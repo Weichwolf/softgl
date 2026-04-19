@@ -241,6 +241,21 @@ set(SG_TEST_CASES
     199_evaluators_patch
     200_accum_jitter
     201_stipple
+    202_shadow_volume
+    203_bump_brick
+    204_lightmap_corridor
+    205_chrome_sphere
+    206_spot_projector
+    207_glass_window
+    208_terrain_blend
+    209_particles_additive
+    210_portal_rooms
+    211_billboard_trees
+    212_skybox_sun
+    213_lens_flare
+    214_decal_stencil
+    215_crt_emissive
+    216_water_surface
 )
 
 # Tolerances for reference/softgl pixel diff. Default exact; individual tests
@@ -434,6 +449,27 @@ set(SG_TOL_200_accum_jitter_MAX_BAD ${SG_ACCUM_MAX_BAD})
 # at edge pixels. Use the generous line budget.
 set(SG_TOL_201_stipple_MAX_DELTA 8)
 set(SG_TOL_201_stipple_MAX_BAD ${SG_LINE_MAX_BAD_BIG})
+
+# Phase SHOWCASE (202-216): real-world GL-1.5 demo scenes. Complex pipeline
+# combinations (stencil, multi-texture, combiners, blends) accumulate more
+# per-pixel rounding delta vs. llvmpipe. Use 3% budget for simple demos,
+# 5% for ones with additive particles / wide sprites / shadow volumes.
+math(EXPR SG_DEMO_MAX_BAD    "640 * 360 * 3 / 100")
+math(EXPR SG_DEMO_BIG_MAX_BAD "640 * 360 * 5 / 100")
+foreach(demo_case
+    203_bump_brick 204_lightmap_corridor 205_chrome_sphere
+    206_spot_projector 207_glass_window 208_terrain_blend
+    210_portal_rooms 211_billboard_trees 214_decal_stencil
+    215_crt_emissive 216_water_surface)
+    set(SG_TOL_${demo_case}_MAX_DELTA 8)
+    set(SG_TOL_${demo_case}_MAX_BAD ${SG_DEMO_MAX_BAD})
+endforeach()
+foreach(demo_big_case
+    202_shadow_volume 209_particles_additive
+    212_skybox_sun 213_lens_flare)
+    set(SG_TOL_${demo_big_case}_MAX_DELTA 16)
+    set(SG_TOL_${demo_big_case}_MAX_BAD ${SG_DEMO_BIG_MAX_BAD})
+endforeach()
 
 foreach(case_name IN LISTS SG_TEST_CASES)
     set(src cases/test_${case_name}.c)
