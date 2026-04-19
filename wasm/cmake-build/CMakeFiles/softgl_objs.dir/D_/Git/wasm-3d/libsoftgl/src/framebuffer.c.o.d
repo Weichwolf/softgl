@@ -1,0 +1,24 @@
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/framebuffer.c.o: \
+  D:/Git/wasm-3d/libsoftgl/src/framebuffer.c \
+  D:/Git/wasm-3d/libsoftgl/src/types.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/stdint.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/stdint.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/bits/alltypes.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/bits/stdint.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/stdlib.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/stdlib.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/features.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/alloca.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/string.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/string.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/strings.h \
+  D:/Git/wasm-3d/wasm/../libsoftgl/include/GL/softgl.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/stddef.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/stddef.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_header_macro.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_ptrdiff_t.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_size_t.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_wchar_t.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_null.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_max_align_t.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_offsetof.h

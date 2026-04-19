@@ -1,0 +1,11 @@
+CMakeFiles/softgl.dir/dispatch.c.o: \
+  D:/Git/wasm-3d/wasm/cmake-build/dispatch.c \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/stddef.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/stddef.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_header_macro.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_ptrdiff_t.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_size_t.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_wchar_t.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_null.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_max_align_t.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_offsetof.h
