@@ -6,6 +6,7 @@ add_library(softgl STATIC
     src/pipeline.c
     src/clip.c
     src/rasterizer.c
+    src/rasterizer_fp.c
     src/lines.c
     src/fragment.c
     src/framebuffer.c

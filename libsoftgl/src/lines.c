@@ -90,7 +90,7 @@ static void sg_line_fragment(softgl_ctx *c, int x, int y,
 
 /* --- Point rasterizer. Assumes the vertex has been through viewport
  * transform already (v->ndc.xy is pixel-center, v->ndc.z is [0..1] depth). */
-static void sg_raster_point(softgl_ctx *c, const sg_vert *v) {
+void sg_raster_point(softgl_ctx *c, const sg_vert *v) {
     float sz = c->point_size;
     if (sz < 1.f) sz = 1.f;
     int size = (int)(sz + 0.5f);
@@ -120,7 +120,7 @@ static void sg_raster_point(softgl_ctx *c, const sg_vert *v) {
 }
 
 /* --- Core line rasterizer. v0/v1 are post-viewport. --- */
-static void sg_raster_line_1px(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1) {
+void sg_raster_line_1px(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1) {
     float x0f = v0->ndc.x, y0f = v0->ndc.y;
     float x1f = v1->ndc.x, y1f = v1->ndc.y;
     float dx = x1f - x0f;
@@ -174,7 +174,7 @@ static void sg_raster_line_1px(softgl_ctx *c, const sg_vert *v0, const sg_vert *
 }
 
 /* Wide line: stamp a perpendicular row of width `w` pixels at each step. */
-static void sg_raster_line_wide(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1, int width) {
+void sg_raster_line_wide(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1, int width) {
     float x0f = v0->ndc.x, y0f = v0->ndc.y;
     float x1f = v1->ndc.x, y1f = v1->ndc.y;
     float dx = x1f - x0f;
@@ -220,9 +220,9 @@ void sg_raster_line(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1) {
     int width = (int)(c->line_width + 0.5f);
     if (width < 1) width = 1;
     if (softgl_get_backend() == SOFTGL_BACKEND_FIXED) {
-        /* TODO Phase FP-1: call sg_raster_line_fp(c, v0, v1, width); */
-        if (width == 1) sg_raster_line_1px(c, v0, v1);
-        else            sg_raster_line_wide(c, v0, v1, width);
+        extern void sg_raster_line_fp(softgl_ctx*, const sg_vert*,
+                                      const sg_vert*, int);
+        sg_raster_line_fp(c, v0, v1, width);
     } else {
         if (width == 1) sg_raster_line_1px(c, v0, v1);
         else            sg_raster_line_wide(c, v0, v1, width);
@@ -265,8 +265,8 @@ void sg_process_point(softgl_ctx *c, const sg_vert *v) {
     sg_vert pv = *v;
     sg_viewport_xform(c, &pv);
     if (softgl_get_backend() == SOFTGL_BACKEND_FIXED) {
-        /* TODO Phase FP-1: call sg_raster_point_fp(c, &pv); */
-        sg_raster_point(c, &pv);
+        extern void sg_raster_point_fp(softgl_ctx*, const sg_vert*);
+        sg_raster_point_fp(c, &pv);
     } else {
         sg_raster_point(c, &pv);
     }

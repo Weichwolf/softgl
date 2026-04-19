@@ -353,8 +353,9 @@ static void sg_finish_triangle(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert 
         sg_vert *tmp = v1; v1 = v2; v2 = tmp;
     }
     if (softgl_get_backend() == SOFTGL_BACKEND_FIXED) {
-        /* TODO Phase FP-1: call sg_raster_triangle_fp(c, v0, v1, v2); */
-        sg_raster_triangle(c, v0, v1, v2);
+        extern void sg_raster_triangle_fp(softgl_ctx*, const sg_vert*,
+                                          const sg_vert*, const sg_vert*);
+        sg_raster_triangle_fp(c, v0, v1, v2);
     } else {
         sg_raster_triangle(c, v0, v1, v2);
     }
