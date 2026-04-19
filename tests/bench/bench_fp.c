@@ -117,6 +117,37 @@ static void scene_overdraw(void) {
     }
 }
 
+/* Depth + alpha-blend overdraw: exercises the full SIMD fragment stack
+ * (depth test, alpha compare, src-alpha / one-minus-src-alpha blend). */
+static void scene_blend_stack(void) {
+    glViewport(0, 0, W, H);
+    glClearColor(0.f, 0.f, 0.f, 1.f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glMatrixMode(GL_PROJECTION); glLoadIdentity();
+    glOrtho(-1, 1, -1, 1, -1, 1);
+    glMatrixMode(GL_MODELVIEW); glLoadIdentity();
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    for (int k = 0; k < 24; k++) {
+        float t = (float)k / 24.f;
+        float z = -0.9f + 1.8f * t;
+        glBegin(GL_TRIANGLES);
+          glColor4f(t, 1.f - t, 0.5f, 0.5f);
+          glVertex3f(-1,-1, z);
+          glVertex3f( 1,-1, z);
+          glVertex3f(-1, 1, z);
+          glVertex3f(-1, 1, z);
+          glVertex3f( 1,-1, z);
+          glVertex3f( 1, 1, z);
+        glEnd();
+    }
+    glDisable(GL_BLEND);
+    glDisable(GL_DEPTH_TEST);
+}
+
 /* ------------------------------------------------------------------ */
 /* Timing                                                              */
 /* ------------------------------------------------------------------ */
@@ -159,9 +190,10 @@ int main(int argc, char **argv) {
     printf("FP-3 benchmark (%dx%d)\n", W, H);
     printf("  %-10s  %-13s  %-13s  %s\n", "scene", "float (ms)", "fixed (ms)", "speedup");
 
-    run_scene("fullquad", scene_fullquad, 300 * mult);
-    run_scene("tess",     scene_tess,      50 * mult);
-    run_scene("overdraw", scene_overdraw,  50 * mult);
+    run_scene("fullquad", scene_fullquad,    300 * mult);
+    run_scene("tess",     scene_tess,         50 * mult);
+    run_scene("overdraw", scene_overdraw,     50 * mult);
+    run_scene("blend",    scene_blend_stack,  50 * mult);
 
     return 0;
 }
