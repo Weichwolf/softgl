@@ -1,20 +1,28 @@
 #include "types.h"
 #include "fp_types.h"
+#include "fp_simd.h"
 #include <math.h>
 
 /* =====================================================================
  * Phase FP-2: real fixed-point triangle rasterizer (scalar).
+ * Phase FP-3: 2x2-quad SIMD coverage (SSE4.1 / wasm_simd128) layered on
+ *             top of the FP-2 edge-function core. Coverage decision is
+ *             SIMD; fragment shading stays scalar (FP-5 target).
  *
  * Edge functions evaluated in 16.8 subpixel screen space. Accumulators
  * are i64 (32.16 product, stepped by i64 deltas). Top-left fill rule
  * applied via per-edge bias so edge pixels hitting exactly E==0 are
  * included for top/left edges and excluded otherwise.
  *
- * Barycentrics and attribute interpolation still run in float in FP-2:
- * the dominant FP-2 payoff is fill-rule parity with llvmpipe, not
- * interpolation precision (that ships in FP-3).
+ * The SIMD path iterates over 2x2 pixel quads. Per quad we compute a
+ * 4-bit coverage mask in one SIMD compare per edge, AND the three
+ * edge masks, AND with per-lane bounds (in case the quad straddles
+ * the framebuffer edge), and only invoke the scalar fragment shader
+ * for lanes that survive.
  *
- * Lines and points remain fallback via float rasterizer (FP-4 port).
+ * If SG_HAVE_SIMD is 0 (neither SSE4.1 nor wasm_simd128 available),
+ * the rasterizer falls back to the plain per-pixel Pineda loop from
+ * FP-2.
  * ===================================================================== */
 
 /* Float rasterizer helpers we reuse. */
@@ -68,6 +76,161 @@ SG_INLINE int fp_is_top_left(sg_screen_t ax, sg_screen_t ay,
     return 0;
 }
 
+/* Saturating cast i64 -> i32. Keeps the sign for coverage testing even
+ * when the full-precision edge value would overflow i32. For realistic
+ * 640x360 framebuffers at 16.8 subpixel precision the product
+ * (dx * dy) in i64 is ~2^34 peak, well above i32. Saturation preserves
+ * the "deep inside/outside" classification the coverage mask needs. */
+SG_INLINE int32_t fp_sat_i64_to_i32(int64_t v) {
+    if (v >  (int64_t)0x7FFFFFFF) return  0x7FFFFFFF;
+    if (v < -(int64_t)0x7FFFFFFF - 1) return -0x7FFFFFFF - 1;
+    return (int32_t)v;
+}
+
+/* =====================================================================
+ * Fragment shader body -- identical to FP-2, extracted so the SIMD
+ * quad loop and the scalar fallback share one copy.
+ *
+ * Preconditions: caller has already verified (E + bias) >= 0 for all
+ * three edges at (x, y). E0/E1/E2 are the full-precision i64 edge
+ * values for this specific pixel, used to build the float barycentrics.
+ * ===================================================================== */
+SG_INLINE void fp_shade_pixel(softgl_ctx *c,
+                              const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
+                              int x, int y,
+                              int64_t E0, int64_t E1,
+                              float inv_area_f,
+                              float invw0, float invw1, float invw2,
+                              float z_offset) {
+    /* Polygon stipple (same window-space convention as float). */
+    if (c->polygon_stipple_enable) {
+        int sx = x & 31;
+        int sy = y & 31;
+        GLubyte row = c->polygon_stipple[sy * 4 + (sx >> 3)];
+        if (!(row & (0x80u >> (sx & 7)))) return;
+    }
+
+    /* Float barycentrics from i64 edge values. */
+    float b0 = (float)E0 * inv_area_f;
+    float b1 = (float)E1 * inv_area_f;
+    float b2 = 1.f - b0 - b1;   /* algebraic closure */
+
+    /* Perspective-correct: w_i = b_i * inv_w_i. */
+    float w0 = b0 * invw0;
+    float w1 = b1 * invw1;
+    float w2 = b2 * invw2;
+    float wsum = w0 + w1 + w2;
+    if (wsum <= 0.f) return;
+    float one_over_wsum = 1.0f / wsum;
+
+    /* Depth: screen-linear, not perspective-corrected. */
+    float z = b0 * v0->ndc.z + b1 * v1->ndc.z + b2 * v2->ndc.z + z_offset;
+
+    /* Color (perspective-correct). */
+    float col[4];
+    fp_lerp_pc(col, &v0->color, &v1->color, &v2->color,
+               w0, w1, w2, one_over_wsum);
+
+    float eye_z = (v0->eye.z * w0 + v1->eye.z * w1 + v2->eye.z * w2) * one_over_wsum;
+
+    float primary[4] = { col[0], col[1], col[2], col[3] };
+
+    /* Texture sampling per unit + combiner. */
+    float unit_tex[SG_MAX_TEX_UNITS][4];
+    int   unit_active[SG_MAX_TEX_UNITS];
+    for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
+        sg_tex_env *env = &c->tex_env[u];
+        int active_slot = -1;
+        if      (env->enabled_target[SG_TEX_TARGET_CUBE] &&
+                 env->bound_tex_target[SG_TEX_TARGET_CUBE])
+            active_slot = SG_TEX_TARGET_CUBE;
+        else if (env->enabled_target[SG_TEX_TARGET_3D] &&
+                 env->bound_tex_target[SG_TEX_TARGET_3D])
+            active_slot = SG_TEX_TARGET_3D;
+        else if (env->enabled_target[SG_TEX_TARGET_2D] &&
+                 env->bound_tex_target[SG_TEX_TARGET_2D])
+            active_slot = SG_TEX_TARGET_2D;
+        else if (env->enabled_target[SG_TEX_TARGET_1D] &&
+                 env->bound_tex_target[SG_TEX_TARGET_1D])
+            active_slot = SG_TEX_TARGET_1D;
+
+        unit_tex[u][0] = unit_tex[u][1] = unit_tex[u][2] = unit_tex[u][3] = 1.f;
+        unit_active[u] = 0;
+        if (active_slot < 0) continue;
+
+        sg_texture *tex = sg_texture_get(c, env->bound_tex_target[active_slot]);
+        if (!tex) continue;
+
+        float uvp[4];
+        fp_lerp_pc(uvp, &v0->uv[u], &v1->uv[u], &v2->uv[u],
+                   w0, w1, w2, one_over_wsum);
+
+        float *tx = unit_tex[u];
+        switch (active_slot) {
+            case SG_TEX_TARGET_1D:
+                if (tex->levels == 0) break;
+                sg_sample_tex1d(tex, tex->min_filter, tex->mag_filter,
+                                tex->wrap_s, uvp[0], 1, tx);
+                break;
+            case SG_TEX_TARGET_3D:
+                if (tex->levels == 0) break;
+                sg_sample_tex3d(tex, tex->min_filter, tex->mag_filter,
+                                tex->wrap_s, tex->wrap_t, tex->wrap_r,
+                                uvp[0], uvp[1], uvp[2], 1, tx);
+                break;
+            case SG_TEX_TARGET_CUBE:
+                sg_sample_tex_cube(tex, tex->min_filter, tex->mag_filter,
+                                   tex->wrap_s, tex->wrap_t,
+                                   uvp[0], uvp[1], uvp[2], 1, tx);
+                break;
+            case SG_TEX_TARGET_2D:
+            default:
+                if (tex->levels == 0) break;
+                sg_sample_tex2d(tex, tex->min_filter, tex->mag_filter,
+                                tex->wrap_s, tex->wrap_t,
+                                uvp[0], uvp[1], 1, tx);
+                break;
+        }
+        unit_active[u] = 1;
+    }
+
+    for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
+        if (!unit_active[u]) continue;
+        float out[4];
+        sg_tex_env_combine_full(&c->tex_env[u], u, primary, col, unit_tex, out);
+        col[0] = out[0]; col[1] = out[1]; col[2] = out[2]; col[3] = out[3];
+    }
+
+    /* Fog. */
+    if (c->fog_enabled) {
+        float ez = eye_z < 0.f ? -eye_z : eye_z;
+        float f = 1.f;
+        switch (c->fog_mode) {
+            case GL_EXP:
+                f = expf(-c->fog_density * ez);
+                break;
+            case GL_EXP2: {
+                float e = c->fog_density * ez;
+                f = expf(-(e * e));
+                break;
+            }
+            case GL_LINEAR_FOG:
+            default: {
+                float range = c->fog_end - c->fog_start;
+                if (range != 0.f)
+                    f = (c->fog_end - ez) / range;
+                break;
+            }
+        }
+        if (f < 0.f) f = 0.f; else if (f > 1.f) f = 1.f;
+        col[0] = f * col[0] + (1.f - f) * c->fog_color[0];
+        col[1] = f * col[1] + (1.f - f) * c->fog_color[1];
+        col[2] = f * col[2] + (1.f - f) * c->fog_color[2];
+    }
+
+    sg_write_fragment(c, x, y, z, col[0], col[1], col[2], col[3]);
+}
+
 void sg_raster_triangle_fp(softgl_ctx *c,
                            const sg_vert *v0,
                            const sg_vert *v1,
@@ -80,30 +243,18 @@ void sg_raster_triangle_fp(softgl_ctx *c,
     sg_screen_t x2 = sg_fp_screen_from_float(v2->ndc.x);
     sg_screen_t y2 = sg_fp_screen_from_float(v2->ndc.y);
 
-    /* --- Signed area × 2 in fixed-point.
+    /* --- Signed area x 2 in fixed-point.
      * (x1-x0) is 16.8, (y2-y0) is 16.8 => product is 32.16 in i64. */
     int64_t area2 = (int64_t)(x1 - x0) * (int64_t)(y2 - y0)
                   - (int64_t)(y1 - y0) * (int64_t)(x2 - x0);
     if (area2 <= 0) return;   /* degenerate or CW (back-face) */
 
-    /* --- B. Top-left biases. Inside iff (E + bias) >= 0. ---
-     * bias = 0 for top/left edges (E==0 counts as inside),
-     * bias = -1 otherwise (E==0 pushed to outside). */
+    /* --- B. Top-left biases. Inside iff (E + bias) >= 0. --- */
     int bias0 = fp_is_top_left(x1, y1, x2, y2) ? 0 : -1;   /* edge opposite v0 */
     int bias1 = fp_is_top_left(x2, y2, x0, y0) ? 0 : -1;   /* edge opposite v1 */
     int bias2 = fp_is_top_left(x0, y0, x1, y1) ? 0 : -1;   /* edge opposite v2 */
 
-    /* --- C. Bounding box in pixels, clipped to viewport + scissor. ---
-     * Float coords use pixel-center sampling at x+0.5. Convert the
-     * fixed-point AABB so we include every pixel whose center might
-     * lie inside the triangle.
-     *
-     * Pixel x is "in" iff its center (x+0.5) lies within [min/256, max/256].
-     * A conservative and simple range is:
-     *   ix_min = floor(min_fp / 256)
-     *   ix_max = floor(max_fp / 256) + 1  (exclusive upper bound)
-     * The edge test will reject pixels whose center actually sits off
-     * the triangle. */
+    /* --- C. Bounding box in pixels, clipped to viewport + scissor. --- */
     sg_screen_t min_x_fp = x0; if (x1 < min_x_fp) min_x_fp = x1; if (x2 < min_x_fp) min_x_fp = x2;
     sg_screen_t max_x_fp = x0; if (x1 > max_x_fp) max_x_fp = x1; if (x2 > max_x_fp) max_x_fp = x2;
     sg_screen_t min_y_fp = y0; if (y1 < min_y_fp) min_y_fp = y1; if (y2 < min_y_fp) min_y_fp = y2;
@@ -113,10 +264,6 @@ void sg_raster_triangle_fp(softgl_ctx *c,
     int iy0 = (int)(min_y_fp >> SG_FP_SUBPIXEL_BITS);
     int ix1 = (int)(max_x_fp >> SG_FP_SUBPIXEL_BITS) + 1;
     int iy1 = (int)(max_y_fp >> SG_FP_SUBPIXEL_BITS) + 1;
-    /* Negative values truncate toward zero for arithmetic shift of a
-     * negative i32 — but sg_screen_t is i32 and >> on signed is impl-
-     * defined in C89/C99 (implementation-defined in C11, "arithmetic
-     * shift" on every compiler we build with). Guard anyway: */
     if (min_x_fp < 0) ix0 = (int)((min_x_fp - (SG_FP_SUBPIXEL_ONE - 1)) >> SG_FP_SUBPIXEL_BITS);
     if (min_y_fp < 0) iy0 = (int)((min_y_fp - (SG_FP_SUBPIXEL_ONE - 1)) >> SG_FP_SUBPIXEL_BITS);
 
@@ -134,28 +281,20 @@ void sg_raster_triangle_fp(softgl_ctx *c,
     }
     if (ix0 >= ix1 || iy0 >= iy1) return;
 
-    /* --- Start sample: pixel center at (ix0+0.5, iy0+0.5) in 16.8.
-     * px_fp = ix0*256 + 128, same for py. */
+    /* --- Start sample: pixel center at (ix0+0.5, iy0+0.5) in 16.8. --- */
     const sg_screen_t half = SG_FP_SUBPIXEL_ONE >> 1;   /* 128 */
     sg_screen_t px_start = (sg_screen_t)ix0 * SG_FP_SUBPIXEL_ONE + half;
     sg_screen_t py_start = (sg_screen_t)iy0 * SG_FP_SUBPIXEL_ONE + half;
 
-    /* --- Edge functions at the start sample. Each E is 32.16 in i64. ---
-     * E(p) = (b.x - a.x) * (p.y - a.y) - (b.y - a.y) * (p.x - a.x)
-     * Stepping:
-     *   dE/dx = -(b.y - a.y)   (one 16.8 delta)
-     *   dE/dy =  (b.x - a.x)   (one 16.8 delta)
-     * Per pixel/row step adds the delta multiplied by SUBPIXEL_ONE
-     * (since p advances by one whole pixel = 256 in subpixel units).
-     * We fold that 256 into the step constant. */
-    int64_t E0_row = (int64_t)(x2 - x1) * (int64_t)(py_start - y1)
-                   - (int64_t)(y2 - y1) * (int64_t)(px_start - x1);
-    int64_t E1_row = (int64_t)(x0 - x2) * (int64_t)(py_start - y2)
-                   - (int64_t)(y0 - y2) * (int64_t)(px_start - x2);
-    int64_t E2_row = (int64_t)(x1 - x0) * (int64_t)(py_start - y0)
-                   - (int64_t)(y1 - y0) * (int64_t)(px_start - x0);
+    /* --- Edge functions at the start sample. Each E is 32.16 in i64. --- */
+    int64_t E0_row0 = (int64_t)(x2 - x1) * (int64_t)(py_start - y1)
+                    - (int64_t)(y2 - y1) * (int64_t)(px_start - x1);
+    int64_t E1_row0 = (int64_t)(x0 - x2) * (int64_t)(py_start - y2)
+                    - (int64_t)(y0 - y2) * (int64_t)(px_start - x2);
+    int64_t E2_row0 = (int64_t)(x1 - x0) * (int64_t)(py_start - y0)
+                    - (int64_t)(y1 - y0) * (int64_t)(px_start - x0);
 
-    /* Per-pixel (dx) and per-row (dy) step constants — pre-multiplied
+    /* Per-pixel (dx) and per-row (dy) step constants, pre-multiplied
      * by SUBPIXEL_ONE so a whole-pixel step just adds them once. */
     int64_t dE0_dx = -(int64_t)(y2 - y1) * (int64_t)SG_FP_SUBPIXEL_ONE;
     int64_t dE0_dy =  (int64_t)(x2 - x1) * (int64_t)SG_FP_SUBPIXEL_ONE;
@@ -164,16 +303,12 @@ void sg_raster_triangle_fp(softgl_ctx *c,
     int64_t dE2_dx = -(int64_t)(y1 - y0) * (int64_t)SG_FP_SUBPIXEL_ONE;
     int64_t dE2_dy =  (int64_t)(x1 - x0) * (int64_t)SG_FP_SUBPIXEL_ONE;
 
-    /* Scale for bary normalization. Both E and area2 are 32.16, so
-     * the ratio is dimensionless — no shift needed. */
     float inv_area_f = 1.0f / (float)area2;
 
     /* --- Polygon offset (fill): same formula as the float path. --- */
     float z_offset = 0.f;
     if (c->polygon_offset_fill && (c->polygon_offset_factor != 0.f ||
                                     c->polygon_offset_units  != 0.f)) {
-        /* Operate in float: dz/dx and dz/dy in screen space.
-         * Use float x/y (pre-fp) for max fidelity. */
         float fx0 = v0->ndc.x, fy0 = v0->ndc.y;
         float fx1 = v1->ndc.x, fy1 = v1->ndc.y;
         float fx2 = v2->ndc.x, fy2 = v2->ndc.y;
@@ -194,145 +329,188 @@ void sg_raster_triangle_fp(softgl_ctx *c,
     float invw1 = v1->ndc.w;
     float invw2 = v2->ndc.w;
 
-    /* --- F. Per-pixel loop, Pineda-style. --- */
+#if SG_HAVE_SIMD
+    /* =================================================================
+     *   SIMD 2x2-quad path (SSE4.1 / wasm_simd128).
+     *
+     * The outer loop advances in 2-pixel steps in both axes. For each
+     * quad, we build a per-lane i32 edge value (saturating from i64)
+     * plus three small delta vectors:
+     *     lane 0: +0
+     *     lane 1: +dE_dx     (TR)
+     *     lane 2:        +dE_dy   (BL)
+     *     lane 3: +dE_dx +dE_dy   (BR)
+     * The coverage mask is the AND of the three sign-bit-tests for
+     * (E_lane + bias) >= 0.
+     *
+     * We also AND a per-lane bounds mask that rejects lanes outside
+     * [ix0, ix1) x [iy0, iy1) -- this handles odd-width bounding boxes
+     * without requiring pixel-aligned quads.
+     * ================================================================= */
+
+    /* NB: we do NOT build the 4-lane edge values by splatting a
+     * saturated i32 TL value and adding i32 offsets. That pattern
+     * wraps when the saturated TL is already at INT32_MAX and the
+     * offset pushes it further -- a lane that should clearly be
+     * "inside" flips to negative and gets rejected. Instead we
+     * compute (E_TL + lane_offset + bias) in full i64 per lane and
+     * then saturate to i32 when loading the SIMD register. That
+     * cost is negligible (three i64 adds per edge) and keeps the
+     * sign bit truthful over the full i64 dynamic range. */
+
+    /* Per-edge "worst" and "best" lane offsets across the quad. A
+     * trivial reject is possible when the maximum achievable edge
+     * value inside the quad is still < -bias; a trivial accept is
+     * possible when the minimum is >= -bias (i.e. all 4 lanes are
+     * strictly inside). Using these as scalar gates avoids the more
+     * expensive SIMD build for the easy cases. */
+    int64_t min_off0 = 0, max_off0 = 0;
+    if (dE0_dx < 0) min_off0 += dE0_dx; else max_off0 += dE0_dx;
+    if (dE0_dy < 0) min_off0 += dE0_dy; else max_off0 += dE0_dy;
+    int64_t min_off1 = 0, max_off1 = 0;
+    if (dE1_dx < 0) min_off1 += dE1_dx; else max_off1 += dE1_dx;
+    if (dE1_dy < 0) min_off1 += dE1_dy; else max_off1 += dE1_dy;
+    int64_t min_off2 = 0, max_off2 = 0;
+    if (dE2_dx < 0) min_off2 += dE2_dx; else max_off2 += dE2_dx;
+    if (dE2_dy < 0) min_off2 += dE2_dy; else max_off2 += dE2_dy;
+
+    /* Walk the bounding box in 2-pixel-high strips. iy is the TL row
+     * of the current quad. When iy+1 == iy1 (odd height), BL/BR lanes
+     * will be masked out by the bounds test. Same story for ix. */
+    int64_t E0_row = E0_row0;
+    int64_t E1_row = E1_row0;
+    int64_t E2_row = E2_row0;
+
+    for (int iy = iy0; iy < iy1; iy += 2) {
+        int64_t E0 = E0_row;
+        int64_t E1 = E1_row;
+        int64_t E2 = E2_row;
+
+        /* Pre-compute per-row bounds mask bits: lanes 2/3 (BL/BR) are
+         * only valid if iy+1 < iy1. */
+        unsigned row_mask = 0x3u;                 /* TL, TR always in row */
+        if (iy + 1 < iy1) row_mask |= 0xCu;       /* BL, BR valid */
+
+        for (int ix = ix0; ix < ix1; ix += 2) {
+            /* Col bounds mask: TR/BR (lanes 1/3) only valid if ix+1<ix1. */
+            unsigned col_mask = 0x5u;             /* TL, BL column */
+            if (ix + 1 < ix1) col_mask |= 0xAu;   /* TR, BR column */
+            unsigned bounds_mask = row_mask & col_mask;
+
+            /* (E + bias) at TL corner, full i64 precision. */
+            int64_t e0_tl = E0 + bias0;
+            int64_t e1_tl = E1 + bias1;
+            int64_t e2_tl = E2 + bias2;
+
+            /* --- Scalar trivial-reject: if any edge's max-across-quad
+             * is < 0, no lane is inside -> skip the SIMD build entirely. */
+            if ((e0_tl + max_off0) < 0 ||
+                (e1_tl + max_off1) < 0 ||
+                (e2_tl + max_off2) < 0) {
+                goto step;
+            }
+
+            unsigned cov;
+            /* --- Scalar trivial-accept: if every edge's min-across-quad
+             * is >= 0, all 4 lanes are inside. Still need bounds_mask for
+             * framebuffer-edge clipping. */
+            if ((e0_tl + min_off0) >= 0 &&
+                (e1_tl + min_off1) >= 0 &&
+                (e2_tl + min_off2) >= 0) {
+                cov = bounds_mask;
+            } else {
+                /* Build the 4-lane edge vector by evaluating (E + bias)
+                 * per lane in full i64, then saturating to i32 so the
+                 * sign bit survives the SIMD compare. Saturation only
+                 * trims values whose magnitude already exceeds 2^31,
+                 * all of which are unambiguously inside/outside. */
+                sg_i32x4 v0v = sg_i32x4_set(
+                    fp_sat_i64_to_i32(e0_tl),
+                    fp_sat_i64_to_i32(e0_tl + dE0_dx),
+                    fp_sat_i64_to_i32(e0_tl + dE0_dy),
+                    fp_sat_i64_to_i32(e0_tl + dE0_dx + dE0_dy));
+                sg_i32x4 v1v = sg_i32x4_set(
+                    fp_sat_i64_to_i32(e1_tl),
+                    fp_sat_i64_to_i32(e1_tl + dE1_dx),
+                    fp_sat_i64_to_i32(e1_tl + dE1_dy),
+                    fp_sat_i64_to_i32(e1_tl + dE1_dx + dE1_dy));
+                sg_i32x4 v2v = sg_i32x4_set(
+                    fp_sat_i64_to_i32(e2_tl),
+                    fp_sat_i64_to_i32(e2_tl + dE2_dx),
+                    fp_sat_i64_to_i32(e2_tl + dE2_dy),
+                    fp_sat_i64_to_i32(e2_tl + dE2_dx + dE2_dy));
+
+                unsigned m0 = sg_i32x4_mask_nonneg(v0v);
+                unsigned m1 = sg_i32x4_mask_nonneg(v1v);
+                unsigned m2 = sg_i32x4_mask_nonneg(v2v);
+
+                cov = m0 & m1 & m2 & bounds_mask;
+            }
+
+            if (cov) {
+                /* Per-lane shade. Reuse the scalar i64 edge values
+                 * (not the saturated i32) to keep barycentric precision
+                 * identical to the FP-2 path.
+                 *
+                 * lane 0 (TL): (ix,   iy  ), E = E0
+                 * lane 1 (TR): (ix+1, iy  ), E = E0 + dE_dx
+                 * lane 2 (BL): (ix,   iy+1), E = E0 + dE_dy
+                 * lane 3 (BR): (ix+1, iy+1), E = E0 + dE_dx + dE_dy
+                 */
+                if (cov & 0x1u) {
+                    fp_shade_pixel(c, v0, v1, v2, ix, iy,
+                                   E0, E1,
+                                   inv_area_f, invw0, invw1, invw2, z_offset);
+                }
+                if (cov & 0x2u) {
+                    fp_shade_pixel(c, v0, v1, v2, ix + 1, iy,
+                                   E0 + dE0_dx, E1 + dE1_dx,
+                                   inv_area_f, invw0, invw1, invw2, z_offset);
+                }
+                if (cov & 0x4u) {
+                    fp_shade_pixel(c, v0, v1, v2, ix, iy + 1,
+                                   E0 + dE0_dy, E1 + dE1_dy,
+                                   inv_area_f, invw0, invw1, invw2, z_offset);
+                }
+                if (cov & 0x8u) {
+                    fp_shade_pixel(c, v0, v1, v2, ix + 1, iy + 1,
+                                   E0 + dE0_dx + dE0_dy,
+                                   E1 + dE1_dx + dE1_dy,
+                                   inv_area_f, invw0, invw1, invw2, z_offset);
+                }
+            }
+
+        step:
+            /* Step 2 pixels right (TL of next quad). */
+            E0 += dE0_dx * 2;
+            E1 += dE1_dx * 2;
+            E2 += dE2_dx * 2;
+        }
+
+        /* Step 2 rows down (TL of next quad row). */
+        E0_row += dE0_dy * 2;
+        E1_row += dE1_dy * 2;
+        E2_row += dE2_dy * 2;
+    }
+
+#else
+    /* =================================================================
+     *   Scalar fallback (FP-2 path).
+     * ================================================================= */
+    int64_t E0_row = E0_row0;
+    int64_t E1_row = E1_row0;
+    int64_t E2_row = E2_row0;
+
     for (int y = iy0; y < iy1; y++) {
         int64_t E0 = E0_row;
         int64_t E1 = E1_row;
         int64_t E2 = E2_row;
 
         for (int x = ix0; x < ix1; x++) {
-            /* Inside iff all three (E + bias) >= 0. */
             if ((E0 + bias0) >= 0 && (E1 + bias1) >= 0 && (E2 + bias2) >= 0) {
-                /* Polygon stipple (same window-space convention as float). */
-                if (c->polygon_stipple_enable) {
-                    int sx = x & 31;
-                    int sy = y & 31;
-                    GLubyte row = c->polygon_stipple[sy * 4 + (sx >> 3)];
-                    if (!(row & (0x80u >> (sx & 7)))) goto step;
-                }
-
-                /* Float barycentrics from i64 edge values. E values are
-                 * already signed — just cast and normalize. */
-                float b0 = (float)E0 * inv_area_f;
-                float b1 = (float)E1 * inv_area_f;
-                float b2 = 1.f - b0 - b1;   /* algebraic closure */
-
-                /* Perspective-correct: w_i = b_i * inv_w_i. */
-                float w0 = b0 * invw0;
-                float w1 = b1 * invw1;
-                float w2 = b2 * invw2;
-                float wsum = w0 + w1 + w2;
-                if (wsum <= 0.f) goto step;
-                float one_over_wsum = 1.0f / wsum;
-
-                /* Depth: screen-linear, not perspective-corrected. */
-                float z = b0 * v0->ndc.z + b1 * v1->ndc.z + b2 * v2->ndc.z + z_offset;
-
-                /* Color (perspective-correct). */
-                float col[4];
-                fp_lerp_pc(col, &v0->color, &v1->color, &v2->color,
-                           w0, w1, w2, one_over_wsum);
-
-                float eye_z = (v0->eye.z * w0 + v1->eye.z * w1 + v2->eye.z * w2) * one_over_wsum;
-
-                float primary[4] = { col[0], col[1], col[2], col[3] };
-
-                /* Texture sampling per unit + combiner — unchanged. */
-                float unit_tex[SG_MAX_TEX_UNITS][4];
-                int   unit_active[SG_MAX_TEX_UNITS];
-                for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
-                    sg_tex_env *env = &c->tex_env[u];
-                    int active_slot = -1;
-                    if      (env->enabled_target[SG_TEX_TARGET_CUBE] &&
-                             env->bound_tex_target[SG_TEX_TARGET_CUBE])
-                        active_slot = SG_TEX_TARGET_CUBE;
-                    else if (env->enabled_target[SG_TEX_TARGET_3D] &&
-                             env->bound_tex_target[SG_TEX_TARGET_3D])
-                        active_slot = SG_TEX_TARGET_3D;
-                    else if (env->enabled_target[SG_TEX_TARGET_2D] &&
-                             env->bound_tex_target[SG_TEX_TARGET_2D])
-                        active_slot = SG_TEX_TARGET_2D;
-                    else if (env->enabled_target[SG_TEX_TARGET_1D] &&
-                             env->bound_tex_target[SG_TEX_TARGET_1D])
-                        active_slot = SG_TEX_TARGET_1D;
-
-                    unit_tex[u][0] = unit_tex[u][1] = unit_tex[u][2] = unit_tex[u][3] = 1.f;
-                    unit_active[u] = 0;
-                    if (active_slot < 0) continue;
-
-                    sg_texture *tex = sg_texture_get(c, env->bound_tex_target[active_slot]);
-                    if (!tex) continue;
-
-                    float uvp[4];
-                    fp_lerp_pc(uvp, &v0->uv[u], &v1->uv[u], &v2->uv[u],
-                               w0, w1, w2, one_over_wsum);
-
-                    float *tx = unit_tex[u];
-                    switch (active_slot) {
-                        case SG_TEX_TARGET_1D:
-                            if (tex->levels == 0) break;
-                            sg_sample_tex1d(tex, tex->min_filter, tex->mag_filter,
-                                            tex->wrap_s, uvp[0], 1, tx);
-                            break;
-                        case SG_TEX_TARGET_3D:
-                            if (tex->levels == 0) break;
-                            sg_sample_tex3d(tex, tex->min_filter, tex->mag_filter,
-                                            tex->wrap_s, tex->wrap_t, tex->wrap_r,
-                                            uvp[0], uvp[1], uvp[2], 1, tx);
-                            break;
-                        case SG_TEX_TARGET_CUBE:
-                            sg_sample_tex_cube(tex, tex->min_filter, tex->mag_filter,
-                                               tex->wrap_s, tex->wrap_t,
-                                               uvp[0], uvp[1], uvp[2], 1, tx);
-                            break;
-                        case SG_TEX_TARGET_2D:
-                        default:
-                            if (tex->levels == 0) break;
-                            sg_sample_tex2d(tex, tex->min_filter, tex->mag_filter,
-                                            tex->wrap_s, tex->wrap_t,
-                                            uvp[0], uvp[1], 1, tx);
-                            break;
-                    }
-                    unit_active[u] = 1;
-                }
-
-                for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
-                    if (!unit_active[u]) continue;
-                    float out[4];
-                    sg_tex_env_combine_full(&c->tex_env[u], u, primary, col, unit_tex, out);
-                    col[0] = out[0]; col[1] = out[1]; col[2] = out[2]; col[3] = out[3];
-                }
-
-                /* Fog. */
-                if (c->fog_enabled) {
-                    float ez = eye_z < 0.f ? -eye_z : eye_z;
-                    float f = 1.f;
-                    switch (c->fog_mode) {
-                        case GL_EXP:
-                            f = expf(-c->fog_density * ez);
-                            break;
-                        case GL_EXP2: {
-                            float e = c->fog_density * ez;
-                            f = expf(-(e * e));
-                            break;
-                        }
-                        case GL_LINEAR_FOG:
-                        default: {
-                            float range = c->fog_end - c->fog_start;
-                            if (range != 0.f)
-                                f = (c->fog_end - ez) / range;
-                            break;
-                        }
-                    }
-                    if (f < 0.f) f = 0.f; else if (f > 1.f) f = 1.f;
-                    col[0] = f * col[0] + (1.f - f) * c->fog_color[0];
-                    col[1] = f * col[1] + (1.f - f) * c->fog_color[1];
-                    col[2] = f * col[2] + (1.f - f) * c->fog_color[2];
-                }
-
-                sg_write_fragment(c, x, y, z, col[0], col[1], col[2], col[3]);
+                fp_shade_pixel(c, v0, v1, v2, x, y, E0, E1,
+                               inv_area_f, invw0, invw1, invw2, z_offset);
             }
-        step:
             E0 += dE0_dx;
             E1 += dE1_dx;
             E2 += dE2_dx;
@@ -341,6 +519,7 @@ void sg_raster_triangle_fp(softgl_ctx *c,
         E1_row += dE1_dy;
         E2_row += dE2_dy;
     }
+#endif
 }
 
 /* Lines + points: FP-4 will port these. For now keep the float path via

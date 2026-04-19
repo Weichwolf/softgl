@@ -6,6 +6,42 @@ enable_testing()
 add_executable(sg_compare harness/compare.c harness/ppm_write.c)
 target_include_directories(sg_compare PRIVATE harness)
 
+# --- FP-3 benchmark (native, softgl only, no reference GL) ---
+add_executable(bench_fp bench/bench_fp.c)
+target_link_libraries(bench_fp PRIVATE softgl)
+set_target_properties(bench_fp PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bench)
+
+# Second bench target that links against a softgl built with SIMD disabled,
+# so we can compare the FP-2 scalar fallback against the FP-3 SIMD-quad path.
+add_library(softgl_noSIMD STATIC
+    ../libsoftgl/src/state.c
+    ../libsoftgl/src/matrix.c
+    ../libsoftgl/src/buffers.c
+    ../libsoftgl/src/texture.c
+    ../libsoftgl/src/pipeline.c
+    ../libsoftgl/src/clip.c
+    ../libsoftgl/src/rasterizer.c
+    ../libsoftgl/src/rasterizer_fp.c
+    ../libsoftgl/src/lines.c
+    ../libsoftgl/src/fragment.c
+    ../libsoftgl/src/framebuffer.c
+    ../libsoftgl/src/lighting.c
+    ../libsoftgl/src/api.c
+    ../libsoftgl/src/immediate.c
+    ../libsoftgl/src/dlist.c
+    ../libsoftgl/src/pixels.c
+    ../libsoftgl/src/evaluators.c)
+target_include_directories(softgl_noSIMD
+    PUBLIC  ${CMAKE_SOURCE_DIR}/libsoftgl/include
+    PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_compile_definitions(softgl_noSIMD PRIVATE SOFTGL_BUILD SG_DISABLE_SIMD)
+
+add_executable(bench_fp_noSIMD bench/bench_fp.c)
+target_link_libraries(bench_fp_noSIMD PRIVATE softgl_noSIMD)
+set_target_properties(bench_fp_noSIMD PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bench)
+
 # --- Harness library: softgl backend ---
 add_library(harness_softgl STATIC harness/harness_softgl.c harness/ppm_write.c)
 target_link_libraries(harness_softgl PUBLIC softgl)
