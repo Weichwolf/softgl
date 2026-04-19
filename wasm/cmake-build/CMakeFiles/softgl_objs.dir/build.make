@@ -116,11 +116,41 @@ CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/clip.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/clip.c.s"
 	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:\Git\wasm-3d\libsoftgl\src\clip.c -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\clip.c.s
 
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/dlist.c.o: CMakeFiles/softgl_objs.dir/flags.make
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/dlist.c.o: CMakeFiles/softgl_objs.dir/includes_C.rsp
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/dlist.c.o: D:/Git/wasm-3d/libsoftgl/src/dlist.c
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/dlist.c.o: CMakeFiles/softgl_objs.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Git\wasm-3d\wasm\cmake-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/dlist.c.o"
+	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/dlist.c.o -MF CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\dlist.c.o.d -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\dlist.c.o -c D:\Git\wasm-3d\libsoftgl\src\dlist.c
+
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/dlist.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/dlist.c.i"
+	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E D:\Git\wasm-3d\libsoftgl\src\dlist.c > CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\dlist.c.i
+
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/dlist.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/dlist.c.s"
+	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:\Git\wasm-3d\libsoftgl\src\dlist.c -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\dlist.c.s
+
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/evaluators.c.o: CMakeFiles/softgl_objs.dir/flags.make
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/evaluators.c.o: CMakeFiles/softgl_objs.dir/includes_C.rsp
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/evaluators.c.o: D:/Git/wasm-3d/libsoftgl/src/evaluators.c
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/evaluators.c.o: CMakeFiles/softgl_objs.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Git\wasm-3d\wasm\cmake-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/evaluators.c.o"
+	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/evaluators.c.o -MF CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\evaluators.c.o.d -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\evaluators.c.o -c D:\Git\wasm-3d\libsoftgl\src\evaluators.c
+
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/evaluators.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/evaluators.c.i"
+	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E D:\Git\wasm-3d\libsoftgl\src\evaluators.c > CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\evaluators.c.i
+
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/evaluators.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/evaluators.c.s"
+	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:\Git\wasm-3d\libsoftgl\src\evaluators.c -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\evaluators.c.s
+
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/fragment.c.o: CMakeFiles/softgl_objs.dir/flags.make
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/fragment.c.o: CMakeFiles/softgl_objs.dir/includes_C.rsp
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/fragment.c.o: D:/Git/wasm-3d/libsoftgl/src/fragment.c
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/fragment.c.o: CMakeFiles/softgl_objs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Git\wasm-3d\wasm\cmake-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/fragment.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Git\wasm-3d\wasm\cmake-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/fragment.c.o"
 	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/fragment.c.o -MF CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\fragment.c.o.d -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\fragment.c.o -c D:\Git\wasm-3d\libsoftgl\src\fragment.c
 
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/fragment.c.i: cmake_force
@@ -135,7 +165,7 @@ CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/framebuffer.c.o: CMakeFi
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/framebuffer.c.o: CMakeFiles/softgl_objs.dir/includes_C.rsp
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/framebuffer.c.o: D:/Git/wasm-3d/libsoftgl/src/framebuffer.c
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/framebuffer.c.o: CMakeFiles/softgl_objs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Git\wasm-3d\wasm\cmake-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/framebuffer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Git\wasm-3d\wasm\cmake-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/framebuffer.c.o"
 	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/framebuffer.c.o -MF CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\framebuffer.c.o.d -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\framebuffer.c.o -c D:\Git\wasm-3d\libsoftgl\src\framebuffer.c
 
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/framebuffer.c.i: cmake_force
@@ -146,11 +176,26 @@ CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/framebuffer.c.s: cmake_f
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/framebuffer.c.s"
 	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:\Git\wasm-3d\libsoftgl\src\framebuffer.c -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\framebuffer.c.s
 
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/immediate.c.o: CMakeFiles/softgl_objs.dir/flags.make
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/immediate.c.o: CMakeFiles/softgl_objs.dir/includes_C.rsp
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/immediate.c.o: D:/Git/wasm-3d/libsoftgl/src/immediate.c
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/immediate.c.o: CMakeFiles/softgl_objs.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Git\wasm-3d\wasm\cmake-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/immediate.c.o"
+	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/immediate.c.o -MF CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\immediate.c.o.d -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\immediate.c.o -c D:\Git\wasm-3d\libsoftgl\src\immediate.c
+
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/immediate.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/immediate.c.i"
+	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E D:\Git\wasm-3d\libsoftgl\src\immediate.c > CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\immediate.c.i
+
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/immediate.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/immediate.c.s"
+	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:\Git\wasm-3d\libsoftgl\src\immediate.c -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\immediate.c.s
+
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lighting.c.o: CMakeFiles/softgl_objs.dir/flags.make
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lighting.c.o: CMakeFiles/softgl_objs.dir/includes_C.rsp
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lighting.c.o: D:/Git/wasm-3d/libsoftgl/src/lighting.c
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lighting.c.o: CMakeFiles/softgl_objs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Git\wasm-3d\wasm\cmake-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lighting.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Git\wasm-3d\wasm\cmake-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lighting.c.o"
 	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lighting.c.o -MF CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\lighting.c.o.d -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\lighting.c.o -c D:\Git\wasm-3d\libsoftgl\src\lighting.c
 
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lighting.c.i: cmake_force
@@ -161,11 +206,26 @@ CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lighting.c.s: cmake_forc
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lighting.c.s"
 	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:\Git\wasm-3d\libsoftgl\src\lighting.c -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\lighting.c.s
 
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lines.c.o: CMakeFiles/softgl_objs.dir/flags.make
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lines.c.o: CMakeFiles/softgl_objs.dir/includes_C.rsp
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lines.c.o: D:/Git/wasm-3d/libsoftgl/src/lines.c
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lines.c.o: CMakeFiles/softgl_objs.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Git\wasm-3d\wasm\cmake-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lines.c.o"
+	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lines.c.o -MF CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\lines.c.o.d -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\lines.c.o -c D:\Git\wasm-3d\libsoftgl\src\lines.c
+
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lines.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lines.c.i"
+	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E D:\Git\wasm-3d\libsoftgl\src\lines.c > CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\lines.c.i
+
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lines.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lines.c.s"
+	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:\Git\wasm-3d\libsoftgl\src\lines.c -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\lines.c.s
+
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/matrix.c.o: CMakeFiles/softgl_objs.dir/flags.make
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/matrix.c.o: CMakeFiles/softgl_objs.dir/includes_C.rsp
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/matrix.c.o: D:/Git/wasm-3d/libsoftgl/src/matrix.c
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/matrix.c.o: CMakeFiles/softgl_objs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Git\wasm-3d\wasm\cmake-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/matrix.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Git\wasm-3d\wasm\cmake-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/matrix.c.o"
 	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/matrix.c.o -MF CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\matrix.c.o.d -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\matrix.c.o -c D:\Git\wasm-3d\libsoftgl\src\matrix.c
 
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/matrix.c.i: cmake_force
@@ -180,7 +240,7 @@ CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pipeline.c.o: CMakeFiles
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pipeline.c.o: CMakeFiles/softgl_objs.dir/includes_C.rsp
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pipeline.c.o: D:/Git/wasm-3d/libsoftgl/src/pipeline.c
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pipeline.c.o: CMakeFiles/softgl_objs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Git\wasm-3d\wasm\cmake-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pipeline.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Git\wasm-3d\wasm\cmake-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pipeline.c.o"
 	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pipeline.c.o -MF CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\pipeline.c.o.d -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\pipeline.c.o -c D:\Git\wasm-3d\libsoftgl\src\pipeline.c
 
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pipeline.c.i: cmake_force
@@ -191,11 +251,26 @@ CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pipeline.c.s: cmake_forc
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pipeline.c.s"
 	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:\Git\wasm-3d\libsoftgl\src\pipeline.c -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\pipeline.c.s
 
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pixels.c.o: CMakeFiles/softgl_objs.dir/flags.make
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pixels.c.o: CMakeFiles/softgl_objs.dir/includes_C.rsp
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pixels.c.o: D:/Git/wasm-3d/libsoftgl/src/pixels.c
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pixels.c.o: CMakeFiles/softgl_objs.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Git\wasm-3d\wasm\cmake-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pixels.c.o"
+	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pixels.c.o -MF CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\pixels.c.o.d -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\pixels.c.o -c D:\Git\wasm-3d\libsoftgl\src\pixels.c
+
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pixels.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pixels.c.i"
+	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E D:\Git\wasm-3d\libsoftgl\src\pixels.c > CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\pixels.c.i
+
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pixels.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pixels.c.s"
+	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:\Git\wasm-3d\libsoftgl\src\pixels.c -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\pixels.c.s
+
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer.c.o: CMakeFiles/softgl_objs.dir/flags.make
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer.c.o: CMakeFiles/softgl_objs.dir/includes_C.rsp
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer.c.o: D:/Git/wasm-3d/libsoftgl/src/rasterizer.c
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer.c.o: CMakeFiles/softgl_objs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Git\wasm-3d\wasm\cmake-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Git\wasm-3d\wasm\cmake-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer.c.o"
 	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer.c.o -MF CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\rasterizer.c.o.d -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\rasterizer.c.o -c D:\Git\wasm-3d\libsoftgl\src\rasterizer.c
 
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer.c.i: cmake_force
@@ -206,11 +281,26 @@ CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer.c.s: cmake_fo
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer.c.s"
 	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:\Git\wasm-3d\libsoftgl\src\rasterizer.c -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\rasterizer.c.s
 
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.o: CMakeFiles/softgl_objs.dir/flags.make
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.o: CMakeFiles/softgl_objs.dir/includes_C.rsp
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.o: D:/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.o: CMakeFiles/softgl_objs.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Git\wasm-3d\wasm\cmake-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building C object CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.o"
+	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.o -MF CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\rasterizer_fp.c.o.d -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\rasterizer_fp.c.o -c D:\Git\wasm-3d\libsoftgl\src\rasterizer_fp.c
+
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing C source to CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.i"
+	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E D:\Git\wasm-3d\libsoftgl\src\rasterizer_fp.c > CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\rasterizer_fp.c.i
+
+CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling C source to assembly CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.s"
+	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S D:\Git\wasm-3d\libsoftgl\src\rasterizer_fp.c -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\rasterizer_fp.c.s
+
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/state.c.o: CMakeFiles/softgl_objs.dir/flags.make
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/state.c.o: CMakeFiles/softgl_objs.dir/includes_C.rsp
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/state.c.o: D:/Git/wasm-3d/libsoftgl/src/state.c
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/state.c.o: CMakeFiles/softgl_objs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Git\wasm-3d\wasm\cmake-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/state.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Git\wasm-3d\wasm\cmake-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/state.c.o"
 	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/state.c.o -MF CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\state.c.o.d -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\state.c.o -c D:\Git\wasm-3d\libsoftgl\src\state.c
 
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/state.c.i: cmake_force
@@ -225,7 +315,7 @@ CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/texture.c.o: CMakeFiles/
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/texture.c.o: CMakeFiles/softgl_objs.dir/includes_C.rsp
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/texture.c.o: D:/Git/wasm-3d/libsoftgl/src/texture.c
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/texture.c.o: CMakeFiles/softgl_objs.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Git\wasm-3d\wasm\cmake-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/texture.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=D:\Git\wasm-3d\wasm\cmake-build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building C object CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/texture.c.o"
 	C:\msys64\ucrt64\lib\emscripten\emcc.bat $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/texture.c.o -MF CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\texture.c.o.d -o CMakeFiles\softgl_objs.dir\D_\Git\wasm-3d\libsoftgl\src\texture.c.o -c D:\Git\wasm-3d\libsoftgl\src\texture.c
 
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/texture.c.i: cmake_force
@@ -239,12 +329,18 @@ CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/texture.c.s: cmake_force
 softgl_objs: CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/api.c.o
 softgl_objs: CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/buffers.c.o
 softgl_objs: CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/clip.c.o
+softgl_objs: CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/dlist.c.o
+softgl_objs: CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/evaluators.c.o
 softgl_objs: CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/fragment.c.o
 softgl_objs: CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/framebuffer.c.o
+softgl_objs: CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/immediate.c.o
 softgl_objs: CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lighting.c.o
+softgl_objs: CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lines.c.o
 softgl_objs: CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/matrix.c.o
 softgl_objs: CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pipeline.c.o
+softgl_objs: CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pixels.c.o
 softgl_objs: CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer.c.o
+softgl_objs: CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.o
 softgl_objs: CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/state.c.o
 softgl_objs: CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/texture.c.o
 softgl_objs: CMakeFiles/softgl_objs.dir/build.make

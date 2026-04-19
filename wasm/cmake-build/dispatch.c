@@ -11,17 +11,133 @@ extern void test_07_matrix_identity(int,int);
 extern void test_08_matrix_translate(int,int);
 extern void test_09_matrix_stack(int,int);
 extern void test_100_showcase(int,int);
+extern void test_101_begin_triangles(int,int);
+extern void test_102_vertex_variants(int,int);
+extern void test_103_triangle_strip(int,int);
+extern void test_104_triangle_fan(int,int);
+extern void test_105_quads_one(int,int);
+extern void test_106_quads_two(int,int);
+extern void test_107_quad_strip(int,int);
+extern void test_108_polygon_hexagon(int,int);
+extern void test_109_lit_triangle(int,int);
 extern void test_10_ortho_projection(int,int);
+extern void test_110_textured_quad(int,int);
+extern void test_111_multitexture_imm(int,int);
+extern void test_112_rectf(int,int);
+extern void test_113_type_conversion(int,int);
+extern void test_114_array_element(int,int);
+extern void test_115_lit_polygon(int,int);
+extern void test_116_dlist_empty(int,int);
+extern void test_117_dlist_triangle(int,int);
+extern void test_118_dlist_transform(int,int);
+extern void test_119_dlist_compile_and_execute(int,int);
 extern void test_11_triangle_ccw(int,int);
+extern void test_120_call_lists_byte(int,int);
+extern void test_121_nested_lists(int,int);
+extern void test_122_dlist_lit(int,int);
+extern void test_123_dlist_texture(int,int);
+extern void test_124_dlist_vbo_draw(int,int);
+extern void test_125_dlist_vbo_alloc(int,int);
+extern void test_126_dlist_color_order(int,int);
+extern void test_127_dlist_matrix_stack(int,int);
+extern void test_128_dlist_repeat_outer_mv(int,int);
+extern void test_129_dlist_id_recycle(int,int);
 extern void test_12_triangle_cw_culled(int,int);
+extern void test_130_call_lists_2bytes(int,int);
+extern void test_131_lines_basic(int,int);
+extern void test_132_line_strip(int,int);
+extern void test_133_line_loop(int,int);
+extern void test_134_line_width(int,int);
+extern void test_135_points_grid(int,int);
+extern void test_136_point_size(int,int);
+extern void test_137_polygon_mode_line(int,int);
+extern void test_138_polygon_mode_point(int,int);
+extern void test_139_polygon_mode_two_faces(int,int);
 extern void test_13_triangle_depth(int,int);
+extern void test_140_polygon_offset(int,int);
+extern void test_141_line_color_gradient(int,int);
+extern void test_142_line_perspective_depth(int,int);
+extern void test_143_line_clip(int,int);
+extern void test_144_edge_flag_polygon(int,int);
+extern void test_145_mixed_primitives(int,int);
+extern void test_146_stencil_clear(int,int);
+extern void test_147_stencil_mask_basic(int,int);
+extern void test_148_stencil_incr_overlap(int,int);
+extern void test_149_stencil_invert_xor(int,int);
 extern void test_14_triangle_frustum(int,int);
+extern void test_150_stencil_zfail_shadow(int,int);
+extern void test_151_stencil_write_mask(int,int);
+extern void test_152_stencil_value_mask(int,int);
+extern void test_153_stencil_dpfail_incr(int,int);
+extern void test_154_stencil_portal(int,int);
+extern void test_155_stencil_mirror(int,int);
+extern void test_156_tex1d_gradient(int,int);
+extern void test_157_tex1d_lookup(int,int);
+extern void test_158_tex3d_corners(int,int);
+extern void test_159_tex3d_slices(int,int);
 extern void test_15_two_tris_depth(int,int);
+extern void test_160_cubemap_skybox(int,int);
+extern void test_161_cubemap_reflect(int,int);
+extern void test_162_cubemap_faces(int,int);
+extern void test_163_copy_tex_image_2d(int,int);
+extern void test_164_copy_tex_sub_image_2d(int,int);
+extern void test_165_tex_sub_image_2d(int,int);
+extern void test_166_tex_sub_image_3d(int,int);
+extern void test_167_cubemap_lit(int,int);
+extern void test_168_tex3d_trilinear(int,int);
+extern void test_169_cube_and_2d(int,int);
 extern void test_16_flat_shaded(int,int);
+extern void test_170_all_targets(int,int);
+extern void test_171_clip_plane_y(int,int);
+extern void test_172_clip_plane_diagonal(int,int);
+extern void test_173_clip_plane_two(int,int);
+extern void test_174_color_material_diffuse(int,int);
+extern void test_175_light_model_local_viewer(int,int);
+extern void test_176_light_model_two_side(int,int);
+extern void test_177_color_mask(int,int);
+extern void test_178_logic_op_xor(int,int);
+extern void test_179_logic_op_invert(int,int);
 extern void test_17_gouraud_rgb(int,int);
+extern void test_180_hint_and_index_mask(int,int);
+extern void test_181_drawpixels_rgba(int,int);
+extern void test_182_drawpixels_luminance(int,int);
+extern void test_183_drawpixels_rgb_float(int,int);
+extern void test_184_readpixels_echo(int,int);
+extern void test_185_copypixels(int,int);
+extern void test_186_pixelzoom_2x(int,int);
+extern void test_187_pixelzoom_flip(int,int);
+extern void test_188_unpack_alignment(int,int);
+extern void test_189_unpack_rowlength_skip(int,int);
 extern void test_18_fullscreen_quad(int,int);
+extern void test_190_rasterpos_clipped(int,int);
+extern void test_191_combine_interpolate(int,int);
+extern void test_192_combine_subtract(int,int);
+extern void test_193_combine_add_signed_scale(int,int);
+extern void test_194_combine_split_alpha(int,int);
+extern void test_195_combine_dot3_rgba(int,int);
+extern void test_196_occlusion_samples(int,int);
+extern void test_197_occlusion_any(int,int);
+extern void test_198_map_buffer(int,int);
+extern void test_199_evaluators_patch(int,int);
 extern void test_19_degenerate_triangle(int,int);
+extern void test_200_accum_jitter(int,int);
+extern void test_201_stipple(int,int);
+extern void test_202_shadow_volume(int,int);
+extern void test_203_bump_brick(int,int);
+extern void test_204_lightmap_corridor(int,int);
+extern void test_205_chrome_sphere(int,int);
+extern void test_206_spot_projector(int,int);
+extern void test_207_glass_window(int,int);
+extern void test_208_terrain_blend(int,int);
+extern void test_209_particles_additive(int,int);
 extern void test_20_triangle_at_edges(int,int);
+extern void test_210_portal_rooms(int,int);
+extern void test_211_billboard_trees(int,int);
+extern void test_212_skybox_sun(int,int);
+extern void test_213_lens_flare(int,int);
+extern void test_214_decal_stencil(int,int);
+extern void test_215_crt_emissive(int,int);
+extern void test_216_water_surface(int,int);
 extern void test_21_clip_left(int,int);
 extern void test_22_clip_right(int,int);
 extern void test_23_clip_top(int,int);
@@ -114,17 +230,133 @@ static const entry tests[] = {
     { "test_08_matrix_translate", test_08_matrix_translate },
     { "test_09_matrix_stack", test_09_matrix_stack },
     { "test_100_showcase", test_100_showcase },
+    { "test_101_begin_triangles", test_101_begin_triangles },
+    { "test_102_vertex_variants", test_102_vertex_variants },
+    { "test_103_triangle_strip", test_103_triangle_strip },
+    { "test_104_triangle_fan", test_104_triangle_fan },
+    { "test_105_quads_one", test_105_quads_one },
+    { "test_106_quads_two", test_106_quads_two },
+    { "test_107_quad_strip", test_107_quad_strip },
+    { "test_108_polygon_hexagon", test_108_polygon_hexagon },
+    { "test_109_lit_triangle", test_109_lit_triangle },
     { "test_10_ortho_projection", test_10_ortho_projection },
+    { "test_110_textured_quad", test_110_textured_quad },
+    { "test_111_multitexture_imm", test_111_multitexture_imm },
+    { "test_112_rectf", test_112_rectf },
+    { "test_113_type_conversion", test_113_type_conversion },
+    { "test_114_array_element", test_114_array_element },
+    { "test_115_lit_polygon", test_115_lit_polygon },
+    { "test_116_dlist_empty", test_116_dlist_empty },
+    { "test_117_dlist_triangle", test_117_dlist_triangle },
+    { "test_118_dlist_transform", test_118_dlist_transform },
+    { "test_119_dlist_compile_and_execute", test_119_dlist_compile_and_execute },
     { "test_11_triangle_ccw", test_11_triangle_ccw },
+    { "test_120_call_lists_byte", test_120_call_lists_byte },
+    { "test_121_nested_lists", test_121_nested_lists },
+    { "test_122_dlist_lit", test_122_dlist_lit },
+    { "test_123_dlist_texture", test_123_dlist_texture },
+    { "test_124_dlist_vbo_draw", test_124_dlist_vbo_draw },
+    { "test_125_dlist_vbo_alloc", test_125_dlist_vbo_alloc },
+    { "test_126_dlist_color_order", test_126_dlist_color_order },
+    { "test_127_dlist_matrix_stack", test_127_dlist_matrix_stack },
+    { "test_128_dlist_repeat_outer_mv", test_128_dlist_repeat_outer_mv },
+    { "test_129_dlist_id_recycle", test_129_dlist_id_recycle },
     { "test_12_triangle_cw_culled", test_12_triangle_cw_culled },
+    { "test_130_call_lists_2bytes", test_130_call_lists_2bytes },
+    { "test_131_lines_basic", test_131_lines_basic },
+    { "test_132_line_strip", test_132_line_strip },
+    { "test_133_line_loop", test_133_line_loop },
+    { "test_134_line_width", test_134_line_width },
+    { "test_135_points_grid", test_135_points_grid },
+    { "test_136_point_size", test_136_point_size },
+    { "test_137_polygon_mode_line", test_137_polygon_mode_line },
+    { "test_138_polygon_mode_point", test_138_polygon_mode_point },
+    { "test_139_polygon_mode_two_faces", test_139_polygon_mode_two_faces },
     { "test_13_triangle_depth", test_13_triangle_depth },
+    { "test_140_polygon_offset", test_140_polygon_offset },
+    { "test_141_line_color_gradient", test_141_line_color_gradient },
+    { "test_142_line_perspective_depth", test_142_line_perspective_depth },
+    { "test_143_line_clip", test_143_line_clip },
+    { "test_144_edge_flag_polygon", test_144_edge_flag_polygon },
+    { "test_145_mixed_primitives", test_145_mixed_primitives },
+    { "test_146_stencil_clear", test_146_stencil_clear },
+    { "test_147_stencil_mask_basic", test_147_stencil_mask_basic },
+    { "test_148_stencil_incr_overlap", test_148_stencil_incr_overlap },
+    { "test_149_stencil_invert_xor", test_149_stencil_invert_xor },
     { "test_14_triangle_frustum", test_14_triangle_frustum },
+    { "test_150_stencil_zfail_shadow", test_150_stencil_zfail_shadow },
+    { "test_151_stencil_write_mask", test_151_stencil_write_mask },
+    { "test_152_stencil_value_mask", test_152_stencil_value_mask },
+    { "test_153_stencil_dpfail_incr", test_153_stencil_dpfail_incr },
+    { "test_154_stencil_portal", test_154_stencil_portal },
+    { "test_155_stencil_mirror", test_155_stencil_mirror },
+    { "test_156_tex1d_gradient", test_156_tex1d_gradient },
+    { "test_157_tex1d_lookup", test_157_tex1d_lookup },
+    { "test_158_tex3d_corners", test_158_tex3d_corners },
+    { "test_159_tex3d_slices", test_159_tex3d_slices },
     { "test_15_two_tris_depth", test_15_two_tris_depth },
+    { "test_160_cubemap_skybox", test_160_cubemap_skybox },
+    { "test_161_cubemap_reflect", test_161_cubemap_reflect },
+    { "test_162_cubemap_faces", test_162_cubemap_faces },
+    { "test_163_copy_tex_image_2d", test_163_copy_tex_image_2d },
+    { "test_164_copy_tex_sub_image_2d", test_164_copy_tex_sub_image_2d },
+    { "test_165_tex_sub_image_2d", test_165_tex_sub_image_2d },
+    { "test_166_tex_sub_image_3d", test_166_tex_sub_image_3d },
+    { "test_167_cubemap_lit", test_167_cubemap_lit },
+    { "test_168_tex3d_trilinear", test_168_tex3d_trilinear },
+    { "test_169_cube_and_2d", test_169_cube_and_2d },
     { "test_16_flat_shaded", test_16_flat_shaded },
+    { "test_170_all_targets", test_170_all_targets },
+    { "test_171_clip_plane_y", test_171_clip_plane_y },
+    { "test_172_clip_plane_diagonal", test_172_clip_plane_diagonal },
+    { "test_173_clip_plane_two", test_173_clip_plane_two },
+    { "test_174_color_material_diffuse", test_174_color_material_diffuse },
+    { "test_175_light_model_local_viewer", test_175_light_model_local_viewer },
+    { "test_176_light_model_two_side", test_176_light_model_two_side },
+    { "test_177_color_mask", test_177_color_mask },
+    { "test_178_logic_op_xor", test_178_logic_op_xor },
+    { "test_179_logic_op_invert", test_179_logic_op_invert },
     { "test_17_gouraud_rgb", test_17_gouraud_rgb },
+    { "test_180_hint_and_index_mask", test_180_hint_and_index_mask },
+    { "test_181_drawpixels_rgba", test_181_drawpixels_rgba },
+    { "test_182_drawpixels_luminance", test_182_drawpixels_luminance },
+    { "test_183_drawpixels_rgb_float", test_183_drawpixels_rgb_float },
+    { "test_184_readpixels_echo", test_184_readpixels_echo },
+    { "test_185_copypixels", test_185_copypixels },
+    { "test_186_pixelzoom_2x", test_186_pixelzoom_2x },
+    { "test_187_pixelzoom_flip", test_187_pixelzoom_flip },
+    { "test_188_unpack_alignment", test_188_unpack_alignment },
+    { "test_189_unpack_rowlength_skip", test_189_unpack_rowlength_skip },
     { "test_18_fullscreen_quad", test_18_fullscreen_quad },
+    { "test_190_rasterpos_clipped", test_190_rasterpos_clipped },
+    { "test_191_combine_interpolate", test_191_combine_interpolate },
+    { "test_192_combine_subtract", test_192_combine_subtract },
+    { "test_193_combine_add_signed_scale", test_193_combine_add_signed_scale },
+    { "test_194_combine_split_alpha", test_194_combine_split_alpha },
+    { "test_195_combine_dot3_rgba", test_195_combine_dot3_rgba },
+    { "test_196_occlusion_samples", test_196_occlusion_samples },
+    { "test_197_occlusion_any", test_197_occlusion_any },
+    { "test_198_map_buffer", test_198_map_buffer },
+    { "test_199_evaluators_patch", test_199_evaluators_patch },
     { "test_19_degenerate_triangle", test_19_degenerate_triangle },
+    { "test_200_accum_jitter", test_200_accum_jitter },
+    { "test_201_stipple", test_201_stipple },
+    { "test_202_shadow_volume", test_202_shadow_volume },
+    { "test_203_bump_brick", test_203_bump_brick },
+    { "test_204_lightmap_corridor", test_204_lightmap_corridor },
+    { "test_205_chrome_sphere", test_205_chrome_sphere },
+    { "test_206_spot_projector", test_206_spot_projector },
+    { "test_207_glass_window", test_207_glass_window },
+    { "test_208_terrain_blend", test_208_terrain_blend },
+    { "test_209_particles_additive", test_209_particles_additive },
     { "test_20_triangle_at_edges", test_20_triangle_at_edges },
+    { "test_210_portal_rooms", test_210_portal_rooms },
+    { "test_211_billboard_trees", test_211_billboard_trees },
+    { "test_212_skybox_sun", test_212_skybox_sun },
+    { "test_213_lens_flare", test_213_lens_flare },
+    { "test_214_decal_stencil", test_214_decal_stencil },
+    { "test_215_crt_emissive", test_215_crt_emissive },
+    { "test_216_water_surface", test_216_water_surface },
     { "test_21_clip_left", test_21_clip_left },
     { "test_22_clip_right", test_22_clip_right },
     { "test_23_clip_top", test_23_clip_top },

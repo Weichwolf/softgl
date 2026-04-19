@@ -21,4 +21,5 @@ CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/buffers.c.o: \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_wchar_t.h \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_null.h \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_max_align_t.h \
-  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_offsetof.h
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_offsetof.h \
+  D:/Git/wasm-3d/libsoftgl/src/dlist.h

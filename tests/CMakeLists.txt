@@ -42,6 +42,47 @@ target_link_libraries(bench_fp_noSIMD PRIVATE softgl_noSIMD)
 set_target_properties(bench_fp_noSIMD PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bench)
 
+# --- FP-6 extended benchmark: synthetic + real scenes ------------------
+# Each real scene (showcase/shadow/particles/city/sphere_lit) is compiled
+# with `run_test` renamed to `sg_bench_scene_<tag>` so bench_scenes.c can
+# call them directly. This avoids static-symbol collisions from including
+# multiple test_*.c files in the same TU.
+set(SG_BENCH_SCENES
+    showcase:100_showcase
+    shadow:202_shadow_volume
+    particles:209_particles_additive
+    city:98_city_block
+    sphere_lit:57_icosphere_lit)
+
+foreach(pair IN LISTS SG_BENCH_SCENES)
+    string(REPLACE ":" ";" parts ${pair})
+    list(GET parts 0 tag)
+    list(GET parts 1 case)
+    add_library(bench_case_${tag} OBJECT cases/test_${case}.c)
+    target_compile_definitions(bench_case_${tag} PRIVATE run_test=sg_bench_scene_${tag})
+    target_include_directories(bench_case_${tag} PRIVATE
+        ${CMAKE_SOURCE_DIR}/libsoftgl/include
+        ${CMAKE_SOURCE_DIR}/tests/harness)
+endforeach()
+
+set(BENCH_SCENE_OBJS
+    $<TARGET_OBJECTS:bench_case_showcase>
+    $<TARGET_OBJECTS:bench_case_shadow>
+    $<TARGET_OBJECTS:bench_case_particles>
+    $<TARGET_OBJECTS:bench_case_city>
+    $<TARGET_OBJECTS:bench_case_sphere_lit>)
+
+add_executable(bench_scenes bench/bench_scenes.c ${BENCH_SCENE_OBJS})
+target_link_libraries(bench_scenes PRIVATE softgl)
+set_target_properties(bench_scenes PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bench)
+
+add_executable(bench_scenes_noSIMD bench/bench_scenes.c ${BENCH_SCENE_OBJS})
+target_link_libraries(bench_scenes_noSIMD PRIVATE softgl_noSIMD)
+target_compile_definitions(bench_scenes_noSIMD PRIVATE SG_DISABLE_SIMD)
+set_target_properties(bench_scenes_noSIMD PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bench)
+
 # --- Harness library: softgl backend ---
 add_library(harness_softgl STATIC harness/harness_softgl.c harness/ppm_write.c)
 target_link_libraries(harness_softgl PUBLIC softgl)
@@ -599,6 +640,16 @@ foreach(case_name IN LISTS SG_TEST_CASES)
     set_tests_properties(${case_name}_compare_backends PROPERTIES
         DEPENDS "${case_name}_run_sgl_float;${case_name}_run_sgl_fixed")
 endforeach()
+
+# FP-6 benchmark as an opt-in CTest (info-only, never a gate). Run
+# explicitly with:  ctest -L bench  (or -R benchmark_fp6)
+# The test is registered with CONFIGURATIONS "Bench" so a bare `ctest`
+# invocation ignores it — keeping the correctness-gate count stable.
+add_test(NAME benchmark_fp6
+    CONFIGURATIONS Bench
+    COMMAND bench_scenes
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/bench)
+set_tests_properties(benchmark_fp6 PROPERTIES LABELS "bench")
 
 # Deploy Mesa DLLs next to reference executables on first configure.
 # Doing it via a custom target keeps rebuilds cheap.

@@ -47,6 +47,7 @@ endforeach()
 
 add_executable(softgl
     ${CMAKE_CURRENT_BINARY_DIR}/dispatch.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/bench_wrap.c
     $<TARGET_OBJECTS:softgl_objs>
     ${TEST_OBJECTS}
 )
@@ -56,5 +57,5 @@ target_include_directories(softgl PRIVATE
 set_target_properties(softgl PROPERTIES
     OUTPUT_NAME softgl
     SUFFIX ".js"
-    LINK_FLAGS "-O2 -msimd128 -sEXPORTED_FUNCTIONS=_softgl_create,_softgl_destroy,_softgl_make_current,_softgl_read_rgba8,_sg_test_count,_sg_test_name,_sg_test_run,_malloc,_free -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,HEAPU8,UTF8ToString -sMODULARIZE=1 -sEXPORT_NAME=createSoftGL -sALLOW_MEMORY_GROWTH=1 -sINITIAL_MEMORY=33554432 -sSTACK_SIZE=8388608"
+    LINK_FLAGS "-O2 -msimd128 -sEXPORTED_FUNCTIONS=_softgl_create,_softgl_destroy,_softgl_make_current,_softgl_read_rgba8,_softgl_set_backend,_softgl_get_backend,_sg_test_count,_sg_test_name,_sg_test_run,_sg_bench_slot_count,_sg_bench_slot_tag,_sg_bench_slot_test_index,_sg_bench_run_idx,_sg_bench_run_slot,_malloc,_free -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,HEAPU8,UTF8ToString -sMODULARIZE=1 -sEXPORT_NAME=createSoftGL -sALLOW_MEMORY_GROWTH=1 -sINITIAL_MEMORY=33554432 -sSTACK_SIZE=8388608"
 )

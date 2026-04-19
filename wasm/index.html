@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<title>SoftGL — 200 Test Cycle (640×360)</title>
+<title>SoftGL — Test Cycle + FP-6 Benchmark (640×360)</title>
 <style>
   html, body { margin: 0; padding: 0; background: #0a0a0a; color: #ddd;
                font-family: ui-monospace, monospace; }
@@ -18,13 +18,19 @@
   .bar { height: 2px; background: #222; margin-top: 10px; position: relative; }
   .bar > div { height: 100%; background: #8bf; width: 0; transition: width 3s linear; }
   button { background: #222; color: #ddd; border: 1px solid #444; padding: 6px 12px;
-           font: inherit; cursor: pointer; margin-right: 8px; }
+           font: inherit; cursor: pointer; margin-right: 8px; margin-bottom: 4px; }
   button:hover { background: #333; }
+  button[disabled] { opacity: 0.4; cursor: not-allowed; }
+  .cap { font-size: 12px; color: #8b8; margin-top: 8px; }
+  .cap.bad { color: #c77; }
+  pre#bench-out { background: #111; border: 1px solid #333; padding: 10px;
+                  color: #cec; font-size: 12px; max-height: 400px; overflow: auto;
+                  margin-top: 16px; white-space: pre; }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <h1>SoftGL — 200 Test Cycle @ 640×360 (3 s / Test, looping)</h1>
+  <h1>SoftGL — Test Cycle + FP-6 Benchmark @ 640×360</h1>
   <div class="stage">
     <canvas id="c" width="640" height="360"></canvas>
     <div class="info">
@@ -36,9 +42,12 @@
         <button id="pause">Pause</button>
         <button id="prev">&lsaquo; Prev</button>
         <button id="next">Next &rsaquo;</button>
+        <button id="bench">Run Benchmark</button>
       </div>
+      <div id="cap" class="cap">SIMD support: detecting…</div>
     </div>
   </div>
+  <pre id="bench-out" hidden></pre>
 </div>
 <script src="softgl.js"></script>
 <script src="main.js"></script>

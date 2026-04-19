@@ -22,5 +22,6 @@ CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/matrix.c.o: \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_null.h \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_max_align_t.h \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_offsetof.h \
+  D:/Git/wasm-3d/libsoftgl/src/dlist.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/math.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/math.h

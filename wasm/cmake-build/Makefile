@@ -259,6 +259,123 @@ test_test_100_showcase/fast:
 .PHONY : test_test_100_showcase/fast
 
 #=============================================================================
+# Target rules for targets named test_test_101_begin_triangles
+
+# Build rule for target.
+test_test_101_begin_triangles: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_101_begin_triangles
+.PHONY : test_test_101_begin_triangles
+
+# fast build rule for target.
+test_test_101_begin_triangles/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_101_begin_triangles.dir\build.make CMakeFiles/test_test_101_begin_triangles.dir/build
+.PHONY : test_test_101_begin_triangles/fast
+
+#=============================================================================
+# Target rules for targets named test_test_102_vertex_variants
+
+# Build rule for target.
+test_test_102_vertex_variants: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_102_vertex_variants
+.PHONY : test_test_102_vertex_variants
+
+# fast build rule for target.
+test_test_102_vertex_variants/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_102_vertex_variants.dir\build.make CMakeFiles/test_test_102_vertex_variants.dir/build
+.PHONY : test_test_102_vertex_variants/fast
+
+#=============================================================================
+# Target rules for targets named test_test_103_triangle_strip
+
+# Build rule for target.
+test_test_103_triangle_strip: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_103_triangle_strip
+.PHONY : test_test_103_triangle_strip
+
+# fast build rule for target.
+test_test_103_triangle_strip/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_103_triangle_strip.dir\build.make CMakeFiles/test_test_103_triangle_strip.dir/build
+.PHONY : test_test_103_triangle_strip/fast
+
+#=============================================================================
+# Target rules for targets named test_test_104_triangle_fan
+
+# Build rule for target.
+test_test_104_triangle_fan: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_104_triangle_fan
+.PHONY : test_test_104_triangle_fan
+
+# fast build rule for target.
+test_test_104_triangle_fan/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_104_triangle_fan.dir\build.make CMakeFiles/test_test_104_triangle_fan.dir/build
+.PHONY : test_test_104_triangle_fan/fast
+
+#=============================================================================
+# Target rules for targets named test_test_105_quads_one
+
+# Build rule for target.
+test_test_105_quads_one: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_105_quads_one
+.PHONY : test_test_105_quads_one
+
+# fast build rule for target.
+test_test_105_quads_one/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_105_quads_one.dir\build.make CMakeFiles/test_test_105_quads_one.dir/build
+.PHONY : test_test_105_quads_one/fast
+
+#=============================================================================
+# Target rules for targets named test_test_106_quads_two
+
+# Build rule for target.
+test_test_106_quads_two: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_106_quads_two
+.PHONY : test_test_106_quads_two
+
+# fast build rule for target.
+test_test_106_quads_two/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_106_quads_two.dir\build.make CMakeFiles/test_test_106_quads_two.dir/build
+.PHONY : test_test_106_quads_two/fast
+
+#=============================================================================
+# Target rules for targets named test_test_107_quad_strip
+
+# Build rule for target.
+test_test_107_quad_strip: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_107_quad_strip
+.PHONY : test_test_107_quad_strip
+
+# fast build rule for target.
+test_test_107_quad_strip/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_107_quad_strip.dir\build.make CMakeFiles/test_test_107_quad_strip.dir/build
+.PHONY : test_test_107_quad_strip/fast
+
+#=============================================================================
+# Target rules for targets named test_test_108_polygon_hexagon
+
+# Build rule for target.
+test_test_108_polygon_hexagon: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_108_polygon_hexagon
+.PHONY : test_test_108_polygon_hexagon
+
+# fast build rule for target.
+test_test_108_polygon_hexagon/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_108_polygon_hexagon.dir\build.make CMakeFiles/test_test_108_polygon_hexagon.dir/build
+.PHONY : test_test_108_polygon_hexagon/fast
+
+#=============================================================================
+# Target rules for targets named test_test_109_lit_triangle
+
+# Build rule for target.
+test_test_109_lit_triangle: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_109_lit_triangle
+.PHONY : test_test_109_lit_triangle
+
+# fast build rule for target.
+test_test_109_lit_triangle/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_109_lit_triangle.dir\build.make CMakeFiles/test_test_109_lit_triangle.dir/build
+.PHONY : test_test_109_lit_triangle/fast
+
+#=============================================================================
 # Target rules for targets named test_test_10_ortho_projection
 
 # Build rule for target.
@@ -270,6 +387,136 @@ test_test_10_ortho_projection: cmake_check_build_system
 test_test_10_ortho_projection/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_10_ortho_projection.dir\build.make CMakeFiles/test_test_10_ortho_projection.dir/build
 .PHONY : test_test_10_ortho_projection/fast
+
+#=============================================================================
+# Target rules for targets named test_test_110_textured_quad
+
+# Build rule for target.
+test_test_110_textured_quad: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_110_textured_quad
+.PHONY : test_test_110_textured_quad
+
+# fast build rule for target.
+test_test_110_textured_quad/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_110_textured_quad.dir\build.make CMakeFiles/test_test_110_textured_quad.dir/build
+.PHONY : test_test_110_textured_quad/fast
+
+#=============================================================================
+# Target rules for targets named test_test_111_multitexture_imm
+
+# Build rule for target.
+test_test_111_multitexture_imm: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_111_multitexture_imm
+.PHONY : test_test_111_multitexture_imm
+
+# fast build rule for target.
+test_test_111_multitexture_imm/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_111_multitexture_imm.dir\build.make CMakeFiles/test_test_111_multitexture_imm.dir/build
+.PHONY : test_test_111_multitexture_imm/fast
+
+#=============================================================================
+# Target rules for targets named test_test_112_rectf
+
+# Build rule for target.
+test_test_112_rectf: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_112_rectf
+.PHONY : test_test_112_rectf
+
+# fast build rule for target.
+test_test_112_rectf/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_112_rectf.dir\build.make CMakeFiles/test_test_112_rectf.dir/build
+.PHONY : test_test_112_rectf/fast
+
+#=============================================================================
+# Target rules for targets named test_test_113_type_conversion
+
+# Build rule for target.
+test_test_113_type_conversion: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_113_type_conversion
+.PHONY : test_test_113_type_conversion
+
+# fast build rule for target.
+test_test_113_type_conversion/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_113_type_conversion.dir\build.make CMakeFiles/test_test_113_type_conversion.dir/build
+.PHONY : test_test_113_type_conversion/fast
+
+#=============================================================================
+# Target rules for targets named test_test_114_array_element
+
+# Build rule for target.
+test_test_114_array_element: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_114_array_element
+.PHONY : test_test_114_array_element
+
+# fast build rule for target.
+test_test_114_array_element/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_114_array_element.dir\build.make CMakeFiles/test_test_114_array_element.dir/build
+.PHONY : test_test_114_array_element/fast
+
+#=============================================================================
+# Target rules for targets named test_test_115_lit_polygon
+
+# Build rule for target.
+test_test_115_lit_polygon: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_115_lit_polygon
+.PHONY : test_test_115_lit_polygon
+
+# fast build rule for target.
+test_test_115_lit_polygon/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_115_lit_polygon.dir\build.make CMakeFiles/test_test_115_lit_polygon.dir/build
+.PHONY : test_test_115_lit_polygon/fast
+
+#=============================================================================
+# Target rules for targets named test_test_116_dlist_empty
+
+# Build rule for target.
+test_test_116_dlist_empty: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_116_dlist_empty
+.PHONY : test_test_116_dlist_empty
+
+# fast build rule for target.
+test_test_116_dlist_empty/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_116_dlist_empty.dir\build.make CMakeFiles/test_test_116_dlist_empty.dir/build
+.PHONY : test_test_116_dlist_empty/fast
+
+#=============================================================================
+# Target rules for targets named test_test_117_dlist_triangle
+
+# Build rule for target.
+test_test_117_dlist_triangle: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_117_dlist_triangle
+.PHONY : test_test_117_dlist_triangle
+
+# fast build rule for target.
+test_test_117_dlist_triangle/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_117_dlist_triangle.dir\build.make CMakeFiles/test_test_117_dlist_triangle.dir/build
+.PHONY : test_test_117_dlist_triangle/fast
+
+#=============================================================================
+# Target rules for targets named test_test_118_dlist_transform
+
+# Build rule for target.
+test_test_118_dlist_transform: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_118_dlist_transform
+.PHONY : test_test_118_dlist_transform
+
+# fast build rule for target.
+test_test_118_dlist_transform/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_118_dlist_transform.dir\build.make CMakeFiles/test_test_118_dlist_transform.dir/build
+.PHONY : test_test_118_dlist_transform/fast
+
+#=============================================================================
+# Target rules for targets named test_test_119_dlist_compile_and_execute
+
+# Build rule for target.
+test_test_119_dlist_compile_and_execute: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_119_dlist_compile_and_execute
+.PHONY : test_test_119_dlist_compile_and_execute
+
+# fast build rule for target.
+test_test_119_dlist_compile_and_execute/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_119_dlist_compile_and_execute.dir\build.make CMakeFiles/test_test_119_dlist_compile_and_execute.dir/build
+.PHONY : test_test_119_dlist_compile_and_execute/fast
 
 #=============================================================================
 # Target rules for targets named test_test_11_triangle_ccw
@@ -285,6 +532,136 @@ test_test_11_triangle_ccw/fast:
 .PHONY : test_test_11_triangle_ccw/fast
 
 #=============================================================================
+# Target rules for targets named test_test_120_call_lists_byte
+
+# Build rule for target.
+test_test_120_call_lists_byte: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_120_call_lists_byte
+.PHONY : test_test_120_call_lists_byte
+
+# fast build rule for target.
+test_test_120_call_lists_byte/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_120_call_lists_byte.dir\build.make CMakeFiles/test_test_120_call_lists_byte.dir/build
+.PHONY : test_test_120_call_lists_byte/fast
+
+#=============================================================================
+# Target rules for targets named test_test_121_nested_lists
+
+# Build rule for target.
+test_test_121_nested_lists: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_121_nested_lists
+.PHONY : test_test_121_nested_lists
+
+# fast build rule for target.
+test_test_121_nested_lists/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_121_nested_lists.dir\build.make CMakeFiles/test_test_121_nested_lists.dir/build
+.PHONY : test_test_121_nested_lists/fast
+
+#=============================================================================
+# Target rules for targets named test_test_122_dlist_lit
+
+# Build rule for target.
+test_test_122_dlist_lit: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_122_dlist_lit
+.PHONY : test_test_122_dlist_lit
+
+# fast build rule for target.
+test_test_122_dlist_lit/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_122_dlist_lit.dir\build.make CMakeFiles/test_test_122_dlist_lit.dir/build
+.PHONY : test_test_122_dlist_lit/fast
+
+#=============================================================================
+# Target rules for targets named test_test_123_dlist_texture
+
+# Build rule for target.
+test_test_123_dlist_texture: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_123_dlist_texture
+.PHONY : test_test_123_dlist_texture
+
+# fast build rule for target.
+test_test_123_dlist_texture/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_123_dlist_texture.dir\build.make CMakeFiles/test_test_123_dlist_texture.dir/build
+.PHONY : test_test_123_dlist_texture/fast
+
+#=============================================================================
+# Target rules for targets named test_test_124_dlist_vbo_draw
+
+# Build rule for target.
+test_test_124_dlist_vbo_draw: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_124_dlist_vbo_draw
+.PHONY : test_test_124_dlist_vbo_draw
+
+# fast build rule for target.
+test_test_124_dlist_vbo_draw/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_124_dlist_vbo_draw.dir\build.make CMakeFiles/test_test_124_dlist_vbo_draw.dir/build
+.PHONY : test_test_124_dlist_vbo_draw/fast
+
+#=============================================================================
+# Target rules for targets named test_test_125_dlist_vbo_alloc
+
+# Build rule for target.
+test_test_125_dlist_vbo_alloc: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_125_dlist_vbo_alloc
+.PHONY : test_test_125_dlist_vbo_alloc
+
+# fast build rule for target.
+test_test_125_dlist_vbo_alloc/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_125_dlist_vbo_alloc.dir\build.make CMakeFiles/test_test_125_dlist_vbo_alloc.dir/build
+.PHONY : test_test_125_dlist_vbo_alloc/fast
+
+#=============================================================================
+# Target rules for targets named test_test_126_dlist_color_order
+
+# Build rule for target.
+test_test_126_dlist_color_order: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_126_dlist_color_order
+.PHONY : test_test_126_dlist_color_order
+
+# fast build rule for target.
+test_test_126_dlist_color_order/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_126_dlist_color_order.dir\build.make CMakeFiles/test_test_126_dlist_color_order.dir/build
+.PHONY : test_test_126_dlist_color_order/fast
+
+#=============================================================================
+# Target rules for targets named test_test_127_dlist_matrix_stack
+
+# Build rule for target.
+test_test_127_dlist_matrix_stack: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_127_dlist_matrix_stack
+.PHONY : test_test_127_dlist_matrix_stack
+
+# fast build rule for target.
+test_test_127_dlist_matrix_stack/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_127_dlist_matrix_stack.dir\build.make CMakeFiles/test_test_127_dlist_matrix_stack.dir/build
+.PHONY : test_test_127_dlist_matrix_stack/fast
+
+#=============================================================================
+# Target rules for targets named test_test_128_dlist_repeat_outer_mv
+
+# Build rule for target.
+test_test_128_dlist_repeat_outer_mv: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_128_dlist_repeat_outer_mv
+.PHONY : test_test_128_dlist_repeat_outer_mv
+
+# fast build rule for target.
+test_test_128_dlist_repeat_outer_mv/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_128_dlist_repeat_outer_mv.dir\build.make CMakeFiles/test_test_128_dlist_repeat_outer_mv.dir/build
+.PHONY : test_test_128_dlist_repeat_outer_mv/fast
+
+#=============================================================================
+# Target rules for targets named test_test_129_dlist_id_recycle
+
+# Build rule for target.
+test_test_129_dlist_id_recycle: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_129_dlist_id_recycle
+.PHONY : test_test_129_dlist_id_recycle
+
+# fast build rule for target.
+test_test_129_dlist_id_recycle/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_129_dlist_id_recycle.dir\build.make CMakeFiles/test_test_129_dlist_id_recycle.dir/build
+.PHONY : test_test_129_dlist_id_recycle/fast
+
+#=============================================================================
 # Target rules for targets named test_test_12_triangle_cw_culled
 
 # Build rule for target.
@@ -296,6 +673,136 @@ test_test_12_triangle_cw_culled: cmake_check_build_system
 test_test_12_triangle_cw_culled/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_12_triangle_cw_culled.dir\build.make CMakeFiles/test_test_12_triangle_cw_culled.dir/build
 .PHONY : test_test_12_triangle_cw_culled/fast
+
+#=============================================================================
+# Target rules for targets named test_test_130_call_lists_2bytes
+
+# Build rule for target.
+test_test_130_call_lists_2bytes: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_130_call_lists_2bytes
+.PHONY : test_test_130_call_lists_2bytes
+
+# fast build rule for target.
+test_test_130_call_lists_2bytes/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_130_call_lists_2bytes.dir\build.make CMakeFiles/test_test_130_call_lists_2bytes.dir/build
+.PHONY : test_test_130_call_lists_2bytes/fast
+
+#=============================================================================
+# Target rules for targets named test_test_131_lines_basic
+
+# Build rule for target.
+test_test_131_lines_basic: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_131_lines_basic
+.PHONY : test_test_131_lines_basic
+
+# fast build rule for target.
+test_test_131_lines_basic/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_131_lines_basic.dir\build.make CMakeFiles/test_test_131_lines_basic.dir/build
+.PHONY : test_test_131_lines_basic/fast
+
+#=============================================================================
+# Target rules for targets named test_test_132_line_strip
+
+# Build rule for target.
+test_test_132_line_strip: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_132_line_strip
+.PHONY : test_test_132_line_strip
+
+# fast build rule for target.
+test_test_132_line_strip/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_132_line_strip.dir\build.make CMakeFiles/test_test_132_line_strip.dir/build
+.PHONY : test_test_132_line_strip/fast
+
+#=============================================================================
+# Target rules for targets named test_test_133_line_loop
+
+# Build rule for target.
+test_test_133_line_loop: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_133_line_loop
+.PHONY : test_test_133_line_loop
+
+# fast build rule for target.
+test_test_133_line_loop/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_133_line_loop.dir\build.make CMakeFiles/test_test_133_line_loop.dir/build
+.PHONY : test_test_133_line_loop/fast
+
+#=============================================================================
+# Target rules for targets named test_test_134_line_width
+
+# Build rule for target.
+test_test_134_line_width: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_134_line_width
+.PHONY : test_test_134_line_width
+
+# fast build rule for target.
+test_test_134_line_width/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_134_line_width.dir\build.make CMakeFiles/test_test_134_line_width.dir/build
+.PHONY : test_test_134_line_width/fast
+
+#=============================================================================
+# Target rules for targets named test_test_135_points_grid
+
+# Build rule for target.
+test_test_135_points_grid: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_135_points_grid
+.PHONY : test_test_135_points_grid
+
+# fast build rule for target.
+test_test_135_points_grid/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_135_points_grid.dir\build.make CMakeFiles/test_test_135_points_grid.dir/build
+.PHONY : test_test_135_points_grid/fast
+
+#=============================================================================
+# Target rules for targets named test_test_136_point_size
+
+# Build rule for target.
+test_test_136_point_size: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_136_point_size
+.PHONY : test_test_136_point_size
+
+# fast build rule for target.
+test_test_136_point_size/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_136_point_size.dir\build.make CMakeFiles/test_test_136_point_size.dir/build
+.PHONY : test_test_136_point_size/fast
+
+#=============================================================================
+# Target rules for targets named test_test_137_polygon_mode_line
+
+# Build rule for target.
+test_test_137_polygon_mode_line: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_137_polygon_mode_line
+.PHONY : test_test_137_polygon_mode_line
+
+# fast build rule for target.
+test_test_137_polygon_mode_line/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_137_polygon_mode_line.dir\build.make CMakeFiles/test_test_137_polygon_mode_line.dir/build
+.PHONY : test_test_137_polygon_mode_line/fast
+
+#=============================================================================
+# Target rules for targets named test_test_138_polygon_mode_point
+
+# Build rule for target.
+test_test_138_polygon_mode_point: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_138_polygon_mode_point
+.PHONY : test_test_138_polygon_mode_point
+
+# fast build rule for target.
+test_test_138_polygon_mode_point/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_138_polygon_mode_point.dir\build.make CMakeFiles/test_test_138_polygon_mode_point.dir/build
+.PHONY : test_test_138_polygon_mode_point/fast
+
+#=============================================================================
+# Target rules for targets named test_test_139_polygon_mode_two_faces
+
+# Build rule for target.
+test_test_139_polygon_mode_two_faces: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_139_polygon_mode_two_faces
+.PHONY : test_test_139_polygon_mode_two_faces
+
+# fast build rule for target.
+test_test_139_polygon_mode_two_faces/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_139_polygon_mode_two_faces.dir\build.make CMakeFiles/test_test_139_polygon_mode_two_faces.dir/build
+.PHONY : test_test_139_polygon_mode_two_faces/fast
 
 #=============================================================================
 # Target rules for targets named test_test_13_triangle_depth
@@ -311,6 +818,136 @@ test_test_13_triangle_depth/fast:
 .PHONY : test_test_13_triangle_depth/fast
 
 #=============================================================================
+# Target rules for targets named test_test_140_polygon_offset
+
+# Build rule for target.
+test_test_140_polygon_offset: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_140_polygon_offset
+.PHONY : test_test_140_polygon_offset
+
+# fast build rule for target.
+test_test_140_polygon_offset/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_140_polygon_offset.dir\build.make CMakeFiles/test_test_140_polygon_offset.dir/build
+.PHONY : test_test_140_polygon_offset/fast
+
+#=============================================================================
+# Target rules for targets named test_test_141_line_color_gradient
+
+# Build rule for target.
+test_test_141_line_color_gradient: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_141_line_color_gradient
+.PHONY : test_test_141_line_color_gradient
+
+# fast build rule for target.
+test_test_141_line_color_gradient/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_141_line_color_gradient.dir\build.make CMakeFiles/test_test_141_line_color_gradient.dir/build
+.PHONY : test_test_141_line_color_gradient/fast
+
+#=============================================================================
+# Target rules for targets named test_test_142_line_perspective_depth
+
+# Build rule for target.
+test_test_142_line_perspective_depth: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_142_line_perspective_depth
+.PHONY : test_test_142_line_perspective_depth
+
+# fast build rule for target.
+test_test_142_line_perspective_depth/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_142_line_perspective_depth.dir\build.make CMakeFiles/test_test_142_line_perspective_depth.dir/build
+.PHONY : test_test_142_line_perspective_depth/fast
+
+#=============================================================================
+# Target rules for targets named test_test_143_line_clip
+
+# Build rule for target.
+test_test_143_line_clip: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_143_line_clip
+.PHONY : test_test_143_line_clip
+
+# fast build rule for target.
+test_test_143_line_clip/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_143_line_clip.dir\build.make CMakeFiles/test_test_143_line_clip.dir/build
+.PHONY : test_test_143_line_clip/fast
+
+#=============================================================================
+# Target rules for targets named test_test_144_edge_flag_polygon
+
+# Build rule for target.
+test_test_144_edge_flag_polygon: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_144_edge_flag_polygon
+.PHONY : test_test_144_edge_flag_polygon
+
+# fast build rule for target.
+test_test_144_edge_flag_polygon/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_144_edge_flag_polygon.dir\build.make CMakeFiles/test_test_144_edge_flag_polygon.dir/build
+.PHONY : test_test_144_edge_flag_polygon/fast
+
+#=============================================================================
+# Target rules for targets named test_test_145_mixed_primitives
+
+# Build rule for target.
+test_test_145_mixed_primitives: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_145_mixed_primitives
+.PHONY : test_test_145_mixed_primitives
+
+# fast build rule for target.
+test_test_145_mixed_primitives/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_145_mixed_primitives.dir\build.make CMakeFiles/test_test_145_mixed_primitives.dir/build
+.PHONY : test_test_145_mixed_primitives/fast
+
+#=============================================================================
+# Target rules for targets named test_test_146_stencil_clear
+
+# Build rule for target.
+test_test_146_stencil_clear: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_146_stencil_clear
+.PHONY : test_test_146_stencil_clear
+
+# fast build rule for target.
+test_test_146_stencil_clear/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_146_stencil_clear.dir\build.make CMakeFiles/test_test_146_stencil_clear.dir/build
+.PHONY : test_test_146_stencil_clear/fast
+
+#=============================================================================
+# Target rules for targets named test_test_147_stencil_mask_basic
+
+# Build rule for target.
+test_test_147_stencil_mask_basic: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_147_stencil_mask_basic
+.PHONY : test_test_147_stencil_mask_basic
+
+# fast build rule for target.
+test_test_147_stencil_mask_basic/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_147_stencil_mask_basic.dir\build.make CMakeFiles/test_test_147_stencil_mask_basic.dir/build
+.PHONY : test_test_147_stencil_mask_basic/fast
+
+#=============================================================================
+# Target rules for targets named test_test_148_stencil_incr_overlap
+
+# Build rule for target.
+test_test_148_stencil_incr_overlap: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_148_stencil_incr_overlap
+.PHONY : test_test_148_stencil_incr_overlap
+
+# fast build rule for target.
+test_test_148_stencil_incr_overlap/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_148_stencil_incr_overlap.dir\build.make CMakeFiles/test_test_148_stencil_incr_overlap.dir/build
+.PHONY : test_test_148_stencil_incr_overlap/fast
+
+#=============================================================================
+# Target rules for targets named test_test_149_stencil_invert_xor
+
+# Build rule for target.
+test_test_149_stencil_invert_xor: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_149_stencil_invert_xor
+.PHONY : test_test_149_stencil_invert_xor
+
+# fast build rule for target.
+test_test_149_stencil_invert_xor/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_149_stencil_invert_xor.dir\build.make CMakeFiles/test_test_149_stencil_invert_xor.dir/build
+.PHONY : test_test_149_stencil_invert_xor/fast
+
+#=============================================================================
 # Target rules for targets named test_test_14_triangle_frustum
 
 # Build rule for target.
@@ -322,6 +959,136 @@ test_test_14_triangle_frustum: cmake_check_build_system
 test_test_14_triangle_frustum/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_14_triangle_frustum.dir\build.make CMakeFiles/test_test_14_triangle_frustum.dir/build
 .PHONY : test_test_14_triangle_frustum/fast
+
+#=============================================================================
+# Target rules for targets named test_test_150_stencil_zfail_shadow
+
+# Build rule for target.
+test_test_150_stencil_zfail_shadow: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_150_stencil_zfail_shadow
+.PHONY : test_test_150_stencil_zfail_shadow
+
+# fast build rule for target.
+test_test_150_stencil_zfail_shadow/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_150_stencil_zfail_shadow.dir\build.make CMakeFiles/test_test_150_stencil_zfail_shadow.dir/build
+.PHONY : test_test_150_stencil_zfail_shadow/fast
+
+#=============================================================================
+# Target rules for targets named test_test_151_stencil_write_mask
+
+# Build rule for target.
+test_test_151_stencil_write_mask: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_151_stencil_write_mask
+.PHONY : test_test_151_stencil_write_mask
+
+# fast build rule for target.
+test_test_151_stencil_write_mask/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_151_stencil_write_mask.dir\build.make CMakeFiles/test_test_151_stencil_write_mask.dir/build
+.PHONY : test_test_151_stencil_write_mask/fast
+
+#=============================================================================
+# Target rules for targets named test_test_152_stencil_value_mask
+
+# Build rule for target.
+test_test_152_stencil_value_mask: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_152_stencil_value_mask
+.PHONY : test_test_152_stencil_value_mask
+
+# fast build rule for target.
+test_test_152_stencil_value_mask/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_152_stencil_value_mask.dir\build.make CMakeFiles/test_test_152_stencil_value_mask.dir/build
+.PHONY : test_test_152_stencil_value_mask/fast
+
+#=============================================================================
+# Target rules for targets named test_test_153_stencil_dpfail_incr
+
+# Build rule for target.
+test_test_153_stencil_dpfail_incr: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_153_stencil_dpfail_incr
+.PHONY : test_test_153_stencil_dpfail_incr
+
+# fast build rule for target.
+test_test_153_stencil_dpfail_incr/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_153_stencil_dpfail_incr.dir\build.make CMakeFiles/test_test_153_stencil_dpfail_incr.dir/build
+.PHONY : test_test_153_stencil_dpfail_incr/fast
+
+#=============================================================================
+# Target rules for targets named test_test_154_stencil_portal
+
+# Build rule for target.
+test_test_154_stencil_portal: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_154_stencil_portal
+.PHONY : test_test_154_stencil_portal
+
+# fast build rule for target.
+test_test_154_stencil_portal/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_154_stencil_portal.dir\build.make CMakeFiles/test_test_154_stencil_portal.dir/build
+.PHONY : test_test_154_stencil_portal/fast
+
+#=============================================================================
+# Target rules for targets named test_test_155_stencil_mirror
+
+# Build rule for target.
+test_test_155_stencil_mirror: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_155_stencil_mirror
+.PHONY : test_test_155_stencil_mirror
+
+# fast build rule for target.
+test_test_155_stencil_mirror/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_155_stencil_mirror.dir\build.make CMakeFiles/test_test_155_stencil_mirror.dir/build
+.PHONY : test_test_155_stencil_mirror/fast
+
+#=============================================================================
+# Target rules for targets named test_test_156_tex1d_gradient
+
+# Build rule for target.
+test_test_156_tex1d_gradient: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_156_tex1d_gradient
+.PHONY : test_test_156_tex1d_gradient
+
+# fast build rule for target.
+test_test_156_tex1d_gradient/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_156_tex1d_gradient.dir\build.make CMakeFiles/test_test_156_tex1d_gradient.dir/build
+.PHONY : test_test_156_tex1d_gradient/fast
+
+#=============================================================================
+# Target rules for targets named test_test_157_tex1d_lookup
+
+# Build rule for target.
+test_test_157_tex1d_lookup: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_157_tex1d_lookup
+.PHONY : test_test_157_tex1d_lookup
+
+# fast build rule for target.
+test_test_157_tex1d_lookup/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_157_tex1d_lookup.dir\build.make CMakeFiles/test_test_157_tex1d_lookup.dir/build
+.PHONY : test_test_157_tex1d_lookup/fast
+
+#=============================================================================
+# Target rules for targets named test_test_158_tex3d_corners
+
+# Build rule for target.
+test_test_158_tex3d_corners: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_158_tex3d_corners
+.PHONY : test_test_158_tex3d_corners
+
+# fast build rule for target.
+test_test_158_tex3d_corners/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_158_tex3d_corners.dir\build.make CMakeFiles/test_test_158_tex3d_corners.dir/build
+.PHONY : test_test_158_tex3d_corners/fast
+
+#=============================================================================
+# Target rules for targets named test_test_159_tex3d_slices
+
+# Build rule for target.
+test_test_159_tex3d_slices: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_159_tex3d_slices
+.PHONY : test_test_159_tex3d_slices
+
+# fast build rule for target.
+test_test_159_tex3d_slices/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_159_tex3d_slices.dir\build.make CMakeFiles/test_test_159_tex3d_slices.dir/build
+.PHONY : test_test_159_tex3d_slices/fast
 
 #=============================================================================
 # Target rules for targets named test_test_15_two_tris_depth
@@ -337,6 +1104,136 @@ test_test_15_two_tris_depth/fast:
 .PHONY : test_test_15_two_tris_depth/fast
 
 #=============================================================================
+# Target rules for targets named test_test_160_cubemap_skybox
+
+# Build rule for target.
+test_test_160_cubemap_skybox: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_160_cubemap_skybox
+.PHONY : test_test_160_cubemap_skybox
+
+# fast build rule for target.
+test_test_160_cubemap_skybox/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_160_cubemap_skybox.dir\build.make CMakeFiles/test_test_160_cubemap_skybox.dir/build
+.PHONY : test_test_160_cubemap_skybox/fast
+
+#=============================================================================
+# Target rules for targets named test_test_161_cubemap_reflect
+
+# Build rule for target.
+test_test_161_cubemap_reflect: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_161_cubemap_reflect
+.PHONY : test_test_161_cubemap_reflect
+
+# fast build rule for target.
+test_test_161_cubemap_reflect/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_161_cubemap_reflect.dir\build.make CMakeFiles/test_test_161_cubemap_reflect.dir/build
+.PHONY : test_test_161_cubemap_reflect/fast
+
+#=============================================================================
+# Target rules for targets named test_test_162_cubemap_faces
+
+# Build rule for target.
+test_test_162_cubemap_faces: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_162_cubemap_faces
+.PHONY : test_test_162_cubemap_faces
+
+# fast build rule for target.
+test_test_162_cubemap_faces/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_162_cubemap_faces.dir\build.make CMakeFiles/test_test_162_cubemap_faces.dir/build
+.PHONY : test_test_162_cubemap_faces/fast
+
+#=============================================================================
+# Target rules for targets named test_test_163_copy_tex_image_2d
+
+# Build rule for target.
+test_test_163_copy_tex_image_2d: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_163_copy_tex_image_2d
+.PHONY : test_test_163_copy_tex_image_2d
+
+# fast build rule for target.
+test_test_163_copy_tex_image_2d/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_163_copy_tex_image_2d.dir\build.make CMakeFiles/test_test_163_copy_tex_image_2d.dir/build
+.PHONY : test_test_163_copy_tex_image_2d/fast
+
+#=============================================================================
+# Target rules for targets named test_test_164_copy_tex_sub_image_2d
+
+# Build rule for target.
+test_test_164_copy_tex_sub_image_2d: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_164_copy_tex_sub_image_2d
+.PHONY : test_test_164_copy_tex_sub_image_2d
+
+# fast build rule for target.
+test_test_164_copy_tex_sub_image_2d/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_164_copy_tex_sub_image_2d.dir\build.make CMakeFiles/test_test_164_copy_tex_sub_image_2d.dir/build
+.PHONY : test_test_164_copy_tex_sub_image_2d/fast
+
+#=============================================================================
+# Target rules for targets named test_test_165_tex_sub_image_2d
+
+# Build rule for target.
+test_test_165_tex_sub_image_2d: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_165_tex_sub_image_2d
+.PHONY : test_test_165_tex_sub_image_2d
+
+# fast build rule for target.
+test_test_165_tex_sub_image_2d/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_165_tex_sub_image_2d.dir\build.make CMakeFiles/test_test_165_tex_sub_image_2d.dir/build
+.PHONY : test_test_165_tex_sub_image_2d/fast
+
+#=============================================================================
+# Target rules for targets named test_test_166_tex_sub_image_3d
+
+# Build rule for target.
+test_test_166_tex_sub_image_3d: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_166_tex_sub_image_3d
+.PHONY : test_test_166_tex_sub_image_3d
+
+# fast build rule for target.
+test_test_166_tex_sub_image_3d/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_166_tex_sub_image_3d.dir\build.make CMakeFiles/test_test_166_tex_sub_image_3d.dir/build
+.PHONY : test_test_166_tex_sub_image_3d/fast
+
+#=============================================================================
+# Target rules for targets named test_test_167_cubemap_lit
+
+# Build rule for target.
+test_test_167_cubemap_lit: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_167_cubemap_lit
+.PHONY : test_test_167_cubemap_lit
+
+# fast build rule for target.
+test_test_167_cubemap_lit/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_167_cubemap_lit.dir\build.make CMakeFiles/test_test_167_cubemap_lit.dir/build
+.PHONY : test_test_167_cubemap_lit/fast
+
+#=============================================================================
+# Target rules for targets named test_test_168_tex3d_trilinear
+
+# Build rule for target.
+test_test_168_tex3d_trilinear: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_168_tex3d_trilinear
+.PHONY : test_test_168_tex3d_trilinear
+
+# fast build rule for target.
+test_test_168_tex3d_trilinear/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_168_tex3d_trilinear.dir\build.make CMakeFiles/test_test_168_tex3d_trilinear.dir/build
+.PHONY : test_test_168_tex3d_trilinear/fast
+
+#=============================================================================
+# Target rules for targets named test_test_169_cube_and_2d
+
+# Build rule for target.
+test_test_169_cube_and_2d: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_169_cube_and_2d
+.PHONY : test_test_169_cube_and_2d
+
+# fast build rule for target.
+test_test_169_cube_and_2d/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_169_cube_and_2d.dir\build.make CMakeFiles/test_test_169_cube_and_2d.dir/build
+.PHONY : test_test_169_cube_and_2d/fast
+
+#=============================================================================
 # Target rules for targets named test_test_16_flat_shaded
 
 # Build rule for target.
@@ -348,6 +1245,136 @@ test_test_16_flat_shaded: cmake_check_build_system
 test_test_16_flat_shaded/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_16_flat_shaded.dir\build.make CMakeFiles/test_test_16_flat_shaded.dir/build
 .PHONY : test_test_16_flat_shaded/fast
+
+#=============================================================================
+# Target rules for targets named test_test_170_all_targets
+
+# Build rule for target.
+test_test_170_all_targets: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_170_all_targets
+.PHONY : test_test_170_all_targets
+
+# fast build rule for target.
+test_test_170_all_targets/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_170_all_targets.dir\build.make CMakeFiles/test_test_170_all_targets.dir/build
+.PHONY : test_test_170_all_targets/fast
+
+#=============================================================================
+# Target rules for targets named test_test_171_clip_plane_y
+
+# Build rule for target.
+test_test_171_clip_plane_y: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_171_clip_plane_y
+.PHONY : test_test_171_clip_plane_y
+
+# fast build rule for target.
+test_test_171_clip_plane_y/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_171_clip_plane_y.dir\build.make CMakeFiles/test_test_171_clip_plane_y.dir/build
+.PHONY : test_test_171_clip_plane_y/fast
+
+#=============================================================================
+# Target rules for targets named test_test_172_clip_plane_diagonal
+
+# Build rule for target.
+test_test_172_clip_plane_diagonal: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_172_clip_plane_diagonal
+.PHONY : test_test_172_clip_plane_diagonal
+
+# fast build rule for target.
+test_test_172_clip_plane_diagonal/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_172_clip_plane_diagonal.dir\build.make CMakeFiles/test_test_172_clip_plane_diagonal.dir/build
+.PHONY : test_test_172_clip_plane_diagonal/fast
+
+#=============================================================================
+# Target rules for targets named test_test_173_clip_plane_two
+
+# Build rule for target.
+test_test_173_clip_plane_two: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_173_clip_plane_two
+.PHONY : test_test_173_clip_plane_two
+
+# fast build rule for target.
+test_test_173_clip_plane_two/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_173_clip_plane_two.dir\build.make CMakeFiles/test_test_173_clip_plane_two.dir/build
+.PHONY : test_test_173_clip_plane_two/fast
+
+#=============================================================================
+# Target rules for targets named test_test_174_color_material_diffuse
+
+# Build rule for target.
+test_test_174_color_material_diffuse: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_174_color_material_diffuse
+.PHONY : test_test_174_color_material_diffuse
+
+# fast build rule for target.
+test_test_174_color_material_diffuse/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_174_color_material_diffuse.dir\build.make CMakeFiles/test_test_174_color_material_diffuse.dir/build
+.PHONY : test_test_174_color_material_diffuse/fast
+
+#=============================================================================
+# Target rules for targets named test_test_175_light_model_local_viewer
+
+# Build rule for target.
+test_test_175_light_model_local_viewer: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_175_light_model_local_viewer
+.PHONY : test_test_175_light_model_local_viewer
+
+# fast build rule for target.
+test_test_175_light_model_local_viewer/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_175_light_model_local_viewer.dir\build.make CMakeFiles/test_test_175_light_model_local_viewer.dir/build
+.PHONY : test_test_175_light_model_local_viewer/fast
+
+#=============================================================================
+# Target rules for targets named test_test_176_light_model_two_side
+
+# Build rule for target.
+test_test_176_light_model_two_side: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_176_light_model_two_side
+.PHONY : test_test_176_light_model_two_side
+
+# fast build rule for target.
+test_test_176_light_model_two_side/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_176_light_model_two_side.dir\build.make CMakeFiles/test_test_176_light_model_two_side.dir/build
+.PHONY : test_test_176_light_model_two_side/fast
+
+#=============================================================================
+# Target rules for targets named test_test_177_color_mask
+
+# Build rule for target.
+test_test_177_color_mask: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_177_color_mask
+.PHONY : test_test_177_color_mask
+
+# fast build rule for target.
+test_test_177_color_mask/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_177_color_mask.dir\build.make CMakeFiles/test_test_177_color_mask.dir/build
+.PHONY : test_test_177_color_mask/fast
+
+#=============================================================================
+# Target rules for targets named test_test_178_logic_op_xor
+
+# Build rule for target.
+test_test_178_logic_op_xor: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_178_logic_op_xor
+.PHONY : test_test_178_logic_op_xor
+
+# fast build rule for target.
+test_test_178_logic_op_xor/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_178_logic_op_xor.dir\build.make CMakeFiles/test_test_178_logic_op_xor.dir/build
+.PHONY : test_test_178_logic_op_xor/fast
+
+#=============================================================================
+# Target rules for targets named test_test_179_logic_op_invert
+
+# Build rule for target.
+test_test_179_logic_op_invert: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_179_logic_op_invert
+.PHONY : test_test_179_logic_op_invert
+
+# fast build rule for target.
+test_test_179_logic_op_invert/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_179_logic_op_invert.dir\build.make CMakeFiles/test_test_179_logic_op_invert.dir/build
+.PHONY : test_test_179_logic_op_invert/fast
 
 #=============================================================================
 # Target rules for targets named test_test_17_gouraud_rgb
@@ -363,6 +1390,136 @@ test_test_17_gouraud_rgb/fast:
 .PHONY : test_test_17_gouraud_rgb/fast
 
 #=============================================================================
+# Target rules for targets named test_test_180_hint_and_index_mask
+
+# Build rule for target.
+test_test_180_hint_and_index_mask: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_180_hint_and_index_mask
+.PHONY : test_test_180_hint_and_index_mask
+
+# fast build rule for target.
+test_test_180_hint_and_index_mask/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_180_hint_and_index_mask.dir\build.make CMakeFiles/test_test_180_hint_and_index_mask.dir/build
+.PHONY : test_test_180_hint_and_index_mask/fast
+
+#=============================================================================
+# Target rules for targets named test_test_181_drawpixels_rgba
+
+# Build rule for target.
+test_test_181_drawpixels_rgba: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_181_drawpixels_rgba
+.PHONY : test_test_181_drawpixels_rgba
+
+# fast build rule for target.
+test_test_181_drawpixels_rgba/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_181_drawpixels_rgba.dir\build.make CMakeFiles/test_test_181_drawpixels_rgba.dir/build
+.PHONY : test_test_181_drawpixels_rgba/fast
+
+#=============================================================================
+# Target rules for targets named test_test_182_drawpixels_luminance
+
+# Build rule for target.
+test_test_182_drawpixels_luminance: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_182_drawpixels_luminance
+.PHONY : test_test_182_drawpixels_luminance
+
+# fast build rule for target.
+test_test_182_drawpixels_luminance/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_182_drawpixels_luminance.dir\build.make CMakeFiles/test_test_182_drawpixels_luminance.dir/build
+.PHONY : test_test_182_drawpixels_luminance/fast
+
+#=============================================================================
+# Target rules for targets named test_test_183_drawpixels_rgb_float
+
+# Build rule for target.
+test_test_183_drawpixels_rgb_float: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_183_drawpixels_rgb_float
+.PHONY : test_test_183_drawpixels_rgb_float
+
+# fast build rule for target.
+test_test_183_drawpixels_rgb_float/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_183_drawpixels_rgb_float.dir\build.make CMakeFiles/test_test_183_drawpixels_rgb_float.dir/build
+.PHONY : test_test_183_drawpixels_rgb_float/fast
+
+#=============================================================================
+# Target rules for targets named test_test_184_readpixels_echo
+
+# Build rule for target.
+test_test_184_readpixels_echo: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_184_readpixels_echo
+.PHONY : test_test_184_readpixels_echo
+
+# fast build rule for target.
+test_test_184_readpixels_echo/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_184_readpixels_echo.dir\build.make CMakeFiles/test_test_184_readpixels_echo.dir/build
+.PHONY : test_test_184_readpixels_echo/fast
+
+#=============================================================================
+# Target rules for targets named test_test_185_copypixels
+
+# Build rule for target.
+test_test_185_copypixels: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_185_copypixels
+.PHONY : test_test_185_copypixels
+
+# fast build rule for target.
+test_test_185_copypixels/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_185_copypixels.dir\build.make CMakeFiles/test_test_185_copypixels.dir/build
+.PHONY : test_test_185_copypixels/fast
+
+#=============================================================================
+# Target rules for targets named test_test_186_pixelzoom_2x
+
+# Build rule for target.
+test_test_186_pixelzoom_2x: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_186_pixelzoom_2x
+.PHONY : test_test_186_pixelzoom_2x
+
+# fast build rule for target.
+test_test_186_pixelzoom_2x/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_186_pixelzoom_2x.dir\build.make CMakeFiles/test_test_186_pixelzoom_2x.dir/build
+.PHONY : test_test_186_pixelzoom_2x/fast
+
+#=============================================================================
+# Target rules for targets named test_test_187_pixelzoom_flip
+
+# Build rule for target.
+test_test_187_pixelzoom_flip: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_187_pixelzoom_flip
+.PHONY : test_test_187_pixelzoom_flip
+
+# fast build rule for target.
+test_test_187_pixelzoom_flip/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_187_pixelzoom_flip.dir\build.make CMakeFiles/test_test_187_pixelzoom_flip.dir/build
+.PHONY : test_test_187_pixelzoom_flip/fast
+
+#=============================================================================
+# Target rules for targets named test_test_188_unpack_alignment
+
+# Build rule for target.
+test_test_188_unpack_alignment: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_188_unpack_alignment
+.PHONY : test_test_188_unpack_alignment
+
+# fast build rule for target.
+test_test_188_unpack_alignment/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_188_unpack_alignment.dir\build.make CMakeFiles/test_test_188_unpack_alignment.dir/build
+.PHONY : test_test_188_unpack_alignment/fast
+
+#=============================================================================
+# Target rules for targets named test_test_189_unpack_rowlength_skip
+
+# Build rule for target.
+test_test_189_unpack_rowlength_skip: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_189_unpack_rowlength_skip
+.PHONY : test_test_189_unpack_rowlength_skip
+
+# fast build rule for target.
+test_test_189_unpack_rowlength_skip/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_189_unpack_rowlength_skip.dir\build.make CMakeFiles/test_test_189_unpack_rowlength_skip.dir/build
+.PHONY : test_test_189_unpack_rowlength_skip/fast
+
+#=============================================================================
 # Target rules for targets named test_test_18_fullscreen_quad
 
 # Build rule for target.
@@ -374,6 +1531,136 @@ test_test_18_fullscreen_quad: cmake_check_build_system
 test_test_18_fullscreen_quad/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_18_fullscreen_quad.dir\build.make CMakeFiles/test_test_18_fullscreen_quad.dir/build
 .PHONY : test_test_18_fullscreen_quad/fast
+
+#=============================================================================
+# Target rules for targets named test_test_190_rasterpos_clipped
+
+# Build rule for target.
+test_test_190_rasterpos_clipped: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_190_rasterpos_clipped
+.PHONY : test_test_190_rasterpos_clipped
+
+# fast build rule for target.
+test_test_190_rasterpos_clipped/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_190_rasterpos_clipped.dir\build.make CMakeFiles/test_test_190_rasterpos_clipped.dir/build
+.PHONY : test_test_190_rasterpos_clipped/fast
+
+#=============================================================================
+# Target rules for targets named test_test_191_combine_interpolate
+
+# Build rule for target.
+test_test_191_combine_interpolate: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_191_combine_interpolate
+.PHONY : test_test_191_combine_interpolate
+
+# fast build rule for target.
+test_test_191_combine_interpolate/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_191_combine_interpolate.dir\build.make CMakeFiles/test_test_191_combine_interpolate.dir/build
+.PHONY : test_test_191_combine_interpolate/fast
+
+#=============================================================================
+# Target rules for targets named test_test_192_combine_subtract
+
+# Build rule for target.
+test_test_192_combine_subtract: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_192_combine_subtract
+.PHONY : test_test_192_combine_subtract
+
+# fast build rule for target.
+test_test_192_combine_subtract/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_192_combine_subtract.dir\build.make CMakeFiles/test_test_192_combine_subtract.dir/build
+.PHONY : test_test_192_combine_subtract/fast
+
+#=============================================================================
+# Target rules for targets named test_test_193_combine_add_signed_scale
+
+# Build rule for target.
+test_test_193_combine_add_signed_scale: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_193_combine_add_signed_scale
+.PHONY : test_test_193_combine_add_signed_scale
+
+# fast build rule for target.
+test_test_193_combine_add_signed_scale/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_193_combine_add_signed_scale.dir\build.make CMakeFiles/test_test_193_combine_add_signed_scale.dir/build
+.PHONY : test_test_193_combine_add_signed_scale/fast
+
+#=============================================================================
+# Target rules for targets named test_test_194_combine_split_alpha
+
+# Build rule for target.
+test_test_194_combine_split_alpha: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_194_combine_split_alpha
+.PHONY : test_test_194_combine_split_alpha
+
+# fast build rule for target.
+test_test_194_combine_split_alpha/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_194_combine_split_alpha.dir\build.make CMakeFiles/test_test_194_combine_split_alpha.dir/build
+.PHONY : test_test_194_combine_split_alpha/fast
+
+#=============================================================================
+# Target rules for targets named test_test_195_combine_dot3_rgba
+
+# Build rule for target.
+test_test_195_combine_dot3_rgba: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_195_combine_dot3_rgba
+.PHONY : test_test_195_combine_dot3_rgba
+
+# fast build rule for target.
+test_test_195_combine_dot3_rgba/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_195_combine_dot3_rgba.dir\build.make CMakeFiles/test_test_195_combine_dot3_rgba.dir/build
+.PHONY : test_test_195_combine_dot3_rgba/fast
+
+#=============================================================================
+# Target rules for targets named test_test_196_occlusion_samples
+
+# Build rule for target.
+test_test_196_occlusion_samples: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_196_occlusion_samples
+.PHONY : test_test_196_occlusion_samples
+
+# fast build rule for target.
+test_test_196_occlusion_samples/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_196_occlusion_samples.dir\build.make CMakeFiles/test_test_196_occlusion_samples.dir/build
+.PHONY : test_test_196_occlusion_samples/fast
+
+#=============================================================================
+# Target rules for targets named test_test_197_occlusion_any
+
+# Build rule for target.
+test_test_197_occlusion_any: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_197_occlusion_any
+.PHONY : test_test_197_occlusion_any
+
+# fast build rule for target.
+test_test_197_occlusion_any/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_197_occlusion_any.dir\build.make CMakeFiles/test_test_197_occlusion_any.dir/build
+.PHONY : test_test_197_occlusion_any/fast
+
+#=============================================================================
+# Target rules for targets named test_test_198_map_buffer
+
+# Build rule for target.
+test_test_198_map_buffer: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_198_map_buffer
+.PHONY : test_test_198_map_buffer
+
+# fast build rule for target.
+test_test_198_map_buffer/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_198_map_buffer.dir\build.make CMakeFiles/test_test_198_map_buffer.dir/build
+.PHONY : test_test_198_map_buffer/fast
+
+#=============================================================================
+# Target rules for targets named test_test_199_evaluators_patch
+
+# Build rule for target.
+test_test_199_evaluators_patch: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_199_evaluators_patch
+.PHONY : test_test_199_evaluators_patch
+
+# fast build rule for target.
+test_test_199_evaluators_patch/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_199_evaluators_patch.dir\build.make CMakeFiles/test_test_199_evaluators_patch.dir/build
+.PHONY : test_test_199_evaluators_patch/fast
 
 #=============================================================================
 # Target rules for targets named test_test_19_degenerate_triangle
@@ -389,6 +1676,136 @@ test_test_19_degenerate_triangle/fast:
 .PHONY : test_test_19_degenerate_triangle/fast
 
 #=============================================================================
+# Target rules for targets named test_test_200_accum_jitter
+
+# Build rule for target.
+test_test_200_accum_jitter: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_200_accum_jitter
+.PHONY : test_test_200_accum_jitter
+
+# fast build rule for target.
+test_test_200_accum_jitter/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_200_accum_jitter.dir\build.make CMakeFiles/test_test_200_accum_jitter.dir/build
+.PHONY : test_test_200_accum_jitter/fast
+
+#=============================================================================
+# Target rules for targets named test_test_201_stipple
+
+# Build rule for target.
+test_test_201_stipple: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_201_stipple
+.PHONY : test_test_201_stipple
+
+# fast build rule for target.
+test_test_201_stipple/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_201_stipple.dir\build.make CMakeFiles/test_test_201_stipple.dir/build
+.PHONY : test_test_201_stipple/fast
+
+#=============================================================================
+# Target rules for targets named test_test_202_shadow_volume
+
+# Build rule for target.
+test_test_202_shadow_volume: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_202_shadow_volume
+.PHONY : test_test_202_shadow_volume
+
+# fast build rule for target.
+test_test_202_shadow_volume/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_202_shadow_volume.dir\build.make CMakeFiles/test_test_202_shadow_volume.dir/build
+.PHONY : test_test_202_shadow_volume/fast
+
+#=============================================================================
+# Target rules for targets named test_test_203_bump_brick
+
+# Build rule for target.
+test_test_203_bump_brick: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_203_bump_brick
+.PHONY : test_test_203_bump_brick
+
+# fast build rule for target.
+test_test_203_bump_brick/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_203_bump_brick.dir\build.make CMakeFiles/test_test_203_bump_brick.dir/build
+.PHONY : test_test_203_bump_brick/fast
+
+#=============================================================================
+# Target rules for targets named test_test_204_lightmap_corridor
+
+# Build rule for target.
+test_test_204_lightmap_corridor: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_204_lightmap_corridor
+.PHONY : test_test_204_lightmap_corridor
+
+# fast build rule for target.
+test_test_204_lightmap_corridor/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_204_lightmap_corridor.dir\build.make CMakeFiles/test_test_204_lightmap_corridor.dir/build
+.PHONY : test_test_204_lightmap_corridor/fast
+
+#=============================================================================
+# Target rules for targets named test_test_205_chrome_sphere
+
+# Build rule for target.
+test_test_205_chrome_sphere: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_205_chrome_sphere
+.PHONY : test_test_205_chrome_sphere
+
+# fast build rule for target.
+test_test_205_chrome_sphere/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_205_chrome_sphere.dir\build.make CMakeFiles/test_test_205_chrome_sphere.dir/build
+.PHONY : test_test_205_chrome_sphere/fast
+
+#=============================================================================
+# Target rules for targets named test_test_206_spot_projector
+
+# Build rule for target.
+test_test_206_spot_projector: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_206_spot_projector
+.PHONY : test_test_206_spot_projector
+
+# fast build rule for target.
+test_test_206_spot_projector/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_206_spot_projector.dir\build.make CMakeFiles/test_test_206_spot_projector.dir/build
+.PHONY : test_test_206_spot_projector/fast
+
+#=============================================================================
+# Target rules for targets named test_test_207_glass_window
+
+# Build rule for target.
+test_test_207_glass_window: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_207_glass_window
+.PHONY : test_test_207_glass_window
+
+# fast build rule for target.
+test_test_207_glass_window/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_207_glass_window.dir\build.make CMakeFiles/test_test_207_glass_window.dir/build
+.PHONY : test_test_207_glass_window/fast
+
+#=============================================================================
+# Target rules for targets named test_test_208_terrain_blend
+
+# Build rule for target.
+test_test_208_terrain_blend: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_208_terrain_blend
+.PHONY : test_test_208_terrain_blend
+
+# fast build rule for target.
+test_test_208_terrain_blend/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_208_terrain_blend.dir\build.make CMakeFiles/test_test_208_terrain_blend.dir/build
+.PHONY : test_test_208_terrain_blend/fast
+
+#=============================================================================
+# Target rules for targets named test_test_209_particles_additive
+
+# Build rule for target.
+test_test_209_particles_additive: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_209_particles_additive
+.PHONY : test_test_209_particles_additive
+
+# fast build rule for target.
+test_test_209_particles_additive/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_209_particles_additive.dir\build.make CMakeFiles/test_test_209_particles_additive.dir/build
+.PHONY : test_test_209_particles_additive/fast
+
+#=============================================================================
 # Target rules for targets named test_test_20_triangle_at_edges
 
 # Build rule for target.
@@ -400,6 +1817,97 @@ test_test_20_triangle_at_edges: cmake_check_build_system
 test_test_20_triangle_at_edges/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_20_triangle_at_edges.dir\build.make CMakeFiles/test_test_20_triangle_at_edges.dir/build
 .PHONY : test_test_20_triangle_at_edges/fast
+
+#=============================================================================
+# Target rules for targets named test_test_210_portal_rooms
+
+# Build rule for target.
+test_test_210_portal_rooms: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_210_portal_rooms
+.PHONY : test_test_210_portal_rooms
+
+# fast build rule for target.
+test_test_210_portal_rooms/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_210_portal_rooms.dir\build.make CMakeFiles/test_test_210_portal_rooms.dir/build
+.PHONY : test_test_210_portal_rooms/fast
+
+#=============================================================================
+# Target rules for targets named test_test_211_billboard_trees
+
+# Build rule for target.
+test_test_211_billboard_trees: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_211_billboard_trees
+.PHONY : test_test_211_billboard_trees
+
+# fast build rule for target.
+test_test_211_billboard_trees/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_211_billboard_trees.dir\build.make CMakeFiles/test_test_211_billboard_trees.dir/build
+.PHONY : test_test_211_billboard_trees/fast
+
+#=============================================================================
+# Target rules for targets named test_test_212_skybox_sun
+
+# Build rule for target.
+test_test_212_skybox_sun: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_212_skybox_sun
+.PHONY : test_test_212_skybox_sun
+
+# fast build rule for target.
+test_test_212_skybox_sun/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_212_skybox_sun.dir\build.make CMakeFiles/test_test_212_skybox_sun.dir/build
+.PHONY : test_test_212_skybox_sun/fast
+
+#=============================================================================
+# Target rules for targets named test_test_213_lens_flare
+
+# Build rule for target.
+test_test_213_lens_flare: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_213_lens_flare
+.PHONY : test_test_213_lens_flare
+
+# fast build rule for target.
+test_test_213_lens_flare/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_213_lens_flare.dir\build.make CMakeFiles/test_test_213_lens_flare.dir/build
+.PHONY : test_test_213_lens_flare/fast
+
+#=============================================================================
+# Target rules for targets named test_test_214_decal_stencil
+
+# Build rule for target.
+test_test_214_decal_stencil: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_214_decal_stencil
+.PHONY : test_test_214_decal_stencil
+
+# fast build rule for target.
+test_test_214_decal_stencil/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_214_decal_stencil.dir\build.make CMakeFiles/test_test_214_decal_stencil.dir/build
+.PHONY : test_test_214_decal_stencil/fast
+
+#=============================================================================
+# Target rules for targets named test_test_215_crt_emissive
+
+# Build rule for target.
+test_test_215_crt_emissive: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_215_crt_emissive
+.PHONY : test_test_215_crt_emissive
+
+# fast build rule for target.
+test_test_215_crt_emissive/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_215_crt_emissive.dir\build.make CMakeFiles/test_test_215_crt_emissive.dir/build
+.PHONY : test_test_215_crt_emissive/fast
+
+#=============================================================================
+# Target rules for targets named test_test_216_water_surface
+
+# Build rule for target.
+test_test_216_water_surface: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\Makefile2 test_test_216_water_surface
+.PHONY : test_test_216_water_surface
+
+# fast build rule for target.
+test_test_216_water_surface/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_216_water_surface.dir\build.make CMakeFiles/test_test_216_water_surface.dir/build
+.PHONY : test_test_216_water_surface/fast
 
 #=============================================================================
 # Target rules for targets named test_test_21_clip_left
@@ -1513,6 +3021,54 @@ D_/Git/wasm-3d/libsoftgl/src/clip.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl_objs.dir\build.make CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/clip.c.s
 .PHONY : D_/Git/wasm-3d/libsoftgl/src/clip.c.s
 
+D_/Git/wasm-3d/libsoftgl/src/dlist.o: D_/Git/wasm-3d/libsoftgl/src/dlist.c.o
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/dlist.o
+
+# target to build an object file
+D_/Git/wasm-3d/libsoftgl/src/dlist.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl_objs.dir\build.make CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/dlist.c.o
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/dlist.c.o
+
+D_/Git/wasm-3d/libsoftgl/src/dlist.i: D_/Git/wasm-3d/libsoftgl/src/dlist.c.i
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/dlist.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/libsoftgl/src/dlist.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl_objs.dir\build.make CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/dlist.c.i
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/dlist.c.i
+
+D_/Git/wasm-3d/libsoftgl/src/dlist.s: D_/Git/wasm-3d/libsoftgl/src/dlist.c.s
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/dlist.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/libsoftgl/src/dlist.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl_objs.dir\build.make CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/dlist.c.s
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/dlist.c.s
+
+D_/Git/wasm-3d/libsoftgl/src/evaluators.o: D_/Git/wasm-3d/libsoftgl/src/evaluators.c.o
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/evaluators.o
+
+# target to build an object file
+D_/Git/wasm-3d/libsoftgl/src/evaluators.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl_objs.dir\build.make CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/evaluators.c.o
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/evaluators.c.o
+
+D_/Git/wasm-3d/libsoftgl/src/evaluators.i: D_/Git/wasm-3d/libsoftgl/src/evaluators.c.i
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/evaluators.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/libsoftgl/src/evaluators.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl_objs.dir\build.make CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/evaluators.c.i
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/evaluators.c.i
+
+D_/Git/wasm-3d/libsoftgl/src/evaluators.s: D_/Git/wasm-3d/libsoftgl/src/evaluators.c.s
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/evaluators.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/libsoftgl/src/evaluators.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl_objs.dir\build.make CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/evaluators.c.s
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/evaluators.c.s
+
 D_/Git/wasm-3d/libsoftgl/src/fragment.o: D_/Git/wasm-3d/libsoftgl/src/fragment.c.o
 .PHONY : D_/Git/wasm-3d/libsoftgl/src/fragment.o
 
@@ -1561,6 +3117,30 @@ D_/Git/wasm-3d/libsoftgl/src/framebuffer.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl_objs.dir\build.make CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/framebuffer.c.s
 .PHONY : D_/Git/wasm-3d/libsoftgl/src/framebuffer.c.s
 
+D_/Git/wasm-3d/libsoftgl/src/immediate.o: D_/Git/wasm-3d/libsoftgl/src/immediate.c.o
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/immediate.o
+
+# target to build an object file
+D_/Git/wasm-3d/libsoftgl/src/immediate.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl_objs.dir\build.make CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/immediate.c.o
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/immediate.c.o
+
+D_/Git/wasm-3d/libsoftgl/src/immediate.i: D_/Git/wasm-3d/libsoftgl/src/immediate.c.i
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/immediate.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/libsoftgl/src/immediate.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl_objs.dir\build.make CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/immediate.c.i
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/immediate.c.i
+
+D_/Git/wasm-3d/libsoftgl/src/immediate.s: D_/Git/wasm-3d/libsoftgl/src/immediate.c.s
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/immediate.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/libsoftgl/src/immediate.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl_objs.dir\build.make CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/immediate.c.s
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/immediate.c.s
+
 D_/Git/wasm-3d/libsoftgl/src/lighting.o: D_/Git/wasm-3d/libsoftgl/src/lighting.c.o
 .PHONY : D_/Git/wasm-3d/libsoftgl/src/lighting.o
 
@@ -1584,6 +3164,30 @@ D_/Git/wasm-3d/libsoftgl/src/lighting.s: D_/Git/wasm-3d/libsoftgl/src/lighting.c
 D_/Git/wasm-3d/libsoftgl/src/lighting.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl_objs.dir\build.make CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lighting.c.s
 .PHONY : D_/Git/wasm-3d/libsoftgl/src/lighting.c.s
+
+D_/Git/wasm-3d/libsoftgl/src/lines.o: D_/Git/wasm-3d/libsoftgl/src/lines.c.o
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/lines.o
+
+# target to build an object file
+D_/Git/wasm-3d/libsoftgl/src/lines.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl_objs.dir\build.make CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lines.c.o
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/lines.c.o
+
+D_/Git/wasm-3d/libsoftgl/src/lines.i: D_/Git/wasm-3d/libsoftgl/src/lines.c.i
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/lines.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/libsoftgl/src/lines.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl_objs.dir\build.make CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lines.c.i
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/lines.c.i
+
+D_/Git/wasm-3d/libsoftgl/src/lines.s: D_/Git/wasm-3d/libsoftgl/src/lines.c.s
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/lines.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/libsoftgl/src/lines.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl_objs.dir\build.make CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lines.c.s
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/lines.c.s
 
 D_/Git/wasm-3d/libsoftgl/src/matrix.o: D_/Git/wasm-3d/libsoftgl/src/matrix.c.o
 .PHONY : D_/Git/wasm-3d/libsoftgl/src/matrix.o
@@ -1633,6 +3237,30 @@ D_/Git/wasm-3d/libsoftgl/src/pipeline.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl_objs.dir\build.make CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pipeline.c.s
 .PHONY : D_/Git/wasm-3d/libsoftgl/src/pipeline.c.s
 
+D_/Git/wasm-3d/libsoftgl/src/pixels.o: D_/Git/wasm-3d/libsoftgl/src/pixels.c.o
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/pixels.o
+
+# target to build an object file
+D_/Git/wasm-3d/libsoftgl/src/pixels.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl_objs.dir\build.make CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pixels.c.o
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/pixels.c.o
+
+D_/Git/wasm-3d/libsoftgl/src/pixels.i: D_/Git/wasm-3d/libsoftgl/src/pixels.c.i
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/pixels.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/libsoftgl/src/pixels.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl_objs.dir\build.make CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pixels.c.i
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/pixels.c.i
+
+D_/Git/wasm-3d/libsoftgl/src/pixels.s: D_/Git/wasm-3d/libsoftgl/src/pixels.c.s
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/pixels.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/libsoftgl/src/pixels.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl_objs.dir\build.make CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pixels.c.s
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/pixels.c.s
+
 D_/Git/wasm-3d/libsoftgl/src/rasterizer.o: D_/Git/wasm-3d/libsoftgl/src/rasterizer.c.o
 .PHONY : D_/Git/wasm-3d/libsoftgl/src/rasterizer.o
 
@@ -1656,6 +3284,30 @@ D_/Git/wasm-3d/libsoftgl/src/rasterizer.s: D_/Git/wasm-3d/libsoftgl/src/rasteriz
 D_/Git/wasm-3d/libsoftgl/src/rasterizer.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl_objs.dir\build.make CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer.c.s
 .PHONY : D_/Git/wasm-3d/libsoftgl/src/rasterizer.c.s
+
+D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.o: D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.o
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.o
+
+# target to build an object file
+D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl_objs.dir\build.make CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.o
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.o
+
+D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.i: D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.i
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl_objs.dir\build.make CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.i
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.i
+
+D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.s: D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.s
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl_objs.dir\build.make CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.s
+.PHONY : D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.s
 
 D_/Git/wasm-3d/libsoftgl/src/state.o: D_/Git/wasm-3d/libsoftgl/src/state.c.o
 .PHONY : D_/Git/wasm-3d/libsoftgl/src/state.o
@@ -1945,6 +3597,222 @@ D_/Git/wasm-3d/tests/cases/test_100_showcase.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_100_showcase.dir\build.make CMakeFiles/test_test_100_showcase.dir/D_/Git/wasm-3d/tests/cases/test_100_showcase.c.s
 .PHONY : D_/Git/wasm-3d/tests/cases/test_100_showcase.c.s
 
+D_/Git/wasm-3d/tests/cases/test_101_begin_triangles.o: D_/Git/wasm-3d/tests/cases/test_101_begin_triangles.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_101_begin_triangles.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_101_begin_triangles.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_101_begin_triangles.dir\build.make CMakeFiles/test_test_101_begin_triangles.dir/D_/Git/wasm-3d/tests/cases/test_101_begin_triangles.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_101_begin_triangles.c.o
+
+D_/Git/wasm-3d/tests/cases/test_101_begin_triangles.i: D_/Git/wasm-3d/tests/cases/test_101_begin_triangles.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_101_begin_triangles.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_101_begin_triangles.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_101_begin_triangles.dir\build.make CMakeFiles/test_test_101_begin_triangles.dir/D_/Git/wasm-3d/tests/cases/test_101_begin_triangles.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_101_begin_triangles.c.i
+
+D_/Git/wasm-3d/tests/cases/test_101_begin_triangles.s: D_/Git/wasm-3d/tests/cases/test_101_begin_triangles.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_101_begin_triangles.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_101_begin_triangles.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_101_begin_triangles.dir\build.make CMakeFiles/test_test_101_begin_triangles.dir/D_/Git/wasm-3d/tests/cases/test_101_begin_triangles.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_101_begin_triangles.c.s
+
+D_/Git/wasm-3d/tests/cases/test_102_vertex_variants.o: D_/Git/wasm-3d/tests/cases/test_102_vertex_variants.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_102_vertex_variants.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_102_vertex_variants.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_102_vertex_variants.dir\build.make CMakeFiles/test_test_102_vertex_variants.dir/D_/Git/wasm-3d/tests/cases/test_102_vertex_variants.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_102_vertex_variants.c.o
+
+D_/Git/wasm-3d/tests/cases/test_102_vertex_variants.i: D_/Git/wasm-3d/tests/cases/test_102_vertex_variants.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_102_vertex_variants.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_102_vertex_variants.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_102_vertex_variants.dir\build.make CMakeFiles/test_test_102_vertex_variants.dir/D_/Git/wasm-3d/tests/cases/test_102_vertex_variants.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_102_vertex_variants.c.i
+
+D_/Git/wasm-3d/tests/cases/test_102_vertex_variants.s: D_/Git/wasm-3d/tests/cases/test_102_vertex_variants.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_102_vertex_variants.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_102_vertex_variants.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_102_vertex_variants.dir\build.make CMakeFiles/test_test_102_vertex_variants.dir/D_/Git/wasm-3d/tests/cases/test_102_vertex_variants.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_102_vertex_variants.c.s
+
+D_/Git/wasm-3d/tests/cases/test_103_triangle_strip.o: D_/Git/wasm-3d/tests/cases/test_103_triangle_strip.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_103_triangle_strip.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_103_triangle_strip.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_103_triangle_strip.dir\build.make CMakeFiles/test_test_103_triangle_strip.dir/D_/Git/wasm-3d/tests/cases/test_103_triangle_strip.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_103_triangle_strip.c.o
+
+D_/Git/wasm-3d/tests/cases/test_103_triangle_strip.i: D_/Git/wasm-3d/tests/cases/test_103_triangle_strip.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_103_triangle_strip.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_103_triangle_strip.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_103_triangle_strip.dir\build.make CMakeFiles/test_test_103_triangle_strip.dir/D_/Git/wasm-3d/tests/cases/test_103_triangle_strip.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_103_triangle_strip.c.i
+
+D_/Git/wasm-3d/tests/cases/test_103_triangle_strip.s: D_/Git/wasm-3d/tests/cases/test_103_triangle_strip.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_103_triangle_strip.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_103_triangle_strip.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_103_triangle_strip.dir\build.make CMakeFiles/test_test_103_triangle_strip.dir/D_/Git/wasm-3d/tests/cases/test_103_triangle_strip.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_103_triangle_strip.c.s
+
+D_/Git/wasm-3d/tests/cases/test_104_triangle_fan.o: D_/Git/wasm-3d/tests/cases/test_104_triangle_fan.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_104_triangle_fan.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_104_triangle_fan.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_104_triangle_fan.dir\build.make CMakeFiles/test_test_104_triangle_fan.dir/D_/Git/wasm-3d/tests/cases/test_104_triangle_fan.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_104_triangle_fan.c.o
+
+D_/Git/wasm-3d/tests/cases/test_104_triangle_fan.i: D_/Git/wasm-3d/tests/cases/test_104_triangle_fan.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_104_triangle_fan.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_104_triangle_fan.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_104_triangle_fan.dir\build.make CMakeFiles/test_test_104_triangle_fan.dir/D_/Git/wasm-3d/tests/cases/test_104_triangle_fan.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_104_triangle_fan.c.i
+
+D_/Git/wasm-3d/tests/cases/test_104_triangle_fan.s: D_/Git/wasm-3d/tests/cases/test_104_triangle_fan.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_104_triangle_fan.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_104_triangle_fan.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_104_triangle_fan.dir\build.make CMakeFiles/test_test_104_triangle_fan.dir/D_/Git/wasm-3d/tests/cases/test_104_triangle_fan.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_104_triangle_fan.c.s
+
+D_/Git/wasm-3d/tests/cases/test_105_quads_one.o: D_/Git/wasm-3d/tests/cases/test_105_quads_one.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_105_quads_one.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_105_quads_one.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_105_quads_one.dir\build.make CMakeFiles/test_test_105_quads_one.dir/D_/Git/wasm-3d/tests/cases/test_105_quads_one.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_105_quads_one.c.o
+
+D_/Git/wasm-3d/tests/cases/test_105_quads_one.i: D_/Git/wasm-3d/tests/cases/test_105_quads_one.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_105_quads_one.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_105_quads_one.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_105_quads_one.dir\build.make CMakeFiles/test_test_105_quads_one.dir/D_/Git/wasm-3d/tests/cases/test_105_quads_one.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_105_quads_one.c.i
+
+D_/Git/wasm-3d/tests/cases/test_105_quads_one.s: D_/Git/wasm-3d/tests/cases/test_105_quads_one.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_105_quads_one.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_105_quads_one.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_105_quads_one.dir\build.make CMakeFiles/test_test_105_quads_one.dir/D_/Git/wasm-3d/tests/cases/test_105_quads_one.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_105_quads_one.c.s
+
+D_/Git/wasm-3d/tests/cases/test_106_quads_two.o: D_/Git/wasm-3d/tests/cases/test_106_quads_two.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_106_quads_two.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_106_quads_two.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_106_quads_two.dir\build.make CMakeFiles/test_test_106_quads_two.dir/D_/Git/wasm-3d/tests/cases/test_106_quads_two.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_106_quads_two.c.o
+
+D_/Git/wasm-3d/tests/cases/test_106_quads_two.i: D_/Git/wasm-3d/tests/cases/test_106_quads_two.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_106_quads_two.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_106_quads_two.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_106_quads_two.dir\build.make CMakeFiles/test_test_106_quads_two.dir/D_/Git/wasm-3d/tests/cases/test_106_quads_two.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_106_quads_two.c.i
+
+D_/Git/wasm-3d/tests/cases/test_106_quads_two.s: D_/Git/wasm-3d/tests/cases/test_106_quads_two.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_106_quads_two.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_106_quads_two.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_106_quads_two.dir\build.make CMakeFiles/test_test_106_quads_two.dir/D_/Git/wasm-3d/tests/cases/test_106_quads_two.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_106_quads_two.c.s
+
+D_/Git/wasm-3d/tests/cases/test_107_quad_strip.o: D_/Git/wasm-3d/tests/cases/test_107_quad_strip.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_107_quad_strip.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_107_quad_strip.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_107_quad_strip.dir\build.make CMakeFiles/test_test_107_quad_strip.dir/D_/Git/wasm-3d/tests/cases/test_107_quad_strip.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_107_quad_strip.c.o
+
+D_/Git/wasm-3d/tests/cases/test_107_quad_strip.i: D_/Git/wasm-3d/tests/cases/test_107_quad_strip.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_107_quad_strip.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_107_quad_strip.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_107_quad_strip.dir\build.make CMakeFiles/test_test_107_quad_strip.dir/D_/Git/wasm-3d/tests/cases/test_107_quad_strip.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_107_quad_strip.c.i
+
+D_/Git/wasm-3d/tests/cases/test_107_quad_strip.s: D_/Git/wasm-3d/tests/cases/test_107_quad_strip.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_107_quad_strip.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_107_quad_strip.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_107_quad_strip.dir\build.make CMakeFiles/test_test_107_quad_strip.dir/D_/Git/wasm-3d/tests/cases/test_107_quad_strip.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_107_quad_strip.c.s
+
+D_/Git/wasm-3d/tests/cases/test_108_polygon_hexagon.o: D_/Git/wasm-3d/tests/cases/test_108_polygon_hexagon.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_108_polygon_hexagon.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_108_polygon_hexagon.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_108_polygon_hexagon.dir\build.make CMakeFiles/test_test_108_polygon_hexagon.dir/D_/Git/wasm-3d/tests/cases/test_108_polygon_hexagon.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_108_polygon_hexagon.c.o
+
+D_/Git/wasm-3d/tests/cases/test_108_polygon_hexagon.i: D_/Git/wasm-3d/tests/cases/test_108_polygon_hexagon.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_108_polygon_hexagon.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_108_polygon_hexagon.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_108_polygon_hexagon.dir\build.make CMakeFiles/test_test_108_polygon_hexagon.dir/D_/Git/wasm-3d/tests/cases/test_108_polygon_hexagon.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_108_polygon_hexagon.c.i
+
+D_/Git/wasm-3d/tests/cases/test_108_polygon_hexagon.s: D_/Git/wasm-3d/tests/cases/test_108_polygon_hexagon.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_108_polygon_hexagon.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_108_polygon_hexagon.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_108_polygon_hexagon.dir\build.make CMakeFiles/test_test_108_polygon_hexagon.dir/D_/Git/wasm-3d/tests/cases/test_108_polygon_hexagon.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_108_polygon_hexagon.c.s
+
+D_/Git/wasm-3d/tests/cases/test_109_lit_triangle.o: D_/Git/wasm-3d/tests/cases/test_109_lit_triangle.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_109_lit_triangle.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_109_lit_triangle.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_109_lit_triangle.dir\build.make CMakeFiles/test_test_109_lit_triangle.dir/D_/Git/wasm-3d/tests/cases/test_109_lit_triangle.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_109_lit_triangle.c.o
+
+D_/Git/wasm-3d/tests/cases/test_109_lit_triangle.i: D_/Git/wasm-3d/tests/cases/test_109_lit_triangle.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_109_lit_triangle.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_109_lit_triangle.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_109_lit_triangle.dir\build.make CMakeFiles/test_test_109_lit_triangle.dir/D_/Git/wasm-3d/tests/cases/test_109_lit_triangle.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_109_lit_triangle.c.i
+
+D_/Git/wasm-3d/tests/cases/test_109_lit_triangle.s: D_/Git/wasm-3d/tests/cases/test_109_lit_triangle.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_109_lit_triangle.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_109_lit_triangle.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_109_lit_triangle.dir\build.make CMakeFiles/test_test_109_lit_triangle.dir/D_/Git/wasm-3d/tests/cases/test_109_lit_triangle.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_109_lit_triangle.c.s
+
 D_/Git/wasm-3d/tests/cases/test_10_ortho_projection.o: D_/Git/wasm-3d/tests/cases/test_10_ortho_projection.c.o
 .PHONY : D_/Git/wasm-3d/tests/cases/test_10_ortho_projection.o
 
@@ -1968,6 +3836,246 @@ D_/Git/wasm-3d/tests/cases/test_10_ortho_projection.s: D_/Git/wasm-3d/tests/case
 D_/Git/wasm-3d/tests/cases/test_10_ortho_projection.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_10_ortho_projection.dir\build.make CMakeFiles/test_test_10_ortho_projection.dir/D_/Git/wasm-3d/tests/cases/test_10_ortho_projection.c.s
 .PHONY : D_/Git/wasm-3d/tests/cases/test_10_ortho_projection.c.s
+
+D_/Git/wasm-3d/tests/cases/test_110_textured_quad.o: D_/Git/wasm-3d/tests/cases/test_110_textured_quad.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_110_textured_quad.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_110_textured_quad.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_110_textured_quad.dir\build.make CMakeFiles/test_test_110_textured_quad.dir/D_/Git/wasm-3d/tests/cases/test_110_textured_quad.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_110_textured_quad.c.o
+
+D_/Git/wasm-3d/tests/cases/test_110_textured_quad.i: D_/Git/wasm-3d/tests/cases/test_110_textured_quad.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_110_textured_quad.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_110_textured_quad.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_110_textured_quad.dir\build.make CMakeFiles/test_test_110_textured_quad.dir/D_/Git/wasm-3d/tests/cases/test_110_textured_quad.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_110_textured_quad.c.i
+
+D_/Git/wasm-3d/tests/cases/test_110_textured_quad.s: D_/Git/wasm-3d/tests/cases/test_110_textured_quad.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_110_textured_quad.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_110_textured_quad.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_110_textured_quad.dir\build.make CMakeFiles/test_test_110_textured_quad.dir/D_/Git/wasm-3d/tests/cases/test_110_textured_quad.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_110_textured_quad.c.s
+
+D_/Git/wasm-3d/tests/cases/test_111_multitexture_imm.o: D_/Git/wasm-3d/tests/cases/test_111_multitexture_imm.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_111_multitexture_imm.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_111_multitexture_imm.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_111_multitexture_imm.dir\build.make CMakeFiles/test_test_111_multitexture_imm.dir/D_/Git/wasm-3d/tests/cases/test_111_multitexture_imm.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_111_multitexture_imm.c.o
+
+D_/Git/wasm-3d/tests/cases/test_111_multitexture_imm.i: D_/Git/wasm-3d/tests/cases/test_111_multitexture_imm.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_111_multitexture_imm.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_111_multitexture_imm.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_111_multitexture_imm.dir\build.make CMakeFiles/test_test_111_multitexture_imm.dir/D_/Git/wasm-3d/tests/cases/test_111_multitexture_imm.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_111_multitexture_imm.c.i
+
+D_/Git/wasm-3d/tests/cases/test_111_multitexture_imm.s: D_/Git/wasm-3d/tests/cases/test_111_multitexture_imm.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_111_multitexture_imm.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_111_multitexture_imm.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_111_multitexture_imm.dir\build.make CMakeFiles/test_test_111_multitexture_imm.dir/D_/Git/wasm-3d/tests/cases/test_111_multitexture_imm.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_111_multitexture_imm.c.s
+
+D_/Git/wasm-3d/tests/cases/test_112_rectf.o: D_/Git/wasm-3d/tests/cases/test_112_rectf.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_112_rectf.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_112_rectf.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_112_rectf.dir\build.make CMakeFiles/test_test_112_rectf.dir/D_/Git/wasm-3d/tests/cases/test_112_rectf.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_112_rectf.c.o
+
+D_/Git/wasm-3d/tests/cases/test_112_rectf.i: D_/Git/wasm-3d/tests/cases/test_112_rectf.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_112_rectf.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_112_rectf.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_112_rectf.dir\build.make CMakeFiles/test_test_112_rectf.dir/D_/Git/wasm-3d/tests/cases/test_112_rectf.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_112_rectf.c.i
+
+D_/Git/wasm-3d/tests/cases/test_112_rectf.s: D_/Git/wasm-3d/tests/cases/test_112_rectf.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_112_rectf.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_112_rectf.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_112_rectf.dir\build.make CMakeFiles/test_test_112_rectf.dir/D_/Git/wasm-3d/tests/cases/test_112_rectf.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_112_rectf.c.s
+
+D_/Git/wasm-3d/tests/cases/test_113_type_conversion.o: D_/Git/wasm-3d/tests/cases/test_113_type_conversion.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_113_type_conversion.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_113_type_conversion.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_113_type_conversion.dir\build.make CMakeFiles/test_test_113_type_conversion.dir/D_/Git/wasm-3d/tests/cases/test_113_type_conversion.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_113_type_conversion.c.o
+
+D_/Git/wasm-3d/tests/cases/test_113_type_conversion.i: D_/Git/wasm-3d/tests/cases/test_113_type_conversion.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_113_type_conversion.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_113_type_conversion.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_113_type_conversion.dir\build.make CMakeFiles/test_test_113_type_conversion.dir/D_/Git/wasm-3d/tests/cases/test_113_type_conversion.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_113_type_conversion.c.i
+
+D_/Git/wasm-3d/tests/cases/test_113_type_conversion.s: D_/Git/wasm-3d/tests/cases/test_113_type_conversion.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_113_type_conversion.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_113_type_conversion.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_113_type_conversion.dir\build.make CMakeFiles/test_test_113_type_conversion.dir/D_/Git/wasm-3d/tests/cases/test_113_type_conversion.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_113_type_conversion.c.s
+
+D_/Git/wasm-3d/tests/cases/test_114_array_element.o: D_/Git/wasm-3d/tests/cases/test_114_array_element.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_114_array_element.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_114_array_element.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_114_array_element.dir\build.make CMakeFiles/test_test_114_array_element.dir/D_/Git/wasm-3d/tests/cases/test_114_array_element.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_114_array_element.c.o
+
+D_/Git/wasm-3d/tests/cases/test_114_array_element.i: D_/Git/wasm-3d/tests/cases/test_114_array_element.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_114_array_element.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_114_array_element.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_114_array_element.dir\build.make CMakeFiles/test_test_114_array_element.dir/D_/Git/wasm-3d/tests/cases/test_114_array_element.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_114_array_element.c.i
+
+D_/Git/wasm-3d/tests/cases/test_114_array_element.s: D_/Git/wasm-3d/tests/cases/test_114_array_element.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_114_array_element.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_114_array_element.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_114_array_element.dir\build.make CMakeFiles/test_test_114_array_element.dir/D_/Git/wasm-3d/tests/cases/test_114_array_element.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_114_array_element.c.s
+
+D_/Git/wasm-3d/tests/cases/test_115_lit_polygon.o: D_/Git/wasm-3d/tests/cases/test_115_lit_polygon.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_115_lit_polygon.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_115_lit_polygon.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_115_lit_polygon.dir\build.make CMakeFiles/test_test_115_lit_polygon.dir/D_/Git/wasm-3d/tests/cases/test_115_lit_polygon.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_115_lit_polygon.c.o
+
+D_/Git/wasm-3d/tests/cases/test_115_lit_polygon.i: D_/Git/wasm-3d/tests/cases/test_115_lit_polygon.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_115_lit_polygon.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_115_lit_polygon.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_115_lit_polygon.dir\build.make CMakeFiles/test_test_115_lit_polygon.dir/D_/Git/wasm-3d/tests/cases/test_115_lit_polygon.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_115_lit_polygon.c.i
+
+D_/Git/wasm-3d/tests/cases/test_115_lit_polygon.s: D_/Git/wasm-3d/tests/cases/test_115_lit_polygon.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_115_lit_polygon.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_115_lit_polygon.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_115_lit_polygon.dir\build.make CMakeFiles/test_test_115_lit_polygon.dir/D_/Git/wasm-3d/tests/cases/test_115_lit_polygon.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_115_lit_polygon.c.s
+
+D_/Git/wasm-3d/tests/cases/test_116_dlist_empty.o: D_/Git/wasm-3d/tests/cases/test_116_dlist_empty.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_116_dlist_empty.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_116_dlist_empty.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_116_dlist_empty.dir\build.make CMakeFiles/test_test_116_dlist_empty.dir/D_/Git/wasm-3d/tests/cases/test_116_dlist_empty.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_116_dlist_empty.c.o
+
+D_/Git/wasm-3d/tests/cases/test_116_dlist_empty.i: D_/Git/wasm-3d/tests/cases/test_116_dlist_empty.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_116_dlist_empty.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_116_dlist_empty.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_116_dlist_empty.dir\build.make CMakeFiles/test_test_116_dlist_empty.dir/D_/Git/wasm-3d/tests/cases/test_116_dlist_empty.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_116_dlist_empty.c.i
+
+D_/Git/wasm-3d/tests/cases/test_116_dlist_empty.s: D_/Git/wasm-3d/tests/cases/test_116_dlist_empty.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_116_dlist_empty.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_116_dlist_empty.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_116_dlist_empty.dir\build.make CMakeFiles/test_test_116_dlist_empty.dir/D_/Git/wasm-3d/tests/cases/test_116_dlist_empty.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_116_dlist_empty.c.s
+
+D_/Git/wasm-3d/tests/cases/test_117_dlist_triangle.o: D_/Git/wasm-3d/tests/cases/test_117_dlist_triangle.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_117_dlist_triangle.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_117_dlist_triangle.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_117_dlist_triangle.dir\build.make CMakeFiles/test_test_117_dlist_triangle.dir/D_/Git/wasm-3d/tests/cases/test_117_dlist_triangle.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_117_dlist_triangle.c.o
+
+D_/Git/wasm-3d/tests/cases/test_117_dlist_triangle.i: D_/Git/wasm-3d/tests/cases/test_117_dlist_triangle.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_117_dlist_triangle.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_117_dlist_triangle.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_117_dlist_triangle.dir\build.make CMakeFiles/test_test_117_dlist_triangle.dir/D_/Git/wasm-3d/tests/cases/test_117_dlist_triangle.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_117_dlist_triangle.c.i
+
+D_/Git/wasm-3d/tests/cases/test_117_dlist_triangle.s: D_/Git/wasm-3d/tests/cases/test_117_dlist_triangle.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_117_dlist_triangle.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_117_dlist_triangle.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_117_dlist_triangle.dir\build.make CMakeFiles/test_test_117_dlist_triangle.dir/D_/Git/wasm-3d/tests/cases/test_117_dlist_triangle.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_117_dlist_triangle.c.s
+
+D_/Git/wasm-3d/tests/cases/test_118_dlist_transform.o: D_/Git/wasm-3d/tests/cases/test_118_dlist_transform.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_118_dlist_transform.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_118_dlist_transform.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_118_dlist_transform.dir\build.make CMakeFiles/test_test_118_dlist_transform.dir/D_/Git/wasm-3d/tests/cases/test_118_dlist_transform.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_118_dlist_transform.c.o
+
+D_/Git/wasm-3d/tests/cases/test_118_dlist_transform.i: D_/Git/wasm-3d/tests/cases/test_118_dlist_transform.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_118_dlist_transform.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_118_dlist_transform.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_118_dlist_transform.dir\build.make CMakeFiles/test_test_118_dlist_transform.dir/D_/Git/wasm-3d/tests/cases/test_118_dlist_transform.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_118_dlist_transform.c.i
+
+D_/Git/wasm-3d/tests/cases/test_118_dlist_transform.s: D_/Git/wasm-3d/tests/cases/test_118_dlist_transform.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_118_dlist_transform.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_118_dlist_transform.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_118_dlist_transform.dir\build.make CMakeFiles/test_test_118_dlist_transform.dir/D_/Git/wasm-3d/tests/cases/test_118_dlist_transform.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_118_dlist_transform.c.s
+
+D_/Git/wasm-3d/tests/cases/test_119_dlist_compile_and_execute.o: D_/Git/wasm-3d/tests/cases/test_119_dlist_compile_and_execute.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_119_dlist_compile_and_execute.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_119_dlist_compile_and_execute.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_119_dlist_compile_and_execute.dir\build.make CMakeFiles/test_test_119_dlist_compile_and_execute.dir/D_/Git/wasm-3d/tests/cases/test_119_dlist_compile_and_execute.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_119_dlist_compile_and_execute.c.o
+
+D_/Git/wasm-3d/tests/cases/test_119_dlist_compile_and_execute.i: D_/Git/wasm-3d/tests/cases/test_119_dlist_compile_and_execute.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_119_dlist_compile_and_execute.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_119_dlist_compile_and_execute.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_119_dlist_compile_and_execute.dir\build.make CMakeFiles/test_test_119_dlist_compile_and_execute.dir/D_/Git/wasm-3d/tests/cases/test_119_dlist_compile_and_execute.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_119_dlist_compile_and_execute.c.i
+
+D_/Git/wasm-3d/tests/cases/test_119_dlist_compile_and_execute.s: D_/Git/wasm-3d/tests/cases/test_119_dlist_compile_and_execute.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_119_dlist_compile_and_execute.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_119_dlist_compile_and_execute.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_119_dlist_compile_and_execute.dir\build.make CMakeFiles/test_test_119_dlist_compile_and_execute.dir/D_/Git/wasm-3d/tests/cases/test_119_dlist_compile_and_execute.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_119_dlist_compile_and_execute.c.s
 
 D_/Git/wasm-3d/tests/cases/test_11_triangle_ccw.o: D_/Git/wasm-3d/tests/cases/test_11_triangle_ccw.c.o
 .PHONY : D_/Git/wasm-3d/tests/cases/test_11_triangle_ccw.o
@@ -1993,6 +4101,246 @@ D_/Git/wasm-3d/tests/cases/test_11_triangle_ccw.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_11_triangle_ccw.dir\build.make CMakeFiles/test_test_11_triangle_ccw.dir/D_/Git/wasm-3d/tests/cases/test_11_triangle_ccw.c.s
 .PHONY : D_/Git/wasm-3d/tests/cases/test_11_triangle_ccw.c.s
 
+D_/Git/wasm-3d/tests/cases/test_120_call_lists_byte.o: D_/Git/wasm-3d/tests/cases/test_120_call_lists_byte.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_120_call_lists_byte.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_120_call_lists_byte.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_120_call_lists_byte.dir\build.make CMakeFiles/test_test_120_call_lists_byte.dir/D_/Git/wasm-3d/tests/cases/test_120_call_lists_byte.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_120_call_lists_byte.c.o
+
+D_/Git/wasm-3d/tests/cases/test_120_call_lists_byte.i: D_/Git/wasm-3d/tests/cases/test_120_call_lists_byte.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_120_call_lists_byte.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_120_call_lists_byte.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_120_call_lists_byte.dir\build.make CMakeFiles/test_test_120_call_lists_byte.dir/D_/Git/wasm-3d/tests/cases/test_120_call_lists_byte.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_120_call_lists_byte.c.i
+
+D_/Git/wasm-3d/tests/cases/test_120_call_lists_byte.s: D_/Git/wasm-3d/tests/cases/test_120_call_lists_byte.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_120_call_lists_byte.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_120_call_lists_byte.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_120_call_lists_byte.dir\build.make CMakeFiles/test_test_120_call_lists_byte.dir/D_/Git/wasm-3d/tests/cases/test_120_call_lists_byte.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_120_call_lists_byte.c.s
+
+D_/Git/wasm-3d/tests/cases/test_121_nested_lists.o: D_/Git/wasm-3d/tests/cases/test_121_nested_lists.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_121_nested_lists.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_121_nested_lists.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_121_nested_lists.dir\build.make CMakeFiles/test_test_121_nested_lists.dir/D_/Git/wasm-3d/tests/cases/test_121_nested_lists.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_121_nested_lists.c.o
+
+D_/Git/wasm-3d/tests/cases/test_121_nested_lists.i: D_/Git/wasm-3d/tests/cases/test_121_nested_lists.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_121_nested_lists.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_121_nested_lists.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_121_nested_lists.dir\build.make CMakeFiles/test_test_121_nested_lists.dir/D_/Git/wasm-3d/tests/cases/test_121_nested_lists.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_121_nested_lists.c.i
+
+D_/Git/wasm-3d/tests/cases/test_121_nested_lists.s: D_/Git/wasm-3d/tests/cases/test_121_nested_lists.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_121_nested_lists.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_121_nested_lists.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_121_nested_lists.dir\build.make CMakeFiles/test_test_121_nested_lists.dir/D_/Git/wasm-3d/tests/cases/test_121_nested_lists.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_121_nested_lists.c.s
+
+D_/Git/wasm-3d/tests/cases/test_122_dlist_lit.o: D_/Git/wasm-3d/tests/cases/test_122_dlist_lit.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_122_dlist_lit.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_122_dlist_lit.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_122_dlist_lit.dir\build.make CMakeFiles/test_test_122_dlist_lit.dir/D_/Git/wasm-3d/tests/cases/test_122_dlist_lit.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_122_dlist_lit.c.o
+
+D_/Git/wasm-3d/tests/cases/test_122_dlist_lit.i: D_/Git/wasm-3d/tests/cases/test_122_dlist_lit.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_122_dlist_lit.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_122_dlist_lit.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_122_dlist_lit.dir\build.make CMakeFiles/test_test_122_dlist_lit.dir/D_/Git/wasm-3d/tests/cases/test_122_dlist_lit.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_122_dlist_lit.c.i
+
+D_/Git/wasm-3d/tests/cases/test_122_dlist_lit.s: D_/Git/wasm-3d/tests/cases/test_122_dlist_lit.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_122_dlist_lit.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_122_dlist_lit.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_122_dlist_lit.dir\build.make CMakeFiles/test_test_122_dlist_lit.dir/D_/Git/wasm-3d/tests/cases/test_122_dlist_lit.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_122_dlist_lit.c.s
+
+D_/Git/wasm-3d/tests/cases/test_123_dlist_texture.o: D_/Git/wasm-3d/tests/cases/test_123_dlist_texture.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_123_dlist_texture.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_123_dlist_texture.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_123_dlist_texture.dir\build.make CMakeFiles/test_test_123_dlist_texture.dir/D_/Git/wasm-3d/tests/cases/test_123_dlist_texture.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_123_dlist_texture.c.o
+
+D_/Git/wasm-3d/tests/cases/test_123_dlist_texture.i: D_/Git/wasm-3d/tests/cases/test_123_dlist_texture.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_123_dlist_texture.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_123_dlist_texture.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_123_dlist_texture.dir\build.make CMakeFiles/test_test_123_dlist_texture.dir/D_/Git/wasm-3d/tests/cases/test_123_dlist_texture.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_123_dlist_texture.c.i
+
+D_/Git/wasm-3d/tests/cases/test_123_dlist_texture.s: D_/Git/wasm-3d/tests/cases/test_123_dlist_texture.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_123_dlist_texture.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_123_dlist_texture.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_123_dlist_texture.dir\build.make CMakeFiles/test_test_123_dlist_texture.dir/D_/Git/wasm-3d/tests/cases/test_123_dlist_texture.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_123_dlist_texture.c.s
+
+D_/Git/wasm-3d/tests/cases/test_124_dlist_vbo_draw.o: D_/Git/wasm-3d/tests/cases/test_124_dlist_vbo_draw.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_124_dlist_vbo_draw.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_124_dlist_vbo_draw.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_124_dlist_vbo_draw.dir\build.make CMakeFiles/test_test_124_dlist_vbo_draw.dir/D_/Git/wasm-3d/tests/cases/test_124_dlist_vbo_draw.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_124_dlist_vbo_draw.c.o
+
+D_/Git/wasm-3d/tests/cases/test_124_dlist_vbo_draw.i: D_/Git/wasm-3d/tests/cases/test_124_dlist_vbo_draw.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_124_dlist_vbo_draw.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_124_dlist_vbo_draw.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_124_dlist_vbo_draw.dir\build.make CMakeFiles/test_test_124_dlist_vbo_draw.dir/D_/Git/wasm-3d/tests/cases/test_124_dlist_vbo_draw.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_124_dlist_vbo_draw.c.i
+
+D_/Git/wasm-3d/tests/cases/test_124_dlist_vbo_draw.s: D_/Git/wasm-3d/tests/cases/test_124_dlist_vbo_draw.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_124_dlist_vbo_draw.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_124_dlist_vbo_draw.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_124_dlist_vbo_draw.dir\build.make CMakeFiles/test_test_124_dlist_vbo_draw.dir/D_/Git/wasm-3d/tests/cases/test_124_dlist_vbo_draw.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_124_dlist_vbo_draw.c.s
+
+D_/Git/wasm-3d/tests/cases/test_125_dlist_vbo_alloc.o: D_/Git/wasm-3d/tests/cases/test_125_dlist_vbo_alloc.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_125_dlist_vbo_alloc.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_125_dlist_vbo_alloc.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_125_dlist_vbo_alloc.dir\build.make CMakeFiles/test_test_125_dlist_vbo_alloc.dir/D_/Git/wasm-3d/tests/cases/test_125_dlist_vbo_alloc.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_125_dlist_vbo_alloc.c.o
+
+D_/Git/wasm-3d/tests/cases/test_125_dlist_vbo_alloc.i: D_/Git/wasm-3d/tests/cases/test_125_dlist_vbo_alloc.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_125_dlist_vbo_alloc.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_125_dlist_vbo_alloc.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_125_dlist_vbo_alloc.dir\build.make CMakeFiles/test_test_125_dlist_vbo_alloc.dir/D_/Git/wasm-3d/tests/cases/test_125_dlist_vbo_alloc.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_125_dlist_vbo_alloc.c.i
+
+D_/Git/wasm-3d/tests/cases/test_125_dlist_vbo_alloc.s: D_/Git/wasm-3d/tests/cases/test_125_dlist_vbo_alloc.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_125_dlist_vbo_alloc.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_125_dlist_vbo_alloc.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_125_dlist_vbo_alloc.dir\build.make CMakeFiles/test_test_125_dlist_vbo_alloc.dir/D_/Git/wasm-3d/tests/cases/test_125_dlist_vbo_alloc.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_125_dlist_vbo_alloc.c.s
+
+D_/Git/wasm-3d/tests/cases/test_126_dlist_color_order.o: D_/Git/wasm-3d/tests/cases/test_126_dlist_color_order.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_126_dlist_color_order.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_126_dlist_color_order.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_126_dlist_color_order.dir\build.make CMakeFiles/test_test_126_dlist_color_order.dir/D_/Git/wasm-3d/tests/cases/test_126_dlist_color_order.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_126_dlist_color_order.c.o
+
+D_/Git/wasm-3d/tests/cases/test_126_dlist_color_order.i: D_/Git/wasm-3d/tests/cases/test_126_dlist_color_order.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_126_dlist_color_order.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_126_dlist_color_order.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_126_dlist_color_order.dir\build.make CMakeFiles/test_test_126_dlist_color_order.dir/D_/Git/wasm-3d/tests/cases/test_126_dlist_color_order.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_126_dlist_color_order.c.i
+
+D_/Git/wasm-3d/tests/cases/test_126_dlist_color_order.s: D_/Git/wasm-3d/tests/cases/test_126_dlist_color_order.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_126_dlist_color_order.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_126_dlist_color_order.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_126_dlist_color_order.dir\build.make CMakeFiles/test_test_126_dlist_color_order.dir/D_/Git/wasm-3d/tests/cases/test_126_dlist_color_order.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_126_dlist_color_order.c.s
+
+D_/Git/wasm-3d/tests/cases/test_127_dlist_matrix_stack.o: D_/Git/wasm-3d/tests/cases/test_127_dlist_matrix_stack.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_127_dlist_matrix_stack.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_127_dlist_matrix_stack.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_127_dlist_matrix_stack.dir\build.make CMakeFiles/test_test_127_dlist_matrix_stack.dir/D_/Git/wasm-3d/tests/cases/test_127_dlist_matrix_stack.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_127_dlist_matrix_stack.c.o
+
+D_/Git/wasm-3d/tests/cases/test_127_dlist_matrix_stack.i: D_/Git/wasm-3d/tests/cases/test_127_dlist_matrix_stack.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_127_dlist_matrix_stack.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_127_dlist_matrix_stack.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_127_dlist_matrix_stack.dir\build.make CMakeFiles/test_test_127_dlist_matrix_stack.dir/D_/Git/wasm-3d/tests/cases/test_127_dlist_matrix_stack.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_127_dlist_matrix_stack.c.i
+
+D_/Git/wasm-3d/tests/cases/test_127_dlist_matrix_stack.s: D_/Git/wasm-3d/tests/cases/test_127_dlist_matrix_stack.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_127_dlist_matrix_stack.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_127_dlist_matrix_stack.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_127_dlist_matrix_stack.dir\build.make CMakeFiles/test_test_127_dlist_matrix_stack.dir/D_/Git/wasm-3d/tests/cases/test_127_dlist_matrix_stack.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_127_dlist_matrix_stack.c.s
+
+D_/Git/wasm-3d/tests/cases/test_128_dlist_repeat_outer_mv.o: D_/Git/wasm-3d/tests/cases/test_128_dlist_repeat_outer_mv.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_128_dlist_repeat_outer_mv.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_128_dlist_repeat_outer_mv.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_128_dlist_repeat_outer_mv.dir\build.make CMakeFiles/test_test_128_dlist_repeat_outer_mv.dir/D_/Git/wasm-3d/tests/cases/test_128_dlist_repeat_outer_mv.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_128_dlist_repeat_outer_mv.c.o
+
+D_/Git/wasm-3d/tests/cases/test_128_dlist_repeat_outer_mv.i: D_/Git/wasm-3d/tests/cases/test_128_dlist_repeat_outer_mv.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_128_dlist_repeat_outer_mv.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_128_dlist_repeat_outer_mv.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_128_dlist_repeat_outer_mv.dir\build.make CMakeFiles/test_test_128_dlist_repeat_outer_mv.dir/D_/Git/wasm-3d/tests/cases/test_128_dlist_repeat_outer_mv.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_128_dlist_repeat_outer_mv.c.i
+
+D_/Git/wasm-3d/tests/cases/test_128_dlist_repeat_outer_mv.s: D_/Git/wasm-3d/tests/cases/test_128_dlist_repeat_outer_mv.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_128_dlist_repeat_outer_mv.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_128_dlist_repeat_outer_mv.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_128_dlist_repeat_outer_mv.dir\build.make CMakeFiles/test_test_128_dlist_repeat_outer_mv.dir/D_/Git/wasm-3d/tests/cases/test_128_dlist_repeat_outer_mv.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_128_dlist_repeat_outer_mv.c.s
+
+D_/Git/wasm-3d/tests/cases/test_129_dlist_id_recycle.o: D_/Git/wasm-3d/tests/cases/test_129_dlist_id_recycle.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_129_dlist_id_recycle.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_129_dlist_id_recycle.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_129_dlist_id_recycle.dir\build.make CMakeFiles/test_test_129_dlist_id_recycle.dir/D_/Git/wasm-3d/tests/cases/test_129_dlist_id_recycle.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_129_dlist_id_recycle.c.o
+
+D_/Git/wasm-3d/tests/cases/test_129_dlist_id_recycle.i: D_/Git/wasm-3d/tests/cases/test_129_dlist_id_recycle.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_129_dlist_id_recycle.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_129_dlist_id_recycle.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_129_dlist_id_recycle.dir\build.make CMakeFiles/test_test_129_dlist_id_recycle.dir/D_/Git/wasm-3d/tests/cases/test_129_dlist_id_recycle.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_129_dlist_id_recycle.c.i
+
+D_/Git/wasm-3d/tests/cases/test_129_dlist_id_recycle.s: D_/Git/wasm-3d/tests/cases/test_129_dlist_id_recycle.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_129_dlist_id_recycle.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_129_dlist_id_recycle.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_129_dlist_id_recycle.dir\build.make CMakeFiles/test_test_129_dlist_id_recycle.dir/D_/Git/wasm-3d/tests/cases/test_129_dlist_id_recycle.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_129_dlist_id_recycle.c.s
+
 D_/Git/wasm-3d/tests/cases/test_12_triangle_cw_culled.o: D_/Git/wasm-3d/tests/cases/test_12_triangle_cw_culled.c.o
 .PHONY : D_/Git/wasm-3d/tests/cases/test_12_triangle_cw_culled.o
 
@@ -2016,6 +4364,246 @@ D_/Git/wasm-3d/tests/cases/test_12_triangle_cw_culled.s: D_/Git/wasm-3d/tests/ca
 D_/Git/wasm-3d/tests/cases/test_12_triangle_cw_culled.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_12_triangle_cw_culled.dir\build.make CMakeFiles/test_test_12_triangle_cw_culled.dir/D_/Git/wasm-3d/tests/cases/test_12_triangle_cw_culled.c.s
 .PHONY : D_/Git/wasm-3d/tests/cases/test_12_triangle_cw_culled.c.s
+
+D_/Git/wasm-3d/tests/cases/test_130_call_lists_2bytes.o: D_/Git/wasm-3d/tests/cases/test_130_call_lists_2bytes.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_130_call_lists_2bytes.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_130_call_lists_2bytes.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_130_call_lists_2bytes.dir\build.make CMakeFiles/test_test_130_call_lists_2bytes.dir/D_/Git/wasm-3d/tests/cases/test_130_call_lists_2bytes.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_130_call_lists_2bytes.c.o
+
+D_/Git/wasm-3d/tests/cases/test_130_call_lists_2bytes.i: D_/Git/wasm-3d/tests/cases/test_130_call_lists_2bytes.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_130_call_lists_2bytes.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_130_call_lists_2bytes.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_130_call_lists_2bytes.dir\build.make CMakeFiles/test_test_130_call_lists_2bytes.dir/D_/Git/wasm-3d/tests/cases/test_130_call_lists_2bytes.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_130_call_lists_2bytes.c.i
+
+D_/Git/wasm-3d/tests/cases/test_130_call_lists_2bytes.s: D_/Git/wasm-3d/tests/cases/test_130_call_lists_2bytes.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_130_call_lists_2bytes.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_130_call_lists_2bytes.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_130_call_lists_2bytes.dir\build.make CMakeFiles/test_test_130_call_lists_2bytes.dir/D_/Git/wasm-3d/tests/cases/test_130_call_lists_2bytes.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_130_call_lists_2bytes.c.s
+
+D_/Git/wasm-3d/tests/cases/test_131_lines_basic.o: D_/Git/wasm-3d/tests/cases/test_131_lines_basic.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_131_lines_basic.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_131_lines_basic.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_131_lines_basic.dir\build.make CMakeFiles/test_test_131_lines_basic.dir/D_/Git/wasm-3d/tests/cases/test_131_lines_basic.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_131_lines_basic.c.o
+
+D_/Git/wasm-3d/tests/cases/test_131_lines_basic.i: D_/Git/wasm-3d/tests/cases/test_131_lines_basic.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_131_lines_basic.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_131_lines_basic.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_131_lines_basic.dir\build.make CMakeFiles/test_test_131_lines_basic.dir/D_/Git/wasm-3d/tests/cases/test_131_lines_basic.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_131_lines_basic.c.i
+
+D_/Git/wasm-3d/tests/cases/test_131_lines_basic.s: D_/Git/wasm-3d/tests/cases/test_131_lines_basic.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_131_lines_basic.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_131_lines_basic.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_131_lines_basic.dir\build.make CMakeFiles/test_test_131_lines_basic.dir/D_/Git/wasm-3d/tests/cases/test_131_lines_basic.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_131_lines_basic.c.s
+
+D_/Git/wasm-3d/tests/cases/test_132_line_strip.o: D_/Git/wasm-3d/tests/cases/test_132_line_strip.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_132_line_strip.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_132_line_strip.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_132_line_strip.dir\build.make CMakeFiles/test_test_132_line_strip.dir/D_/Git/wasm-3d/tests/cases/test_132_line_strip.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_132_line_strip.c.o
+
+D_/Git/wasm-3d/tests/cases/test_132_line_strip.i: D_/Git/wasm-3d/tests/cases/test_132_line_strip.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_132_line_strip.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_132_line_strip.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_132_line_strip.dir\build.make CMakeFiles/test_test_132_line_strip.dir/D_/Git/wasm-3d/tests/cases/test_132_line_strip.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_132_line_strip.c.i
+
+D_/Git/wasm-3d/tests/cases/test_132_line_strip.s: D_/Git/wasm-3d/tests/cases/test_132_line_strip.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_132_line_strip.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_132_line_strip.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_132_line_strip.dir\build.make CMakeFiles/test_test_132_line_strip.dir/D_/Git/wasm-3d/tests/cases/test_132_line_strip.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_132_line_strip.c.s
+
+D_/Git/wasm-3d/tests/cases/test_133_line_loop.o: D_/Git/wasm-3d/tests/cases/test_133_line_loop.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_133_line_loop.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_133_line_loop.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_133_line_loop.dir\build.make CMakeFiles/test_test_133_line_loop.dir/D_/Git/wasm-3d/tests/cases/test_133_line_loop.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_133_line_loop.c.o
+
+D_/Git/wasm-3d/tests/cases/test_133_line_loop.i: D_/Git/wasm-3d/tests/cases/test_133_line_loop.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_133_line_loop.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_133_line_loop.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_133_line_loop.dir\build.make CMakeFiles/test_test_133_line_loop.dir/D_/Git/wasm-3d/tests/cases/test_133_line_loop.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_133_line_loop.c.i
+
+D_/Git/wasm-3d/tests/cases/test_133_line_loop.s: D_/Git/wasm-3d/tests/cases/test_133_line_loop.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_133_line_loop.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_133_line_loop.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_133_line_loop.dir\build.make CMakeFiles/test_test_133_line_loop.dir/D_/Git/wasm-3d/tests/cases/test_133_line_loop.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_133_line_loop.c.s
+
+D_/Git/wasm-3d/tests/cases/test_134_line_width.o: D_/Git/wasm-3d/tests/cases/test_134_line_width.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_134_line_width.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_134_line_width.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_134_line_width.dir\build.make CMakeFiles/test_test_134_line_width.dir/D_/Git/wasm-3d/tests/cases/test_134_line_width.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_134_line_width.c.o
+
+D_/Git/wasm-3d/tests/cases/test_134_line_width.i: D_/Git/wasm-3d/tests/cases/test_134_line_width.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_134_line_width.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_134_line_width.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_134_line_width.dir\build.make CMakeFiles/test_test_134_line_width.dir/D_/Git/wasm-3d/tests/cases/test_134_line_width.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_134_line_width.c.i
+
+D_/Git/wasm-3d/tests/cases/test_134_line_width.s: D_/Git/wasm-3d/tests/cases/test_134_line_width.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_134_line_width.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_134_line_width.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_134_line_width.dir\build.make CMakeFiles/test_test_134_line_width.dir/D_/Git/wasm-3d/tests/cases/test_134_line_width.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_134_line_width.c.s
+
+D_/Git/wasm-3d/tests/cases/test_135_points_grid.o: D_/Git/wasm-3d/tests/cases/test_135_points_grid.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_135_points_grid.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_135_points_grid.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_135_points_grid.dir\build.make CMakeFiles/test_test_135_points_grid.dir/D_/Git/wasm-3d/tests/cases/test_135_points_grid.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_135_points_grid.c.o
+
+D_/Git/wasm-3d/tests/cases/test_135_points_grid.i: D_/Git/wasm-3d/tests/cases/test_135_points_grid.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_135_points_grid.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_135_points_grid.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_135_points_grid.dir\build.make CMakeFiles/test_test_135_points_grid.dir/D_/Git/wasm-3d/tests/cases/test_135_points_grid.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_135_points_grid.c.i
+
+D_/Git/wasm-3d/tests/cases/test_135_points_grid.s: D_/Git/wasm-3d/tests/cases/test_135_points_grid.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_135_points_grid.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_135_points_grid.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_135_points_grid.dir\build.make CMakeFiles/test_test_135_points_grid.dir/D_/Git/wasm-3d/tests/cases/test_135_points_grid.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_135_points_grid.c.s
+
+D_/Git/wasm-3d/tests/cases/test_136_point_size.o: D_/Git/wasm-3d/tests/cases/test_136_point_size.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_136_point_size.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_136_point_size.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_136_point_size.dir\build.make CMakeFiles/test_test_136_point_size.dir/D_/Git/wasm-3d/tests/cases/test_136_point_size.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_136_point_size.c.o
+
+D_/Git/wasm-3d/tests/cases/test_136_point_size.i: D_/Git/wasm-3d/tests/cases/test_136_point_size.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_136_point_size.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_136_point_size.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_136_point_size.dir\build.make CMakeFiles/test_test_136_point_size.dir/D_/Git/wasm-3d/tests/cases/test_136_point_size.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_136_point_size.c.i
+
+D_/Git/wasm-3d/tests/cases/test_136_point_size.s: D_/Git/wasm-3d/tests/cases/test_136_point_size.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_136_point_size.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_136_point_size.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_136_point_size.dir\build.make CMakeFiles/test_test_136_point_size.dir/D_/Git/wasm-3d/tests/cases/test_136_point_size.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_136_point_size.c.s
+
+D_/Git/wasm-3d/tests/cases/test_137_polygon_mode_line.o: D_/Git/wasm-3d/tests/cases/test_137_polygon_mode_line.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_137_polygon_mode_line.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_137_polygon_mode_line.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_137_polygon_mode_line.dir\build.make CMakeFiles/test_test_137_polygon_mode_line.dir/D_/Git/wasm-3d/tests/cases/test_137_polygon_mode_line.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_137_polygon_mode_line.c.o
+
+D_/Git/wasm-3d/tests/cases/test_137_polygon_mode_line.i: D_/Git/wasm-3d/tests/cases/test_137_polygon_mode_line.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_137_polygon_mode_line.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_137_polygon_mode_line.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_137_polygon_mode_line.dir\build.make CMakeFiles/test_test_137_polygon_mode_line.dir/D_/Git/wasm-3d/tests/cases/test_137_polygon_mode_line.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_137_polygon_mode_line.c.i
+
+D_/Git/wasm-3d/tests/cases/test_137_polygon_mode_line.s: D_/Git/wasm-3d/tests/cases/test_137_polygon_mode_line.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_137_polygon_mode_line.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_137_polygon_mode_line.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_137_polygon_mode_line.dir\build.make CMakeFiles/test_test_137_polygon_mode_line.dir/D_/Git/wasm-3d/tests/cases/test_137_polygon_mode_line.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_137_polygon_mode_line.c.s
+
+D_/Git/wasm-3d/tests/cases/test_138_polygon_mode_point.o: D_/Git/wasm-3d/tests/cases/test_138_polygon_mode_point.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_138_polygon_mode_point.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_138_polygon_mode_point.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_138_polygon_mode_point.dir\build.make CMakeFiles/test_test_138_polygon_mode_point.dir/D_/Git/wasm-3d/tests/cases/test_138_polygon_mode_point.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_138_polygon_mode_point.c.o
+
+D_/Git/wasm-3d/tests/cases/test_138_polygon_mode_point.i: D_/Git/wasm-3d/tests/cases/test_138_polygon_mode_point.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_138_polygon_mode_point.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_138_polygon_mode_point.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_138_polygon_mode_point.dir\build.make CMakeFiles/test_test_138_polygon_mode_point.dir/D_/Git/wasm-3d/tests/cases/test_138_polygon_mode_point.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_138_polygon_mode_point.c.i
+
+D_/Git/wasm-3d/tests/cases/test_138_polygon_mode_point.s: D_/Git/wasm-3d/tests/cases/test_138_polygon_mode_point.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_138_polygon_mode_point.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_138_polygon_mode_point.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_138_polygon_mode_point.dir\build.make CMakeFiles/test_test_138_polygon_mode_point.dir/D_/Git/wasm-3d/tests/cases/test_138_polygon_mode_point.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_138_polygon_mode_point.c.s
+
+D_/Git/wasm-3d/tests/cases/test_139_polygon_mode_two_faces.o: D_/Git/wasm-3d/tests/cases/test_139_polygon_mode_two_faces.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_139_polygon_mode_two_faces.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_139_polygon_mode_two_faces.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_139_polygon_mode_two_faces.dir\build.make CMakeFiles/test_test_139_polygon_mode_two_faces.dir/D_/Git/wasm-3d/tests/cases/test_139_polygon_mode_two_faces.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_139_polygon_mode_two_faces.c.o
+
+D_/Git/wasm-3d/tests/cases/test_139_polygon_mode_two_faces.i: D_/Git/wasm-3d/tests/cases/test_139_polygon_mode_two_faces.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_139_polygon_mode_two_faces.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_139_polygon_mode_two_faces.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_139_polygon_mode_two_faces.dir\build.make CMakeFiles/test_test_139_polygon_mode_two_faces.dir/D_/Git/wasm-3d/tests/cases/test_139_polygon_mode_two_faces.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_139_polygon_mode_two_faces.c.i
+
+D_/Git/wasm-3d/tests/cases/test_139_polygon_mode_two_faces.s: D_/Git/wasm-3d/tests/cases/test_139_polygon_mode_two_faces.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_139_polygon_mode_two_faces.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_139_polygon_mode_two_faces.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_139_polygon_mode_two_faces.dir\build.make CMakeFiles/test_test_139_polygon_mode_two_faces.dir/D_/Git/wasm-3d/tests/cases/test_139_polygon_mode_two_faces.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_139_polygon_mode_two_faces.c.s
 
 D_/Git/wasm-3d/tests/cases/test_13_triangle_depth.o: D_/Git/wasm-3d/tests/cases/test_13_triangle_depth.c.o
 .PHONY : D_/Git/wasm-3d/tests/cases/test_13_triangle_depth.o
@@ -2041,6 +4629,246 @@ D_/Git/wasm-3d/tests/cases/test_13_triangle_depth.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_13_triangle_depth.dir\build.make CMakeFiles/test_test_13_triangle_depth.dir/D_/Git/wasm-3d/tests/cases/test_13_triangle_depth.c.s
 .PHONY : D_/Git/wasm-3d/tests/cases/test_13_triangle_depth.c.s
 
+D_/Git/wasm-3d/tests/cases/test_140_polygon_offset.o: D_/Git/wasm-3d/tests/cases/test_140_polygon_offset.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_140_polygon_offset.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_140_polygon_offset.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_140_polygon_offset.dir\build.make CMakeFiles/test_test_140_polygon_offset.dir/D_/Git/wasm-3d/tests/cases/test_140_polygon_offset.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_140_polygon_offset.c.o
+
+D_/Git/wasm-3d/tests/cases/test_140_polygon_offset.i: D_/Git/wasm-3d/tests/cases/test_140_polygon_offset.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_140_polygon_offset.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_140_polygon_offset.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_140_polygon_offset.dir\build.make CMakeFiles/test_test_140_polygon_offset.dir/D_/Git/wasm-3d/tests/cases/test_140_polygon_offset.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_140_polygon_offset.c.i
+
+D_/Git/wasm-3d/tests/cases/test_140_polygon_offset.s: D_/Git/wasm-3d/tests/cases/test_140_polygon_offset.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_140_polygon_offset.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_140_polygon_offset.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_140_polygon_offset.dir\build.make CMakeFiles/test_test_140_polygon_offset.dir/D_/Git/wasm-3d/tests/cases/test_140_polygon_offset.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_140_polygon_offset.c.s
+
+D_/Git/wasm-3d/tests/cases/test_141_line_color_gradient.o: D_/Git/wasm-3d/tests/cases/test_141_line_color_gradient.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_141_line_color_gradient.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_141_line_color_gradient.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_141_line_color_gradient.dir\build.make CMakeFiles/test_test_141_line_color_gradient.dir/D_/Git/wasm-3d/tests/cases/test_141_line_color_gradient.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_141_line_color_gradient.c.o
+
+D_/Git/wasm-3d/tests/cases/test_141_line_color_gradient.i: D_/Git/wasm-3d/tests/cases/test_141_line_color_gradient.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_141_line_color_gradient.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_141_line_color_gradient.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_141_line_color_gradient.dir\build.make CMakeFiles/test_test_141_line_color_gradient.dir/D_/Git/wasm-3d/tests/cases/test_141_line_color_gradient.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_141_line_color_gradient.c.i
+
+D_/Git/wasm-3d/tests/cases/test_141_line_color_gradient.s: D_/Git/wasm-3d/tests/cases/test_141_line_color_gradient.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_141_line_color_gradient.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_141_line_color_gradient.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_141_line_color_gradient.dir\build.make CMakeFiles/test_test_141_line_color_gradient.dir/D_/Git/wasm-3d/tests/cases/test_141_line_color_gradient.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_141_line_color_gradient.c.s
+
+D_/Git/wasm-3d/tests/cases/test_142_line_perspective_depth.o: D_/Git/wasm-3d/tests/cases/test_142_line_perspective_depth.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_142_line_perspective_depth.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_142_line_perspective_depth.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_142_line_perspective_depth.dir\build.make CMakeFiles/test_test_142_line_perspective_depth.dir/D_/Git/wasm-3d/tests/cases/test_142_line_perspective_depth.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_142_line_perspective_depth.c.o
+
+D_/Git/wasm-3d/tests/cases/test_142_line_perspective_depth.i: D_/Git/wasm-3d/tests/cases/test_142_line_perspective_depth.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_142_line_perspective_depth.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_142_line_perspective_depth.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_142_line_perspective_depth.dir\build.make CMakeFiles/test_test_142_line_perspective_depth.dir/D_/Git/wasm-3d/tests/cases/test_142_line_perspective_depth.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_142_line_perspective_depth.c.i
+
+D_/Git/wasm-3d/tests/cases/test_142_line_perspective_depth.s: D_/Git/wasm-3d/tests/cases/test_142_line_perspective_depth.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_142_line_perspective_depth.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_142_line_perspective_depth.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_142_line_perspective_depth.dir\build.make CMakeFiles/test_test_142_line_perspective_depth.dir/D_/Git/wasm-3d/tests/cases/test_142_line_perspective_depth.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_142_line_perspective_depth.c.s
+
+D_/Git/wasm-3d/tests/cases/test_143_line_clip.o: D_/Git/wasm-3d/tests/cases/test_143_line_clip.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_143_line_clip.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_143_line_clip.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_143_line_clip.dir\build.make CMakeFiles/test_test_143_line_clip.dir/D_/Git/wasm-3d/tests/cases/test_143_line_clip.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_143_line_clip.c.o
+
+D_/Git/wasm-3d/tests/cases/test_143_line_clip.i: D_/Git/wasm-3d/tests/cases/test_143_line_clip.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_143_line_clip.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_143_line_clip.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_143_line_clip.dir\build.make CMakeFiles/test_test_143_line_clip.dir/D_/Git/wasm-3d/tests/cases/test_143_line_clip.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_143_line_clip.c.i
+
+D_/Git/wasm-3d/tests/cases/test_143_line_clip.s: D_/Git/wasm-3d/tests/cases/test_143_line_clip.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_143_line_clip.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_143_line_clip.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_143_line_clip.dir\build.make CMakeFiles/test_test_143_line_clip.dir/D_/Git/wasm-3d/tests/cases/test_143_line_clip.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_143_line_clip.c.s
+
+D_/Git/wasm-3d/tests/cases/test_144_edge_flag_polygon.o: D_/Git/wasm-3d/tests/cases/test_144_edge_flag_polygon.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_144_edge_flag_polygon.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_144_edge_flag_polygon.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_144_edge_flag_polygon.dir\build.make CMakeFiles/test_test_144_edge_flag_polygon.dir/D_/Git/wasm-3d/tests/cases/test_144_edge_flag_polygon.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_144_edge_flag_polygon.c.o
+
+D_/Git/wasm-3d/tests/cases/test_144_edge_flag_polygon.i: D_/Git/wasm-3d/tests/cases/test_144_edge_flag_polygon.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_144_edge_flag_polygon.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_144_edge_flag_polygon.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_144_edge_flag_polygon.dir\build.make CMakeFiles/test_test_144_edge_flag_polygon.dir/D_/Git/wasm-3d/tests/cases/test_144_edge_flag_polygon.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_144_edge_flag_polygon.c.i
+
+D_/Git/wasm-3d/tests/cases/test_144_edge_flag_polygon.s: D_/Git/wasm-3d/tests/cases/test_144_edge_flag_polygon.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_144_edge_flag_polygon.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_144_edge_flag_polygon.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_144_edge_flag_polygon.dir\build.make CMakeFiles/test_test_144_edge_flag_polygon.dir/D_/Git/wasm-3d/tests/cases/test_144_edge_flag_polygon.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_144_edge_flag_polygon.c.s
+
+D_/Git/wasm-3d/tests/cases/test_145_mixed_primitives.o: D_/Git/wasm-3d/tests/cases/test_145_mixed_primitives.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_145_mixed_primitives.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_145_mixed_primitives.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_145_mixed_primitives.dir\build.make CMakeFiles/test_test_145_mixed_primitives.dir/D_/Git/wasm-3d/tests/cases/test_145_mixed_primitives.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_145_mixed_primitives.c.o
+
+D_/Git/wasm-3d/tests/cases/test_145_mixed_primitives.i: D_/Git/wasm-3d/tests/cases/test_145_mixed_primitives.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_145_mixed_primitives.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_145_mixed_primitives.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_145_mixed_primitives.dir\build.make CMakeFiles/test_test_145_mixed_primitives.dir/D_/Git/wasm-3d/tests/cases/test_145_mixed_primitives.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_145_mixed_primitives.c.i
+
+D_/Git/wasm-3d/tests/cases/test_145_mixed_primitives.s: D_/Git/wasm-3d/tests/cases/test_145_mixed_primitives.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_145_mixed_primitives.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_145_mixed_primitives.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_145_mixed_primitives.dir\build.make CMakeFiles/test_test_145_mixed_primitives.dir/D_/Git/wasm-3d/tests/cases/test_145_mixed_primitives.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_145_mixed_primitives.c.s
+
+D_/Git/wasm-3d/tests/cases/test_146_stencil_clear.o: D_/Git/wasm-3d/tests/cases/test_146_stencil_clear.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_146_stencil_clear.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_146_stencil_clear.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_146_stencil_clear.dir\build.make CMakeFiles/test_test_146_stencil_clear.dir/D_/Git/wasm-3d/tests/cases/test_146_stencil_clear.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_146_stencil_clear.c.o
+
+D_/Git/wasm-3d/tests/cases/test_146_stencil_clear.i: D_/Git/wasm-3d/tests/cases/test_146_stencil_clear.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_146_stencil_clear.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_146_stencil_clear.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_146_stencil_clear.dir\build.make CMakeFiles/test_test_146_stencil_clear.dir/D_/Git/wasm-3d/tests/cases/test_146_stencil_clear.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_146_stencil_clear.c.i
+
+D_/Git/wasm-3d/tests/cases/test_146_stencil_clear.s: D_/Git/wasm-3d/tests/cases/test_146_stencil_clear.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_146_stencil_clear.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_146_stencil_clear.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_146_stencil_clear.dir\build.make CMakeFiles/test_test_146_stencil_clear.dir/D_/Git/wasm-3d/tests/cases/test_146_stencil_clear.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_146_stencil_clear.c.s
+
+D_/Git/wasm-3d/tests/cases/test_147_stencil_mask_basic.o: D_/Git/wasm-3d/tests/cases/test_147_stencil_mask_basic.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_147_stencil_mask_basic.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_147_stencil_mask_basic.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_147_stencil_mask_basic.dir\build.make CMakeFiles/test_test_147_stencil_mask_basic.dir/D_/Git/wasm-3d/tests/cases/test_147_stencil_mask_basic.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_147_stencil_mask_basic.c.o
+
+D_/Git/wasm-3d/tests/cases/test_147_stencil_mask_basic.i: D_/Git/wasm-3d/tests/cases/test_147_stencil_mask_basic.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_147_stencil_mask_basic.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_147_stencil_mask_basic.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_147_stencil_mask_basic.dir\build.make CMakeFiles/test_test_147_stencil_mask_basic.dir/D_/Git/wasm-3d/tests/cases/test_147_stencil_mask_basic.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_147_stencil_mask_basic.c.i
+
+D_/Git/wasm-3d/tests/cases/test_147_stencil_mask_basic.s: D_/Git/wasm-3d/tests/cases/test_147_stencil_mask_basic.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_147_stencil_mask_basic.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_147_stencil_mask_basic.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_147_stencil_mask_basic.dir\build.make CMakeFiles/test_test_147_stencil_mask_basic.dir/D_/Git/wasm-3d/tests/cases/test_147_stencil_mask_basic.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_147_stencil_mask_basic.c.s
+
+D_/Git/wasm-3d/tests/cases/test_148_stencil_incr_overlap.o: D_/Git/wasm-3d/tests/cases/test_148_stencil_incr_overlap.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_148_stencil_incr_overlap.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_148_stencil_incr_overlap.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_148_stencil_incr_overlap.dir\build.make CMakeFiles/test_test_148_stencil_incr_overlap.dir/D_/Git/wasm-3d/tests/cases/test_148_stencil_incr_overlap.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_148_stencil_incr_overlap.c.o
+
+D_/Git/wasm-3d/tests/cases/test_148_stencil_incr_overlap.i: D_/Git/wasm-3d/tests/cases/test_148_stencil_incr_overlap.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_148_stencil_incr_overlap.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_148_stencil_incr_overlap.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_148_stencil_incr_overlap.dir\build.make CMakeFiles/test_test_148_stencil_incr_overlap.dir/D_/Git/wasm-3d/tests/cases/test_148_stencil_incr_overlap.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_148_stencil_incr_overlap.c.i
+
+D_/Git/wasm-3d/tests/cases/test_148_stencil_incr_overlap.s: D_/Git/wasm-3d/tests/cases/test_148_stencil_incr_overlap.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_148_stencil_incr_overlap.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_148_stencil_incr_overlap.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_148_stencil_incr_overlap.dir\build.make CMakeFiles/test_test_148_stencil_incr_overlap.dir/D_/Git/wasm-3d/tests/cases/test_148_stencil_incr_overlap.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_148_stencil_incr_overlap.c.s
+
+D_/Git/wasm-3d/tests/cases/test_149_stencil_invert_xor.o: D_/Git/wasm-3d/tests/cases/test_149_stencil_invert_xor.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_149_stencil_invert_xor.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_149_stencil_invert_xor.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_149_stencil_invert_xor.dir\build.make CMakeFiles/test_test_149_stencil_invert_xor.dir/D_/Git/wasm-3d/tests/cases/test_149_stencil_invert_xor.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_149_stencil_invert_xor.c.o
+
+D_/Git/wasm-3d/tests/cases/test_149_stencil_invert_xor.i: D_/Git/wasm-3d/tests/cases/test_149_stencil_invert_xor.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_149_stencil_invert_xor.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_149_stencil_invert_xor.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_149_stencil_invert_xor.dir\build.make CMakeFiles/test_test_149_stencil_invert_xor.dir/D_/Git/wasm-3d/tests/cases/test_149_stencil_invert_xor.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_149_stencil_invert_xor.c.i
+
+D_/Git/wasm-3d/tests/cases/test_149_stencil_invert_xor.s: D_/Git/wasm-3d/tests/cases/test_149_stencil_invert_xor.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_149_stencil_invert_xor.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_149_stencil_invert_xor.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_149_stencil_invert_xor.dir\build.make CMakeFiles/test_test_149_stencil_invert_xor.dir/D_/Git/wasm-3d/tests/cases/test_149_stencil_invert_xor.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_149_stencil_invert_xor.c.s
+
 D_/Git/wasm-3d/tests/cases/test_14_triangle_frustum.o: D_/Git/wasm-3d/tests/cases/test_14_triangle_frustum.c.o
 .PHONY : D_/Git/wasm-3d/tests/cases/test_14_triangle_frustum.o
 
@@ -2064,6 +4892,246 @@ D_/Git/wasm-3d/tests/cases/test_14_triangle_frustum.s: D_/Git/wasm-3d/tests/case
 D_/Git/wasm-3d/tests/cases/test_14_triangle_frustum.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_14_triangle_frustum.dir\build.make CMakeFiles/test_test_14_triangle_frustum.dir/D_/Git/wasm-3d/tests/cases/test_14_triangle_frustum.c.s
 .PHONY : D_/Git/wasm-3d/tests/cases/test_14_triangle_frustum.c.s
+
+D_/Git/wasm-3d/tests/cases/test_150_stencil_zfail_shadow.o: D_/Git/wasm-3d/tests/cases/test_150_stencil_zfail_shadow.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_150_stencil_zfail_shadow.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_150_stencil_zfail_shadow.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_150_stencil_zfail_shadow.dir\build.make CMakeFiles/test_test_150_stencil_zfail_shadow.dir/D_/Git/wasm-3d/tests/cases/test_150_stencil_zfail_shadow.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_150_stencil_zfail_shadow.c.o
+
+D_/Git/wasm-3d/tests/cases/test_150_stencil_zfail_shadow.i: D_/Git/wasm-3d/tests/cases/test_150_stencil_zfail_shadow.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_150_stencil_zfail_shadow.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_150_stencil_zfail_shadow.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_150_stencil_zfail_shadow.dir\build.make CMakeFiles/test_test_150_stencil_zfail_shadow.dir/D_/Git/wasm-3d/tests/cases/test_150_stencil_zfail_shadow.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_150_stencil_zfail_shadow.c.i
+
+D_/Git/wasm-3d/tests/cases/test_150_stencil_zfail_shadow.s: D_/Git/wasm-3d/tests/cases/test_150_stencil_zfail_shadow.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_150_stencil_zfail_shadow.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_150_stencil_zfail_shadow.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_150_stencil_zfail_shadow.dir\build.make CMakeFiles/test_test_150_stencil_zfail_shadow.dir/D_/Git/wasm-3d/tests/cases/test_150_stencil_zfail_shadow.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_150_stencil_zfail_shadow.c.s
+
+D_/Git/wasm-3d/tests/cases/test_151_stencil_write_mask.o: D_/Git/wasm-3d/tests/cases/test_151_stencil_write_mask.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_151_stencil_write_mask.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_151_stencil_write_mask.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_151_stencil_write_mask.dir\build.make CMakeFiles/test_test_151_stencil_write_mask.dir/D_/Git/wasm-3d/tests/cases/test_151_stencil_write_mask.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_151_stencil_write_mask.c.o
+
+D_/Git/wasm-3d/tests/cases/test_151_stencil_write_mask.i: D_/Git/wasm-3d/tests/cases/test_151_stencil_write_mask.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_151_stencil_write_mask.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_151_stencil_write_mask.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_151_stencil_write_mask.dir\build.make CMakeFiles/test_test_151_stencil_write_mask.dir/D_/Git/wasm-3d/tests/cases/test_151_stencil_write_mask.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_151_stencil_write_mask.c.i
+
+D_/Git/wasm-3d/tests/cases/test_151_stencil_write_mask.s: D_/Git/wasm-3d/tests/cases/test_151_stencil_write_mask.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_151_stencil_write_mask.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_151_stencil_write_mask.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_151_stencil_write_mask.dir\build.make CMakeFiles/test_test_151_stencil_write_mask.dir/D_/Git/wasm-3d/tests/cases/test_151_stencil_write_mask.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_151_stencil_write_mask.c.s
+
+D_/Git/wasm-3d/tests/cases/test_152_stencil_value_mask.o: D_/Git/wasm-3d/tests/cases/test_152_stencil_value_mask.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_152_stencil_value_mask.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_152_stencil_value_mask.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_152_stencil_value_mask.dir\build.make CMakeFiles/test_test_152_stencil_value_mask.dir/D_/Git/wasm-3d/tests/cases/test_152_stencil_value_mask.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_152_stencil_value_mask.c.o
+
+D_/Git/wasm-3d/tests/cases/test_152_stencil_value_mask.i: D_/Git/wasm-3d/tests/cases/test_152_stencil_value_mask.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_152_stencil_value_mask.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_152_stencil_value_mask.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_152_stencil_value_mask.dir\build.make CMakeFiles/test_test_152_stencil_value_mask.dir/D_/Git/wasm-3d/tests/cases/test_152_stencil_value_mask.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_152_stencil_value_mask.c.i
+
+D_/Git/wasm-3d/tests/cases/test_152_stencil_value_mask.s: D_/Git/wasm-3d/tests/cases/test_152_stencil_value_mask.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_152_stencil_value_mask.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_152_stencil_value_mask.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_152_stencil_value_mask.dir\build.make CMakeFiles/test_test_152_stencil_value_mask.dir/D_/Git/wasm-3d/tests/cases/test_152_stencil_value_mask.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_152_stencil_value_mask.c.s
+
+D_/Git/wasm-3d/tests/cases/test_153_stencil_dpfail_incr.o: D_/Git/wasm-3d/tests/cases/test_153_stencil_dpfail_incr.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_153_stencil_dpfail_incr.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_153_stencil_dpfail_incr.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_153_stencil_dpfail_incr.dir\build.make CMakeFiles/test_test_153_stencil_dpfail_incr.dir/D_/Git/wasm-3d/tests/cases/test_153_stencil_dpfail_incr.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_153_stencil_dpfail_incr.c.o
+
+D_/Git/wasm-3d/tests/cases/test_153_stencil_dpfail_incr.i: D_/Git/wasm-3d/tests/cases/test_153_stencil_dpfail_incr.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_153_stencil_dpfail_incr.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_153_stencil_dpfail_incr.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_153_stencil_dpfail_incr.dir\build.make CMakeFiles/test_test_153_stencil_dpfail_incr.dir/D_/Git/wasm-3d/tests/cases/test_153_stencil_dpfail_incr.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_153_stencil_dpfail_incr.c.i
+
+D_/Git/wasm-3d/tests/cases/test_153_stencil_dpfail_incr.s: D_/Git/wasm-3d/tests/cases/test_153_stencil_dpfail_incr.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_153_stencil_dpfail_incr.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_153_stencil_dpfail_incr.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_153_stencil_dpfail_incr.dir\build.make CMakeFiles/test_test_153_stencil_dpfail_incr.dir/D_/Git/wasm-3d/tests/cases/test_153_stencil_dpfail_incr.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_153_stencil_dpfail_incr.c.s
+
+D_/Git/wasm-3d/tests/cases/test_154_stencil_portal.o: D_/Git/wasm-3d/tests/cases/test_154_stencil_portal.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_154_stencil_portal.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_154_stencil_portal.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_154_stencil_portal.dir\build.make CMakeFiles/test_test_154_stencil_portal.dir/D_/Git/wasm-3d/tests/cases/test_154_stencil_portal.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_154_stencil_portal.c.o
+
+D_/Git/wasm-3d/tests/cases/test_154_stencil_portal.i: D_/Git/wasm-3d/tests/cases/test_154_stencil_portal.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_154_stencil_portal.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_154_stencil_portal.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_154_stencil_portal.dir\build.make CMakeFiles/test_test_154_stencil_portal.dir/D_/Git/wasm-3d/tests/cases/test_154_stencil_portal.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_154_stencil_portal.c.i
+
+D_/Git/wasm-3d/tests/cases/test_154_stencil_portal.s: D_/Git/wasm-3d/tests/cases/test_154_stencil_portal.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_154_stencil_portal.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_154_stencil_portal.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_154_stencil_portal.dir\build.make CMakeFiles/test_test_154_stencil_portal.dir/D_/Git/wasm-3d/tests/cases/test_154_stencil_portal.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_154_stencil_portal.c.s
+
+D_/Git/wasm-3d/tests/cases/test_155_stencil_mirror.o: D_/Git/wasm-3d/tests/cases/test_155_stencil_mirror.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_155_stencil_mirror.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_155_stencil_mirror.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_155_stencil_mirror.dir\build.make CMakeFiles/test_test_155_stencil_mirror.dir/D_/Git/wasm-3d/tests/cases/test_155_stencil_mirror.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_155_stencil_mirror.c.o
+
+D_/Git/wasm-3d/tests/cases/test_155_stencil_mirror.i: D_/Git/wasm-3d/tests/cases/test_155_stencil_mirror.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_155_stencil_mirror.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_155_stencil_mirror.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_155_stencil_mirror.dir\build.make CMakeFiles/test_test_155_stencil_mirror.dir/D_/Git/wasm-3d/tests/cases/test_155_stencil_mirror.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_155_stencil_mirror.c.i
+
+D_/Git/wasm-3d/tests/cases/test_155_stencil_mirror.s: D_/Git/wasm-3d/tests/cases/test_155_stencil_mirror.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_155_stencil_mirror.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_155_stencil_mirror.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_155_stencil_mirror.dir\build.make CMakeFiles/test_test_155_stencil_mirror.dir/D_/Git/wasm-3d/tests/cases/test_155_stencil_mirror.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_155_stencil_mirror.c.s
+
+D_/Git/wasm-3d/tests/cases/test_156_tex1d_gradient.o: D_/Git/wasm-3d/tests/cases/test_156_tex1d_gradient.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_156_tex1d_gradient.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_156_tex1d_gradient.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_156_tex1d_gradient.dir\build.make CMakeFiles/test_test_156_tex1d_gradient.dir/D_/Git/wasm-3d/tests/cases/test_156_tex1d_gradient.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_156_tex1d_gradient.c.o
+
+D_/Git/wasm-3d/tests/cases/test_156_tex1d_gradient.i: D_/Git/wasm-3d/tests/cases/test_156_tex1d_gradient.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_156_tex1d_gradient.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_156_tex1d_gradient.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_156_tex1d_gradient.dir\build.make CMakeFiles/test_test_156_tex1d_gradient.dir/D_/Git/wasm-3d/tests/cases/test_156_tex1d_gradient.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_156_tex1d_gradient.c.i
+
+D_/Git/wasm-3d/tests/cases/test_156_tex1d_gradient.s: D_/Git/wasm-3d/tests/cases/test_156_tex1d_gradient.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_156_tex1d_gradient.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_156_tex1d_gradient.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_156_tex1d_gradient.dir\build.make CMakeFiles/test_test_156_tex1d_gradient.dir/D_/Git/wasm-3d/tests/cases/test_156_tex1d_gradient.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_156_tex1d_gradient.c.s
+
+D_/Git/wasm-3d/tests/cases/test_157_tex1d_lookup.o: D_/Git/wasm-3d/tests/cases/test_157_tex1d_lookup.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_157_tex1d_lookup.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_157_tex1d_lookup.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_157_tex1d_lookup.dir\build.make CMakeFiles/test_test_157_tex1d_lookup.dir/D_/Git/wasm-3d/tests/cases/test_157_tex1d_lookup.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_157_tex1d_lookup.c.o
+
+D_/Git/wasm-3d/tests/cases/test_157_tex1d_lookup.i: D_/Git/wasm-3d/tests/cases/test_157_tex1d_lookup.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_157_tex1d_lookup.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_157_tex1d_lookup.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_157_tex1d_lookup.dir\build.make CMakeFiles/test_test_157_tex1d_lookup.dir/D_/Git/wasm-3d/tests/cases/test_157_tex1d_lookup.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_157_tex1d_lookup.c.i
+
+D_/Git/wasm-3d/tests/cases/test_157_tex1d_lookup.s: D_/Git/wasm-3d/tests/cases/test_157_tex1d_lookup.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_157_tex1d_lookup.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_157_tex1d_lookup.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_157_tex1d_lookup.dir\build.make CMakeFiles/test_test_157_tex1d_lookup.dir/D_/Git/wasm-3d/tests/cases/test_157_tex1d_lookup.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_157_tex1d_lookup.c.s
+
+D_/Git/wasm-3d/tests/cases/test_158_tex3d_corners.o: D_/Git/wasm-3d/tests/cases/test_158_tex3d_corners.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_158_tex3d_corners.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_158_tex3d_corners.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_158_tex3d_corners.dir\build.make CMakeFiles/test_test_158_tex3d_corners.dir/D_/Git/wasm-3d/tests/cases/test_158_tex3d_corners.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_158_tex3d_corners.c.o
+
+D_/Git/wasm-3d/tests/cases/test_158_tex3d_corners.i: D_/Git/wasm-3d/tests/cases/test_158_tex3d_corners.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_158_tex3d_corners.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_158_tex3d_corners.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_158_tex3d_corners.dir\build.make CMakeFiles/test_test_158_tex3d_corners.dir/D_/Git/wasm-3d/tests/cases/test_158_tex3d_corners.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_158_tex3d_corners.c.i
+
+D_/Git/wasm-3d/tests/cases/test_158_tex3d_corners.s: D_/Git/wasm-3d/tests/cases/test_158_tex3d_corners.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_158_tex3d_corners.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_158_tex3d_corners.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_158_tex3d_corners.dir\build.make CMakeFiles/test_test_158_tex3d_corners.dir/D_/Git/wasm-3d/tests/cases/test_158_tex3d_corners.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_158_tex3d_corners.c.s
+
+D_/Git/wasm-3d/tests/cases/test_159_tex3d_slices.o: D_/Git/wasm-3d/tests/cases/test_159_tex3d_slices.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_159_tex3d_slices.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_159_tex3d_slices.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_159_tex3d_slices.dir\build.make CMakeFiles/test_test_159_tex3d_slices.dir/D_/Git/wasm-3d/tests/cases/test_159_tex3d_slices.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_159_tex3d_slices.c.o
+
+D_/Git/wasm-3d/tests/cases/test_159_tex3d_slices.i: D_/Git/wasm-3d/tests/cases/test_159_tex3d_slices.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_159_tex3d_slices.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_159_tex3d_slices.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_159_tex3d_slices.dir\build.make CMakeFiles/test_test_159_tex3d_slices.dir/D_/Git/wasm-3d/tests/cases/test_159_tex3d_slices.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_159_tex3d_slices.c.i
+
+D_/Git/wasm-3d/tests/cases/test_159_tex3d_slices.s: D_/Git/wasm-3d/tests/cases/test_159_tex3d_slices.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_159_tex3d_slices.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_159_tex3d_slices.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_159_tex3d_slices.dir\build.make CMakeFiles/test_test_159_tex3d_slices.dir/D_/Git/wasm-3d/tests/cases/test_159_tex3d_slices.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_159_tex3d_slices.c.s
 
 D_/Git/wasm-3d/tests/cases/test_15_two_tris_depth.o: D_/Git/wasm-3d/tests/cases/test_15_two_tris_depth.c.o
 .PHONY : D_/Git/wasm-3d/tests/cases/test_15_two_tris_depth.o
@@ -2089,6 +5157,246 @@ D_/Git/wasm-3d/tests/cases/test_15_two_tris_depth.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_15_two_tris_depth.dir\build.make CMakeFiles/test_test_15_two_tris_depth.dir/D_/Git/wasm-3d/tests/cases/test_15_two_tris_depth.c.s
 .PHONY : D_/Git/wasm-3d/tests/cases/test_15_two_tris_depth.c.s
 
+D_/Git/wasm-3d/tests/cases/test_160_cubemap_skybox.o: D_/Git/wasm-3d/tests/cases/test_160_cubemap_skybox.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_160_cubemap_skybox.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_160_cubemap_skybox.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_160_cubemap_skybox.dir\build.make CMakeFiles/test_test_160_cubemap_skybox.dir/D_/Git/wasm-3d/tests/cases/test_160_cubemap_skybox.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_160_cubemap_skybox.c.o
+
+D_/Git/wasm-3d/tests/cases/test_160_cubemap_skybox.i: D_/Git/wasm-3d/tests/cases/test_160_cubemap_skybox.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_160_cubemap_skybox.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_160_cubemap_skybox.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_160_cubemap_skybox.dir\build.make CMakeFiles/test_test_160_cubemap_skybox.dir/D_/Git/wasm-3d/tests/cases/test_160_cubemap_skybox.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_160_cubemap_skybox.c.i
+
+D_/Git/wasm-3d/tests/cases/test_160_cubemap_skybox.s: D_/Git/wasm-3d/tests/cases/test_160_cubemap_skybox.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_160_cubemap_skybox.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_160_cubemap_skybox.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_160_cubemap_skybox.dir\build.make CMakeFiles/test_test_160_cubemap_skybox.dir/D_/Git/wasm-3d/tests/cases/test_160_cubemap_skybox.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_160_cubemap_skybox.c.s
+
+D_/Git/wasm-3d/tests/cases/test_161_cubemap_reflect.o: D_/Git/wasm-3d/tests/cases/test_161_cubemap_reflect.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_161_cubemap_reflect.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_161_cubemap_reflect.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_161_cubemap_reflect.dir\build.make CMakeFiles/test_test_161_cubemap_reflect.dir/D_/Git/wasm-3d/tests/cases/test_161_cubemap_reflect.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_161_cubemap_reflect.c.o
+
+D_/Git/wasm-3d/tests/cases/test_161_cubemap_reflect.i: D_/Git/wasm-3d/tests/cases/test_161_cubemap_reflect.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_161_cubemap_reflect.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_161_cubemap_reflect.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_161_cubemap_reflect.dir\build.make CMakeFiles/test_test_161_cubemap_reflect.dir/D_/Git/wasm-3d/tests/cases/test_161_cubemap_reflect.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_161_cubemap_reflect.c.i
+
+D_/Git/wasm-3d/tests/cases/test_161_cubemap_reflect.s: D_/Git/wasm-3d/tests/cases/test_161_cubemap_reflect.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_161_cubemap_reflect.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_161_cubemap_reflect.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_161_cubemap_reflect.dir\build.make CMakeFiles/test_test_161_cubemap_reflect.dir/D_/Git/wasm-3d/tests/cases/test_161_cubemap_reflect.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_161_cubemap_reflect.c.s
+
+D_/Git/wasm-3d/tests/cases/test_162_cubemap_faces.o: D_/Git/wasm-3d/tests/cases/test_162_cubemap_faces.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_162_cubemap_faces.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_162_cubemap_faces.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_162_cubemap_faces.dir\build.make CMakeFiles/test_test_162_cubemap_faces.dir/D_/Git/wasm-3d/tests/cases/test_162_cubemap_faces.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_162_cubemap_faces.c.o
+
+D_/Git/wasm-3d/tests/cases/test_162_cubemap_faces.i: D_/Git/wasm-3d/tests/cases/test_162_cubemap_faces.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_162_cubemap_faces.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_162_cubemap_faces.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_162_cubemap_faces.dir\build.make CMakeFiles/test_test_162_cubemap_faces.dir/D_/Git/wasm-3d/tests/cases/test_162_cubemap_faces.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_162_cubemap_faces.c.i
+
+D_/Git/wasm-3d/tests/cases/test_162_cubemap_faces.s: D_/Git/wasm-3d/tests/cases/test_162_cubemap_faces.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_162_cubemap_faces.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_162_cubemap_faces.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_162_cubemap_faces.dir\build.make CMakeFiles/test_test_162_cubemap_faces.dir/D_/Git/wasm-3d/tests/cases/test_162_cubemap_faces.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_162_cubemap_faces.c.s
+
+D_/Git/wasm-3d/tests/cases/test_163_copy_tex_image_2d.o: D_/Git/wasm-3d/tests/cases/test_163_copy_tex_image_2d.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_163_copy_tex_image_2d.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_163_copy_tex_image_2d.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_163_copy_tex_image_2d.dir\build.make CMakeFiles/test_test_163_copy_tex_image_2d.dir/D_/Git/wasm-3d/tests/cases/test_163_copy_tex_image_2d.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_163_copy_tex_image_2d.c.o
+
+D_/Git/wasm-3d/tests/cases/test_163_copy_tex_image_2d.i: D_/Git/wasm-3d/tests/cases/test_163_copy_tex_image_2d.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_163_copy_tex_image_2d.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_163_copy_tex_image_2d.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_163_copy_tex_image_2d.dir\build.make CMakeFiles/test_test_163_copy_tex_image_2d.dir/D_/Git/wasm-3d/tests/cases/test_163_copy_tex_image_2d.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_163_copy_tex_image_2d.c.i
+
+D_/Git/wasm-3d/tests/cases/test_163_copy_tex_image_2d.s: D_/Git/wasm-3d/tests/cases/test_163_copy_tex_image_2d.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_163_copy_tex_image_2d.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_163_copy_tex_image_2d.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_163_copy_tex_image_2d.dir\build.make CMakeFiles/test_test_163_copy_tex_image_2d.dir/D_/Git/wasm-3d/tests/cases/test_163_copy_tex_image_2d.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_163_copy_tex_image_2d.c.s
+
+D_/Git/wasm-3d/tests/cases/test_164_copy_tex_sub_image_2d.o: D_/Git/wasm-3d/tests/cases/test_164_copy_tex_sub_image_2d.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_164_copy_tex_sub_image_2d.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_164_copy_tex_sub_image_2d.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_164_copy_tex_sub_image_2d.dir\build.make CMakeFiles/test_test_164_copy_tex_sub_image_2d.dir/D_/Git/wasm-3d/tests/cases/test_164_copy_tex_sub_image_2d.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_164_copy_tex_sub_image_2d.c.o
+
+D_/Git/wasm-3d/tests/cases/test_164_copy_tex_sub_image_2d.i: D_/Git/wasm-3d/tests/cases/test_164_copy_tex_sub_image_2d.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_164_copy_tex_sub_image_2d.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_164_copy_tex_sub_image_2d.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_164_copy_tex_sub_image_2d.dir\build.make CMakeFiles/test_test_164_copy_tex_sub_image_2d.dir/D_/Git/wasm-3d/tests/cases/test_164_copy_tex_sub_image_2d.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_164_copy_tex_sub_image_2d.c.i
+
+D_/Git/wasm-3d/tests/cases/test_164_copy_tex_sub_image_2d.s: D_/Git/wasm-3d/tests/cases/test_164_copy_tex_sub_image_2d.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_164_copy_tex_sub_image_2d.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_164_copy_tex_sub_image_2d.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_164_copy_tex_sub_image_2d.dir\build.make CMakeFiles/test_test_164_copy_tex_sub_image_2d.dir/D_/Git/wasm-3d/tests/cases/test_164_copy_tex_sub_image_2d.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_164_copy_tex_sub_image_2d.c.s
+
+D_/Git/wasm-3d/tests/cases/test_165_tex_sub_image_2d.o: D_/Git/wasm-3d/tests/cases/test_165_tex_sub_image_2d.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_165_tex_sub_image_2d.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_165_tex_sub_image_2d.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_165_tex_sub_image_2d.dir\build.make CMakeFiles/test_test_165_tex_sub_image_2d.dir/D_/Git/wasm-3d/tests/cases/test_165_tex_sub_image_2d.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_165_tex_sub_image_2d.c.o
+
+D_/Git/wasm-3d/tests/cases/test_165_tex_sub_image_2d.i: D_/Git/wasm-3d/tests/cases/test_165_tex_sub_image_2d.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_165_tex_sub_image_2d.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_165_tex_sub_image_2d.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_165_tex_sub_image_2d.dir\build.make CMakeFiles/test_test_165_tex_sub_image_2d.dir/D_/Git/wasm-3d/tests/cases/test_165_tex_sub_image_2d.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_165_tex_sub_image_2d.c.i
+
+D_/Git/wasm-3d/tests/cases/test_165_tex_sub_image_2d.s: D_/Git/wasm-3d/tests/cases/test_165_tex_sub_image_2d.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_165_tex_sub_image_2d.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_165_tex_sub_image_2d.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_165_tex_sub_image_2d.dir\build.make CMakeFiles/test_test_165_tex_sub_image_2d.dir/D_/Git/wasm-3d/tests/cases/test_165_tex_sub_image_2d.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_165_tex_sub_image_2d.c.s
+
+D_/Git/wasm-3d/tests/cases/test_166_tex_sub_image_3d.o: D_/Git/wasm-3d/tests/cases/test_166_tex_sub_image_3d.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_166_tex_sub_image_3d.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_166_tex_sub_image_3d.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_166_tex_sub_image_3d.dir\build.make CMakeFiles/test_test_166_tex_sub_image_3d.dir/D_/Git/wasm-3d/tests/cases/test_166_tex_sub_image_3d.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_166_tex_sub_image_3d.c.o
+
+D_/Git/wasm-3d/tests/cases/test_166_tex_sub_image_3d.i: D_/Git/wasm-3d/tests/cases/test_166_tex_sub_image_3d.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_166_tex_sub_image_3d.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_166_tex_sub_image_3d.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_166_tex_sub_image_3d.dir\build.make CMakeFiles/test_test_166_tex_sub_image_3d.dir/D_/Git/wasm-3d/tests/cases/test_166_tex_sub_image_3d.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_166_tex_sub_image_3d.c.i
+
+D_/Git/wasm-3d/tests/cases/test_166_tex_sub_image_3d.s: D_/Git/wasm-3d/tests/cases/test_166_tex_sub_image_3d.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_166_tex_sub_image_3d.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_166_tex_sub_image_3d.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_166_tex_sub_image_3d.dir\build.make CMakeFiles/test_test_166_tex_sub_image_3d.dir/D_/Git/wasm-3d/tests/cases/test_166_tex_sub_image_3d.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_166_tex_sub_image_3d.c.s
+
+D_/Git/wasm-3d/tests/cases/test_167_cubemap_lit.o: D_/Git/wasm-3d/tests/cases/test_167_cubemap_lit.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_167_cubemap_lit.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_167_cubemap_lit.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_167_cubemap_lit.dir\build.make CMakeFiles/test_test_167_cubemap_lit.dir/D_/Git/wasm-3d/tests/cases/test_167_cubemap_lit.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_167_cubemap_lit.c.o
+
+D_/Git/wasm-3d/tests/cases/test_167_cubemap_lit.i: D_/Git/wasm-3d/tests/cases/test_167_cubemap_lit.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_167_cubemap_lit.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_167_cubemap_lit.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_167_cubemap_lit.dir\build.make CMakeFiles/test_test_167_cubemap_lit.dir/D_/Git/wasm-3d/tests/cases/test_167_cubemap_lit.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_167_cubemap_lit.c.i
+
+D_/Git/wasm-3d/tests/cases/test_167_cubemap_lit.s: D_/Git/wasm-3d/tests/cases/test_167_cubemap_lit.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_167_cubemap_lit.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_167_cubemap_lit.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_167_cubemap_lit.dir\build.make CMakeFiles/test_test_167_cubemap_lit.dir/D_/Git/wasm-3d/tests/cases/test_167_cubemap_lit.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_167_cubemap_lit.c.s
+
+D_/Git/wasm-3d/tests/cases/test_168_tex3d_trilinear.o: D_/Git/wasm-3d/tests/cases/test_168_tex3d_trilinear.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_168_tex3d_trilinear.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_168_tex3d_trilinear.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_168_tex3d_trilinear.dir\build.make CMakeFiles/test_test_168_tex3d_trilinear.dir/D_/Git/wasm-3d/tests/cases/test_168_tex3d_trilinear.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_168_tex3d_trilinear.c.o
+
+D_/Git/wasm-3d/tests/cases/test_168_tex3d_trilinear.i: D_/Git/wasm-3d/tests/cases/test_168_tex3d_trilinear.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_168_tex3d_trilinear.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_168_tex3d_trilinear.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_168_tex3d_trilinear.dir\build.make CMakeFiles/test_test_168_tex3d_trilinear.dir/D_/Git/wasm-3d/tests/cases/test_168_tex3d_trilinear.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_168_tex3d_trilinear.c.i
+
+D_/Git/wasm-3d/tests/cases/test_168_tex3d_trilinear.s: D_/Git/wasm-3d/tests/cases/test_168_tex3d_trilinear.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_168_tex3d_trilinear.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_168_tex3d_trilinear.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_168_tex3d_trilinear.dir\build.make CMakeFiles/test_test_168_tex3d_trilinear.dir/D_/Git/wasm-3d/tests/cases/test_168_tex3d_trilinear.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_168_tex3d_trilinear.c.s
+
+D_/Git/wasm-3d/tests/cases/test_169_cube_and_2d.o: D_/Git/wasm-3d/tests/cases/test_169_cube_and_2d.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_169_cube_and_2d.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_169_cube_and_2d.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_169_cube_and_2d.dir\build.make CMakeFiles/test_test_169_cube_and_2d.dir/D_/Git/wasm-3d/tests/cases/test_169_cube_and_2d.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_169_cube_and_2d.c.o
+
+D_/Git/wasm-3d/tests/cases/test_169_cube_and_2d.i: D_/Git/wasm-3d/tests/cases/test_169_cube_and_2d.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_169_cube_and_2d.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_169_cube_and_2d.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_169_cube_and_2d.dir\build.make CMakeFiles/test_test_169_cube_and_2d.dir/D_/Git/wasm-3d/tests/cases/test_169_cube_and_2d.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_169_cube_and_2d.c.i
+
+D_/Git/wasm-3d/tests/cases/test_169_cube_and_2d.s: D_/Git/wasm-3d/tests/cases/test_169_cube_and_2d.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_169_cube_and_2d.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_169_cube_and_2d.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_169_cube_and_2d.dir\build.make CMakeFiles/test_test_169_cube_and_2d.dir/D_/Git/wasm-3d/tests/cases/test_169_cube_and_2d.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_169_cube_and_2d.c.s
+
 D_/Git/wasm-3d/tests/cases/test_16_flat_shaded.o: D_/Git/wasm-3d/tests/cases/test_16_flat_shaded.c.o
 .PHONY : D_/Git/wasm-3d/tests/cases/test_16_flat_shaded.o
 
@@ -2112,6 +5420,246 @@ D_/Git/wasm-3d/tests/cases/test_16_flat_shaded.s: D_/Git/wasm-3d/tests/cases/tes
 D_/Git/wasm-3d/tests/cases/test_16_flat_shaded.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_16_flat_shaded.dir\build.make CMakeFiles/test_test_16_flat_shaded.dir/D_/Git/wasm-3d/tests/cases/test_16_flat_shaded.c.s
 .PHONY : D_/Git/wasm-3d/tests/cases/test_16_flat_shaded.c.s
+
+D_/Git/wasm-3d/tests/cases/test_170_all_targets.o: D_/Git/wasm-3d/tests/cases/test_170_all_targets.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_170_all_targets.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_170_all_targets.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_170_all_targets.dir\build.make CMakeFiles/test_test_170_all_targets.dir/D_/Git/wasm-3d/tests/cases/test_170_all_targets.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_170_all_targets.c.o
+
+D_/Git/wasm-3d/tests/cases/test_170_all_targets.i: D_/Git/wasm-3d/tests/cases/test_170_all_targets.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_170_all_targets.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_170_all_targets.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_170_all_targets.dir\build.make CMakeFiles/test_test_170_all_targets.dir/D_/Git/wasm-3d/tests/cases/test_170_all_targets.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_170_all_targets.c.i
+
+D_/Git/wasm-3d/tests/cases/test_170_all_targets.s: D_/Git/wasm-3d/tests/cases/test_170_all_targets.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_170_all_targets.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_170_all_targets.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_170_all_targets.dir\build.make CMakeFiles/test_test_170_all_targets.dir/D_/Git/wasm-3d/tests/cases/test_170_all_targets.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_170_all_targets.c.s
+
+D_/Git/wasm-3d/tests/cases/test_171_clip_plane_y.o: D_/Git/wasm-3d/tests/cases/test_171_clip_plane_y.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_171_clip_plane_y.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_171_clip_plane_y.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_171_clip_plane_y.dir\build.make CMakeFiles/test_test_171_clip_plane_y.dir/D_/Git/wasm-3d/tests/cases/test_171_clip_plane_y.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_171_clip_plane_y.c.o
+
+D_/Git/wasm-3d/tests/cases/test_171_clip_plane_y.i: D_/Git/wasm-3d/tests/cases/test_171_clip_plane_y.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_171_clip_plane_y.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_171_clip_plane_y.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_171_clip_plane_y.dir\build.make CMakeFiles/test_test_171_clip_plane_y.dir/D_/Git/wasm-3d/tests/cases/test_171_clip_plane_y.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_171_clip_plane_y.c.i
+
+D_/Git/wasm-3d/tests/cases/test_171_clip_plane_y.s: D_/Git/wasm-3d/tests/cases/test_171_clip_plane_y.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_171_clip_plane_y.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_171_clip_plane_y.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_171_clip_plane_y.dir\build.make CMakeFiles/test_test_171_clip_plane_y.dir/D_/Git/wasm-3d/tests/cases/test_171_clip_plane_y.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_171_clip_plane_y.c.s
+
+D_/Git/wasm-3d/tests/cases/test_172_clip_plane_diagonal.o: D_/Git/wasm-3d/tests/cases/test_172_clip_plane_diagonal.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_172_clip_plane_diagonal.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_172_clip_plane_diagonal.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_172_clip_plane_diagonal.dir\build.make CMakeFiles/test_test_172_clip_plane_diagonal.dir/D_/Git/wasm-3d/tests/cases/test_172_clip_plane_diagonal.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_172_clip_plane_diagonal.c.o
+
+D_/Git/wasm-3d/tests/cases/test_172_clip_plane_diagonal.i: D_/Git/wasm-3d/tests/cases/test_172_clip_plane_diagonal.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_172_clip_plane_diagonal.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_172_clip_plane_diagonal.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_172_clip_plane_diagonal.dir\build.make CMakeFiles/test_test_172_clip_plane_diagonal.dir/D_/Git/wasm-3d/tests/cases/test_172_clip_plane_diagonal.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_172_clip_plane_diagonal.c.i
+
+D_/Git/wasm-3d/tests/cases/test_172_clip_plane_diagonal.s: D_/Git/wasm-3d/tests/cases/test_172_clip_plane_diagonal.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_172_clip_plane_diagonal.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_172_clip_plane_diagonal.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_172_clip_plane_diagonal.dir\build.make CMakeFiles/test_test_172_clip_plane_diagonal.dir/D_/Git/wasm-3d/tests/cases/test_172_clip_plane_diagonal.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_172_clip_plane_diagonal.c.s
+
+D_/Git/wasm-3d/tests/cases/test_173_clip_plane_two.o: D_/Git/wasm-3d/tests/cases/test_173_clip_plane_two.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_173_clip_plane_two.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_173_clip_plane_two.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_173_clip_plane_two.dir\build.make CMakeFiles/test_test_173_clip_plane_two.dir/D_/Git/wasm-3d/tests/cases/test_173_clip_plane_two.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_173_clip_plane_two.c.o
+
+D_/Git/wasm-3d/tests/cases/test_173_clip_plane_two.i: D_/Git/wasm-3d/tests/cases/test_173_clip_plane_two.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_173_clip_plane_two.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_173_clip_plane_two.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_173_clip_plane_two.dir\build.make CMakeFiles/test_test_173_clip_plane_two.dir/D_/Git/wasm-3d/tests/cases/test_173_clip_plane_two.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_173_clip_plane_two.c.i
+
+D_/Git/wasm-3d/tests/cases/test_173_clip_plane_two.s: D_/Git/wasm-3d/tests/cases/test_173_clip_plane_two.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_173_clip_plane_two.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_173_clip_plane_two.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_173_clip_plane_two.dir\build.make CMakeFiles/test_test_173_clip_plane_two.dir/D_/Git/wasm-3d/tests/cases/test_173_clip_plane_two.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_173_clip_plane_two.c.s
+
+D_/Git/wasm-3d/tests/cases/test_174_color_material_diffuse.o: D_/Git/wasm-3d/tests/cases/test_174_color_material_diffuse.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_174_color_material_diffuse.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_174_color_material_diffuse.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_174_color_material_diffuse.dir\build.make CMakeFiles/test_test_174_color_material_diffuse.dir/D_/Git/wasm-3d/tests/cases/test_174_color_material_diffuse.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_174_color_material_diffuse.c.o
+
+D_/Git/wasm-3d/tests/cases/test_174_color_material_diffuse.i: D_/Git/wasm-3d/tests/cases/test_174_color_material_diffuse.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_174_color_material_diffuse.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_174_color_material_diffuse.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_174_color_material_diffuse.dir\build.make CMakeFiles/test_test_174_color_material_diffuse.dir/D_/Git/wasm-3d/tests/cases/test_174_color_material_diffuse.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_174_color_material_diffuse.c.i
+
+D_/Git/wasm-3d/tests/cases/test_174_color_material_diffuse.s: D_/Git/wasm-3d/tests/cases/test_174_color_material_diffuse.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_174_color_material_diffuse.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_174_color_material_diffuse.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_174_color_material_diffuse.dir\build.make CMakeFiles/test_test_174_color_material_diffuse.dir/D_/Git/wasm-3d/tests/cases/test_174_color_material_diffuse.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_174_color_material_diffuse.c.s
+
+D_/Git/wasm-3d/tests/cases/test_175_light_model_local_viewer.o: D_/Git/wasm-3d/tests/cases/test_175_light_model_local_viewer.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_175_light_model_local_viewer.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_175_light_model_local_viewer.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_175_light_model_local_viewer.dir\build.make CMakeFiles/test_test_175_light_model_local_viewer.dir/D_/Git/wasm-3d/tests/cases/test_175_light_model_local_viewer.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_175_light_model_local_viewer.c.o
+
+D_/Git/wasm-3d/tests/cases/test_175_light_model_local_viewer.i: D_/Git/wasm-3d/tests/cases/test_175_light_model_local_viewer.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_175_light_model_local_viewer.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_175_light_model_local_viewer.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_175_light_model_local_viewer.dir\build.make CMakeFiles/test_test_175_light_model_local_viewer.dir/D_/Git/wasm-3d/tests/cases/test_175_light_model_local_viewer.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_175_light_model_local_viewer.c.i
+
+D_/Git/wasm-3d/tests/cases/test_175_light_model_local_viewer.s: D_/Git/wasm-3d/tests/cases/test_175_light_model_local_viewer.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_175_light_model_local_viewer.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_175_light_model_local_viewer.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_175_light_model_local_viewer.dir\build.make CMakeFiles/test_test_175_light_model_local_viewer.dir/D_/Git/wasm-3d/tests/cases/test_175_light_model_local_viewer.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_175_light_model_local_viewer.c.s
+
+D_/Git/wasm-3d/tests/cases/test_176_light_model_two_side.o: D_/Git/wasm-3d/tests/cases/test_176_light_model_two_side.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_176_light_model_two_side.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_176_light_model_two_side.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_176_light_model_two_side.dir\build.make CMakeFiles/test_test_176_light_model_two_side.dir/D_/Git/wasm-3d/tests/cases/test_176_light_model_two_side.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_176_light_model_two_side.c.o
+
+D_/Git/wasm-3d/tests/cases/test_176_light_model_two_side.i: D_/Git/wasm-3d/tests/cases/test_176_light_model_two_side.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_176_light_model_two_side.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_176_light_model_two_side.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_176_light_model_two_side.dir\build.make CMakeFiles/test_test_176_light_model_two_side.dir/D_/Git/wasm-3d/tests/cases/test_176_light_model_two_side.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_176_light_model_two_side.c.i
+
+D_/Git/wasm-3d/tests/cases/test_176_light_model_two_side.s: D_/Git/wasm-3d/tests/cases/test_176_light_model_two_side.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_176_light_model_two_side.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_176_light_model_two_side.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_176_light_model_two_side.dir\build.make CMakeFiles/test_test_176_light_model_two_side.dir/D_/Git/wasm-3d/tests/cases/test_176_light_model_two_side.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_176_light_model_two_side.c.s
+
+D_/Git/wasm-3d/tests/cases/test_177_color_mask.o: D_/Git/wasm-3d/tests/cases/test_177_color_mask.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_177_color_mask.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_177_color_mask.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_177_color_mask.dir\build.make CMakeFiles/test_test_177_color_mask.dir/D_/Git/wasm-3d/tests/cases/test_177_color_mask.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_177_color_mask.c.o
+
+D_/Git/wasm-3d/tests/cases/test_177_color_mask.i: D_/Git/wasm-3d/tests/cases/test_177_color_mask.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_177_color_mask.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_177_color_mask.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_177_color_mask.dir\build.make CMakeFiles/test_test_177_color_mask.dir/D_/Git/wasm-3d/tests/cases/test_177_color_mask.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_177_color_mask.c.i
+
+D_/Git/wasm-3d/tests/cases/test_177_color_mask.s: D_/Git/wasm-3d/tests/cases/test_177_color_mask.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_177_color_mask.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_177_color_mask.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_177_color_mask.dir\build.make CMakeFiles/test_test_177_color_mask.dir/D_/Git/wasm-3d/tests/cases/test_177_color_mask.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_177_color_mask.c.s
+
+D_/Git/wasm-3d/tests/cases/test_178_logic_op_xor.o: D_/Git/wasm-3d/tests/cases/test_178_logic_op_xor.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_178_logic_op_xor.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_178_logic_op_xor.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_178_logic_op_xor.dir\build.make CMakeFiles/test_test_178_logic_op_xor.dir/D_/Git/wasm-3d/tests/cases/test_178_logic_op_xor.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_178_logic_op_xor.c.o
+
+D_/Git/wasm-3d/tests/cases/test_178_logic_op_xor.i: D_/Git/wasm-3d/tests/cases/test_178_logic_op_xor.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_178_logic_op_xor.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_178_logic_op_xor.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_178_logic_op_xor.dir\build.make CMakeFiles/test_test_178_logic_op_xor.dir/D_/Git/wasm-3d/tests/cases/test_178_logic_op_xor.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_178_logic_op_xor.c.i
+
+D_/Git/wasm-3d/tests/cases/test_178_logic_op_xor.s: D_/Git/wasm-3d/tests/cases/test_178_logic_op_xor.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_178_logic_op_xor.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_178_logic_op_xor.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_178_logic_op_xor.dir\build.make CMakeFiles/test_test_178_logic_op_xor.dir/D_/Git/wasm-3d/tests/cases/test_178_logic_op_xor.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_178_logic_op_xor.c.s
+
+D_/Git/wasm-3d/tests/cases/test_179_logic_op_invert.o: D_/Git/wasm-3d/tests/cases/test_179_logic_op_invert.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_179_logic_op_invert.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_179_logic_op_invert.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_179_logic_op_invert.dir\build.make CMakeFiles/test_test_179_logic_op_invert.dir/D_/Git/wasm-3d/tests/cases/test_179_logic_op_invert.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_179_logic_op_invert.c.o
+
+D_/Git/wasm-3d/tests/cases/test_179_logic_op_invert.i: D_/Git/wasm-3d/tests/cases/test_179_logic_op_invert.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_179_logic_op_invert.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_179_logic_op_invert.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_179_logic_op_invert.dir\build.make CMakeFiles/test_test_179_logic_op_invert.dir/D_/Git/wasm-3d/tests/cases/test_179_logic_op_invert.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_179_logic_op_invert.c.i
+
+D_/Git/wasm-3d/tests/cases/test_179_logic_op_invert.s: D_/Git/wasm-3d/tests/cases/test_179_logic_op_invert.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_179_logic_op_invert.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_179_logic_op_invert.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_179_logic_op_invert.dir\build.make CMakeFiles/test_test_179_logic_op_invert.dir/D_/Git/wasm-3d/tests/cases/test_179_logic_op_invert.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_179_logic_op_invert.c.s
 
 D_/Git/wasm-3d/tests/cases/test_17_gouraud_rgb.o: D_/Git/wasm-3d/tests/cases/test_17_gouraud_rgb.c.o
 .PHONY : D_/Git/wasm-3d/tests/cases/test_17_gouraud_rgb.o
@@ -2137,6 +5685,246 @@ D_/Git/wasm-3d/tests/cases/test_17_gouraud_rgb.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_17_gouraud_rgb.dir\build.make CMakeFiles/test_test_17_gouraud_rgb.dir/D_/Git/wasm-3d/tests/cases/test_17_gouraud_rgb.c.s
 .PHONY : D_/Git/wasm-3d/tests/cases/test_17_gouraud_rgb.c.s
 
+D_/Git/wasm-3d/tests/cases/test_180_hint_and_index_mask.o: D_/Git/wasm-3d/tests/cases/test_180_hint_and_index_mask.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_180_hint_and_index_mask.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_180_hint_and_index_mask.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_180_hint_and_index_mask.dir\build.make CMakeFiles/test_test_180_hint_and_index_mask.dir/D_/Git/wasm-3d/tests/cases/test_180_hint_and_index_mask.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_180_hint_and_index_mask.c.o
+
+D_/Git/wasm-3d/tests/cases/test_180_hint_and_index_mask.i: D_/Git/wasm-3d/tests/cases/test_180_hint_and_index_mask.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_180_hint_and_index_mask.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_180_hint_and_index_mask.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_180_hint_and_index_mask.dir\build.make CMakeFiles/test_test_180_hint_and_index_mask.dir/D_/Git/wasm-3d/tests/cases/test_180_hint_and_index_mask.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_180_hint_and_index_mask.c.i
+
+D_/Git/wasm-3d/tests/cases/test_180_hint_and_index_mask.s: D_/Git/wasm-3d/tests/cases/test_180_hint_and_index_mask.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_180_hint_and_index_mask.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_180_hint_and_index_mask.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_180_hint_and_index_mask.dir\build.make CMakeFiles/test_test_180_hint_and_index_mask.dir/D_/Git/wasm-3d/tests/cases/test_180_hint_and_index_mask.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_180_hint_and_index_mask.c.s
+
+D_/Git/wasm-3d/tests/cases/test_181_drawpixels_rgba.o: D_/Git/wasm-3d/tests/cases/test_181_drawpixels_rgba.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_181_drawpixels_rgba.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_181_drawpixels_rgba.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_181_drawpixels_rgba.dir\build.make CMakeFiles/test_test_181_drawpixels_rgba.dir/D_/Git/wasm-3d/tests/cases/test_181_drawpixels_rgba.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_181_drawpixels_rgba.c.o
+
+D_/Git/wasm-3d/tests/cases/test_181_drawpixels_rgba.i: D_/Git/wasm-3d/tests/cases/test_181_drawpixels_rgba.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_181_drawpixels_rgba.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_181_drawpixels_rgba.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_181_drawpixels_rgba.dir\build.make CMakeFiles/test_test_181_drawpixels_rgba.dir/D_/Git/wasm-3d/tests/cases/test_181_drawpixels_rgba.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_181_drawpixels_rgba.c.i
+
+D_/Git/wasm-3d/tests/cases/test_181_drawpixels_rgba.s: D_/Git/wasm-3d/tests/cases/test_181_drawpixels_rgba.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_181_drawpixels_rgba.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_181_drawpixels_rgba.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_181_drawpixels_rgba.dir\build.make CMakeFiles/test_test_181_drawpixels_rgba.dir/D_/Git/wasm-3d/tests/cases/test_181_drawpixels_rgba.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_181_drawpixels_rgba.c.s
+
+D_/Git/wasm-3d/tests/cases/test_182_drawpixels_luminance.o: D_/Git/wasm-3d/tests/cases/test_182_drawpixels_luminance.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_182_drawpixels_luminance.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_182_drawpixels_luminance.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_182_drawpixels_luminance.dir\build.make CMakeFiles/test_test_182_drawpixels_luminance.dir/D_/Git/wasm-3d/tests/cases/test_182_drawpixels_luminance.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_182_drawpixels_luminance.c.o
+
+D_/Git/wasm-3d/tests/cases/test_182_drawpixels_luminance.i: D_/Git/wasm-3d/tests/cases/test_182_drawpixels_luminance.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_182_drawpixels_luminance.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_182_drawpixels_luminance.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_182_drawpixels_luminance.dir\build.make CMakeFiles/test_test_182_drawpixels_luminance.dir/D_/Git/wasm-3d/tests/cases/test_182_drawpixels_luminance.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_182_drawpixels_luminance.c.i
+
+D_/Git/wasm-3d/tests/cases/test_182_drawpixels_luminance.s: D_/Git/wasm-3d/tests/cases/test_182_drawpixels_luminance.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_182_drawpixels_luminance.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_182_drawpixels_luminance.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_182_drawpixels_luminance.dir\build.make CMakeFiles/test_test_182_drawpixels_luminance.dir/D_/Git/wasm-3d/tests/cases/test_182_drawpixels_luminance.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_182_drawpixels_luminance.c.s
+
+D_/Git/wasm-3d/tests/cases/test_183_drawpixels_rgb_float.o: D_/Git/wasm-3d/tests/cases/test_183_drawpixels_rgb_float.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_183_drawpixels_rgb_float.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_183_drawpixels_rgb_float.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_183_drawpixels_rgb_float.dir\build.make CMakeFiles/test_test_183_drawpixels_rgb_float.dir/D_/Git/wasm-3d/tests/cases/test_183_drawpixels_rgb_float.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_183_drawpixels_rgb_float.c.o
+
+D_/Git/wasm-3d/tests/cases/test_183_drawpixels_rgb_float.i: D_/Git/wasm-3d/tests/cases/test_183_drawpixels_rgb_float.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_183_drawpixels_rgb_float.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_183_drawpixels_rgb_float.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_183_drawpixels_rgb_float.dir\build.make CMakeFiles/test_test_183_drawpixels_rgb_float.dir/D_/Git/wasm-3d/tests/cases/test_183_drawpixels_rgb_float.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_183_drawpixels_rgb_float.c.i
+
+D_/Git/wasm-3d/tests/cases/test_183_drawpixels_rgb_float.s: D_/Git/wasm-3d/tests/cases/test_183_drawpixels_rgb_float.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_183_drawpixels_rgb_float.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_183_drawpixels_rgb_float.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_183_drawpixels_rgb_float.dir\build.make CMakeFiles/test_test_183_drawpixels_rgb_float.dir/D_/Git/wasm-3d/tests/cases/test_183_drawpixels_rgb_float.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_183_drawpixels_rgb_float.c.s
+
+D_/Git/wasm-3d/tests/cases/test_184_readpixels_echo.o: D_/Git/wasm-3d/tests/cases/test_184_readpixels_echo.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_184_readpixels_echo.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_184_readpixels_echo.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_184_readpixels_echo.dir\build.make CMakeFiles/test_test_184_readpixels_echo.dir/D_/Git/wasm-3d/tests/cases/test_184_readpixels_echo.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_184_readpixels_echo.c.o
+
+D_/Git/wasm-3d/tests/cases/test_184_readpixels_echo.i: D_/Git/wasm-3d/tests/cases/test_184_readpixels_echo.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_184_readpixels_echo.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_184_readpixels_echo.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_184_readpixels_echo.dir\build.make CMakeFiles/test_test_184_readpixels_echo.dir/D_/Git/wasm-3d/tests/cases/test_184_readpixels_echo.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_184_readpixels_echo.c.i
+
+D_/Git/wasm-3d/tests/cases/test_184_readpixels_echo.s: D_/Git/wasm-3d/tests/cases/test_184_readpixels_echo.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_184_readpixels_echo.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_184_readpixels_echo.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_184_readpixels_echo.dir\build.make CMakeFiles/test_test_184_readpixels_echo.dir/D_/Git/wasm-3d/tests/cases/test_184_readpixels_echo.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_184_readpixels_echo.c.s
+
+D_/Git/wasm-3d/tests/cases/test_185_copypixels.o: D_/Git/wasm-3d/tests/cases/test_185_copypixels.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_185_copypixels.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_185_copypixels.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_185_copypixels.dir\build.make CMakeFiles/test_test_185_copypixels.dir/D_/Git/wasm-3d/tests/cases/test_185_copypixels.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_185_copypixels.c.o
+
+D_/Git/wasm-3d/tests/cases/test_185_copypixels.i: D_/Git/wasm-3d/tests/cases/test_185_copypixels.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_185_copypixels.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_185_copypixels.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_185_copypixels.dir\build.make CMakeFiles/test_test_185_copypixels.dir/D_/Git/wasm-3d/tests/cases/test_185_copypixels.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_185_copypixels.c.i
+
+D_/Git/wasm-3d/tests/cases/test_185_copypixels.s: D_/Git/wasm-3d/tests/cases/test_185_copypixels.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_185_copypixels.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_185_copypixels.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_185_copypixels.dir\build.make CMakeFiles/test_test_185_copypixels.dir/D_/Git/wasm-3d/tests/cases/test_185_copypixels.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_185_copypixels.c.s
+
+D_/Git/wasm-3d/tests/cases/test_186_pixelzoom_2x.o: D_/Git/wasm-3d/tests/cases/test_186_pixelzoom_2x.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_186_pixelzoom_2x.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_186_pixelzoom_2x.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_186_pixelzoom_2x.dir\build.make CMakeFiles/test_test_186_pixelzoom_2x.dir/D_/Git/wasm-3d/tests/cases/test_186_pixelzoom_2x.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_186_pixelzoom_2x.c.o
+
+D_/Git/wasm-3d/tests/cases/test_186_pixelzoom_2x.i: D_/Git/wasm-3d/tests/cases/test_186_pixelzoom_2x.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_186_pixelzoom_2x.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_186_pixelzoom_2x.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_186_pixelzoom_2x.dir\build.make CMakeFiles/test_test_186_pixelzoom_2x.dir/D_/Git/wasm-3d/tests/cases/test_186_pixelzoom_2x.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_186_pixelzoom_2x.c.i
+
+D_/Git/wasm-3d/tests/cases/test_186_pixelzoom_2x.s: D_/Git/wasm-3d/tests/cases/test_186_pixelzoom_2x.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_186_pixelzoom_2x.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_186_pixelzoom_2x.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_186_pixelzoom_2x.dir\build.make CMakeFiles/test_test_186_pixelzoom_2x.dir/D_/Git/wasm-3d/tests/cases/test_186_pixelzoom_2x.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_186_pixelzoom_2x.c.s
+
+D_/Git/wasm-3d/tests/cases/test_187_pixelzoom_flip.o: D_/Git/wasm-3d/tests/cases/test_187_pixelzoom_flip.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_187_pixelzoom_flip.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_187_pixelzoom_flip.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_187_pixelzoom_flip.dir\build.make CMakeFiles/test_test_187_pixelzoom_flip.dir/D_/Git/wasm-3d/tests/cases/test_187_pixelzoom_flip.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_187_pixelzoom_flip.c.o
+
+D_/Git/wasm-3d/tests/cases/test_187_pixelzoom_flip.i: D_/Git/wasm-3d/tests/cases/test_187_pixelzoom_flip.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_187_pixelzoom_flip.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_187_pixelzoom_flip.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_187_pixelzoom_flip.dir\build.make CMakeFiles/test_test_187_pixelzoom_flip.dir/D_/Git/wasm-3d/tests/cases/test_187_pixelzoom_flip.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_187_pixelzoom_flip.c.i
+
+D_/Git/wasm-3d/tests/cases/test_187_pixelzoom_flip.s: D_/Git/wasm-3d/tests/cases/test_187_pixelzoom_flip.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_187_pixelzoom_flip.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_187_pixelzoom_flip.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_187_pixelzoom_flip.dir\build.make CMakeFiles/test_test_187_pixelzoom_flip.dir/D_/Git/wasm-3d/tests/cases/test_187_pixelzoom_flip.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_187_pixelzoom_flip.c.s
+
+D_/Git/wasm-3d/tests/cases/test_188_unpack_alignment.o: D_/Git/wasm-3d/tests/cases/test_188_unpack_alignment.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_188_unpack_alignment.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_188_unpack_alignment.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_188_unpack_alignment.dir\build.make CMakeFiles/test_test_188_unpack_alignment.dir/D_/Git/wasm-3d/tests/cases/test_188_unpack_alignment.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_188_unpack_alignment.c.o
+
+D_/Git/wasm-3d/tests/cases/test_188_unpack_alignment.i: D_/Git/wasm-3d/tests/cases/test_188_unpack_alignment.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_188_unpack_alignment.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_188_unpack_alignment.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_188_unpack_alignment.dir\build.make CMakeFiles/test_test_188_unpack_alignment.dir/D_/Git/wasm-3d/tests/cases/test_188_unpack_alignment.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_188_unpack_alignment.c.i
+
+D_/Git/wasm-3d/tests/cases/test_188_unpack_alignment.s: D_/Git/wasm-3d/tests/cases/test_188_unpack_alignment.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_188_unpack_alignment.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_188_unpack_alignment.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_188_unpack_alignment.dir\build.make CMakeFiles/test_test_188_unpack_alignment.dir/D_/Git/wasm-3d/tests/cases/test_188_unpack_alignment.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_188_unpack_alignment.c.s
+
+D_/Git/wasm-3d/tests/cases/test_189_unpack_rowlength_skip.o: D_/Git/wasm-3d/tests/cases/test_189_unpack_rowlength_skip.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_189_unpack_rowlength_skip.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_189_unpack_rowlength_skip.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_189_unpack_rowlength_skip.dir\build.make CMakeFiles/test_test_189_unpack_rowlength_skip.dir/D_/Git/wasm-3d/tests/cases/test_189_unpack_rowlength_skip.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_189_unpack_rowlength_skip.c.o
+
+D_/Git/wasm-3d/tests/cases/test_189_unpack_rowlength_skip.i: D_/Git/wasm-3d/tests/cases/test_189_unpack_rowlength_skip.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_189_unpack_rowlength_skip.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_189_unpack_rowlength_skip.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_189_unpack_rowlength_skip.dir\build.make CMakeFiles/test_test_189_unpack_rowlength_skip.dir/D_/Git/wasm-3d/tests/cases/test_189_unpack_rowlength_skip.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_189_unpack_rowlength_skip.c.i
+
+D_/Git/wasm-3d/tests/cases/test_189_unpack_rowlength_skip.s: D_/Git/wasm-3d/tests/cases/test_189_unpack_rowlength_skip.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_189_unpack_rowlength_skip.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_189_unpack_rowlength_skip.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_189_unpack_rowlength_skip.dir\build.make CMakeFiles/test_test_189_unpack_rowlength_skip.dir/D_/Git/wasm-3d/tests/cases/test_189_unpack_rowlength_skip.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_189_unpack_rowlength_skip.c.s
+
 D_/Git/wasm-3d/tests/cases/test_18_fullscreen_quad.o: D_/Git/wasm-3d/tests/cases/test_18_fullscreen_quad.c.o
 .PHONY : D_/Git/wasm-3d/tests/cases/test_18_fullscreen_quad.o
 
@@ -2160,6 +5948,246 @@ D_/Git/wasm-3d/tests/cases/test_18_fullscreen_quad.s: D_/Git/wasm-3d/tests/cases
 D_/Git/wasm-3d/tests/cases/test_18_fullscreen_quad.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_18_fullscreen_quad.dir\build.make CMakeFiles/test_test_18_fullscreen_quad.dir/D_/Git/wasm-3d/tests/cases/test_18_fullscreen_quad.c.s
 .PHONY : D_/Git/wasm-3d/tests/cases/test_18_fullscreen_quad.c.s
+
+D_/Git/wasm-3d/tests/cases/test_190_rasterpos_clipped.o: D_/Git/wasm-3d/tests/cases/test_190_rasterpos_clipped.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_190_rasterpos_clipped.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_190_rasterpos_clipped.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_190_rasterpos_clipped.dir\build.make CMakeFiles/test_test_190_rasterpos_clipped.dir/D_/Git/wasm-3d/tests/cases/test_190_rasterpos_clipped.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_190_rasterpos_clipped.c.o
+
+D_/Git/wasm-3d/tests/cases/test_190_rasterpos_clipped.i: D_/Git/wasm-3d/tests/cases/test_190_rasterpos_clipped.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_190_rasterpos_clipped.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_190_rasterpos_clipped.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_190_rasterpos_clipped.dir\build.make CMakeFiles/test_test_190_rasterpos_clipped.dir/D_/Git/wasm-3d/tests/cases/test_190_rasterpos_clipped.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_190_rasterpos_clipped.c.i
+
+D_/Git/wasm-3d/tests/cases/test_190_rasterpos_clipped.s: D_/Git/wasm-3d/tests/cases/test_190_rasterpos_clipped.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_190_rasterpos_clipped.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_190_rasterpos_clipped.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_190_rasterpos_clipped.dir\build.make CMakeFiles/test_test_190_rasterpos_clipped.dir/D_/Git/wasm-3d/tests/cases/test_190_rasterpos_clipped.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_190_rasterpos_clipped.c.s
+
+D_/Git/wasm-3d/tests/cases/test_191_combine_interpolate.o: D_/Git/wasm-3d/tests/cases/test_191_combine_interpolate.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_191_combine_interpolate.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_191_combine_interpolate.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_191_combine_interpolate.dir\build.make CMakeFiles/test_test_191_combine_interpolate.dir/D_/Git/wasm-3d/tests/cases/test_191_combine_interpolate.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_191_combine_interpolate.c.o
+
+D_/Git/wasm-3d/tests/cases/test_191_combine_interpolate.i: D_/Git/wasm-3d/tests/cases/test_191_combine_interpolate.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_191_combine_interpolate.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_191_combine_interpolate.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_191_combine_interpolate.dir\build.make CMakeFiles/test_test_191_combine_interpolate.dir/D_/Git/wasm-3d/tests/cases/test_191_combine_interpolate.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_191_combine_interpolate.c.i
+
+D_/Git/wasm-3d/tests/cases/test_191_combine_interpolate.s: D_/Git/wasm-3d/tests/cases/test_191_combine_interpolate.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_191_combine_interpolate.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_191_combine_interpolate.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_191_combine_interpolate.dir\build.make CMakeFiles/test_test_191_combine_interpolate.dir/D_/Git/wasm-3d/tests/cases/test_191_combine_interpolate.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_191_combine_interpolate.c.s
+
+D_/Git/wasm-3d/tests/cases/test_192_combine_subtract.o: D_/Git/wasm-3d/tests/cases/test_192_combine_subtract.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_192_combine_subtract.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_192_combine_subtract.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_192_combine_subtract.dir\build.make CMakeFiles/test_test_192_combine_subtract.dir/D_/Git/wasm-3d/tests/cases/test_192_combine_subtract.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_192_combine_subtract.c.o
+
+D_/Git/wasm-3d/tests/cases/test_192_combine_subtract.i: D_/Git/wasm-3d/tests/cases/test_192_combine_subtract.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_192_combine_subtract.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_192_combine_subtract.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_192_combine_subtract.dir\build.make CMakeFiles/test_test_192_combine_subtract.dir/D_/Git/wasm-3d/tests/cases/test_192_combine_subtract.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_192_combine_subtract.c.i
+
+D_/Git/wasm-3d/tests/cases/test_192_combine_subtract.s: D_/Git/wasm-3d/tests/cases/test_192_combine_subtract.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_192_combine_subtract.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_192_combine_subtract.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_192_combine_subtract.dir\build.make CMakeFiles/test_test_192_combine_subtract.dir/D_/Git/wasm-3d/tests/cases/test_192_combine_subtract.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_192_combine_subtract.c.s
+
+D_/Git/wasm-3d/tests/cases/test_193_combine_add_signed_scale.o: D_/Git/wasm-3d/tests/cases/test_193_combine_add_signed_scale.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_193_combine_add_signed_scale.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_193_combine_add_signed_scale.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_193_combine_add_signed_scale.dir\build.make CMakeFiles/test_test_193_combine_add_signed_scale.dir/D_/Git/wasm-3d/tests/cases/test_193_combine_add_signed_scale.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_193_combine_add_signed_scale.c.o
+
+D_/Git/wasm-3d/tests/cases/test_193_combine_add_signed_scale.i: D_/Git/wasm-3d/tests/cases/test_193_combine_add_signed_scale.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_193_combine_add_signed_scale.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_193_combine_add_signed_scale.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_193_combine_add_signed_scale.dir\build.make CMakeFiles/test_test_193_combine_add_signed_scale.dir/D_/Git/wasm-3d/tests/cases/test_193_combine_add_signed_scale.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_193_combine_add_signed_scale.c.i
+
+D_/Git/wasm-3d/tests/cases/test_193_combine_add_signed_scale.s: D_/Git/wasm-3d/tests/cases/test_193_combine_add_signed_scale.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_193_combine_add_signed_scale.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_193_combine_add_signed_scale.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_193_combine_add_signed_scale.dir\build.make CMakeFiles/test_test_193_combine_add_signed_scale.dir/D_/Git/wasm-3d/tests/cases/test_193_combine_add_signed_scale.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_193_combine_add_signed_scale.c.s
+
+D_/Git/wasm-3d/tests/cases/test_194_combine_split_alpha.o: D_/Git/wasm-3d/tests/cases/test_194_combine_split_alpha.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_194_combine_split_alpha.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_194_combine_split_alpha.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_194_combine_split_alpha.dir\build.make CMakeFiles/test_test_194_combine_split_alpha.dir/D_/Git/wasm-3d/tests/cases/test_194_combine_split_alpha.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_194_combine_split_alpha.c.o
+
+D_/Git/wasm-3d/tests/cases/test_194_combine_split_alpha.i: D_/Git/wasm-3d/tests/cases/test_194_combine_split_alpha.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_194_combine_split_alpha.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_194_combine_split_alpha.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_194_combine_split_alpha.dir\build.make CMakeFiles/test_test_194_combine_split_alpha.dir/D_/Git/wasm-3d/tests/cases/test_194_combine_split_alpha.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_194_combine_split_alpha.c.i
+
+D_/Git/wasm-3d/tests/cases/test_194_combine_split_alpha.s: D_/Git/wasm-3d/tests/cases/test_194_combine_split_alpha.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_194_combine_split_alpha.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_194_combine_split_alpha.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_194_combine_split_alpha.dir\build.make CMakeFiles/test_test_194_combine_split_alpha.dir/D_/Git/wasm-3d/tests/cases/test_194_combine_split_alpha.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_194_combine_split_alpha.c.s
+
+D_/Git/wasm-3d/tests/cases/test_195_combine_dot3_rgba.o: D_/Git/wasm-3d/tests/cases/test_195_combine_dot3_rgba.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_195_combine_dot3_rgba.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_195_combine_dot3_rgba.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_195_combine_dot3_rgba.dir\build.make CMakeFiles/test_test_195_combine_dot3_rgba.dir/D_/Git/wasm-3d/tests/cases/test_195_combine_dot3_rgba.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_195_combine_dot3_rgba.c.o
+
+D_/Git/wasm-3d/tests/cases/test_195_combine_dot3_rgba.i: D_/Git/wasm-3d/tests/cases/test_195_combine_dot3_rgba.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_195_combine_dot3_rgba.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_195_combine_dot3_rgba.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_195_combine_dot3_rgba.dir\build.make CMakeFiles/test_test_195_combine_dot3_rgba.dir/D_/Git/wasm-3d/tests/cases/test_195_combine_dot3_rgba.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_195_combine_dot3_rgba.c.i
+
+D_/Git/wasm-3d/tests/cases/test_195_combine_dot3_rgba.s: D_/Git/wasm-3d/tests/cases/test_195_combine_dot3_rgba.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_195_combine_dot3_rgba.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_195_combine_dot3_rgba.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_195_combine_dot3_rgba.dir\build.make CMakeFiles/test_test_195_combine_dot3_rgba.dir/D_/Git/wasm-3d/tests/cases/test_195_combine_dot3_rgba.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_195_combine_dot3_rgba.c.s
+
+D_/Git/wasm-3d/tests/cases/test_196_occlusion_samples.o: D_/Git/wasm-3d/tests/cases/test_196_occlusion_samples.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_196_occlusion_samples.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_196_occlusion_samples.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_196_occlusion_samples.dir\build.make CMakeFiles/test_test_196_occlusion_samples.dir/D_/Git/wasm-3d/tests/cases/test_196_occlusion_samples.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_196_occlusion_samples.c.o
+
+D_/Git/wasm-3d/tests/cases/test_196_occlusion_samples.i: D_/Git/wasm-3d/tests/cases/test_196_occlusion_samples.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_196_occlusion_samples.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_196_occlusion_samples.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_196_occlusion_samples.dir\build.make CMakeFiles/test_test_196_occlusion_samples.dir/D_/Git/wasm-3d/tests/cases/test_196_occlusion_samples.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_196_occlusion_samples.c.i
+
+D_/Git/wasm-3d/tests/cases/test_196_occlusion_samples.s: D_/Git/wasm-3d/tests/cases/test_196_occlusion_samples.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_196_occlusion_samples.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_196_occlusion_samples.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_196_occlusion_samples.dir\build.make CMakeFiles/test_test_196_occlusion_samples.dir/D_/Git/wasm-3d/tests/cases/test_196_occlusion_samples.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_196_occlusion_samples.c.s
+
+D_/Git/wasm-3d/tests/cases/test_197_occlusion_any.o: D_/Git/wasm-3d/tests/cases/test_197_occlusion_any.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_197_occlusion_any.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_197_occlusion_any.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_197_occlusion_any.dir\build.make CMakeFiles/test_test_197_occlusion_any.dir/D_/Git/wasm-3d/tests/cases/test_197_occlusion_any.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_197_occlusion_any.c.o
+
+D_/Git/wasm-3d/tests/cases/test_197_occlusion_any.i: D_/Git/wasm-3d/tests/cases/test_197_occlusion_any.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_197_occlusion_any.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_197_occlusion_any.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_197_occlusion_any.dir\build.make CMakeFiles/test_test_197_occlusion_any.dir/D_/Git/wasm-3d/tests/cases/test_197_occlusion_any.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_197_occlusion_any.c.i
+
+D_/Git/wasm-3d/tests/cases/test_197_occlusion_any.s: D_/Git/wasm-3d/tests/cases/test_197_occlusion_any.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_197_occlusion_any.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_197_occlusion_any.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_197_occlusion_any.dir\build.make CMakeFiles/test_test_197_occlusion_any.dir/D_/Git/wasm-3d/tests/cases/test_197_occlusion_any.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_197_occlusion_any.c.s
+
+D_/Git/wasm-3d/tests/cases/test_198_map_buffer.o: D_/Git/wasm-3d/tests/cases/test_198_map_buffer.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_198_map_buffer.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_198_map_buffer.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_198_map_buffer.dir\build.make CMakeFiles/test_test_198_map_buffer.dir/D_/Git/wasm-3d/tests/cases/test_198_map_buffer.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_198_map_buffer.c.o
+
+D_/Git/wasm-3d/tests/cases/test_198_map_buffer.i: D_/Git/wasm-3d/tests/cases/test_198_map_buffer.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_198_map_buffer.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_198_map_buffer.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_198_map_buffer.dir\build.make CMakeFiles/test_test_198_map_buffer.dir/D_/Git/wasm-3d/tests/cases/test_198_map_buffer.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_198_map_buffer.c.i
+
+D_/Git/wasm-3d/tests/cases/test_198_map_buffer.s: D_/Git/wasm-3d/tests/cases/test_198_map_buffer.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_198_map_buffer.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_198_map_buffer.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_198_map_buffer.dir\build.make CMakeFiles/test_test_198_map_buffer.dir/D_/Git/wasm-3d/tests/cases/test_198_map_buffer.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_198_map_buffer.c.s
+
+D_/Git/wasm-3d/tests/cases/test_199_evaluators_patch.o: D_/Git/wasm-3d/tests/cases/test_199_evaluators_patch.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_199_evaluators_patch.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_199_evaluators_patch.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_199_evaluators_patch.dir\build.make CMakeFiles/test_test_199_evaluators_patch.dir/D_/Git/wasm-3d/tests/cases/test_199_evaluators_patch.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_199_evaluators_patch.c.o
+
+D_/Git/wasm-3d/tests/cases/test_199_evaluators_patch.i: D_/Git/wasm-3d/tests/cases/test_199_evaluators_patch.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_199_evaluators_patch.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_199_evaluators_patch.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_199_evaluators_patch.dir\build.make CMakeFiles/test_test_199_evaluators_patch.dir/D_/Git/wasm-3d/tests/cases/test_199_evaluators_patch.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_199_evaluators_patch.c.i
+
+D_/Git/wasm-3d/tests/cases/test_199_evaluators_patch.s: D_/Git/wasm-3d/tests/cases/test_199_evaluators_patch.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_199_evaluators_patch.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_199_evaluators_patch.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_199_evaluators_patch.dir\build.make CMakeFiles/test_test_199_evaluators_patch.dir/D_/Git/wasm-3d/tests/cases/test_199_evaluators_patch.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_199_evaluators_patch.c.s
 
 D_/Git/wasm-3d/tests/cases/test_19_degenerate_triangle.o: D_/Git/wasm-3d/tests/cases/test_19_degenerate_triangle.c.o
 .PHONY : D_/Git/wasm-3d/tests/cases/test_19_degenerate_triangle.o
@@ -2185,6 +6213,246 @@ D_/Git/wasm-3d/tests/cases/test_19_degenerate_triangle.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_19_degenerate_triangle.dir\build.make CMakeFiles/test_test_19_degenerate_triangle.dir/D_/Git/wasm-3d/tests/cases/test_19_degenerate_triangle.c.s
 .PHONY : D_/Git/wasm-3d/tests/cases/test_19_degenerate_triangle.c.s
 
+D_/Git/wasm-3d/tests/cases/test_200_accum_jitter.o: D_/Git/wasm-3d/tests/cases/test_200_accum_jitter.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_200_accum_jitter.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_200_accum_jitter.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_200_accum_jitter.dir\build.make CMakeFiles/test_test_200_accum_jitter.dir/D_/Git/wasm-3d/tests/cases/test_200_accum_jitter.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_200_accum_jitter.c.o
+
+D_/Git/wasm-3d/tests/cases/test_200_accum_jitter.i: D_/Git/wasm-3d/tests/cases/test_200_accum_jitter.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_200_accum_jitter.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_200_accum_jitter.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_200_accum_jitter.dir\build.make CMakeFiles/test_test_200_accum_jitter.dir/D_/Git/wasm-3d/tests/cases/test_200_accum_jitter.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_200_accum_jitter.c.i
+
+D_/Git/wasm-3d/tests/cases/test_200_accum_jitter.s: D_/Git/wasm-3d/tests/cases/test_200_accum_jitter.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_200_accum_jitter.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_200_accum_jitter.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_200_accum_jitter.dir\build.make CMakeFiles/test_test_200_accum_jitter.dir/D_/Git/wasm-3d/tests/cases/test_200_accum_jitter.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_200_accum_jitter.c.s
+
+D_/Git/wasm-3d/tests/cases/test_201_stipple.o: D_/Git/wasm-3d/tests/cases/test_201_stipple.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_201_stipple.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_201_stipple.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_201_stipple.dir\build.make CMakeFiles/test_test_201_stipple.dir/D_/Git/wasm-3d/tests/cases/test_201_stipple.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_201_stipple.c.o
+
+D_/Git/wasm-3d/tests/cases/test_201_stipple.i: D_/Git/wasm-3d/tests/cases/test_201_stipple.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_201_stipple.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_201_stipple.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_201_stipple.dir\build.make CMakeFiles/test_test_201_stipple.dir/D_/Git/wasm-3d/tests/cases/test_201_stipple.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_201_stipple.c.i
+
+D_/Git/wasm-3d/tests/cases/test_201_stipple.s: D_/Git/wasm-3d/tests/cases/test_201_stipple.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_201_stipple.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_201_stipple.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_201_stipple.dir\build.make CMakeFiles/test_test_201_stipple.dir/D_/Git/wasm-3d/tests/cases/test_201_stipple.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_201_stipple.c.s
+
+D_/Git/wasm-3d/tests/cases/test_202_shadow_volume.o: D_/Git/wasm-3d/tests/cases/test_202_shadow_volume.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_202_shadow_volume.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_202_shadow_volume.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_202_shadow_volume.dir\build.make CMakeFiles/test_test_202_shadow_volume.dir/D_/Git/wasm-3d/tests/cases/test_202_shadow_volume.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_202_shadow_volume.c.o
+
+D_/Git/wasm-3d/tests/cases/test_202_shadow_volume.i: D_/Git/wasm-3d/tests/cases/test_202_shadow_volume.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_202_shadow_volume.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_202_shadow_volume.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_202_shadow_volume.dir\build.make CMakeFiles/test_test_202_shadow_volume.dir/D_/Git/wasm-3d/tests/cases/test_202_shadow_volume.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_202_shadow_volume.c.i
+
+D_/Git/wasm-3d/tests/cases/test_202_shadow_volume.s: D_/Git/wasm-3d/tests/cases/test_202_shadow_volume.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_202_shadow_volume.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_202_shadow_volume.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_202_shadow_volume.dir\build.make CMakeFiles/test_test_202_shadow_volume.dir/D_/Git/wasm-3d/tests/cases/test_202_shadow_volume.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_202_shadow_volume.c.s
+
+D_/Git/wasm-3d/tests/cases/test_203_bump_brick.o: D_/Git/wasm-3d/tests/cases/test_203_bump_brick.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_203_bump_brick.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_203_bump_brick.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_203_bump_brick.dir\build.make CMakeFiles/test_test_203_bump_brick.dir/D_/Git/wasm-3d/tests/cases/test_203_bump_brick.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_203_bump_brick.c.o
+
+D_/Git/wasm-3d/tests/cases/test_203_bump_brick.i: D_/Git/wasm-3d/tests/cases/test_203_bump_brick.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_203_bump_brick.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_203_bump_brick.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_203_bump_brick.dir\build.make CMakeFiles/test_test_203_bump_brick.dir/D_/Git/wasm-3d/tests/cases/test_203_bump_brick.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_203_bump_brick.c.i
+
+D_/Git/wasm-3d/tests/cases/test_203_bump_brick.s: D_/Git/wasm-3d/tests/cases/test_203_bump_brick.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_203_bump_brick.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_203_bump_brick.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_203_bump_brick.dir\build.make CMakeFiles/test_test_203_bump_brick.dir/D_/Git/wasm-3d/tests/cases/test_203_bump_brick.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_203_bump_brick.c.s
+
+D_/Git/wasm-3d/tests/cases/test_204_lightmap_corridor.o: D_/Git/wasm-3d/tests/cases/test_204_lightmap_corridor.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_204_lightmap_corridor.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_204_lightmap_corridor.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_204_lightmap_corridor.dir\build.make CMakeFiles/test_test_204_lightmap_corridor.dir/D_/Git/wasm-3d/tests/cases/test_204_lightmap_corridor.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_204_lightmap_corridor.c.o
+
+D_/Git/wasm-3d/tests/cases/test_204_lightmap_corridor.i: D_/Git/wasm-3d/tests/cases/test_204_lightmap_corridor.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_204_lightmap_corridor.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_204_lightmap_corridor.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_204_lightmap_corridor.dir\build.make CMakeFiles/test_test_204_lightmap_corridor.dir/D_/Git/wasm-3d/tests/cases/test_204_lightmap_corridor.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_204_lightmap_corridor.c.i
+
+D_/Git/wasm-3d/tests/cases/test_204_lightmap_corridor.s: D_/Git/wasm-3d/tests/cases/test_204_lightmap_corridor.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_204_lightmap_corridor.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_204_lightmap_corridor.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_204_lightmap_corridor.dir\build.make CMakeFiles/test_test_204_lightmap_corridor.dir/D_/Git/wasm-3d/tests/cases/test_204_lightmap_corridor.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_204_lightmap_corridor.c.s
+
+D_/Git/wasm-3d/tests/cases/test_205_chrome_sphere.o: D_/Git/wasm-3d/tests/cases/test_205_chrome_sphere.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_205_chrome_sphere.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_205_chrome_sphere.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_205_chrome_sphere.dir\build.make CMakeFiles/test_test_205_chrome_sphere.dir/D_/Git/wasm-3d/tests/cases/test_205_chrome_sphere.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_205_chrome_sphere.c.o
+
+D_/Git/wasm-3d/tests/cases/test_205_chrome_sphere.i: D_/Git/wasm-3d/tests/cases/test_205_chrome_sphere.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_205_chrome_sphere.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_205_chrome_sphere.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_205_chrome_sphere.dir\build.make CMakeFiles/test_test_205_chrome_sphere.dir/D_/Git/wasm-3d/tests/cases/test_205_chrome_sphere.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_205_chrome_sphere.c.i
+
+D_/Git/wasm-3d/tests/cases/test_205_chrome_sphere.s: D_/Git/wasm-3d/tests/cases/test_205_chrome_sphere.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_205_chrome_sphere.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_205_chrome_sphere.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_205_chrome_sphere.dir\build.make CMakeFiles/test_test_205_chrome_sphere.dir/D_/Git/wasm-3d/tests/cases/test_205_chrome_sphere.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_205_chrome_sphere.c.s
+
+D_/Git/wasm-3d/tests/cases/test_206_spot_projector.o: D_/Git/wasm-3d/tests/cases/test_206_spot_projector.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_206_spot_projector.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_206_spot_projector.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_206_spot_projector.dir\build.make CMakeFiles/test_test_206_spot_projector.dir/D_/Git/wasm-3d/tests/cases/test_206_spot_projector.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_206_spot_projector.c.o
+
+D_/Git/wasm-3d/tests/cases/test_206_spot_projector.i: D_/Git/wasm-3d/tests/cases/test_206_spot_projector.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_206_spot_projector.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_206_spot_projector.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_206_spot_projector.dir\build.make CMakeFiles/test_test_206_spot_projector.dir/D_/Git/wasm-3d/tests/cases/test_206_spot_projector.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_206_spot_projector.c.i
+
+D_/Git/wasm-3d/tests/cases/test_206_spot_projector.s: D_/Git/wasm-3d/tests/cases/test_206_spot_projector.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_206_spot_projector.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_206_spot_projector.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_206_spot_projector.dir\build.make CMakeFiles/test_test_206_spot_projector.dir/D_/Git/wasm-3d/tests/cases/test_206_spot_projector.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_206_spot_projector.c.s
+
+D_/Git/wasm-3d/tests/cases/test_207_glass_window.o: D_/Git/wasm-3d/tests/cases/test_207_glass_window.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_207_glass_window.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_207_glass_window.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_207_glass_window.dir\build.make CMakeFiles/test_test_207_glass_window.dir/D_/Git/wasm-3d/tests/cases/test_207_glass_window.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_207_glass_window.c.o
+
+D_/Git/wasm-3d/tests/cases/test_207_glass_window.i: D_/Git/wasm-3d/tests/cases/test_207_glass_window.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_207_glass_window.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_207_glass_window.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_207_glass_window.dir\build.make CMakeFiles/test_test_207_glass_window.dir/D_/Git/wasm-3d/tests/cases/test_207_glass_window.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_207_glass_window.c.i
+
+D_/Git/wasm-3d/tests/cases/test_207_glass_window.s: D_/Git/wasm-3d/tests/cases/test_207_glass_window.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_207_glass_window.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_207_glass_window.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_207_glass_window.dir\build.make CMakeFiles/test_test_207_glass_window.dir/D_/Git/wasm-3d/tests/cases/test_207_glass_window.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_207_glass_window.c.s
+
+D_/Git/wasm-3d/tests/cases/test_208_terrain_blend.o: D_/Git/wasm-3d/tests/cases/test_208_terrain_blend.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_208_terrain_blend.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_208_terrain_blend.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_208_terrain_blend.dir\build.make CMakeFiles/test_test_208_terrain_blend.dir/D_/Git/wasm-3d/tests/cases/test_208_terrain_blend.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_208_terrain_blend.c.o
+
+D_/Git/wasm-3d/tests/cases/test_208_terrain_blend.i: D_/Git/wasm-3d/tests/cases/test_208_terrain_blend.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_208_terrain_blend.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_208_terrain_blend.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_208_terrain_blend.dir\build.make CMakeFiles/test_test_208_terrain_blend.dir/D_/Git/wasm-3d/tests/cases/test_208_terrain_blend.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_208_terrain_blend.c.i
+
+D_/Git/wasm-3d/tests/cases/test_208_terrain_blend.s: D_/Git/wasm-3d/tests/cases/test_208_terrain_blend.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_208_terrain_blend.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_208_terrain_blend.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_208_terrain_blend.dir\build.make CMakeFiles/test_test_208_terrain_blend.dir/D_/Git/wasm-3d/tests/cases/test_208_terrain_blend.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_208_terrain_blend.c.s
+
+D_/Git/wasm-3d/tests/cases/test_209_particles_additive.o: D_/Git/wasm-3d/tests/cases/test_209_particles_additive.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_209_particles_additive.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_209_particles_additive.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_209_particles_additive.dir\build.make CMakeFiles/test_test_209_particles_additive.dir/D_/Git/wasm-3d/tests/cases/test_209_particles_additive.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_209_particles_additive.c.o
+
+D_/Git/wasm-3d/tests/cases/test_209_particles_additive.i: D_/Git/wasm-3d/tests/cases/test_209_particles_additive.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_209_particles_additive.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_209_particles_additive.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_209_particles_additive.dir\build.make CMakeFiles/test_test_209_particles_additive.dir/D_/Git/wasm-3d/tests/cases/test_209_particles_additive.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_209_particles_additive.c.i
+
+D_/Git/wasm-3d/tests/cases/test_209_particles_additive.s: D_/Git/wasm-3d/tests/cases/test_209_particles_additive.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_209_particles_additive.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_209_particles_additive.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_209_particles_additive.dir\build.make CMakeFiles/test_test_209_particles_additive.dir/D_/Git/wasm-3d/tests/cases/test_209_particles_additive.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_209_particles_additive.c.s
+
 D_/Git/wasm-3d/tests/cases/test_20_triangle_at_edges.o: D_/Git/wasm-3d/tests/cases/test_20_triangle_at_edges.c.o
 .PHONY : D_/Git/wasm-3d/tests/cases/test_20_triangle_at_edges.o
 
@@ -2208,6 +6476,174 @@ D_/Git/wasm-3d/tests/cases/test_20_triangle_at_edges.s: D_/Git/wasm-3d/tests/cas
 D_/Git/wasm-3d/tests/cases/test_20_triangle_at_edges.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_20_triangle_at_edges.dir\build.make CMakeFiles/test_test_20_triangle_at_edges.dir/D_/Git/wasm-3d/tests/cases/test_20_triangle_at_edges.c.s
 .PHONY : D_/Git/wasm-3d/tests/cases/test_20_triangle_at_edges.c.s
+
+D_/Git/wasm-3d/tests/cases/test_210_portal_rooms.o: D_/Git/wasm-3d/tests/cases/test_210_portal_rooms.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_210_portal_rooms.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_210_portal_rooms.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_210_portal_rooms.dir\build.make CMakeFiles/test_test_210_portal_rooms.dir/D_/Git/wasm-3d/tests/cases/test_210_portal_rooms.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_210_portal_rooms.c.o
+
+D_/Git/wasm-3d/tests/cases/test_210_portal_rooms.i: D_/Git/wasm-3d/tests/cases/test_210_portal_rooms.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_210_portal_rooms.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_210_portal_rooms.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_210_portal_rooms.dir\build.make CMakeFiles/test_test_210_portal_rooms.dir/D_/Git/wasm-3d/tests/cases/test_210_portal_rooms.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_210_portal_rooms.c.i
+
+D_/Git/wasm-3d/tests/cases/test_210_portal_rooms.s: D_/Git/wasm-3d/tests/cases/test_210_portal_rooms.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_210_portal_rooms.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_210_portal_rooms.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_210_portal_rooms.dir\build.make CMakeFiles/test_test_210_portal_rooms.dir/D_/Git/wasm-3d/tests/cases/test_210_portal_rooms.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_210_portal_rooms.c.s
+
+D_/Git/wasm-3d/tests/cases/test_211_billboard_trees.o: D_/Git/wasm-3d/tests/cases/test_211_billboard_trees.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_211_billboard_trees.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_211_billboard_trees.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_211_billboard_trees.dir\build.make CMakeFiles/test_test_211_billboard_trees.dir/D_/Git/wasm-3d/tests/cases/test_211_billboard_trees.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_211_billboard_trees.c.o
+
+D_/Git/wasm-3d/tests/cases/test_211_billboard_trees.i: D_/Git/wasm-3d/tests/cases/test_211_billboard_trees.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_211_billboard_trees.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_211_billboard_trees.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_211_billboard_trees.dir\build.make CMakeFiles/test_test_211_billboard_trees.dir/D_/Git/wasm-3d/tests/cases/test_211_billboard_trees.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_211_billboard_trees.c.i
+
+D_/Git/wasm-3d/tests/cases/test_211_billboard_trees.s: D_/Git/wasm-3d/tests/cases/test_211_billboard_trees.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_211_billboard_trees.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_211_billboard_trees.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_211_billboard_trees.dir\build.make CMakeFiles/test_test_211_billboard_trees.dir/D_/Git/wasm-3d/tests/cases/test_211_billboard_trees.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_211_billboard_trees.c.s
+
+D_/Git/wasm-3d/tests/cases/test_212_skybox_sun.o: D_/Git/wasm-3d/tests/cases/test_212_skybox_sun.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_212_skybox_sun.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_212_skybox_sun.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_212_skybox_sun.dir\build.make CMakeFiles/test_test_212_skybox_sun.dir/D_/Git/wasm-3d/tests/cases/test_212_skybox_sun.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_212_skybox_sun.c.o
+
+D_/Git/wasm-3d/tests/cases/test_212_skybox_sun.i: D_/Git/wasm-3d/tests/cases/test_212_skybox_sun.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_212_skybox_sun.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_212_skybox_sun.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_212_skybox_sun.dir\build.make CMakeFiles/test_test_212_skybox_sun.dir/D_/Git/wasm-3d/tests/cases/test_212_skybox_sun.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_212_skybox_sun.c.i
+
+D_/Git/wasm-3d/tests/cases/test_212_skybox_sun.s: D_/Git/wasm-3d/tests/cases/test_212_skybox_sun.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_212_skybox_sun.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_212_skybox_sun.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_212_skybox_sun.dir\build.make CMakeFiles/test_test_212_skybox_sun.dir/D_/Git/wasm-3d/tests/cases/test_212_skybox_sun.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_212_skybox_sun.c.s
+
+D_/Git/wasm-3d/tests/cases/test_213_lens_flare.o: D_/Git/wasm-3d/tests/cases/test_213_lens_flare.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_213_lens_flare.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_213_lens_flare.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_213_lens_flare.dir\build.make CMakeFiles/test_test_213_lens_flare.dir/D_/Git/wasm-3d/tests/cases/test_213_lens_flare.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_213_lens_flare.c.o
+
+D_/Git/wasm-3d/tests/cases/test_213_lens_flare.i: D_/Git/wasm-3d/tests/cases/test_213_lens_flare.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_213_lens_flare.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_213_lens_flare.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_213_lens_flare.dir\build.make CMakeFiles/test_test_213_lens_flare.dir/D_/Git/wasm-3d/tests/cases/test_213_lens_flare.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_213_lens_flare.c.i
+
+D_/Git/wasm-3d/tests/cases/test_213_lens_flare.s: D_/Git/wasm-3d/tests/cases/test_213_lens_flare.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_213_lens_flare.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_213_lens_flare.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_213_lens_flare.dir\build.make CMakeFiles/test_test_213_lens_flare.dir/D_/Git/wasm-3d/tests/cases/test_213_lens_flare.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_213_lens_flare.c.s
+
+D_/Git/wasm-3d/tests/cases/test_214_decal_stencil.o: D_/Git/wasm-3d/tests/cases/test_214_decal_stencil.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_214_decal_stencil.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_214_decal_stencil.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_214_decal_stencil.dir\build.make CMakeFiles/test_test_214_decal_stencil.dir/D_/Git/wasm-3d/tests/cases/test_214_decal_stencil.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_214_decal_stencil.c.o
+
+D_/Git/wasm-3d/tests/cases/test_214_decal_stencil.i: D_/Git/wasm-3d/tests/cases/test_214_decal_stencil.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_214_decal_stencil.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_214_decal_stencil.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_214_decal_stencil.dir\build.make CMakeFiles/test_test_214_decal_stencil.dir/D_/Git/wasm-3d/tests/cases/test_214_decal_stencil.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_214_decal_stencil.c.i
+
+D_/Git/wasm-3d/tests/cases/test_214_decal_stencil.s: D_/Git/wasm-3d/tests/cases/test_214_decal_stencil.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_214_decal_stencil.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_214_decal_stencil.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_214_decal_stencil.dir\build.make CMakeFiles/test_test_214_decal_stencil.dir/D_/Git/wasm-3d/tests/cases/test_214_decal_stencil.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_214_decal_stencil.c.s
+
+D_/Git/wasm-3d/tests/cases/test_215_crt_emissive.o: D_/Git/wasm-3d/tests/cases/test_215_crt_emissive.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_215_crt_emissive.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_215_crt_emissive.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_215_crt_emissive.dir\build.make CMakeFiles/test_test_215_crt_emissive.dir/D_/Git/wasm-3d/tests/cases/test_215_crt_emissive.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_215_crt_emissive.c.o
+
+D_/Git/wasm-3d/tests/cases/test_215_crt_emissive.i: D_/Git/wasm-3d/tests/cases/test_215_crt_emissive.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_215_crt_emissive.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_215_crt_emissive.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_215_crt_emissive.dir\build.make CMakeFiles/test_test_215_crt_emissive.dir/D_/Git/wasm-3d/tests/cases/test_215_crt_emissive.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_215_crt_emissive.c.i
+
+D_/Git/wasm-3d/tests/cases/test_215_crt_emissive.s: D_/Git/wasm-3d/tests/cases/test_215_crt_emissive.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_215_crt_emissive.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_215_crt_emissive.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_215_crt_emissive.dir\build.make CMakeFiles/test_test_215_crt_emissive.dir/D_/Git/wasm-3d/tests/cases/test_215_crt_emissive.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_215_crt_emissive.c.s
+
+D_/Git/wasm-3d/tests/cases/test_216_water_surface.o: D_/Git/wasm-3d/tests/cases/test_216_water_surface.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_216_water_surface.o
+
+# target to build an object file
+D_/Git/wasm-3d/tests/cases/test_216_water_surface.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_216_water_surface.dir\build.make CMakeFiles/test_test_216_water_surface.dir/D_/Git/wasm-3d/tests/cases/test_216_water_surface.c.o
+.PHONY : D_/Git/wasm-3d/tests/cases/test_216_water_surface.c.o
+
+D_/Git/wasm-3d/tests/cases/test_216_water_surface.i: D_/Git/wasm-3d/tests/cases/test_216_water_surface.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_216_water_surface.i
+
+# target to preprocess a source file
+D_/Git/wasm-3d/tests/cases/test_216_water_surface.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_216_water_surface.dir\build.make CMakeFiles/test_test_216_water_surface.dir/D_/Git/wasm-3d/tests/cases/test_216_water_surface.c.i
+.PHONY : D_/Git/wasm-3d/tests/cases/test_216_water_surface.c.i
+
+D_/Git/wasm-3d/tests/cases/test_216_water_surface.s: D_/Git/wasm-3d/tests/cases/test_216_water_surface.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_216_water_surface.s
+
+# target to generate assembly for a file
+D_/Git/wasm-3d/tests/cases/test_216_water_surface.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_216_water_surface.dir\build.make CMakeFiles/test_test_216_water_surface.dir/D_/Git/wasm-3d/tests/cases/test_216_water_surface.c.s
+.PHONY : D_/Git/wasm-3d/tests/cases/test_216_water_surface.c.s
 
 D_/Git/wasm-3d/tests/cases/test_21_clip_left.o: D_/Git/wasm-3d/tests/cases/test_21_clip_left.c.o
 .PHONY : D_/Git/wasm-3d/tests/cases/test_21_clip_left.o
@@ -4105,6 +8541,30 @@ D_/Git/wasm-3d/tests/cases/test_99_moving_camera.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\test_test_99_moving_camera.dir\build.make CMakeFiles/test_test_99_moving_camera.dir/D_/Git/wasm-3d/tests/cases/test_99_moving_camera.c.s
 .PHONY : D_/Git/wasm-3d/tests/cases/test_99_moving_camera.c.s
 
+bench_wrap.o: bench_wrap.c.o
+.PHONY : bench_wrap.o
+
+# target to build an object file
+bench_wrap.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl.dir\build.make CMakeFiles/softgl.dir/bench_wrap.c.o
+.PHONY : bench_wrap.c.o
+
+bench_wrap.i: bench_wrap.c.i
+.PHONY : bench_wrap.i
+
+# target to preprocess a source file
+bench_wrap.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl.dir\build.make CMakeFiles/softgl.dir/bench_wrap.c.i
+.PHONY : bench_wrap.c.i
+
+bench_wrap.s: bench_wrap.c.s
+.PHONY : bench_wrap.s
+
+# target to generate assembly for a file
+bench_wrap.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl.dir\build.make CMakeFiles/softgl.dir/bench_wrap.c.s
+.PHONY : bench_wrap.c.s
+
 dispatch.o: dispatch.c.o
 .PHONY : dispatch.o
 
@@ -4149,17 +8609,133 @@ help:
 	@echo ... test_test_08_matrix_translate
 	@echo ... test_test_09_matrix_stack
 	@echo ... test_test_100_showcase
+	@echo ... test_test_101_begin_triangles
+	@echo ... test_test_102_vertex_variants
+	@echo ... test_test_103_triangle_strip
+	@echo ... test_test_104_triangle_fan
+	@echo ... test_test_105_quads_one
+	@echo ... test_test_106_quads_two
+	@echo ... test_test_107_quad_strip
+	@echo ... test_test_108_polygon_hexagon
+	@echo ... test_test_109_lit_triangle
 	@echo ... test_test_10_ortho_projection
+	@echo ... test_test_110_textured_quad
+	@echo ... test_test_111_multitexture_imm
+	@echo ... test_test_112_rectf
+	@echo ... test_test_113_type_conversion
+	@echo ... test_test_114_array_element
+	@echo ... test_test_115_lit_polygon
+	@echo ... test_test_116_dlist_empty
+	@echo ... test_test_117_dlist_triangle
+	@echo ... test_test_118_dlist_transform
+	@echo ... test_test_119_dlist_compile_and_execute
 	@echo ... test_test_11_triangle_ccw
+	@echo ... test_test_120_call_lists_byte
+	@echo ... test_test_121_nested_lists
+	@echo ... test_test_122_dlist_lit
+	@echo ... test_test_123_dlist_texture
+	@echo ... test_test_124_dlist_vbo_draw
+	@echo ... test_test_125_dlist_vbo_alloc
+	@echo ... test_test_126_dlist_color_order
+	@echo ... test_test_127_dlist_matrix_stack
+	@echo ... test_test_128_dlist_repeat_outer_mv
+	@echo ... test_test_129_dlist_id_recycle
 	@echo ... test_test_12_triangle_cw_culled
+	@echo ... test_test_130_call_lists_2bytes
+	@echo ... test_test_131_lines_basic
+	@echo ... test_test_132_line_strip
+	@echo ... test_test_133_line_loop
+	@echo ... test_test_134_line_width
+	@echo ... test_test_135_points_grid
+	@echo ... test_test_136_point_size
+	@echo ... test_test_137_polygon_mode_line
+	@echo ... test_test_138_polygon_mode_point
+	@echo ... test_test_139_polygon_mode_two_faces
 	@echo ... test_test_13_triangle_depth
+	@echo ... test_test_140_polygon_offset
+	@echo ... test_test_141_line_color_gradient
+	@echo ... test_test_142_line_perspective_depth
+	@echo ... test_test_143_line_clip
+	@echo ... test_test_144_edge_flag_polygon
+	@echo ... test_test_145_mixed_primitives
+	@echo ... test_test_146_stencil_clear
+	@echo ... test_test_147_stencil_mask_basic
+	@echo ... test_test_148_stencil_incr_overlap
+	@echo ... test_test_149_stencil_invert_xor
 	@echo ... test_test_14_triangle_frustum
+	@echo ... test_test_150_stencil_zfail_shadow
+	@echo ... test_test_151_stencil_write_mask
+	@echo ... test_test_152_stencil_value_mask
+	@echo ... test_test_153_stencil_dpfail_incr
+	@echo ... test_test_154_stencil_portal
+	@echo ... test_test_155_stencil_mirror
+	@echo ... test_test_156_tex1d_gradient
+	@echo ... test_test_157_tex1d_lookup
+	@echo ... test_test_158_tex3d_corners
+	@echo ... test_test_159_tex3d_slices
 	@echo ... test_test_15_two_tris_depth
+	@echo ... test_test_160_cubemap_skybox
+	@echo ... test_test_161_cubemap_reflect
+	@echo ... test_test_162_cubemap_faces
+	@echo ... test_test_163_copy_tex_image_2d
+	@echo ... test_test_164_copy_tex_sub_image_2d
+	@echo ... test_test_165_tex_sub_image_2d
+	@echo ... test_test_166_tex_sub_image_3d
+	@echo ... test_test_167_cubemap_lit
+	@echo ... test_test_168_tex3d_trilinear
+	@echo ... test_test_169_cube_and_2d
 	@echo ... test_test_16_flat_shaded
+	@echo ... test_test_170_all_targets
+	@echo ... test_test_171_clip_plane_y
+	@echo ... test_test_172_clip_plane_diagonal
+	@echo ... test_test_173_clip_plane_two
+	@echo ... test_test_174_color_material_diffuse
+	@echo ... test_test_175_light_model_local_viewer
+	@echo ... test_test_176_light_model_two_side
+	@echo ... test_test_177_color_mask
+	@echo ... test_test_178_logic_op_xor
+	@echo ... test_test_179_logic_op_invert
 	@echo ... test_test_17_gouraud_rgb
+	@echo ... test_test_180_hint_and_index_mask
+	@echo ... test_test_181_drawpixels_rgba
+	@echo ... test_test_182_drawpixels_luminance
+	@echo ... test_test_183_drawpixels_rgb_float
+	@echo ... test_test_184_readpixels_echo
+	@echo ... test_test_185_copypixels
+	@echo ... test_test_186_pixelzoom_2x
+	@echo ... test_test_187_pixelzoom_flip
+	@echo ... test_test_188_unpack_alignment
+	@echo ... test_test_189_unpack_rowlength_skip
 	@echo ... test_test_18_fullscreen_quad
+	@echo ... test_test_190_rasterpos_clipped
+	@echo ... test_test_191_combine_interpolate
+	@echo ... test_test_192_combine_subtract
+	@echo ... test_test_193_combine_add_signed_scale
+	@echo ... test_test_194_combine_split_alpha
+	@echo ... test_test_195_combine_dot3_rgba
+	@echo ... test_test_196_occlusion_samples
+	@echo ... test_test_197_occlusion_any
+	@echo ... test_test_198_map_buffer
+	@echo ... test_test_199_evaluators_patch
 	@echo ... test_test_19_degenerate_triangle
+	@echo ... test_test_200_accum_jitter
+	@echo ... test_test_201_stipple
+	@echo ... test_test_202_shadow_volume
+	@echo ... test_test_203_bump_brick
+	@echo ... test_test_204_lightmap_corridor
+	@echo ... test_test_205_chrome_sphere
+	@echo ... test_test_206_spot_projector
+	@echo ... test_test_207_glass_window
+	@echo ... test_test_208_terrain_blend
+	@echo ... test_test_209_particles_additive
 	@echo ... test_test_20_triangle_at_edges
+	@echo ... test_test_210_portal_rooms
+	@echo ... test_test_211_billboard_trees
+	@echo ... test_test_212_skybox_sun
+	@echo ... test_test_213_lens_flare
+	@echo ... test_test_214_decal_stencil
+	@echo ... test_test_215_crt_emissive
+	@echo ... test_test_216_water_surface
 	@echo ... test_test_21_clip_left
 	@echo ... test_test_22_clip_right
 	@echo ... test_test_23_clip_top
@@ -4248,24 +8824,42 @@ help:
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/clip.o
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/clip.i
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/clip.s
+	@echo ... D_/Git/wasm-3d/libsoftgl/src/dlist.o
+	@echo ... D_/Git/wasm-3d/libsoftgl/src/dlist.i
+	@echo ... D_/Git/wasm-3d/libsoftgl/src/dlist.s
+	@echo ... D_/Git/wasm-3d/libsoftgl/src/evaluators.o
+	@echo ... D_/Git/wasm-3d/libsoftgl/src/evaluators.i
+	@echo ... D_/Git/wasm-3d/libsoftgl/src/evaluators.s
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/fragment.o
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/fragment.i
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/fragment.s
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/framebuffer.o
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/framebuffer.i
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/framebuffer.s
+	@echo ... D_/Git/wasm-3d/libsoftgl/src/immediate.o
+	@echo ... D_/Git/wasm-3d/libsoftgl/src/immediate.i
+	@echo ... D_/Git/wasm-3d/libsoftgl/src/immediate.s
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/lighting.o
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/lighting.i
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/lighting.s
+	@echo ... D_/Git/wasm-3d/libsoftgl/src/lines.o
+	@echo ... D_/Git/wasm-3d/libsoftgl/src/lines.i
+	@echo ... D_/Git/wasm-3d/libsoftgl/src/lines.s
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/matrix.o
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/matrix.i
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/matrix.s
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/pipeline.o
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/pipeline.i
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/pipeline.s
+	@echo ... D_/Git/wasm-3d/libsoftgl/src/pixels.o
+	@echo ... D_/Git/wasm-3d/libsoftgl/src/pixels.i
+	@echo ... D_/Git/wasm-3d/libsoftgl/src/pixels.s
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/rasterizer.o
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/rasterizer.i
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/rasterizer.s
+	@echo ... D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.o
+	@echo ... D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.i
+	@echo ... D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.s
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/state.o
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/state.i
 	@echo ... D_/Git/wasm-3d/libsoftgl/src/state.s
@@ -4302,39 +8896,387 @@ help:
 	@echo ... D_/Git/wasm-3d/tests/cases/test_100_showcase.o
 	@echo ... D_/Git/wasm-3d/tests/cases/test_100_showcase.i
 	@echo ... D_/Git/wasm-3d/tests/cases/test_100_showcase.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_101_begin_triangles.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_101_begin_triangles.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_101_begin_triangles.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_102_vertex_variants.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_102_vertex_variants.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_102_vertex_variants.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_103_triangle_strip.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_103_triangle_strip.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_103_triangle_strip.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_104_triangle_fan.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_104_triangle_fan.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_104_triangle_fan.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_105_quads_one.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_105_quads_one.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_105_quads_one.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_106_quads_two.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_106_quads_two.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_106_quads_two.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_107_quad_strip.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_107_quad_strip.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_107_quad_strip.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_108_polygon_hexagon.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_108_polygon_hexagon.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_108_polygon_hexagon.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_109_lit_triangle.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_109_lit_triangle.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_109_lit_triangle.s
 	@echo ... D_/Git/wasm-3d/tests/cases/test_10_ortho_projection.o
 	@echo ... D_/Git/wasm-3d/tests/cases/test_10_ortho_projection.i
 	@echo ... D_/Git/wasm-3d/tests/cases/test_10_ortho_projection.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_110_textured_quad.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_110_textured_quad.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_110_textured_quad.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_111_multitexture_imm.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_111_multitexture_imm.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_111_multitexture_imm.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_112_rectf.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_112_rectf.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_112_rectf.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_113_type_conversion.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_113_type_conversion.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_113_type_conversion.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_114_array_element.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_114_array_element.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_114_array_element.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_115_lit_polygon.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_115_lit_polygon.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_115_lit_polygon.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_116_dlist_empty.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_116_dlist_empty.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_116_dlist_empty.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_117_dlist_triangle.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_117_dlist_triangle.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_117_dlist_triangle.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_118_dlist_transform.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_118_dlist_transform.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_118_dlist_transform.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_119_dlist_compile_and_execute.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_119_dlist_compile_and_execute.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_119_dlist_compile_and_execute.s
 	@echo ... D_/Git/wasm-3d/tests/cases/test_11_triangle_ccw.o
 	@echo ... D_/Git/wasm-3d/tests/cases/test_11_triangle_ccw.i
 	@echo ... D_/Git/wasm-3d/tests/cases/test_11_triangle_ccw.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_120_call_lists_byte.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_120_call_lists_byte.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_120_call_lists_byte.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_121_nested_lists.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_121_nested_lists.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_121_nested_lists.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_122_dlist_lit.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_122_dlist_lit.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_122_dlist_lit.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_123_dlist_texture.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_123_dlist_texture.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_123_dlist_texture.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_124_dlist_vbo_draw.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_124_dlist_vbo_draw.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_124_dlist_vbo_draw.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_125_dlist_vbo_alloc.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_125_dlist_vbo_alloc.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_125_dlist_vbo_alloc.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_126_dlist_color_order.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_126_dlist_color_order.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_126_dlist_color_order.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_127_dlist_matrix_stack.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_127_dlist_matrix_stack.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_127_dlist_matrix_stack.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_128_dlist_repeat_outer_mv.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_128_dlist_repeat_outer_mv.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_128_dlist_repeat_outer_mv.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_129_dlist_id_recycle.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_129_dlist_id_recycle.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_129_dlist_id_recycle.s
 	@echo ... D_/Git/wasm-3d/tests/cases/test_12_triangle_cw_culled.o
 	@echo ... D_/Git/wasm-3d/tests/cases/test_12_triangle_cw_culled.i
 	@echo ... D_/Git/wasm-3d/tests/cases/test_12_triangle_cw_culled.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_130_call_lists_2bytes.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_130_call_lists_2bytes.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_130_call_lists_2bytes.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_131_lines_basic.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_131_lines_basic.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_131_lines_basic.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_132_line_strip.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_132_line_strip.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_132_line_strip.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_133_line_loop.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_133_line_loop.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_133_line_loop.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_134_line_width.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_134_line_width.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_134_line_width.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_135_points_grid.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_135_points_grid.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_135_points_grid.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_136_point_size.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_136_point_size.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_136_point_size.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_137_polygon_mode_line.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_137_polygon_mode_line.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_137_polygon_mode_line.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_138_polygon_mode_point.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_138_polygon_mode_point.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_138_polygon_mode_point.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_139_polygon_mode_two_faces.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_139_polygon_mode_two_faces.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_139_polygon_mode_two_faces.s
 	@echo ... D_/Git/wasm-3d/tests/cases/test_13_triangle_depth.o
 	@echo ... D_/Git/wasm-3d/tests/cases/test_13_triangle_depth.i
 	@echo ... D_/Git/wasm-3d/tests/cases/test_13_triangle_depth.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_140_polygon_offset.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_140_polygon_offset.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_140_polygon_offset.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_141_line_color_gradient.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_141_line_color_gradient.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_141_line_color_gradient.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_142_line_perspective_depth.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_142_line_perspective_depth.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_142_line_perspective_depth.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_143_line_clip.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_143_line_clip.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_143_line_clip.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_144_edge_flag_polygon.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_144_edge_flag_polygon.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_144_edge_flag_polygon.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_145_mixed_primitives.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_145_mixed_primitives.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_145_mixed_primitives.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_146_stencil_clear.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_146_stencil_clear.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_146_stencil_clear.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_147_stencil_mask_basic.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_147_stencil_mask_basic.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_147_stencil_mask_basic.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_148_stencil_incr_overlap.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_148_stencil_incr_overlap.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_148_stencil_incr_overlap.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_149_stencil_invert_xor.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_149_stencil_invert_xor.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_149_stencil_invert_xor.s
 	@echo ... D_/Git/wasm-3d/tests/cases/test_14_triangle_frustum.o
 	@echo ... D_/Git/wasm-3d/tests/cases/test_14_triangle_frustum.i
 	@echo ... D_/Git/wasm-3d/tests/cases/test_14_triangle_frustum.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_150_stencil_zfail_shadow.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_150_stencil_zfail_shadow.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_150_stencil_zfail_shadow.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_151_stencil_write_mask.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_151_stencil_write_mask.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_151_stencil_write_mask.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_152_stencil_value_mask.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_152_stencil_value_mask.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_152_stencil_value_mask.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_153_stencil_dpfail_incr.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_153_stencil_dpfail_incr.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_153_stencil_dpfail_incr.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_154_stencil_portal.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_154_stencil_portal.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_154_stencil_portal.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_155_stencil_mirror.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_155_stencil_mirror.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_155_stencil_mirror.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_156_tex1d_gradient.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_156_tex1d_gradient.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_156_tex1d_gradient.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_157_tex1d_lookup.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_157_tex1d_lookup.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_157_tex1d_lookup.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_158_tex3d_corners.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_158_tex3d_corners.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_158_tex3d_corners.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_159_tex3d_slices.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_159_tex3d_slices.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_159_tex3d_slices.s
 	@echo ... D_/Git/wasm-3d/tests/cases/test_15_two_tris_depth.o
 	@echo ... D_/Git/wasm-3d/tests/cases/test_15_two_tris_depth.i
 	@echo ... D_/Git/wasm-3d/tests/cases/test_15_two_tris_depth.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_160_cubemap_skybox.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_160_cubemap_skybox.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_160_cubemap_skybox.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_161_cubemap_reflect.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_161_cubemap_reflect.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_161_cubemap_reflect.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_162_cubemap_faces.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_162_cubemap_faces.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_162_cubemap_faces.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_163_copy_tex_image_2d.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_163_copy_tex_image_2d.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_163_copy_tex_image_2d.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_164_copy_tex_sub_image_2d.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_164_copy_tex_sub_image_2d.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_164_copy_tex_sub_image_2d.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_165_tex_sub_image_2d.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_165_tex_sub_image_2d.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_165_tex_sub_image_2d.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_166_tex_sub_image_3d.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_166_tex_sub_image_3d.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_166_tex_sub_image_3d.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_167_cubemap_lit.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_167_cubemap_lit.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_167_cubemap_lit.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_168_tex3d_trilinear.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_168_tex3d_trilinear.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_168_tex3d_trilinear.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_169_cube_and_2d.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_169_cube_and_2d.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_169_cube_and_2d.s
 	@echo ... D_/Git/wasm-3d/tests/cases/test_16_flat_shaded.o
 	@echo ... D_/Git/wasm-3d/tests/cases/test_16_flat_shaded.i
 	@echo ... D_/Git/wasm-3d/tests/cases/test_16_flat_shaded.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_170_all_targets.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_170_all_targets.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_170_all_targets.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_171_clip_plane_y.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_171_clip_plane_y.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_171_clip_plane_y.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_172_clip_plane_diagonal.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_172_clip_plane_diagonal.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_172_clip_plane_diagonal.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_173_clip_plane_two.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_173_clip_plane_two.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_173_clip_plane_two.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_174_color_material_diffuse.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_174_color_material_diffuse.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_174_color_material_diffuse.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_175_light_model_local_viewer.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_175_light_model_local_viewer.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_175_light_model_local_viewer.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_176_light_model_two_side.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_176_light_model_two_side.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_176_light_model_two_side.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_177_color_mask.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_177_color_mask.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_177_color_mask.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_178_logic_op_xor.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_178_logic_op_xor.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_178_logic_op_xor.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_179_logic_op_invert.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_179_logic_op_invert.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_179_logic_op_invert.s
 	@echo ... D_/Git/wasm-3d/tests/cases/test_17_gouraud_rgb.o
 	@echo ... D_/Git/wasm-3d/tests/cases/test_17_gouraud_rgb.i
 	@echo ... D_/Git/wasm-3d/tests/cases/test_17_gouraud_rgb.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_180_hint_and_index_mask.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_180_hint_and_index_mask.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_180_hint_and_index_mask.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_181_drawpixels_rgba.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_181_drawpixels_rgba.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_181_drawpixels_rgba.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_182_drawpixels_luminance.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_182_drawpixels_luminance.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_182_drawpixels_luminance.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_183_drawpixels_rgb_float.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_183_drawpixels_rgb_float.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_183_drawpixels_rgb_float.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_184_readpixels_echo.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_184_readpixels_echo.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_184_readpixels_echo.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_185_copypixels.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_185_copypixels.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_185_copypixels.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_186_pixelzoom_2x.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_186_pixelzoom_2x.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_186_pixelzoom_2x.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_187_pixelzoom_flip.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_187_pixelzoom_flip.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_187_pixelzoom_flip.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_188_unpack_alignment.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_188_unpack_alignment.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_188_unpack_alignment.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_189_unpack_rowlength_skip.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_189_unpack_rowlength_skip.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_189_unpack_rowlength_skip.s
 	@echo ... D_/Git/wasm-3d/tests/cases/test_18_fullscreen_quad.o
 	@echo ... D_/Git/wasm-3d/tests/cases/test_18_fullscreen_quad.i
 	@echo ... D_/Git/wasm-3d/tests/cases/test_18_fullscreen_quad.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_190_rasterpos_clipped.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_190_rasterpos_clipped.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_190_rasterpos_clipped.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_191_combine_interpolate.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_191_combine_interpolate.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_191_combine_interpolate.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_192_combine_subtract.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_192_combine_subtract.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_192_combine_subtract.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_193_combine_add_signed_scale.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_193_combine_add_signed_scale.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_193_combine_add_signed_scale.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_194_combine_split_alpha.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_194_combine_split_alpha.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_194_combine_split_alpha.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_195_combine_dot3_rgba.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_195_combine_dot3_rgba.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_195_combine_dot3_rgba.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_196_occlusion_samples.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_196_occlusion_samples.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_196_occlusion_samples.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_197_occlusion_any.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_197_occlusion_any.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_197_occlusion_any.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_198_map_buffer.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_198_map_buffer.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_198_map_buffer.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_199_evaluators_patch.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_199_evaluators_patch.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_199_evaluators_patch.s
 	@echo ... D_/Git/wasm-3d/tests/cases/test_19_degenerate_triangle.o
 	@echo ... D_/Git/wasm-3d/tests/cases/test_19_degenerate_triangle.i
 	@echo ... D_/Git/wasm-3d/tests/cases/test_19_degenerate_triangle.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_200_accum_jitter.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_200_accum_jitter.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_200_accum_jitter.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_201_stipple.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_201_stipple.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_201_stipple.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_202_shadow_volume.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_202_shadow_volume.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_202_shadow_volume.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_203_bump_brick.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_203_bump_brick.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_203_bump_brick.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_204_lightmap_corridor.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_204_lightmap_corridor.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_204_lightmap_corridor.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_205_chrome_sphere.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_205_chrome_sphere.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_205_chrome_sphere.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_206_spot_projector.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_206_spot_projector.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_206_spot_projector.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_207_glass_window.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_207_glass_window.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_207_glass_window.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_208_terrain_blend.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_208_terrain_blend.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_208_terrain_blend.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_209_particles_additive.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_209_particles_additive.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_209_particles_additive.s
 	@echo ... D_/Git/wasm-3d/tests/cases/test_20_triangle_at_edges.o
 	@echo ... D_/Git/wasm-3d/tests/cases/test_20_triangle_at_edges.i
 	@echo ... D_/Git/wasm-3d/tests/cases/test_20_triangle_at_edges.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_210_portal_rooms.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_210_portal_rooms.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_210_portal_rooms.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_211_billboard_trees.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_211_billboard_trees.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_211_billboard_trees.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_212_skybox_sun.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_212_skybox_sun.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_212_skybox_sun.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_213_lens_flare.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_213_lens_flare.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_213_lens_flare.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_214_decal_stencil.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_214_decal_stencil.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_214_decal_stencil.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_215_crt_emissive.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_215_crt_emissive.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_215_crt_emissive.s
+	@echo ... D_/Git/wasm-3d/tests/cases/test_216_water_surface.o
+	@echo ... D_/Git/wasm-3d/tests/cases/test_216_water_surface.i
+	@echo ... D_/Git/wasm-3d/tests/cases/test_216_water_surface.s
 	@echo ... D_/Git/wasm-3d/tests/cases/test_21_clip_left.o
 	@echo ... D_/Git/wasm-3d/tests/cases/test_21_clip_left.i
 	@echo ... D_/Git/wasm-3d/tests/cases/test_21_clip_left.s
@@ -4572,6 +9514,9 @@ help:
 	@echo ... D_/Git/wasm-3d/tests/cases/test_99_moving_camera.o
 	@echo ... D_/Git/wasm-3d/tests/cases/test_99_moving_camera.i
 	@echo ... D_/Git/wasm-3d/tests/cases/test_99_moving_camera.s
+	@echo ... bench_wrap.o
+	@echo ... bench_wrap.i
+	@echo ... bench_wrap.s
 	@echo ... dispatch.o
 	@echo ... dispatch.i
 	@echo ... dispatch.s

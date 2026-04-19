@@ -1,5 +1,6 @@
 #include "harness.h"
 #include <math.h>
+#include <stdlib.h>
 
 /* Low-poly hilly landscape with 25 axis-aligned billboard trees. Trees
  * are always oriented with +Y up (world-space Y), so they're "Y-axis

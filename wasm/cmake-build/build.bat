@@ -41,7 +41,7 @@ del /q softgl.js softgl.wasm 2>nul
 echo --- Linking softgl.js ---
 call emcc.bat -v -O2 -msimd128 ^
     @CMakeFiles\softgl.dir\objects1.rsp ^
-    -sEXPORTED_FUNCTIONS=_softgl_create,_softgl_destroy,_softgl_make_current,_softgl_read_rgba8,_sg_test_count,_sg_test_name,_sg_test_run,_malloc,_free ^
+    -sEXPORTED_FUNCTIONS=_softgl_create,_softgl_destroy,_softgl_make_current,_softgl_read_rgba8,_softgl_set_backend,_softgl_get_backend,_sg_test_count,_sg_test_name,_sg_test_run,_sg_bench_slot_count,_sg_bench_slot_tag,_sg_bench_slot_test_index,_sg_bench_run_idx,_sg_bench_run_slot,_malloc,_free ^
     -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,HEAPU8,UTF8ToString ^
     -sMODULARIZE=1 ^
     -sEXPORT_NAME=createSoftGL ^
