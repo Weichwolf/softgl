@@ -26,9 +26,6 @@
  * ===================================================================== */
 
 /* Float rasterizer helpers we reuse. */
-extern void sg_raster_line_1px (softgl_ctx *c, const sg_vert *v0, const sg_vert *v1);
-extern void sg_raster_line_wide(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1, int width);
-extern void sg_raster_point    (softgl_ctx *c, const sg_vert *v);
 extern void sg_write_fragment  (softgl_ctx *c, int x, int y, float z,
                                 float r, float g, float b, float a);
 
@@ -522,57 +519,243 @@ void sg_raster_triangle_fp(softgl_ctx *c,
 #endif
 }
 
-/* Lines + points: FP-4 will port these. For now keep the float path via
- * an inline float->fp->float round-trip so the FIXED backend still runs
- * through the fp_types quantization on the geometry channels. */
-static sg_fp_vert sg_fp_from_vert(const sg_vert *v) {
-    sg_fp_vert out;
-    out.x     = sg_fp_screen_from_float(v->ndc.x);
-    out.y     = sg_fp_screen_from_float(v->ndc.y);
-    out.z     = sg_fp_depth_from_float (v->ndc.z);
-    out.inv_w = sg_fp_invw_from_float  (v->ndc.w);
-    out.color[0] = v->color.x; out.color[1] = v->color.y;
-    out.color[2] = v->color.z; out.color[3] = v->color.w;
-    out.normal[0] = v->normal.x; out.normal[1] = v->normal.y; out.normal[2] = v->normal.z;
-    out.eye_z = v->eye.z;
-    for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
-        out.uv[u][0] = v->uv[u].x; out.uv[u][1] = v->uv[u].y;
-        out.uv[u][2] = v->uv[u].z; out.uv[u][3] = v->uv[u].w;
+/* =====================================================================
+ * FP-4: fixed-point line + point rasterizers.
+ *
+ * Lines: scalar DDA in 16.8 screen space. Pick a major axis so the step
+ * along it is exactly one subpixel-full-unit (+/- SUBPIXEL_ONE) and the
+ * minor axis advances by a pre-computed fractional delta. All coordinate
+ * arithmetic is integer; attribute interpolation (color, depth, eye_z)
+ * stays in float for now (FP-5 tightens this). A single `t` parameter in
+ * 16.16 keeps the attribute lerp monotonic and free of drift even on
+ * long lines.
+ *
+ * Clipping happens upstream in sg_process_line() using Liang-Barsky on
+ * clip-space vertices; by the time we land here both endpoints are
+ * post-viewport pixel positions. Line stipple is evaluated per-emitted-
+ * pixel against c->line_stipple_counter so it carries across segments
+ * of a LINE_STRIP / LINE_LOOP.
+ *
+ * Points: integer stamp centered on the rounded pixel center. Scissor
+ * + framebuffer bounds are handled inside sg_write_fragment; we keep
+ * the stamp loop dumb.
+ * ===================================================================== */
+
+/* Common fog + fragment emission for a line / point sample. */
+SG_INLINE void fp_line_fragment(softgl_ctx *c, int x, int y,
+                                float z, float col[4], float eye_z) {
+    if (c->fog_enabled) {
+        float ez = eye_z < 0.f ? -eye_z : eye_z;
+        float f = 1.f;
+        switch (c->fog_mode) {
+            case GL_EXP:
+                f = expf(-c->fog_density * ez);
+                break;
+            case GL_EXP2: {
+                float e = c->fog_density * ez;
+                f = expf(-(e * e));
+                break;
+            }
+            case GL_LINEAR_FOG:
+            default: {
+                float range = c->fog_end - c->fog_start;
+                if (range != 0.f)
+                    f = (c->fog_end - ez) / range;
+                break;
+            }
+        }
+        if (f < 0.f) f = 0.f; else if (f > 1.f) f = 1.f;
+        col[0] = f * col[0] + (1.f - f) * c->fog_color[0];
+        col[1] = f * col[1] + (1.f - f) * c->fog_color[1];
+        col[2] = f * col[2] + (1.f - f) * c->fog_color[2];
     }
-    return out;
+    sg_write_fragment(c, x, y, z, col[0], col[1], col[2], col[3]);
 }
 
-static sg_vert sg_vert_from_fp(const sg_fp_vert *fp, const sg_vert *src) {
-    sg_vert out = *src;
-    out.ndc.x = sg_fp_screen_to_float(fp->x);
-    out.ndc.y = sg_fp_screen_to_float(fp->y);
-    out.ndc.z = sg_fp_depth_to_float (fp->z);
-    out.ndc.w = (float)fp->inv_w * (1.0f / 65536.0f);
-    out.color.x = fp->color[0]; out.color.y = fp->color[1];
-    out.color.z = fp->color[2]; out.color.w = fp->color[3];
-    out.normal.x = fp->normal[0]; out.normal.y = fp->normal[1]; out.normal.z = fp->normal[2];
-    out.eye.z = fp->eye_z;
-    for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
-        out.uv[u].x = fp->uv[u][0]; out.uv[u].y = fp->uv[u][1];
-        out.uv[u].z = fp->uv[u][2]; out.uv[u].w = fp->uv[u][3];
+/* --- 1-pixel wide line (DDA in 16.8 fixed-point). --- */
+static void fp_raster_line_1px(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1) {
+    sg_screen_t x0 = sg_fp_screen_from_float(v0->ndc.x);
+    sg_screen_t y0 = sg_fp_screen_from_float(v0->ndc.y);
+    sg_screen_t x1 = sg_fp_screen_from_float(v1->ndc.x);
+    sg_screen_t y1 = sg_fp_screen_from_float(v1->ndc.y);
+
+    sg_screen_t dx = x1 - x0;
+    sg_screen_t dy = y1 - y0;
+    int32_t adx = dx < 0 ? -dx : dx;
+    int32_t ady = dy < 0 ? -dy : dy;
+
+    /* Step count in pixels matches the float path: max(|dx|,|dy|) rounded.
+     * The subpixel magnitudes are already "pixel * 256", so we bring them
+     * back to pixel space with a round-to-nearest shift. */
+    int32_t steps_fp = adx > ady ? adx : ady;
+    int steps = (int)((steps_fp + (SG_FP_SUBPIXEL_ONE >> 1)) >> SG_FP_SUBPIXEL_BITS);
+    if (steps < 1) steps = 1;
+
+    /* Per-step increments, in 16.8 subpixels per pixel-step.
+     * major axis: exactly +/- SUBPIXEL_ONE per step.
+     * minor axis: (minor_delta / step_count), rounded.
+     * Using i64 for the division keeps the 8-bit fractional precision. */
+    int64_t step_dx_fp, step_dy_fp;
+    step_dx_fp = (int64_t)dx / (int64_t)steps;
+    step_dy_fp = (int64_t)dy / (int64_t)steps;
+
+    /* Accumulators fit in i32 easily (640*256 max + steps*step ~ same range)
+     * but we step them as i64 to share the type with the pre-computed step
+     * and let the compiler avoid partial-register stalls. */
+    int64_t x_fp = x0;
+    int64_t y_fp = y0;
+
+    /* Polygon offset (line) - float, same formula as float path. */
+    float z_offset = 0.f;
+    if (c->polygon_offset_line && (c->polygon_offset_factor != 0.f ||
+                                    c->polygon_offset_units  != 0.f)) {
+        float fadx = (float)adx * (1.0f / (float)SG_FP_SUBPIXEL_ONE);
+        float fady = (float)ady * (1.0f / (float)SG_FP_SUBPIXEL_ONE);
+        float dz = v1->ndc.z - v0->ndc.z;
+        float max_slope = 0.f;
+        if (fadx > 0.f) { float s = fabsf(dz / fadx); if (s > max_slope) max_slope = s; }
+        if (fady > 0.f) { float s = fabsf(dz / fady); if (s > max_slope) max_slope = s; }
+        z_offset = c->polygon_offset_factor * max_slope
+                 + c->polygon_offset_units  * 1e-6f;
     }
-    return out;
+
+    float inv_steps = 1.f / (float)steps;
+
+    for (int i = 0; i <= steps; i++) {
+        int ix = (int)(x_fp >> SG_FP_SUBPIXEL_BITS);
+        int iy = (int)(y_fp >> SG_FP_SUBPIXEL_BITS);
+
+        /* Line stipple: same per-pixel counter semantics as the float path.
+         * Increment whether or not the fragment is emitted; skip emit when
+         * the pattern bit is 0. The counter is persistent across segments. */
+        int emit = 1;
+        if (c->line_stipple_enable) {
+            int factor = c->line_stipple_factor < 1 ? 1 : c->line_stipple_factor;
+            int bit = (c->line_stipple_counter / factor) & 15;
+            c->line_stipple_counter++;
+            if (!(c->line_stipple_pattern & (1u << bit))) emit = 0;
+        }
+
+        if (emit) {
+            float t = (float)i * inv_steps;
+            float z = v0->ndc.z + (v1->ndc.z - v0->ndc.z) * t + z_offset;
+            float col[4];
+            col[0] = v0->color.x + (v1->color.x - v0->color.x) * t;
+            col[1] = v0->color.y + (v1->color.y - v0->color.y) * t;
+            col[2] = v0->color.z + (v1->color.z - v0->color.z) * t;
+            col[3] = v0->color.w + (v1->color.w - v0->color.w) * t;
+            float ez = v0->eye.z + (v1->eye.z - v0->eye.z) * t;
+            fp_line_fragment(c, ix, iy, z, col, ez);
+        }
+
+        x_fp += step_dx_fp;
+        y_fp += step_dy_fp;
+    }
+}
+
+/* --- Wide line (axis-aligned thickness stamp). --- */
+static void fp_raster_line_wide(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1, int width) {
+    sg_screen_t x0 = sg_fp_screen_from_float(v0->ndc.x);
+    sg_screen_t y0 = sg_fp_screen_from_float(v0->ndc.y);
+    sg_screen_t x1 = sg_fp_screen_from_float(v1->ndc.x);
+    sg_screen_t y1 = sg_fp_screen_from_float(v1->ndc.y);
+
+    sg_screen_t dx = x1 - x0;
+    sg_screen_t dy = y1 - y0;
+    int32_t adx = dx < 0 ? -dx : dx;
+    int32_t ady = dy < 0 ? -dy : dy;
+
+    int32_t steps_fp = adx > ady ? adx : ady;
+    int steps = (int)((steps_fp + (SG_FP_SUBPIXEL_ONE >> 1)) >> SG_FP_SUBPIXEL_BITS);
+    if (steps < 1) steps = 1;
+
+    int64_t step_dx_fp = (int64_t)dx / (int64_t)steps;
+    int64_t step_dy_fp = (int64_t)dy / (int64_t)steps;
+
+    int64_t x_fp = x0;
+    int64_t y_fp = y0;
+
+    /* OpenGL wide-line rule (non-smooth): thickness in the minor axis. */
+    int vertical_major = (ady > adx);
+    int half = width / 2;
+
+    float inv_steps = 1.f / (float)steps;
+
+    for (int i = 0; i <= steps; i++) {
+        int ix = (int)(x_fp >> SG_FP_SUBPIXEL_BITS);
+        int iy = (int)(y_fp >> SG_FP_SUBPIXEL_BITS);
+
+        float t = (float)i * inv_steps;
+        float z = v0->ndc.z + (v1->ndc.z - v0->ndc.z) * t;
+        float col[4];
+        col[0] = v0->color.x + (v1->color.x - v0->color.x) * t;
+        col[1] = v0->color.y + (v1->color.y - v0->color.y) * t;
+        col[2] = v0->color.z + (v1->color.z - v0->color.z) * t;
+        col[3] = v0->color.w + (v1->color.w - v0->color.w) * t;
+        float ez = v0->eye.z + (v1->eye.z - v0->eye.z) * t;
+
+        for (int k = -half; k < width - half; k++) {
+            int px, py;
+            if (vertical_major) { px = ix + k; py = iy; }
+            else                { px = ix;     py = iy + k; }
+            float c4[4] = { col[0], col[1], col[2], col[3] };
+            fp_line_fragment(c, px, py, z, c4, ez);
+        }
+
+        x_fp += step_dx_fp;
+        y_fp += step_dy_fp;
+    }
 }
 
 void sg_raster_line_fp(softgl_ctx *c,
                        const sg_vert *v0,
                        const sg_vert *v1,
                        int width) {
-    sg_fp_vert fp0 = sg_fp_from_vert(v0);
-    sg_fp_vert fp1 = sg_fp_from_vert(v1);
-    sg_vert f0 = sg_vert_from_fp(&fp0, v0);
-    sg_vert f1 = sg_vert_from_fp(&fp1, v1);
-    if (width <= 1) sg_raster_line_1px (c, &f0, &f1);
-    else            sg_raster_line_wide(c, &f0, &f1, width);
+    if (width <= 1) fp_raster_line_1px (c, v0, v1);
+    else            fp_raster_line_wide(c, v0, v1, width);
 }
 
-void sg_raster_point_fp(softgl_ctx *c, const sg_vert *v0) {
-    sg_fp_vert fp0 = sg_fp_from_vert(v0);
-    sg_vert    f0  = sg_vert_from_fp(&fp0, v0);
-    sg_raster_point(c, &f0);
+/* --- Point rasterizer: integer stamp centered on the fixed-point
+ * pixel center. For point_size == 1 this emits exactly one fragment.
+ * Framebuffer + scissor bounds are handled inside sg_write_fragment,
+ * so out-of-bounds lanes of the stamp are silent no-ops. --- */
+void sg_raster_point_fp(softgl_ctx *c, const sg_vert *v) {
+    float sz = c->point_size;
+    if (sz < 1.f) sz = 1.f;
+    int size = (int)(sz + 0.5f);
+    if (size < 1) size = 1;
+
+    /* Round half-up to pixel center. For size==1 this matches floor()
+     * of the float path (floor(x) == (x_fp >> BITS) when x_fp >= 0).
+     * For larger stamps the stamp is centered with the same half-offset
+     * as the float path. */
+    sg_screen_t x_fp = sg_fp_screen_from_float(v->ndc.x);
+    sg_screen_t y_fp = sg_fp_screen_from_float(v->ndc.y);
+    int cx = (int)(x_fp >> SG_FP_SUBPIXEL_BITS);
+    int cy = (int)(y_fp >> SG_FP_SUBPIXEL_BITS);
+    int half = size / 2;
+    int x0 = cx - half;
+    int y0 = cy - half;
+    int x1 = x0 + size;
+    int y1 = y0 + size;
+
+    float col[4] = { v->color.x, v->color.y, v->color.z, v->color.w };
+    float ez = v->eye.z;
+    float z  = v->ndc.z;
+    if (c->polygon_offset_point && (c->polygon_offset_factor != 0.f ||
+                                     c->polygon_offset_units  != 0.f)) {
+        /* Matches the float path: points have zero screen-space z slope,
+         * so only the constant units term contributes. */
+        z += c->polygon_offset_units * 1e-6f;
+    }
+
+    /* Scalar stamp. SIMD would help only for size >= 4 and has to
+     * coordinate with sg_write_fragment, which already does the scissor
+     * + bounds test per pixel. Defer that to FP-5 if needed. */
+    for (int y = y0; y < y1; y++) {
+        for (int x = x0; x < x1; x++) {
+            float c4[4] = { col[0], col[1], col[2], col[3] };
+            fp_line_fragment(c, x, y, z, c4, ez);
+        }
+    }
 }
