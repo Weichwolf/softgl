@@ -205,6 +205,25 @@ static void sg_reset_state(softgl_ctx *c) {
 
     sg_dlist_init(c);
 
+    /* Phase 7: pixel-transfer state. */
+    c->pack.alignment = 4;
+    c->pack.row_length = 0;
+    c->pack.skip_rows = 0;
+    c->pack.skip_pixels = 0;
+    c->pack.lsb_first = 0;
+    c->pack.swap_bytes = 0;
+    c->unpack = c->pack;
+    c->pixel_zoom_x = 1.f;
+    c->pixel_zoom_y = 1.f;
+    c->raster_pos[0] = 0.f;
+    c->raster_pos[1] = 0.f;
+    c->raster_pos[2] = 0.f;
+    c->raster_pos[3] = 1.f;
+    c->raster_color[0] = c->raster_color[1] = c->raster_color[2] = c->raster_color[3] = 1.f;
+    c->raster_texcoord[0] = c->raster_texcoord[1] = c->raster_texcoord[2] = 0.f;
+    c->raster_texcoord[3] = 1.f;
+    c->raster_pos_valid = 1;
+
     c->last_error = GL_NO_ERROR;
 }
 
@@ -774,6 +793,31 @@ void glGetIntegerv(GLenum p, GLint *v) {
         case GL_POLYGON_SMOOTH_HINT:   *v = (GLint)c->hint_polygon_smooth; return;
         case GL_FOG_HINT:              *v = (GLint)c->hint_fog; return;
         case GL_GENERATE_MIPMAP_HINT:  *v = (GLint)c->hint_generate_mipmap; return;
+        /* Phase 7 pixel-transfer getters */
+        case GL_PACK_ALIGNMENT:        *v = c->pack.alignment; return;
+        case GL_PACK_ROW_LENGTH:       *v = c->pack.row_length; return;
+        case GL_PACK_SKIP_ROWS:        *v = c->pack.skip_rows; return;
+        case GL_PACK_SKIP_PIXELS:      *v = c->pack.skip_pixels; return;
+        case GL_PACK_LSB_FIRST:        *v = c->pack.lsb_first; return;
+        case GL_PACK_SWAP_BYTES:       *v = c->pack.swap_bytes; return;
+        case GL_UNPACK_ALIGNMENT:      *v = c->unpack.alignment; return;
+        case GL_UNPACK_ROW_LENGTH:     *v = c->unpack.row_length; return;
+        case GL_UNPACK_SKIP_ROWS:      *v = c->unpack.skip_rows; return;
+        case GL_UNPACK_SKIP_PIXELS:    *v = c->unpack.skip_pixels; return;
+        case GL_UNPACK_LSB_FIRST:      *v = c->unpack.lsb_first; return;
+        case GL_UNPACK_SWAP_BYTES:     *v = c->unpack.swap_bytes; return;
+        case GL_CURRENT_RASTER_POSITION_VALID:
+            *v = c->raster_pos_valid; return;
+        case GL_CURRENT_RASTER_POSITION:
+            v[0] = (GLint)c->raster_pos[0]; v[1] = (GLint)c->raster_pos[1];
+            v[2] = (GLint)c->raster_pos[2]; v[3] = (GLint)c->raster_pos[3];
+            return;
+        case GL_CURRENT_RASTER_COLOR:
+            v[0] = (GLint)(c->raster_color[0] * 255.f);
+            v[1] = (GLint)(c->raster_color[1] * 255.f);
+            v[2] = (GLint)(c->raster_color[2] * 255.f);
+            v[3] = (GLint)(c->raster_color[3] * 255.f);
+            return;
         default: sg_set_error(GL_INVALID_ENUM); return;
     }
 }
@@ -796,6 +840,17 @@ void glGetFloatv(GLenum p, GLfloat *v) {
         case GL_COLOR_WRITEMASK:
             v[0] = (float)c->color_mask[0]; v[1] = (float)c->color_mask[1];
             v[2] = (float)c->color_mask[2]; v[3] = (float)c->color_mask[3];
+            return;
+        /* Phase 7 */
+        case GL_ZOOM_X: *v = c->pixel_zoom_x; return;
+        case GL_ZOOM_Y: *v = c->pixel_zoom_y; return;
+        case GL_CURRENT_RASTER_POSITION:
+            v[0] = c->raster_pos[0]; v[1] = c->raster_pos[1];
+            v[2] = c->raster_pos[2]; v[3] = c->raster_pos[3];
+            return;
+        case GL_CURRENT_RASTER_COLOR:
+            v[0] = c->raster_color[0]; v[1] = c->raster_color[1];
+            v[2] = c->raster_color[2]; v[3] = c->raster_color[3];
             return;
         default: sg_set_error(GL_INVALID_ENUM); return;
     }

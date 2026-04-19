@@ -267,6 +267,25 @@ struct softgl_ctx {
     GLuint     dlist_base;          /* glListBase */
     int        dlist_depth;         /* nested call counter */
 
+    /* Pixel-transfer state (Phase 7): pack/unpack + zoom. */
+    struct {
+        GLint alignment;      /* 1,2,4,8 (default 4) */
+        GLint row_length;     /* 0 = use width */
+        GLint skip_rows;
+        GLint skip_pixels;
+        GLint lsb_first;
+        GLint swap_bytes;
+    } pack, unpack;
+    float  pixel_zoom_x;
+    float  pixel_zoom_y;
+
+    /* Raster position (Phase 7). Post-transform window-space coord + snapshot
+     * of current color / texcoord at the moment glRasterPos was called. */
+    float  raster_pos[4];
+    float  raster_color[4];
+    float  raster_texcoord[4];
+    int    raster_pos_valid;
+
     /* Error */
     GLenum last_error;
 };

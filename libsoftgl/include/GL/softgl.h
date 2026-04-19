@@ -313,6 +313,30 @@ typedef ptrdiff_t      GLintptr;
 #define GL_LOGIC_OP_MODE                  0x0BF0
 #define GL_INDEX_LOGIC_OP                 0x0BF1
 
+/* Pixel transfer (Phase 7) */
+#define GL_PACK_ALIGNMENT                 0x0D05
+#define GL_PACK_ROW_LENGTH                0x0D02
+#define GL_PACK_SKIP_ROWS                 0x0D03
+#define GL_PACK_SKIP_PIXELS               0x0D04
+#define GL_PACK_LSB_FIRST                 0x0D01
+#define GL_PACK_SWAP_BYTES                0x0D00
+#define GL_UNPACK_ALIGNMENT               0x0CF5
+#define GL_UNPACK_ROW_LENGTH              0x0CF2
+#define GL_UNPACK_SKIP_ROWS               0x0CF3
+#define GL_UNPACK_SKIP_PIXELS             0x0CF4
+#define GL_UNPACK_LSB_FIRST               0x0CF1
+#define GL_UNPACK_SWAP_BYTES              0x0CF0
+#define GL_ZOOM_X                         0x0D16
+#define GL_ZOOM_Y                         0x0D17
+#define GL_CURRENT_RASTER_POSITION        0x0B07
+#define GL_CURRENT_RASTER_POSITION_VALID  0x0B08
+#define GL_CURRENT_RASTER_COLOR           0x0B04
+#define GL_DEPTH_COMPONENT                0x1902
+#define GL_STENCIL_INDEX                  0x1901
+#define GL_COLOR                          0x1800
+#define GL_DEPTH                          0x1801
+#define GL_STENCIL                        0x1802
+
 /* Hint */
 #define GL_PERSPECTIVE_CORRECTION_HINT    0x0C50
 #define GL_POINT_SMOOTH_HINT              0x0C51
@@ -613,6 +637,41 @@ void glLineWidth(GLfloat width);
 void glPointSize(GLfloat size);
 void glPolygonMode(GLenum face, GLenum mode);
 void glPolygonOffset(GLfloat factor, GLfloat units);
+
+/* ---- Pixel transfer (Phase 7) ---- */
+
+void glDrawPixels(GLsizei w, GLsizei h, GLenum format, GLenum type, const void *pixels);
+void glReadPixels(GLint x, GLint y, GLsizei w, GLsizei h, GLenum format, GLenum type, void *pixels);
+void glCopyPixels(GLint x, GLint y, GLsizei w, GLsizei h, GLenum type);
+void glPixelStorei(GLenum pname, GLint param);
+void glPixelStoref(GLenum pname, GLfloat param);
+void glPixelZoom(GLfloat xfactor, GLfloat yfactor);
+
+/* glRasterPos — all coordinate variants funnel into the same state. */
+void glRasterPos2f(GLfloat x, GLfloat y);
+void glRasterPos2i(GLint x, GLint y);
+void glRasterPos2s(GLshort x, GLshort y);
+void glRasterPos2d(GLdouble x, GLdouble y);
+void glRasterPos3f(GLfloat x, GLfloat y, GLfloat z);
+void glRasterPos3i(GLint x, GLint y, GLint z);
+void glRasterPos3s(GLshort x, GLshort y, GLshort z);
+void glRasterPos3d(GLdouble x, GLdouble y, GLdouble z);
+void glRasterPos4f(GLfloat x, GLfloat y, GLfloat z, GLfloat w);
+void glRasterPos4i(GLint x, GLint y, GLint z, GLint w);
+void glRasterPos4s(GLshort x, GLshort y, GLshort z, GLshort w);
+void glRasterPos4d(GLdouble x, GLdouble y, GLdouble z, GLdouble w);
+void glRasterPos2fv(const GLfloat *v);
+void glRasterPos2iv(const GLint *v);
+void glRasterPos2sv(const GLshort *v);
+void glRasterPos2dv(const GLdouble *v);
+void glRasterPos3fv(const GLfloat *v);
+void glRasterPos3iv(const GLint *v);
+void glRasterPos3sv(const GLshort *v);
+void glRasterPos3dv(const GLdouble *v);
+void glRasterPos4fv(const GLfloat *v);
+void glRasterPos4iv(const GLint *v);
+void glRasterPos4sv(const GLshort *v);
+void glRasterPos4dv(const GLdouble *v);
 
 /* ---- Display lists ---- */
 

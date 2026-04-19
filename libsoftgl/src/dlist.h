@@ -130,6 +130,15 @@ enum {
     SG_OP_LIGHT_MODELF,     /* GLenum, float                    */
     SG_OP_LIGHT_MODELI,     /* GLenum, GLint                    */
 
+    /* Phase 7: pixel transfer */
+    SG_OP_DRAW_PIXELS,      /* GLsizei w, h; GLenum fmt, type; uint32 bytes; <pixels> */
+    SG_OP_READ_PIXELS,      /* GLint x,y; GLsizei w,h; GLenum fmt,type; uintptr dst */
+    SG_OP_COPY_PIXELS,      /* GLint x,y; GLsizei w,h; GLenum type */
+    SG_OP_PIXEL_STORE_I,    /* GLenum pname; GLint  param */
+    SG_OP_PIXEL_STORE_F,    /* GLenum pname; GLfloat param */
+    SG_OP_PIXEL_ZOOM,       /* float xf, yf */
+    SG_OP_RASTER_POS,       /* float[4] x,y,z,w */
+
     SG_OP_END_OF_LIST       /* sentinel */
 };
 
@@ -262,6 +271,15 @@ void _sg_hint_real(GLenum target, GLenum mode);
 void _sg_index_mask_real(GLuint mask);
 void _sg_light_modelf_real(GLenum p, GLfloat v);
 void _sg_light_modeli_real(GLenum p, GLint v);
+
+/* Phase 7: pixel transfer */
+void _sg_draw_pixels_real(GLsizei w, GLsizei h, GLenum format, GLenum type, const void *pixels);
+void _sg_read_pixels_real(GLint x, GLint y, GLsizei w, GLsizei h, GLenum format, GLenum type, void *pixels);
+void _sg_copy_pixels_real(GLint x, GLint y, GLsizei w, GLsizei h, GLenum type);
+void _sg_pixel_store_i_real(GLenum pname, GLint param);
+void _sg_pixel_store_f_real(GLenum pname, GLfloat param);
+void _sg_pixel_zoom_real(GLfloat xf, GLfloat yf);
+void _sg_raster_pos_real(float x, float y, float z, float w);
 
 /* Immediate mode — normalized primitives */
 void _sg_begin_real(GLenum mode);

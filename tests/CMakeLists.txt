@@ -220,6 +220,16 @@ set(SG_TEST_CASES
     178_logic_op_xor
     179_logic_op_invert
     180_hint_and_index_mask
+    181_drawpixels_rgba
+    182_drawpixels_luminance
+    183_drawpixels_rgb_float
+    184_readpixels_echo
+    185_copypixels
+    186_pixelzoom_2x
+    187_pixelzoom_flip
+    188_unpack_alignment
+    189_unpack_rowlength_skip
+    190_rasterpos_clipped
 )
 
 # Tolerances for reference/softgl pixel diff. Default exact; individual tests
@@ -354,6 +364,18 @@ foreach(p6_case
     178_logic_op_xor 179_logic_op_invert)
     set(SG_TOL_${p6_case}_MAX_DELTA 4)
     set(SG_TOL_${p6_case}_MAX_BAD ${SG_RASTER_MAX_BAD})
+endforeach()
+
+# Phase 7: pixel transfer. Byte-exact copies dominate, but LUMINANCE and FLOAT
+# clamp rounding may differ by 1 LSB against Mesa. Zoom paths touch nearest-
+# sample boundaries where Mesa's implementation may differ at edge pixels.
+foreach(p7_case
+    181_drawpixels_rgba 182_drawpixels_luminance 183_drawpixels_rgb_float
+    184_readpixels_echo 185_copypixels
+    186_pixelzoom_2x 187_pixelzoom_flip
+    188_unpack_alignment 189_unpack_rowlength_skip 190_rasterpos_clipped)
+    set(SG_TOL_${p7_case}_MAX_DELTA 4)
+    set(SG_TOL_${p7_case}_MAX_BAD ${SG_RASTER_MAX_BAD})
 endforeach()
 
 foreach(case_name IN LISTS SG_TEST_CASES)

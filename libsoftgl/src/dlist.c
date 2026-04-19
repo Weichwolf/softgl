@@ -618,6 +618,25 @@ static void sg_replay_stream(softgl_ctx *c, const uint8_t *cmds, size_t size) {
             sg_rd_read(&R, &a, sizeof(a));
             _sg_light_modeli_real(a.p, a.v); break; }
 
+        case SG_OP_DRAW_PIXELS: {
+            struct { GLsizei w, h; GLenum format, type; uint32_t bytes; } a;
+            sg_rd_read(&R, &a, sizeof(a));
+            const void *pixels = NULL;
+            if (a.bytes > 0) pixels = sg_rd_peek(&R, a.bytes);
+            _sg_draw_pixels_real(a.w, a.h, a.format, a.type, pixels);
+            break; }
+        case SG_OP_COPY_PIXELS: {
+            struct { GLint x, y; GLsizei w, h; GLenum type; } a;
+            sg_rd_read(&R, &a, sizeof(a));
+            _sg_copy_pixels_real(a.x, a.y, a.w, a.h, a.type);
+            break; }
+        case SG_OP_PIXEL_ZOOM: { float v[2];
+            sg_rd_read(&R, v, sizeof(v));
+            _sg_pixel_zoom_real(v[0], v[1]); break; }
+        case SG_OP_RASTER_POS: { float v[4];
+            sg_rd_read(&R, v, sizeof(v));
+            _sg_raster_pos_real(v[0], v[1], v[2], v[3]); break; }
+
         default:
             /* Unknown op — abort replay gracefully. */
             return;
