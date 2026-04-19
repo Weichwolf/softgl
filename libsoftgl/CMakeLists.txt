@@ -14,6 +14,7 @@ add_library(softgl STATIC
     src/immediate.c
     src/dlist.c
     src/pixels.c
+    src/evaluators.c
 )
 
 target_include_directories(softgl

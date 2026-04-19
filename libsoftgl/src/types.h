@@ -22,6 +22,8 @@
 #define SG_MAX_MIPMAP_LEVELS 16
 #define SG_MAX_CLIP_VERTS    12   /* triangle clipped against 6 planes -> up to 9, +spares */
 #define SG_TILE_SIZE         16
+#define SG_MAX_EVAL_ORDER    12   /* Bezier order clamp (spec minimum is 8). */
+#define SG_MAX_NAME_STACK    64
 
 /* Everything uses RGBA8888 in framebuffer; internal math float. */
 
@@ -153,6 +155,41 @@ typedef struct {
     const uint8_t *ptr;
     GLuint  buffer;       /* bound VBO when pointer was set; 0 = client array */
 } sg_attrib_ptr;
+
+/* ---- Evaluators (Phase X) ----
+ * One 1D and one 2D slot per target type (VERTEX_3/4, COLOR_4, NORMAL,
+ * TEXTURE_COORD_1..4). Each slot holds a deep copy of the control-point
+ * coefficients packed to 4 floats per point (unused components zeroed).
+ */
+enum {
+    SG_EV1_VERTEX_3 = 0, SG_EV1_VERTEX_4, SG_EV1_COLOR_4, SG_EV1_NORMAL,
+    SG_EV1_TEX_1, SG_EV1_TEX_2, SG_EV1_TEX_3, SG_EV1_TEX_4,
+    SG_EV1_COUNT
+};
+enum {
+    SG_EV2_VERTEX_3 = 0, SG_EV2_VERTEX_4, SG_EV2_COLOR_4, SG_EV2_NORMAL,
+    SG_EV2_TEX_1, SG_EV2_TEX_2, SG_EV2_TEX_3, SG_EV2_TEX_4,
+    SG_EV2_COUNT
+};
+
+typedef struct {
+    int     enabled;          /* glEnable(GL_MAP1_*) */
+    int     defined;          /* points[] holds valid coefficients */
+    float   u0, u1;
+    int     order;            /* 1..SG_MAX_EVAL_ORDER */
+    int     components;       /* 3, 4, or the count for tex/color/normal */
+    /* Packed to 4 components per control point so every type fits. */
+    float  *points;           /* order * 4 floats */
+} sg_map1;
+
+typedef struct {
+    int     enabled;
+    int     defined;
+    float   u0, u1, v0, v1;
+    int     u_order, v_order;
+    int     components;
+    float  *points;           /* u_order * v_order * 4 floats */
+} sg_map2;
 
 struct softgl_ctx {
     sg_framebuffer fb;
@@ -309,6 +346,46 @@ struct softgl_ctx {
     float  raster_color[4];
     float  raster_texcoord[4];
     int    raster_pos_valid;
+
+    /* ---- Phase X: Evaluators ---- */
+    sg_map1 map1[SG_EV1_COUNT];
+    sg_map2 map2[SG_EV2_COUNT];
+    /* Grid state for EvalMesh. */
+    int     map1_grid_n;        float map1_grid_u0, map1_grid_u1;
+    int     map2_grid_nu;       float map2_grid_u0, map2_grid_u1;
+    int     map2_grid_nv;       float map2_grid_v0, map2_grid_v1;
+    int     auto_normal;        /* GL_AUTO_NORMAL */
+
+    /* ---- Phase X: Accumulation buffer (lazy alloc on first glAccum). ---- */
+    float  *accum;              /* fb.w * fb.h * 4 floats; NULL until used */
+    float   clear_accum[4];
+
+    /* ---- Phase X: Selection + Feedback ---- */
+    GLenum  render_mode;        /* GL_RENDER / GL_SELECT / GL_FEEDBACK */
+    /* Selection: name stack + hit records into a user-provided buffer. */
+    GLuint *sel_buffer;
+    GLsizei sel_buffer_size;    /* in GLuints */
+    GLsizei sel_buffer_used;    /* high-water ptr; set INVALID_OPERATION on overflow */
+    int     sel_overflow;
+    GLuint  name_stack[SG_MAX_NAME_STACK];
+    int     name_stack_top;     /* -1 = empty (no glInitNames yet or popped past base) */
+    int     sel_hit_count;      /* returned by glRenderMode(SELECT -> other) */
+    int     sel_hit_record_open;/* is there a live record ready to be flushed? */
+    float   sel_hit_zmin, sel_hit_zmax;
+    /* Feedback. */
+    GLfloat *fb_buffer;
+    GLsizei  fb_buffer_size;    /* in GLfloats */
+    GLsizei  fb_buffer_used;
+    GLenum   fb_type;           /* GL_2D / GL_3D / GL_3D_COLOR / ... */
+    int      fb_overflow;
+
+    /* ---- Phase X: Stipple ---- */
+    int     line_stipple_enable;
+    int     line_stipple_factor;
+    GLushort line_stipple_pattern;
+    int     line_stipple_counter;  /* incremented per fragment along a line */
+    int     polygon_stipple_enable;
+    GLubyte polygon_stipple[128];  /* 32 rows * 4 bytes each */
 
     /* Error */
     GLenum last_error;

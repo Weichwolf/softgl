@@ -231,6 +231,31 @@ static void sg_reset_state(softgl_ctx *c) {
     c->raster_texcoord[3] = 1.f;
     c->raster_pos_valid = 1;
 
+    /* Phase X: evaluators / accum / selection / feedback / stipple. */
+    memset(c->map1, 0, sizeof(c->map1));
+    memset(c->map2, 0, sizeof(c->map2));
+    c->map1_grid_n = 1; c->map1_grid_u0 = 0.f; c->map1_grid_u1 = 1.f;
+    c->map2_grid_nu = 1; c->map2_grid_u0 = 0.f; c->map2_grid_u1 = 1.f;
+    c->map2_grid_nv = 1; c->map2_grid_v0 = 0.f; c->map2_grid_v1 = 1.f;
+    c->auto_normal = 0;
+    c->accum = NULL;
+    c->clear_accum[0] = c->clear_accum[1] = c->clear_accum[2] = c->clear_accum[3] = 0.f;
+    c->render_mode = GL_RENDER;
+    c->sel_buffer = NULL; c->sel_buffer_size = 0; c->sel_buffer_used = 0;
+    c->sel_overflow = 0;
+    c->name_stack_top = -1;
+    c->sel_hit_count = 0;
+    c->sel_hit_record_open = 0;
+    c->sel_hit_zmin = c->sel_hit_zmax = 0.f;
+    c->fb_buffer = NULL; c->fb_buffer_size = 0; c->fb_buffer_used = 0;
+    c->fb_type = GL_2D; c->fb_overflow = 0;
+    c->line_stipple_enable = 0;
+    c->line_stipple_factor = 1;
+    c->line_stipple_pattern = 0xFFFFu;
+    c->line_stipple_counter = 0;
+    c->polygon_stipple_enable = 0;
+    memset(c->polygon_stipple, 0xFF, sizeof(c->polygon_stipple));
+
     c->last_error = GL_NO_ERROR;
 }
 
@@ -274,6 +299,13 @@ void softgl_destroy(softgl_ctx *c) {
     }
     if (c->imm_buf) sg_aligned_free(c->imm_buf);
     if (c->queries) free(c->queries);
+    for (int i = 0; i < SG_EV1_COUNT; i++) {
+        if (c->map1[i].points) free(c->map1[i].points);
+    }
+    for (int i = 0; i < SG_EV2_COUNT; i++) {
+        if (c->map2[i].points) free(c->map2[i].points);
+    }
+    if (c->accum) free(c->accum);
     sg_dlist_shutdown(c);
     if (g_current == c) g_current = NULL;
     free(c);
@@ -339,6 +371,29 @@ static int *sg_enable_flag(softgl_ctx *c, GLenum cap, int *light_slot) {
     }
     if (cap >= GL_CLIP_PLANE0 && cap <= GL_CLIP_PLANE5) {
         return &c->clip_plane_enabled[cap - GL_CLIP_PLANE0];
+    }
+    /* Phase X: evaluators + stipple + auto-normal. */
+    switch (cap) {
+        case GL_MAP1_VERTEX_3:        return &c->map1[SG_EV1_VERTEX_3].enabled;
+        case GL_MAP1_VERTEX_4:        return &c->map1[SG_EV1_VERTEX_4].enabled;
+        case GL_MAP1_COLOR_4:         return &c->map1[SG_EV1_COLOR_4].enabled;
+        case GL_MAP1_NORMAL:          return &c->map1[SG_EV1_NORMAL].enabled;
+        case GL_MAP1_TEXTURE_COORD_1: return &c->map1[SG_EV1_TEX_1].enabled;
+        case GL_MAP1_TEXTURE_COORD_2: return &c->map1[SG_EV1_TEX_2].enabled;
+        case GL_MAP1_TEXTURE_COORD_3: return &c->map1[SG_EV1_TEX_3].enabled;
+        case GL_MAP1_TEXTURE_COORD_4: return &c->map1[SG_EV1_TEX_4].enabled;
+        case GL_MAP2_VERTEX_3:        return &c->map2[SG_EV2_VERTEX_3].enabled;
+        case GL_MAP2_VERTEX_4:        return &c->map2[SG_EV2_VERTEX_4].enabled;
+        case GL_MAP2_COLOR_4:         return &c->map2[SG_EV2_COLOR_4].enabled;
+        case GL_MAP2_NORMAL:          return &c->map2[SG_EV2_NORMAL].enabled;
+        case GL_MAP2_TEXTURE_COORD_1: return &c->map2[SG_EV2_TEX_1].enabled;
+        case GL_MAP2_TEXTURE_COORD_2: return &c->map2[SG_EV2_TEX_2].enabled;
+        case GL_MAP2_TEXTURE_COORD_3: return &c->map2[SG_EV2_TEX_3].enabled;
+        case GL_MAP2_TEXTURE_COORD_4: return &c->map2[SG_EV2_TEX_4].enabled;
+        case GL_AUTO_NORMAL:          return &c->auto_normal;
+        case GL_LINE_STIPPLE:         return &c->line_stipple_enable;
+        case GL_POLYGON_STIPPLE:      return &c->polygon_stipple_enable;
+        default: break;
     }
     return NULL;
 }
@@ -977,6 +1032,31 @@ static int sg_query_state(softgl_ctx *c, GLenum p, double out[16]) {
         case GL_LINE_SMOOTH:
         case GL_POINT_SMOOTH:
         case GL_POLYGON_SMOOTH:              out[0] = 0; return 1;
+
+        /* Phase X: accum / selection / feedback / stipple queries. */
+        case GL_ACCUM_RED_BITS: case GL_ACCUM_GREEN_BITS:
+        case GL_ACCUM_BLUE_BITS: case GL_ACCUM_ALPHA_BITS: out[0] = 16; return 1;
+        case GL_ACCUM_CLEAR_VALUE:
+            out[0] = c->clear_accum[0]; out[1] = c->clear_accum[1];
+            out[2] = c->clear_accum[2]; out[3] = c->clear_accum[3];
+            return 4;
+        case GL_RENDER_MODE:                 out[0] = (double)c->render_mode; return 1;
+        case GL_SELECTION_BUFFER_SIZE:       out[0] = (double)c->sel_buffer_size; return 1;
+        case GL_FEEDBACK_BUFFER_SIZE:        out[0] = (double)c->fb_buffer_size; return 1;
+        case GL_FEEDBACK_BUFFER_TYPE:        out[0] = (double)c->fb_type; return 1;
+        case GL_NAME_STACK_DEPTH:            out[0] = (double)(c->name_stack_top + 1); return 1;
+        case GL_MAX_NAME_STACK_DEPTH:        out[0] = SG_MAX_NAME_STACK; return 1;
+        case GL_LINE_STIPPLE_PATTERN:        out[0] = (double)c->line_stipple_pattern; return 1;
+        case GL_LINE_STIPPLE_REPEAT:         out[0] = (double)c->line_stipple_factor; return 1;
+        case GL_MAP1_GRID_SEGMENTS:          out[0] = (double)c->map1_grid_n; return 1;
+        case GL_MAP1_GRID_DOMAIN:
+            out[0] = c->map1_grid_u0; out[1] = c->map1_grid_u1; return 2;
+        case GL_MAP2_GRID_SEGMENTS:
+            out[0] = (double)c->map2_grid_nu; out[1] = (double)c->map2_grid_nv; return 2;
+        case GL_MAP2_GRID_DOMAIN:
+            out[0] = c->map2_grid_u0; out[1] = c->map2_grid_u1;
+            out[2] = c->map2_grid_v0; out[3] = c->map2_grid_v1;
+            return 4;
 
         default: break;
     }

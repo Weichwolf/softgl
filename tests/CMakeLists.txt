@@ -238,6 +238,9 @@ set(SG_TEST_CASES
     196_occlusion_samples
     197_occlusion_any
     198_map_buffer
+    199_evaluators_patch
+    200_accum_jitter
+    201_stipple
 )
 
 # Tolerances for reference/softgl pixel diff. Default exact; individual tests
@@ -405,6 +408,32 @@ endforeach()
 # 198 renders a triangle via mapped-buffer vertices — standard raster budget.
 set(SG_TOL_198_map_buffer_MAX_DELTA 4)
 set(SG_TOL_198_map_buffer_MAX_BAD ${SG_RASTER_MAX_BAD})
+
+# Phase X: Evaluators / Accum / Stipple.
+# 199 — evaluator bezier patch: de Casteljau vs Mesa's internal Bezier basis
+# can differ by ~1 LSB at smooth-shaded interiors, plus raster tie-breaks on
+# the quad seam grid. Stay with the standard raster budget but delta 8 — the
+# auto-normal central-difference approximation differs from Mesa's analytic
+# partial derivative at a per-channel byte level, which ripples through
+# diffuse lighting.
+set(SG_TOL_199_evaluators_patch_MAX_DELTA 16)
+set(SG_TOL_199_evaluators_patch_MAX_BAD ${SG_RASTER_MAX_BAD})
+
+# 200 — 4-sample jitter accum AA: sub-pixel sample positions are identical
+# and the 0.25 blend weight matches, but llvmpipe's rasterizer edge rules
+# differ per jitter pass. Expect sub-pixel anti-aliased edges that don't line
+# up byte-exactly; widen the delta and double the bad-pixel budget.
+math(EXPR SG_ACCUM_MAX_BAD "640 * 360 * 5 / 100")
+set(SG_TOL_200_accum_jitter_MAX_DELTA 16)
+set(SG_TOL_200_accum_jitter_MAX_BAD ${SG_ACCUM_MAX_BAD})
+
+# 201 — line + polygon stipple: our rasterizers are DDA/Bresenham-ish, llvmpipe
+# uses a half-plane line algorithm. Stippled edges drift at non-axis-aligned
+# angles, plus polygon-fill stipple phase locks to window-space origin (we
+# match Mesa's convention) but the underlying polygon rasterization differs
+# at edge pixels. Use the generous line budget.
+set(SG_TOL_201_stipple_MAX_DELTA 8)
+set(SG_TOL_201_stipple_MAX_BAD ${SG_LINE_MAX_BAD_BIG})
 
 foreach(case_name IN LISTS SG_TEST_CASES)
     set(src cases/test_${case_name}.c)

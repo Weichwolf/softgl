@@ -436,6 +436,79 @@ typedef int64_t        GLint64;
 #define GL_FASTEST                        0x1101
 #define GL_NICEST                         0x1102
 
+/* Phase X: Evaluators (1D/2D Bezier maps). */
+#define GL_MAP1_COLOR_4                   0x0D90
+#define GL_MAP1_INDEX                     0x0D91
+#define GL_MAP1_NORMAL                    0x0D92
+#define GL_MAP1_TEXTURE_COORD_1           0x0D93
+#define GL_MAP1_TEXTURE_COORD_2           0x0D94
+#define GL_MAP1_TEXTURE_COORD_3           0x0D95
+#define GL_MAP1_TEXTURE_COORD_4           0x0D96
+#define GL_MAP1_VERTEX_3                  0x0D97
+#define GL_MAP1_VERTEX_4                  0x0D98
+#define GL_MAP2_COLOR_4                   0x0DB0
+#define GL_MAP2_INDEX                     0x0DB1
+#define GL_MAP2_NORMAL                    0x0DB2
+#define GL_MAP2_TEXTURE_COORD_1           0x0DB3
+#define GL_MAP2_TEXTURE_COORD_2           0x0DB4
+#define GL_MAP2_TEXTURE_COORD_3           0x0DB5
+#define GL_MAP2_TEXTURE_COORD_4           0x0DB6
+#define GL_MAP2_VERTEX_3                  0x0DB7
+#define GL_MAP2_VERTEX_4                  0x0DB8
+#define GL_MAP1_GRID_DOMAIN               0x0DD0
+#define GL_MAP1_GRID_SEGMENTS             0x0DD1
+#define GL_MAP2_GRID_DOMAIN               0x0DD2
+#define GL_MAP2_GRID_SEGMENTS             0x0DD3
+#define GL_AUTO_NORMAL                    0x0D80
+#define GL_COEFF                          0x0A00
+#define GL_ORDER                          0x0A01
+#define GL_DOMAIN                         0x0A02
+
+/* Phase X: Accumulation buffer. */
+#define GL_ACCUM                          0x0100
+#define GL_LOAD                           0x0101
+#define GL_RETURN                         0x0102
+#define GL_MULT                           0x0103
+/* GL_ADD (0x0104) already defined */
+#define GL_ACCUM_BUFFER_BIT               0x00000200
+#define GL_ACCUM_CLEAR_VALUE              0x0B80
+#define GL_ACCUM_RED_BITS                 0x0D58
+#define GL_ACCUM_GREEN_BITS               0x0D59
+#define GL_ACCUM_BLUE_BITS                0x0D5A
+#define GL_ACCUM_ALPHA_BITS               0x0D5B
+
+/* Phase X: Selection + Feedback. */
+#define GL_RENDER                         0x1C00
+#define GL_FEEDBACK                       0x1C01
+#define GL_SELECT                         0x1C02
+#define GL_RENDER_MODE                    0x0C40
+#define GL_SELECTION_BUFFER_POINTER       0x0DF3
+#define GL_SELECTION_BUFFER_SIZE          0x0DF4
+#define GL_FEEDBACK_BUFFER_POINTER        0x0DF0
+#define GL_FEEDBACK_BUFFER_SIZE           0x0DF1
+#define GL_FEEDBACK_BUFFER_TYPE           0x0DF2
+#define GL_NAME_STACK_DEPTH               0x0D70
+#define GL_MAX_NAME_STACK_DEPTH           0x0D37
+#define GL_2D                             0x0600
+#define GL_3D                             0x0601
+#define GL_3D_COLOR                       0x0602
+#define GL_3D_COLOR_TEXTURE               0x0603
+#define GL_4D_COLOR_TEXTURE               0x0604
+#define GL_PASS_THROUGH_TOKEN             0x0700
+#define GL_POINT_TOKEN                    0x0701
+#define GL_LINE_TOKEN                     0x0702
+#define GL_POLYGON_TOKEN                  0x0703
+#define GL_BITMAP_TOKEN                   0x0704
+#define GL_DRAW_PIXEL_TOKEN               0x0705
+#define GL_COPY_PIXEL_TOKEN               0x0706
+#define GL_LINE_RESET_TOKEN               0x0707
+
+/* Phase X: Line/Polygon stipple. */
+#define GL_LINE_STIPPLE                   0x0B24
+#define GL_LINE_STIPPLE_PATTERN           0x0B25
+#define GL_LINE_STIPPLE_REPEAT            0x0B26
+#define GL_POLYGON_STIPPLE                0x0B42
+
 /* ---- Entry points ---- */
 
 void glClearColor(GLclampf r, GLclampf g, GLclampf b, GLclampf a);
@@ -790,6 +863,51 @@ void      glEndList(void);
 void      glCallList(GLuint list);
 void      glCallLists(GLsizei n, GLenum type, const GLvoid *lists);
 void      glListBase(GLuint base);
+
+/* ---- Phase X: Evaluators, Accum buffer, Selection/Feedback, Stipple ---- */
+
+void glMap1f(GLenum target, GLfloat u1, GLfloat u2, GLint stride,
+             GLint order, const GLfloat *points);
+void glMap1d(GLenum target, GLdouble u1, GLdouble u2, GLint stride,
+             GLint order, const GLdouble *points);
+void glMap2f(GLenum target, GLfloat u1, GLfloat u2, GLint ustride, GLint uorder,
+             GLfloat v1, GLfloat v2, GLint vstride, GLint vorder,
+             const GLfloat *points);
+void glMap2d(GLenum target, GLdouble u1, GLdouble u2, GLint ustride, GLint uorder,
+             GLdouble v1, GLdouble v2, GLint vstride, GLint vorder,
+             const GLdouble *points);
+void glMapGrid1f(GLint n, GLfloat u1, GLfloat u2);
+void glMapGrid1d(GLint n, GLdouble u1, GLdouble u2);
+void glMapGrid2f(GLint nu, GLfloat u1, GLfloat u2,
+                 GLint nv, GLfloat v1, GLfloat v2);
+void glMapGrid2d(GLint nu, GLdouble u1, GLdouble u2,
+                 GLint nv, GLdouble v1, GLdouble v2);
+void glEvalCoord1f(GLfloat u);
+void glEvalCoord1d(GLdouble u);
+void glEvalCoord2f(GLfloat u, GLfloat v);
+void glEvalCoord2d(GLdouble u, GLdouble v);
+void glEvalCoord1fv(const GLfloat *u);
+void glEvalCoord2fv(const GLfloat *uv);
+void glEvalMesh1(GLenum mode, GLint i1, GLint i2);
+void glEvalMesh2(GLenum mode, GLint i1, GLint i2, GLint j1, GLint j2);
+void glEvalPoint1(GLint i);
+void glEvalPoint2(GLint i, GLint j);
+
+void glClearAccum(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
+void glAccum(GLenum op, GLfloat value);
+
+GLint glRenderMode(GLenum mode);
+void  glSelectBuffer(GLsizei size, GLuint *buffer);
+void  glInitNames(void);
+void  glLoadName(GLuint name);
+void  glPushName(GLuint name);
+void  glPopName(void);
+void  glFeedbackBuffer(GLsizei size, GLenum type, GLfloat *buffer);
+void  glPassThrough(GLfloat token);
+
+void glLineStipple(GLint factor, GLushort pattern);
+void glPolygonStipple(const GLubyte *mask);
+void glGetPolygonStipple(GLubyte *mask);
 
 /* ---- Softgl-specific extensions ---- */
 

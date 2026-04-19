@@ -298,6 +298,13 @@ void sg_raster_triangle(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1, con
             float e1 = sg_edge(x2, y2, x0, y0, px, py);  /* opposite v1 */
             float e2 = sg_edge(x0, y0, x1, y1, px, py);  /* opposite v2 */
             if (e0 < 0.f || e1 < 0.f || e2 < 0.f) continue;
+            /* Polygon stipple (Phase X): 32x32 bit pattern in window coords. */
+            if (c->polygon_stipple_enable) {
+                int sx = x & 31;
+                int sy = y & 31;
+                GLubyte row = c->polygon_stipple[sy * 4 + (sx >> 3)];
+                if (!(row & (0x80u >> (sx & 7)))) continue;
+            }
 
             /* Barycentric weights, with top-left fill rule applied implicitly by >= 0. */
             float b0 = e0 * inv_area;

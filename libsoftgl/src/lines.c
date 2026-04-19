@@ -150,6 +150,15 @@ static void sg_raster_line_1px(softgl_ctx *c, const sg_vert *v0, const sg_vert *
         int ix = (int)floorf(x);
         int iy = (int)floorf(y);
 
+        /* Line stipple: per-fragment bit test against the 16-bit pattern,
+         * scaled by factor. The counter runs independently of the pipeline. */
+        if (c->line_stipple_enable) {
+            int factor = c->line_stipple_factor < 1 ? 1 : c->line_stipple_factor;
+            int bit = (c->line_stipple_counter / factor) & 15;
+            c->line_stipple_counter++;
+            if (!(c->line_stipple_pattern & (1u << bit))) continue;
+        }
+
         float col[4];
         col[0] = v0->color.x + (v1->color.x - v0->color.x) * t;
         col[1] = v0->color.y + (v1->color.y - v0->color.y) * t;

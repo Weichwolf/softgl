@@ -65,6 +65,26 @@ void _sg_clear_real(GLbitfield mask) {
             for (int x = x0; x < x1; x++) row[x - x0] = s;
         }
     }
+    if (mask & GL_ACCUM_BUFFER_BIT) {
+        /* Lazy-allocate the accum buffer on first use. */
+        if (!c->accum) {
+            size_t nf = (size_t)c->fb.w * (size_t)c->fb.h * 4;
+            c->accum = (float*)malloc(nf * sizeof(float));
+            if (c->accum) memset(c->accum, 0, nf * sizeof(float));
+        }
+        if (c->accum) {
+            for (int y = y0; y < y1; y++) {
+                float *row = c->accum + (y * c->fb.w + x0) * 4;
+                for (int x = x0; x < x1; x++) {
+                    float *p = row + (x - x0) * 4;
+                    p[0] = c->clear_accum[0];
+                    p[1] = c->clear_accum[1];
+                    p[2] = c->clear_accum[2];
+                    p[3] = c->clear_accum[3];
+                }
+            }
+        }
+    }
 }
 
 void glClear(GLbitfield mask) {

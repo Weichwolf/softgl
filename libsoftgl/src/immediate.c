@@ -320,6 +320,7 @@ void _sg_begin_real(GLenum mode) {
     c->imm_mode   = mode;
     c->imm_active = 1;
     c->imm_count  = 0;
+    c->line_stipple_counter = 0;
 }
 
 void _sg_end_real(void) {
