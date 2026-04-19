@@ -209,6 +209,22 @@ void sg_write_fragment(softgl_ctx *c, int x, int y, float z, float r, float g, f
     if (c->color_mask[1]) px[1] = sg_quantize(g);
     if (c->color_mask[2]) px[2] = sg_quantize(b);
     if (c->color_mask[3]) px[3] = sg_quantize(a);
+
+    /* Occlusion-query sample counting (Phase 9). Only fragments that passed
+     * the full test stack (scissor/alpha/stencil/depth) AND actually wrote
+     * color participate per spec — we reach this point exactly when that
+     * holds. GL_SAMPLES_PASSED accumulates the per-fragment count (we run
+     * at 1 sample/pixel); GL_ANY_SAMPLES_PASSED is a sticky boolean. */
+    GLuint qsid = c->current_query[SG_QUERY_TARGET_SAMPLES_PASSED];
+    if (qsid) {
+        sg_query *q = sg_query_get(c, qsid);
+        if (q && q->active) q->result += 1;
+    }
+    GLuint qaid = c->current_query[SG_QUERY_TARGET_ANY_SAMPLES_PASSED];
+    if (qaid) {
+        sg_query *q = sg_query_get(c, qaid);
+        if (q && q->active) q->result = 1;
+    }
 }
 
 /* Linear-interpolate a vec4 attribute perspective-correctly. */

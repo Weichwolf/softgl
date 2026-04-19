@@ -60,7 +60,24 @@ typedef struct {
     size_t   size;
     void    *data;
     GLenum   usage;
+    int      mapped;       /* 1 between glMapBuffer / glUnmapBuffer */
+    GLenum   access;       /* GL_READ_ONLY / GL_WRITE_ONLY / GL_READ_WRITE */
 } sg_buffer;
+
+/* Occlusion query object (Phase 9, ARB_occlusion_query). */
+typedef struct {
+    uint32_t id;
+    int      in_use;
+    GLenum   target;        /* GL_SAMPLES_PASSED | GL_ANY_SAMPLES_PASSED */
+    int      active;        /* 1 between glBeginQuery / glEndQuery */
+    GLuint64 result;        /* sample count (or 0/1 for ANY_SAMPLES_PASSED) */
+    int      result_available;
+} sg_query;
+
+/* Slots for the per-target currently-active query. */
+#define SG_QUERY_TARGET_SAMPLES_PASSED     0
+#define SG_QUERY_TARGET_ANY_SAMPLES_PASSED 1
+#define SG_QUERY_TARGET_COUNT              2
 
 /* Texture target slot indices for per-unit bindings / enables. */
 #define SG_TEX_TARGET_1D   0
@@ -243,6 +260,11 @@ struct softgl_ctx {
     GLuint      array_buffer_binding;
     GLuint      element_buffer_binding;
 
+    /* Occlusion queries (Phase 9) */
+    sg_query *queries;
+    size_t    queries_cap;
+    GLuint    current_query[SG_QUERY_TARGET_COUNT];  /* id of currently active query per target, 0 = none */
+
     /* Vertex attribute pointers (client state) */
     sg_attrib_ptr attr_pos;
     sg_attrib_ptr attr_normal;
@@ -319,6 +341,7 @@ struct sg_buffer_s;
 struct sg_texture_s;
 sg_buffer  *sg_buffer_get(softgl_ctx *c, GLuint id);
 sg_texture *sg_texture_get(softgl_ctx *c, GLuint id);
+sg_query   *sg_query_get(softgl_ctx *c, GLuint id);
 
 /* From pipeline.c */
 void sg_process_triangle_pub(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert *v2);

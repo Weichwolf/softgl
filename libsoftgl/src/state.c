@@ -184,6 +184,10 @@ static void sg_reset_state(softgl_ctx *c) {
     c->array_buffer_binding = 0;
     c->element_buffer_binding = 0;
 
+    c->queries = NULL;
+    c->queries_cap = 0;
+    for (int i = 0; i < SG_QUERY_TARGET_COUNT; i++) c->current_query[i] = 0;
+
     memset(&c->attr_pos, 0, sizeof(c->attr_pos));
     memset(&c->attr_normal, 0, sizeof(c->attr_normal));
     memset(&c->attr_color, 0, sizeof(c->attr_color));
@@ -269,6 +273,7 @@ void softgl_destroy(softgl_ctx *c) {
         free(c->textures);
     }
     if (c->imm_buf) sg_aligned_free(c->imm_buf);
+    if (c->queries) free(c->queries);
     sg_dlist_shutdown(c);
     if (g_current == c) g_current = NULL;
     free(c);
@@ -322,6 +327,10 @@ static int *sg_enable_flag(softgl_ctx *c, GLenum cap, int *light_slot) {
         case GL_COLOR_MATERIAL:       return &c->color_material_enabled;
         case GL_COLOR_LOGIC_OP:       return &c->color_logic_op_enabled;
         case GL_INDEX_LOGIC_OP:       return &c->color_logic_op_enabled; /* alias for state-only */
+        case GL_VERTEX_ARRAY:         return &c->attr_pos.enabled;
+        case GL_NORMAL_ARRAY:         return &c->attr_normal.enabled;
+        case GL_COLOR_ARRAY:          return &c->attr_color.enabled;
+        case GL_TEXTURE_COORD_ARRAY:  return &c->attr_tex[c->client_tex_unit].enabled;
         default: break;
     }
     if (cap >= GL_LIGHT0 && cap < GL_LIGHT0 + SG_MAX_LIGHTS) {
@@ -747,114 +756,287 @@ void glIndexMask(GLuint mask) {
     } else _sg_index_mask_real(mask);
 }
 
-/* glGet* are queries → always execute immediately (spec §5.4). */
+/* ================================================================
+ * Unified state query. Writes up to 16 doubles into `out`, returns
+ * the number of components. Returns 0 with GL_INVALID_ENUM on an
+ * unknown enum. Everything in the softgl state vector is reachable
+ * from here; glGetIntegerv / Floatv / Booleanv / Doublev all funnel
+ * through this one dispatch, picking the target type-conversion.
+ *
+ * Matrix-valued params (16 components) and array-valued (2/3/4) are
+ * all supported. Boolean caps dispatch into sg_enable_flag() below.
+ * ================================================================ */
+
+static int sg_query_state(softgl_ctx *c, GLenum p, double out[16]) {
+    switch (p) {
+        /* Viewport / scissor box. */
+        case GL_VIEWPORT:
+            out[0] = c->viewport[0]; out[1] = c->viewport[1];
+            out[2] = c->viewport[2]; out[3] = c->viewport[3];
+            return 4;
+        case GL_SCISSOR_BOX:
+            out[0] = c->scissor[0]; out[1] = c->scissor[1];
+            out[2] = c->scissor[2]; out[3] = c->scissor[3];
+            return 4;
+        case GL_MAX_VIEWPORT_DIMS:
+            out[0] = 16384; out[1] = 16384; return 2;
+
+        /* Implementation limits. */
+        case GL_MAX_LIGHTS:                   out[0] = SG_MAX_LIGHTS; return 1;
+        case GL_MAX_TEXTURE_UNITS:            out[0] = SG_MAX_TEX_UNITS; return 1;
+        case GL_MAX_TEXTURE_SIZE:             out[0] = 4096; return 1;
+        case GL_MAX_3D_TEXTURE_SIZE:          out[0] = 256; return 1;
+        case GL_MAX_CUBE_MAP_TEXTURE_SIZE:    out[0] = 4096; return 1;
+        case GL_MAX_CLIP_PLANES:              out[0] = 6; return 1;
+        case GL_MAX_MODELVIEW_STACK_DEPTH:    out[0] = SG_MAX_MATRIX_STACK; return 1;
+        case GL_MAX_TEXTURE_STACK_DEPTH:      out[0] = SG_MAX_MATRIX_STACK; return 1;
+        /* GL_MAX_MATRIX_STACK_DEPTH (0x0D38) == GL_MAX_PROJECTION_STACK_DEPTH */
+        case GL_MAX_MATRIX_STACK_DEPTH:       out[0] = SG_MAX_MATRIX_STACK; return 1;
+        case GL_SUBPIXEL_BITS:                out[0] = 4; return 1;
+        case GL_LIST_BASE:                    out[0] = (double)c->dlist_base; return 1;
+        case GL_MAX_LIST_NESTING:             out[0] = 64; return 1;
+
+        /* Matrices. */
+        case GL_MODELVIEW_MATRIX:
+            for (int i = 0; i < 16; i++) out[i] = c->mv_stack[c->mv_top].m[i];
+            return 16;
+        case GL_PROJECTION_MATRIX:
+            for (int i = 0; i < 16; i++) out[i] = c->pr_stack[c->pr_top].m[i];
+            return 16;
+        case GL_TEXTURE_MATRIX:
+            for (int i = 0; i < 16; i++)
+                out[i] = c->tex_stack[c->active_tex_unit][c->tex_top[c->active_tex_unit]].m[i];
+            return 16;
+        case GL_MATRIX_MODE:                  out[0] = (double)c->matrix_mode; return 1;
+
+        /* Current immediate-mode attrs. */
+        case GL_CURRENT_COLOR:
+            out[0] = c->current_color[0]; out[1] = c->current_color[1];
+            out[2] = c->current_color[2]; out[3] = c->current_color[3];
+            return 4;
+        case GL_CURRENT_NORMAL:
+            out[0] = c->current_normal[0]; out[1] = c->current_normal[1];
+            out[2] = c->current_normal[2]; return 3;
+        case GL_CURRENT_TEXTURE_COORDS:
+            out[0] = c->current_texcoord[c->active_tex_unit][0];
+            out[1] = c->current_texcoord[c->active_tex_unit][1];
+            out[2] = c->current_texcoord[c->active_tex_unit][2];
+            out[3] = c->current_texcoord[c->active_tex_unit][3];
+            return 4;
+
+        /* Clears. */
+        case GL_COLOR_CLEAR_VALUE:
+            out[0] = c->clear_color[0]; out[1] = c->clear_color[1];
+            out[2] = c->clear_color[2]; out[3] = c->clear_color[3];
+            return 4;
+        case GL_DEPTH_CLEAR_VALUE:           out[0] = c->clear_depth; return 1;
+        case GL_STENCIL_CLEAR_VALUE:         out[0] = c->clear_stencil; return 1;
+
+        /* Write masks. */
+        case GL_COLOR_WRITEMASK:
+            out[0] = c->color_mask[0]; out[1] = c->color_mask[1];
+            out[2] = c->color_mask[2]; out[3] = c->color_mask[3];
+            return 4;
+        case GL_DEPTH_WRITEMASK:             out[0] = c->depth_mask; return 1;
+        case GL_STENCIL_WRITEMASK:           out[0] = (double)c->stencil_write_mask; return 1;
+        case GL_INDEX_WRITEMASK:             out[0] = (double)c->index_writemask; return 1;
+
+        /* Cull / face. */
+        case GL_CULL_FACE_MODE:              out[0] = (double)c->cull_face; return 1;
+        case GL_FRONT_FACE:                  out[0] = (double)c->front_face; return 1;
+
+        /* Depth. */
+        case GL_DEPTH_FUNC:                  out[0] = (double)c->depth_func; return 1;
+        case GL_DEPTH_RANGE:                 out[0] = 0.0; out[1] = 1.0; return 2;
+
+        /* Stencil (queries). */
+        case GL_STENCIL_FUNC:                out[0] = (double)c->stencil_func; return 1;
+        case GL_STENCIL_REF:                 out[0] = (double)c->stencil_ref; return 1;
+        case GL_STENCIL_VALUE_MASK:          out[0] = (double)c->stencil_value_mask; return 1;
+        case GL_STENCIL_FAIL:                out[0] = (double)c->stencil_sfail; return 1;
+        case GL_STENCIL_PASS_DEPTH_FAIL:     out[0] = (double)c->stencil_dpfail; return 1;
+        case GL_STENCIL_PASS_DEPTH_PASS:     out[0] = (double)c->stencil_dppass; return 1;
+        case GL_STENCIL_BITS:                out[0] = 8; return 1;
+
+        /* Blend / alpha test. */
+        case GL_BLEND_SRC:                   out[0] = (double)c->blend_src; return 1;
+        case GL_BLEND_DST:                   out[0] = (double)c->blend_dst; return 1;
+        case GL_ALPHA_TEST_FUNC:             out[0] = (double)c->alpha_func; return 1;
+        case GL_ALPHA_TEST_REF:              out[0] = c->alpha_ref; return 1;
+
+        /* Fog. */
+        case GL_FOG_MODE:                    out[0] = (double)c->fog_mode; return 1;
+        case GL_FOG_DENSITY:                 out[0] = c->fog_density; return 1;
+        case GL_FOG_START:                   out[0] = c->fog_start; return 1;
+        case GL_FOG_END:                     out[0] = c->fog_end; return 1;
+        case GL_FOG_COLOR:
+            out[0] = c->fog_color[0]; out[1] = c->fog_color[1];
+            out[2] = c->fog_color[2]; out[3] = c->fog_color[3];
+            return 4;
+
+        /* Lighting model. */
+        case GL_LIGHT_MODEL_AMBIENT:
+            out[0] = c->light_model_ambient[0]; out[1] = c->light_model_ambient[1];
+            out[2] = c->light_model_ambient[2]; out[3] = c->light_model_ambient[3];
+            return 4;
+        case GL_LIGHT_MODEL_LOCAL_VIEWER:    out[0] = c->light_model_local_viewer; return 1;
+        case GL_LIGHT_MODEL_TWO_SIDE:        out[0] = c->light_model_two_side; return 1;
+        case GL_COLOR_MATERIAL_FACE:         out[0] = (double)c->color_material_face; return 1;
+        case GL_COLOR_MATERIAL_PARAMETER:    out[0] = (double)c->color_material_mode; return 1;
+        case GL_SHADE_MODEL:                 out[0] = (double)c->shade_model; return 1;
+
+        /* Line / point / polygon-mode. */
+        case GL_LINE_WIDTH:                  out[0] = c->line_width; return 1;
+        case GL_POINT_SIZE:                  out[0] = c->point_size; return 1;
+        case GL_POLYGON_MODE:
+            out[0] = (double)c->polygon_mode_front;
+            out[1] = (double)c->polygon_mode_back;
+            return 2;
+        case GL_POLYGON_OFFSET_FACTOR:       out[0] = c->polygon_offset_factor; return 1;
+        case GL_POLYGON_OFFSET_UNITS:        out[0] = c->polygon_offset_units;  return 1;
+
+        /* Logic op. */
+        case GL_LOGIC_OP_MODE:               out[0] = (double)c->logic_op; return 1;
+
+        /* Hints. */
+        case GL_PERSPECTIVE_CORRECTION_HINT: out[0] = (double)c->hint_perspective_correction; return 1;
+        case GL_POINT_SMOOTH_HINT:           out[0] = (double)c->hint_point_smooth; return 1;
+        case GL_LINE_SMOOTH_HINT:            out[0] = (double)c->hint_line_smooth; return 1;
+        case GL_POLYGON_SMOOTH_HINT:         out[0] = (double)c->hint_polygon_smooth; return 1;
+        case GL_FOG_HINT:                    out[0] = (double)c->hint_fog; return 1;
+        case GL_GENERATE_MIPMAP_HINT:        out[0] = (double)c->hint_generate_mipmap; return 1;
+
+        /* Pixel-transfer (Phase 7). */
+        case GL_PACK_ALIGNMENT:              out[0] = c->pack.alignment; return 1;
+        case GL_PACK_ROW_LENGTH:             out[0] = c->pack.row_length; return 1;
+        case GL_PACK_SKIP_ROWS:              out[0] = c->pack.skip_rows; return 1;
+        case GL_PACK_SKIP_PIXELS:            out[0] = c->pack.skip_pixels; return 1;
+        case GL_PACK_LSB_FIRST:              out[0] = c->pack.lsb_first; return 1;
+        case GL_PACK_SWAP_BYTES:             out[0] = c->pack.swap_bytes; return 1;
+        case GL_UNPACK_ALIGNMENT:            out[0] = c->unpack.alignment; return 1;
+        case GL_UNPACK_ROW_LENGTH:           out[0] = c->unpack.row_length; return 1;
+        case GL_UNPACK_SKIP_ROWS:            out[0] = c->unpack.skip_rows; return 1;
+        case GL_UNPACK_SKIP_PIXELS:          out[0] = c->unpack.skip_pixels; return 1;
+        case GL_UNPACK_LSB_FIRST:            out[0] = c->unpack.lsb_first; return 1;
+        case GL_UNPACK_SWAP_BYTES:           out[0] = c->unpack.swap_bytes; return 1;
+        case GL_ZOOM_X:                      out[0] = c->pixel_zoom_x; return 1;
+        case GL_ZOOM_Y:                      out[0] = c->pixel_zoom_y; return 1;
+        case GL_CURRENT_RASTER_POSITION_VALID: out[0] = c->raster_pos_valid; return 1;
+        case GL_CURRENT_RASTER_POSITION:
+            out[0] = c->raster_pos[0]; out[1] = c->raster_pos[1];
+            out[2] = c->raster_pos[2]; out[3] = c->raster_pos[3];
+            return 4;
+        case GL_CURRENT_RASTER_COLOR:
+            out[0] = c->raster_color[0]; out[1] = c->raster_color[1];
+            out[2] = c->raster_color[2]; out[3] = c->raster_color[3];
+            return 4;
+
+        /* Texture / buffer bindings. */
+        case GL_ACTIVE_TEXTURE:              out[0] = GL_TEXTURE0 + c->active_tex_unit; return 1;
+        case GL_CLIENT_ACTIVE_TEXTURE:       out[0] = GL_TEXTURE0 + c->client_tex_unit; return 1;
+        case GL_ARRAY_BUFFER_BINDING:        out[0] = (double)c->array_buffer_binding; return 1;
+        case GL_ELEMENT_ARRAY_BUFFER_BINDING: out[0] = (double)c->element_buffer_binding; return 1;
+        case GL_TEXTURE_BINDING_1D:
+            out[0] = (double)c->tex_env[c->active_tex_unit].bound_tex_target[SG_TEX_TARGET_1D];
+            return 1;
+        case GL_TEXTURE_BINDING_2D:
+            out[0] = (double)c->tex_env[c->active_tex_unit].bound_tex_target[SG_TEX_TARGET_2D];
+            return 1;
+        case GL_TEXTURE_BINDING_3D:
+            out[0] = (double)c->tex_env[c->active_tex_unit].bound_tex_target[SG_TEX_TARGET_3D];
+            return 1;
+        case GL_TEXTURE_BINDING_CUBE_MAP:
+            out[0] = (double)c->tex_env[c->active_tex_unit].bound_tex_target[SG_TEX_TARGET_CUBE];
+            return 1;
+
+        /* Vertex-array pointer state. */
+        case GL_VERTEX_ARRAY_SIZE:           out[0] = c->attr_pos.size; return 1;
+        case GL_VERTEX_ARRAY_TYPE:           out[0] = (double)c->attr_pos.type; return 1;
+        case GL_VERTEX_ARRAY_STRIDE:         out[0] = c->attr_pos.stride; return 1;
+        case GL_NORMAL_ARRAY_TYPE:           out[0] = (double)c->attr_normal.type; return 1;
+        case GL_NORMAL_ARRAY_STRIDE:         out[0] = c->attr_normal.stride; return 1;
+        case GL_COLOR_ARRAY_SIZE:            out[0] = c->attr_color.size; return 1;
+        case GL_COLOR_ARRAY_TYPE:            out[0] = (double)c->attr_color.type; return 1;
+        case GL_COLOR_ARRAY_STRIDE:          out[0] = c->attr_color.stride; return 1;
+        case GL_TEXTURE_COORD_ARRAY_SIZE:    out[0] = c->attr_tex[c->client_tex_unit].size; return 1;
+        case GL_TEXTURE_COORD_ARRAY_TYPE:    out[0] = (double)c->attr_tex[c->client_tex_unit].type; return 1;
+        case GL_TEXTURE_COORD_ARRAY_STRIDE:  out[0] = c->attr_tex[c->client_tex_unit].stride; return 1;
+
+        /* Framebuffer format advertised. */
+        case GL_RED_BITS:                    out[0] = 8; return 1;
+        case GL_GREEN_BITS:                  out[0] = 8; return 1;
+        case GL_BLUE_BITS:                   out[0] = 8; return 1;
+        case GL_ALPHA_BITS:                  out[0] = 8; return 1;
+        case GL_DEPTH_BITS:                  out[0] = 32; return 1;
+        /* GL_STENCIL_BITS handled above */
+        case GL_DOUBLEBUFFER:                out[0] = 0; return 1;
+        case GL_STEREO:                      out[0] = 0; return 1;
+
+        /* Smoothing caps are state-only in softgl (never actually used, but
+         * query-readable as 0). */
+        case GL_LINE_SMOOTH:
+        case GL_POINT_SMOOTH:
+        case GL_POLYGON_SMOOTH:              out[0] = 0; return 1;
+
+        default: break;
+    }
+
+    /* Fall through: boolean caps are valid for glGetBoolean / Integer / etc.
+     * too. Try them via the enable-flag resolver. */
+    int slot; int *f = sg_enable_flag(c, p, &slot);
+    if (f) { out[0] = *f ? 1.0 : 0.0; return 1; }
+
+    sg_set_error(GL_INVALID_ENUM);
+    return 0;
+}
+
 void glGetIntegerv(GLenum p, GLint *v) {
     softgl_ctx *c = g_current; if (!c || !v) return;
-    switch (p) {
-        case GL_VIEWPORT:
-            v[0] = c->viewport[0]; v[1] = c->viewport[1];
-            v[2] = c->viewport[2]; v[3] = c->viewport[3];
-            return;
-        case GL_MAX_LIGHTS:       *v = SG_MAX_LIGHTS; return;
-        case GL_MAX_TEXTURE_UNITS: *v = SG_MAX_TEX_UNITS; return;
-        case GL_MAX_TEXTURE_SIZE: *v = 4096; return;
-        case GL_LIST_BASE:         *v = (GLint)c->dlist_base; return;
-        case GL_MAX_LIST_NESTING:  *v = 64; return;
-        case GL_LINE_WIDTH:        *v = (GLint)(c->line_width + 0.5f); return;
-        case GL_POINT_SIZE:        *v = (GLint)(c->point_size + 0.5f); return;
-        case GL_POLYGON_MODE:
-            v[0] = (GLint)c->polygon_mode_front;
-            v[1] = (GLint)c->polygon_mode_back;
-            return;
-        case GL_POLYGON_OFFSET_FACTOR:
-            *v = (GLint)(c->polygon_offset_factor + 0.5f); return;
-        case GL_POLYGON_OFFSET_UNITS:
-            *v = (GLint)(c->polygon_offset_units + 0.5f); return;
-        case GL_STENCIL_BITS:          *v = 8; return;
-        case GL_STENCIL_REF:           *v = c->stencil_ref; return;
-        case GL_STENCIL_VALUE_MASK:    *v = (GLint)c->stencil_value_mask; return;
-        case GL_STENCIL_WRITEMASK:     *v = (GLint)c->stencil_write_mask; return;
-        case GL_STENCIL_FUNC:          *v = (GLint)c->stencil_func; return;
-        case GL_STENCIL_FAIL:          *v = (GLint)c->stencil_sfail; return;
-        case GL_STENCIL_PASS_DEPTH_FAIL: *v = (GLint)c->stencil_dpfail; return;
-        case GL_STENCIL_PASS_DEPTH_PASS: *v = (GLint)c->stencil_dppass; return;
-        case GL_STENCIL_CLEAR_VALUE:   *v = c->clear_stencil; return;
-        case GL_MAX_CLIP_PLANES:       *v = 6; return;
-        case GL_COLOR_WRITEMASK:
-            v[0] = c->color_mask[0]; v[1] = c->color_mask[1];
-            v[2] = c->color_mask[2]; v[3] = c->color_mask[3];
-            return;
-        case GL_LOGIC_OP_MODE:         *v = (GLint)c->logic_op; return;
-        case GL_INDEX_WRITEMASK:       *v = (GLint)c->index_writemask; return;
-        case GL_COLOR_MATERIAL_FACE:   *v = (GLint)c->color_material_face; return;
-        case GL_COLOR_MATERIAL_PARAMETER: *v = (GLint)c->color_material_mode; return;
-        case GL_LIGHT_MODEL_LOCAL_VIEWER: *v = c->light_model_local_viewer; return;
-        case GL_LIGHT_MODEL_TWO_SIDE:     *v = c->light_model_two_side; return;
-        case GL_PERSPECTIVE_CORRECTION_HINT: *v = (GLint)c->hint_perspective_correction; return;
-        case GL_POINT_SMOOTH_HINT:     *v = (GLint)c->hint_point_smooth; return;
-        case GL_LINE_SMOOTH_HINT:      *v = (GLint)c->hint_line_smooth; return;
-        case GL_POLYGON_SMOOTH_HINT:   *v = (GLint)c->hint_polygon_smooth; return;
-        case GL_FOG_HINT:              *v = (GLint)c->hint_fog; return;
-        case GL_GENERATE_MIPMAP_HINT:  *v = (GLint)c->hint_generate_mipmap; return;
-        /* Phase 7 pixel-transfer getters */
-        case GL_PACK_ALIGNMENT:        *v = c->pack.alignment; return;
-        case GL_PACK_ROW_LENGTH:       *v = c->pack.row_length; return;
-        case GL_PACK_SKIP_ROWS:        *v = c->pack.skip_rows; return;
-        case GL_PACK_SKIP_PIXELS:      *v = c->pack.skip_pixels; return;
-        case GL_PACK_LSB_FIRST:        *v = c->pack.lsb_first; return;
-        case GL_PACK_SWAP_BYTES:       *v = c->pack.swap_bytes; return;
-        case GL_UNPACK_ALIGNMENT:      *v = c->unpack.alignment; return;
-        case GL_UNPACK_ROW_LENGTH:     *v = c->unpack.row_length; return;
-        case GL_UNPACK_SKIP_ROWS:      *v = c->unpack.skip_rows; return;
-        case GL_UNPACK_SKIP_PIXELS:    *v = c->unpack.skip_pixels; return;
-        case GL_UNPACK_LSB_FIRST:      *v = c->unpack.lsb_first; return;
-        case GL_UNPACK_SWAP_BYTES:     *v = c->unpack.swap_bytes; return;
-        case GL_CURRENT_RASTER_POSITION_VALID:
-            *v = c->raster_pos_valid; return;
-        case GL_CURRENT_RASTER_POSITION:
-            v[0] = (GLint)c->raster_pos[0]; v[1] = (GLint)c->raster_pos[1];
-            v[2] = (GLint)c->raster_pos[2]; v[3] = (GLint)c->raster_pos[3];
-            return;
-        case GL_CURRENT_RASTER_COLOR:
-            v[0] = (GLint)(c->raster_color[0] * 255.f);
-            v[1] = (GLint)(c->raster_color[1] * 255.f);
-            v[2] = (GLint)(c->raster_color[2] * 255.f);
-            v[3] = (GLint)(c->raster_color[3] * 255.f);
-            return;
-        default: sg_set_error(GL_INVALID_ENUM); return;
+    double buf[16];
+    int n = sg_query_state(c, p, buf);
+    /* Per spec, GL_MODELVIEW/PROJECTION/TEXTURE_MATRIX and other float-valued
+     * state is rounded when read as integer. */
+    for (int i = 0; i < n; i++) {
+        double d = buf[i];
+        v[i] = (GLint)(d < 0 ? d - 0.5 : d + 0.5);
     }
 }
 
 void glGetFloatv(GLenum p, GLfloat *v) {
     softgl_ctx *c = g_current; if (!c || !v) return;
-    switch (p) {
-        case GL_MODELVIEW_MATRIX:
-            memcpy(v, c->mv_stack[c->mv_top].m, sizeof(float) * 16); return;
-        case GL_PROJECTION_MATRIX:
-            memcpy(v, c->pr_stack[c->pr_top].m, sizeof(float) * 16); return;
-        case GL_LINE_WIDTH:        *v = c->line_width; return;
-        case GL_POINT_SIZE:        *v = c->point_size; return;
-        case GL_POLYGON_OFFSET_FACTOR: *v = c->polygon_offset_factor; return;
-        case GL_POLYGON_OFFSET_UNITS:  *v = c->polygon_offset_units;  return;
-        case GL_LIGHT_MODEL_AMBIENT:
-            v[0] = c->light_model_ambient[0]; v[1] = c->light_model_ambient[1];
-            v[2] = c->light_model_ambient[2]; v[3] = c->light_model_ambient[3];
-            return;
-        case GL_COLOR_WRITEMASK:
-            v[0] = (float)c->color_mask[0]; v[1] = (float)c->color_mask[1];
-            v[2] = (float)c->color_mask[2]; v[3] = (float)c->color_mask[3];
-            return;
-        /* Phase 7 */
-        case GL_ZOOM_X: *v = c->pixel_zoom_x; return;
-        case GL_ZOOM_Y: *v = c->pixel_zoom_y; return;
-        case GL_CURRENT_RASTER_POSITION:
-            v[0] = c->raster_pos[0]; v[1] = c->raster_pos[1];
-            v[2] = c->raster_pos[2]; v[3] = c->raster_pos[3];
-            return;
-        case GL_CURRENT_RASTER_COLOR:
-            v[0] = c->raster_color[0]; v[1] = c->raster_color[1];
-            v[2] = c->raster_color[2]; v[3] = c->raster_color[3];
-            return;
-        default: sg_set_error(GL_INVALID_ENUM); return;
+    double buf[16];
+    int n = sg_query_state(c, p, buf);
+    for (int i = 0; i < n; i++) v[i] = (GLfloat)buf[i];
+}
+
+void glGetDoublev(GLenum p, GLdouble *v) {
+    softgl_ctx *c = g_current; if (!c || !v) return;
+    double buf[16];
+    int n = sg_query_state(c, p, buf);
+    for (int i = 0; i < n; i++) v[i] = buf[i];
+}
+
+void glGetBooleanv(GLenum p, GLboolean *v) {
+    softgl_ctx *c = g_current; if (!c || !v) return;
+    double buf[16];
+    int n = sg_query_state(c, p, buf);
+    for (int i = 0; i < n; i++) v[i] = (buf[i] != 0.0) ? GL_TRUE : GL_FALSE;
+}
+
+const GLubyte *glGetString(GLenum name) {
+    switch (name) {
+        case GL_VENDOR:     return (const GLubyte*)"softgl";
+        case GL_RENDERER:   return (const GLubyte*)"softgl software renderer";
+        case GL_VERSION:    return (const GLubyte*)"1.5.0 (softgl)";
+        case GL_EXTENSIONS:
+            return (const GLubyte*)
+                "GL_ARB_vertex_buffer_object "
+                "GL_ARB_texture_env_combine "
+                "GL_ARB_texture_env_dot3 "
+                "GL_ARB_multitexture "
+                "GL_ARB_texture_cube_map "
+                "GL_EXT_texture3D "
+                "GL_ARB_occlusion_query";
+        default: sg_set_error(GL_INVALID_ENUM); return NULL;
     }
 }

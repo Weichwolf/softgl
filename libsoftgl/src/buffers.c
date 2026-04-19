@@ -262,3 +262,236 @@ void glTexCoordPointer(GLint size, GLenum type, GLsizei stride, const void *ptr)
         if (c->dlist_exec) _sg_texcoord_pointer_real(size, type, stride, ptr);
     } else _sg_texcoord_pointer_real(size, type, stride, ptr);
 }
+
+/* ================================================================
+ * Buffer mapping (Phase 9). glMapBuffer/glUnmapBuffer are executed
+ * immediately per spec — they return pointers, so they cannot be
+ * deferred. Tests using them inside a display list would be nonsense.
+ * ================================================================ */
+
+static sg_buffer *sg_bound_buffer(softgl_ctx *c, GLenum target) {
+    GLuint id;
+    switch (target) {
+        case GL_ARRAY_BUFFER:         id = c->array_buffer_binding; break;
+        case GL_ELEMENT_ARRAY_BUFFER: id = c->element_buffer_binding; break;
+        default: sg_set_error(GL_INVALID_ENUM); return NULL;
+    }
+    sg_buffer *b = sg_buffer_get(c, id);
+    if (!b) { sg_set_error(GL_INVALID_OPERATION); return NULL; }
+    return b;
+}
+
+void *glMapBuffer(GLenum target, GLenum access) {
+    softgl_ctx *c = sg_current(); if (!c) return NULL;
+    if (access != GL_READ_ONLY && access != GL_WRITE_ONLY && access != GL_READ_WRITE) {
+        sg_set_error(GL_INVALID_ENUM); return NULL;
+    }
+    sg_buffer *b = sg_bound_buffer(c, target);
+    if (!b) return NULL;
+    if (b->mapped) { sg_set_error(GL_INVALID_OPERATION); return NULL; }
+    if (!b->data || b->size == 0) {
+        sg_set_error(GL_OUT_OF_MEMORY); return NULL;
+    }
+    b->mapped = 1;
+    b->access = access;
+    return b->data;
+}
+
+GLboolean glUnmapBuffer(GLenum target) {
+    softgl_ctx *c = sg_current(); if (!c) return GL_FALSE;
+    sg_buffer *b = sg_bound_buffer(c, target);
+    if (!b) return GL_FALSE;
+    if (!b->mapped) { sg_set_error(GL_INVALID_OPERATION); return GL_FALSE; }
+    b->mapped = 0;
+    b->access = 0;
+    /* In a pure-software implementation the mapped pointer IS the storage,
+     * so there is never a transfer step that could invalidate it. Always
+     * return GL_TRUE. */
+    return GL_TRUE;
+}
+
+void glGetBufferParameteriv(GLenum target, GLenum pname, GLint *params) {
+    softgl_ctx *c = sg_current(); if (!c || !params) return;
+    sg_buffer *b = sg_bound_buffer(c, target);
+    if (!b) return;
+    switch (pname) {
+        case GL_BUFFER_SIZE:   *params = (GLint)b->size; return;
+        case GL_BUFFER_USAGE:  *params = (GLint)b->usage; return;
+        case GL_BUFFER_ACCESS: *params = (GLint)(b->access ? b->access : GL_READ_WRITE); return;
+        case GL_BUFFER_MAPPED: *params = b->mapped ? GL_TRUE : GL_FALSE; return;
+        default: sg_set_error(GL_INVALID_ENUM); return;
+    }
+}
+
+void glGetBufferPointerv(GLenum target, GLenum pname, void **params) {
+    softgl_ctx *c = sg_current(); if (!c || !params) return;
+    sg_buffer *b = sg_bound_buffer(c, target);
+    if (!b) return;
+    if (pname != GL_BUFFER_MAP_POINTER) { sg_set_error(GL_INVALID_ENUM); return; }
+    *params = b->mapped ? b->data : NULL;
+}
+
+/* ================================================================
+ * Occlusion queries (Phase 9, ARB_occlusion_query).
+ *
+ * Query ids are a pool parallel to buffers/textures. Queries are
+ * always executed immediately — they represent async GPU state in
+ * real GL, but in softgl everything is synchronous.
+ * ================================================================ */
+
+static sg_query *sg_query_alloc_slot(softgl_ctx *c, GLuint *out_id) {
+    for (size_t i = 0; i < c->queries_cap; i++) {
+        if (!c->queries[i].in_use) {
+            memset(&c->queries[i], 0, sizeof(sg_query));
+            c->queries[i].in_use = 1;
+            c->queries[i].id = (GLuint)(i + 1);
+            *out_id = c->queries[i].id;
+            return &c->queries[i];
+        }
+    }
+    size_t new_cap = c->queries_cap ? c->queries_cap * 2 : 16;
+    sg_query *nq = (sg_query*)realloc(c->queries, new_cap * sizeof(sg_query));
+    if (!nq) return NULL;
+    memset(nq + c->queries_cap, 0, (new_cap - c->queries_cap) * sizeof(sg_query));
+    c->queries = nq;
+    size_t old = c->queries_cap;
+    c->queries_cap = new_cap;
+    c->queries[old].in_use = 1;
+    c->queries[old].id = (GLuint)(old + 1);
+    *out_id = c->queries[old].id;
+    return &c->queries[old];
+}
+
+sg_query *sg_query_get(softgl_ctx *c, GLuint id) {
+    if (id == 0 || id > c->queries_cap) return NULL;
+    sg_query *q = &c->queries[id - 1];
+    if (!q->in_use) return NULL;
+    return q;
+}
+
+static int sg_query_target_slot(GLenum target) {
+    switch (target) {
+        case GL_SAMPLES_PASSED:     return SG_QUERY_TARGET_SAMPLES_PASSED;
+        case GL_ANY_SAMPLES_PASSED: return SG_QUERY_TARGET_ANY_SAMPLES_PASSED;
+        default: return -1;
+    }
+}
+
+void glGenQueries(GLsizei n, GLuint *ids) {
+    softgl_ctx *c = sg_current(); if (!c || !ids) return;
+    if (n < 0) { sg_set_error(GL_INVALID_VALUE); return; }
+    for (GLsizei i = 0; i < n; i++) {
+        GLuint id = 0;
+        sg_query_alloc_slot(c, &id);
+        ids[i] = id;
+    }
+}
+
+void glDeleteQueries(GLsizei n, const GLuint *ids) {
+    softgl_ctx *c = sg_current(); if (!c || !ids) return;
+    if (n < 0) { sg_set_error(GL_INVALID_VALUE); return; }
+    for (GLsizei i = 0; i < n; i++) {
+        GLuint id = ids[i];
+        sg_query *q = sg_query_get(c, id);
+        if (!q) continue;
+        /* If currently active on any target, end it silently. */
+        for (int s = 0; s < SG_QUERY_TARGET_COUNT; s++) {
+            if (c->current_query[s] == id) c->current_query[s] = 0;
+        }
+        q->in_use = 0;
+        q->active = 0;
+    }
+}
+
+GLboolean glIsQuery(GLuint id) {
+    softgl_ctx *c = sg_current(); if (!c) return GL_FALSE;
+    return sg_query_get(c, id) ? GL_TRUE : GL_FALSE;
+}
+
+void glBeginQuery(GLenum target, GLuint id) {
+    softgl_ctx *c = sg_current(); if (!c) return;
+    int slot = sg_query_target_slot(target);
+    if (slot < 0) { sg_set_error(GL_INVALID_ENUM); return; }
+    if (id == 0) { sg_set_error(GL_INVALID_OPERATION); return; }
+    if (c->current_query[slot] != 0) { sg_set_error(GL_INVALID_OPERATION); return; }
+
+    /* Auto-create the query object if glBeginQuery is called with an id
+     * that was never handed out by glGenQueries — matches ARB spec text
+     * allowing lazy allocation. */
+    sg_query *q = sg_query_get(c, id);
+    if (!q) {
+        /* Grow pool and claim the requested id. */
+        if (id > c->queries_cap) {
+            size_t new_cap = id;
+            sg_query *nq = (sg_query*)realloc(c->queries, new_cap * sizeof(sg_query));
+            if (!nq) return;
+            memset(nq + c->queries_cap, 0, (new_cap - c->queries_cap) * sizeof(sg_query));
+            c->queries = nq;
+            c->queries_cap = new_cap;
+        }
+        q = &c->queries[id - 1];
+        memset(q, 0, sizeof(*q));
+        q->in_use = 1;
+        q->id = id;
+    }
+
+    /* A given query object can't have been used with a different target before. */
+    if (q->target != 0 && q->target != target) {
+        sg_set_error(GL_INVALID_OPERATION); return;
+    }
+
+    q->target = target;
+    q->active = 1;
+    q->result = 0;
+    q->result_available = 0;
+    c->current_query[slot] = id;
+}
+
+void glEndQuery(GLenum target) {
+    softgl_ctx *c = sg_current(); if (!c) return;
+    int slot = sg_query_target_slot(target);
+    if (slot < 0) { sg_set_error(GL_INVALID_ENUM); return; }
+    GLuint id = c->current_query[slot];
+    if (id == 0) { sg_set_error(GL_INVALID_OPERATION); return; }
+    sg_query *q = sg_query_get(c, id);
+    if (q) {
+        q->active = 0;
+        q->result_available = 1;
+    }
+    c->current_query[slot] = 0;
+}
+
+void glGetQueryiv(GLenum target, GLenum pname, GLint *params) {
+    softgl_ctx *c = sg_current(); if (!c || !params) return;
+    int slot = sg_query_target_slot(target);
+    if (slot < 0) { sg_set_error(GL_INVALID_ENUM); return; }
+    switch (pname) {
+        case GL_CURRENT_QUERY:       *params = (GLint)c->current_query[slot]; return;
+        case GL_QUERY_COUNTER_BITS:  *params = 32; return;
+        default: sg_set_error(GL_INVALID_ENUM); return;
+    }
+}
+
+void glGetQueryObjectiv(GLuint id, GLenum pname, GLint *params) {
+    softgl_ctx *c = sg_current(); if (!c || !params) return;
+    sg_query *q = sg_query_get(c, id);
+    if (!q) { sg_set_error(GL_INVALID_OPERATION); return; }
+    if (q->active) { sg_set_error(GL_INVALID_OPERATION); return; }
+    switch (pname) {
+        case GL_QUERY_RESULT:           *params = (GLint)q->result; return;
+        case GL_QUERY_RESULT_AVAILABLE: *params = q->result_available ? GL_TRUE : GL_FALSE; return;
+        default: sg_set_error(GL_INVALID_ENUM); return;
+    }
+}
+
+void glGetQueryObjectuiv(GLuint id, GLenum pname, GLuint *params) {
+    softgl_ctx *c = sg_current(); if (!c || !params) return;
+    sg_query *q = sg_query_get(c, id);
+    if (!q) { sg_set_error(GL_INVALID_OPERATION); return; }
+    if (q->active) { sg_set_error(GL_INVALID_OPERATION); return; }
+    switch (pname) {
+        case GL_QUERY_RESULT:           *params = (GLuint)q->result; return;
+        case GL_QUERY_RESULT_AVAILABLE: *params = q->result_available ? GL_TRUE : GL_FALSE; return;
+        default: sg_set_error(GL_INVALID_ENUM); return;
+    }
+}

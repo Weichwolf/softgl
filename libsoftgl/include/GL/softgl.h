@@ -25,6 +25,8 @@ typedef double         GLclampd;
 typedef void           GLvoid;
 typedef ptrdiff_t      GLsizeiptr;
 typedef ptrdiff_t      GLintptr;
+typedef uint64_t       GLuint64;
+typedef int64_t        GLint64;
 
 #define GL_FALSE 0
 #define GL_TRUE  1
@@ -349,6 +351,80 @@ typedef ptrdiff_t      GLintptr;
 #define GL_DEPTH                          0x1801
 #define GL_STENCIL                        0x1802
 
+/* Occlusion queries (Phase 9 / ARB_occlusion_query) */
+#define GL_SAMPLES_PASSED                 0x8914
+#define GL_ANY_SAMPLES_PASSED             0x8C2F
+#define GL_QUERY_COUNTER_BITS             0x8864
+#define GL_CURRENT_QUERY                  0x8865
+#define GL_QUERY_RESULT                   0x8866
+#define GL_QUERY_RESULT_AVAILABLE         0x8867
+
+/* Buffer mapping (Phase 9 / ARB_vertex_buffer_object mapping subset) */
+#define GL_READ_ONLY                      0x88B8
+#define GL_WRITE_ONLY                     0x88B9
+#define GL_READ_WRITE                     0x88BA
+#define GL_BUFFER_SIZE                    0x8764
+#define GL_BUFFER_USAGE                   0x8765
+#define GL_BUFFER_ACCESS                  0x88BB
+#define GL_BUFFER_MAPPED                  0x88BC
+#define GL_BUFFER_MAP_POINTER             0x88BD
+
+/* Miscellaneous state enums for glGet* (Phase 9) */
+#define GL_CURRENT_COLOR                  0x0B00
+#define GL_CURRENT_INDEX                  0x0B01
+#define GL_CURRENT_NORMAL                 0x0B02
+#define GL_CURRENT_TEXTURE_COORDS         0x0B03
+#define GL_SHADE_MODEL                    0x0B54
+#define GL_MATRIX_MODE                    0x0BA0
+#define GL_DEPTH_RANGE                    0x0B70
+#define GL_DEPTH_WRITEMASK                0x0B72
+#define GL_DEPTH_CLEAR_VALUE              0x0B73
+#define GL_DEPTH_FUNC                     0x0B74
+#define GL_CULL_FACE_MODE                 0x0B45
+#define GL_FRONT_FACE                     0x0B46
+#define GL_COLOR_CLEAR_VALUE              0x0C22
+#define GL_BLEND_SRC                      0x0BE1
+#define GL_BLEND_DST                      0x0BE0
+#define GL_ALPHA_TEST_FUNC                0x0BC1
+#define GL_ALPHA_TEST_REF                 0x0BC2
+#define GL_LINE_SMOOTH                    0x0B20
+#define GL_POINT_SMOOTH                   0x0B10
+#define GL_POLYGON_SMOOTH                 0x0B41
+#define GL_MAX_MATRIX_STACK_DEPTH         0x0D38   /* alias for MAX_PROJECTION_STACK_DEPTH */
+#define GL_MAX_MODELVIEW_STACK_DEPTH      0x0D36
+#define GL_MAX_PROJECTION_STACK_DEPTH     0x0D38
+#define GL_MAX_TEXTURE_STACK_DEPTH        0x0D39
+#define GL_MAX_VIEWPORT_DIMS              0x0D3A
+#define GL_TEXTURE_MATRIX                 0x0BA8
+#define GL_ACTIVE_TEXTURE                 0x84E0
+#define GL_CLIENT_ACTIVE_TEXTURE          0x84E1
+#define GL_ARRAY_BUFFER_BINDING           0x8894
+#define GL_ELEMENT_ARRAY_BUFFER_BINDING   0x8895
+#define GL_RED_BITS                       0x0D52
+#define GL_GREEN_BITS                     0x0D53
+#define GL_BLUE_BITS                      0x0D54
+#define GL_ALPHA_BITS                     0x0D55
+#define GL_DEPTH_BITS                     0x0D56
+#define GL_SUBPIXEL_BITS                  0x0D50
+#define GL_DOUBLEBUFFER                   0x0C32
+#define GL_STEREO                         0x0C33
+#define GL_SCISSOR_BOX                    0x0C10
+#define GL_VERTEX_ARRAY_SIZE              0x807A
+#define GL_VERTEX_ARRAY_TYPE              0x807B
+#define GL_VERTEX_ARRAY_STRIDE            0x807C
+#define GL_NORMAL_ARRAY_TYPE              0x807E
+#define GL_NORMAL_ARRAY_STRIDE            0x807F
+#define GL_COLOR_ARRAY_SIZE               0x8081
+#define GL_COLOR_ARRAY_TYPE               0x8082
+#define GL_COLOR_ARRAY_STRIDE             0x8083
+#define GL_TEXTURE_COORD_ARRAY_SIZE       0x8088
+#define GL_TEXTURE_COORD_ARRAY_TYPE       0x8089
+#define GL_TEXTURE_COORD_ARRAY_STRIDE     0x808A
+#define GL_VENDOR                         0x1F00
+#define GL_RENDERER                       0x1F01
+#define GL_VERSION                        0x1F02
+#define GL_EXTENSIONS                     0x1F03
+
 /* Hint */
 #define GL_PERSPECTIVE_CORRECTION_HINT    0x0C50
 #define GL_POINT_SMOOTH_HINT              0x0C51
@@ -482,6 +558,25 @@ void glIndexMask(GLuint mask);
 GLenum glGetError(void);
 void glGetIntegerv(GLenum p, GLint *v);
 void glGetFloatv(GLenum p, GLfloat *v);
+void glGetBooleanv(GLenum p, GLboolean *v);
+void glGetDoublev(GLenum p, GLdouble *v);
+const GLubyte *glGetString(GLenum name);
+
+/* Occlusion queries (Phase 9) */
+void      glGenQueries(GLsizei n, GLuint *ids);
+void      glDeleteQueries(GLsizei n, const GLuint *ids);
+GLboolean glIsQuery(GLuint id);
+void      glBeginQuery(GLenum target, GLuint id);
+void      glEndQuery(GLenum target);
+void      glGetQueryiv(GLenum target, GLenum pname, GLint *params);
+void      glGetQueryObjectiv(GLuint id, GLenum pname, GLint *params);
+void      glGetQueryObjectuiv(GLuint id, GLenum pname, GLuint *params);
+
+/* Buffer mapping (Phase 9) */
+void     *glMapBuffer(GLenum target, GLenum access);
+GLboolean glUnmapBuffer(GLenum target);
+void      glGetBufferParameteriv(GLenum target, GLenum pname, GLint *params);
+void      glGetBufferPointerv(GLenum target, GLenum pname, void **params);
 
 /* --- Immediate mode: glBegin / glEnd and all the vertex-emitting calls. --- */
 

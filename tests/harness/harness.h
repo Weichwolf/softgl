@@ -23,6 +23,19 @@
     extern PFNGLMULTITEXCOORD3FARBPROC       hx_glMultiTexCoord3f;
     extern PFNGLTEXIMAGE3DPROC               hx_glTexImage3D;
     extern PFNGLTEXSUBIMAGE3DPROC            hx_glTexSubImage3D;
+    /* Phase 9: occlusion queries + buffer mapping. */
+    extern PFNGLGENQUERIESARBPROC            hx_glGenQueries;
+    extern PFNGLDELETEQUERIESARBPROC         hx_glDeleteQueries;
+    extern PFNGLISQUERYARBPROC               hx_glIsQuery;
+    extern PFNGLBEGINQUERYARBPROC            hx_glBeginQuery;
+    extern PFNGLENDQUERYARBPROC              hx_glEndQuery;
+    extern PFNGLGETQUERYIVARBPROC            hx_glGetQueryiv;
+    extern PFNGLGETQUERYOBJECTIVARBPROC      hx_glGetQueryObjectiv;
+    extern PFNGLGETQUERYOBJECTUIVARBPROC     hx_glGetQueryObjectuiv;
+    extern PFNGLMAPBUFFERARBPROC             hx_glMapBuffer;
+    extern PFNGLUNMAPBUFFERARBPROC           hx_glUnmapBuffer;
+    extern PFNGLGETBUFFERPARAMETERIVARBPROC  hx_glGetBufferParameteriv;
+    extern PFNGLGETBUFFERPOINTERVARBPROC     hx_glGetBufferPointerv;
     #define glGenBuffers         hx_glGenBuffers
     #define glDeleteBuffers      hx_glDeleteBuffers
     #define glBindBuffer         hx_glBindBuffer
@@ -34,6 +47,18 @@
     #define glMultiTexCoord3f    hx_glMultiTexCoord3f
     #define glTexImage3D         hx_glTexImage3D
     #define glTexSubImage3D      hx_glTexSubImage3D
+    #define glGenQueries         hx_glGenQueries
+    #define glDeleteQueries      hx_glDeleteQueries
+    #define glIsQuery            hx_glIsQuery
+    #define glBeginQuery         hx_glBeginQuery
+    #define glEndQuery           hx_glEndQuery
+    #define glGetQueryiv         hx_glGetQueryiv
+    #define glGetQueryObjectiv   hx_glGetQueryObjectiv
+    #define glGetQueryObjectuiv  hx_glGetQueryObjectuiv
+    #define glMapBuffer          hx_glMapBuffer
+    #define glUnmapBuffer        hx_glUnmapBuffer
+    #define glGetBufferParameteriv hx_glGetBufferParameteriv
+    #define glGetBufferPointerv  hx_glGetBufferPointerv
 #else
     #include <GL/softgl.h>
 #endif

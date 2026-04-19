@@ -22,6 +22,18 @@ PFNGLMULTITEXCOORD2FARBPROC       hx_glMultiTexCoord2f = NULL;
 PFNGLMULTITEXCOORD3FARBPROC       hx_glMultiTexCoord3f = NULL;
 PFNGLTEXIMAGE3DPROC               hx_glTexImage3D = NULL;
 PFNGLTEXSUBIMAGE3DPROC            hx_glTexSubImage3D = NULL;
+PFNGLGENQUERIESARBPROC            hx_glGenQueries = NULL;
+PFNGLDELETEQUERIESARBPROC         hx_glDeleteQueries = NULL;
+PFNGLISQUERYARBPROC               hx_glIsQuery = NULL;
+PFNGLBEGINQUERYARBPROC            hx_glBeginQuery = NULL;
+PFNGLENDQUERYARBPROC              hx_glEndQuery = NULL;
+PFNGLGETQUERYIVARBPROC            hx_glGetQueryiv = NULL;
+PFNGLGETQUERYOBJECTIVARBPROC      hx_glGetQueryObjectiv = NULL;
+PFNGLGETQUERYOBJECTUIVARBPROC     hx_glGetQueryObjectuiv = NULL;
+PFNGLMAPBUFFERARBPROC             hx_glMapBuffer = NULL;
+PFNGLUNMAPBUFFERARBPROC           hx_glUnmapBuffer = NULL;
+PFNGLGETBUFFERPARAMETERIVARBPROC  hx_glGetBufferParameteriv = NULL;
+PFNGLGETBUFFERPOINTERVARBPROC     hx_glGetBufferPointerv = NULL;
 
 static LRESULT CALLBACK sg_wndproc(HWND h, UINT m, WPARAM wp, LPARAM lp) {
     return DefWindowProcA(h, m, wp, lp);
@@ -89,6 +101,18 @@ int main(int argc, char **argv) {
     hx_glMultiTexCoord3f = (PFNGLMULTITEXCOORD3FARBPROC)wglGetProcAddress("glMultiTexCoord3f");
     hx_glTexImage3D      = (PFNGLTEXIMAGE3DPROC)wglGetProcAddress("glTexImage3D");
     hx_glTexSubImage3D   = (PFNGLTEXSUBIMAGE3DPROC)wglGetProcAddress("glTexSubImage3D");
+    hx_glGenQueries      = (PFNGLGENQUERIESARBPROC)wglGetProcAddress("glGenQueries");
+    hx_glDeleteQueries   = (PFNGLDELETEQUERIESARBPROC)wglGetProcAddress("glDeleteQueries");
+    hx_glIsQuery         = (PFNGLISQUERYARBPROC)wglGetProcAddress("glIsQuery");
+    hx_glBeginQuery      = (PFNGLBEGINQUERYARBPROC)wglGetProcAddress("glBeginQuery");
+    hx_glEndQuery        = (PFNGLENDQUERYARBPROC)wglGetProcAddress("glEndQuery");
+    hx_glGetQueryiv      = (PFNGLGETQUERYIVARBPROC)wglGetProcAddress("glGetQueryiv");
+    hx_glGetQueryObjectiv = (PFNGLGETQUERYOBJECTIVARBPROC)wglGetProcAddress("glGetQueryObjectiv");
+    hx_glGetQueryObjectuiv = (PFNGLGETQUERYOBJECTUIVARBPROC)wglGetProcAddress("glGetQueryObjectuiv");
+    hx_glMapBuffer       = (PFNGLMAPBUFFERARBPROC)wglGetProcAddress("glMapBuffer");
+    hx_glUnmapBuffer     = (PFNGLUNMAPBUFFERARBPROC)wglGetProcAddress("glUnmapBuffer");
+    hx_glGetBufferParameteriv = (PFNGLGETBUFFERPARAMETERIVARBPROC)wglGetProcAddress("glGetBufferParameteriv");
+    hx_glGetBufferPointerv = (PFNGLGETBUFFERPOINTERVARBPROC)wglGetProcAddress("glGetBufferPointerv");
 
     fprintf(stderr, "[WGL] running run_test\n");
     run_test(SG_TEST_W, SG_TEST_H);

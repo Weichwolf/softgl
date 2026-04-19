@@ -235,6 +235,9 @@ set(SG_TEST_CASES
     193_combine_add_signed_scale
     194_combine_split_alpha
     195_combine_dot3_rgba
+    196_occlusion_samples
+    197_occlusion_any
+    198_map_buffer
 )
 
 # Tolerances for reference/softgl pixel diff. Default exact; individual tests
@@ -394,6 +397,14 @@ foreach(p8_case
     set(SG_TOL_${p8_case}_MAX_DELTA 4)
     set(SG_TOL_${p8_case}_MAX_BAD ${SG_RASTER_MAX_BAD})
 endforeach()
+
+# Phase 9: occlusion queries + buffer mapping.
+# 196/197 end in a clear-fill whose color encodes the query result — the
+# pixel output is a byte-exact uniform color, so there's no raster tolerance
+# needed, just the default 1-LSB slack for quantization rounding.
+# 198 renders a triangle via mapped-buffer vertices — standard raster budget.
+set(SG_TOL_198_map_buffer_MAX_DELTA 4)
+set(SG_TOL_198_map_buffer_MAX_BAD ${SG_RASTER_MAX_BAD})
 
 foreach(case_name IN LISTS SG_TEST_CASES)
     set(src cases/test_${case_name}.c)
