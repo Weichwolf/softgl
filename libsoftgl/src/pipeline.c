@@ -4,6 +4,14 @@
 #include <string.h>
 #include <stdlib.h>
 
+/* Phase FP-0: backend dispatch scaffolding.
+ *
+ * Until Phase FP-1..6 implement the fixed-point rasterizer, the FIXED
+ * branch falls back to the float path so the test harness sees identical
+ * output on both backends. The explicit switch here documents the hook
+ * sites (triangle fill, line, point) that later gain sg_raster_*_fp
+ * counterparts. */
+
 /* ==================================================================
  * Pipeline: vertex fetch → MV → projection → clip → viewport → raster.
  *
@@ -344,7 +352,12 @@ static void sg_finish_triangle(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert 
     if (area2 < 0.f) {
         sg_vert *tmp = v1; v1 = v2; v2 = tmp;
     }
-    sg_raster_triangle(c, v0, v1, v2);
+    if (softgl_get_backend() == SOFTGL_BACKEND_FIXED) {
+        /* TODO Phase FP-1: call sg_raster_triangle_fp(c, v0, v1, v2); */
+        sg_raster_triangle(c, v0, v1, v2);
+    } else {
+        sg_raster_triangle(c, v0, v1, v2);
+    }
 }
 
 void sg_process_triangle_pub(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert *v2);

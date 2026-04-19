@@ -2,6 +2,9 @@
 #include <math.h>
 #include <string.h>
 
+/* Phase FP-0: backend dispatch scaffolding (see pipeline.c). FIXED falls
+ * back to the float rasterizers until FP-1..6 implement fp counterparts. */
+
 /* =====================================================================
  * Line + point rasterization. Separate from triangle rasterizer.
  *
@@ -216,8 +219,14 @@ static void sg_raster_line_wide(softgl_ctx *c, const sg_vert *v0, const sg_vert 
 void sg_raster_line(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1) {
     int width = (int)(c->line_width + 0.5f);
     if (width < 1) width = 1;
-    if (width == 1) sg_raster_line_1px(c, v0, v1);
-    else            sg_raster_line_wide(c, v0, v1, width);
+    if (softgl_get_backend() == SOFTGL_BACKEND_FIXED) {
+        /* TODO Phase FP-1: call sg_raster_line_fp(c, v0, v1, width); */
+        if (width == 1) sg_raster_line_1px(c, v0, v1);
+        else            sg_raster_line_wide(c, v0, v1, width);
+    } else {
+        if (width == 1) sg_raster_line_1px(c, v0, v1);
+        else            sg_raster_line_wide(c, v0, v1, width);
+    }
 }
 
 /* --- Viewport helpers. --- */
@@ -255,5 +264,10 @@ void sg_process_point(softgl_ctx *c, const sg_vert *v) {
     }
     sg_vert pv = *v;
     sg_viewport_xform(c, &pv);
-    sg_raster_point(c, &pv);
+    if (softgl_get_backend() == SOFTGL_BACKEND_FIXED) {
+        /* TODO Phase FP-1: call sg_raster_point_fp(c, &pv); */
+        sg_raster_point(c, &pv);
+    } else {
+        sg_raster_point(c, &pv);
+    }
 }

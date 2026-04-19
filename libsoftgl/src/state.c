@@ -2,6 +2,7 @@
 #include "dlist.h"
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 void *sg_aligned_alloc(size_t size, size_t align) {
     if (align < sizeof(void*)) align = sizeof(void*);
@@ -21,6 +22,45 @@ void sg_aligned_free(void *p) {
 static softgl_ctx *g_current = NULL;
 
 softgl_ctx *sg_current(void) { return g_current; }
+
+/* ---- Backend selection (global, not per-context) ----
+ * Default is the scalar-float reference pipeline. The FIXED backend is
+ * scaffolded here but falls back to the float path until FP-1..6 land. */
+static softgl_backend_t g_backend = SOFTGL_BACKEND_SCALAR_FLOAT;
+
+void softgl_set_backend(softgl_backend_t b) {
+    if (b == SOFTGL_BACKEND_SCALAR_FLOAT || b == SOFTGL_BACKEND_FIXED) {
+        g_backend = b;
+    }
+}
+
+softgl_backend_t softgl_get_backend(void) { return g_backend; }
+
+/* Case-insensitive string compare; local to avoid strcasecmp portability. */
+static int sg_streq_i(const char *a, const char *b) {
+    if (!a || !b) return 0;
+    while (*a && *b) {
+        int ca = tolower((unsigned char)*a);
+        int cb = tolower((unsigned char)*b);
+        if (ca != cb) return 0;
+        a++; b++;
+    }
+    return *a == 0 && *b == 0;
+}
+
+/* Consult SOFTGL_BACKEND env var; called once per softgl_create(). */
+static void sg_apply_backend_env(void) {
+    const char *e = getenv("SOFTGL_BACKEND");
+    if (!e || !*e) return;
+    if (sg_streq_i(e, "float") || sg_streq_i(e, "scalar") ||
+        sg_streq_i(e, "scalar_float")) {
+        g_backend = SOFTGL_BACKEND_SCALAR_FLOAT;
+    } else if (sg_streq_i(e, "fixed") || sg_streq_i(e, "fp") ||
+               sg_streq_i(e, "fixed_point")) {
+        g_backend = SOFTGL_BACKEND_FIXED;
+    }
+    /* Unknown values leave whatever softgl_set_backend() set. */
+}
 
 static void sg_mat4_identity(sg_mat4 *m) {
     memset(m->m, 0, sizeof(m->m));
@@ -260,6 +300,7 @@ static void sg_reset_state(softgl_ctx *c) {
 }
 
 softgl_ctx *softgl_create(GLsizei w, GLsizei h) {
+    sg_apply_backend_env();
     softgl_ctx *c = (softgl_ctx*)calloc(1, sizeof(*c));
     if (!c) return NULL;
     c->fb.w = w;

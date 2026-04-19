@@ -918,6 +918,24 @@ void        softgl_destroy(softgl_ctx *c);
 void        softgl_make_current(softgl_ctx *c);
 const void *softgl_read_rgba8(softgl_ctx *c);
 
+/* Backend selection. Global (not per-context) because mid-frame backend
+ * switching is meaningless. The default is SCALAR_FLOAT (reference).
+ * FIXED is the forthcoming hardware-style i16/i32 pipeline; until Phase
+ * FP-1..6 land it falls back to the float path so all tests stay green.
+ *
+ * softgl_create() additionally consults the SOFTGL_BACKEND environment
+ * variable:
+ *   SOFTGL_BACKEND=float  -> SCALAR_FLOAT
+ *   SOFTGL_BACKEND=fixed  -> FIXED
+ * (case-insensitive). Env override wins over any prior softgl_set_backend. */
+typedef enum {
+    SOFTGL_BACKEND_SCALAR_FLOAT = 0,   /* current, reference */
+    SOFTGL_BACKEND_FIXED        = 1    /* future, performance (not yet implemented) */
+} softgl_backend_t;
+
+void             softgl_set_backend(softgl_backend_t b);
+softgl_backend_t softgl_get_backend(void);
+
 #ifdef __cplusplus
 }
 #endif

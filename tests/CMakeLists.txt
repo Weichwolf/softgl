@@ -471,28 +471,51 @@ foreach(demo_big_case
     set(SG_TOL_${demo_big_case}_MAX_BAD ${SG_DEMO_BIG_MAX_BAD})
 endforeach()
 
+# Phase FP-0: backend-vs-backend comparison budget.
+# Both softgl backends currently use the float implementation (FIXED falls
+# through until FP-1..6 land), so the delta is trivially zero. Once the
+# fixed-point pipeline lands, the target is max_delta=2 at ~0.4 % of the
+# 640*360 framebuffer.
+set(SG_BACKEND_COMPARE_MAX_DELTA 2)
+set(SG_BACKEND_COMPARE_MAX_BAD   1000)    # ~0.4 % of 640*360
+
 foreach(case_name IN LISTS SG_TEST_CASES)
     set(src cases/test_${case_name}.c)
 
-    # Reference variant
+    # Reference variant (Mesa llvmpipe).
     add_executable(ref_${case_name} ${src})
     target_link_libraries(ref_${case_name} PRIVATE harness_wgl)
     set_target_properties(ref_${case_name} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tests_ref)
 
-    # Softgl variant
+    # Softgl variant (one binary; backend selected via env/argv at run time).
     add_executable(sgl_${case_name} ${src})
     target_link_libraries(sgl_${case_name} PRIVATE harness_softgl)
     set_target_properties(sgl_${case_name} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tests_sgl)
 
-    # Register as CTest "run+diff" target
+    # --- Run phases ---
     add_test(NAME ${case_name}_run_ref
-        COMMAND ref_${case_name} ${CMAKE_BINARY_DIR}/out/${case_name}_ref.rgba ${CMAKE_BINARY_DIR}/out/${case_name}_ref.ppm
+        COMMAND ref_${case_name}
+            ${CMAKE_BINARY_DIR}/out/${case_name}_ref.rgba
+            ${CMAKE_BINARY_DIR}/out/${case_name}_ref.ppm
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests_ref)
-    add_test(NAME ${case_name}_run_sgl
-        COMMAND sgl_${case_name} ${CMAKE_BINARY_DIR}/out/${case_name}_sgl.rgba ${CMAKE_BINARY_DIR}/out/${case_name}_sgl.ppm
+
+    add_test(NAME ${case_name}_run_sgl_float
+        COMMAND ${CMAKE_COMMAND} -E env SOFTGL_BACKEND=float
+            $<TARGET_FILE:sgl_${case_name}>
+            ${CMAKE_BINARY_DIR}/out/${case_name}_sgl_float.rgba
+            ${CMAKE_BINARY_DIR}/out/${case_name}_sgl_float.ppm
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests_sgl)
+
+    add_test(NAME ${case_name}_run_sgl_fixed
+        COMMAND ${CMAKE_COMMAND} -E env SOFTGL_BACKEND=fixed
+            $<TARGET_FILE:sgl_${case_name}>
+            ${CMAKE_BINARY_DIR}/out/${case_name}_sgl_fixed.rgba
+            ${CMAKE_BINARY_DIR}/out/${case_name}_sgl_fixed.ppm
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/tests_sgl)
+
+    # --- Per-case tolerances for ref-vs-softgl comparisons ---
     if(DEFINED SG_TOL_${case_name}_MAX_DELTA)
         set(_max_delta ${SG_TOL_${case_name}_MAX_DELTA})
     else()
@@ -503,13 +526,42 @@ foreach(case_name IN LISTS SG_TEST_CASES)
     else()
         set(_max_bad ${SG_DEFAULT_MAX_BAD_PIXELS})
     endif()
-    add_test(NAME ${case_name}_compare
+
+    # --- Compare phases ---
+    # ref vs softgl(float): the canonical correctness gate.
+    add_test(NAME ${case_name}_compare_float
         COMMAND sg_compare
             ${CMAKE_BINARY_DIR}/out/${case_name}_ref.rgba
-            ${CMAKE_BINARY_DIR}/out/${case_name}_sgl.rgba
+            ${CMAKE_BINARY_DIR}/out/${case_name}_sgl_float.rgba
             ${_max_delta} ${_max_bad}
-            ${CMAKE_BINARY_DIR}/out/${case_name}_diff.ppm)
-    set_tests_properties(${case_name}_compare PROPERTIES DEPENDS "${case_name}_run_ref;${case_name}_run_sgl")
+            ${CMAKE_BINARY_DIR}/out/${case_name}_diff_float.ppm)
+    set_tests_properties(${case_name}_compare_float PROPERTIES
+        DEPENDS "${case_name}_run_ref;${case_name}_run_sgl_float")
+
+    # ref vs softgl(fixed): currently identical to compare_float because
+    # FIXED falls back to the float path. Once FP-1..6 land, this gate
+    # catches any divergence of the fixed pipeline from Mesa beyond the
+    # per-case raster tolerance.
+    add_test(NAME ${case_name}_compare_fixed
+        COMMAND sg_compare
+            ${CMAKE_BINARY_DIR}/out/${case_name}_ref.rgba
+            ${CMAKE_BINARY_DIR}/out/${case_name}_sgl_fixed.rgba
+            ${_max_delta} ${_max_bad}
+            ${CMAKE_BINARY_DIR}/out/${case_name}_diff_fixed.ppm)
+    set_tests_properties(${case_name}_compare_fixed PROPERTIES
+        DEPENDS "${case_name}_run_ref;${case_name}_run_sgl_fixed")
+
+    # softgl(float) vs softgl(fixed): backend-to-backend drift. Trivially
+    # zero during FP-0 (same implementation). Post-FP budget lives in
+    # SG_BACKEND_COMPARE_{MAX_DELTA,MAX_BAD}.
+    add_test(NAME ${case_name}_compare_backends
+        COMMAND sg_compare
+            ${CMAKE_BINARY_DIR}/out/${case_name}_sgl_float.rgba
+            ${CMAKE_BINARY_DIR}/out/${case_name}_sgl_fixed.rgba
+            ${SG_BACKEND_COMPARE_MAX_DELTA} ${SG_BACKEND_COMPARE_MAX_BAD}
+            ${CMAKE_BINARY_DIR}/out/${case_name}_diff_backends.ppm)
+    set_tests_properties(${case_name}_compare_backends PROPERTIES
+        DEPENDS "${case_name}_run_sgl_float;${case_name}_run_sgl_fixed")
 endforeach()
 
 # Deploy Mesa DLLs next to reference executables on first configure.
