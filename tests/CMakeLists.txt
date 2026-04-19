@@ -230,6 +230,11 @@ set(SG_TEST_CASES
     188_unpack_alignment
     189_unpack_rowlength_skip
     190_rasterpos_clipped
+    191_combine_interpolate
+    192_combine_subtract
+    193_combine_add_signed_scale
+    194_combine_split_alpha
+    195_combine_dot3_rgba
 )
 
 # Tolerances for reference/softgl pixel diff. Default exact; individual tests
@@ -376,6 +381,18 @@ foreach(p7_case
     188_unpack_alignment 189_unpack_rowlength_skip 190_rasterpos_clipped)
     set(SG_TOL_${p7_case}_MAX_DELTA 4)
     set(SG_TOL_${p7_case}_MAX_BAD ${SG_RASTER_MAX_BAD})
+endforeach()
+
+# Phase 8: full GL_COMBINE + extensions. Combiner arithmetic is clamped and
+# well-specified, but each extra operator compounds floating-point rounding
+# vs. Mesa by one LSB; SUBTRACT / ADD_SIGNED with RGB_SCALE=2 can ring a few
+# edge pixels differently. Use the raster tolerance, delta 4.
+foreach(p8_case
+    191_combine_interpolate 192_combine_subtract
+    193_combine_add_signed_scale 194_combine_split_alpha
+    195_combine_dot3_rgba)
+    set(SG_TOL_${p8_case}_MAX_DELTA 4)
+    set(SG_TOL_${p8_case}_MAX_BAD ${SG_RASTER_MAX_BAD})
 endforeach()
 
 foreach(case_name IN LISTS SG_TEST_CASES)

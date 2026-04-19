@@ -14,6 +14,11 @@ void sg_sample_tex_cube(const sg_texture *t, GLenum min_filter, GLenum mag_filte
                         GLenum wrap_s, GLenum wrap_t,
                         float x, float y, float z, int mag, float out[4]);
 void sg_tex_env_combine(const sg_tex_env *env, const float in[4], const float tex[4], float out[4]);
+void sg_tex_env_combine_full(const sg_tex_env *env, int current_unit,
+                             const float primary[4],
+                             const float previous[4],
+                             float unit_tex[SG_MAX_TEX_UNITS][4],
+                             float out[4]);
 
 /* =====================================================================
  * Triangle rasterizer. Pineda edge functions, tile-by-tile traversal,
@@ -301,10 +306,18 @@ void sg_raster_triangle(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1, con
             /* Eye-space z for fog (interpolate perspective-correct). */
             float eye_z = (v0->eye.z * w0 + v1->eye.z * w1 + v2->eye.z * w2) * one_over_wsum;
 
-            /* Texture sampling: one unit at a time, each combines with
-             * the running fragment color per its tex-env. Target priority
-             * (highest enabled wins on a unit): CUBE > 3D > 2D > 1D, mirroring
-             * desktop GL behaviour. */
+            /* Primary color: the post-lighting vertex color BEFORE any combiner
+             * touches it. Snapshot here so per-unit combiners can reference it
+             * via GL_PRIMARY_COLOR independently from GL_PREVIOUS (the running
+             * fragment color). */
+            float primary[4] = { col[0], col[1], col[2], col[3] };
+
+            /* Pre-sample texel for every tex unit so cross-unit references in
+             * the combiner (GL_TEXTUREn for n != current) resolve without
+             * re-sampling per source. Disabled units get white (1,1,1,1).
+             * Target priority (highest enabled wins on a unit): CUBE > 3D > 2D > 1D. */
+            float unit_tex[SG_MAX_TEX_UNITS][4];
+            int   unit_active[SG_MAX_TEX_UNITS];
             for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
                 sg_tex_env *env = &c->tex_env[u];
                 int active_slot = -1;
@@ -320,6 +333,9 @@ void sg_raster_triangle(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1, con
                 else if (env->enabled_target[SG_TEX_TARGET_1D] &&
                          env->bound_tex_target[SG_TEX_TARGET_1D])
                     active_slot = SG_TEX_TARGET_1D;
+
+                unit_tex[u][0] = unit_tex[u][1] = unit_tex[u][2] = unit_tex[u][3] = 1.f;
+                unit_active[u] = 0;
                 if (active_slot < 0) continue;
 
                 sg_texture *tex = sg_texture_get(c, env->bound_tex_target[active_slot]);
@@ -328,15 +344,15 @@ void sg_raster_triangle(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1, con
                 float uvp[4];
                 sg_lerp_pc(uvp, &v0->uv[u], &v1->uv[u], &v2->uv[u], w0, w1, w2, one_over_wsum);
 
-                float tx[4];
+                float *tx = unit_tex[u];
                 switch (active_slot) {
                     case SG_TEX_TARGET_1D:
-                        if (tex->levels == 0) { tx[0]=tx[1]=tx[2]=1.f; tx[3]=1.f; break; }
+                        if (tex->levels == 0) break;
                         sg_sample_tex1d(tex, tex->min_filter, tex->mag_filter,
                                         tex->wrap_s, uvp[0], 1, tx);
                         break;
                     case SG_TEX_TARGET_3D:
-                        if (tex->levels == 0) { tx[0]=tx[1]=tx[2]=1.f; tx[3]=1.f; break; }
+                        if (tex->levels == 0) break;
                         sg_sample_tex3d(tex, tex->min_filter, tex->mag_filter,
                                         tex->wrap_s, tex->wrap_t, tex->wrap_r,
                                         uvp[0], uvp[1], uvp[2], 1, tx);
@@ -348,15 +364,21 @@ void sg_raster_triangle(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1, con
                         break;
                     case SG_TEX_TARGET_2D:
                     default:
-                        if (tex->levels == 0) { tx[0]=tx[1]=tx[2]=1.f; tx[3]=1.f; break; }
+                        if (tex->levels == 0) break;
                         sg_sample_tex2d(tex, tex->min_filter, tex->mag_filter,
                                         tex->wrap_s, tex->wrap_t,
                                         uvp[0], uvp[1], 1, tx);
                         break;
                 }
+                unit_active[u] = 1;
+            }
 
+            /* Apply each active unit's combiner in order. `col` is the running
+             * PREVIOUS color; primary stays fixed at the pre-combiner vertex color. */
+            for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
+                if (!unit_active[u]) continue;
                 float out[4];
-                sg_tex_env_combine(env, col, tx, out);
+                sg_tex_env_combine_full(&c->tex_env[u], u, primary, col, unit_tex, out);
                 col[0] = out[0]; col[1] = out[1]; col[2] = out[2]; col[3] = out[3];
             }
 

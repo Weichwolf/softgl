@@ -154,11 +154,12 @@ static void sg_reset_state(softgl_ctx *c) {
         c->tex_env[i].env_mode = GL_MODULATE;
         c->tex_env[i].combine_rgb = GL_MODULATE;
         c->tex_env[i].combine_a   = GL_MODULATE;
-        c->tex_env[i].src_rgb[0] = GL_PREVIOUS;
-        c->tex_env[i].src_rgb[1] = GL_TEXTURE0 + i;
+        /* Per ARB_texture_env_combine spec defaults: src0=TEXTURE, src1=PREVIOUS, src2=CONSTANT. */
+        c->tex_env[i].src_rgb[0] = GL_TEXTURE;
+        c->tex_env[i].src_rgb[1] = GL_PREVIOUS;
         c->tex_env[i].src_rgb[2] = GL_CONSTANT;
-        c->tex_env[i].src_a[0]   = GL_PREVIOUS;
-        c->tex_env[i].src_a[1]   = GL_TEXTURE0 + i;
+        c->tex_env[i].src_a[0]   = GL_TEXTURE;
+        c->tex_env[i].src_a[1]   = GL_PREVIOUS;
         c->tex_env[i].src_a[2]   = GL_CONSTANT;
         c->tex_env[i].op_rgb[0] = GL_SRC_COLOR;
         c->tex_env[i].op_rgb[1] = GL_SRC_COLOR;
@@ -168,6 +169,8 @@ static void sg_reset_state(softgl_ctx *c) {
         c->tex_env[i].op_a[2]   = GL_SRC_ALPHA;
         c->tex_env[i].env_color[0] = c->tex_env[i].env_color[1] = c->tex_env[i].env_color[2] = 0.f;
         c->tex_env[i].env_color[3] = 0.f;
+        c->tex_env[i].rgb_scale = 1.f;
+        c->tex_env[i].alpha_scale = 1.f;
         for (int k = 0; k < SG_TEX_TARGET_COUNT; k++) {
             c->tex_env[i].enabled_target[k]   = 0;
             c->tex_env[i].bound_tex_target[k] = 0;

@@ -321,47 +321,252 @@ void sg_sample_tex_cube(const sg_texture *t, GLenum min_filter, GLenum mag_filte
     sg_sample_cube_face(t, face, 0, filter, wrap_s, wrap_t, s, ti, out);
 }
 
-/* Apply texture-environment combiner between incoming fragment and texel. */
-void sg_tex_env_combine(const sg_tex_env *env, const float in[4], const float tex[4], float out[4]) {
-    GLenum mode = env->env_mode;
-    switch (mode) {
+/* ===== Texture environment combiner =====================================
+ * Full GL 1.5 / ARB_texture_env_combine support:
+ *   - Fixed modes REPLACE / MODULATE / DECAL (from GL 1.1) with alpha=texel's
+ *     own alpha MODULATEd with input.
+ *   - GL_COMBINE with independent RGB and Alpha combiners, each selecting from
+ *     {TEXTURE, TEXTUREn, PREVIOUS, PRIMARY_COLOR, CONSTANT} with operand
+ *     transforms {SRC_COLOR, ONE_MINUS_SRC_COLOR, SRC_ALPHA, ONE_MINUS_SRC_ALPHA}
+ *     and operators REPLACE/MODULATE/ADD/ADD_SIGNED/INTERPOLATE/SUBTRACT and
+ *     DOT3_RGB(A).
+ *   - Post-combine RGB_SCALE and ALPHA_SCALE (1.0 / 2.0 / 4.0), applied BEFORE
+ *     the final [0,1] clamp, matching the spec text:
+ *        final = clamp(scale * combined, 0, 1).
+ * Cross-unit source references (GL_TEXTUREn with n != current) dispatch into
+ * unit_tex[n] which the rasterizer pre-samples once per pixel.
+ * ===================================================================== */
+
+SG_INLINE void sg_clamp4(float v[4]) {
+    for (int i = 0; i < 4; i++) {
+        if (v[i] < 0.f) v[i] = 0.f;
+        else if (v[i] > 1.f) v[i] = 1.f;
+    }
+}
+
+/* Resolve a combiner source enum to its RGBA in out[4]. */
+static void sg_resolve_source(GLenum src, int current_unit,
+                              const float primary[4],
+                              const float previous[4],
+                              const float constant[4],
+                              float unit_tex[SG_MAX_TEX_UNITS][4],
+                              float out[4]) {
+    if (src == GL_PREVIOUS) {
+        out[0] = previous[0]; out[1] = previous[1];
+        out[2] = previous[2]; out[3] = previous[3];
+    } else if (src == GL_PRIMARY_COLOR) {
+        out[0] = primary[0]; out[1] = primary[1];
+        out[2] = primary[2]; out[3] = primary[3];
+    } else if (src == GL_CONSTANT) {
+        out[0] = constant[0]; out[1] = constant[1];
+        out[2] = constant[2]; out[3] = constant[3];
+    } else if (src == GL_TEXTURE) {
+        const float *t = unit_tex[current_unit];
+        out[0] = t[0]; out[1] = t[1]; out[2] = t[2]; out[3] = t[3];
+    } else if (src >= GL_TEXTURE0 && src < GL_TEXTURE0 + SG_MAX_TEX_UNITS) {
+        int u = (int)(src - GL_TEXTURE0);
+        const float *t = unit_tex[u];
+        out[0] = t[0]; out[1] = t[1]; out[2] = t[2]; out[3] = t[3];
+    } else {
+        /* Unknown source: fall back to previous. */
+        out[0] = previous[0]; out[1] = previous[1];
+        out[2] = previous[2]; out[3] = previous[3];
+    }
+}
+
+/* Apply an operand transform for the RGB combiner path: returns RGB-valued
+ * 3-vector usable by an RGB combine op. */
+SG_INLINE void sg_operand_rgb(GLenum op, const float src[4], float out[3]) {
+    switch (op) {
+        case GL_SRC_COLOR:
+            out[0] = src[0]; out[1] = src[1]; out[2] = src[2]; break;
+        case GL_ONE_MINUS_SRC_COLOR:
+            out[0] = 1.f - src[0]; out[1] = 1.f - src[1]; out[2] = 1.f - src[2]; break;
+        case GL_SRC_ALPHA:
+            out[0] = out[1] = out[2] = src[3]; break;
+        case GL_ONE_MINUS_SRC_ALPHA:
+            out[0] = out[1] = out[2] = 1.f - src[3]; break;
+        default:
+            out[0] = src[0]; out[1] = src[1]; out[2] = src[2]; break;
+    }
+}
+
+/* Apply an operand transform for the Alpha combiner path: only SRC_ALPHA /
+ * ONE_MINUS_SRC_ALPHA are legal per spec. */
+SG_INLINE float sg_operand_a(GLenum op, const float src[4]) {
+    switch (op) {
+        case GL_SRC_ALPHA:           return src[3];
+        case GL_ONE_MINUS_SRC_ALPHA: return 1.f - src[3];
+        default:                     return src[3];
+    }
+}
+
+/* Compute combined RGB output given three already-operand-transformed args. */
+SG_INLINE void sg_combine_rgb_op(GLenum op,
+                                        const float a0[3], const float a1[3], const float a2[3],
+                                        float out[3]) {
+    switch (op) {
+        case GL_REPLACE:
+            out[0] = a0[0]; out[1] = a0[1]; out[2] = a0[2]; break;
+        case GL_MODULATE:
+            out[0] = a0[0] * a1[0]; out[1] = a0[1] * a1[1]; out[2] = a0[2] * a1[2]; break;
+        case GL_ADD:
+            out[0] = a0[0] + a1[0]; out[1] = a0[1] + a1[1]; out[2] = a0[2] + a1[2]; break;
+        case GL_ADD_SIGNED:
+            out[0] = a0[0] + a1[0] - 0.5f;
+            out[1] = a0[1] + a1[1] - 0.5f;
+            out[2] = a0[2] + a1[2] - 0.5f;
+            break;
+        case GL_INTERPOLATE:
+            out[0] = a0[0] * a2[0] + a1[0] * (1.f - a2[0]);
+            out[1] = a0[1] * a2[1] + a1[1] * (1.f - a2[1]);
+            out[2] = a0[2] * a2[2] + a1[2] * (1.f - a2[2]);
+            break;
+        case GL_SUBTRACT:
+            out[0] = a0[0] - a1[0]; out[1] = a0[1] - a1[1]; out[2] = a0[2] - a1[2]; break;
+        default:
+            /* Unknown op: MODULATE fallback. */
+            out[0] = a0[0] * a1[0]; out[1] = a0[1] * a1[1]; out[2] = a0[2] * a1[2]; break;
+    }
+}
+
+/* Compute combined alpha output. */
+SG_INLINE float sg_combine_a_op(GLenum op, float a0, float a1, float a2) {
+    switch (op) {
+        case GL_REPLACE:     return a0;
+        case GL_MODULATE:    return a0 * a1;
+        case GL_ADD:         return a0 + a1;
+        case GL_ADD_SIGNED:  return a0 + a1 - 0.5f;
+        case GL_INTERPOLATE: return a0 * a2 + a1 * (1.f - a2);
+        case GL_SUBTRACT:    return a0 - a1;
+        default:             return a0 * a1;
+    }
+}
+
+/* Full combiner. unit_tex[u] is the pre-sampled texel (or white) for each unit
+ * so cross-unit references (GL_TEXTUREn) resolve without re-sampling. The
+ * current unit's texel is also just unit_tex[current_unit] and is used for
+ * GL_TEXTURE (without suffix). primary is the post-lighting vertex color;
+ * previous is the running fragment color coming in from the prior unit
+ * (== primary for unit 0). */
+void sg_tex_env_combine_full(const sg_tex_env *env, int current_unit,
+                             const float primary[4],
+                             const float previous[4],
+                             float unit_tex[SG_MAX_TEX_UNITS][4],
+                             float out[4]) {
+    const float *constant = env->env_color;
+    const float *tex = unit_tex[current_unit];
+
+    switch (env->env_mode) {
         case GL_REPLACE:
             out[0] = tex[0]; out[1] = tex[1];
             out[2] = tex[2]; out[3] = tex[3];
-            break;
+            return;
         case GL_MODULATE:
-            out[0] = in[0] * tex[0];
-            out[1] = in[1] * tex[1];
-            out[2] = in[2] * tex[2];
-            out[3] = in[3] * tex[3];
-            break;
+            out[0] = previous[0] * tex[0];
+            out[1] = previous[1] * tex[1];
+            out[2] = previous[2] * tex[2];
+            out[3] = previous[3] * tex[3];
+            return;
         case GL_DECAL: {
             float a = tex[3];
-            out[0] = in[0] * (1.f - a) + tex[0] * a;
-            out[1] = in[1] * (1.f - a) + tex[1] * a;
-            out[2] = in[2] * (1.f - a) + tex[2] * a;
-            out[3] = in[3];
-            break;
+            out[0] = previous[0] * (1.f - a) + tex[0] * a;
+            out[1] = previous[1] * (1.f - a) + tex[1] * a;
+            out[2] = previous[2] * (1.f - a) + tex[2] * a;
+            out[3] = previous[3];
+            return;
         }
+        case GL_ADD:
+            /* Fixed-func GL_ADD: Cv=C_prev+C_tex, Av=A_prev*A_tex (no combine). */
+            out[0] = previous[0] + tex[0];
+            out[1] = previous[1] + tex[1];
+            out[2] = previous[2] + tex[2];
+            out[3] = previous[3] * tex[3];
+            sg_clamp4(out);
+            return;
         case GL_COMBINE:
-            if (env->combine_rgb == GL_DOT3_RGB || env->combine_rgb == GL_DOT3_RGBA) {
-                /* Dot3: tex and in interpreted as signed [-1,1] after bias-scale.
-                 * Per spec: s = 4*((arg0-0.5) dot (arg1-0.5)), replicated to RGB. */
-                float a0r = tex[0] - 0.5f, a0g = tex[1] - 0.5f, a0b = tex[2] - 0.5f;
-                float a1r = in[0]  - 0.5f, a1g = in[1]  - 0.5f, a1b = in[2]  - 0.5f;
-                float d = 4.f * (a0r * a1r + a0g * a1g + a0b * a1b);
-                if (d < 0.f) d = 0.f; else if (d > 1.f) d = 1.f;
-                out[0] = out[1] = out[2] = d;
-                out[3] = (env->combine_rgb == GL_DOT3_RGBA) ? d : in[3] * tex[3];
-            } else {
-                /* Fall back to MODULATE semantics for other combine_rgb values. */
-                out[0] = in[0] * tex[0]; out[1] = in[1] * tex[1];
-                out[2] = in[2] * tex[2]; out[3] = in[3] * tex[3];
-            }
-            break;
+            break;  /* fall through to combiner dispatch below */
         default:
-            out[0] = in[0] * tex[0]; out[1] = in[1] * tex[1];
-            out[2] = in[2] * tex[2]; out[3] = in[3] * tex[3];
-            break;
+            /* Unknown mode — MODULATE fallback. */
+            out[0] = previous[0] * tex[0];
+            out[1] = previous[1] * tex[1];
+            out[2] = previous[2] * tex[2];
+            out[3] = previous[3] * tex[3];
+            return;
     }
+
+    /* ---- GL_COMBINE path ------------------------------------------------- */
+    float rgb_out[3];
+    float alpha_out;
+
+    /* Dot3 RGB(A): operates over three-component signed values biased by -0.5.
+     * Uses RGB args 0 and 1 only. */
+    if (env->combine_rgb == GL_DOT3_RGB || env->combine_rgb == GL_DOT3_RGBA) {
+        float s0[4], s1[4];
+        sg_resolve_source(env->src_rgb[0], current_unit, primary, previous, constant, unit_tex, s0);
+        sg_resolve_source(env->src_rgb[1], current_unit, primary, previous, constant, unit_tex, s1);
+        float a0[3], a1[3];
+        sg_operand_rgb(env->op_rgb[0], s0, a0);
+        sg_operand_rgb(env->op_rgb[1], s1, a1);
+        float d = 4.f * ((a0[0] - 0.5f) * (a1[0] - 0.5f)
+                       + (a0[1] - 0.5f) * (a1[1] - 0.5f)
+                       + (a0[2] - 0.5f) * (a1[2] - 0.5f));
+        rgb_out[0] = rgb_out[1] = rgb_out[2] = d;
+        if (env->combine_rgb == GL_DOT3_RGBA) {
+            alpha_out = d;   /* overrides combine_a per spec */
+        } else {
+            /* alpha via separate combine_a */
+            float a0s[4], a1s[4], a2s[4];
+            sg_resolve_source(env->src_a[0], current_unit, primary, previous, constant, unit_tex, a0s);
+            sg_resolve_source(env->src_a[1], current_unit, primary, previous, constant, unit_tex, a1s);
+            sg_resolve_source(env->src_a[2], current_unit, primary, previous, constant, unit_tex, a2s);
+            float aa0 = sg_operand_a(env->op_a[0], a0s);
+            float aa1 = sg_operand_a(env->op_a[1], a1s);
+            float aa2 = sg_operand_a(env->op_a[2], a2s);
+            alpha_out = sg_combine_a_op(env->combine_a, aa0, aa1, aa2);
+        }
+    } else {
+        /* Normal RGB combiner */
+        float s0[4], s1[4], s2[4];
+        sg_resolve_source(env->src_rgb[0], current_unit, primary, previous, constant, unit_tex, s0);
+        sg_resolve_source(env->src_rgb[1], current_unit, primary, previous, constant, unit_tex, s1);
+        sg_resolve_source(env->src_rgb[2], current_unit, primary, previous, constant, unit_tex, s2);
+        float a0[3], a1[3], a2[3];
+        sg_operand_rgb(env->op_rgb[0], s0, a0);
+        sg_operand_rgb(env->op_rgb[1], s1, a1);
+        sg_operand_rgb(env->op_rgb[2], s2, a2);
+        sg_combine_rgb_op(env->combine_rgb, a0, a1, a2, rgb_out);
+
+        /* Alpha combiner (independent). */
+        float a0s[4], a1s[4], a2s[4];
+        sg_resolve_source(env->src_a[0], current_unit, primary, previous, constant, unit_tex, a0s);
+        sg_resolve_source(env->src_a[1], current_unit, primary, previous, constant, unit_tex, a1s);
+        sg_resolve_source(env->src_a[2], current_unit, primary, previous, constant, unit_tex, a2s);
+        float aa0 = sg_operand_a(env->op_a[0], a0s);
+        float aa1 = sg_operand_a(env->op_a[1], a1s);
+        float aa2 = sg_operand_a(env->op_a[2], a2s);
+        alpha_out = sg_combine_a_op(env->combine_a, aa0, aa1, aa2);
+    }
+
+    /* Post-scale then clamp. Scale defaults to 1.0; spec legal values 1/2/4. */
+    float rs = env->rgb_scale;
+    float as = env->alpha_scale;
+    out[0] = rgb_out[0] * rs;
+    out[1] = rgb_out[1] * rs;
+    out[2] = rgb_out[2] * rs;
+    out[3] = alpha_out * as;
+    sg_clamp4(out);
+}
+
+/* Legacy two-arg signature retained so rasterizer / lines code that still uses
+ * only (previous, this-texel) keeps working for the non-COMBINE modes. This
+ * just builds a minimal unit_tex array and dispatches. */
+void sg_tex_env_combine(const sg_tex_env *env, const float in[4], const float tex[4], float out[4]) {
+    float unit_tex[SG_MAX_TEX_UNITS][4];
+    for (int i = 0; i < SG_MAX_TEX_UNITS; i++) {
+        unit_tex[i][0] = tex[0]; unit_tex[i][1] = tex[1];
+        unit_tex[i][2] = tex[2]; unit_tex[i][3] = tex[3];
+    }
+    /* current_unit=0; primary==previous==in (no cross-unit info available). */
+    sg_tex_env_combine_full(env, 0, in, in, unit_tex, out);
 }

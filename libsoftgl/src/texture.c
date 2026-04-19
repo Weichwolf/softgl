@@ -550,11 +550,25 @@ void _sg_tex_env_i_real(GLenum target, GLenum pname, GLint param) {
         case GL_OPERAND0_RGB:     e->op_rgb[0]   = (GLenum)param; break;
         case GL_OPERAND1_RGB:     e->op_rgb[1]   = (GLenum)param; break;
         case GL_OPERAND2_RGB:     e->op_rgb[2]   = (GLenum)param; break;
+        case GL_SOURCE0_ALPHA:    e->src_a[0]    = (GLenum)param; break;
+        case GL_SOURCE1_ALPHA:    e->src_a[1]    = (GLenum)param; break;
+        case GL_SOURCE2_ALPHA:    e->src_a[2]    = (GLenum)param; break;
+        case GL_OPERAND0_ALPHA:   e->op_a[0]     = (GLenum)param; break;
+        case GL_OPERAND1_ALPHA:   e->op_a[1]     = (GLenum)param; break;
+        case GL_OPERAND2_ALPHA:   e->op_a[2]     = (GLenum)param; break;
+        case GL_RGB_SCALE:        e->rgb_scale   = (float)param; break;
+        case GL_ALPHA_SCALE:      e->alpha_scale = (float)param; break;
         default: sg_set_error(GL_INVALID_ENUM);
     }
 }
 
 void _sg_tex_env_f_real(GLenum target, GLenum pname, GLfloat param) {
+    softgl_ctx *c = sg_current(); if (!c) return;
+    if (target != GL_TEXTURE_ENV) { sg_set_error(GL_INVALID_ENUM); return; }
+    sg_tex_env *e = &c->tex_env[c->active_tex_unit];
+    /* RGB_SCALE / ALPHA_SCALE are floats in the glTexEnvf path (legal values 1/2/4). */
+    if (pname == GL_RGB_SCALE)   { e->rgb_scale = param; return; }
+    if (pname == GL_ALPHA_SCALE) { e->alpha_scale = param; return; }
     _sg_tex_env_i_real(target, pname, (GLint)param);
 }
 
@@ -565,9 +579,11 @@ void _sg_tex_env_fv_real(GLenum target, GLenum pname, const GLfloat *params) {
     if (pname == GL_TEXTURE_ENV_COLOR) {
         e->env_color[0] = params[0]; e->env_color[1] = params[1];
         e->env_color[2] = params[2]; e->env_color[3] = params[3];
-    } else {
-        _sg_tex_env_i_real(target, pname, (GLint)params[0]);
+        return;
     }
+    if (pname == GL_RGB_SCALE)   { e->rgb_scale = params[0]; return; }
+    if (pname == GL_ALPHA_SCALE) { e->alpha_scale = params[0]; return; }
+    _sg_tex_env_i_real(target, pname, (GLint)params[0]);
 }
 
 /* ==========  Public wrappers (dlist-aware)  ========== */

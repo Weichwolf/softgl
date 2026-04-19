@@ -100,6 +100,8 @@ typedef struct {
     GLenum op_rgb[3];
     GLenum op_a[3];
     float  env_color[4];
+    float  rgb_scale;    /* GL_RGB_SCALE, default 1.0, legal 1/2/4 */
+    float  alpha_scale;  /* GL_ALPHA_SCALE, default 1.0, legal 1/2/4 */
     /* Per-target enable bits and bindings. Index via SG_TEX_TARGET_*. */
     int    enabled_target[SG_TEX_TARGET_COUNT];
     GLuint bound_tex_target[SG_TEX_TARGET_COUNT];
