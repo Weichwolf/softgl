@@ -19,14 +19,21 @@
 #define SG_MAX_TILES 8
 #endif
 
-/* One triangle in a worker's bin. Stores post-transform/viewport vertices
- * — the worker only runs the fragment pipeline, not vertex processing. */
-typedef struct SG_ALIGN16 {
-    sg_vert v[3];
+/* One triangle in a worker's bin. Vertices live in a pool-global array
+ * shared across all bins (see sg_worker_pool.vpool); a tri records the
+ * three indices into that pool plus its sort key. Triangles that span
+ * multiple tiles are duplicated only as 16B index-triples instead of
+ * 3×160B vertex copies. */
+typedef struct {
+    uint32_t v[3];
+    float    zkey;   /* min ndc.z across the 3 verts; front-most depth */
 } sg_worker_tri;
 
 typedef struct {
     sg_worker_tri *tris;     /* growable */
+    /* Sort scratch: packed (zkey_q<<24 | tri_idx) keys. Post-sort the low
+     * 24 bits hold sorted tri indices into bins->tris. */
+    uint32_t      *sort_keys;
     int            count;    /* written by main, read+reset by worker */
     int            cap;
     int            ix0, ix1; /* owned X-range of the framebuffer [ix0, ix1) */
@@ -48,6 +55,13 @@ typedef struct {
     sg_worker      workers[SG_MAX_TILES];
     sg_worker_bin  bins[SG_MAX_TILES];
 
+    /* Shared vertex pool: main thread appends post-viewport sg_vert triples
+     * as they are submitted, bin entries carry indices into this array.
+     * Read-only from workers during a flush; reset to 0 after flush. */
+    sg_vert       *vpool;
+    int            vpool_count;
+    int            vpool_cap;
+
     /* Wake protocol: main bumps gen + broadcasts; each worker compares its
      * local_gen to the shared gen under the mutex to decide whether there
      * is new work. Workers atomic-increment done_count when their queue
@@ -57,6 +71,7 @@ typedef struct {
     atomic_int      gen;
     atomic_int      done_count;
     atomic_int      alive;
+    atomic_int      sort_safe;   /* main sets per-flush; 1 = worker may sort */
 } sg_worker_pool;
 
 void sg_workers_init(softgl_ctx *c, int nworkers_hint);

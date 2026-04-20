@@ -37,6 +37,12 @@ static void sg_bin_grow(sg_worker_bin *b, int need) {
     if (b->count > 0) memcpy(n, b->tris, (size_t)b->count * sizeof(*n));
     if (b->tris) sg_aligned_free(b->tris);
     b->tris = n;
+    /* 32-bit sort keys: high 8 bits = quantized zkey, low 24 = tri index.
+     * Sorting this compact array keeps the scatter inside L1 even for
+     * ~10k tris per tile, where scattering the full sg_worker_tri would
+     * blow through L2. */
+    if (b->sort_keys) sg_aligned_free(b->sort_keys);
+    b->sort_keys = (uint32_t*)sg_aligned_alloc((size_t)cap * 2 * sizeof(uint32_t), 16);
     b->cap  = cap;
 }
 
@@ -53,6 +59,18 @@ static void sg_tri_xbounds(const sg_vert *v0, const sg_vert *v1, const sg_vert *
     *out_ix1 = ib;
 }
 
+static void sg_vpool_grow(sg_worker_pool *p, int need) {
+    int cap = p->vpool_cap;
+    if (cap >= need) return;
+    if (cap == 0) cap = 1024;
+    while (cap < need) cap *= 2;
+    sg_vert *n = (sg_vert*)sg_aligned_alloc((size_t)cap * sizeof(*n), 16);
+    if (p->vpool_count > 0) memcpy(n, p->vpool, (size_t)p->vpool_count * sizeof(*n));
+    if (p->vpool) sg_aligned_free(p->vpool);
+    p->vpool    = n;
+    p->vpool_cap = cap;
+}
+
 void sg_workers_bin_tri(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1, const sg_vert *v2) {
     sg_worker_pool *p = (sg_worker_pool*)c->workers;
     if (!p || p->nworkers == 0) {
@@ -63,16 +81,60 @@ void sg_workers_bin_tri(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1, con
     int tri_ix0, tri_ix1;
     sg_tri_xbounds(v0, v1, v2, &tri_ix0, &tri_ix1);
 
+    /* Conservative front-most depth: min of per-vertex ndc.z across the
+     * triangle. Used only for bucket-sort when sort_safe is set at flush. */
+    float z0 = v0->ndc.z, z1 = v1->ndc.z, z2 = v2->ndc.z;
+    float zmin = z0 < z1 ? z0 : z1; if (z2 < zmin) zmin = z2;
+
+    /* Append vertices to the shared pool once; bins only store indices. */
+    sg_vpool_grow(p, p->vpool_count + 3);
+    uint32_t i0 = (uint32_t)(p->vpool_count + 0);
+    uint32_t i1 = (uint32_t)(p->vpool_count + 1);
+    uint32_t i2 = (uint32_t)(p->vpool_count + 2);
+    p->vpool[i0] = *v0;
+    p->vpool[i1] = *v1;
+    p->vpool[i2] = *v2;
+    p->vpool_count += 3;
+
     for (int t = 0; t < p->nworkers; t++) {
         sg_worker_bin *b = &p->bins[t];
         /* Overlap test: triangle X-bbox vs tile X-range. */
         if (tri_ix1 <= b->ix0 || tri_ix0 >= b->ix1) continue;
         sg_bin_grow(b, b->count + 1);
         sg_worker_tri *slot = &b->tris[b->count++];
-        slot->v[0] = *v0;
-        slot->v[1] = *v1;
-        slot->v[2] = *v2;
+        slot->v[0] = i0;
+        slot->v[1] = i1;
+        slot->v[2] = i2;
+        slot->zkey = zmin;
     }
+}
+
+/* 256-bucket front-to-back sort. Builds a (zkey_q<<24 | idx) key array,
+ * bucket-scatters the keys (tiny 4B/tri vs 496B), then rasterizes via
+ * indirection through keys[i] & 0xFFFFFF. Two memory passes on keys,
+ * zero touches to tri payload data. */
+static void sg_bin_sort_z(sg_worker_bin *b) {
+    int n = b->count;
+    if (n < 2) return;
+    uint32_t *keys  = b->sort_keys;
+    uint32_t *sorted = keys + n;   /* scatter destination, half of the 2×cap buffer */
+    int counts[257];
+    for (int i = 0; i < 257; i++) counts[i] = 0;
+    for (int i = 0; i < n; i++) {
+        float z = b->tris[i].zkey;
+        if (z < 0.f) z = 0.f; else if (z > 1.f) z = 1.f;
+        uint32_t bk = (uint32_t)(z * 255.f);
+        keys[i] = (bk << 24) | (uint32_t)i;
+        counts[bk + 1]++;
+    }
+    for (int i = 1; i < 257; i++) counts[i] += counts[i - 1];
+    for (int i = 0; i < n; i++) {
+        uint32_t bk = keys[i] >> 24;
+        sorted[counts[bk]++] = keys[i];
+    }
+    /* Stash sorted indices back in keys[] so the drain loop below reads
+     * them contiguously. */
+    for (int i = 0; i < n; i++) keys[i] = sorted[i] & 0x00FFFFFFu;
 }
 
 static void *sg_worker_main(void *arg) {
@@ -94,12 +156,24 @@ static void *sg_worker_main(void *arg) {
         pthread_mutex_unlock(&p->mtx);
         if (!alive) break;
 
+        int sort = atomic_load_explicit(&p->sort_safe, memory_order_acquire);
+        if (sort) sg_bin_sort_z(b);
+
         /* Drain bin. Count is owned by main between flushes, so this read
          * is a plain load — the wake protocol synchronises before it. */
         int n = b->count;
-        for (int i = 0; i < n; i++) {
-            sg_worker_tri *t = &b->tris[i];
-            sg_raster_triangle_tile(c, &t->v[0], &t->v[1], &t->v[2], b->ix0, b->ix1);
+        const sg_vert *vp = p->vpool;
+        if (sort) {
+            const uint32_t *order = b->sort_keys;
+            for (int i = 0; i < n; i++) {
+                const sg_worker_tri *t = &b->tris[order[i]];
+                sg_raster_triangle_tile(c, &vp[t->v[0]], &vp[t->v[1]], &vp[t->v[2]], b->ix0, b->ix1);
+            }
+        } else {
+            for (int i = 0; i < n; i++) {
+                const sg_worker_tri *t = &b->tris[i];
+                sg_raster_triangle_tile(c, &vp[t->v[0]], &vp[t->v[1]], &vp[t->v[2]], b->ix0, b->ix1);
+            }
         }
         b->count = 0;
 
@@ -120,6 +194,7 @@ void sg_workers_init(softgl_ctx *c, int nworkers_hint) {
     atomic_init(&p->gen, 0);
     atomic_init(&p->done_count, 0);
     atomic_init(&p->alive, 1);
+    atomic_init(&p->sort_safe, 0);
     pthread_mutex_init(&p->mtx, NULL);
     pthread_cond_init(&p->wake, NULL);
 
@@ -129,9 +204,10 @@ void sg_workers_init(softgl_ctx *c, int nworkers_hint) {
     for (int t = 0; t < n; t++) {
         p->bins[t].ix0 = (fbw * t)       / n;
         p->bins[t].ix1 = (fbw * (t + 1)) / n;
-        p->bins[t].tris  = NULL;
-        p->bins[t].count = 0;
-        p->bins[t].cap   = 0;
+        p->bins[t].tris      = NULL;
+        p->bins[t].sort_keys = NULL;
+        p->bins[t].count     = 0;
+        p->bins[t].cap       = 0;
     }
 
     c->workers = p;
@@ -161,12 +237,28 @@ void sg_workers_shutdown(softgl_ctx *c) {
         if (p->workers[t].started) pthread_join(p->workers[t].thread, NULL);
     }
     for (int t = 0; t < p->nworkers; t++) {
-        if (p->bins[t].tris) sg_aligned_free(p->bins[t].tris);
+        if (p->bins[t].tris)      sg_aligned_free(p->bins[t].tris);
+        if (p->bins[t].sort_keys) sg_aligned_free(p->bins[t].sort_keys);
     }
+    if (p->vpool) sg_aligned_free(p->vpool);
     pthread_mutex_destroy(&p->mtx);
     pthread_cond_destroy(&p->wake);
     free(p);
     c->workers = NULL;
+}
+
+/* Front-to-back Z-sort is only legal under state combinations where
+ * submission order is transparent to the final pixel value: opaque
+ * rendering with a monotonic depth test. Everything else (blend,
+ * stencil, logic-op, alpha-test, depth_func ∈ {EQUAL, GREATER, ...})
+ * must drain in submission order. */
+static int sg_pool_sort_safe(const softgl_ctx *c) {
+    if (!c->depth_test) return 0;
+    if (c->depth_func != GL_LESS && c->depth_func != GL_LEQUAL) return 0;
+    if (c->blend || c->alpha_test || c->stencil_test) return 0;
+    if (c->color_logic_op_enabled) return 0;
+    if (c->polygon_stipple_enable) return 0;
+    return 1;
 }
 
 void sg_workers_flush(softgl_ctx *c) {
@@ -179,6 +271,7 @@ void sg_workers_flush(softgl_ctx *c) {
     for (int t = 0; t < p->nworkers; t++) total += p->bins[t].count;
     if (total == 0) return;
 
+    atomic_store_explicit(&p->sort_safe, sg_pool_sort_safe(c), memory_order_release);
     atomic_store_explicit(&p->done_count, 0, memory_order_release);
     pthread_mutex_lock(&p->mtx);
     atomic_fetch_add_explicit(&p->gen, 1, memory_order_acq_rel);
@@ -192,4 +285,7 @@ void sg_workers_flush(softgl_ctx *c) {
         __builtin_ia32_pause();
 #endif
     }
+    /* Workers are done — pool becomes empty; next flush refills from scratch.
+     * Bin counts were already zeroed by workers. */
+    p->vpool_count = 0;
 }
