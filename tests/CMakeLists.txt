@@ -83,6 +83,18 @@ target_compile_definitions(bench_scenes_noSIMD PRIVATE SG_DISABLE_SIMD)
 set_target_properties(bench_scenes_noSIMD PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bench)
 
+# --- bench_tank: T-80 MBT asset (OBJ+PNG pre-packed by tools/pack_tank.py) ---
+add_executable(bench_tank bench/bench_tank.c)
+target_link_libraries(bench_tank PRIVATE softgl)
+set_target_properties(bench_tank PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bench)
+
+add_executable(bench_tank_noSIMD bench/bench_tank.c)
+target_link_libraries(bench_tank_noSIMD PRIVATE softgl_noSIMD)
+target_compile_definitions(bench_tank_noSIMD PRIVATE SG_DISABLE_SIMD)
+set_target_properties(bench_tank_noSIMD PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bench)
+
 # --- Harness library: softgl backend ---
 add_library(harness_softgl STATIC harness/harness_softgl.c harness/ppm_write.c)
 target_link_libraries(harness_softgl PUBLIC softgl)
