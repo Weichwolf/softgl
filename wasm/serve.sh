@@ -8,13 +8,20 @@ cd "$(dirname "$0")"
 PORT="${1:-8000}"
 echo "serving on http://localhost:$PORT (COOP/COEP enabled)"
 
+# python3 first; some Windows installs ship a MS-Store stub at `python`
+# that `command -v` finds but exits with an error, so test execution too.
 PY=""
-if   command -v python3 > /dev/null; then PY=python3
-elif command -v python  > /dev/null; then PY=python
-else
-    echo "need python3 or python to run the demo server" >&2
+for cand in python3 /ucrt64/bin/python3 /mingw64/bin/python3 python py; do
+    if command -v "$cand" > /dev/null 2>&1 \
+       && "$cand" -c "import sys; sys.exit(0)" > /dev/null 2>&1; then
+        PY="$cand"; break
+    fi
+done
+if [ -z "$PY" ]; then
+    echo "need python3 on PATH (MSYS2 ucrt64: pacman -S python)" >&2
     exit 1
 fi
+echo "using python: $PY"
 
 "$PY" -u -c "
 import os, sys

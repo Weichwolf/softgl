@@ -29,7 +29,6 @@
   const benchBtn  = document.getElementById('bench');
   const tankBtn   = document.getElementById('tank');
   const testsBtn  = document.getElementById('tests');
-  const capEl     = document.getElementById('cap');
   const benchOut  = document.getElementById('bench-out');
   const sStatsSimd    = document.getElementById('s-simd');
   const sStatsSab     = document.getElementById('s-sab');
@@ -40,11 +39,9 @@
 
   /* SIMD is a hard build-time requirement — the .wasm contains v128 ops,
    * so a browser that fails the probe also fails to instantiate the
-   * module. We still surface the result so a broken environment is
-   * visible instead of silently hanging on module load. */
-  capEl.textContent = 'WASM SIMD support: ' + (simdOK ? 'yes (required)' : 'NO — module load will fail');
-  capEl.classList.toggle('bad', !simdOK);
-  sStatsSimd.textContent = simdOK ? 'yes' : 'NO (required)';
+   * module. Surfaced in the stats row so a broken env is visible
+   * instead of silently hanging on module load. */
+  sStatsSimd.textContent = simdOK ? 'yes' : 'NO — module load will fail';
   sStatsSimd.classList.toggle('bad', !simdOK);
   sStatsSab.textContent = sabOK
       ? 'yes (cross-origin isolated)'
