@@ -3,7 +3,7 @@
 #include <math.h>
 #include <string.h>
 
-#if !defined(SG_DISABLE_SIMD) && defined(__SSE4_1__)
+#if !defined(SG_DISABLE_SIMD) && (defined(__SSE4_1__) || defined(__wasm_simd128__))
   #include <smmintrin.h>
   #define SG_MATRIX_SIMD 1
 #else

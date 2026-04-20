@@ -9,7 +9,13 @@ endif()
 
 set(SRC ${CMAKE_CURRENT_SOURCE_DIR}/..)
 
-add_compile_options(-O2 -msimd128 -Wno-unused-parameter)
+# -msse..-msse4.1 arm Emscripten's <xmmintrin.h>/<smmintrin.h>/<tmmintrin.h>
+# compat headers (under sysroot/include/compat) which guard on __SSE__ etc.
+# They transparently map the _mm_* intrinsics used in pipeline.c, matrix.c
+# and rasterizer_fp.c onto wasm_simd128 under -msimd128 at codegen time.
+# Without these flags the compat headers raise #error "SSE instruction
+# set not enabled" and the SIMD gates in those files fall back to scalar.
+add_compile_options(-O2 -msimd128 -msse -msse2 -msse3 -mssse3 -msse4.1 -Wno-unused-parameter)
 
 # libsoftgl sources (wrapped rather than subdir to avoid toolchain clashes)
 file(GLOB SOFTGL_SRC ${SRC}/libsoftgl/src/*.c)

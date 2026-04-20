@@ -24,4 +24,15 @@ CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/matrix.c.o: \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_offsetof.h \
   D:/Git/wasm-3d/libsoftgl/src/dlist.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/math.h \
-  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/math.h
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/math.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/smmintrin.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/tmmintrin.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/pmmintrin.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/emmintrin.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/xmmintrin.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/wasm_simd128.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/stdbool.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/stdbool.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/limits.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/limits.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/bits/limits.h

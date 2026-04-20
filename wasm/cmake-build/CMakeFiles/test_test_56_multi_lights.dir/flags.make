@@ -6,5 +6,5 @@ C_DEFINES = -Drun_test=test_56_multi_lights
 
 C_INCLUDES = @CMakeFiles/test_test_56_multi_lights.dir/includes_C.rsp
 
-C_FLAGS = -std=gnu11 -O2 -msimd128 -Wno-unused-parameter
+C_FLAGS = -std=gnu11 -O2 -msimd128 -msse -msse2 -msse3 -mssse3 -msse4.1 -Wno-unused-parameter
 

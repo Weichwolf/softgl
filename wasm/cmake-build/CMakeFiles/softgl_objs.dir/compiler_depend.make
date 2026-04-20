@@ -257,12 +257,20 @@ CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/lines.c.o: D:/Git/wasm-3
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/matrix.c.o: D:/Git/wasm-3d/libsoftgl/src/matrix.c \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/alloca.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/bits/alltypes.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/bits/limits.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/bits/stdint.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/emmintrin.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/math.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/pmmintrin.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/smmintrin.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/stdlib.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/string.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/tmmintrin.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/xmmintrin.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/features.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/limits.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/math.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/stdbool.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/stddef.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/stdint.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/stdlib.h \
@@ -275,8 +283,11 @@ CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/matrix.c.o: D:/Git/wasm-
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_ptrdiff_t.h \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_size_t.h \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_wchar_t.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/limits.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/stdbool.h \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/stddef.h \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/stdint.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/wasm_simd128.h \
   D:/Git/wasm-3d/libsoftgl/src/dlist.h \
   D:/Git/wasm-3d/libsoftgl/src/types.h \
   D:/Git/wasm-3d/libsoftgl/include/GL/softgl.h
@@ -284,17 +295,27 @@ CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/matrix.c.o: D:/Git/wasm-
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pipeline.c.o: D:/Git/wasm-3d/libsoftgl/src/pipeline.c \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/alloca.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/bits/alltypes.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/bits/limits.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/bits/stdint.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/emmintrin.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/math.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/pmmintrin.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/smmintrin.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/stdlib.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/string.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/tmmintrin.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/xmmintrin.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/features.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/limits.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/math.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/stdbool.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/stddef.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/stdint.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/stdio.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/stdlib.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/string.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/strings.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/wasi/api.h \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_header_macro.h \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_max_align_t.h \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_null.h \
@@ -302,8 +323,11 @@ CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/pipeline.c.o: D:/Git/was
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_ptrdiff_t.h \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_size_t.h \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_wchar_t.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/limits.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/stdbool.h \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/stddef.h \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/stdint.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/wasm_simd128.h \
   D:/Git/wasm-3d/libsoftgl/src/dlist.h \
   D:/Git/wasm-3d/libsoftgl/src/types.h \
   D:/Git/wasm-3d/libsoftgl/include/GL/softgl.h
@@ -358,17 +382,25 @@ CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer.c.o: D:/Git/w
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_wchar_t.h \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/stddef.h \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/stdint.h \
+  D:/Git/wasm-3d/libsoftgl/src/frag_hot.h \
   D:/Git/wasm-3d/libsoftgl/src/types.h \
   D:/Git/wasm-3d/libsoftgl/include/GL/softgl.h
 
 CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.o: D:/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/alloca.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/bits/alltypes.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/bits/limits.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/bits/stdint.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/emmintrin.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/math.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/pmmintrin.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/smmintrin.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/stdlib.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/string.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/tmmintrin.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/xmmintrin.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/features.h \
+  C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/limits.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/math.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/stdbool.h \
   C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/stddef.h \
@@ -383,12 +415,14 @@ CMakeFiles/softgl_objs.dir/D_/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c.o: D:/Gi
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_ptrdiff_t.h \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_size_t.h \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_wchar_t.h \
+  C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/limits.h \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/stdbool.h \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/stddef.h \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/stdint.h \
   C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/wasm_simd128.h \
   D:/Git/wasm-3d/libsoftgl/src/fp_simd.h \
   D:/Git/wasm-3d/libsoftgl/src/fp_types.h \
+  D:/Git/wasm-3d/libsoftgl/src/frag_hot.h \
   D:/Git/wasm-3d/libsoftgl/src/types.h \
   D:/Git/wasm-3d/libsoftgl/include/GL/softgl.h
 
@@ -448,9 +482,21 @@ D:/Git/wasm-3d/libsoftgl/src/texture.c:
 
 D:/Git/wasm-3d/libsoftgl/src/rasterizer_fp.c:
 
+D:/Git/wasm-3d/libsoftgl/src/frag_hot.h:
+
 D:/Git/wasm-3d/libsoftgl/src/rasterizer.c:
 
+C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/wasi/api.h:
+
 D:/Git/wasm-3d/libsoftgl/src/pipeline.c:
+
+C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/limits.h:
+
+C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/xmmintrin.h:
+
+C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/emmintrin.h:
+
+C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/bits/limits.h:
 
 C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/ctype.h:
 
@@ -476,6 +522,8 @@ C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/features.h:
 
 C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/alloca.h:
 
+C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/pmmintrin.h:
+
 C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/string.h:
 
 C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_offsetof.h:
@@ -486,11 +534,15 @@ C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/stdlib.h:
 
 D:/Git/wasm-3d/libsoftgl/src/types.h:
 
+C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/limits.h:
+
 D:/Git/wasm-3d/libsoftgl/src/evaluators.c:
 
 C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/stdbool.h:
 
 C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/bits/stdint.h:
+
+C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/smmintrin.h:
 
 C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/math.h:
 
@@ -511,6 +563,8 @@ C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/__stddef_size_t.h:
 D:/Git/wasm-3d/libsoftgl/src/fp_types.h:
 
 D:/Git/wasm-3d/libsoftgl/src/fp_simd.h:
+
+C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/stdio.h:
 
 C:/msys64/ucrt64/opt/emscripten-llvm/lib/clang/22/include/stdbool.h:
 
@@ -537,5 +591,7 @@ D:/Git/wasm-3d/libsoftgl/include/GL/softgl.h:
 C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/stddef.h:
 
 D:/Git/wasm-3d/libsoftgl/src/dlist.c:
+
+C:/msys64/ucrt64/lib/emscripten/cache/sysroot/include/compat/tmmintrin.h:
 
 D:/Git/wasm-3d/libsoftgl/src/clip.c:

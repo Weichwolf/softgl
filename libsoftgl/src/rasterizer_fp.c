@@ -4,6 +4,14 @@
 #include "frag_hot.h"
 #include <math.h>
 
+/* Under Emscripten (-msimd128) the <smmintrin.h> compat header maps the
+ * _mm_* intrinsics we use below onto wasm_simd128 ops. fp_simd.h itself
+ * only pulls smmintrin.h on native SSE4.1, so we add a WASM-side pull
+ * here so the raw _mm_* intrinsics in the bilinear/UV hotpath compile. */
+#if !defined(SG_DISABLE_SIMD) && defined(__wasm_simd128__) && !defined(__SSE4_1__)
+  #include <smmintrin.h>
+#endif
+
 /* =====================================================================
  * Phase FP-2: real fixed-point triangle rasterizer (scalar).
  * Phase FP-3: 2x2-quad SIMD coverage (SSE4.1 / wasm_simd128) layered on
@@ -436,7 +444,7 @@ SG_INLINE void fp_shade_quad(softgl_ctx *c,
                 sg_f32x4_mul(w2v, sg_f32x4_splat(v2->uv[0].y))), inv_wsum);
 
         /* REPEAT wrap into [0,1): u - floor(u). */
-#if defined(SG_SIMD_SSE4)
+#if defined(SG_SIMD_SSE4) || defined(SG_SIMD_WASM)
         sg_f32x4 uu = sg_f32x4_sub(uxv, _mm_floor_ps(uxv));
         sg_f32x4 vv = sg_f32x4_sub(uyv, _mm_floor_ps(uyv));
 #else
@@ -453,11 +461,15 @@ SG_INLINE void fp_shade_quad(softgl_ctx *c,
         sg_f32x4 fyv = sg_f32x4_sub(sg_f32x4_mul(vv, th_v), half);
 
         SG_ALIGN16 int32_t x0A[4], y0A[4];
-#if defined(SG_SIMD_SSE4)
+#if defined(SG_SIMD_SSE4) || defined(SG_SIMD_WASM)
+        /* fxfl/fyfl are already integer-valued floats (floor output), so
+         * truncating conversion matches RNE exactly. Using _mm_cvttps_epi32
+         * keeps semantics identical between native (SSE trunc) and WASM
+         * (wasm_i32x4_trunc_sat_f32x4 trunc). */
         sg_f32x4 fxfl = _mm_floor_ps(fxv);
         sg_f32x4 fyfl = _mm_floor_ps(fyv);
-        sg_i32x4 x0v = _mm_cvtps_epi32(fxfl);
-        sg_i32x4 y0v = _mm_cvtps_epi32(fyfl);
+        sg_i32x4 x0v = _mm_cvttps_epi32(fxfl);
+        sg_i32x4 y0v = _mm_cvttps_epi32(fyfl);
         _mm_store_si128((__m128i*)x0A, x0v);
         _mm_store_si128((__m128i*)y0A, y0v);
 #else
@@ -482,9 +494,14 @@ SG_INLINE void fp_shade_quad(softgl_ctx *c,
         sg_f32x4 fu256 = sg_f32x4_mul(fu, sg_f32x4_splat(256.f));
         sg_f32x4 fv256 = sg_f32x4_mul(fv, sg_f32x4_splat(256.f));
         SG_ALIGN16 int32_t fu8A[4], fv8A[4];
-#if defined(SG_SIMD_SSE4)
-        _mm_store_si128((__m128i*)fu8A, _mm_cvtps_epi32(fu256));
-        _mm_store_si128((__m128i*)fv8A, _mm_cvtps_epi32(fv256));
+#if defined(SG_SIMD_SSE4) || defined(SG_SIMD_WASM)
+        /* Round-half-up via (+0.5f) then truncate. Matches the scalar
+         * fallback below and bridges SSE's native RNE cvtps vs WASM's
+         * truncating wasm_i32x4_trunc_sat_f32x4. fu256/fv256 are in
+         * [0, 256], so +0.5f + trunc stays in the well-defined range. */
+        __m128 half256 = _mm_set1_ps(0.5f);
+        _mm_store_si128((__m128i*)fu8A, _mm_cvttps_epi32(_mm_add_ps(fu256, half256)));
+        _mm_store_si128((__m128i*)fv8A, _mm_cvttps_epi32(_mm_add_ps(fv256, half256)));
 #else
         SG_ALIGN16 float fu256S[4], fv256S[4];
         sg_f32x4_store(fu256S, fu256); sg_f32x4_store(fv256S, fv256);
@@ -526,7 +543,7 @@ SG_INLINE void fp_shade_quad(softgl_ctx *c,
             int fu8 = fu8A[l]; if (fu8 < 0) fu8 = 0; else if (fu8 > 256) fu8 = 256;
             int fv8 = fv8A[l]; if (fv8 < 0) fv8 = 0; else if (fv8 > 256) fv8 = 256;
             int ifu = 256 - fu8, ifv = 256 - fv8;
-#if defined(SG_SIMD_SSE4)
+#if defined(SG_SIMD_SSE4) || defined(SG_SIMD_WASM)
             /* SIMD bilinear over 4 RGBA8 channels. Per-channel arithmetic:
              *   top = p00*ifu + p10*fu8                 (<= 255*256 + 255*256 = 130560)
              *   bot = p01*ifu + p11*fu8
