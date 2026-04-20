@@ -1,14 +1,8 @@
 #include "types.h"
 #include "dlist.h"
+#include <smmintrin.h>
 #include <math.h>
 #include <string.h>
-
-#if !defined(SG_DISABLE_SIMD) && (defined(__SSE4_1__) || defined(__wasm_simd128__))
-  #include <smmintrin.h>
-  #define SG_MATRIX_SIMD 1
-#else
-  #define SG_MATRIX_SIMD 0
-#endif
 
 /* Column-major 4x4: element (row r, col c) at m[c*4+r]. */
 
@@ -30,27 +24,29 @@ static void sg_ident(sg_mat4 *m) {
 }
 
 void sg_mat4_mul(sg_mat4 * SG_RESTRICT out, const sg_mat4 * SG_RESTRICT a, const sg_mat4 * SG_RESTRICT b) {
-    sg_mat4 tmp;
+    /* Each output column = a->col0 * b[c][0] + a->col1 * b[c][1]
+     *                    + a->col2 * b[c][2] + a->col3 * b[c][3].
+     * Same 4 products per output lane as the scalar loop, same
+     * associativity — IEEE-identical. */
+    __m128 a0 = _mm_load_ps(a->m + 0);
+    __m128 a1 = _mm_load_ps(a->m + 4);
+    __m128 a2 = _mm_load_ps(a->m + 8);
+    __m128 a3 = _mm_load_ps(a->m + 12);
+    SG_ALIGN16 float tmp[16];
     for (int col = 0; col < 4; col++) {
-        float b0 = b->m[col*4 + 0];
-        float b1 = b->m[col*4 + 1];
-        float b2 = b->m[col*4 + 2];
-        float b3 = b->m[col*4 + 3];
-        for (int row = 0; row < 4; row++) {
-            tmp.m[col*4 + row] =
-                a->m[0*4 + row] * b0 +
-                a->m[1*4 + row] * b1 +
-                a->m[2*4 + row] * b2 +
-                a->m[3*4 + row] * b3;
-        }
+        __m128 bc = _mm_load_ps(b->m + col * 4);
+        __m128 b0 = _mm_shuffle_ps(bc, bc, _MM_SHUFFLE(0,0,0,0));
+        __m128 b1 = _mm_shuffle_ps(bc, bc, _MM_SHUFFLE(1,1,1,1));
+        __m128 b2 = _mm_shuffle_ps(bc, bc, _MM_SHUFFLE(2,2,2,2));
+        __m128 b3 = _mm_shuffle_ps(bc, bc, _MM_SHUFFLE(3,3,3,3));
+        __m128 r  = _mm_add_ps(_mm_add_ps(_mm_mul_ps(a0, b0), _mm_mul_ps(a1, b1)),
+                               _mm_add_ps(_mm_mul_ps(a2, b2), _mm_mul_ps(a3, b3)));
+        _mm_store_ps(tmp + col * 4, r);
     }
-    *out = tmp;
+    memcpy(out->m, tmp, sizeof(tmp));
 }
 
 void sg_mat4_mul_vec4(sg_vec4 * SG_RESTRICT out, const sg_mat4 * SG_RESTRICT m, const sg_vec4 * SG_RESTRICT v) {
-#if SG_MATRIX_SIMD
-    /* col0*x + col1*y + col2*z + col3*w is IEEE-identical to the scalar
-     * per-row dot-products (same four products, same associativity). */
     __m128 r    = _mm_load_ps(&v->x);
     __m128 col0 = _mm_load_ps(m->m + 0);
     __m128 col1 = _mm_load_ps(m->m + 4);
@@ -63,13 +59,6 @@ void sg_mat4_mul_vec4(sg_vec4 * SG_RESTRICT out, const sg_mat4 * SG_RESTRICT m, 
     __m128 res = _mm_add_ps(_mm_add_ps(_mm_mul_ps(col0, x), _mm_mul_ps(col1, y)),
                             _mm_add_ps(_mm_mul_ps(col2, z), _mm_mul_ps(col3, w)));
     _mm_store_ps(&out->x, res);
-#else
-    float x = v->x, y = v->y, z = v->z, w = v->w;
-    out->x = m->m[0]*x + m->m[4]*y + m->m[8]*z  + m->m[12]*w;
-    out->y = m->m[1]*x + m->m[5]*y + m->m[9]*z  + m->m[13]*w;
-    out->z = m->m[2]*x + m->m[6]*y + m->m[10]*z + m->m[14]*w;
-    out->w = m->m[3]*x + m->m[7]*y + m->m[11]*z + m->m[15]*w;
-#endif
 }
 
 /* 4x4 inverse via cofactor expansion. Returns 0 if singular. */

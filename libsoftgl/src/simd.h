@@ -4,16 +4,15 @@
 /* SIMD wrapper for the 2x2-quad rasterizer.
  *
  * Lane layout: 0=TL, 1=TR, 2=BL, 3=BR. Coverage/compare masks use full
- * lane-wide 0xFFFFFFFF/0 so a single _mm_and_si128 composes them. */
+ * lane-wide 0xFFFFFFFF/0 so a single _mm_and_si128 composes them.
+ *
+ * SSE4.1 (native x86) / wasm_simd128 (Emscripten -msimd128) are hard
+ * requirements. No scalar fallback. */
 
 #include <stdint.h>
 
-#if defined(SG_DISABLE_SIMD)
-    #define SG_HAVE_SIMD 0
-#elif defined(__SSE4_1__)
+#if defined(__SSE4_1__)
     #include <smmintrin.h>
-    #define SG_HAVE_SIMD 1
-    #define SG_SIMD_SSE4 1
 
     typedef __m128i sg_i32x4;
     typedef __m128  sg_f32x4;
@@ -110,8 +109,6 @@
 
 #elif defined(__wasm_simd128__)
     #include <wasm_simd128.h>
-    #define SG_HAVE_SIMD 1
-    #define SG_SIMD_WASM 1
 
     typedef v128_t sg_i32x4;
     typedef v128_t sg_f32x4;
@@ -185,7 +182,7 @@
     static inline sg_f32x4 sg_f32x4_load(const float *p) { return wasm_v128_load(p); }
 
 #else
-    #define SG_HAVE_SIMD 0
+    #error "softgl requires SSE4.1 (native) or wasm_simd128 (Emscripten)."
 #endif
 
 #endif /* SOFTGL_FP_SIMD_H */

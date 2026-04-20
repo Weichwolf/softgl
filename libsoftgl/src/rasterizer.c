@@ -7,7 +7,7 @@
 /* Under Emscripten (-msimd128), <smmintrin.h> remaps _mm_* onto
  * wasm_simd128. simd.h only pulls it on native SSE4.1, so include
  * here for the raw _mm_* intrinsics in the bilinear/UV hotpath. */
-#if !defined(SG_DISABLE_SIMD) && defined(__wasm_simd128__) && !defined(__SSE4_1__)
+#if defined(__wasm_simd128__) && !defined(__SSE4_1__)
   #include <smmintrin.h>
 #endif
 
@@ -153,7 +153,6 @@ SG_INLINE void sg_shade_pixel(softgl_ctx *c,
     sg_write_fragment(c, x, y, z, col[0], col[1], col[2], col[3]);
 }
 
-#if SG_HAVE_SIMD
 /* SIMD 2x2-quad shader. Lanes: 0=TL, 1=TR, 2=BL, 3=BR. */
 
 /* Flags that force per-lane scalar fallback. */
@@ -283,20 +282,11 @@ SG_INLINE void sg_shade_quad(softgl_ctx *c,
      * a lane and must not update fb.depth). row1 load gated on iy+1<fb.h. */
     const int early_z = c->depth_test && !c->alpha_test;
     if (early_z) {
-#if defined(SG_SIMD_SSE4) || defined(SG_SIMD_WASM)
         __m128i dr0 = _mm_loadl_epi64((const __m128i*)&c->fb.depth[idx_row0]);
         __m128i dr1 = row1_in_fb
             ? _mm_loadl_epi64((const __m128i*)&c->fb.depth[idx_row1])
             : _mm_setzero_si128();
         sg_f32x4 fb_d_early = _mm_castsi128_ps(_mm_unpacklo_epi64(dr0, dr1));
-#else
-        SG_ALIGN16 float dL0[4];
-        dL0[0] = c->fb.depth[idxL[0]];
-        dL0[1] = c->fb.depth[idxL[1]];
-        dL0[2] = row1_in_fb ? c->fb.depth[idxL[2]] : 0.f;
-        dL0[3] = row1_in_fb ? c->fb.depth[idxL[3]] : 0.f;
-        sg_f32x4 fb_d_early = sg_f32x4_load(dL0);
-#endif
         sg_i32x4 dm_early = sg_depth_test_simd(c->depth_func, z, fb_d_early);
         mask = sg_i32x4_and(mask, dm_early);
         if (!sg_mask4_live(mask)) return;
@@ -346,40 +336,20 @@ SG_INLINE void sg_shade_quad(softgl_ctx *c,
                 sg_f32x4_mul(w2v, sg_f32x4_splat(v2->uv[0].y))), inv_wsum);
 
         /* REPEAT wrap into [0,1). */
-#if defined(SG_SIMD_SSE4) || defined(SG_SIMD_WASM)
         sg_f32x4 uu = sg_f32x4_sub(uxv, _mm_floor_ps(uxv));
         sg_f32x4 vv = sg_f32x4_sub(uyv, _mm_floor_ps(uyv));
-#else
-        SG_ALIGN16 float uxS[4], uyS[4];
-        sg_f32x4_store(uxS, uxv); sg_f32x4_store(uyS, uyv);
-        SG_ALIGN16 float uuS[4], vvS[4];
-        for (int l = 0; l < 4; l++) { uuS[l] = uxS[l] - floorf(uxS[l]); vvS[l] = uyS[l] - floorf(uyS[l]); }
-        sg_f32x4 uu = sg_f32x4_load(uuS), vv = sg_f32x4_load(vvS);
-#endif
 
         /* Continuous texel coord: f = wrap * dim - 0.5. */
         sg_f32x4 fxv = sg_f32x4_sub(sg_f32x4_mul(uu, tw_v), half);
         sg_f32x4 fyv = sg_f32x4_sub(sg_f32x4_mul(vv, th_v), half);
 
         SG_ALIGN16 int32_t x0A[4], y0A[4];
-#if defined(SG_SIMD_SSE4) || defined(SG_SIMD_WASM)
-        /* fxfl/fyfl are floor output (integer-valued floats), so SSE
-         * trunc and wasm_i32x4_trunc_sat_f32x4 yield identical i32 values. */
         sg_f32x4 fxfl = _mm_floor_ps(fxv);
         sg_f32x4 fyfl = _mm_floor_ps(fyv);
         sg_i32x4 x0v = _mm_cvttps_epi32(fxfl);
         sg_i32x4 y0v = _mm_cvttps_epi32(fyfl);
         _mm_store_si128((__m128i*)x0A, x0v);
         _mm_store_si128((__m128i*)y0A, y0v);
-#else
-        SG_ALIGN16 float fxS[4], fyS[4], fxflS[4], fyflS[4];
-        sg_f32x4_store(fxS, fxv); sg_f32x4_store(fyS, fyv);
-        for (int l = 0; l < 4; l++) {
-            fxflS[l] = floorf(fxS[l]); fyflS[l] = floorf(fyS[l]);
-            x0A[l] = (int32_t)fxflS[l]; y0A[l] = (int32_t)fyflS[l];
-        }
-        sg_f32x4 fxfl = sg_f32x4_load(fxflS), fyfl = sg_f32x4_load(fyflS);
-#endif
         sg_f32x4 fu = sg_f32x4_sub(fxv, fxfl);
         sg_f32x4 fv = sg_f32x4_sub(fyv, fyfl);
 
@@ -390,20 +360,11 @@ SG_INLINE void sg_shade_quad(softgl_ctx *c,
         sg_f32x4 fu256 = sg_f32x4_mul(fu, sg_f32x4_splat(256.f));
         sg_f32x4 fv256 = sg_f32x4_mul(fv, sg_f32x4_splat(256.f));
         SG_ALIGN16 int32_t fu8A[4], fv8A[4];
-#if defined(SG_SIMD_SSE4) || defined(SG_SIMD_WASM)
         /* Round-half-up via +0.5 + trunc. Bridges SSE RNE cvtps vs
          * WASM trunc_sat; fu256/fv256 are in [0,256] so well-defined. */
         __m128 half256 = _mm_set1_ps(0.5f);
         _mm_store_si128((__m128i*)fu8A, _mm_cvttps_epi32(_mm_add_ps(fu256, half256)));
         _mm_store_si128((__m128i*)fv8A, _mm_cvttps_epi32(_mm_add_ps(fv256, half256)));
-#else
-        SG_ALIGN16 float fu256S[4], fv256S[4];
-        sg_f32x4_store(fu256S, fu256); sg_f32x4_store(fv256S, fv256);
-        for (int l = 0; l < 4; l++) {
-            fu8A[l] = (int32_t)(fu256S[l] + 0.5f);
-            fv8A[l] = (int32_t)(fv256S[l] + 0.5f);
-        }
-#endif
 
         SG_ALIGN16 float crL[4], cgL[4], cbL[4], caL[4];
         sg_f32x4_store(crL, cr);  sg_f32x4_store(cgL, cg);
@@ -435,7 +396,6 @@ SG_INLINE void sg_shade_quad(softgl_ctx *c,
             int fu8 = fu8A[l]; if (fu8 < 0) fu8 = 0; else if (fu8 > 256) fu8 = 256;
             int fv8 = fv8A[l]; if (fv8 < 0) fv8 = 0; else if (fv8 > 256) fv8 = 256;
             int ifu = 256 - fu8, ifv = 256 - fv8;
-#if defined(SG_SIMD_SSE4) || defined(SG_SIMD_WASM)
             /* Integer-bilinear over 4 RGBA8 channels via _mm_madd_epi16. */
             __m128i c00 = _mm_cvtepu8_epi16(_mm_cvtsi32_si128(*(const int32_t*)p00));
             __m128i c10 = _mm_cvtepu8_epi16(_mm_cvtsi32_si128(*(const int32_t*)p10));
@@ -460,17 +420,6 @@ SG_INLINE void sg_shade_quad(softgl_ctx *c,
             uint8_t tx1 = (uint8_t)(rgba >> 8);
             uint8_t tx2 = (uint8_t)(rgba >> 16);
             uint8_t tx3 = (uint8_t)(rgba >> 24);
-#else
-            uint8_t tx[4];
-            for (int k = 0; k < 4; k++) {
-                int top = p00[k] * ifu + p10[k] * fu8;
-                int bot = p01[k] * ifu + p11[k] * fu8;
-                int v2  = (top * ifv + bot * fv8 + (1 << 15)) >> 16;
-                if (v2 > 255) v2 = 255; else if (v2 < 0) v2 = 0;
-                tx[k] = (uint8_t)v2;
-            }
-            uint8_t tx0 = tx[0], tx1 = tx[1], tx2 = tx[2], tx3 = tx[3];
-#endif
             if (replace) {
                 crL[l] = tx0 * inv255;
                 cgL[l] = tx1 * inv255;
@@ -555,20 +504,11 @@ SG_INLINE void sg_shade_quad(softgl_ctx *c,
     /* Depth: late test if early-Z suppressed; deferred write gated by mask. */
     if (c->depth_test) {
         if (!early_z) {
-#if defined(SG_SIMD_SSE4) || defined(SG_SIMD_WASM)
             __m128i dr0 = _mm_loadl_epi64((const __m128i*)&c->fb.depth[idx_row0]);
             __m128i dr1 = row1_in_fb
                 ? _mm_loadl_epi64((const __m128i*)&c->fb.depth[idx_row1])
                 : _mm_setzero_si128();
             sg_f32x4 fb_d = _mm_castsi128_ps(_mm_unpacklo_epi64(dr0, dr1));
-#else
-            SG_ALIGN16 float dL[4];
-            dL[0] = c->fb.depth[idxL[0]];
-            dL[1] = c->fb.depth[idxL[1]];
-            dL[2] = row1_in_fb ? c->fb.depth[idxL[2]] : 0.f;
-            dL[3] = row1_in_fb ? c->fb.depth[idxL[3]] : 0.f;
-            sg_f32x4 fb_d = sg_f32x4_load(dL);
-#endif
             sg_i32x4 dm = sg_depth_test_simd(c->depth_func, z, fb_d);
             mask = sg_i32x4_and(mask, dm);
             live = sg_mask4_live(mask);
@@ -588,7 +528,6 @@ SG_INLINE void sg_shade_quad(softgl_ctx *c,
     if (c->blend &&
         sg_blend_fastpath_supported(c->blend_src) &&
         sg_blend_fastpath_supported(c->blend_dst)) {
-#if defined(SG_SIMD_SSE4) || defined(SG_SIMD_WASM)
         __m128i crow0 = _mm_loadl_epi64((const __m128i*)&c->fb.color[idx_row0 * 4]);
         __m128i crow1 = row1_in_fb
             ? _mm_loadl_epi64((const __m128i*)&c->fb.color[idx_row1 * 4])
@@ -603,19 +542,6 @@ SG_INLINE void sg_shade_quad(softgl_ctx *c,
         sg_f32x4 dGv = _mm_mul_ps(_mm_cvtepi32_ps(_mm_shuffle_epi8(dst_packed, dshuf_G)), d_inv255);
         sg_f32x4 dBv = _mm_mul_ps(_mm_cvtepi32_ps(_mm_shuffle_epi8(dst_packed, dshuf_B)), d_inv255);
         sg_f32x4 dAv = _mm_mul_ps(_mm_cvtepi32_ps(_mm_shuffle_epi8(dst_packed, dshuf_A)), d_inv255);
-#else
-        SG_ALIGN16 float dR[4], dG[4], dB[4], dA[4];
-        for (int l = 0; l < 4; l++) {
-            const uint8_t *p = c->fb.color + idxL[l] * 4;
-            const float inv255 = 1.f / 255.f;
-            dR[l] = p[0] * inv255;
-            dG[l] = p[1] * inv255;
-            dB[l] = p[2] * inv255;
-            dA[l] = p[3] * inv255;
-        }
-        sg_f32x4 dRv = sg_f32x4_load(dR), dGv = sg_f32x4_load(dG);
-        sg_f32x4 dBv = sg_f32x4_load(dB), dAv = sg_f32x4_load(dA);
-#endif
         sg_f32x4 sf = sg_blend_factor(c->blend_src, ca, dAv);
         sg_f32x4 df = sg_blend_factor(c->blend_dst, ca, dAv);
 
@@ -651,7 +577,6 @@ SG_INLINE void sg_shade_quad(softgl_ctx *c,
     uint8_t mb = c->color_mask[2] ? 0xFF : 0x00;
     uint8_t ma = c->color_mask[3] ? 0xFF : 0x00;
 
-#if defined(SG_SIMD_SSE4) || defined(SG_SIMD_WASM)
     __m128i v_R = _mm_cvtsi32_si128((int32_t)qR);
     __m128i v_G = _mm_cvtsi32_si128((int32_t)qG);
     __m128i v_B = _mm_cvtsi32_si128((int32_t)qB);
@@ -683,22 +608,7 @@ SG_INLINE void sg_shade_quad(softgl_ctx *c,
         _mm_storel_epi64((__m128i*)&c->fb.color[idx_row1 * 4],
                          _mm_unpackhi_epi64(blended, blended));
     }
-#else
-    for (int l = 0; l < 4; l++) {
-        if (!(live & (1u << l))) continue;
-        uint8_t *px = c->fb.color + idxL[l] * 4;
-        uint8_t r8 = (uint8_t)((qR >> (l * 8)) & 0xFF);
-        uint8_t g8 = (uint8_t)((qG >> (l * 8)) & 0xFF);
-        uint8_t b8 = (uint8_t)((qB >> (l * 8)) & 0xFF);
-        uint8_t a8 = (uint8_t)((qA >> (l * 8)) & 0xFF);
-        px[0] = (uint8_t)((r8 & mr) | (px[0] & (uint8_t)~mr));
-        px[1] = (uint8_t)((g8 & mg) | (px[1] & (uint8_t)~mg));
-        px[2] = (uint8_t)((b8 & mb) | (px[2] & (uint8_t)~mb));
-        px[3] = (uint8_t)((a8 & ma) | (px[3] & (uint8_t)~ma));
-    }
-#endif
 }
-#endif /* SG_HAVE_SIMD */
 
 void sg_raster_triangle(softgl_ctx *c,
                            const sg_vert *v0,
@@ -793,7 +703,6 @@ void sg_raster_triangle(softgl_ctx *c,
     sg_tex_tri_ctx tctx;
     sg_tex_tri_prepare(c, &tctx);
 
-#if SG_HAVE_SIMD
     /* SIMD 2x2-quad path. Per-edge min/max-across-quad offsets enable
      * scalar trivial accept/reject; (E+bias) is computed per lane in
      * full i64 then saturated to i32 to avoid wrap when TL is at INT32_MAX. */
@@ -911,32 +820,6 @@ void sg_raster_triangle(softgl_ctx *c,
         E1_row += dE1_dy * 2;
         E2_row += dE2_dy * 2;
     }
-
-#else
-    /* Scalar Pineda fallback. */
-    int64_t E0_row = E0_row0;
-    int64_t E1_row = E1_row0;
-    int64_t E2_row = E2_row0;
-
-    for (int y = iy0; y < iy1; y++) {
-        int64_t E0 = E0_row;
-        int64_t E1 = E1_row;
-        int64_t E2 = E2_row;
-
-        for (int x = ix0; x < ix1; x++) {
-            if ((E0 + bias0) >= 0 && (E1 + bias1) >= 0 && (E2 + bias2) >= 0) {
-                sg_shade_pixel(c, &tctx, v0, v1, v2, x, y, E0, E1,
-                               inv_area_f, invw0, invw1, invw2, z_offset);
-            }
-            E0 += dE0_dx;
-            E1 += dE1_dx;
-            E2 += dE2_dx;
-        }
-        E0_row += dE0_dy;
-        E1_row += dE1_dy;
-        E2_row += dE2_dy;
-    }
-#endif
 }
 
 /* Lines: DDA in 16.8 fixed-point, attribute lerp in float.

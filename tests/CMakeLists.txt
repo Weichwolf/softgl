@@ -12,37 +12,6 @@ target_link_libraries(bench_raster PRIVATE softgl)
 set_target_properties(bench_raster PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bench)
 
-# Second bench target that links against a softgl built with SIMD disabled,
-# so we can compare the scalar fallback against the SIMD-quad fp path.
-add_library(softgl_noSIMD STATIC
-    ../libsoftgl/src/state.c
-    ../libsoftgl/src/matrix.c
-    ../libsoftgl/src/buffers.c
-    ../libsoftgl/src/texture.c
-    ../libsoftgl/src/pipeline.c
-    ../libsoftgl/src/clip.c
-    ../libsoftgl/src/fragment_write.c
-    ../libsoftgl/src/fragment_combine.c
-    ../libsoftgl/src/rasterizer.c
-    ../libsoftgl/src/lines.c
-    ../libsoftgl/src/fragment.c
-    ../libsoftgl/src/framebuffer.c
-    ../libsoftgl/src/lighting.c
-    ../libsoftgl/src/api.c
-    ../libsoftgl/src/immediate.c
-    ../libsoftgl/src/dlist.c
-    ../libsoftgl/src/pixels.c
-    ../libsoftgl/src/evaluators.c)
-target_include_directories(softgl_noSIMD
-    PUBLIC  ${CMAKE_SOURCE_DIR}/libsoftgl/include
-    PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
-target_compile_definitions(softgl_noSIMD PRIVATE SOFTGL_BUILD SG_DISABLE_SIMD)
-
-add_executable(bench_raster_noSIMD bench/bench_raster.c)
-target_link_libraries(bench_raster_noSIMD PRIVATE softgl_noSIMD)
-set_target_properties(bench_raster_noSIMD PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bench)
-
 # --- FP-6 extended benchmark: synthetic + real scenes ------------------
 # Each real scene (showcase/shadow/particles/city/sphere_lit) is compiled
 # with `run_test` renamed to `sg_bench_scene_<tag>` so bench_scenes.c can
@@ -78,22 +47,10 @@ target_link_libraries(bench_scenes PRIVATE softgl)
 set_target_properties(bench_scenes PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bench)
 
-add_executable(bench_scenes_noSIMD bench/bench_scenes.c ${BENCH_SCENE_OBJS})
-target_link_libraries(bench_scenes_noSIMD PRIVATE softgl_noSIMD)
-target_compile_definitions(bench_scenes_noSIMD PRIVATE SG_DISABLE_SIMD)
-set_target_properties(bench_scenes_noSIMD PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bench)
-
 # --- bench_tank: T-80 MBT asset (OBJ+PNG pre-packed by tools/pack_tank.py) ---
 add_executable(bench_tank bench/bench_tank.c)
 target_link_libraries(bench_tank PRIVATE softgl)
 set_target_properties(bench_tank PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bench)
-
-add_executable(bench_tank_noSIMD bench/bench_tank.c)
-target_link_libraries(bench_tank_noSIMD PRIVATE softgl_noSIMD)
-target_compile_definitions(bench_tank_noSIMD PRIVATE SG_DISABLE_SIMD)
-set_target_properties(bench_tank_noSIMD PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bench)
 
 # --- Harness library: softgl backend ---

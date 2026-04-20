@@ -1,16 +1,10 @@
 #include "types.h"
 #include "dlist.h"
+#include <smmintrin.h>
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-
-#if !defined(SG_DISABLE_SIMD) && (defined(__SSE4_1__) || defined(__wasm_simd128__))
-  #include <smmintrin.h>
-  #define SG_PIPELINE_SIMD 1
-#else
-  #define SG_PIPELINE_SIMD 0
-#endif
 
 /* Pipeline: vertex fetch -> MV -> projection -> clip -> viewport -> raster. */
 
@@ -88,18 +82,11 @@ static void sg_apply_lighting_side(softgl_ctx *c, const sg_vec4 *eye_pos, const 
             }
         }
     }
-    /* Accumulator lanes (r,g,b,_). Per-channel ops are independent, so
-     * SIMD lane-wise sum is bit-identical to scalar. Lane 3 is garbage,
-     * overwritten with `a` at the end. */
-#if SG_PIPELINE_SIMD
+    /* Accumulator lanes (r,g,b,_). Lane 3 is garbage, overwritten with `a`
+     * at the end. */
     __m128 acc = _mm_add_ps(_mm_loadu_ps(mat.emission),
                             _mm_mul_ps(_mm_loadu_ps(mat.ambient),
                                        _mm_loadu_ps(c->light_model_ambient)));
-#else
-    float r = mat.emission[0] + mat.ambient[0] * c->light_model_ambient[0];
-    float g = mat.emission[1] + mat.ambient[1] * c->light_model_ambient[1];
-    float b = mat.emission[2] + mat.ambient[2] * c->light_model_ambient[2];
-#endif
     float a = mat.diffuse[3];
 
     float nx = eye_n->x, ny = eye_n->y, nz = eye_n->z;
@@ -121,14 +108,8 @@ static void sg_apply_lighting_side(softgl_ctx *c, const sg_vec4 *eye_pos, const 
     for (int i = 0; i < SG_MAX_LIGHTS; i++) {
         const sg_light *L = &c->lights[i];
         if (!L->enabled) continue;
-#if SG_PIPELINE_SIMD
         acc = _mm_add_ps(acc, _mm_mul_ps(_mm_loadu_ps(mat.ambient),
                                          _mm_loadu_ps(L->ambient)));
-#else
-        r += mat.ambient[0] * L->ambient[0];
-        g += mat.ambient[1] * L->ambient[1];
-        b += mat.ambient[2] * L->ambient[2];
-#endif
 
         float Lx, Ly, Lz;   /* unit vector from fragment to light */
         float att = 1.0f;
@@ -147,9 +128,7 @@ static void sg_apply_lighting_side(softgl_ctx *c, const sg_vec4 *eye_pos, const 
         }
         float ndotl = nx*Lx + ny*Ly + nz*Lz;
         if (ndotl < 0.f) ndotl = 0.f;
-#if SG_PIPELINE_SIMD
         {
-            /* ((md*ld)*ndotl)*att matches scalar reassociation. */
             __m128 md = _mm_loadu_ps(mat.diffuse);
             __m128 ld = _mm_loadu_ps(L->diffuse);
             __m128 nd = _mm_set1_ps(ndotl);
@@ -157,11 +136,6 @@ static void sg_apply_lighting_side(softgl_ctx *c, const sg_vec4 *eye_pos, const 
             __m128 t  = _mm_mul_ps(_mm_mul_ps(_mm_mul_ps(md, ld), nd), at);
             acc = _mm_add_ps(acc, t);
         }
-#else
-        r += mat.diffuse[0] * L->diffuse[0] * ndotl * att;
-        g += mat.diffuse[1] * L->diffuse[1] * ndotl * att;
-        b += mat.diffuse[2] * L->diffuse[2] * ndotl * att;
-#endif
 
         if (ndotl > 0.f && mat.shininess > 0.f) {
             float hx = Lx + Vx, hy = Ly + Vy, hz = Lz + Vz;
@@ -170,26 +144,16 @@ static void sg_apply_lighting_side(softgl_ctx *c, const sg_vec4 *eye_pos, const 
             float ndoth = nx*hx + ny*hy + nz*hz;
             if (ndoth > 0.f) {
                 float spec = powf(ndoth, mat.shininess) * att;
-#if SG_PIPELINE_SIMD
                 __m128 ms = _mm_loadu_ps(mat.specular);
                 __m128 ls = _mm_loadu_ps(L->specular);
                 __m128 sp = _mm_set1_ps(spec);
                 acc = _mm_add_ps(acc, _mm_mul_ps(_mm_mul_ps(ms, ls), sp));
-#else
-                r += mat.specular[0] * L->specular[0] * spec;
-                g += mat.specular[1] * L->specular[1] * spec;
-                b += mat.specular[2] * L->specular[2] * spec;
-#endif
             }
         }
     }
-#if SG_PIPELINE_SIMD
     SG_ALIGN16 float tmp[4];
     _mm_store_ps(tmp, acc);
     out[0] = tmp[0]; out[1] = tmp[1]; out[2] = tmp[2]; out[3] = a;
-#else
-    out[0] = r; out[1] = g; out[2] = b; out[3] = a;
-#endif
 }
 
 /* Front-face convenience wrapper. */
@@ -365,7 +329,6 @@ static void sg_process_triangle_frustum(softgl_ctx *c, sg_vert *v0, sg_vert *v1,
     /* Trivial accept: all 3 vertices pass all 6 frustum planes. */
     const sg_vert *verts[3] = { v0, v1, v2 };
     int all_in = 1;
-#if SG_PIPELINE_SIMD
     __m128 any_out_lo = _mm_setzero_ps();
     __m128 any_out_hi = _mm_setzero_ps();
     __m128 zero = _mm_setzero_ps();
@@ -385,23 +348,6 @@ static void sg_process_triangle_frustum(softgl_ctx *c, sg_vert *v0, sg_vert *v1,
     int m_lo = _mm_movemask_ps(any_out_lo);
     int m_hi = _mm_movemask_ps(any_out_hi) & 0x3;   /* upper 2 lanes = w>=0 garbage */
     if ((m_lo | m_hi) != 0) all_in = 0;
-#else
-    for (int p = 0; p < 6 && all_in; p++) {
-        for (int i = 0; i < 3; i++) {
-            float d = 0.f;
-            const sg_vec4 *V = &verts[i]->clip;
-            switch (p) {
-                case 0: d = V->x + V->w; break;
-                case 1: d = -V->x + V->w; break;
-                case 2: d = V->y + V->w; break;
-                case 3: d = -V->y + V->w; break;
-                case 4: d = V->z + V->w; break;
-                case 5: d = -V->z + V->w; break;
-            }
-            if (d < 0.f) { all_in = 0; break; }
-        }
-    }
-#endif
     if (all_in) {
         sg_finish_triangle(c, v0, v1, v2);
         return;
