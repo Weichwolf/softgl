@@ -8589,6 +8589,30 @@ dispatch.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl.dir\build.make CMakeFiles/softgl.dir/dispatch.c.s
 .PHONY : dispatch.c.s
 
+tank_wrap.o: tank_wrap.c.o
+.PHONY : tank_wrap.o
+
+# target to build an object file
+tank_wrap.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl.dir\build.make CMakeFiles/softgl.dir/tank_wrap.c.o
+.PHONY : tank_wrap.c.o
+
+tank_wrap.i: tank_wrap.c.i
+.PHONY : tank_wrap.i
+
+# target to preprocess a source file
+tank_wrap.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl.dir\build.make CMakeFiles/softgl.dir/tank_wrap.c.i
+.PHONY : tank_wrap.c.i
+
+tank_wrap.s: tank_wrap.c.s
+.PHONY : tank_wrap.s
+
+# target to generate assembly for a file
+tank_wrap.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\softgl.dir\build.make CMakeFiles/softgl.dir/tank_wrap.c.s
+.PHONY : tank_wrap.c.s
+
 # Help Target
 help:
 	@echo The following are some of the valid targets for this Makefile:
@@ -9520,6 +9544,9 @@ help:
 	@echo ... dispatch.o
 	@echo ... dispatch.i
 	@echo ... dispatch.s
+	@echo ... tank_wrap.o
+	@echo ... tank_wrap.i
+	@echo ... tank_wrap.s
 .PHONY : help
 
 

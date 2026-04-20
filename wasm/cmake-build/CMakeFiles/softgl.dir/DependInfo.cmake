@@ -10,6 +10,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "D:/Git/wasm-3d/wasm/bench_wrap.c" "CMakeFiles/softgl.dir/bench_wrap.c.o" "gcc" "CMakeFiles/softgl.dir/bench_wrap.c.o.d"
   "D:/Git/wasm-3d/wasm/cmake-build/dispatch.c" "CMakeFiles/softgl.dir/dispatch.c.o" "gcc" "CMakeFiles/softgl.dir/dispatch.c.o.d"
+  "D:/Git/wasm-3d/wasm/tank_wrap.c" "CMakeFiles/softgl.dir/tank_wrap.c.o" "gcc" "CMakeFiles/softgl.dir/tank_wrap.c.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

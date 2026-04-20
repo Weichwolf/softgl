@@ -25,6 +25,8 @@
   const prevBtn   = document.getElementById('prev');
   const nextBtn   = document.getElementById('next');
   const benchBtn  = document.getElementById('bench');
+  const tankBtn   = document.getElementById('tank');
+  const testsBtn  = document.getElementById('tests');
   const capEl     = document.getElementById('cap');
   const benchOut  = document.getElementById('bench-out');
 
@@ -33,20 +35,8 @@
 
   const Mod = await createSoftGL();
 
-  const testCount = Mod.ccall('sg_test_count', 'number', [], []);
-  let idx = 0;
-  let paused = false;
-  let timer = null;
-  let benching = false;
-
-  function renderCurrent() {
-    const c = Mod.ccall('softgl_create', 'number', ['number','number'], [W, H]);
-    Mod.ccall('softgl_make_current', null, ['number'], [c]);
-
-    const t0 = performance.now();
-    Mod.ccall('sg_test_run', null, ['number','number','number'], [idx, W, H]);
-    const t1 = performance.now();
-
+  /* ---- Shared output path: softgl FB → canvas ----------------------- */
+  function blitContext(c) {
     const pixelsPtr = Mod.ccall('softgl_read_rgba8', 'number', ['number'], [c]);
     const pixels = Mod.HEAPU8.subarray(pixelsPtr, pixelsPtr + W * H * 4);
     for (let y = 0; y < H; y++) {
@@ -55,7 +45,23 @@
       img.data.set(pixels.subarray(src, src + W * 4), dst);
     }
     ctx.putImageData(img, 0, 0);
+  }
 
+  /* ---- Test cycle mode -------------------------------------------- */
+  const testCount = Mod.ccall('sg_test_count', 'number', [], []);
+  let idx = 0;
+  let paused = false;
+  let timer = null;
+  let benching = false;
+  let mode = 'tank';       /* 'tank' | 'tests' */
+
+  function renderTest() {
+    const c = Mod.ccall('softgl_create', 'number', ['number','number'], [W, H]);
+    Mod.ccall('softgl_make_current', null, ['number'], [c]);
+    const t0 = performance.now();
+    Mod.ccall('sg_test_run', null, ['number','number','number'], [idx, W, H]);
+    const t1 = performance.now();
+    blitContext(c);
     Mod.ccall('softgl_destroy', null, ['number'], [c]);
 
     const name = Mod.ccall('sg_test_name', 'string', ['number'], [idx]);
@@ -70,37 +76,115 @@
     progEl.style.width = '100%';
   }
 
-  function schedule() {
+  function scheduleTests() {
     clearTimeout(timer);
-    if (paused || benching) return;
+    if (paused || benching || mode !== 'tests') return;
     timer = setTimeout(() => {
       idx = (idx + 1) % testCount;
-      renderCurrent();
-      schedule();
+      renderTest();
+      scheduleTests();
     }, INTERVAL_MS);
   }
 
+  /* ---- Tank mode -------------------------------------------------- */
+  let tankLoaded = false;
+  let tankCtx = 0;
+  let tankFrameId = 0;
+  let tankAngle = 0;
+  let tankLastTime = 0;
+
+  async function loadTank() {
+    const resp = await fetch('tank.pack');
+    if (!resp.ok) throw new Error('tank.pack not found (HTTP ' + resp.status + ')');
+    const bytes = new Uint8Array(await resp.arrayBuffer());
+
+    /* Allocate inside WASM heap, copy the file in */
+    const ptr = Mod._malloc(bytes.length);
+    Mod.HEAPU8.set(bytes, ptr);
+
+    /* A context must be current before glGenBuffers etc. can do anything */
+    if (!tankCtx) {
+      tankCtx = Mod.ccall('softgl_create', 'number', ['number','number'], [W, H]);
+    }
+    Mod.ccall('softgl_make_current', null, ['number'], [tankCtx]);
+
+    const ok = Mod.ccall('sg_tank_load', 'number', ['number','number'], [ptr, bytes.length]);
+    Mod._free(ptr);
+    if (!ok) throw new Error('sg_tank_load returned 0 (bad pack?)');
+
+    tankLoaded = true;
+    const tris = Mod.ccall('sg_tank_tri_count', 'number', [], []);
+    const mats = Mod.ccall('sg_tank_mat_count', 'number', [], []);
+    counterEl.textContent = `T-80 MBT`;
+    nameEl.textContent = `${tris.toLocaleString()} triangles · ${mats} materials`;
+  }
+
+  function tankFrame(t) {
+    if (mode !== 'tank') { tankFrameId = 0; return; }
+    if (tankLastTime === 0) tankLastTime = t;
+    const dt = Math.min(50, t - tankLastTime);    /* clamp to 50 ms */
+    tankLastTime = t;
+    tankAngle = (tankAngle + dt * 0.04) % 360;    /* ~14.4 °/s */
+
+    Mod.ccall('softgl_make_current', null, ['number'], [tankCtx]);
+    const t0 = performance.now();
+    Mod.ccall('sg_tank_render', null, ['number','number','number'],
+              [tankAngle, W, H]);
+    const t1 = performance.now();
+    blitContext(tankCtx);
+    timingEl.textContent = `render: ${(t1 - t0).toFixed(2)} ms   ·   ${(1000/(t1-t0)).toFixed(0)} fps`;
+    /* steady angle bar instead of test progress */
+    progEl.style.transition = 'none';
+    progEl.style.width = `${(tankAngle / 360) * 100}%`;
+
+    tankFrameId = requestAnimationFrame(tankFrame);
+  }
+
+  function startTank() {
+    mode = 'tank';
+    paused = false;
+    pauseBtn.textContent = 'Pause';
+    clearTimeout(timer);
+    tankLastTime = 0;
+    if (!tankFrameId) tankFrameId = requestAnimationFrame(tankFrame);
+  }
+  function startTests() {
+    mode = 'tests';
+    if (tankFrameId) { cancelAnimationFrame(tankFrameId); tankFrameId = 0; }
+    renderTest();
+    scheduleTests();
+  }
+
+  /* ---- Buttons ---------------------------------------------------- */
   pauseBtn.onclick = () => {
     paused = !paused;
     pauseBtn.textContent = paused ? 'Resume' : 'Pause';
-    if (paused) clearTimeout(timer); else schedule();
+    if (mode === 'tests') {
+      if (paused) clearTimeout(timer); else scheduleTests();
+    } else if (mode === 'tank') {
+      if (paused && tankFrameId) { cancelAnimationFrame(tankFrameId); tankFrameId = 0; }
+      else if (!paused && !tankFrameId) { tankLastTime = 0; tankFrameId = requestAnimationFrame(tankFrame); }
+    }
   };
   prevBtn.onclick = () => {
+    if (mode !== 'tests') startTests();
     idx = (idx - 1 + testCount) % testCount;
-    renderCurrent(); schedule();
+    renderTest(); scheduleTests();
   };
   nextBtn.onclick = () => {
+    if (mode !== 'tests') startTests();
     idx = (idx + 1) % testCount;
-    renderCurrent(); schedule();
+    renderTest(); scheduleTests();
   };
+  if (tankBtn)  tankBtn.onclick  = startTank;
+  if (testsBtn) testsBtn.onclick = startTests;
 
-  /* ----- Benchmark mode -------------------------------------------
-   * Runs each FP-6 slot on both backends, appends a pass-2 check vs
-   * best-of-5. We only do best-of-3 in WASM to keep the button snappy. */
+  /* ---- Benchmark mode -------------------------------------------- */
   async function runBenchmark() {
     if (benching) return;
     benching = true;
     clearTimeout(timer);
+    if (tankFrameId) { cancelAnimationFrame(tankFrameId); tankFrameId = 0; }
     benchBtn.disabled = true;
     benchOut.hidden = false;
     benchOut.textContent = '';
@@ -110,12 +194,7 @@
     for (let s = 0; s < slotCount; s++) {
       tags.push(Mod.ccall('sg_bench_slot_tag', 'string', ['number'], [s]));
     }
-
-    const log = (s) => {
-      benchOut.textContent += s + '\n';
-      benchOut.scrollTop = benchOut.scrollHeight;
-    };
-
+    const log = (s) => { benchOut.textContent += s + '\n'; benchOut.scrollTop = benchOut.scrollHeight; };
     log(`# FP-6 WASM benchmark @ ${W}x${H} — SIMD=${simdOK}`);
     log(`# userAgent: ${navigator.userAgent}`);
     log(`# 3 runs per (scene, backend); min reported.`);
@@ -123,14 +202,12 @@
 
     const iters = 20;
     const runs  = 3;
-
     for (let s = 0; s < slotCount; s++) {
       const tag = tags[s];
       for (const backend of [0, 1]) {
         const name = backend === 0 ? 'float' : 'fixed';
         let best = Infinity;
         for (let r = 0; r < runs; r++) {
-          /* Yield to the event loop so the UI stays responsive. */
           await new Promise(res => setTimeout(res, 0));
           const ms = Mod.ccall('sg_bench_run_slot', 'number',
                                ['number','number','number'],
@@ -142,14 +219,25 @@
       }
     }
     log('');
-    log('# done. click "Resume" to continue test cycling.');
-
+    log('# done. click "Tank" or "Tests" to resume.');
     benching = false;
     benchBtn.disabled = false;
   }
-
   benchBtn.onclick = runBenchmark;
 
-  renderCurrent();
-  schedule();
+  /* ---- Boot: try tank, fall back to tests ------------------------- */
+  nameEl.textContent = 'loading tank.pack…';
+  try {
+    await loadTank();
+    startTank();
+  } catch (err) {
+    console.error('tank mode unavailable:', err);
+    nameEl.style.color = '#c77';
+    nameEl.textContent = `tank load failed: ${err.message} — falling back to test cycle`;
+    timingEl.textContent = (err.stack || '').split('\n').slice(0,3).join(' | ');
+    /* small delay so the user can read the error before cycling starts */
+    await new Promise(r => setTimeout(r, 1500));
+    nameEl.style.color = '';
+    startTests();
+  }
 })();

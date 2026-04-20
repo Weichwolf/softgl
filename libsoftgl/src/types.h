@@ -420,6 +420,49 @@ sg_buffer  *sg_buffer_get(softgl_ctx *c, GLuint id);
 sg_texture *sg_texture_get(softgl_ctx *c, GLuint id);
 sg_query   *sg_query_get(softgl_ctx *c, GLuint id);
 
+/* From fragment.c — texture samplers (RGBA floats in [0,1]). */
+void sg_sample_tex2d(const sg_texture *t, GLenum min_filter, GLenum mag_filter,
+                     GLenum wrap_s, GLenum wrap_t,
+                     float u, float v, int mag, float out[4]);
+void sg_sample_tex1d(const sg_texture *t, GLenum min_filter, GLenum mag_filter,
+                     GLenum wrap_s, float u, int mag, float out[4]);
+void sg_sample_tex3d(const sg_texture *t, GLenum min_filter, GLenum mag_filter,
+                     GLenum wrap_s, GLenum wrap_t, GLenum wrap_r,
+                     float u, float v, float r, int mag, float out[4]);
+void sg_sample_tex_cube(const sg_texture *t, GLenum min_filter, GLenum mag_filter,
+                        GLenum wrap_s, GLenum wrap_t,
+                        float x, float y, float z, int mag, float out[4]);
+void sg_tex_env_combine_full(const sg_tex_env *env, int current_unit,
+                             const float primary[4],
+                             const float previous[4],
+                             float unit_tex[SG_MAX_TEX_UNITS][4],
+                             float out[4]);
+
+/* From fragment.c — per-triangle texture/combiner context (hoist).
+ * Lifts tex_env scans and sg_texture_get out of the per-pixel inner loop. */
+typedef struct {
+    int            active_slot;       /* SG_TEX_TARGET_*, or -1 if inactive */
+    sg_texture    *tex;
+    GLenum         filter_min;
+    GLenum         filter_mag;
+    GLenum         wrap_s, wrap_t, wrap_r;
+    int            tw, th, td;
+    const uint8_t *data0;              /* level-0 data for 2D/3D; NULL for cube */
+} sg_tex_unit_tri;
+
+typedef struct {
+    sg_tex_unit_tri unit[SG_MAX_TEX_UNITS];
+    int             any_active;
+    int             fastpath_kind;     /* 0=generic, 1=mod2D-lin-rep, 2=rep2D-lin-rep, 3=no-tex */
+} sg_tex_tri_ctx;
+
+void sg_tex_tri_prepare(softgl_ctx *c, sg_tex_tri_ctx *t);
+void sg_tex_tri_sample_units(const sg_tex_tri_ctx *t,
+                             const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
+                             float w0, float w1, float w2, float one_over_wsum,
+                             float unit_tex[SG_MAX_TEX_UNITS][4],
+                             int   unit_active[SG_MAX_TEX_UNITS]);
+
 /* From pipeline.c */
 void sg_process_triangle_pub(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert *v2);
 void sg_process_vertex_at(softgl_ctx *c, int index, sg_vert *out);

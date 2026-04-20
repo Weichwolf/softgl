@@ -156,9 +156,10 @@ static void setup_scene(void) {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE); glCullFace(GL_BACK); glFrontFace(GL_CCW);
 
+    /* Telephoto framing to match the WASM preview (~4× zoom). */
     float aspect = (float)W / (float)H;
     glMatrixMode(GL_PROJECTION); glLoadIdentity();
-    glFrustum(-0.5 * aspect, 0.5 * aspect, -0.5, 0.5, 1.0, 20.0);
+    glFrustum(-0.125 * aspect, 0.125 * aspect, -0.125, 0.125, 1.0, 20.0);
     glMatrixMode(GL_MODELVIEW);  glLoadIdentity();
 
     glEnable(GL_LIGHTING); glEnable(GL_LIGHT0);

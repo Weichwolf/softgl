@@ -7,6 +7,141 @@
  * interpolation produces per-fragment u/v.
  * ===================================================================== */
 
+/* Per-triangle snapshot of texture / combiner state. Declared in types.h,
+ * computed ONCE per triangle by sg_tex_tri_prepare and consumed per-pixel.
+ * Lifts the tex_env[] scan, sg_texture_get lookups, and filter/wrap reads
+ * out of the hot fragment loop.
+ *
+ * fastpath_kind describes the most common specialised pixel path:
+ *   0  = generic — caller must sample / combine normally
+ *   1  = unit 0 only, 2D LINEAR/LINEAR REPEAT/REPEAT, MODULATE, no fog
+ *   2  = unit 0 only, 2D LINEAR/LINEAR REPEAT/REPEAT, REPLACE, no fog
+ *   3  = no texture units active at all (skip sampling entirely) */
+
+/* Fill `t` from the context's current tex-env / texture state. Call once
+ * per triangle before entering the rasterizer inner loop. */
+void sg_tex_tri_prepare(softgl_ctx *c, sg_tex_tri_ctx *t) {
+    t->any_active = 0;
+    t->fastpath_kind = 0;
+    int n_active = 0;
+    int first_active = -1;
+
+    for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
+        sg_tex_unit_tri *ut = &t->unit[u];
+        sg_tex_env *env = &c->tex_env[u];
+        int active_slot = -1;
+        if      (env->enabled_target[SG_TEX_TARGET_CUBE] &&
+                 env->bound_tex_target[SG_TEX_TARGET_CUBE])
+            active_slot = SG_TEX_TARGET_CUBE;
+        else if (env->enabled_target[SG_TEX_TARGET_3D] &&
+                 env->bound_tex_target[SG_TEX_TARGET_3D])
+            active_slot = SG_TEX_TARGET_3D;
+        else if (env->enabled_target[SG_TEX_TARGET_2D] &&
+                 env->bound_tex_target[SG_TEX_TARGET_2D])
+            active_slot = SG_TEX_TARGET_2D;
+        else if (env->enabled_target[SG_TEX_TARGET_1D] &&
+                 env->bound_tex_target[SG_TEX_TARGET_1D])
+            active_slot = SG_TEX_TARGET_1D;
+
+        ut->active_slot = active_slot;
+        ut->tex = NULL;
+        ut->data0 = NULL;
+        ut->tw = ut->th = ut->td = 0;
+
+        if (active_slot < 0) continue;
+        sg_texture *tex = sg_texture_get(c, env->bound_tex_target[active_slot]);
+        if (!tex || tex->levels == 0) {
+            /* disabled-equivalent */
+            ut->active_slot = -1;
+            continue;
+        }
+        ut->tex = tex;
+        ut->filter_min = tex->min_filter;
+        ut->filter_mag = tex->mag_filter;
+        ut->wrap_s = tex->wrap_s;
+        ut->wrap_t = tex->wrap_t;
+        ut->wrap_r = tex->wrap_r;
+        ut->tw = tex->w[0];
+        ut->th = tex->h[0];
+        ut->td = tex->d[0];
+        if (active_slot != SG_TEX_TARGET_CUBE) ut->data0 = tex->data[0];
+        if (first_active < 0) first_active = u;
+        n_active++;
+        t->any_active = 1;
+    }
+
+    if (!t->any_active) {
+        t->fastpath_kind = 3;
+        return;
+    }
+
+    /* Fastpath selection: the Tank bench and many other common renderers
+     * hit this exact combination. MAG_FILTER is what actually runs when
+     * the magnification sign is 1 (our caller always passes mag=1). */
+    if (n_active == 1 && first_active == 0) {
+        sg_tex_unit_tri *u0 = &t->unit[0];
+        sg_tex_env *env = &c->tex_env[0];
+        if (u0->active_slot == SG_TEX_TARGET_2D &&
+            u0->filter_mag == GL_LINEAR &&
+            u0->wrap_s == GL_REPEAT && u0->wrap_t == GL_REPEAT &&
+            u0->tw > 0 && u0->th > 0 && u0->data0 &&
+            !c->fog_enabled) {
+            if (env->env_mode == GL_MODULATE) t->fastpath_kind = 1;
+            else if (env->env_mode == GL_REPLACE) t->fastpath_kind = 2;
+        }
+    }
+}
+
+/* Populate unit_tex[] + unit_active[] from a prepared sg_tex_tri_ctx and
+ * the perspective-correct per-pixel lerp inputs. Replaces the per-pixel
+ * dispatch that scans tex_env[].enabled_target[] and calls sg_texture_get.
+ * Only used by the "generic" (non-fastpath) path. */
+void sg_tex_tri_sample_units(
+    const sg_tex_tri_ctx *t,
+    const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
+    float w0, float w1, float w2, float one_over_wsum,
+    float unit_tex[SG_MAX_TEX_UNITS][4],
+    int   unit_active[SG_MAX_TEX_UNITS])
+{
+    for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
+        unit_tex[u][0] = unit_tex[u][1] = unit_tex[u][2] = unit_tex[u][3] = 1.f;
+        unit_active[u] = 0;
+        const sg_tex_unit_tri *ut = &t->unit[u];
+        if (ut->active_slot < 0 || !ut->tex) continue;
+
+        float uvp_x = (v0->uv[u].x * w0 + v1->uv[u].x * w1 + v2->uv[u].x * w2) * one_over_wsum;
+        float uvp_y = (v0->uv[u].y * w0 + v1->uv[u].y * w1 + v2->uv[u].y * w2) * one_over_wsum;
+        float uvp_z = (v0->uv[u].z * w0 + v1->uv[u].z * w1 + v2->uv[u].z * w2) * one_over_wsum;
+
+        sg_texture *tex = ut->tex;
+        float *tx = unit_tex[u];
+        switch (ut->active_slot) {
+            case SG_TEX_TARGET_1D:
+                sg_sample_tex1d(tex, ut->filter_min, ut->filter_mag,
+                                ut->wrap_s, uvp_x, 1, tx);
+                break;
+            case SG_TEX_TARGET_3D:
+                sg_sample_tex3d(tex, ut->filter_min, ut->filter_mag,
+                                ut->wrap_s, ut->wrap_t, ut->wrap_r,
+                                uvp_x, uvp_y, uvp_z, 1, tx);
+                break;
+            case SG_TEX_TARGET_CUBE:
+                sg_sample_tex_cube(tex, ut->filter_min, ut->filter_mag,
+                                   ut->wrap_s, ut->wrap_t,
+                                   uvp_x, uvp_y, uvp_z, 1, tx);
+                break;
+            case SG_TEX_TARGET_2D:
+            default:
+                sg_sample_tex2d(tex, ut->filter_min, ut->filter_mag,
+                                ut->wrap_s, ut->wrap_t,
+                                uvp_x, uvp_y, 1, tx);
+                break;
+        }
+        unit_active[u] = 1;
+    }
+}
+
+
 SG_INLINE float sg_wrap_coord(float c, GLenum wrap) {
     switch (wrap) {
         case GL_REPEAT: return c - floorf(c);

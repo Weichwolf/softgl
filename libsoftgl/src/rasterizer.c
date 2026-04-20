@@ -1,4 +1,5 @@
 #include "types.h"
+#include "frag_hot.h"
 #include <math.h>
 #include <string.h>
 
@@ -275,6 +276,13 @@ void sg_raster_triangle(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1, con
     float invw1 = v1->ndc.w;
     float invw2 = v2->ndc.w;
 
+    /* Hoist all triangle-invariant tex-env / texture state out of the
+     * per-pixel loop. Each pixel now does an O(1) lookup into the prepared
+     * context instead of walking env->enabled_target[] and hitting
+     * sg_texture_get() 4× per unit. */
+    sg_tex_tri_ctx tctx;
+    sg_tex_tri_prepare(c, &tctx);
+
     /* Polygon offset (fill): constant bias added to z. slope = max(|dz/dx|,|dz/dy|). */
     float z_offset = 0.f;
     if (c->polygon_offset_fill && (c->polygon_offset_factor != 0.f ||
@@ -335,74 +343,29 @@ void sg_raster_triangle(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1, con
              * fragment color). */
             float primary[4] = { col[0], col[1], col[2], col[3] };
 
-            /* Pre-sample texel for every tex unit so cross-unit references in
-             * the combiner (GL_TEXTUREn for n != current) resolve without
-             * re-sampling per source. Disabled units get white (1,1,1,1).
-             * Target priority (highest enabled wins on a unit): CUBE > 3D > 2D > 1D. */
-            float unit_tex[SG_MAX_TEX_UNITS][4];
-            int   unit_active[SG_MAX_TEX_UNITS];
-            for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
-                sg_tex_env *env = &c->tex_env[u];
-                int active_slot = -1;
-                if      (env->enabled_target[SG_TEX_TARGET_CUBE] &&
-                         env->bound_tex_target[SG_TEX_TARGET_CUBE])
-                    active_slot = SG_TEX_TARGET_CUBE;
-                else if (env->enabled_target[SG_TEX_TARGET_3D] &&
-                         env->bound_tex_target[SG_TEX_TARGET_3D])
-                    active_slot = SG_TEX_TARGET_3D;
-                else if (env->enabled_target[SG_TEX_TARGET_2D] &&
-                         env->bound_tex_target[SG_TEX_TARGET_2D])
-                    active_slot = SG_TEX_TARGET_2D;
-                else if (env->enabled_target[SG_TEX_TARGET_1D] &&
-                         env->bound_tex_target[SG_TEX_TARGET_1D])
-                    active_slot = SG_TEX_TARGET_1D;
-
-                unit_tex[u][0] = unit_tex[u][1] = unit_tex[u][2] = unit_tex[u][3] = 1.f;
-                unit_active[u] = 0;
-                if (active_slot < 0) continue;
-
-                sg_texture *tex = sg_texture_get(c, env->bound_tex_target[active_slot]);
-                if (!tex) continue;
-
-                float uvp[4];
-                sg_lerp_pc(uvp, &v0->uv[u], &v1->uv[u], &v2->uv[u], w0, w1, w2, one_over_wsum);
-
-                float *tx = unit_tex[u];
-                switch (active_slot) {
-                    case SG_TEX_TARGET_1D:
-                        if (tex->levels == 0) break;
-                        sg_sample_tex1d(tex, tex->min_filter, tex->mag_filter,
-                                        tex->wrap_s, uvp[0], 1, tx);
-                        break;
-                    case SG_TEX_TARGET_3D:
-                        if (tex->levels == 0) break;
-                        sg_sample_tex3d(tex, tex->min_filter, tex->mag_filter,
-                                        tex->wrap_s, tex->wrap_t, tex->wrap_r,
-                                        uvp[0], uvp[1], uvp[2], 1, tx);
-                        break;
-                    case SG_TEX_TARGET_CUBE:
-                        sg_sample_tex_cube(tex, tex->min_filter, tex->mag_filter,
-                                           tex->wrap_s, tex->wrap_t,
-                                           uvp[0], uvp[1], uvp[2], 1, tx);
-                        break;
-                    case SG_TEX_TARGET_2D:
-                    default:
-                        if (tex->levels == 0) break;
-                        sg_sample_tex2d(tex, tex->min_filter, tex->mag_filter,
-                                        tex->wrap_s, tex->wrap_t,
-                                        uvp[0], uvp[1], 1, tx);
-                        break;
-                }
-                unit_active[u] = 1;
-            }
-
-            /* Apply each active unit's combiner in order. `col` is the running
-             * PREVIOUS color; primary stays fixed at the pre-combiner vertex color. */
-            for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
-                if (!unit_active[u]) continue;
+            /* Texture sampling + combiner. Three paths:
+             *   - no units active: skip entirely (col already holds primary)
+             *   - fastpath_kind 1/2: single-unit 2D LINEAR REPEAT MODULATE/REPLACE,
+             *                        no fog, inlined bilinear fetch, zero function calls
+             *   - generic: prepared per-unit context feeds sample + combiner */
+            if (tctx.fastpath_kind == 1 || tctx.fastpath_kind == 2) {
+                float uu = (v0->uv[0].x * w0 + v1->uv[0].x * w1 + v2->uv[0].x * w2) * one_over_wsum;
+                float vv = (v0->uv[0].y * w0 + v1->uv[0].y * w1 + v2->uv[0].y * w2) * one_over_wsum;
                 float out[4];
-                sg_tex_env_combine_full(&c->tex_env[u], u, primary, col, unit_tex, out);
+                sg_hot_fastpath_shade(&tctx, tctx.fastpath_kind, uu, vv, primary, out);
                 col[0] = out[0]; col[1] = out[1]; col[2] = out[2]; col[3] = out[3];
+            } else if (tctx.any_active) {
+                float unit_tex[SG_MAX_TEX_UNITS][4];
+                int   unit_active[SG_MAX_TEX_UNITS];
+                sg_tex_tri_sample_units(&tctx, v0, v1, v2,
+                                        w0, w1, w2, one_over_wsum,
+                                        unit_tex, unit_active);
+                for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
+                    if (!unit_active[u]) continue;
+                    float out[4];
+                    sg_tex_env_combine_full(&c->tex_env[u], u, primary, col, unit_tex, out);
+                    col[0] = out[0]; col[1] = out[1]; col[2] = out[2]; col[3] = out[3];
+                }
             }
 
             /* Fog blend (after texturing). Fog coordinate is |eye.z|. */

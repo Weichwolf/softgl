@@ -1,6 +1,7 @@
 #include "types.h"
 #include "fp_types.h"
 #include "fp_simd.h"
+#include "frag_hot.h"
 #include <math.h>
 
 /* =====================================================================
@@ -100,6 +101,7 @@ SG_INLINE int32_t fp_sat_i64_to_i32(int64_t v) {
  * values for this specific pixel, used to build the float barycentrics.
  * ===================================================================== */
 SG_INLINE void fp_shade_pixel(softgl_ctx *c,
+                              const sg_tex_tri_ctx *tctx,
                               const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
                               int x, int y,
                               int64_t E0, int64_t E1,
@@ -139,70 +141,33 @@ SG_INLINE void fp_shade_pixel(softgl_ctx *c,
 
     float primary[4] = { col[0], col[1], col[2], col[3] };
 
-    /* Texture sampling per unit + combiner. */
-    float unit_tex[SG_MAX_TEX_UNITS][4];
-    int   unit_active[SG_MAX_TEX_UNITS];
-    for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
-        sg_tex_env *env = &c->tex_env[u];
-        int active_slot = -1;
-        if      (env->enabled_target[SG_TEX_TARGET_CUBE] &&
-                 env->bound_tex_target[SG_TEX_TARGET_CUBE])
-            active_slot = SG_TEX_TARGET_CUBE;
-        else if (env->enabled_target[SG_TEX_TARGET_3D] &&
-                 env->bound_tex_target[SG_TEX_TARGET_3D])
-            active_slot = SG_TEX_TARGET_3D;
-        else if (env->enabled_target[SG_TEX_TARGET_2D] &&
-                 env->bound_tex_target[SG_TEX_TARGET_2D])
-            active_slot = SG_TEX_TARGET_2D;
-        else if (env->enabled_target[SG_TEX_TARGET_1D] &&
-                 env->bound_tex_target[SG_TEX_TARGET_1D])
-            active_slot = SG_TEX_TARGET_1D;
-
-        unit_tex[u][0] = unit_tex[u][1] = unit_tex[u][2] = unit_tex[u][3] = 1.f;
-        unit_active[u] = 0;
-        if (active_slot < 0) continue;
-
-        sg_texture *tex = sg_texture_get(c, env->bound_tex_target[active_slot]);
-        if (!tex) continue;
-
-        float uvp[4];
-        fp_lerp_pc(uvp, &v0->uv[u], &v1->uv[u], &v2->uv[u],
-                   w0, w1, w2, one_over_wsum);
-
-        float *tx = unit_tex[u];
-        switch (active_slot) {
-            case SG_TEX_TARGET_1D:
-                if (tex->levels == 0) break;
-                sg_sample_tex1d(tex, tex->min_filter, tex->mag_filter,
-                                tex->wrap_s, uvp[0], 1, tx);
-                break;
-            case SG_TEX_TARGET_3D:
-                if (tex->levels == 0) break;
-                sg_sample_tex3d(tex, tex->min_filter, tex->mag_filter,
-                                tex->wrap_s, tex->wrap_t, tex->wrap_r,
-                                uvp[0], uvp[1], uvp[2], 1, tx);
-                break;
-            case SG_TEX_TARGET_CUBE:
-                sg_sample_tex_cube(tex, tex->min_filter, tex->mag_filter,
-                                   tex->wrap_s, tex->wrap_t,
-                                   uvp[0], uvp[1], uvp[2], 1, tx);
-                break;
-            case SG_TEX_TARGET_2D:
-            default:
-                if (tex->levels == 0) break;
-                sg_sample_tex2d(tex, tex->min_filter, tex->mag_filter,
-                                tex->wrap_s, tex->wrap_t,
-                                uvp[0], uvp[1], 1, tx);
-                break;
-        }
-        unit_active[u] = 1;
-    }
-
-    for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
-        if (!unit_active[u]) continue;
+    /* Texture sampling + combiner via hoisted per-triangle context.
+     * Fast-path: single 2D LINEAR REPEAT MODULATE/REPLACE unit, no fog.
+     * Matches sg_sample_tex2d + combiner bit-exactly (all u8 quantisation
+     * happens in the sampler, so later tests see the same bytes). */
+    if (tctx->fastpath_kind == 1 || tctx->fastpath_kind == 2) {
+        float uu = (v0->uv[0].x * w0 + v1->uv[0].x * w1 + v2->uv[0].x * w2) * one_over_wsum;
+        float vv = (v0->uv[0].y * w0 + v1->uv[0].y * w1 + v2->uv[0].y * w2) * one_over_wsum;
         float out[4];
-        sg_tex_env_combine_full(&c->tex_env[u], u, primary, col, unit_tex, out);
+        /* Fixed rasterizer is not the bit-exact reference, so we use the
+         * integer-bilinear variant (up to 1 LSB drift — inside the
+         * compare_backends budget of 2). This is the scalar fallback for
+         * quads that got forced down via trickier state (stencil /
+         * stipple / odd blend / occlusion query). */
+        sg_hot_fastpath_shade_fast(tctx, tctx->fastpath_kind, uu, vv, primary, out);
         col[0] = out[0]; col[1] = out[1]; col[2] = out[2]; col[3] = out[3];
+    } else if (tctx->any_active) {
+        float unit_tex[SG_MAX_TEX_UNITS][4];
+        int   unit_active[SG_MAX_TEX_UNITS];
+        sg_tex_tri_sample_units(tctx, v0, v1, v2,
+                                w0, w1, w2, one_over_wsum,
+                                unit_tex, unit_active);
+        for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
+            if (!unit_active[u]) continue;
+            float out[4];
+            sg_tex_env_combine_full(&c->tex_env[u], u, primary, col, unit_tex, out);
+            col[0] = out[0]; col[1] = out[1]; col[2] = out[2]; col[3] = out[3];
+        }
     }
 
     /* Fog. */
@@ -273,19 +238,26 @@ SG_INLINE void fp_shade_pixel(softgl_ctx *c,
  * textured triangles keep the bit-exact scalar path preserves per-pixel
  * parity with the reference backend and with the float backend without
  * costing anything on the hot path we wanted to vectorise. */
-SG_INLINE int fp_quad_needs_scalar(const softgl_ctx *c) {
+SG_INLINE int fp_quad_needs_scalar(const softgl_ctx *c, const sg_tex_tri_ctx *tctx) {
     if (c->stencil_test)             return 1;
     if (c->color_logic_op_enabled)   return 1;
     if (c->polygon_stipple_enable)   return 1;
     if (c->current_query[SG_QUERY_TARGET_SAMPLES_PASSED])     return 1;
     if (c->current_query[SG_QUERY_TARGET_ANY_SAMPLES_PASSED]) return 1;
-    for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
-        const sg_tex_env *e = &c->tex_env[u];
-        if (e->enabled_target[SG_TEX_TARGET_CUBE] ||
-            e->enabled_target[SG_TEX_TARGET_3D]   ||
-            e->enabled_target[SG_TEX_TARGET_2D]   ||
-            e->enabled_target[SG_TEX_TARGET_1D])  return 1;
-    }
+    /* Textures are OK in SIMD-quad ONLY if the hoisted fastpath applies
+     * (single-unit 2D LINEAR REPEAT MODULATE/REPLACE, no fog). Those
+     * cases are bilinear-filtered, so the ~1-ULP reassociation drift
+     * between scalar and SIMD barycentrics cannot cross a texel boundary
+     * — the blend averages both sides of the fractional position. The
+     * original scalar force-down was there for NEAREST, which flips
+     * output byte when drift crosses the floor() boundary; for LINEAR
+     * the texel walk is smooth and the output stays byte-for-byte equal
+     * within the u8-quantisation we apply.
+     *
+     * If tctx->any_active but fastpath is off (generic combiner / cube /
+     * 3D / NEAREST / non-REPEAT wrap), still fall back to scalar. */
+    if (tctx->any_active && tctx->fastpath_kind != 1 && tctx->fastpath_kind != 2)
+        return 1;
     return 0;
 }
 
@@ -362,6 +334,7 @@ SG_INLINE sg_i32x4 fp_depth_test_simd(GLenum func, sg_f32x4 new_z, sg_f32x4 fb_d
  * (attr lerp, alpha test, depth test, simple blend, f->u8 quantise) in
  * SIMD form. */
 SG_INLINE void fp_shade_quad(softgl_ctx *c,
+                             const sg_tex_tri_ctx *tctx,
                              const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
                              int ix, int iy, unsigned cov,
                              int64_t E0_tl, int64_t E1_tl,
@@ -431,103 +404,141 @@ SG_INLINE void fp_shade_quad(softgl_ctx *c,
                                  sg_f32x4_mul(w1v, sg_f32x4_splat(v1->color.w))),
                     sg_f32x4_mul(w2v, sg_f32x4_splat(v2->color.w))), inv_wsum);
 
-    /* ---- 5. Texture sampling + combiner (per-lane scalar).
-     * fp_quad_needs_scalar() forces textured triangles down the scalar
-     * path entirely (see comment there — 1-ULP UV drift crosses NEAREST
-     * texel boundaries on high-frequency REPEAT textures). The block
-     * below is therefore dead code in the current build, but kept so a
-     * future attempt at a bit-exact SIMD UV interpolator can drop the
-     * scalar fallback back into the quad path without re-adding the
-     * whole sampling dispatch. Guarded by an always-false check so the
-     * compiler trims the bulk. */
-    const int any_tex_unit = 0;
+    /* ---- 5. Texture sampling + combiner (fastpath only).
+     * fp_quad_needs_scalar() has already forced generic textured triangles
+     * down the scalar path. We only land here with NO texture OR with the
+     * single-unit 2D LINEAR REPEAT MODULATE/REPLACE fastpath (bilinear
+     * filter absorbs ~1-ULP UV reassociation drift without crossing a
+     * texel boundary).
+     *
+     * 4-lane UV interpolation + 4-lane REPEAT-wrap + 4-lane corner index
+     * computation — only the 16 u8 loads remain scalar (no cheap gather
+     * on SSE4.1; AVX2 gather is off-spec for this build). */
+    if (tctx->fastpath_kind == 1 || tctx->fastpath_kind == 2) {
+        const sg_tex_unit_tri *u0 = &tctx->unit[0];
+        const uint8_t *data = u0->data0;
+        int tw = u0->tw, th = u0->th;
+        sg_f32x4 tw_v = sg_f32x4_splat((float)tw);
+        sg_f32x4 th_v = sg_f32x4_splat((float)th);
+        sg_f32x4 half = sg_f32x4_splat(0.5f);
+        sg_f32x4 one4 = sg_f32x4_splat(1.f);
 
-    if (any_tex_unit) {
-        /* Per-lane: sample every active unit, run combiner, write back into
-         * the 4 colour lanes. UV interpolation is scalar inside this branch;
-         * the saving vs. fp_shade_pixel is the outer function-call frame +
-         * polygon-stipple check + edge-i64 repacking. Still a win. */
+        /* 4-lane perspective-correct UV: u = (sum u_i * w_i) * inv_wsum. */
+        sg_f32x4 uxv = sg_f32x4_mul(
+            sg_f32x4_add(sg_f32x4_add(
+                sg_f32x4_mul(w0v, sg_f32x4_splat(v0->uv[0].x)),
+                sg_f32x4_mul(w1v, sg_f32x4_splat(v1->uv[0].x))),
+                sg_f32x4_mul(w2v, sg_f32x4_splat(v2->uv[0].x))), inv_wsum);
+        sg_f32x4 uyv = sg_f32x4_mul(
+            sg_f32x4_add(sg_f32x4_add(
+                sg_f32x4_mul(w0v, sg_f32x4_splat(v0->uv[0].y)),
+                sg_f32x4_mul(w1v, sg_f32x4_splat(v1->uv[0].y))),
+                sg_f32x4_mul(w2v, sg_f32x4_splat(v2->uv[0].y))), inv_wsum);
+
+        /* REPEAT wrap into [0,1): u - floor(u). */
+#if defined(SG_SIMD_SSE4)
+        sg_f32x4 uu = sg_f32x4_sub(uxv, _mm_floor_ps(uxv));
+        sg_f32x4 vv = sg_f32x4_sub(uyv, _mm_floor_ps(uyv));
+#else
+        /* Portable fallback: store+floorf+load. Rare. */
+        SG_ALIGN16 float uxS[4], uyS[4];
+        sg_f32x4_store(uxS, uxv); sg_f32x4_store(uyS, uyv);
+        SG_ALIGN16 float uuS[4], vvS[4];
+        for (int l = 0; l < 4; l++) { uuS[l] = uxS[l] - floorf(uxS[l]); vvS[l] = uyS[l] - floorf(uyS[l]); }
+        sg_f32x4 uu = sg_f32x4_load(uuS), vv = sg_f32x4_load(vvS);
+#endif
+
+        /* Continuous texel coord at pixel centre: f = wrap * dim - 0.5. */
+        sg_f32x4 fxv = sg_f32x4_sub(sg_f32x4_mul(uu, tw_v), half);
+        sg_f32x4 fyv = sg_f32x4_sub(sg_f32x4_mul(vv, th_v), half);
+
+        SG_ALIGN16 int32_t x0A[4], y0A[4];
+#if defined(SG_SIMD_SSE4)
+        sg_f32x4 fxfl = _mm_floor_ps(fxv);
+        sg_f32x4 fyfl = _mm_floor_ps(fyv);
+        sg_i32x4 x0v = _mm_cvtps_epi32(fxfl);
+        sg_i32x4 y0v = _mm_cvtps_epi32(fyfl);
+        _mm_store_si128((__m128i*)x0A, x0v);
+        _mm_store_si128((__m128i*)y0A, y0v);
+#else
+        SG_ALIGN16 float fxS[4], fyS[4], fxflS[4], fyflS[4];
+        sg_f32x4_store(fxS, fxv); sg_f32x4_store(fyS, fyv);
+        for (int l = 0; l < 4; l++) {
+            fxflS[l] = floorf(fxS[l]); fyflS[l] = floorf(fyS[l]);
+            x0A[l] = (int32_t)fxflS[l]; y0A[l] = (int32_t)fyflS[l];
+        }
+        sg_f32x4 fxfl = sg_f32x4_load(fxflS), fyfl = sg_f32x4_load(fyflS);
+#endif
+        /* Fractional parts. */
+        sg_f32x4 fu = sg_f32x4_sub(fxv, fxfl);
+        sg_f32x4 fv = sg_f32x4_sub(fyv, fyfl);
+
+        /* Store fractional coords. */
+        SG_ALIGN16 float fuS[4], fvS[4];
+        sg_f32x4_store(fuS, fu);
+        sg_f32x4_store(fvS, fv);
+
+        /* Quantise the 4 fractional lanes to 8-bit weights once, SIMD. */
+        sg_f32x4 fu256 = sg_f32x4_mul(fu, sg_f32x4_splat(256.f));
+        sg_f32x4 fv256 = sg_f32x4_mul(fv, sg_f32x4_splat(256.f));
+        SG_ALIGN16 int32_t fu8A[4], fv8A[4];
+#if defined(SG_SIMD_SSE4)
+        _mm_store_si128((__m128i*)fu8A, _mm_cvtps_epi32(fu256));
+        _mm_store_si128((__m128i*)fv8A, _mm_cvtps_epi32(fv256));
+#else
+        SG_ALIGN16 float fu256S[4], fv256S[4];
+        sg_f32x4_store(fu256S, fu256); sg_f32x4_store(fv256S, fv256);
+        for (int l = 0; l < 4; l++) {
+            fu8A[l] = (int32_t)(fu256S[l] + 0.5f);
+            fv8A[l] = (int32_t)(fv256S[l] + 0.5f);
+        }
+#endif
+
+        /* Per-lane: 4 texel loads, integer-bilinear blend, MODULATE/REPLACE. */
         SG_ALIGN16 float crL[4], cgL[4], cbL[4], caL[4];
-        SG_ALIGN16 float w0L[4], w1L[4], w2L[4], iwL[4];
         sg_f32x4_store(crL, cr);  sg_f32x4_store(cgL, cg);
         sg_f32x4_store(cbL, cb);  sg_f32x4_store(caL, ca);
-        sg_f32x4_store(w0L, w0v); sg_f32x4_store(w1L, w1v);
-        sg_f32x4_store(w2L, w2v); sg_f32x4_store(iwL, inv_wsum);
+        int replace = (tctx->fastpath_kind == 2);
+        const float inv255 = 1.f / 255.f;
 
         for (int l = 0; l < 4; l++) {
             if (!(cov & (1u << l))) continue;
-            float col[4] = { crL[l], cgL[l], cbL[l], caL[l] };
-            float primary[4] = { crL[l], cgL[l], cbL[l], caL[l] };
-            float wl0 = w0L[l], wl1 = w1L[l], wl2 = w2L[l], iwl = iwL[l];
-
-            float unit_tex[SG_MAX_TEX_UNITS][4];
-            int   unit_active[SG_MAX_TEX_UNITS];
-            for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
-                sg_tex_env *env = &c->tex_env[u];
-                int active_slot = -1;
-                if      (env->enabled_target[SG_TEX_TARGET_CUBE] &&
-                         env->bound_tex_target[SG_TEX_TARGET_CUBE])
-                    active_slot = SG_TEX_TARGET_CUBE;
-                else if (env->enabled_target[SG_TEX_TARGET_3D] &&
-                         env->bound_tex_target[SG_TEX_TARGET_3D])
-                    active_slot = SG_TEX_TARGET_3D;
-                else if (env->enabled_target[SG_TEX_TARGET_2D] &&
-                         env->bound_tex_target[SG_TEX_TARGET_2D])
-                    active_slot = SG_TEX_TARGET_2D;
-                else if (env->enabled_target[SG_TEX_TARGET_1D] &&
-                         env->bound_tex_target[SG_TEX_TARGET_1D])
-                    active_slot = SG_TEX_TARGET_1D;
-
-                unit_tex[u][0] = unit_tex[u][1] = unit_tex[u][2] = unit_tex[u][3] = 1.f;
-                unit_active[u] = 0;
-                if (active_slot < 0) continue;
-
-                sg_texture *tex = sg_texture_get(c, env->bound_tex_target[active_slot]);
-                if (!tex) continue;
-
-                float uvp[4];
-                fp_lerp_pc(uvp, &v0->uv[u], &v1->uv[u], &v2->uv[u],
-                           wl0, wl1, wl2, iwl);
-
-                float *tx = unit_tex[u];
-                switch (active_slot) {
-                    case SG_TEX_TARGET_1D:
-                        if (tex->levels == 0) break;
-                        sg_sample_tex1d(tex, tex->min_filter, tex->mag_filter,
-                                        tex->wrap_s, uvp[0], 1, tx);
-                        break;
-                    case SG_TEX_TARGET_3D:
-                        if (tex->levels == 0) break;
-                        sg_sample_tex3d(tex, tex->min_filter, tex->mag_filter,
-                                        tex->wrap_s, tex->wrap_t, tex->wrap_r,
-                                        uvp[0], uvp[1], uvp[2], 1, tx);
-                        break;
-                    case SG_TEX_TARGET_CUBE:
-                        sg_sample_tex_cube(tex, tex->min_filter, tex->mag_filter,
-                                           tex->wrap_s, tex->wrap_t,
-                                           uvp[0], uvp[1], uvp[2], 1, tx);
-                        break;
-                    case SG_TEX_TARGET_2D:
-                    default:
-                        if (tex->levels == 0) break;
-                        sg_sample_tex2d(tex, tex->min_filter, tex->mag_filter,
-                                        tex->wrap_s, tex->wrap_t,
-                                        uvp[0], uvp[1], 1, tx);
-                        break;
-                }
-                unit_active[u] = 1;
+            int x0i = x0A[l], y0i = y0A[l];
+            int x1i = x0i + 1, y1i = y0i + 1;
+            x0i %= tw; if (x0i < 0) x0i += tw;
+            x1i %= tw; if (x1i < 0) x1i += tw;
+            y0i %= th; if (y0i < 0) y0i += th;
+            y1i %= th; if (y1i < 0) y1i += th;
+            const uint8_t *p00 = data + (y0i * tw + x0i) * 4;
+            const uint8_t *p10 = data + (y0i * tw + x1i) * 4;
+            const uint8_t *p01 = data + (y1i * tw + x0i) * 4;
+            const uint8_t *p11 = data + (y1i * tw + x1i) * 4;
+            int fu8 = fu8A[l]; if (fu8 < 0) fu8 = 0; else if (fu8 > 256) fu8 = 256;
+            int fv8 = fv8A[l]; if (fv8 < 0) fv8 = 0; else if (fv8 > 256) fv8 = 256;
+            int ifu = 256 - fu8, ifv = 256 - fv8;
+            uint8_t tx[4];
+            for (int k = 0; k < 4; k++) {
+                int top = p00[k] * ifu + p10[k] * fu8;
+                int bot = p01[k] * ifu + p11[k] * fu8;
+                int v2  = (top * ifv + bot * fv8 + (1 << 15)) >> 16;
+                if (v2 > 255) v2 = 255; else if (v2 < 0) v2 = 0;
+                tx[k] = (uint8_t)v2;
             }
-            for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
-                if (!unit_active[u]) continue;
-                float out[4];
-                sg_tex_env_combine_full(&c->tex_env[u], u, primary, col, unit_tex, out);
-                col[0] = out[0]; col[1] = out[1]; col[2] = out[2]; col[3] = out[3];
+            if (replace) {
+                crL[l] = tx[0] * inv255;
+                cgL[l] = tx[1] * inv255;
+                cbL[l] = tx[2] * inv255;
+                caL[l] = tx[3] * inv255;
+            } else {
+                crL[l] *= tx[0] * inv255;
+                cgL[l] *= tx[1] * inv255;
+                cbL[l] *= tx[2] * inv255;
+                caL[l] *= tx[3] * inv255;
             }
-            crL[l] = col[0]; cgL[l] = col[1]; cbL[l] = col[2]; caL[l] = col[3];
         }
-        /* Reload SIMD registers from the possibly-updated per-lane arrays. */
         cr = sg_f32x4_load(crL); cg = sg_f32x4_load(cgL);
         cb = sg_f32x4_load(cbL); ca = sg_f32x4_load(caL);
+        (void)one4;
     }
 
     /* ---- 6. Fog (SIMD when feasible — linear always; EXP/EXP2 use expf
@@ -810,6 +821,10 @@ void sg_raster_triangle_fp(softgl_ctx *c,
     float invw1 = v1->ndc.w;
     float invw2 = v2->ndc.w;
 
+    /* Hoist triangle-invariant tex state out of the inner loop. */
+    sg_tex_tri_ctx tctx;
+    sg_tex_tri_prepare(c, &tctx);
+
 #if SG_HAVE_SIMD
     /* =================================================================
      *   SIMD 2x2-quad path (SSE4.1 / wasm_simd128).
@@ -859,7 +874,7 @@ void sg_raster_triangle_fp(softgl_ctx *c,
      * fallback, or can every covered quad use the SIMD fragment shader?
      * (The flags tested are triangle-invariant state; decision lifts
      * out of the inner loop entirely.) */
-    int use_simd_quad = !fp_quad_needs_scalar(c);
+    int use_simd_quad = !fp_quad_needs_scalar(c, &tctx);
 
     /* Walk the bounding box in 2-pixel-high strips. iy is the TL row
      * of the current quad. When iy+1 == iy1 (odd height), BL/BR lanes
@@ -940,7 +955,7 @@ void sg_raster_triangle_fp(softgl_ctx *c,
                      * of the quad with vectorised barycentric interp,
                      * vectorised alpha/depth test and simple blend, and
                      * a masked RGBA8 quantised write. */
-                    fp_shade_quad(c, v0, v1, v2, ix, iy, cov,
+                    fp_shade_quad(c, &tctx, v0, v1, v2, ix, iy, cov,
                                   E0, E1,
                                   dE0_dx, dE0_dy, dE1_dx, dE1_dy,
                                   inv_area_f, invw0, invw1, invw2, z_offset);
@@ -957,22 +972,22 @@ void sg_raster_triangle_fp(softgl_ctx *c,
                      * lane 3 (BR): (ix+1, iy+1), E = E0 + dE_dx + dE_dy
                      */
                     if (cov & 0x1u) {
-                        fp_shade_pixel(c, v0, v1, v2, ix, iy,
+                        fp_shade_pixel(c, &tctx, v0, v1, v2, ix, iy,
                                        E0, E1,
                                        inv_area_f, invw0, invw1, invw2, z_offset);
                     }
                     if (cov & 0x2u) {
-                        fp_shade_pixel(c, v0, v1, v2, ix + 1, iy,
+                        fp_shade_pixel(c, &tctx, v0, v1, v2, ix + 1, iy,
                                        E0 + dE0_dx, E1 + dE1_dx,
                                        inv_area_f, invw0, invw1, invw2, z_offset);
                     }
                     if (cov & 0x4u) {
-                        fp_shade_pixel(c, v0, v1, v2, ix, iy + 1,
+                        fp_shade_pixel(c, &tctx, v0, v1, v2, ix, iy + 1,
                                        E0 + dE0_dy, E1 + dE1_dy,
                                        inv_area_f, invw0, invw1, invw2, z_offset);
                     }
                     if (cov & 0x8u) {
-                        fp_shade_pixel(c, v0, v1, v2, ix + 1, iy + 1,
+                        fp_shade_pixel(c, &tctx, v0, v1, v2, ix + 1, iy + 1,
                                        E0 + dE0_dx + dE0_dy,
                                        E1 + dE1_dx + dE1_dy,
                                        inv_area_f, invw0, invw1, invw2, z_offset);
@@ -1008,7 +1023,7 @@ void sg_raster_triangle_fp(softgl_ctx *c,
 
         for (int x = ix0; x < ix1; x++) {
             if ((E0 + bias0) >= 0 && (E1 + bias1) >= 0 && (E2 + bias2) >= 0) {
-                fp_shade_pixel(c, v0, v1, v2, x, y, E0, E1,
+                fp_shade_pixel(c, &tctx, v0, v1, v2, x, y, E0, E1,
                                inv_area_f, invw0, invw1, invw2, z_offset);
             }
             E0 += dE0_dx;
