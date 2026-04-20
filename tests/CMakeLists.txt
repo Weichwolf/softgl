@@ -303,6 +303,7 @@ set(SG_TEST_CASES
     214_decal_stencil
     215_crt_emissive
     216_water_surface
+    217_dot3_multipass_fog
 )
 
 # Tolerances for reference/softgl pixel diff. Default exact; individual tests
@@ -517,6 +518,13 @@ foreach(demo_big_case
     set(SG_TOL_${demo_big_case}_MAX_DELTA 16)
     set(SG_TOL_${demo_big_case}_MAX_BAD ${SG_DEMO_BIG_MAX_BAD})
 endforeach()
+
+# 217 — DOT3 multi-pass bump + additive blend + linear fog. Each light pass
+# compounds combiner rounding, multi-pass additive saturation, and fog blend;
+# edge of depth_func=EQUAL quads can drift vs llvmpipe by several LSBs. Use
+# the big-demo budget.
+set(SG_TOL_217_dot3_multipass_fog_MAX_DELTA 16)
+set(SG_TOL_217_dot3_multipass_fog_MAX_BAD ${SG_DEMO_BIG_MAX_BAD})
 
 foreach(case_name IN LISTS SG_TEST_CASES)
     set(src cases/test_${case_name}.c)
