@@ -1,25 +1,20 @@
 #ifndef SOFTGL_FRAG_HOT_H
 #define SOFTGL_FRAG_HOT_H
 
-/* =====================================================================
- * Hot fragment helpers. These inline into both the float and fixed
- * rasterizers so the common single-unit 2D LINEAR REPEAT MODULATE path
- * — the Tank bench case — skips the generic tex-env dispatch entirely.
- *
- * Bit-identical to sg_sample_tex2d(GL_LINEAR, REPEAT, REPEAT) followed by
- * GL_MODULATE / GL_REPLACE. Test parity (216 scene cases) hinges on that.
- * ===================================================================== */
+/* Hot fragment helpers for the common 2D LINEAR REPEAT MODULATE path.
+ * Bit-identical to sg_sample_tex2d(LINEAR, REPEAT, REPEAT) + MODULATE/REPLACE;
+ * backend parity tests depend on that. */
 
 #include "types.h"
 #include <math.h>
 
-/* POT detect helper — evaluates dim-1 for power-of-two dims, 0 otherwise. */
+/* POT: dim-1 for power-of-two dims, 0 otherwise. */
 static inline int sg_hot_pot_mask(int dim) {
     return (dim > 0 && (dim & (dim - 1)) == 0) ? (dim - 1) : 0;
 }
 
-/* Inline bilinear-REPEAT 2D sample, returning u8 per channel. Matches
- * sg_sample_tex2d exactly for the LINEAR + REPEAT + REPEAT case. */
+/* Inline bilinear-REPEAT 2D sample. Matches sg_sample_tex2d exactly for
+ * LINEAR + REPEAT. */
 static inline void sg_hot_sample_2d_linear_repeat_u8(
     const uint8_t *data, int tw, int th,
     float u, float v, uint8_t out[4])
@@ -56,31 +51,20 @@ static inline void sg_hot_sample_2d_linear_repeat_u8(
     }
 }
 
-/* Integer-arithmetic bilinear-REPEAT sample. Uses 8-bit fractional
- * interpolation weights (0..256). Result differs from the float sampler
- * by at most 1 LSB per channel due to the 8-bit quantised weights —
- * comfortably inside the per-pixel backend-compare tolerance (max_delta=2).
- * Saves ~3 floorfs + 16 u8->float conversions + 12 float multiplies +
- * 16 float->int conversions per fetch.
- *
- * Fast-enough-and-known-good version of the common case the Tank bench
- * drowns in (14k textured tris × thousands of shaded pixels each). */
+/* Integer-arithmetic bilinear-REPEAT sample (8-bit weights). Differs
+ * from float sampler by at most 1 LSB/channel, inside compare tolerance
+ * (max_delta=2). */
 static inline void sg_hot_sample_2d_linear_repeat_u8_fast(
     const uint8_t *data, int tw, int th,
     float u, float v, uint8_t out[4])
 {
-    /* REPEAT wrap into [0,1). Bias trick avoids floorf by exploiting
-     * the finite magnitude of u/v in the tank case — but stay correct
-     * across the full float range via explicit floorf. GCC compiles
-     * floorf(x) to cvttss2si+compare under -ffast-math, which is cheap. */
     float uu = u - floorf(u);
     float vv = v - floorf(v);
-    /* Scale to texel space and split integer/fractional at 8-bit precision. */
     float fx = uu * (float)tw - 0.5f;
     float fy = vv * (float)th - 0.5f;
     int x0 = (int)floorf(fx);
     int y0 = (int)floorf(fy);
-    /* Quantise fractions to 0..256. */
+    /* Fractions quantised to 0..256. */
     int fu8 = (int)((fx - (float)x0) * 256.f + 0.5f);
     int fv8 = (int)((fy - (float)y0) * 256.f + 0.5f);
     if (fu8 > 256) fu8 = 256; else if (fu8 < 0) fu8 = 0;
@@ -102,24 +86,20 @@ static inline void sg_hot_sample_2d_linear_repeat_u8_fast(
     const uint8_t *p10 = data + (y0 * tw + x1) * 4;
     const uint8_t *p01 = data + (y1 * tw + x0) * 4;
     const uint8_t *p11 = data + (y1 * tw + x1) * 4;
-    /* 4 u8 × 8-bit weights = 16-bit intermediates, two rows then blend
-     * vertically. Shift by 16 (2× 8-bit weight multiplies) keeps results
-     * in 0..255 range with correct rounding bias (+32768 before shift). */
+    /* 8-bit weights → 16-bit intermediates. Shift by 16 (two 8-bit mults)
+     * with +32768 rounding bias keeps result in 0..255. */
     for (int k = 0; k < 4; k++) {
-        int top = p00[k] * ifu + p10[k] * fu8;   /* 0..(256*255) */
+        int top = p00[k] * ifu + p10[k] * fu8;
         int bot = p01[k] * ifu + p11[k] * fu8;
-        /* Vertical blend: (top*ifv + bot*fv8) / (256*256). */
         int v2  = (top * ifv + bot * fv8 + (1 << 15)) >> 16;
         if (v2 > 255) v2 = 255; else if (v2 < 0) v2 = 0;
         out[k] = (uint8_t)v2;
     }
 }
 
-/* Fast-path fragment shading (bitexact-to-float-backend variant).
- * Samples unit 0 (validated as 2D LINEAR REPEAT/REPEAT by prepare), applies
- * MODULATE or REPLACE, writes float RGBA. Uses the float-arithmetic
- * bilinear sampler so the float rasterizer fastpath matches sg_sample_tex2d
- * byte-for-byte against the legacy generic path. */
+/* Fast-path shading: unit 0 (2D LINEAR REPEAT, validated by prepare)
+ * with MODULATE or REPLACE. Float-arithmetic sampler for byte-exact
+ * parity with the generic path. */
 static inline void sg_hot_fastpath_shade(
     const sg_tex_tri_ctx *tctx,
     int fastpath_kind,                  /* 1 = MODULATE, 2 = REPLACE */
@@ -144,10 +124,7 @@ static inline void sg_hot_fastpath_shade(
     }
 }
 
-/* Integer-bilinear variant: up to 1-LSB drift per channel vs the float
- * sampler, well inside SG_BACKEND_COMPARE_MAX_DELTA=2. Used by the fixed
- * rasterizer only (the float rasterizer is the reference, so it sticks
- * to sg_hot_sample_2d_linear_repeat_u8). */
+/* Integer-bilinear variant: up to 1-LSB drift vs float sampler. */
 static inline void sg_hot_fastpath_shade_fast(
     const sg_tex_tri_ctx *tctx,
     int fastpath_kind,

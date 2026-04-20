@@ -3,14 +3,10 @@
 #include <string.h>
 #include <stdlib.h>
 
-/* ==================================================================
- * Immediate mode + the entire Color/Normal/TexCoord/Vertex entry-point
- * zoo.  All the integer/short/byte/double variants reduce to the
- * float-normalized set_color/set_normal/set_texcoord/vert_emit helpers,
- * and THOSE are the only things the display-list recorder needs to
- * intercept — the public glColor3b / glColor4ui / ... variants route
- * through them automatically.
- * ================================================================== */
+/* Immediate-mode + the Color/Normal/TexCoord/Vertex entry zoo. All the
+ * int/short/byte/double variants funnel through the float-normalized
+ * set_color/set_normal/set_texcoord/vert_emit helpers, so only those
+ * need dlist interception. */
 
 SG_INLINE float nb(GLbyte v)   { float f = v * (1.0f / 127.0f);        return f < -1.f ? -1.f : f; }
 SG_INLINE float nub(GLubyte v) { return v * (1.0f / 255.0f); }
@@ -18,8 +14,6 @@ SG_INLINE float ns(GLshort v)  { float f = v * (1.0f / 32767.0f);      return f 
 SG_INLINE float nus(GLushort v){ return v * (1.0f / 65535.0f); }
 SG_INLINE float ni(GLint v)    { float f = v * (1.0f / 2147483647.0f); return f < -1.f ? -1.f : f; }
 SG_INLINE float nui(GLuint v)  { return v * (1.0f / 4294967295.0f); }
-
-/* ==================  _real implementations  ================== */
 
 void _sg_cur_color_real(float r, float g, float b, float a) {
     softgl_ctx *c = sg_current(); if (!c) return;
@@ -46,7 +40,7 @@ void _sg_cur_edgeflag_real(int f) {
     c->current_edge_flag = f ? 1 : 0;
 }
 
-/* ==================  Recording-aware setters used by the variants ====== */
+/* Recording-aware setters used by the typed variants. */
 
 static void set_color(float r, float g, float b, float a) {
     softgl_ctx *c = sg_current(); if (!c) return;
@@ -77,8 +71,6 @@ static void set_texcoord(unsigned unit, float s, float t, float r, float q) {
         if (c->dlist_exec) _sg_cur_texcoord_real(unit, s, t, r, q);
     } else _sg_cur_texcoord_real(unit, s, t, r, q);
 }
-
-/* =====================  glColor  ===================== */
 
 void glColor3f(GLfloat r, GLfloat g, GLfloat b)                     { set_color(r, g, b, 1.f); }
 void glColor4f(GLfloat r, GLfloat g, GLfloat b, GLfloat a)          { set_color(r, g, b, a); }
@@ -114,8 +106,6 @@ void glColor4iv(const GLint *v)    { glColor4i(v[0], v[1], v[2], v[3]); }
 void glColor3uiv(const GLuint *v)  { glColor3ui(v[0], v[1], v[2]); }
 void glColor4uiv(const GLuint *v)  { glColor4ui(v[0], v[1], v[2], v[3]); }
 
-/* =====================  glNormal  ===================== */
-
 void glNormal3f(GLfloat x, GLfloat y, GLfloat z) { set_normal(x, y, z); }
 void glNormal3d(GLdouble x, GLdouble y, GLdouble z) { set_normal((float)x,(float)y,(float)z); }
 void glNormal3b(GLbyte x, GLbyte y, GLbyte z)    { set_normal(nb(x), nb(y), nb(z)); }
@@ -126,8 +116,6 @@ void glNormal3dv(const GLdouble *v) { glNormal3d(v[0], v[1], v[2]); }
 void glNormal3bv(const GLbyte *v)   { glNormal3b(v[0], v[1], v[2]); }
 void glNormal3sv(const GLshort *v)  { glNormal3s(v[0], v[1], v[2]); }
 void glNormal3iv(const GLint *v)    { glNormal3i(v[0], v[1], v[2]); }
-
-/* =====================  glTexCoord / glMultiTexCoord  ===================== */
 
 void glTexCoord1f(GLfloat s)                                  { set_texcoord(0, s, 0, 0, 1); }
 void glTexCoord1i(GLint s)                                    { set_texcoord(0, (float)s, 0, 0, 1); }
@@ -204,8 +192,6 @@ void glMultiTexCoord2dv(GLenum u, const GLdouble *v) { glMultiTexCoord2d(u, v[0]
 void glMultiTexCoord3dv(GLenum u, const GLdouble *v) { glMultiTexCoord3d(u, v[0], v[1], v[2]); }
 void glMultiTexCoord4dv(GLenum u, const GLdouble *v) { glMultiTexCoord4d(u, v[0], v[1], v[2], v[3]); }
 
-/* =====================  Edge flag  ===================== */
-
 void glEdgeFlag(GLboolean f) {
     softgl_ctx *c = sg_current(); if (!c) return;
     if (c->dlist_recording) {
@@ -216,8 +202,6 @@ void glEdgeFlag(GLboolean f) {
 }
 void glEdgeFlagv(const GLboolean *f) { if (f) glEdgeFlag(*f); }
 void glEdgeFlagPointer(GLsizei stride, const void *ptr) { (void)stride; (void)ptr; }
-
-/* =====================  Primitive machinery — the _real path  ===== */
 
 static int imm_reserve(softgl_ctx *c, size_t need) {
     if (c->imm_cap >= need) return 1;
@@ -285,7 +269,7 @@ static void imm_emit(softgl_ctx *c) {
             }
             break;
         case GL_LINE_LOOP:
-            /* Emit edges as vertices come in; the closing edge is drawn on glEnd. */
+            /* Emit edges as verts come in; closing edge drawn on glEnd. */
             if (n >= 2) {
                 sg_process_line(c, &buf[n - 2], &buf[n - 1]);
             }
@@ -306,8 +290,6 @@ static void imm_push(softgl_ctx *c, const sg_vert *v) {
     imm_emit(c);
 }
 
-/* =====================  _real primitives  ===================== */
-
 void _sg_begin_real(GLenum mode) {
     softgl_ctx *c = sg_current(); if (!c) return;
     if (c->imm_active) { sg_set_error(GL_INVALID_OPERATION); return; }
@@ -326,7 +308,7 @@ void _sg_begin_real(GLenum mode) {
 void _sg_end_real(void) {
     softgl_ctx *c = sg_current(); if (!c) return;
     if (!c->imm_active) { sg_set_error(GL_INVALID_OPERATION); return; }
-    /* LINE_LOOP closing edge: last vertex -> first vertex. */
+    /* LINE_LOOP closing edge: last -> first. */
     if (c->imm_mode == GL_LINE_LOOP && c->imm_count >= 2) {
         sg_process_line(c, &c->imm_buf[c->imm_count - 1], &c->imm_buf[0]);
     }
@@ -351,11 +333,7 @@ void _sg_array_element_real(GLint i) {
 }
 
 void _sg_rect_real(float x1, float y1, float x2, float y2) {
-    /* Classic glRect expansion.  Uses the recording-aware public wrappers
-     * so THIS expansion path auto-routes through dlist when we're inside
-     * GL_COMPILE_AND_EXECUTE and sg_dlist_replay re-enters _sg_rect_real.
-     * But when we're in replay context we are NOT recording, so it calls
-     * _real directly and ends up emitting triangles. */
+    /* Call _sg_*_real directly; at replay time we are NOT recording. */
     _sg_begin_real(GL_POLYGON);
     _sg_vertex_real(x1, y1, 0.f, 1.f);
     _sg_vertex_real(x2, y1, 0.f, 1.f);
@@ -363,8 +341,6 @@ void _sg_rect_real(float x1, float y1, float x2, float y2) {
     _sg_vertex_real(x1, y2, 0.f, 1.f);
     _sg_end_real();
 }
-
-/* =====================  Public wrappers  ===================== */
 
 void glBegin(GLenum mode) {
     softgl_ctx *c = sg_current(); if (!c) return;

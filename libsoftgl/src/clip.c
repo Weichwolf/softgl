@@ -1,21 +1,9 @@
 #include "types.h"
 #include <string.h>
 
-/* =====================================================================
- * View-frustum clipping in clip space (before perspective divide).
- *
- * Plane tests (inside = d >= 0):
- *   left:   x + w
- *   right: -x + w
- *   bot:    y + w
- *   top:   -y + w
- *   near:   z + w
- *   far:   -z + w
- *
- * Sutherland-Hodgman on the triangle polygon; after all 6 planes, fan-
- * triangulate the resulting convex polygon. Interpolation runs on every
- * tracked attribute (clip, color, normal, eye, uv[0..N]).
- * ===================================================================== */
+/* Clip-space view-frustum clipping (before perspective divide).
+ * Plane tests (inside = d >= 0): L: x+w  R: -x+w  B: y+w  T: -y+w
+ * N: z+w  F: -z+w. Sutherland-Hodgman, then fan-triangulate. */
 
 float sg_plane_dist_pub(const sg_vec4 *v, int plane);
 float sg_plane_dist_pub(const sg_vec4 *v, int plane) {
@@ -49,7 +37,7 @@ static void sg_lerp_vec4(sg_vec4 *out, const sg_vec4 *a, const sg_vec4 *b, float
     out->w = a->w + (b->w - a->w) * t;
 }
 
-/* Exported: used by line clipper (lines.c) as well. */
+/* Exported: also used by line clipper (lines.c). */
 void sg_lerp_vert_pub(sg_vert *out, const sg_vert *a, const sg_vert *b, float t);
 void sg_lerp_vert_pub(sg_vert *out, const sg_vert *a, const sg_vert *b, float t) {
     sg_lerp_vec4(&out->clip,       &a->clip,       &b->clip,       t);
@@ -72,8 +60,7 @@ static void sg_lerp_vert(sg_vert *out, const sg_vert *a, const sg_vert *b, float
     /* ndc filled in by pipeline after clip */
 }
 
-/* Clip `in` polygon (in_count verts) against the plane, write output to `out`.
- * Returns new vertex count. */
+/* Clip `in` polygon against one plane into `out`; returns new count. */
 static int sg_clip_plane(const sg_vert *in, int in_count, int plane, sg_vert *out) {
     if (in_count < 3) return 0;
     int out_count = 0;
@@ -85,14 +72,12 @@ static int sg_clip_plane(const sg_vert *in, int in_count, int plane, sg_vert *ou
         int s_in = sd >= 0.f;
         int e_in = ed >= 0.f;
         if (s_in ^ e_in) {
-            /* edge crosses plane: output intersection */
             float t = sd / (sd - ed);
             if (t < 0.f) t = 0.f; else if (t > 1.f) t = 1.f;
             sg_lerp_vert(&out[out_count], s, e, t);
             out_count++;
         }
         if (e_in) {
-            /* output end point */
             out[out_count] = *e;
             out_count++;
         }
@@ -102,8 +87,7 @@ static int sg_clip_plane(const sg_vert *in, int in_count, int plane, sg_vert *ou
     return out_count;
 }
 
-/* Clip a triangle against all 6 frustum planes. Returns number of output
- * triangles (each filling out_tris[3*i + 0..2]). */
+/* Clip triangle against all 6 frustum planes; returns # tris. */
 int sg_clip_triangle(const sg_vert *tri, sg_vert *out_tris, int *out_count) {
     sg_vert buf_a[SG_MAX_CLIP_VERTS];
     sg_vert buf_b[SG_MAX_CLIP_VERTS];
@@ -121,7 +105,6 @@ int sg_clip_triangle(const sg_vert *tri, sg_vert *out_tris, int *out_count) {
         sg_vert *tmp = cur; cur = alt; alt = tmp;
     }
 
-    /* Fan-triangulate the convex polygon around cur[0]. */
     int tris = 0;
     for (int i = 1; i + 1 < n; i++) {
         out_tris[tris * 3 + 0] = cur[0];
@@ -133,12 +116,8 @@ int sg_clip_triangle(const sg_vert *tri, sg_vert *out_tris, int *out_count) {
     return tris;
 }
 
-/* =====================================================================
- * User-clip-plane clipping in eye-space. Distances use v->eye.xyz and
- * treat eye.w as 1 (eye.w is actually the edge-flag slot).
- * Polygon (n verts) is clipped against the given enabled planes in-place
- * via ping-pong buffers. Returns final polygon size (0 if fully clipped).
- * ===================================================================== */
+/* User-clip-plane clipping in eye-space. Distances use eye.xyz and treat
+ * eye.w as 1 (eye.w is actually the edge-flag slot). */
 
 SG_INLINE double sg_user_plane_dist(const sg_vec4 *eye, const double eq[4]) {
     return (double)eye->x * eq[0]
@@ -174,12 +153,10 @@ static int sg_clip_user_plane(const sg_vert *in, int in_count, const double eq[4
     return out_count;
 }
 
-/* Clip a triangle against the ctx's enabled user clip planes (in eye-space).
- * Produces up to ~6 eye-space polygon vertices which the caller must feed
- * through projection + frustum clip. Returns 0 if nothing survives. */
+/* Clip triangle against ctx's enabled user planes (eye-space).
+ * Returns # output tris; caller feeds them through projection + frustum. */
 int sg_clip_triangle_user_planes(softgl_ctx *c, const sg_vert *tri_in,
                                  sg_vert *out_tris, int *out_count) {
-    /* Fast path: no user planes enabled. */
     int any_enabled = 0;
     for (int i = 0; i < 6; i++) if (c->clip_plane_enabled[i]) { any_enabled = 1; break; }
     if (!any_enabled) {

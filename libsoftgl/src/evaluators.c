@@ -4,44 +4,18 @@
 #include <string.h>
 #include <math.h>
 
-/* GL error tokens that the softgl header doesn't expose publicly but the
- * selection/name-stack path needs for spec-compliant diagnostics. */
+/* Spec-mandated error tokens not in softgl.h. */
 #ifndef GL_STACK_OVERFLOW
 #define GL_STACK_OVERFLOW  0x0503
 #define GL_STACK_UNDERFLOW 0x0504
 #endif
 
-/* =====================================================================
- * Phase X — Legacy fixed-function features required by the GL 1.5 spec
- * but rarely exercised:
- *
- *   - Evaluators (glMap1f/glMap2f + EvalCoord/EvalMesh/EvalPoint):
- *       Bezier-basis 1D/2D patches. de Casteljau evaluation. Only the
- *       emission path drives the existing immediate-mode pipeline —
- *       glEvalCoord{1,2}f emits a single vertex via glVertex3f, which
- *       routes through the current glBegin primitive (or is wrapped in
- *       an implicit GL_POINT/GL_LINE/GL_QUAD_STRIP by glEvalMesh).
- *
- *   - Accumulation buffer (glClearAccum / glAccum / GL_ACCUM_BUFFER_BIT):
- *       float-per-channel buffer sized to the framebuffer, lazy allocated
- *       on first glAccum / glClear(GL_ACCUM_BUFFER_BIT). Supports LOAD,
- *       ACCUM, MULT, ADD, RETURN. Reads/writes current color buffer.
- *
- *   - Selection + Feedback (glRenderMode / glSelectBuffer / name stack,
- *       glFeedbackBuffer / glPassThrough):
- *       state tracking only — the draw pipeline stays in GL_RENDER mode.
- *       glRenderMode returns 0 hits / 0 tokens when switching away, per
- *       the spec (valid for implementations that do no selection work).
- *       glPassThrough writes its token to the feedback buffer when in
- *       GL_FEEDBACK mode so feedback-count tests see real writes.
- *
- *   - Line + polygon stipple (glLineStipple / glPolygonStipple):
- *       state stored here, pattern honoured in the rasterizers.
- * ===================================================================== */
+/* Legacy fixed-function features: Evaluators, Accum buffer, Selection +
+ * Feedback (state tracking only — draw pipeline stays in GL_RENDER),
+ * Line/polygon stipple. Evaluator emission routes through the existing
+ * immediate-mode pipeline (EvalCoord → glVertex3f/4f). */
 
-/* ------------------------------------------------------------------ */
-/* Evaluators                                                          */
-/* ------------------------------------------------------------------ */
+/* ---- Evaluators ---- */
 
 static int ev1_slot_from_enum(GLenum target, int *components) {
     switch (target) {
@@ -137,8 +111,7 @@ void glMap2f(GLenum target, GLfloat u1, GLfloat u2, GLint ustride, GLint uorder,
     m->u0 = u1; m->u1 = u2; m->v0 = v1; m->v1 = v2;
     m->u_order = uorder; m->v_order = vorder;
     m->components = comps;
-    /* Point layout: points[i_v * vstride + i_u * ustride + k]. Repack to
-     * dst[(i_v * uorder + i_u) * 4 + k]. */
+    /* Repack src[jv*vstride + iu*ustride + k] → dst[(jv*uorder+iu)*4+k]. */
     for (int jv = 0; jv < vorder; jv++) {
         for (int iu = 0; iu < uorder; iu++) {
             const float *src = points + (size_t)jv * vstride + (size_t)iu * ustride;
@@ -159,7 +132,6 @@ void glMap2d(GLenum target, GLdouble u1, GLdouble u2, GLint ustride, GLint uorde
     if (uorder < 1 || vorder < 1 || ustride < comps || vstride < comps || !points) {
         sg_set_error(GL_INVALID_VALUE); return;
     }
-    /* Allocate a float repack sized to cover the entire source window. */
     size_t stride_bytes = (size_t)vorder * (size_t)vstride;
     float *buf = (float*)malloc(sizeof(float) * stride_bytes);
     if (!buf) { sg_set_error(GL_OUT_OF_MEMORY); return; }
@@ -191,7 +163,6 @@ void glMapGrid2d(GLint nu, GLdouble u1, GLdouble u2,
     glMapGrid2f(nu, (GLfloat)u1, (GLfloat)u2, nv, (GLfloat)v1, (GLfloat)v2);
 }
 
-/* de Casteljau 1D: evaluate on a copy of ctrl (each point 4 floats) at u'. */
 static void decasteljau1(const float *ctrl, int order, float u, float out[4]) {
     float tmp[SG_MAX_EVAL_ORDER][4];
     memcpy(tmp, ctrl, (size_t)order * 4 * sizeof(float));
@@ -206,12 +177,10 @@ static void decasteljau1(const float *ctrl, int order, float u, float out[4]) {
     out[2] = tmp[0][2]; out[3] = tmp[0][3];
 }
 
-/* de Casteljau 2D: evaluate an u_order x v_order control grid at (u,v).
- * ctrl layout: ctrl[(jv * u_order + iu) * 4 + k]. */
+/* ctrl layout: ctrl[(jv * uorder + iu) * 4 + k]. */
 static void decasteljau2(const float *ctrl, int uorder, int vorder,
                          float u, float v, float out[4])
 {
-    /* First collapse rows of u -> one point per v. */
     float row_pts[SG_MAX_EVAL_ORDER][4];
     for (int jv = 0; jv < vorder; jv++) {
         decasteljau1(ctrl + (size_t)jv * uorder * 4, uorder, u, row_pts[jv]);
@@ -219,14 +188,12 @@ static void decasteljau2(const float *ctrl, int uorder, int vorder,
     decasteljau1(&row_pts[0][0], vorder, v, out);
 }
 
-/* Map a grid parameter [0..1] to [u0..u1]. */
 SG_INLINE float sg_remap(float t, float a, float b) { return a + (b - a) * t; }
 
-/* Emit a vertex via the public glVertex path so it routes through whatever
- * primitive the caller is currently inside. Also emits color/normal/texcoord
- * derived from enabled maps. */
+/* Emit via public glVertex so it routes through the caller's primitive.
+ * Color/normal/texcoord from enabled maps first so the vertex carries
+ * updated current state. */
 static void emit_eval1(softgl_ctx *c, float u) {
-    /* Evaluate all enabled maps (color, normal, texcoord first so vertex carries current state). */
     for (int slot = 0; slot < SG_EV1_COUNT; slot++) {
         if (slot == SG_EV1_VERTEX_3 || slot == SG_EV1_VERTEX_4) continue;
         sg_map1 *m = &c->map1[slot];
@@ -244,7 +211,7 @@ static void emit_eval1(softgl_ctx *c, float u) {
             default: break;
         }
     }
-    /* Finally emit vertex — VERTEX_4 takes priority over VERTEX_3 per spec. */
+    /* VERTEX_4 takes priority over VERTEX_3 per spec. */
     if (c->map1[SG_EV1_VERTEX_4].enabled && c->map1[SG_EV1_VERTEX_4].defined) {
         sg_map1 *m = &c->map1[SG_EV1_VERTEX_4];
         float tu = (u - m->u0) / (m->u1 - m->u0);
@@ -279,8 +246,7 @@ static void emit_eval2(softgl_ctx *c, float u, float v) {
             default: break;
         }
     }
-    /* Auto-normal for 2D vertex maps: derive from partial derivatives.
-     * Approximated by central differences in parameter space. */
+    /* Auto-normal: derive from partials via central differences. */
     int have_vert = 0;
     sg_map2 *mv = NULL;
     int vert4 = 0;
@@ -296,9 +262,8 @@ static void emit_eval2(softgl_ctx *c, float u, float v) {
 
     if (c->auto_normal && !c->map2[SG_EV2_NORMAL].enabled) {
         float h = 1e-3f;
-        /* Derivative in normalized parameter space. Always take a forward
-         * difference: at the upper boundary we step backward but negate
-         * the result so du / dv stay oriented with +u / +v. */
+        /* Forward difference in parameter space; at upper boundary step
+         * backward and negate so du/dv stay oriented with +u/+v. */
         float p00[4], pu[4], pv[4];
         decasteljau2(mv->points, mv->u_order, mv->v_order, tu, tv, p00);
         int u_back = (tu + h > 1.f);
@@ -399,7 +364,7 @@ void glEvalMesh2(GLenum mode, GLint i1, GLint i2, GLint j1, GLint j2) {
         return;
     }
     if (mode == GL_LINE) {
-        /* One line-loop around each cell. Simple and spec-compatible. */
+        /* Line-loop around each cell. */
         for (int j = j1; j < j2; j++) {
             for (int i = i1; i < i2; i++) {
                 float u0 = c->map2_grid_u0 + du * (float)i;
@@ -416,7 +381,7 @@ void glEvalMesh2(GLenum mode, GLint i1, GLint i2, GLint j1, GLint j2) {
         }
         return;
     }
-    /* GL_FILL: emit a quad strip per row. */
+    /* GL_FILL: quad strip per row. */
     for (int j = j1; j < j2; j++) {
         glBegin(GL_QUAD_STRIP);
         for (int i = i1; i <= i2; i++) {
@@ -430,9 +395,7 @@ void glEvalMesh2(GLenum mode, GLint i1, GLint i2, GLint j1, GLint j2) {
     }
 }
 
-/* ------------------------------------------------------------------ */
-/* Accumulation buffer                                                 */
-/* ------------------------------------------------------------------ */
+/* ---- Accumulation buffer ---- */
 
 void glClearAccum(GLfloat r, GLfloat g, GLfloat b, GLfloat a) {
     softgl_ctx *c = sg_current(); if (!c) return;
@@ -453,7 +416,7 @@ void glAccum(GLenum op, GLfloat value) {
     softgl_ctx *c = sg_current(); if (!c) return;
     if (!ensure_accum(c)) return;
     int W = c->fb.w, H = c->fb.h;
-    /* Viewport is a per-fragment bound on accum ops per spec. */
+    /* Spec: viewport bounds accum ops. */
     int vx0 = c->viewport[0], vy0 = c->viewport[1];
     int vx1 = vx0 + c->viewport[2], vy1 = vy0 + c->viewport[3];
     if (vx0 < 0) vx0 = 0;
@@ -529,20 +492,14 @@ void glAccum(GLenum op, GLfloat value) {
     }
 }
 
-/* ------------------------------------------------------------------ */
-/* Selection + Feedback                                                */
-/* ------------------------------------------------------------------ */
+/* ---- Selection + Feedback ---- */
 
 GLint glRenderMode(GLenum mode) {
     softgl_ctx *c = sg_current(); if (!c) return 0;
     GLint ret = 0;
     switch (c->render_mode) {
         case GL_SELECT:
-            /* Flush any open record. */
             if (c->sel_hit_record_open) {
-                /* record complete: already accounted in sel_hit_count on
-                 * name-stack changes; the implicit final flush happens at
-                 * mode transition, so just clear the open flag. */
                 c->sel_hit_record_open = 0;
             }
             ret = c->sel_overflow ? -1 : c->sel_hit_count;
@@ -620,7 +577,7 @@ void glPassThrough(GLfloat token) {
     softgl_ctx *c = sg_current(); if (!c) return;
     if (c->render_mode != GL_FEEDBACK) return;
     if (!c->fb_buffer) return;
-    /* Emit GL_PASS_THROUGH_TOKEN followed by the user value. */
+    /* Emit PASS_THROUGH_TOKEN + user value. */
     if (c->fb_buffer_used + 2 > c->fb_buffer_size) {
         c->fb_overflow = 1; return;
     }
@@ -628,9 +585,7 @@ void glPassThrough(GLfloat token) {
     c->fb_buffer[c->fb_buffer_used++] = token;
 }
 
-/* ------------------------------------------------------------------ */
-/* Line + polygon stipple                                              */
-/* ------------------------------------------------------------------ */
+/* ---- Line + polygon stipple ---- */
 
 void glLineStipple(GLint factor, GLushort pattern) {
     softgl_ctx *c = sg_current(); if (!c) return;

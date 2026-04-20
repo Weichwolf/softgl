@@ -12,7 +12,7 @@ set(SRC ${CMAKE_CURRENT_SOURCE_DIR}/..)
 # -msse..-msse4.1 arm Emscripten's <xmmintrin.h>/<smmintrin.h>/<tmmintrin.h>
 # compat headers (under sysroot/include/compat) which guard on __SSE__ etc.
 # They transparently map the _mm_* intrinsics used in pipeline.c, matrix.c
-# and rasterizer_fp.c onto wasm_simd128 under -msimd128 at codegen time.
+# and rasterizer.c onto wasm_simd128 under -msimd128 at codegen time.
 # Without these flags the compat headers raise #error "SSE instruction
 # set not enabled" and the SIMD gates in those files fall back to scalar.
 add_compile_options(-O2 -msimd128 -msse -msse2 -msse3 -mssse3 -msse4.1 -Wno-unused-parameter)
@@ -64,5 +64,5 @@ target_include_directories(softgl PRIVATE
 set_target_properties(softgl PROPERTIES
     OUTPUT_NAME softgl
     SUFFIX ".js"
-    LINK_FLAGS "-O2 -msimd128 -sEXPORTED_FUNCTIONS=_softgl_create,_softgl_destroy,_softgl_make_current,_softgl_read_rgba8,_softgl_set_backend,_softgl_get_backend,_sg_test_count,_sg_test_name,_sg_test_run,_sg_bench_slot_count,_sg_bench_slot_tag,_sg_bench_slot_test_index,_sg_bench_run_idx,_sg_bench_run_slot,_sg_tank_load,_sg_tank_render,_sg_tank_tri_count,_sg_tank_mat_count,_sg_tank_unload,_malloc,_free -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,HEAPU8,UTF8ToString -sMODULARIZE=1 -sEXPORT_NAME=createSoftGL -sALLOW_MEMORY_GROWTH=1 -sINITIAL_MEMORY=33554432 -sSTACK_SIZE=8388608"
+    LINK_FLAGS "-O2 -msimd128 -sEXPORTED_FUNCTIONS=_softgl_create,_softgl_destroy,_softgl_make_current,_softgl_read_rgba8,_sg_test_count,_sg_test_name,_sg_test_run,_sg_bench_slot_count,_sg_bench_slot_tag,_sg_bench_slot_test_index,_sg_bench_run_idx,_sg_bench_run_slot,_sg_tank_load,_sg_tank_render,_sg_tank_tri_count,_sg_tank_mat_count,_sg_tank_unload,_malloc,_free -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,HEAPU8,UTF8ToString -sMODULARIZE=1 -sEXPORT_NAME=createSoftGL -sALLOW_MEMORY_GROWTH=1 -sINITIAL_MEMORY=33554432 -sSTACK_SIZE=8388608"
 )

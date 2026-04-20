@@ -12,36 +12,12 @@
   #define SG_PIPELINE_SIMD 0
 #endif
 
-/* Phase FP-0: backend dispatch scaffolding.
- *
- * Until Phase FP-1..6 implement the fixed-point rasterizer, the FIXED
- * branch falls back to the float path so the test harness sees identical
- * output on both backends. The explicit switch here documents the hook
- * sites (triangle fill, line, point) that later gain sg_raster_*_fp
- * counterparts. */
+/* Pipeline: vertex fetch -> MV -> projection -> clip -> viewport -> raster. */
 
-/* ==================================================================
- * Pipeline: vertex fetch → MV → projection → clip → viewport → raster.
- *
- * For the scalar-first pass we transform vertices one at a time, but the
- * sg_vert struct is 16-byte aligned AoS so a SIMD pass can load whole
- * vec4 fields directly (position, normal, color, uv[0]) with one 16-byte
- * load per attribute. Matrix × vec4 is the obvious future SIMD target.
- * ================================================================== */
-
-/* Forward: raster a triangle in screen space after clipping. */
 void sg_raster_triangle(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1, const sg_vert *v2);
-
-/* Forward: clip one triangle against the 6 frustum planes. Produces up to
- * ~6 triangles (hexagon) in out_tris; returns the triangle count.  */
 int sg_clip_triangle(const sg_vert *tri_in, sg_vert *out_tris, int *out_count);
-
-/* Forward: clip against enabled user clip planes in eye-space. Produces up to
- * ~6 triangles that still need frustum clipping + projection. */
 int sg_clip_triangle_user_planes(softgl_ctx *c, const sg_vert *tri_in,
                                  sg_vert *out_tris, int *out_count);
-
-/* ---- Attribute fetch ---- */
 
 static const uint8_t *sg_attrib_base(softgl_ctx *c, const sg_attrib_ptr *a) {
     if (a->buffer) {
@@ -52,7 +28,7 @@ static const uint8_t *sg_attrib_base(softgl_ctx *c, const sg_attrib_ptr *a) {
     return a->ptr;
 }
 
-/* Copy N components of given type/stride into dst, padding the rest with `def`. */
+/* Copy N typed components into dst, pad rest with `def`. */
 static void sg_fetch_attrib(const uint8_t *base, int index, int stride, int n, GLenum type,
                             float *dst, int dst_len, float def) {
     if (!base) {
@@ -78,16 +54,11 @@ static void sg_fetch_attrib(const uint8_t *base, int index, int stride, int n, G
     for (int i = got; i < dst_len; i++) dst[i] = def;
 }
 
-/* ---- Lighting ----
- *
- * Applies one side (front or back) of lighting with the given material and
- * normal vector. Caller flips normal for back face. Color-material tracking
- * overrides selected material channel with vcolor when enabled.
- */
+/* One side of lighting. Caller flips normal for back face.
+ * Color-material overrides selected material channels with vcolor. */
 static void sg_apply_lighting_side(softgl_ctx *c, const sg_vec4 *eye_pos, const sg_vec4 *eye_n,
                                    const sg_material *mat_base, int face_is_back,
                                    const float *vcolor, float out[4]) {
-    /* Work with a mutable copy so color-material can override fields. */
     sg_material mat = *mat_base;
     if (c->color_material_enabled) {
         int face_match =
@@ -117,11 +88,9 @@ static void sg_apply_lighting_side(softgl_ctx *c, const sg_vec4 *eye_pos, const 
             }
         }
     }
-    /* Accumulator: lanes = (r, g, b, _). SIMD-accumulating means the per-lane
-     * sequence of ADDs/MULs is bit-identical to the scalar sequence, because
-     * every channel's operation chain is independent and we preserve it per
-     * lane. Lane 3 is intentionally left as garbage — we overwrite with 'a'
-     * at the end. */
+    /* Accumulator lanes (r,g,b,_). Per-channel ops are independent, so
+     * SIMD lane-wise sum is bit-identical to scalar. Lane 3 is garbage,
+     * overwritten with `a` at the end. */
 #if SG_PIPELINE_SIMD
     __m128 acc = _mm_add_ps(_mm_loadu_ps(mat.emission),
                             _mm_mul_ps(_mm_loadu_ps(mat.ambient),
@@ -140,7 +109,7 @@ static void sg_apply_lighting_side(softgl_ctx *c, const sg_vec4 *eye_pos, const 
         if (len > 1e-20f) { float inv = 1.f / len; nx *= inv; ny *= inv; nz *= inv; }
     }
 
-    /* Viewer vector: infinite viewer at +Z by default; local viewer uses -eye_pos normalized. */
+    /* Viewer vector: infinite at +Z; local = normalize(-eye_pos). */
     float Vx = 0.f, Vy = 0.f, Vz = 1.f;
     if (c->light_model_local_viewer) {
         Vx = -eye_pos->x; Vy = -eye_pos->y; Vz = -eye_pos->z;
@@ -152,7 +121,6 @@ static void sg_apply_lighting_side(softgl_ctx *c, const sg_vec4 *eye_pos, const 
     for (int i = 0; i < SG_MAX_LIGHTS; i++) {
         const sg_light *L = &c->lights[i];
         if (!L->enabled) continue;
-        /* Ambient always contributes. */
 #if SG_PIPELINE_SIMD
         acc = _mm_add_ps(acc, _mm_mul_ps(_mm_loadu_ps(mat.ambient),
                                          _mm_loadu_ps(L->ambient)));
@@ -181,10 +149,7 @@ static void sg_apply_lighting_side(softgl_ctx *c, const sg_vec4 *eye_pos, const 
         if (ndotl < 0.f) ndotl = 0.f;
 #if SG_PIPELINE_SIMD
         {
-            /* Scalar-equivalent per lane:
-             *   r += mat.diffuse[0] * L->diffuse[0] * ndotl * att;
-             * We pack ndotl*att into a broadcast and multiply.
-             * ((mat.diff * L.diff) * ndotl) * att — group same as scalar. */
+            /* ((md*ld)*ndotl)*att matches scalar reassociation. */
             __m128 md = _mm_loadu_ps(mat.diffuse);
             __m128 ld = _mm_loadu_ps(L->diffuse);
             __m128 nd = _mm_set1_ps(ndotl);
@@ -199,7 +164,6 @@ static void sg_apply_lighting_side(softgl_ctx *c, const sg_vec4 *eye_pos, const 
 #endif
 
         if (ndotl > 0.f && mat.shininess > 0.f) {
-            /* Blinn: half vector between L and V. */
             float hx = Lx + Vx, hy = Ly + Vy, hz = Lz + Vz;
             float hlen = sqrtf(hx*hx + hy*hy + hz*hz);
             if (hlen > 1e-20f) { float inv = 1.f / hlen; hx *= inv; hy *= inv; hz *= inv; }
@@ -228,20 +192,14 @@ static void sg_apply_lighting_side(softgl_ctx *c, const sg_vec4 *eye_pos, const 
 #endif
 }
 
-/* Back-compat wrapper: front-face lighting only. Retained for call sites
- * that don't care about two-side. */
+/* Front-face convenience wrapper. */
 static void sg_apply_lighting(softgl_ctx *c, const sg_vec4 *eye_pos, const sg_vec4 *eye_n,
                               const float *vcolor, float out[4]) {
     sg_apply_lighting_side(c, eye_pos, eye_n, &c->material_front, 0, vcolor, out);
 }
 
-/* ---- Per-vertex processing ---- */
-
-/* Normal matrix cache: the inverse-transpose of MV's upper-3x3. MV does not
- * change between vertices of a draw call (the GL spec disallows matrix
- * mutation between glBegin/glEnd, and glDrawArrays/glDrawElements is atomic),
- * so we compute it once per draw. Invalidated by sg_vcache_clear() and
- * (defensively) by any routine that touches sg_mat4 stack tops. */
+/* Cached inverse-transpose MV upper-3x3. Built once per draw call;
+ * MV is not allowed to change inside glBegin/glEnd or during a draw. */
 static SG_ALIGN16 sg_mat4 sg_nm4;
 static int                sg_nm_valid = 0;
 
@@ -291,22 +249,16 @@ static void sg_process_vertex(softgl_ctx *c, int index, sg_vert *out) {
         }
     }
 
-    /* Build eye-space position (pre-projection): mv * pos */
     sg_vec4 p4 = { pos[0], pos[1], pos[2], pos[3] };
     sg_vec4 eye; sg_mat4_mul_vec4(&eye, &c->mv_stack[c->mv_top], &p4);
     out->eye = eye;
-    /* Stash current edge flag in eye.w (unused slot). Valid for this vertex's
-     * outgoing edge only for polygon-mode wireframe rasterization. */
+    /* Edge flag stashed in unused eye.w for polygon-mode wireframe. */
     out->eye.w = (float)c->current_edge_flag;
 
-    /* Clip-space: P * (MV * pos) */
     sg_vec4 clip; sg_mat4_mul_vec4(&clip, &c->pr_stack[c->pr_top], &eye);
     out->clip = clip;
 
-    /* Normals — for lighting, we want eye-space normal (inverse-transpose of upper MV). */
     if (c->lighting) {
-        /* Use cached normal matrix (per-draw-call, invalidated at top of
-         * _sg_draw_*_real via sg_vcache_clear which also clears sg_nm_valid). */
         if (!sg_nm_valid) {
             float nm9[9]; sg_mat4_normal_matrix(nm9, &c->mv_stack[c->mv_top]);
             sg_mat4_from_normal_matrix(&sg_nm4, nm9);
@@ -337,9 +289,6 @@ static void sg_process_vertex(softgl_ctx *c, int index, sg_vert *out) {
     }
 }
 
-/* ---- Per-triangle viewport + raster dispatch ---- */
-
-/* Viewport + cull + raster one post-clip triangle. */
 static void sg_finish_triangle(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert *v2) {
     sg_vert *tri[3] = { v0, v1, v2 };
     for (int i = 0; i < 3; i++) {
@@ -376,15 +325,13 @@ static void sg_finish_triangle(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert 
         if (front == cull_front) return;
     }
 
-    /* Two-sided lighting: on a back-facing polygon we use the back-lit color
-     * that was computed alongside color at vertex time. */
+    /* Two-sided lighting: back faces use pre-computed color_back. */
     if (c->lighting && c->light_model_two_side && !front) {
         tri[0]->color = tri[0]->color_back;
         tri[1]->color = tri[1]->color_back;
         tri[2]->color = tri[2]->color_back;
     }
 
-    /* Polygon-mode dispatch: per-face selection of FILL / LINE / POINT. */
     GLenum mode = front ? c->polygon_mode_front : c->polygon_mode_back;
     if (mode == GL_POINT) {
         sg_process_point(c, v0);
@@ -393,13 +340,9 @@ static void sg_finish_triangle(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert 
         return;
     }
     if (mode == GL_LINE) {
-        /* Edge flags: eye.w == 1 means the edge STARTING at this vertex is drawn.
-         * Vertices come from pre-finish clip/viewport path; they already carry
-         * the viewport-transformed ndc, but sg_process_line wants clip-space
-         * input + does viewport itself. So re-issue lines directly in
-         * post-viewport form via sg_raster_line. */
-        /* NOTE: sg_finish_triangle already viewport-transformed v0/v1/v2.
-         *       sg_raster_line expects post-viewport verts. Use it directly. */
+        /* Edge flag (eye.w==1): edge STARTING at this vertex is drawn.
+         * Verts already viewport-transformed; call sg_raster_line directly
+         * (sg_process_line expects clip space). */
         void sg_raster_line(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1);
         int e0 = (v0->eye.w >= 0.5f);
         int e1 = (v1->eye.w >= 0.5f);
@@ -413,48 +356,34 @@ static void sg_finish_triangle(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert 
     if (area2 < 0.f) {
         sg_vert *tmp = v1; v1 = v2; v2 = tmp;
     }
-    if (softgl_get_backend() == SOFTGL_BACKEND_FIXED) {
-        extern void sg_raster_triangle_fp(softgl_ctx*, const sg_vert*,
-                                          const sg_vert*, const sg_vert*);
-        sg_raster_triangle_fp(c, v0, v1, v2);
-    } else {
-        sg_raster_triangle(c, v0, v1, v2);
-    }
+    sg_raster_triangle(c, v0, v1, v2);
 }
 
 void sg_process_triangle_pub(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert *v2);
 
 static void sg_process_triangle_frustum(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert *v2) {
-    /* Trivial accept: all three vertices pass all six frustum planes.
-     * Per-vertex we compute the six distances as:
-     *   d0 = x + w, d1 = -x + w, d2 = y + w, d3 = -y + w
-     *   d4 = z + w, d5 = -z + w
-     * A vertex is "in" iff all six are >= 0. The triangle is trivially
-     * accepted iff all three vertices are in. We OR the per-lane sign bits
-     * across the 3 vertices; if no sign bit set in any plane, all_in. */
+    /* Trivial accept: all 3 vertices pass all 6 frustum planes. */
     const sg_vert *verts[3] = { v0, v1, v2 };
     int all_in = 1;
 #if SG_PIPELINE_SIMD
-    __m128 any_out_lo = _mm_setzero_ps();   /* running OR of cmplt masks */
+    __m128 any_out_lo = _mm_setzero_ps();
     __m128 any_out_hi = _mm_setzero_ps();
     __m128 zero = _mm_setzero_ps();
     for (int i = 0; i < 3; i++) {
-        __m128 V = _mm_load_ps(&verts[i]->clip.x);                /* x, y, z, w */
-        __m128 Vw = _mm_shuffle_ps(V, V, _MM_SHUFFLE(3,3,3,3));   /* w, w, w, w */
-        /* lanes: (x, y, z, 0) */
+        __m128 V = _mm_load_ps(&verts[i]->clip.x);
+        __m128 Vw = _mm_shuffle_ps(V, V, _MM_SHUFFLE(3,3,3,3));
         __m128 Vxyz = _mm_blend_ps(V, zero, 0x8);
-        __m128 d_plus  = _mm_add_ps(Vxyz, Vw);                    /* (x+w, y+w, z+w, w) */
-        __m128 d_minus = _mm_sub_ps(Vw, Vxyz);                    /* (-x+w, -y+w, -z+w, w) */
-        __m128 d_lo = _mm_unpacklo_ps(d_plus, d_minus);           /* (d0=x+w, d1=-x+w, d2=y+w, d3=-y+w) */
-        __m128 d_hi = _mm_unpackhi_ps(d_plus, d_minus);           /* (d4=z+w, d5=-z+w, w, w) */
-        /* lane-wise "d < 0" test -> full-lane mask (0xFFFFFFFF if outside) */
+        __m128 d_plus  = _mm_add_ps(Vxyz, Vw);
+        __m128 d_minus = _mm_sub_ps(Vw, Vxyz);
+        __m128 d_lo = _mm_unpacklo_ps(d_plus, d_minus);
+        __m128 d_hi = _mm_unpackhi_ps(d_plus, d_minus);
         __m128 out_lo = _mm_cmplt_ps(d_lo, zero);
         __m128 out_hi = _mm_cmplt_ps(d_hi, zero);
         any_out_lo = _mm_or_ps(any_out_lo, out_lo);
         any_out_hi = _mm_or_ps(any_out_hi, out_hi);
     }
-    int m_lo = _mm_movemask_ps(any_out_lo);          /* 4 bits: d0,d1,d2,d3 */
-    int m_hi = _mm_movemask_ps(any_out_hi) & 0x3;    /* lanes 0,1 = d4,d5 (lanes 2,3 are w>=0 trash) */
+    int m_lo = _mm_movemask_ps(any_out_lo);
+    int m_hi = _mm_movemask_ps(any_out_hi) & 0x3;   /* upper 2 lanes = w>=0 garbage */
     if ((m_lo | m_hi) != 0) all_in = 0;
 #else
     for (int p = 0; p < 6 && all_in; p++) {
@@ -478,9 +407,8 @@ static void sg_process_triangle_frustum(softgl_ctx *c, sg_vert *v0, sg_vert *v1,
         return;
     }
 
-    /* Need clipping. */
     SG_ALIGN16 sg_vert in_tri[3] = { *v0, *v1, *v2 };
-    SG_ALIGN16 sg_vert out_tris[3 * 8];    /* up to a hexagon → 6 tris; extra headroom */
+    SG_ALIGN16 sg_vert out_tris[3 * 8];    /* hexagon -> 6 tris + slack */
     int ntri = 0;
     sg_clip_triangle(in_tri, out_tris, &ntri);
     for (int i = 0; i < ntri; i++) {
@@ -489,12 +417,11 @@ static void sg_process_triangle_frustum(softgl_ctx *c, sg_vert *v0, sg_vert *v1,
 }
 
 static void sg_process_triangle(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert *v2) {
-    /* Fast path: no user clip planes — go straight to frustum stage. */
     int any_user = 0;
     for (int i = 0; i < 6; i++) if (c->clip_plane_enabled[i]) { any_user = 1; break; }
     if (!any_user) { sg_process_triangle_frustum(c, v0, v1, v2); return; }
 
-    /* First stage: clip against enabled user planes in eye-space. */
+    /* User-clip in eye-space, then frustum + viewport. */
     SG_ALIGN16 sg_vert in_tri[3] = { *v0, *v1, *v2 };
     SG_ALIGN16 sg_vert eye_tris[3 * 8];
     int ntri = 0;
@@ -506,8 +433,6 @@ static void sg_process_triangle(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert
                                     &eye_tris[i*3 + 2]);
     }
 }
-
-/* ---- Index fetch helper ---- */
 
 static uint32_t sg_fetch_index(softgl_ctx *c, GLenum type, const void *indices, GLsizei i) {
     const uint8_t *base = (const uint8_t*)indices;
@@ -524,15 +449,9 @@ static uint32_t sg_fetch_index(softgl_ctx *c, GLenum type, const void *indices, 
     }
 }
 
-/* ---- Vertex cache (per-draw-call FIFO) ----
- *
- * Transformed-vertex cache keyed by source index. Cleared at the top of
- * every _sg_draw_{arrays,elements}_real() call so no stale entry can
- * survive a state mutation between draws. 16 slot FIFO + linear scan;
- * at 16 slots the scan is ~4 cycles, payload is small (4 u32 cachelines).
- *
- * Single-threaded (softgl has one global g_current), file-static is safe.
- */
+/* Per-draw vertex cache keyed by source index. Cleared at the top of
+ * each draw so state mutations between draws cannot leak via a stale slot.
+ * Single-threaded (one global ctx) so file-static is safe. */
 #define SG_VCACHE_SIZE 32
 #define SG_VCACHE_INVALID 0xFFFFFFFFu
 static SG_ALIGN16 sg_vert sg_vcache_verts[SG_VCACHE_SIZE];
@@ -546,13 +465,12 @@ SG_INLINE void sg_vcache_clear(void) {
 }
 
 SG_INLINE void sg_vcache_fetch(softgl_ctx *c, uint32_t idx, sg_vert *out) {
-    /* Linear search — small enough the compiler can unroll. */
     for (int i = 0; i < SG_VCACHE_SIZE; i++) {
         if (sg_vcache_keys[i] == idx) {
             *out = sg_vcache_verts[i]; return;
         }
     }
-    /* Miss: transform, insert at tail (FIFO eviction). */
+    /* Miss: transform, FIFO-evict at tail. */
     int slot = sg_vcache_tail;
     sg_process_vertex(c, (int)idx, &sg_vcache_verts[slot]);
     sg_vcache_keys[slot] = idx;
@@ -560,15 +478,9 @@ SG_INLINE void sg_vcache_fetch(softgl_ctx *c, uint32_t idx, sg_vert *out) {
     *out = sg_vcache_verts[slot];
 }
 
-/* ---- Public draw calls ---- */
-
 void _sg_draw_arrays_real(GLenum mode, GLint first, GLsizei count) {
     softgl_ctx *c = sg_current(); if (!c) return;
     if (count <= 0) return;
-
-    /* For TRIANGLES there is no index re-use, so the cache is dead weight;
-     * for STRIP and FAN a few slots hit. Clear at start — the same state-
-     * safety argument as in _sg_draw_elements_real applies. */
     sg_vcache_clear();
 
     if (mode == GL_TRIANGLES) {
@@ -637,19 +549,15 @@ void _sg_draw_arrays_real(GLenum mode, GLint first, GLsizei count) {
     }
 }
 
-/* Public wrapper: external modules (immediate.c) may dispatch triangles. */
 void sg_process_triangle_pub(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert *v2) {
     sg_process_triangle(c, v0, v1, v2);
 }
 
-/* Public wrapper for array-indexed vertex processing (used by glArrayElement). */
 void sg_process_vertex_at(softgl_ctx *c, int index, sg_vert *out) {
     sg_process_vertex(c, index, out);
 }
 
-/* Build an sg_vert for immediate mode: position is given directly, all other
- * attributes come from the "current" state (color, normal, texcoord per unit).
- * Applies modelview, projection, and lighting consistently with sg_process_vertex. */
+/* Immediate-mode vertex: position direct, other attrs from current state. */
 void sg_build_vertex_imm(softgl_ctx *c, float px, float py, float pz, float pw, sg_vert *out) {
     float color[4]  = { c->current_color[0], c->current_color[1],
                         c->current_color[2], c->current_color[3] };
@@ -702,10 +610,6 @@ void sg_build_vertex_imm(softgl_ctx *c, float px, float py, float pz, float pw, 
 void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void *indices) {
     softgl_ctx *c = sg_current(); if (!c) return;
     if (count <= 0) return;
-
-    /* Flush the transformed-vertex cache: any state the caller mutated
-     * between draws (matrix stack, lighting, material, texcoord-gen, etc.)
-     * must not carry over via a cached key. */
     sg_vcache_clear();
 
     if (mode == GL_TRIANGLES) {
@@ -782,8 +686,6 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
     }
 }
 
-/* ---- Public (dlist-aware) wrappers ---- */
-
 void glDrawArrays(GLenum mode, GLint first, GLsizei count) {
     softgl_ctx *c = sg_current(); if (!c) return;
     if (c->dlist_recording) {
@@ -796,9 +698,8 @@ void glDrawArrays(GLenum mode, GLint first, GLsizei count) {
 void glDrawElements(GLenum mode, GLsizei count, GLenum type, const void *indices) {
     softgl_ctx *c = sg_current(); if (!c) return;
     if (c->dlist_recording) {
-        /* Record the raw indices pointer/offset AND a deep copy of the
-         * client-memory indices (in case no EBO is bound at replay time).
-         * At replay we branch on the replay-context's binding. */
+        /* Record raw indices ptr/offset AND deep copy of client memory
+         * (no EBO at replay time). Replay branches on binding. */
         size_t tsz = 0;
         switch (type) {
             case GL_UNSIGNED_BYTE:  tsz = 1; break;

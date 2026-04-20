@@ -7,8 +7,6 @@ static sg_light *sg_light_slot(softgl_ctx *c, GLenum light) {
     return &c->lights[light - GL_LIGHT0];
 }
 
-/* ==================  _real implementations  ================== */
-
 void _sg_lightfv_real(GLenum light, GLenum pname, const GLfloat *v) {
     softgl_ctx *c = sg_current(); if (!c || !v) return;
     sg_light *L = sg_light_slot(c, light); if (!L) return;
@@ -118,8 +116,7 @@ void _sg_light_modeli_real(GLenum p, GLint v) {
         case GL_LIGHT_MODEL_TWO_SIDE:
             c->light_model_two_side = (v != 0) ? 1 : 0; return;
         case GL_LIGHT_MODEL_AMBIENT:
-            /* integer vec would go through fv path; scalar form is unusual */
-            return;
+            return;   /* integer vec goes through fv path */
         default: return;
     }
 }
@@ -162,8 +159,6 @@ void _sg_fogfv_real(GLenum p, const GLfloat *v) {
         _sg_fogf_real(p, v[0]);
     }
 }
-
-/* ==================  Public wrappers (dlist-aware)  ================== */
 
 void glLightfv(GLenum light, GLenum pname, const GLfloat *v) {
     softgl_ctx *c = sg_current(); if (!c || !v) return;
@@ -259,7 +254,7 @@ void glColorMaterial(GLenum face, GLenum mode) {
 
 void glMaterialiv(GLenum face, GLenum pname, const GLint *v) {
     if (!v) return;
-    /* Map integers to [-1,1] like the core spec. For shininess it's the raw scalar. */
+    /* Spec: integers map to [-1,1]; shininess is raw. */
     if (pname == GL_SHININESS) {
         glMaterialf(face, pname, (GLfloat)v[0]);
         return;

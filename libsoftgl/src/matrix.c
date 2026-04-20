@@ -10,7 +10,7 @@
   #define SG_MATRIX_SIMD 0
 #endif
 
-/* Column-major 4x4, OpenGL convention: element at (row r, col c) is m[c*4 + r]. */
+/* Column-major 4x4: element (row r, col c) at m[c*4+r]. */
 
 static sg_mat4 *sg_top(softgl_ctx *c) {
     switch (c->matrix_mode) {
@@ -49,11 +49,8 @@ void sg_mat4_mul(sg_mat4 * SG_RESTRICT out, const sg_mat4 * SG_RESTRICT a, const
 
 void sg_mat4_mul_vec4(sg_vec4 * SG_RESTRICT out, const sg_mat4 * SG_RESTRICT m, const sg_vec4 * SG_RESTRICT v) {
 #if SG_MATRIX_SIMD
-    /* Column-broadcast Mat4 x Vec4: 4 MULs + 3 ADDs. sg_vec4 / sg_mat4 are
-     * both SG_ALIGN16, so aligned loads/stores are safe. Operation order
-     * col0*x + col1*y + col2*z + col3*w is IEEE-identical to the scalar
-     * per-row dot-products because each output lane sums the same four
-     * products in the same left-to-right order. */
+    /* col0*x + col1*y + col2*z + col3*w is IEEE-identical to the scalar
+     * per-row dot-products (same four products, same associativity). */
     __m128 r    = _mm_load_ps(&v->x);
     __m128 col0 = _mm_load_ps(m->m + 0);
     __m128 col1 = _mm_load_ps(m->m + 4);
@@ -75,8 +72,7 @@ void sg_mat4_mul_vec4(sg_vec4 * SG_RESTRICT out, const sg_mat4 * SG_RESTRICT m, 
 #endif
 }
 
-/* Full 4x4 inverse using cofactor expansion. Returns 0 if singular
- * (det close to zero); caller may treat as identity-fallback. */
+/* 4x4 inverse via cofactor expansion. Returns 0 if singular. */
 int sg_mat4_inverse(sg_mat4 *out, const sg_mat4 *in);
 int sg_mat4_inverse(sg_mat4 *out, const sg_mat4 *in) {
     const float *m = in->m;
@@ -146,18 +142,14 @@ void sg_mat4_normal_matrix(float out9[9], const sg_mat4 *m) {
     out9[6] = G * inv; out9[7] = H * inv; out9[8] = I * inv;
 }
 
-/* Build a 4x4 column-major matrix from a row-major 3x3 normal matrix.
- * Output layout is compatible with sg_mat4_mul_vec4: element (row r, col c)
- * of the 3x3 lives at out[c*4 + r]. Column 3 and row 3 are zero-padded so
- * a vec4 (n.x, n.y, n.z, 0) yields (3x3 * n, 0) when multiplied. */
+/* Row-major 3x3 normal matrix → column-major 4x4 compatible with
+ * sg_mat4_mul_vec4. Column 3 / row 3 zero-padded. */
 void sg_mat4_from_normal_matrix(sg_mat4 *out, const float nm9[9]) {
     out->m[0]  = nm9[0]; out->m[1]  = nm9[3]; out->m[2]  = nm9[6]; out->m[3]  = 0.f;
     out->m[4]  = nm9[1]; out->m[5]  = nm9[4]; out->m[6]  = nm9[7]; out->m[7]  = 0.f;
     out->m[8]  = nm9[2]; out->m[9]  = nm9[5]; out->m[10] = nm9[8]; out->m[11] = 0.f;
     out->m[12] = 0.f;    out->m[13] = 0.f;    out->m[14] = 0.f;    out->m[15] = 0.f;
 }
-
-/* ==================  _real implementations  ================== */
 
 void _sg_matrix_mode_real(GLenum m) {
     softgl_ctx *c = sg_current(); if (!c) return;
@@ -272,8 +264,6 @@ void _sg_frustum_real(GLdouble l, GLdouble r, GLdouble b, GLdouble t, GLdouble n
     sg_mat4_mul(sg_top(c), sg_top(c), &m);
 }
 
-/* ==================  Public wrappers (dlist-aware)  ================== */
-
 void glMatrixMode(GLenum m) {
     softgl_ctx *c = sg_current(); if (!c) return;
     if (c->dlist_recording) {
@@ -367,9 +357,7 @@ void glFrustum(GLdouble l, GLdouble r, GLdouble b, GLdouble t, GLdouble n, GLdou
     } else _sg_frustum_real(l, r, b, t, n, f);
 }
 
-/* ==================  glClipPlane (+ _real)  ================== */
-
-/* Transform object-space plane equation by (MV^-1)^T, store in eye-space. */
+/* Transform object-space plane equation by (MV^-1)^T, store eye-space. */
 void _sg_clip_plane_real(GLenum plane, const GLdouble *equation) {
     softgl_ctx *c = sg_current(); if (!c || !equation) return;
     if (plane < GL_CLIP_PLANE0 || plane > GL_CLIP_PLANE5) {
@@ -378,23 +366,15 @@ void _sg_clip_plane_real(GLenum plane, const GLdouble *equation) {
     int idx = (int)(plane - GL_CLIP_PLANE0);
     sg_mat4 inv;
     if (!sg_mat4_inverse(&inv, &c->mv_stack[c->mv_top])) {
-        /* Fall back to identity: store plane as-is (treat MV as identity). */
+        /* Singular MV: store plane as-is (identity fallback). */
         c->clip_plane_eq[idx][0] = equation[0];
         c->clip_plane_eq[idx][1] = equation[1];
         c->clip_plane_eq[idx][2] = equation[2];
         c->clip_plane_eq[idx][3] = equation[3];
         return;
     }
-    /* (M^-1)^T * p : for column-major M^-1 stored in inv.m[c*4+r],
-     * element (row r, col c) is inv.m[c*4+r]. (M^-1)^T has rows = columns of M^-1,
-     * so eye[r] = sum_c (M^-1)^T[r][c] * p[c] = sum_c (M^-1)[c][r] * p[c]
-     *          = sum_c inv.m[r*4 + c] * p[c]
-     * That is the SAME as treating inv.m as row-major indices [r*4+c]. But inv.m is
-     * column-major (inv.m[c*4+r] = element row r col c). So (M^-1)[c][r] = inv.m[r*4+c].
-     * Wait let me re-index: column-major m: m[c*4+r] is the element at (row r, col c).
-     * So  element (row r, col c) of M^-1 is inv.m[c*4+r].
-     * (M^-1)^T[r][c] = (M^-1)[c][r] = inv.m[r*4+c].
-     * eye[r] = sum_c inv.m[r*4+c] * p[c]. */
+    /* (M^-1)^T * p: for column-major inv.m, element (row r, col c) = inv.m[c*4+r].
+     * eye[r] = sum_c (M^-1)^T[r][c] * p[c] = sum_c inv.m[r*4+c] * p[c]. */
     for (int r = 0; r < 4; r++) {
         double s = 0.0;
         for (int col = 0; col < 4; col++) {

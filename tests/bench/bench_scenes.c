@@ -185,8 +185,7 @@ static scene_t scenes[] = {
 /* Per-scene timing                                                    */
 /* ------------------------------------------------------------------ */
 
-static double time_scene(scene_fn fn, int iters, softgl_backend_t backend) {
-    softgl_set_backend(backend);
+static double time_scene(scene_fn fn, int iters) {
     softgl_ctx *ctx = softgl_create(W, H);
     softgl_make_current(ctx);
     fn(W, H); /* warm-up */
@@ -211,14 +210,12 @@ int sg_bench_scene_iters(int i) {
     return (i < 0 || i >= NUM_SCENES) ? 0 : scenes[i].iters;
 }
 
-/* WASM/Embedded entry point: runs scene [idx] [iters] times on [backend]
- * (0=float, 1=fixed), returns ms/frame. The softgl binary built with
- * SG_DISABLE_SIMD will interpret backend==1 as fixed-scalar. */
+/* WASM/Embedded entry point: runs scene [idx] [iters] times, returns ms/frame.
+ * `backend` is retained for ABI stability but is ignored (single backend). */
 double sg_bench_run(int idx, int iters, int backend) {
+    (void)backend;
     if (idx < 0 || idx >= NUM_SCENES || iters <= 0) return -1.0;
-    softgl_backend_t b = (backend == 1) ? SOFTGL_BACKEND_FIXED
-                                        : SOFTGL_BACKEND_SCALAR_FLOAT;
-    return time_scene(scenes[idx].fn, iters, b);
+    return time_scene(scenes[idx].fn, iters);
 }
 
 /* ------------------------------------------------------------------ */
@@ -227,9 +224,6 @@ double sg_bench_run(int idx, int iters, int backend) {
 
 int main(int argc, char **argv) {
     int mult = 1;
-    int only_noSIMD_probe = 0;  /* when this binary was built WITHOUT SIMD,
-                                 * we skip the "float vs fixed" header and
-                                 * only print the fixed column as scalar. */
     if (argc > 1) mult = atoi(argv[1]);
     if (mult < 1) mult = 1;
 
@@ -238,27 +232,15 @@ int main(int argc, char **argv) {
     const char *tag = "";
 #ifdef SG_DISABLE_SIMD
     tag = " [noSIMD build]";
-    only_noSIMD_probe = 1;
 #endif
 
-    printf("# FP-6 benchmark (%dx%d)%s\n", W, H, tag);
+    printf("# scenes benchmark (%dx%d)%s\n", W, H, tag);
 
     for (int s = 0; s < NUM_SCENES; s++) {
         int iters = scenes[s].iters * mult;
-        if (!only_noSIMD_probe) {
-            double ms_f = time_scene(scenes[s].fn, iters, SOFTGL_BACKEND_SCALAR_FLOAT);
-            double ms_x = time_scene(scenes[s].fn, iters, SOFTGL_BACKEND_FIXED);
-            double speedup = (ms_x > 0.0) ? ms_f / ms_x : 0.0;
-            printf("scene=%-10s backend=float        ms=%7.3f iters=%d\n",
-                   scenes[s].name, ms_f, iters);
-            printf("scene=%-10s backend=fixed        ms=%7.3f iters=%d speedup=%.2fx_vs_float\n",
-                   scenes[s].name, ms_x, iters, speedup);
-        } else {
-            /* noSIMD binary: the FIXED backend here IS the scalar fallback. */
-            double ms_n = time_scene(scenes[s].fn, iters, SOFTGL_BACKEND_FIXED);
-            printf("scene=%-10s backend=fixed_noSIMD ms=%7.3f iters=%d\n",
-                   scenes[s].name, ms_n, iters);
-        }
+        double ms = time_scene(scenes[s].fn, iters);
+        printf("scene=%-10s ms=%7.3f iters=%d\n",
+               scenes[s].name, ms, iters);
         fflush(stdout);
     }
     return 0;

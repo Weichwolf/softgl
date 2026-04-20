@@ -28,7 +28,7 @@ void _sg_clear_real(GLbitfield mask) {
         uint8_t g = sg_quantize(c->clear_color[1]);
         uint8_t b = sg_quantize(c->clear_color[2]);
         uint8_t a = sg_quantize(c->clear_color[3]);
-        /* glClear honours color mask (spec §4.2.3). */
+        /* glClear honours color mask (spec 4.2.3). */
         int all_on = c->color_mask[0] && c->color_mask[1] &&
                      c->color_mask[2] && c->color_mask[3];
         if (all_on) {
@@ -66,7 +66,7 @@ void _sg_clear_real(GLbitfield mask) {
         }
     }
     if (mask & GL_ACCUM_BUFFER_BIT) {
-        /* Lazy-allocate the accum buffer on first use. */
+        /* Lazy-alloc accum buffer on first use. */
         if (!c->accum) {
             size_t nf = (size_t)c->fb.w * (size_t)c->fb.h * 4;
             c->accum = (float*)malloc(nf * sizeof(float));

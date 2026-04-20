@@ -206,39 +206,26 @@ int main(int argc, char **argv) {
         return 1;
     }
 
-    softgl_backend_t backends[] = {
-        SOFTGL_BACKEND_SCALAR_FLOAT, SOFTGL_BACKEND_FIXED
-    };
-    const char *names[] = { "float", "fixed" };
-
-    fprintf(stderr, "tank: %u verts, %u materials, %d iters/backend @ %dx%d\n",
+    fprintf(stderr, "tank: %u verts, %u materials, %d iters @ %dx%d\n",
             tank.n_verts, tank.n_materials, iters, W, H);
 
-    double ms_float = 0, ms_fixed = 0;
-    for (int b = 0; b < 2; b++) {
-        softgl_set_backend(backends[b]);
-        softgl_ctx *c = softgl_create(W, H);
-        softgl_make_current(c);
+    softgl_ctx *c = softgl_create(W, H);
+    softgl_make_current(c);
 
-        setup_scene();
-        tank_upload(&tank);
-        /* one warmup */
-        set_camera(0.f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        tank_draw(&tank);
+    setup_scene();
+    tank_upload(&tank);
+    /* one warmup */
+    set_camera(0.f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    tank_draw(&tank);
 
-        double ms = 1e99;
-        for (int r = 0; r < 3; r++) {
-            double t = run_loop(&tank, iters);
-            if (t < ms) ms = t;
-        }
-        printf("scene=tank backend=%-5s ms=%6.2f fps=%5.1f\n",
-               names[b], ms, 1000.0 / ms);
-        if (b == 0) ms_float = ms; else ms_fixed = ms;
-
-        softgl_destroy(c);
+    double ms = 1e99;
+    for (int r = 0; r < 3; r++) {
+        double t = run_loop(&tank, iters);
+        if (t < ms) ms = t;
     }
-    printf("scene=tank speedup=%.2fx (fixed vs float)\n",
-           ms_float / ms_fixed);
+    printf("scene=tank ms=%6.2f fps=%5.1f\n", ms, 1000.0 / ms);
+
+    softgl_destroy(c);
     return 0;
 }

@@ -3,19 +3,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* =====================================================================
- * Texture storage + upload, with 1D/2D/3D/cube support.
- *
- * Ownership:
- *   - For 1D/2D/3D: t->data[level] holds the full level as RGBA8.
- *     w/h/d[level] describe its dimensions (h=d=1 for 1D; d=1 for 2D).
- *   - For cube maps: t->cube_faces[face][level] holds each of the six faces.
- *     cube_w/cube_h[face][level] describe per-face dimensions.
- *     t->data[]/w[]/h[]/d[] mirror face 0 (POS_X) for convenience.
- *   - A single sg_texture is "owned" by whichever target first bound it;
- *     binding to another target later overwrites t->target and re-interprets
- *     storage. This matches desktop GL 1.1/1.2 semantics closely enough.
- * ===================================================================== */
+/* Texture storage + upload. 1D/2D/3D: t->data[level] + w/h/d[level].
+ * Cube: t->cube_faces[face][level] + cube_w/cube_h; face 0 mirrors into
+ * t->data[]/w/h/d for legacy paths. */
 
 static sg_texture *sg_alloc_tex_slot(softgl_ctx *c, GLuint *out_id) {
     for (size_t i = 0; i < c->textures_cap; i++) {
@@ -57,10 +47,6 @@ sg_texture *sg_texture_get(softgl_ctx *c, GLuint id) {
     return t;
 }
 
-/* ---- small helpers ---------------------------------------------------- */
-
-/* Map a GL target enum to one of our internal target slots. Returns -1 on
- * unrecognised input (or cube-face targets — those resolve separately). */
 static int sg_target_to_slot(GLenum target) {
     switch (target) {
         case GL_TEXTURE_1D:        return SG_TEX_TARGET_1D;
@@ -71,7 +57,6 @@ static int sg_target_to_slot(GLenum target) {
     }
 }
 
-/* Map a cube-face target enum to a face index 0..5. Returns -1 if not a face. */
 static int sg_cube_face_index(GLenum target) {
     switch (target) {
         case GL_TEXTURE_CUBE_MAP_POSITIVE_X: return 0;
@@ -84,7 +69,6 @@ static int sg_cube_face_index(GLenum target) {
     }
 }
 
-/* Compute source bytes-per-pixel for a (format, type) pair. 0 = unknown. */
 static size_t sg_src_bpp(GLenum format, GLenum type) {
     size_t comps = 0;
     switch (format) {
@@ -104,15 +88,11 @@ static size_t sg_src_bpp(GLenum format, GLenum type) {
     return comps * esz;
 }
 
-/* Get the active texture for a given storage target. Create on demand if none
- * is bound, following GL semantics: "uploading to GL_TEXTURE_xD with no texture
- * bound" would set GL_INVALID_OPERATION on the real driver; we match that. */
+/* NULL if nothing bound; caller raises GL_INVALID_OPERATION. */
 static sg_texture *sg_active_tex_for_target(softgl_ctx *c, int slot) {
     GLuint id = c->tex_env[c->active_tex_unit].bound_tex_target[slot];
     return sg_texture_get(c, id);
 }
-
-/* ---- pixel expansion -------------------------------------------------- */
 
 static void sg_expand_pixel(uint8_t *dst, const void *src, int src_index,
                             GLenum format, GLenum type) {
@@ -150,8 +130,6 @@ static void sg_expand_pixel(uint8_t *dst, const void *src, int src_index,
     dst[0] = r; dst[1] = g; dst[2] = b; dst[3] = a;
 }
 
-/* ---- glGen / glDelete ------------------------------------------------- */
-
 void glGenTextures(GLsizei n, GLuint *out) {
     softgl_ctx *c = sg_current(); if (!c || !out) return;
     for (GLsizei i = 0; i < n; i++) {
@@ -185,8 +163,6 @@ void glDeleteTextures(GLsizei n, const GLuint *ids) {
     }
 }
 
-/* ===========  _real implementations  =========== */
-
 void _sg_active_texture_real(GLenum unit) {
     softgl_ctx *c = sg_current(); if (!c) return;
     int u = (int)(unit - GL_TEXTURE0);
@@ -219,7 +195,6 @@ void _sg_bind_texture_real(GLenum target, GLuint id) {
     c->tex_env[c->active_tex_unit].bound_tex_target[slot] = id;
 }
 
-/* Generic 3D upload: writes w*h*d texels of RGBA8 into dst. */
 static void sg_upload_rgba8(uint8_t *dst, const void *pixels, int w, int h, int d,
                             GLenum format, GLenum type) {
     if (!pixels) {
@@ -231,7 +206,6 @@ static void sg_upload_rgba8(uint8_t *dst, const void *pixels, int w, int h, int 
         sg_expand_pixel(dst + i * 4, pixels, i, format, type);
 }
 
-/* TexImage for 1D: stored in data[level] with h=d=1. */
 void _sg_tex_image_1d_real(GLenum target, GLint level, GLint ifmt, GLsizei w,
                            GLint border, GLenum format, GLenum type, const void *pixels) {
     (void)ifmt; (void)border;
@@ -240,7 +214,7 @@ void _sg_tex_image_1d_real(GLenum target, GLint level, GLint ifmt, GLsizei w,
         sg_set_error(GL_INVALID_ENUM); return;
     }
     if (level < 0 || level >= SG_MAX_MIPMAP_LEVELS) { sg_set_error(GL_INVALID_VALUE); return; }
-    if (target == GL_PROXY_TEXTURE_1D) return;  /* proxy: no allocation */
+    if (target == GL_PROXY_TEXTURE_1D) return;
 
     sg_texture *t = sg_active_tex_for_target(c, SG_TEX_TARGET_1D);
     if (!t) { sg_set_error(GL_INVALID_OPERATION); return; }
@@ -255,7 +229,6 @@ void _sg_tex_image_1d_real(GLenum target, GLint level, GLint ifmt, GLsizei w,
     sg_upload_rgba8(t->data[level], pixels, w, 1, 1, format, type);
 }
 
-/* TexImage for 2D or a single cube-map face. */
 void _sg_tex_image_2d_real(GLenum target, GLint level, GLint ifmt, GLsizei w, GLsizei h,
                            GLint border, GLenum format, GLenum type, const void *pixels) {
     (void)ifmt; (void)border;
@@ -264,7 +237,6 @@ void _sg_tex_image_2d_real(GLenum target, GLint level, GLint ifmt, GLsizei w, GL
 
     int face = sg_cube_face_index(target);
     if (face >= 0) {
-        /* Cube-map face upload. Texture must be bound to CUBE target. */
         sg_texture *t = sg_active_tex_for_target(c, SG_TEX_TARGET_CUBE);
         if (!t) { sg_set_error(GL_INVALID_OPERATION); return; }
         t->target = GL_TEXTURE_CUBE_MAP;
@@ -277,7 +249,7 @@ void _sg_tex_image_2d_real(GLenum target, GLint level, GLint ifmt, GLsizei w, GL
         if (!t->cube_faces[face][level]) { sg_set_error(GL_OUT_OF_MEMORY); return; }
         t->cube_w[face][level] = w; t->cube_h[face][level] = h;
         sg_upload_rgba8(t->cube_faces[face][level], pixels, w, h, 1, format, type);
-        /* Mirror face 0 into legacy fields for any code that expects it. */
+        /* Face 0 mirrors into legacy fields. */
         if (face == 0) {
             t->w[level] = w; t->h[level] = h; t->d[level] = 1;
             if (level + 1 > t->levels) t->levels = level + 1;
@@ -326,8 +298,6 @@ void _sg_tex_image_3d_real(GLenum target, GLint level, GLint ifmt, GLsizei w, GL
     if (level + 1 > t->levels) t->levels = level + 1;
     sg_upload_rgba8(t->data[level], pixels, w, h, d, format, type);
 }
-
-/* TexSubImage: overwrite a sub-region. Dst layout RGBA8. */
 
 void _sg_tex_sub_image_1d_real(GLenum target, GLint level, GLint xoff, GLsizei w,
                                GLenum format, GLenum type, const void *pixels) {
@@ -380,10 +350,7 @@ void _sg_tex_sub_image_2d_real(GLenum target, GLint level, GLint xoff, GLint yof
     }
 }
 
-/* ---- CopyTex* — read from the framebuffer ----------------------------- */
-
-/* Read w*h RGBA pixels from the current context's color framebuffer at (sx, sy),
- * clipped to the fb bounds. Returns a freshly allocated uint8_t[w*h*4] or NULL. */
+/* Read w*h RGBA from fb at (sx,sy), clipped. malloc'd or NULL. */
 static uint8_t *sg_fb_read_rect(softgl_ctx *c, int sx, int sy, int w, int h) {
     if (w <= 0 || h <= 0) return NULL;
     uint8_t *buf = (uint8_t*)malloc((size_t)w * h * 4);
@@ -513,8 +480,6 @@ void _sg_copy_tex_sub_image_2d_real(GLenum target, GLint level, GLint xoff, GLin
     free(fb);
 }
 
-/* ---- TexParameter ----------------------------------------------------- */
-
 void _sg_tex_parameter_i_real(GLenum target, GLenum pname, GLint param) {
     softgl_ctx *c = sg_current(); if (!c) return;
     int slot = sg_target_to_slot(target);
@@ -566,7 +531,6 @@ void _sg_tex_env_f_real(GLenum target, GLenum pname, GLfloat param) {
     softgl_ctx *c = sg_current(); if (!c) return;
     if (target != GL_TEXTURE_ENV) { sg_set_error(GL_INVALID_ENUM); return; }
     sg_tex_env *e = &c->tex_env[c->active_tex_unit];
-    /* RGB_SCALE / ALPHA_SCALE are floats in the glTexEnvf path (legal values 1/2/4). */
     if (pname == GL_RGB_SCALE)   { e->rgb_scale = param; return; }
     if (pname == GL_ALPHA_SCALE) { e->alpha_scale = param; return; }
     _sg_tex_env_i_real(target, pname, (GLint)param);
@@ -586,8 +550,6 @@ void _sg_tex_env_fv_real(GLenum target, GLenum pname, const GLfloat *params) {
     _sg_tex_env_i_real(target, pname, (GLint)params[0]);
 }
 
-/* ==========  Public wrappers (dlist-aware)  ========== */
-
 void glActiveTexture(GLenum unit) {
     softgl_ctx *c = sg_current(); if (!c) return;
     if (c->dlist_recording) {
@@ -605,9 +567,7 @@ void glBindTexture(GLenum target, GLuint id) {
     } else _sg_bind_texture_real(target, id);
 }
 
-/* Helper for recording: compute payload byte count for a given (format, type)
- * over a pixel count. Returns 0 if format/type unrecognised — caller treats
- * that as "omit deep copy". */
+/* dlist payload bytes for (format,type)*pixels; 0 = unknown → skip copy. */
 static uint32_t sg_pixels_bytes(GLenum format, GLenum type, size_t pixels) {
     size_t bpp = sg_src_bpp(format, type);
     if (bpp == 0) return 0;

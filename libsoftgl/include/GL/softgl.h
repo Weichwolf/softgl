@@ -327,7 +327,7 @@ typedef int64_t        GLint64;
 #define GL_LOGIC_OP_MODE                  0x0BF0
 #define GL_INDEX_LOGIC_OP                 0x0BF1
 
-/* Pixel transfer (Phase 7) */
+/* Pixel transfer */
 #define GL_PACK_ALIGNMENT                 0x0D05
 #define GL_PACK_ROW_LENGTH                0x0D02
 #define GL_PACK_SKIP_ROWS                 0x0D03
@@ -351,7 +351,7 @@ typedef int64_t        GLint64;
 #define GL_DEPTH                          0x1801
 #define GL_STENCIL                        0x1802
 
-/* Occlusion queries (Phase 9 / ARB_occlusion_query) */
+/* Occlusion queries (ARB_occlusion_query) */
 #define GL_SAMPLES_PASSED                 0x8914
 #define GL_ANY_SAMPLES_PASSED             0x8C2F
 #define GL_QUERY_COUNTER_BITS             0x8864
@@ -359,7 +359,7 @@ typedef int64_t        GLint64;
 #define GL_QUERY_RESULT                   0x8866
 #define GL_QUERY_RESULT_AVAILABLE         0x8867
 
-/* Buffer mapping (Phase 9 / ARB_vertex_buffer_object mapping subset) */
+/* Buffer mapping (ARB_vertex_buffer_object mapping subset) */
 #define GL_READ_ONLY                      0x88B8
 #define GL_WRITE_ONLY                     0x88B9
 #define GL_READ_WRITE                     0x88BA
@@ -369,7 +369,7 @@ typedef int64_t        GLint64;
 #define GL_BUFFER_MAPPED                  0x88BC
 #define GL_BUFFER_MAP_POINTER             0x88BD
 
-/* Miscellaneous state enums for glGet* (Phase 9) */
+/* Miscellaneous state enums for glGet*. */
 #define GL_CURRENT_COLOR                  0x0B00
 #define GL_CURRENT_INDEX                  0x0B01
 #define GL_CURRENT_NORMAL                 0x0B02
@@ -436,7 +436,7 @@ typedef int64_t        GLint64;
 #define GL_FASTEST                        0x1101
 #define GL_NICEST                         0x1102
 
-/* Phase X: Evaluators (1D/2D Bezier maps). */
+/* Evaluators (1D/2D Bezier maps). */
 #define GL_MAP1_COLOR_4                   0x0D90
 #define GL_MAP1_INDEX                     0x0D91
 #define GL_MAP1_NORMAL                    0x0D92
@@ -464,7 +464,7 @@ typedef int64_t        GLint64;
 #define GL_ORDER                          0x0A01
 #define GL_DOMAIN                         0x0A02
 
-/* Phase X: Accumulation buffer. */
+/* Accumulation buffer. */
 #define GL_ACCUM                          0x0100
 #define GL_LOAD                           0x0101
 #define GL_RETURN                         0x0102
@@ -477,7 +477,7 @@ typedef int64_t        GLint64;
 #define GL_ACCUM_BLUE_BITS                0x0D5A
 #define GL_ACCUM_ALPHA_BITS               0x0D5B
 
-/* Phase X: Selection + Feedback. */
+/* Selection + Feedback. */
 #define GL_RENDER                         0x1C00
 #define GL_FEEDBACK                       0x1C01
 #define GL_SELECT                         0x1C02
@@ -503,7 +503,7 @@ typedef int64_t        GLint64;
 #define GL_COPY_PIXEL_TOKEN               0x0706
 #define GL_LINE_RESET_TOKEN               0x0707
 
-/* Phase X: Line/Polygon stipple. */
+/* Line/Polygon stipple. */
 #define GL_LINE_STIPPLE                   0x0B24
 #define GL_LINE_STIPPLE_PATTERN           0x0B25
 #define GL_LINE_STIPPLE_REPEAT            0x0B26
@@ -635,7 +635,7 @@ void glGetBooleanv(GLenum p, GLboolean *v);
 void glGetDoublev(GLenum p, GLdouble *v);
 const GLubyte *glGetString(GLenum name);
 
-/* Occlusion queries (Phase 9) */
+/* Occlusion queries */
 void      glGenQueries(GLsizei n, GLuint *ids);
 void      glDeleteQueries(GLsizei n, const GLuint *ids);
 GLboolean glIsQuery(GLuint id);
@@ -645,7 +645,7 @@ void      glGetQueryiv(GLenum target, GLenum pname, GLint *params);
 void      glGetQueryObjectiv(GLuint id, GLenum pname, GLint *params);
 void      glGetQueryObjectuiv(GLuint id, GLenum pname, GLuint *params);
 
-/* Buffer mapping (Phase 9) */
+/* Buffer mapping */
 void     *glMapBuffer(GLenum target, GLenum access);
 GLboolean glUnmapBuffer(GLenum target);
 void      glGetBufferParameteriv(GLenum target, GLenum pname, GLint *params);
@@ -818,7 +818,7 @@ void glPointSize(GLfloat size);
 void glPolygonMode(GLenum face, GLenum mode);
 void glPolygonOffset(GLfloat factor, GLfloat units);
 
-/* ---- Pixel transfer (Phase 7) ---- */
+/* ---- Pixel transfer ---- */
 
 void glDrawPixels(GLsizei w, GLsizei h, GLenum format, GLenum type, const void *pixels);
 void glReadPixels(GLint x, GLint y, GLsizei w, GLsizei h, GLenum format, GLenum type, void *pixels);
@@ -864,7 +864,7 @@ void      glCallList(GLuint list);
 void      glCallLists(GLsizei n, GLenum type, const GLvoid *lists);
 void      glListBase(GLuint base);
 
-/* ---- Phase X: Evaluators, Accum buffer, Selection/Feedback, Stipple ---- */
+/* ---- Evaluators, Accum buffer, Selection/Feedback, Stipple ---- */
 
 void glMap1f(GLenum target, GLfloat u1, GLfloat u2, GLint stride,
              GLint order, const GLfloat *points);
@@ -917,24 +917,6 @@ softgl_ctx *softgl_create(GLsizei w, GLsizei h);
 void        softgl_destroy(softgl_ctx *c);
 void        softgl_make_current(softgl_ctx *c);
 const void *softgl_read_rgba8(softgl_ctx *c);
-
-/* Backend selection. Global (not per-context) because mid-frame backend
- * switching is meaningless. The default is SCALAR_FLOAT (reference).
- * FIXED is the forthcoming hardware-style i16/i32 pipeline; until Phase
- * FP-1..6 land it falls back to the float path so all tests stay green.
- *
- * softgl_create() additionally consults the SOFTGL_BACKEND environment
- * variable:
- *   SOFTGL_BACKEND=float  -> SCALAR_FLOAT
- *   SOFTGL_BACKEND=fixed  -> FIXED
- * (case-insensitive). Env override wins over any prior softgl_set_backend. */
-typedef enum {
-    SOFTGL_BACKEND_SCALAR_FLOAT = 0,   /* current, reference */
-    SOFTGL_BACKEND_FIXED        = 1    /* future, performance (not yet implemented) */
-} softgl_backend_t;
-
-void             softgl_set_backend(softgl_backend_t b);
-softgl_backend_t softgl_get_backend(void);
 
 #ifdef __cplusplus
 }

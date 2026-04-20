@@ -5,8 +5,6 @@
 
 #define SG_DLIST_MAX_NESTING 64
 
-/* ---- Allocation / pool --------------------------------------------------- */
-
 static sg_dlist *sg_dlist_slot(softgl_ctx *c, GLuint id) {
     if (id == 0 || id > c->lists_cap) return NULL;
     return &c->lists[id - 1];
@@ -51,8 +49,6 @@ void sg_dlist_shutdown(softgl_ctx *c) {
     }
 }
 
-/* ---- Recording stream helpers ------------------------------------------- */
-
 int sg_dlist_append(softgl_ctx *c, const void *data, size_t size) {
     if (!c->dlist_recording) return 0;
     sg_dlist *L = sg_dlist_get(c, c->dlist_cur);
@@ -76,13 +72,10 @@ int sg_dlist_emit(softgl_ctx *c, uint16_t op, const void *payload, size_t size) 
     return 1;
 }
 
-/* ---- Public API: glGenLists / glDeleteLists / glIsList / glListBase ----- */
-
 GLuint glGenLists(GLsizei range) {
     softgl_ctx *c = sg_current(); if (!c) return 0;
     if (range <= 0) { sg_set_error(GL_INVALID_VALUE); return 0; }
-    /* Find `range` consecutive free slots (ids are slot+1). */
-    /* Try existing capacity first. */
+    /* Find `range` consecutive free slots; grow if none. */
     for (size_t start = 0; start + (size_t)range <= c->lists_cap; start++) {
         int ok = 1;
         for (GLsizei i = 0; i < range; i++) {
@@ -99,7 +92,6 @@ GLuint glGenLists(GLsizei range) {
             return (GLuint)(start + 1);
         }
     }
-    /* Grow. Reserve capacity for at least old_cap + range (plus some slack). */
     size_t old = c->lists_cap;
     size_t need = old + (size_t)range;
     if (!sg_dlist_reserve(c, need)) { sg_set_error(GL_OUT_OF_MEMORY); return 0; }
@@ -141,8 +133,6 @@ void glListBase(GLuint base) {
     }
 }
 
-/* ---- glNewList / glEndList ---------------------------------------------- */
-
 void glNewList(GLuint list, GLenum mode) {
     softgl_ctx *c = sg_current(); if (!c) return;
     if (list == 0) { sg_set_error(GL_INVALID_VALUE); return; }
@@ -150,7 +140,6 @@ void glNewList(GLuint list, GLenum mode) {
         sg_set_error(GL_INVALID_ENUM); return;
     }
     if (c->dlist_recording) { sg_set_error(GL_INVALID_OPERATION); return; }
-    /* Lazy allocate / reuse the slot. */
     if (list > c->lists_cap) {
         if (!sg_dlist_reserve(c, list)) { sg_set_error(GL_OUT_OF_MEMORY); return; }
     }
@@ -173,9 +162,6 @@ void glEndList(void) {
     c->dlist_exec = 0;
 }
 
-/* ---- Replay ------------------------------------------------------------- */
-
-/* Reader cursor into a cmd stream. */
 typedef struct { const uint8_t *p; const uint8_t *e; } sg_rd;
 
 static int sg_rd_read(sg_rd *r, void *dst, size_t n) {
@@ -198,8 +184,7 @@ void sg_dlist_replay(softgl_ctx *c, GLuint id) {
     if (!L) return;
     if (c->dlist_depth >= SG_DLIST_MAX_NESTING) return;
     c->dlist_depth++;
-    /* Copy cmds pointer locally: if the list deletes itself during replay
-     * (allowed per spec) we still finish correctly. */
+    /* Copy cmds locally: list may delete itself during replay (spec). */
     const uint8_t *cmds = L->cmds;
     size_t n = L->cmds_size;
     sg_replay_stream(c, cmds, n);
@@ -216,8 +201,7 @@ void glCallList(GLuint list) {
     }
 }
 
-/* Decode per-element index to list id with big-endian packing for
- * GL_{2,3,4}_BYTES. */
+/* GL_{2,3,4}_BYTES: big-endian packing per spec. */
 static GLuint sg_call_lists_index(GLenum type, const void *lists, GLsizei i) {
     const uint8_t *p = (const uint8_t*)lists;
     switch (type) {
@@ -255,7 +239,6 @@ void glCallLists(GLsizei n, GLenum type, const GLvoid *lists) {
     size_t esz = sg_call_lists_elem_size(type);
     if (esz == 0) { sg_set_error(GL_INVALID_ENUM); return; }
     if (c->dlist_recording) {
-        /* Deep-copy the index stream into the recording. */
         uint32_t un = (uint32_t)n; uint32_t ut = (uint32_t)type;
         sg_dlist_emit(c, SG_OP_CALL_LISTS, NULL, 0);
         sg_dlist_append(c, &un, sizeof(un));
@@ -274,8 +257,6 @@ void glCallLists(GLsizei n, GLenum type, const GLvoid *lists) {
         sg_dlist_replay(c, c->dlist_base + idx);
     }
 }
-
-/* ---- The replay dispatch table ------------------------------------------ */
 
 static void sg_replay_stream(softgl_ctx *c, const uint8_t *cmds, size_t size) {
     sg_rd R = { cmds, cmds + size };
@@ -520,7 +501,7 @@ static void sg_replay_stream(softgl_ctx *c, const uint8_t *cmds, size_t size) {
             sg_rd_read(&R, &a, sizeof(a));
             const void *indices;
             if (c->element_buffer_binding) {
-                /* EBO bound at replay → original offset is used. */
+                /* EBO bound at replay → use original offset. */
                 indices = (const void*)a.ptr_or_off;
                 if (a.has_copy) sg_rd_peek(&R, a.copy_bytes); /* skip copy */
             } else if (a.has_copy) {
@@ -638,8 +619,7 @@ static void sg_replay_stream(softgl_ctx *c, const uint8_t *cmds, size_t size) {
             _sg_raster_pos_real(v[0], v[1], v[2], v[3]); break; }
 
         default:
-            /* Unknown op — abort replay gracefully. */
-            return;
+            return;   /* unknown op: abort replay */
         }
     }
 }

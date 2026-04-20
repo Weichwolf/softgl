@@ -30,12 +30,25 @@ zwischen Phasen.
 
 ## Architektur
 
+- **Ein Rasterizer.** `rasterizer.c::sg_raster_triangle`. Pineda
+  Edge-Functions in 16.8 Fixed-Point (i64-Akku), 2×2-Quad SIMD via SSE4.1 /
+  `wasm_simd128`. Per-Lane scalar Fallback `sg_shade_pixel` greift nur bei
+  Stencil / Polygon-Stipple / Color-Logic-Op / Occlusion-Queries (state,
+  das per-pixel serialisiert werden muss). Der alte parallele "float-Rasterizer"
+  ist entfernt — Mesa llvmpipe via `harness_wgl.c` bleibt alleinige Test-Referenz.
+- **Early-Z** aktiv wenn `depth_test && !alpha_test`: Depth-Test vor Attribute-
+  Lerp / Texture-Sample / Fog, Depth-Write deferiert bis post-scissor.
+- **Packed 2-Row 64-Bit FB I/O:** Depth-Load, Blend-Dst-Load und Color-Write
+  laufen über `_mm_loadl_epi64 + _mm_unpacklo_epi64 + _mm_shuffle_epi8`
+  (bzw. WASM-Äquivalente).
 - **AoS, 16-Byte-aligned:** `sg_vert` mit `vec4`-Feldern für clip/ndc/color/normal/eye
-  und `uv[SG_MAX_TEX_UNITS]`. SIMD-ready für spätere 128-Bit-Loads.
-- **Skalarer Per-Pixel-Rasterizer** im ersten Durchstich; bbox-getilte Traversal mit
-  Edge-Function-Akkumulator, so strukturiert dass 4-breite SIMD trivial nachrüstbar.
+  und `uv[SG_MAX_TEX_UNITS]`.
 - **Framebuffer:** getrennte RGBA8-Color- und f32-Depth-Planes, row 0 = bottom
   (GL-Konvention).
+- **Fragment-Write-Pfad:** `fragment_write.c::sg_write_fragment` — generischer
+  Per-Pixel-Pfad (Alpha/Stencil/Depth/LogicOp/Blend/ColorMask/OcclusionQuery)
+  für alles, was der SIMD-Quad nicht vektorisiert. Genutzt von Lines, Points,
+  glDrawPixels, `sg_shade_pixel`, rare-blend-Fallback.
 - **Immediate Mode:** akkumuliert vertices in `ctx->imm_buf` mit dynamischem Wachstum,
   dispatched am `glEnd` an dieselbe Pipeline wie `glDrawArrays`.
 - **Clipping:** Clip-Space vor Perspective Divide gegen 6 Planes, Fan-Triangulation.
@@ -46,11 +59,11 @@ zwischen Phasen.
 libsoftgl/
   include/GL/softgl.h   # Subset-Header, API-kompatibel zu echtem GL
   src/*.c               # state, matrix, buffers, texture, pipeline, clip,
-                        # rasterizer, fragment, framebuffer, lighting, api,
-                        # immediate, ...
+                        # rasterizer, fragment_write, fragment (sampler),
+                        # framebuffer, lighting, api, immediate, ...
 tests/
   harness/*.c           # harness_softgl, harness_wgl, compare, ppm_write
-  cases/test_001..200_*.c   # 200 Tests (Ziel), aufsteigende Komplexität
+  cases/test_001..216_*.c   # 216 Tests, aufsteigende Komplexität
 wasm/
   CMakeLists.txt + dispatch.c.in    # Emscripten-Build
   index.html, main.js, serve.sh     # Browser-Runner, 3 s/Test, infinite loop
@@ -77,6 +90,9 @@ Mesa standardmäßig D3D12 (nicht-deterministisch).
 **Toleranz-Modell** (`tests/harness/compare.c`): Pixel mit Channel-Delta > N zählen als
 "bad", Test passt wenn `bad <= max_bad`. Raster-Tests: ~2 % Framebuffer-Budget
 (Fill-Rule-Diff zu llvmpipe unvermeidbar). Clear-Tests: `max_delta=1, max_bad=w*h`.
+
+**Test-Form:** pro Case je `run_ref` (Mesa llvmpipe), `run_sgl` (unsere Impl),
+`compare` (Mesa vs softgl). 216 Cases × 3 Phasen = 648 Tests.
 
 **Tests sind aspekt-korrekt für 640×360.** Jeder Test setzt entweder `aspect =
 (float)w/(float)h` in seine `glOrtho`/`glFrustum`-Bounds, oder fügt `glScalef(aspect,

@@ -195,28 +195,25 @@
       tags.push(Mod.ccall('sg_bench_slot_tag', 'string', ['number'], [s]));
     }
     const log = (s) => { benchOut.textContent += s + '\n'; benchOut.scrollTop = benchOut.scrollHeight; };
-    log(`# FP-6 WASM benchmark @ ${W}x${H} — SIMD=${simdOK}`);
+    log(`# scenes WASM benchmark @ ${W}x${H} — SIMD=${simdOK}`);
     log(`# userAgent: ${navigator.userAgent}`);
-    log(`# 3 runs per (scene, backend); min reported.`);
+    log(`# 3 runs per scene; min reported.`);
     log('');
 
     const iters = 20;
     const runs  = 3;
     for (let s = 0; s < slotCount; s++) {
       const tag = tags[s];
-      for (const backend of [0, 1]) {
-        const name = backend === 0 ? 'float' : 'fixed';
-        let best = Infinity;
-        for (let r = 0; r < runs; r++) {
-          await new Promise(res => setTimeout(res, 0));
-          const ms = Mod.ccall('sg_bench_run_slot', 'number',
-                               ['number','number','number'],
-                               [s, iters, backend]);
-          if (ms < best) best = ms;
-        }
-        const fps = best > 0 ? (1000 / best) : 0;
-        log(`scene=${tag.padEnd(10)} backend=${name.padEnd(5)} ms=${best.toFixed(3)} fps=${fps.toFixed(1)}`);
+      let best = Infinity;
+      for (let r = 0; r < runs; r++) {
+        await new Promise(res => setTimeout(res, 0));
+        const ms = Mod.ccall('sg_bench_run_slot', 'number',
+                             ['number','number','number'],
+                             [s, iters, 0]);   /* backend arg ignored (fp-only) */
+        if (ms < best) best = ms;
       }
+      const fps = best > 0 ? (1000 / best) : 0;
+      log(`scene=${tag.padEnd(10)} ms=${best.toFixed(3)} fps=${fps.toFixed(1)}`);
     }
     log('');
     log('# done. click "Tank" or "Tests" to resume.');

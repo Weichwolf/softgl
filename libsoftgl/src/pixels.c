@@ -4,26 +4,11 @@
 #include <string.h>
 #include <stdlib.h>
 
-/* ==================================================================
- * Phase 7: Pixel transfer.
- *
- *   glDrawPixels  — unpack a client image into the framebuffer at the
- *                   current raster position; goes through the fragment
- *                   pipeline (scissor/alpha/stencil/depth/blend/mask).
- *   glReadPixels  — pack a framebuffer rectangle into client memory.
- *   glCopyPixels  — read a framebuffer rectangle and draw it at the
- *                   current raster position; with temp-buffer to handle
- *                   overlap correctly.
- *   glPixelStore  — pack/unpack alignment, row length, skip rows/pixels.
- *   glPixelZoom   — NEAREST pixel scaling with optional mirroring.
- *   glRasterPos*  — run the full vertex-transform pipeline to fix a 2D
- *                   window-space raster position.
- * ================================================================== */
+/* Pixel transfer: DrawPixels / ReadPixels / CopyPixels (overlap-safe
+ * via temp) + PixelStore / PixelZoom / RasterPos. */
 
 extern void sg_write_fragment(softgl_ctx *c, int x, int y, float z,
                               float r, float g, float b, float a);
-
-/* ---- Format / type helpers -------------------------------------------- */
 
 static int sg_fmt_components(GLenum format) {
     switch (format) {
@@ -51,23 +36,19 @@ static int sg_type_size(GLenum type) {
     }
 }
 
-/* Align n up to the next multiple of a (power-of-two). */
 static size_t sg_align_up(size_t n, size_t a) {
     if (a <= 1) return n;
     return (n + a - 1) & ~(a - 1);
 }
 
-/* Row stride in bytes for an image of `width` pixels at `pixel_size` bytes each,
- * honouring row_length (0 = use width) and alignment. */
+/* Row stride bytes: honours row_length (0=width) + alignment. */
 static size_t sg_row_stride(int width, int pixel_size, GLint row_length, GLint alignment) {
     int w = (row_length > 0) ? row_length : width;
     size_t row_bytes = (size_t)w * (size_t)pixel_size;
     return sg_align_up(row_bytes, (size_t)(alignment > 0 ? alignment : 1));
 }
 
-/* Read one component from `p` of `type`. For integer color types we return the
- * normalized [0,1] or [-1,1] value; for depth the native float; for stencil the
- * integer value. The caller decides which interpretation to use. */
+/* int -> [0,1] or [-1,1], float native. */
 static float sg_read_component_norm(const void *p, GLenum type) {
     switch (type) {
         case GL_UNSIGNED_BYTE:  return *(const uint8_t*)p * (1.0f / 255.0f);
@@ -90,7 +71,6 @@ static float sg_read_component_norm(const void *p, GLenum type) {
     }
 }
 
-/* For stencil/integer reads: raw uint32 regardless of signedness/size. */
 static uint32_t sg_read_component_int(const void *p, GLenum type) {
     switch (type) {
         case GL_UNSIGNED_BYTE:  return *(const uint8_t*)p;
@@ -104,7 +84,6 @@ static uint32_t sg_read_component_int(const void *p, GLenum type) {
     }
 }
 
-/* Write a normalized color component. */
 static void sg_write_component_norm(void *p, GLenum type, float v) {
     if (v < 0.f) v = 0.f; else if (v > 1.f) v = 1.f;
     switch (type) {
@@ -132,8 +111,6 @@ static void sg_write_component_int(void *p, GLenum type, uint32_t v) {
     }
 }
 
-/* Unpack one source pixel at (i, j) into a canonical RGBA tuple (+ optional
- * depth / stencil integer). For color formats the rgba is [0..1] float. */
 typedef struct {
     float    rgba[4];
     float    depth;
@@ -152,7 +129,6 @@ static void sg_unpack_pixel(sg_unpacked *out, const uint8_t *row, int i,
     out->stencil = 0;
 
     if (format == GL_DEPTH_COMPONENT) {
-        /* Depth: float-normalized value in [0,1]. */
         if (type == GL_FLOAT) out->depth = *(const float*)p;
         else                  out->depth = sg_read_component_norm(p, type);
         return;
@@ -162,7 +138,6 @@ static void sg_unpack_pixel(sg_unpacked *out, const uint8_t *row, int i,
         return;
     }
 
-    /* Color path: read components, expand to RGBA. */
     float comp[4] = {0.f, 0.f, 0.f, 1.f};
     for (int k = 0; k < ncomp; k++) {
         comp[k] = sg_read_component_norm(p + (size_t)k * (size_t)tsz, type);
@@ -187,8 +162,6 @@ static void sg_unpack_pixel(sg_unpacked *out, const uint8_t *row, int i,
     }
 }
 
-/* Pack one framebuffer pixel (RGBA8 src + float depth + u8 stencil) into the
- * destination at (i, j) in the given row. */
 static void sg_pack_pixel(const softgl_ctx *c, int fbx, int fby,
                           uint8_t *row, int i,
                           GLenum format, GLenum type) {
@@ -209,7 +182,6 @@ static void sg_pack_pixel(const softgl_ctx *c, int fbx, int fby,
         return;
     }
 
-    /* Color path. */
     const uint8_t *src = c->fb.color + idx * 4;
     float rgba[4] = {
         src[0] * (1.0f / 255.0f),
@@ -238,12 +210,6 @@ static void sg_pack_pixel(const softgl_ctx *c, int fbx, int fby,
     }
 }
 
-/* Direct framebuffer write for color-formatted drawpixels, bypassing the
- * fragment pipeline. NOT used for normal glDrawPixels; kept for sg_copy_pixels
- * to write a color block that already went through the pipeline at read-time. */
-
-/* ---- glPixelStore ------------------------------------------------------ */
-
 static int sg_pixel_store_field(softgl_ctx *c, GLenum pname, GLint **outp) {
     switch (pname) {
         case GL_PACK_ALIGNMENT:   *outp = &c->pack.alignment; return 1;
@@ -266,7 +232,6 @@ void _sg_pixel_store_i_real(GLenum pname, GLint param) {
     softgl_ctx *c = sg_current(); if (!c) return;
     GLint *dst = NULL;
     if (!sg_pixel_store_field(c, pname, &dst)) { sg_set_error(GL_INVALID_ENUM); return; }
-    /* Alignment must be 1,2,4,8 per spec. */
     if (pname == GL_PACK_ALIGNMENT || pname == GL_UNPACK_ALIGNMENT) {
         if (param != 1 && param != 2 && param != 4 && param != 8) {
             sg_set_error(GL_INVALID_VALUE); return;
@@ -280,7 +245,7 @@ void _sg_pixel_store_i_real(GLenum pname, GLint param) {
 }
 
 void _sg_pixel_store_f_real(GLenum pname, GLfloat param) {
-    /* Boolean pnames accept any non-zero as true; integer pnames round. */
+    /* Booleans: non-zero = true; integers round. */
     GLint p;
     if (pname == GL_PACK_LSB_FIRST || pname == GL_UNPACK_LSB_FIRST ||
         pname == GL_PACK_SWAP_BYTES || pname == GL_UNPACK_SWAP_BYTES) {
@@ -293,9 +258,8 @@ void _sg_pixel_store_f_real(GLenum pname, GLfloat param) {
 
 void glPixelStorei(GLenum pname, GLint param) {
     softgl_ctx *c = sg_current(); if (!c) return;
+    /* Spec: pixel-store changes execute immediately, never recorded. */
     if (c->dlist_recording) {
-        /* Spec: pixel-store state changes are NOT compiled into display lists;
-         * they execute immediately. Match that behaviour. */
         _sg_pixel_store_i_real(pname, param);
         return;
     }
@@ -310,8 +274,6 @@ void glPixelStoref(GLenum pname, GLfloat param) {
     }
     _sg_pixel_store_f_real(pname, param);
 }
-
-/* ---- glPixelZoom ------------------------------------------------------- */
 
 void _sg_pixel_zoom_real(GLfloat xf, GLfloat yf) {
     softgl_ctx *c = sg_current(); if (!c) return;
@@ -328,22 +290,17 @@ void glPixelZoom(GLfloat xf, GLfloat yf) {
     } else _sg_pixel_zoom_real(xf, yf);
 }
 
-/* ---- glRasterPos ------------------------------------------------------- */
-
-/* Transform (x,y,z,w) through MV * P, clip-test, perspective-divide, then
- * viewport to window coords. Sets raster_pos_valid accordingly. */
+/* MV*P, clip test, perspective divide, viewport. Sets raster_pos_valid. */
 void _sg_raster_pos_real(float x, float y, float z, float w) {
     softgl_ctx *c = sg_current(); if (!c) return;
     sg_vec4 obj = { x, y, z, w };
     sg_vec4 eye; sg_mat4_mul_vec4(&eye, &c->mv_stack[c->mv_top], &obj);
     sg_vec4 clip; sg_mat4_mul_vec4(&clip, &c->pr_stack[c->pr_top], &eye);
 
-    /* Frustum test in clip space: |x|,|y|,|z| <= w. */
     float aw = fabsf(clip.w);
     int valid = (fabsf(clip.x) <= aw) && (fabsf(clip.y) <= aw) && (fabsf(clip.z) <= aw);
     c->raster_pos_valid = valid ? 1 : 0;
 
-    /* Perspective divide + viewport. */
     float iw = (clip.w != 0.f) ? (1.0f / clip.w) : 1e20f;
     float nx = clip.x * iw, ny = clip.y * iw, nz = clip.z * iw;
     float vpx = (float)c->viewport[0];
@@ -355,7 +312,7 @@ void _sg_raster_pos_real(float x, float y, float z, float w) {
     c->raster_pos[2] = (nz * 0.5f + 0.5f);
     c->raster_pos[3] = clip.w;
 
-    /* Snapshot current color + tex0 at this instant, per GL spec. */
+    /* Spec: snapshot current color + tex0. */
     c->raster_color[0] = c->current_color[0];
     c->raster_color[1] = c->current_color[1];
     c->raster_color[2] = c->current_color[2];
@@ -400,16 +357,11 @@ void glRasterPos4iv(const GLint *v)    { sg_raster_pos_wrapper((float)v[0],(floa
 void glRasterPos4sv(const GLshort *v)  { sg_raster_pos_wrapper((float)v[0],(float)v[1],(float)v[2],(float)v[3]); }
 void glRasterPos4dv(const GLdouble *v) { sg_raster_pos_wrapper((float)v[0],(float)v[1],(float)v[2],(float)v[3]); }
 
-/* ---- glDrawPixels ------------------------------------------------------ */
-
-/* Draw one source pixel at source (i, j) into the destination rectangle that
- * corresponds to it under the current pixel zoom. Uses sg_write_fragment so the
- * whole fragment pipeline applies. */
+/* Stamp src pixel (i,j) into zoom-mapped dest rect via fragment pipeline. */
 static void sg_drawpixel_color(softgl_ctx *c, int i, int j, int src_w, int src_h,
                                const sg_unpacked *up, int rx, int ry) {
     float zx = c->pixel_zoom_x;
     float zy = c->pixel_zoom_y;
-    /* Destination rectangle corners in continuous space. */
     float dx0 = (float)rx + (float)i     * zx;
     float dx1 = (float)rx + (float)(i+1) * zx;
     float dy0 = (float)ry + (float)j     * zy;
@@ -418,7 +370,6 @@ static void sg_drawpixel_color(softgl_ctx *c, int i, int j, int src_w, int src_h
     if (dy1 < dy0) { float t = dy0; dy0 = dy1; dy1 = t; }
     int ix0 = (int)floorf(dx0), ix1 = (int)ceilf(dx1);
     int iy0 = (int)floorf(dy0), iy1 = (int)ceilf(dy1);
-    /* Raster-Position-Z → depth (0..1 window). */
     float z = c->raster_pos[2];
     if (z < 0.f) z = 0.f; else if (z > 1.f) z = 1.f;
     for (int y = iy0; y < iy1; y++) {
@@ -427,12 +378,10 @@ static void sg_drawpixel_color(softgl_ctx *c, int i, int j, int src_w, int src_h
                               up->rgba[0], up->rgba[1], up->rgba[2], up->rgba[3]);
         }
     }
-    /* Avoid unused warnings in non-zoom path. */
     (void)src_w; (void)src_h;
 }
 
-/* Depth / stencil writes bypass the color fragment pipeline — they hit the
- * corresponding aux buffers directly, honouring scissor. */
+/* Depth/stencil writes bypass color pipeline; honour scissor only. */
 static void sg_drawpixel_depth(softgl_ctx *c, int i, int j, float z_val,
                                int rx, int ry) {
     float zx = c->pixel_zoom_x;
@@ -537,8 +486,6 @@ void glDrawPixels(GLsizei w, GLsizei h, GLenum format, GLenum type, const void *
     } else _sg_draw_pixels_real(w, h, format, type, pixels);
 }
 
-/* ---- glReadPixels ------------------------------------------------------ */
-
 void _sg_read_pixels_real(GLint x, GLint y, GLsizei width, GLsizei height,
                           GLenum format, GLenum type, void *pixels) {
     softgl_ctx *c = sg_current(); if (!c) return;
@@ -560,7 +507,6 @@ void _sg_read_pixels_real(GLint x, GLint y, GLsizei width, GLsizei height,
             int fbx = x + i;
             int fby = y + j;
             if (fbx < 0 || fby < 0 || fbx >= c->fb.w || fby >= c->fb.h) {
-                /* Out-of-range source: fill zeros. */
                 memset(row + (size_t)i * (size_t)pixel_size, 0, (size_t)pixel_size);
                 continue;
             }
@@ -571,12 +517,9 @@ void _sg_read_pixels_real(GLint x, GLint y, GLsizei width, GLsizei height,
 
 void glReadPixels(GLint x, GLint y, GLsizei w, GLsizei h,
                   GLenum format, GLenum type, void *pixels) {
-    /* glReadPixels is a query-like call; never compiled into display lists
-     * (spec: ReadPixels is not compiled, executes immediately). */
+    /* Spec: never compiled into display lists. */
     _sg_read_pixels_real(x, y, w, h, format, type, pixels);
 }
-
-/* ---- glCopyPixels ------------------------------------------------------ */
 
 void _sg_copy_pixels_real(GLint x, GLint y, GLsizei width, GLsizei height, GLenum type) {
     softgl_ctx *c = sg_current(); if (!c) return;
@@ -593,7 +536,7 @@ void _sg_copy_pixels_real(GLint x, GLint y, GLsizei width, GLsizei height, GLenu
         size_t pixels = (size_t)width * (size_t)height;
         uint8_t *tmp = (uint8_t*)malloc(pixels * 4);
         if (!tmp) { sg_set_error(GL_OUT_OF_MEMORY); return; }
-        /* Read into a linear RGBA8 buffer — same layout the FB uses. */
+        /* Linear RGBA8 matching fb layout → overlap-safe. */
         for (int j = 0; j < height; j++) {
             for (int i = 0; i < width; i++) {
                 int sx = x + i, sy = y + j;
@@ -606,7 +549,7 @@ void _sg_copy_pixels_real(GLint x, GLint y, GLsizei width, GLsizei height, GLenu
                 }
             }
         }
-        /* Write through the fragment pipeline so blend/depth/alpha/mask apply. */
+        /* Pipeline write so blend/depth/alpha/mask apply. */
         float z = c->raster_pos[2];
         if (z < 0.f) z = 0.f; else if (z > 1.f) z = 1.f;
         for (int j = 0; j < height; j++) {

@@ -2,14 +2,12 @@
  * (which already links in every test_*.c case) to time any scene by index.
  *
  * Exported:
- *   sg_bench_run_idx(int test_idx, int iters, int backend) -> double ms/frame
+ *   sg_bench_run_idx(int test_idx, int iters, int _ignored) -> double ms/frame
  *   sg_bench_scene_table(int slot) -> int test_idx  (-1 end)
- *   sg_bench_scene_label(int slot) -> const char* (FP-6 short tag)
+ *   sg_bench_scene_label(int slot) -> const char* (short tag)
  *
- * The scene table is hand-picked to match the native bench: showcase,
- * shadow, particles, city, sphere_lit. Additional slots expose the
- * synthetic fill-dominated scenes which exist only as test_* cases —
- * those aren't in the native list; JS side uses the showcase-ish set.
+ * The `backend` argument is retained for ABI stability but ignored (the
+ * float backend was removed in favour of the SIMD fp pipeline).
  *
  * Timing uses emscripten_get_now() which is performance.now() in the
  * browser. Accuracy is typically ~5 us, enough for our ms-scale numbers.
@@ -76,13 +74,12 @@ int sg_bench_slot_test_index(int slot) {
     return -1;
 }
 
-/* Core timing loop. backend: 0=float, 1=fixed. Iters >= 1.
+/* Core timing loop. `backend` is ignored (kept for ABI stability).
  * Creates one context, runs warm-up, then `iters` timed frames. */
 double sg_bench_run_idx(int test_idx, int iters, int backend) {
+    (void)backend;
     if (iters <= 0) return -1.0;
     if (test_idx < 0 || test_idx >= sg_test_count()) return -1.0;
-    softgl_set_backend(backend == 1 ? SOFTGL_BACKEND_FIXED
-                                    : SOFTGL_BACKEND_SCALAR_FLOAT);
     softgl_ctx *c = softgl_create(W, H);
     if (!c) return -1.0;
     softgl_make_current(c);
