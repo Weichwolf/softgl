@@ -5,6 +5,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#if !defined(SG_DISABLE_SIMD) && defined(__SSE4_1__)
+  #include <smmintrin.h>
+  #define SG_PIPELINE_SIMD 1
+#else
+  #define SG_PIPELINE_SIMD 0
+#endif
+
 /* Phase FP-0: backend dispatch scaffolding.
  *
  * Until Phase FP-1..6 implement the fixed-point rasterizer, the FIXED
@@ -110,11 +117,20 @@ static void sg_apply_lighting_side(softgl_ctx *c, const sg_vec4 *eye_pos, const 
             }
         }
     }
-    /* Emission + scene-ambient × material-ambient: applied once per vertex,
-     * independent of the number of enabled lights. */
+    /* Accumulator: lanes = (r, g, b, _). SIMD-accumulating means the per-lane
+     * sequence of ADDs/MULs is bit-identical to the scalar sequence, because
+     * every channel's operation chain is independent and we preserve it per
+     * lane. Lane 3 is intentionally left as garbage — we overwrite with 'a'
+     * at the end. */
+#if SG_PIPELINE_SIMD
+    __m128 acc = _mm_add_ps(_mm_loadu_ps(mat.emission),
+                            _mm_mul_ps(_mm_loadu_ps(mat.ambient),
+                                       _mm_loadu_ps(c->light_model_ambient)));
+#else
     float r = mat.emission[0] + mat.ambient[0] * c->light_model_ambient[0];
     float g = mat.emission[1] + mat.ambient[1] * c->light_model_ambient[1];
     float b = mat.emission[2] + mat.ambient[2] * c->light_model_ambient[2];
+#endif
     float a = mat.diffuse[3];
 
     float nx = eye_n->x, ny = eye_n->y, nz = eye_n->z;
@@ -137,9 +153,14 @@ static void sg_apply_lighting_side(softgl_ctx *c, const sg_vec4 *eye_pos, const 
         const sg_light *L = &c->lights[i];
         if (!L->enabled) continue;
         /* Ambient always contributes. */
+#if SG_PIPELINE_SIMD
+        acc = _mm_add_ps(acc, _mm_mul_ps(_mm_loadu_ps(mat.ambient),
+                                         _mm_loadu_ps(L->ambient)));
+#else
         r += mat.ambient[0] * L->ambient[0];
         g += mat.ambient[1] * L->ambient[1];
         b += mat.ambient[2] * L->ambient[2];
+#endif
 
         float Lx, Ly, Lz;   /* unit vector from fragment to light */
         float att = 1.0f;
@@ -158,9 +179,24 @@ static void sg_apply_lighting_side(softgl_ctx *c, const sg_vec4 *eye_pos, const 
         }
         float ndotl = nx*Lx + ny*Ly + nz*Lz;
         if (ndotl < 0.f) ndotl = 0.f;
+#if SG_PIPELINE_SIMD
+        {
+            /* Scalar-equivalent per lane:
+             *   r += mat.diffuse[0] * L->diffuse[0] * ndotl * att;
+             * We pack ndotl*att into a broadcast and multiply.
+             * ((mat.diff * L.diff) * ndotl) * att — group same as scalar. */
+            __m128 md = _mm_loadu_ps(mat.diffuse);
+            __m128 ld = _mm_loadu_ps(L->diffuse);
+            __m128 nd = _mm_set1_ps(ndotl);
+            __m128 at = _mm_set1_ps(att);
+            __m128 t  = _mm_mul_ps(_mm_mul_ps(_mm_mul_ps(md, ld), nd), at);
+            acc = _mm_add_ps(acc, t);
+        }
+#else
         r += mat.diffuse[0] * L->diffuse[0] * ndotl * att;
         g += mat.diffuse[1] * L->diffuse[1] * ndotl * att;
         b += mat.diffuse[2] * L->diffuse[2] * ndotl * att;
+#endif
 
         if (ndotl > 0.f && mat.shininess > 0.f) {
             /* Blinn: half vector between L and V. */
@@ -170,13 +206,26 @@ static void sg_apply_lighting_side(softgl_ctx *c, const sg_vec4 *eye_pos, const 
             float ndoth = nx*hx + ny*hy + nz*hz;
             if (ndoth > 0.f) {
                 float spec = powf(ndoth, mat.shininess) * att;
+#if SG_PIPELINE_SIMD
+                __m128 ms = _mm_loadu_ps(mat.specular);
+                __m128 ls = _mm_loadu_ps(L->specular);
+                __m128 sp = _mm_set1_ps(spec);
+                acc = _mm_add_ps(acc, _mm_mul_ps(_mm_mul_ps(ms, ls), sp));
+#else
                 r += mat.specular[0] * L->specular[0] * spec;
                 g += mat.specular[1] * L->specular[1] * spec;
                 b += mat.specular[2] * L->specular[2] * spec;
+#endif
             }
         }
     }
+#if SG_PIPELINE_SIMD
+    SG_ALIGN16 float tmp[4];
+    _mm_store_ps(tmp, acc);
+    out[0] = tmp[0]; out[1] = tmp[1]; out[2] = tmp[2]; out[3] = a;
+#else
     out[0] = r; out[1] = g; out[2] = b; out[3] = a;
+#endif
 }
 
 /* Back-compat wrapper: front-face lighting only. Retained for call sites
@@ -187,6 +236,14 @@ static void sg_apply_lighting(softgl_ctx *c, const sg_vec4 *eye_pos, const sg_ve
 }
 
 /* ---- Per-vertex processing ---- */
+
+/* Normal matrix cache: the inverse-transpose of MV's upper-3x3. MV does not
+ * change between vertices of a draw call (the GL spec disallows matrix
+ * mutation between glBegin/glEnd, and glDrawArrays/glDrawElements is atomic),
+ * so we compute it once per draw. Invalidated by sg_vcache_clear() and
+ * (defensively) by any routine that touches sg_mat4 stack tops. */
+static SG_ALIGN16 sg_mat4 sg_nm4;
+static int                sg_nm_valid = 0;
 
 static void sg_process_vertex(softgl_ctx *c, int index, sg_vert *out) {
     float pos[4]    = {0,0,0,1};
@@ -248,12 +305,15 @@ static void sg_process_vertex(softgl_ctx *c, int index, sg_vert *out) {
 
     /* Normals — for lighting, we want eye-space normal (inverse-transpose of upper MV). */
     if (c->lighting) {
-        float nm[9]; sg_mat4_normal_matrix(nm, &c->mv_stack[c->mv_top]);
-        /* nm is row-major: nm[i*3+j] = M^-T[i][j]. */
-        sg_vec4 en;
-        en.x = nm[0]*normal[0] + nm[1]*normal[1] + nm[2]*normal[2];
-        en.y = nm[3]*normal[0] + nm[4]*normal[1] + nm[5]*normal[2];
-        en.z = nm[6]*normal[0] + nm[7]*normal[1] + nm[8]*normal[2];
+        /* Use cached normal matrix (per-draw-call, invalidated at top of
+         * _sg_draw_*_real via sg_vcache_clear which also clears sg_nm_valid). */
+        if (!sg_nm_valid) {
+            float nm9[9]; sg_mat4_normal_matrix(nm9, &c->mv_stack[c->mv_top]);
+            sg_mat4_from_normal_matrix(&sg_nm4, nm9);
+            sg_nm_valid = 1;
+        }
+        SG_ALIGN16 sg_vec4 n4 = { normal[0], normal[1], normal[2], 0.f };
+        sg_vec4 en; sg_mat4_mul_vec4(&en, &sg_nm4, &n4);
         en.w = 0.f;
         out->normal = en;
         float lit[4];
@@ -365,9 +425,38 @@ static void sg_finish_triangle(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert 
 void sg_process_triangle_pub(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert *v2);
 
 static void sg_process_triangle_frustum(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert *v2) {
-    /* Trivial accept: all three vertices pass all six frustum planes. */
-    int all_in = 1;
+    /* Trivial accept: all three vertices pass all six frustum planes.
+     * Per-vertex we compute the six distances as:
+     *   d0 = x + w, d1 = -x + w, d2 = y + w, d3 = -y + w
+     *   d4 = z + w, d5 = -z + w
+     * A vertex is "in" iff all six are >= 0. The triangle is trivially
+     * accepted iff all three vertices are in. We OR the per-lane sign bits
+     * across the 3 vertices; if no sign bit set in any plane, all_in. */
     const sg_vert *verts[3] = { v0, v1, v2 };
+    int all_in = 1;
+#if SG_PIPELINE_SIMD
+    __m128 any_out_lo = _mm_setzero_ps();   /* running OR of cmplt masks */
+    __m128 any_out_hi = _mm_setzero_ps();
+    __m128 zero = _mm_setzero_ps();
+    for (int i = 0; i < 3; i++) {
+        __m128 V = _mm_load_ps(&verts[i]->clip.x);                /* x, y, z, w */
+        __m128 Vw = _mm_shuffle_ps(V, V, _MM_SHUFFLE(3,3,3,3));   /* w, w, w, w */
+        /* lanes: (x, y, z, 0) */
+        __m128 Vxyz = _mm_blend_ps(V, zero, 0x8);
+        __m128 d_plus  = _mm_add_ps(Vxyz, Vw);                    /* (x+w, y+w, z+w, w) */
+        __m128 d_minus = _mm_sub_ps(Vw, Vxyz);                    /* (-x+w, -y+w, -z+w, w) */
+        __m128 d_lo = _mm_unpacklo_ps(d_plus, d_minus);           /* (d0=x+w, d1=-x+w, d2=y+w, d3=-y+w) */
+        __m128 d_hi = _mm_unpackhi_ps(d_plus, d_minus);           /* (d4=z+w, d5=-z+w, w, w) */
+        /* lane-wise "d < 0" test -> full-lane mask (0xFFFFFFFF if outside) */
+        __m128 out_lo = _mm_cmplt_ps(d_lo, zero);
+        __m128 out_hi = _mm_cmplt_ps(d_hi, zero);
+        any_out_lo = _mm_or_ps(any_out_lo, out_lo);
+        any_out_hi = _mm_or_ps(any_out_hi, out_hi);
+    }
+    int m_lo = _mm_movemask_ps(any_out_lo);          /* 4 bits: d0,d1,d2,d3 */
+    int m_hi = _mm_movemask_ps(any_out_hi) & 0x3;    /* lanes 0,1 = d4,d5 (lanes 2,3 are w>=0 trash) */
+    if ((m_lo | m_hi) != 0) all_in = 0;
+#else
     for (int p = 0; p < 6 && all_in; p++) {
         for (int i = 0; i < 3; i++) {
             float d = 0.f;
@@ -383,6 +472,7 @@ static void sg_process_triangle_frustum(softgl_ctx *c, sg_vert *v0, sg_vert *v1,
             if (d < 0.f) { all_in = 0; break; }
         }
     }
+#endif
     if (all_in) {
         sg_finish_triangle(c, v0, v1, v2);
         return;
@@ -452,6 +542,7 @@ static int                 sg_vcache_tail;
 SG_INLINE void sg_vcache_clear(void) {
     for (int i = 0; i < SG_VCACHE_SIZE; i++) sg_vcache_keys[i] = SG_VCACHE_INVALID;
     sg_vcache_tail = 0;
+    sg_nm_valid = 0;
 }
 
 SG_INLINE void sg_vcache_fetch(softgl_ctx *c, uint32_t idx, sg_vert *out) {
@@ -581,11 +672,10 @@ void sg_build_vertex_imm(softgl_ctx *c, float px, float py, float pz, float pw, 
     out->clip = clip;
 
     if (c->lighting) {
-        float nm[9]; sg_mat4_normal_matrix(nm, &c->mv_stack[c->mv_top]);
-        sg_vec4 en;
-        en.x = nm[0]*normal[0] + nm[1]*normal[1] + nm[2]*normal[2];
-        en.y = nm[3]*normal[0] + nm[4]*normal[1] + nm[5]*normal[2];
-        en.z = nm[6]*normal[0] + nm[7]*normal[1] + nm[8]*normal[2];
+        float nm9[9]; sg_mat4_normal_matrix(nm9, &c->mv_stack[c->mv_top]);
+        SG_ALIGN16 sg_mat4 nm4; sg_mat4_from_normal_matrix(&nm4, nm9);
+        SG_ALIGN16 sg_vec4 n4 = { normal[0], normal[1], normal[2], 0.f };
+        sg_vec4 en; sg_mat4_mul_vec4(&en, &nm4, &n4);
         en.w = 0.f;
         out->normal = en;
         float lit[4];

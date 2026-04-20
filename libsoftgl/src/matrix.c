@@ -3,6 +3,13 @@
 #include <math.h>
 #include <string.h>
 
+#if !defined(SG_DISABLE_SIMD) && defined(__SSE4_1__)
+  #include <smmintrin.h>
+  #define SG_MATRIX_SIMD 1
+#else
+  #define SG_MATRIX_SIMD 0
+#endif
+
 /* Column-major 4x4, OpenGL convention: element at (row r, col c) is m[c*4 + r]. */
 
 static sg_mat4 *sg_top(softgl_ctx *c) {
@@ -41,11 +48,31 @@ void sg_mat4_mul(sg_mat4 * SG_RESTRICT out, const sg_mat4 * SG_RESTRICT a, const
 }
 
 void sg_mat4_mul_vec4(sg_vec4 * SG_RESTRICT out, const sg_mat4 * SG_RESTRICT m, const sg_vec4 * SG_RESTRICT v) {
+#if SG_MATRIX_SIMD
+    /* Column-broadcast Mat4 x Vec4: 4 MULs + 3 ADDs. sg_vec4 / sg_mat4 are
+     * both SG_ALIGN16, so aligned loads/stores are safe. Operation order
+     * col0*x + col1*y + col2*z + col3*w is IEEE-identical to the scalar
+     * per-row dot-products because each output lane sums the same four
+     * products in the same left-to-right order. */
+    __m128 r    = _mm_load_ps(&v->x);
+    __m128 col0 = _mm_load_ps(m->m + 0);
+    __m128 col1 = _mm_load_ps(m->m + 4);
+    __m128 col2 = _mm_load_ps(m->m + 8);
+    __m128 col3 = _mm_load_ps(m->m + 12);
+    __m128 x = _mm_shuffle_ps(r, r, _MM_SHUFFLE(0,0,0,0));
+    __m128 y = _mm_shuffle_ps(r, r, _MM_SHUFFLE(1,1,1,1));
+    __m128 z = _mm_shuffle_ps(r, r, _MM_SHUFFLE(2,2,2,2));
+    __m128 w = _mm_shuffle_ps(r, r, _MM_SHUFFLE(3,3,3,3));
+    __m128 res = _mm_add_ps(_mm_add_ps(_mm_mul_ps(col0, x), _mm_mul_ps(col1, y)),
+                            _mm_add_ps(_mm_mul_ps(col2, z), _mm_mul_ps(col3, w)));
+    _mm_store_ps(&out->x, res);
+#else
     float x = v->x, y = v->y, z = v->z, w = v->w;
     out->x = m->m[0]*x + m->m[4]*y + m->m[8]*z  + m->m[12]*w;
     out->y = m->m[1]*x + m->m[5]*y + m->m[9]*z  + m->m[13]*w;
     out->z = m->m[2]*x + m->m[6]*y + m->m[10]*z + m->m[14]*w;
     out->w = m->m[3]*x + m->m[7]*y + m->m[11]*z + m->m[15]*w;
+#endif
 }
 
 /* Full 4x4 inverse using cofactor expansion. Returns 0 if singular
@@ -117,6 +144,17 @@ void sg_mat4_normal_matrix(float out9[9], const sg_mat4 *m) {
     out9[0] = A * inv; out9[1] = B * inv; out9[2] = C * inv;
     out9[3] = D * inv; out9[4] = E * inv; out9[5] = F * inv;
     out9[6] = G * inv; out9[7] = H * inv; out9[8] = I * inv;
+}
+
+/* Build a 4x4 column-major matrix from a row-major 3x3 normal matrix.
+ * Output layout is compatible with sg_mat4_mul_vec4: element (row r, col c)
+ * of the 3x3 lives at out[c*4 + r]. Column 3 and row 3 are zero-padded so
+ * a vec4 (n.x, n.y, n.z, 0) yields (3x3 * n, 0) when multiplied. */
+void sg_mat4_from_normal_matrix(sg_mat4 *out, const float nm9[9]) {
+    out->m[0]  = nm9[0]; out->m[1]  = nm9[3]; out->m[2]  = nm9[6]; out->m[3]  = 0.f;
+    out->m[4]  = nm9[1]; out->m[5]  = nm9[4]; out->m[6]  = nm9[7]; out->m[7]  = 0.f;
+    out->m[8]  = nm9[2]; out->m[9]  = nm9[5]; out->m[10] = nm9[8]; out->m[11] = 0.f;
+    out->m[12] = 0.f;    out->m[13] = 0.f;    out->m[14] = 0.f;    out->m[15] = 0.f;
 }
 
 /* ==================  _real implementations  ================== */

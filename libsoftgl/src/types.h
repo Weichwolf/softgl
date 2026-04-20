@@ -412,6 +412,7 @@ void  sg_set_error(GLenum e);
 void sg_mat4_mul(sg_mat4 *out, const sg_mat4 *a, const sg_mat4 *b);
 void sg_mat4_mul_vec4(sg_vec4 *out, const sg_mat4 *m, const sg_vec4 *v);
 void sg_mat4_normal_matrix(float out9[9], const sg_mat4 *m);
+void sg_mat4_from_normal_matrix(sg_mat4 *out, const float nm9[9]);
 
 /* From buffers.c / texture.c */
 struct sg_buffer_s;
