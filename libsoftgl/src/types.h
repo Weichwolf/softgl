@@ -355,6 +355,10 @@ struct softgl_ctx {
     GLenum   fb_type;
     int      fb_overflow;
 
+    /* Parallel raster workers (sg_worker_pool*, opaque here to keep
+     * pthread out of the GL header fan-out). NULL = single-thread. */
+    void   *workers;
+
     /* Stipple */
     int     line_stipple_enable;
     int     line_stipple_factor;

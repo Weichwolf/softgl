@@ -1,5 +1,6 @@
 #include "types.h"
 #include "dlist.h"
+#include "workers.h"
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
@@ -518,6 +519,7 @@ void _sg_read_pixels_real(GLint x, GLint y, GLsizei width, GLsizei height,
 void glReadPixels(GLint x, GLint y, GLsizei w, GLsizei h,
                   GLenum format, GLenum type, void *pixels) {
     /* Spec: never compiled into display lists. */
+    softgl_ctx *c = sg_current(); if (c) sg_workers_flush(c);
     _sg_read_pixels_real(x, y, w, h, format, type, pixels);
 }
 

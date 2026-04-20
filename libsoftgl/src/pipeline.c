@@ -1,5 +1,6 @@
 #include "types.h"
 #include "dlist.h"
+#include "workers.h"
 #include <smmintrin.h>
 #include <math.h>
 #include <string.h>
@@ -320,7 +321,10 @@ static void sg_finish_triangle(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert 
     if (area2 < 0.f) {
         sg_vert *tmp = v1; v1 = v2; v2 = tmp;
     }
-    sg_raster_triangle(c, v0, v1, v2);
+    /* Route through the tile-worker pool: bins by X-bbox, defers raster
+     * until sg_workers_flush is called at a GL sync point. Falls through
+     * to a direct sg_raster_triangle_tile when the pool is absent. */
+    sg_workers_bin_tri(c, v0, v1, v2);
 }
 
 void sg_process_triangle_pub(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert *v2);
@@ -493,6 +497,7 @@ void _sg_draw_arrays_real(GLenum mode, GLint first, GLsizei count) {
             sg_process_point(c, &v);
         }
     }
+    sg_workers_flush(c);
 }
 
 void sg_process_triangle_pub(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert *v2) {
@@ -630,6 +635,7 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
             sg_process_point(c, &v);
         }
     }
+    sg_workers_flush(c);
 }
 
 void glDrawArrays(GLenum mode, GLint first, GLsizei count) {

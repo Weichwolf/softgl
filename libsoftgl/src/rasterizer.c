@@ -610,10 +610,15 @@ SG_INLINE void sg_shade_quad(softgl_ctx *c,
     }
 }
 
-void sg_raster_triangle(softgl_ctx *c,
-                           const sg_vert *v0,
-                           const sg_vert *v1,
-                           const sg_vert *v2) {
+/* Internal: rasterize v0,v1,v2 restricted to x in [tile_ix0, tile_ix1).
+ * tile_ix0=0, tile_ix1=fb.w reproduces the whole-FB behaviour exactly
+ * (caller is the single-thread path). Workers pass their owned X-stripe
+ * to parallelise across tiles without touching each other's columns. */
+void sg_raster_triangle_tile(softgl_ctx *c,
+                             const sg_vert *v0,
+                             const sg_vert *v1,
+                             const sg_vert *v2,
+                             int tile_ix0, int tile_ix1) {
     /* 16.8 fixed-point screen coords. */
     sg_screen_t x0 = sg_fp_screen_from_float(v0->ndc.x);
     sg_screen_t y0 = sg_fp_screen_from_float(v0->ndc.y);
@@ -642,9 +647,9 @@ void sg_raster_triangle(softgl_ctx *c,
     if (min_x_fp < 0) ix0 = (int)((min_x_fp - (SG_FP_SUBPIXEL_ONE - 1)) >> SG_FP_SUBPIXEL_BITS);
     if (min_y_fp < 0) iy0 = (int)((min_y_fp - (SG_FP_SUBPIXEL_ONE - 1)) >> SG_FP_SUBPIXEL_BITS);
 
-    if (ix0 < 0) ix0 = 0;
+    if (ix0 < tile_ix0) ix0 = tile_ix0;
     if (iy0 < 0) iy0 = 0;
-    if (ix1 > c->fb.w) ix1 = c->fb.w;
+    if (ix1 > tile_ix1) ix1 = tile_ix1;
     if (iy1 > c->fb.h) iy1 = c->fb.h;
     if (c->scissor_enabled) {
         int sx0 = c->scissor[0], sy0 = c->scissor[1];
@@ -820,6 +825,16 @@ void sg_raster_triangle(softgl_ctx *c,
         E1_row += dE1_dy * 2;
         E2_row += dE2_dy * 2;
     }
+}
+
+/* Public (non-binned) entrypoint: rasterize across the whole framebuffer.
+ * Used by callers that bypass the worker pool (lines, points, pixel ops,
+ * and the workers-disabled single-thread fallback). */
+void sg_raster_triangle(softgl_ctx *c,
+                        const sg_vert *v0,
+                        const sg_vert *v1,
+                        const sg_vert *v2) {
+    sg_raster_triangle_tile(c, v0, v1, v2, 0, c->fb.w);
 }
 
 /* Lines: DDA in 16.8 fixed-point, attribute lerp in float.

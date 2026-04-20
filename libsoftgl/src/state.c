@@ -1,5 +1,6 @@
 #include "types.h"
 #include "dlist.h"
+#include "workers.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -269,11 +270,18 @@ softgl_ctx *softgl_create(GLsizei w, GLsizei h) {
     memset(c->fb.stencil, 0, (size_t)w * h);
     for (int i = 0; i < w * h; i++) c->fb.depth[i] = 1.0f;
     sg_reset_state(c);
+    /* One worker per logical core, up to SG_MAX_TILES. On WASM w/o pthreads
+     * this is a no-op and sg_workers_bin_tri falls through to direct raster. */
+    sg_workers_init(c, 0);
     return c;
 }
 
 void softgl_destroy(softgl_ctx *c) {
     if (!c) return;
+    /* Drain + join workers before any state they may still be reading
+     * gets torn down (fb.color/depth, textures, vbos). */
+    sg_workers_flush(c);
+    sg_workers_shutdown(c);
     if (c->fb.color)   sg_aligned_free(c->fb.color);
     if (c->fb.depth)   sg_aligned_free(c->fb.depth);
     if (c->fb.stencil) sg_aligned_free(c->fb.stencil);
@@ -310,7 +318,10 @@ void softgl_make_current(softgl_ctx *c) {
 }
 
 const void *softgl_read_rgba8(softgl_ctx *c) {
-    return c ? c->fb.color : NULL;
+    if (!c) return NULL;
+    /* JS/WASM reads the FB directly — workers must be drained first. */
+    sg_workers_flush(c);
+    return c->fb.color;
 }
 
 void sg_set_error(GLenum e) {

@@ -1,5 +1,6 @@
 #include "types.h"
 #include "dlist.h"
+#include "workers.h"
 #include <string.h>
 
 static void sg_effective_scissor(const softgl_ctx *c, int *x0, int *y0, int *x1, int *y1) {
@@ -89,6 +90,8 @@ void _sg_clear_real(GLbitfield mask) {
 
 void glClear(GLbitfield mask) {
     softgl_ctx *c = sg_current(); if (!c) return;
+    /* Any pending binned tris must land in the old FB before we wipe it. */
+    sg_workers_flush(c);
     if (c->dlist_recording) {
         sg_dlist_emit(c, SG_OP_CLEAR, &mask, sizeof(mask));
         if (c->dlist_exec) _sg_clear_real(mask);

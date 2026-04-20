@@ -1,5 +1,6 @@
 #include "types.h"
 #include "dlist.h"
+#include "workers.h"
 #include <string.h>
 #include <stdlib.h>
 
@@ -314,6 +315,9 @@ void _sg_end_real(void) {
     }
     c->imm_active = 0;
     c->imm_count  = 0;
+    /* Drain workers: glEnd is an implicit submission boundary, any state
+     * change between glEnd and the next glBegin must see the committed FB. */
+    sg_workers_flush(c);
 }
 
 void _sg_vertex_real(float x, float y, float z, float w) {

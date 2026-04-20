@@ -1,8 +1,21 @@
 #include "types.h"
 #include "dlist.h"
+#include "workers.h"
 
 /* glColor / glNormal / glTexCoord / glMultiTexCoord / glVertex / glBegin /
  * glEnd / glArrayElement / glRect / glEdgeFlag live in immediate.c. */
+
+/* Sync points. Both drain the worker pool — the GL spec only requires
+ * that glFinish blocks until prior commands complete, but our flush is
+ * already synchronous so glFlush collapses to the same. */
+void glFinish(void) {
+    softgl_ctx *c = sg_current(); if (!c) return;
+    sg_workers_flush(c);
+}
+void glFlush(void) {
+    softgl_ctx *c = sg_current(); if (!c) return;
+    sg_workers_flush(c);
+}
 
 void glDepthMask(GLboolean b) {
     softgl_ctx *c = sg_current(); if (!c) return;
