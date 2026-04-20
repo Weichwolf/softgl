@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#if defined(_WIN32)
+#if defined(__EMSCRIPTEN__)
+  #include <emscripten/threading.h>
+#elif defined(_WIN32)
   #include <windows.h>
 #elif defined(__unix__) || defined(__APPLE__)
   #include <unistd.h>
@@ -19,8 +21,21 @@ void sg_raster_triangle_tile(softgl_ctx *c,
  * SG_JOB_VERTEX phase because main is spin-waiting. */
 void sg_process_vertex_at(softgl_ctx *c, int index, sg_vert *out);
 
+int sg_thread_count(softgl_ctx *c) {
+    if (!c) return 0;
+    sg_worker_pool *p = (sg_worker_pool*)c->workers;
+    return p ? p->nworkers : 0;
+}
+
 int sg_hwthreads(void) {
-#if defined(_WIN32)
+#if defined(__EMSCRIPTEN__)
+    /* navigator.hardwareConcurrency under the hood; returns 1 on the few
+     * browsers that hide it. Requires the module to be built with -pthread
+     * for actual Web-Worker-backed threads; without, this still returns
+     * the core count but the workers fall back to a no-op pool. */
+    int n = emscripten_num_logical_cores();
+    return n > 0 ? n : 1;
+#elif defined(_WIN32)
     SYSTEM_INFO si;
     GetSystemInfo(&si);
     int n = (int)si.dwNumberOfProcessors;

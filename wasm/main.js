@@ -13,6 +13,8 @@
     10,10,1, 8,0, 65,0, 253,15, 253,98, 11,
   ]);
   const simdOK = WebAssembly.validate(SIMD_PROBE);
+  const sabOK  = (typeof SharedArrayBuffer !== 'undefined')
+              && (typeof crossOriginIsolated === 'undefined' || crossOriginIsolated);
 
   const canvas = document.getElementById('c');
   const ctx = canvas.getContext('2d');
@@ -29,11 +31,57 @@
   const testsBtn  = document.getElementById('tests');
   const capEl     = document.getElementById('cap');
   const benchOut  = document.getElementById('bench-out');
+  const sStatsSimd    = document.getElementById('s-simd');
+  const sStatsSab     = document.getElementById('s-sab');
+  const sStatsThreads = document.getElementById('s-threads');
+  const sStatsCores   = document.getElementById('s-cores');
+  const sStatsMs      = document.getElementById('s-ms');
+  const sStatsP       = document.getElementById('s-p');
 
-  capEl.textContent = 'WASM SIMD support: ' + (simdOK ? 'yes' : 'no (fixed-point scalar fallback)');
+  /* SIMD is a hard build-time requirement — the .wasm contains v128 ops,
+   * so a browser that fails the probe also fails to instantiate the
+   * module. We still surface the result so a broken environment is
+   * visible instead of silently hanging on module load. */
+  capEl.textContent = 'WASM SIMD support: ' + (simdOK ? 'yes (required)' : 'NO — module load will fail');
   capEl.classList.toggle('bad', !simdOK);
+  sStatsSimd.textContent = simdOK ? 'yes' : 'NO (required)';
+  sStatsSimd.classList.toggle('bad', !simdOK);
+  sStatsSab.textContent = sabOK
+      ? 'yes (cross-origin isolated)'
+      : 'NO (COOP/COEP headers missing — threads disabled)';
+  sStatsSab.classList.toggle('bad', !sabOK);
+  sStatsCores.textContent = (navigator.hardwareConcurrency || 1) + ' (navigator.hardwareConcurrency)';
 
   const Mod = await createSoftGL();
+
+  /* Render threads actually spawned — 0 when SAB is missing or
+   * -pthread was off in the build. Matches sg_thread_count() on a
+   * real context once one exists, so we read it lazily below. */
+  const hwThreads = Mod.ccall('sg_hwthreads', 'number', [], []);
+  sStatsCores.textContent = hwThreads + ' (emscripten_num_logical_cores)';
+
+  function updateThreadStats(ctx) {
+    const threads = Mod.ccall('sg_thread_count', 'number', ['number'], [ctx]);
+    sStatsThreads.textContent = threads > 0
+        ? `${threads} (tile workers + parallel vertex transform)`
+        : '0 (single-threaded fallback — no pthreads)';
+    sStatsThreads.classList.toggle('bad', threads === 0);
+  }
+
+  /* Rolling frame-time window for p50/p95 stats. */
+  const FT_MAX = 120;
+  const frameTimes = [];
+  function recordFrameMs(ms) {
+    frameTimes.push(ms);
+    if (frameTimes.length > FT_MAX) frameTimes.shift();
+    sStatsMs.textContent = `${ms.toFixed(2)} ms (${(1000/ms).toFixed(0)} fps)`;
+    if (frameTimes.length >= 10) {
+      const s = [...frameTimes].sort((a,b)=>a-b);
+      const p50 = s[Math.floor(s.length * 0.50)];
+      const p95 = s[Math.floor(s.length * 0.95)];
+      sStatsP.textContent = `${p50.toFixed(2)} / ${p95.toFixed(2)} ms (${frameTimes.length}-frame window)`;
+    }
+  }
 
   /* ---- Shared output path: softgl FB → canvas ----------------------- */
   function blitContext(c) {
@@ -58,6 +106,7 @@
   function renderTest() {
     const c = Mod.ccall('softgl_create', 'number', ['number','number'], [W, H]);
     Mod.ccall('softgl_make_current', null, ['number'], [c]);
+    updateThreadStats(c);
     const t0 = performance.now();
     Mod.ccall('sg_test_run', null, ['number','number','number'], [idx, W, H]);
     const t1 = performance.now();
@@ -67,7 +116,9 @@
     const name = Mod.ccall('sg_test_name', 'string', ['number'], [idx]);
     counterEl.textContent = `[${idx + 1} / ${testCount}]`;
     nameEl.textContent = name;
-    timingEl.textContent = `render: ${(t1 - t0).toFixed(2)} ms`;
+    const ms = t1 - t0;
+    timingEl.textContent = `render: ${ms.toFixed(2)} ms`;
+    recordFrameMs(ms);
 
     progEl.style.transition = 'none';
     progEl.style.width = '0%';
@@ -117,6 +168,7 @@
     const mats = Mod.ccall('sg_tank_mat_count', 'number', [], []);
     counterEl.textContent = `T-80 MBT`;
     nameEl.textContent = `${tris.toLocaleString()} triangles · ${mats} materials`;
+    updateThreadStats(tankCtx);
   }
 
   function tankFrame(t) {
@@ -132,7 +184,9 @@
               [tankAngle, W, H]);
     const t1 = performance.now();
     blitContext(tankCtx);
-    timingEl.textContent = `render: ${(t1 - t0).toFixed(2)} ms   ·   ${(1000/(t1-t0)).toFixed(0)} fps`;
+    const ms = t1 - t0;
+    timingEl.textContent = `render: ${ms.toFixed(2)} ms   ·   ${(1000/ms).toFixed(0)} fps`;
+    recordFrameMs(ms);
     /* steady angle bar instead of test progress */
     progEl.style.transition = 'none';
     progEl.style.width = `${(tankAngle / 360) * 100}%`;

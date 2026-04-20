@@ -15,7 +15,11 @@ set(SRC ${CMAKE_CURRENT_SOURCE_DIR}/..)
 # and rasterizer.c onto wasm_simd128 under -msimd128 at codegen time.
 # Without these flags the compat headers raise #error "SSE instruction
 # set not enabled" and the SIMD gates in those files fall back to scalar.
-add_compile_options(-O2 -msimd128 -msse -msse2 -msse3 -mssse3 -msse4.1 -Wno-unused-parameter)
+#
+# -pthread enables the Web-Workers-backed pthreads runtime so the tile
+# binning renderer + parallel vertex transform light up in the browser.
+# Required to be on BOTH the compile and link command lines.
+add_compile_options(-O2 -msimd128 -msse -msse2 -msse3 -mssse3 -msse4.1 -pthread -Wno-unused-parameter)
 
 # libsoftgl sources (wrapped rather than subdir to avoid toolchain clashes)
 file(GLOB SOFTGL_SRC ${SRC}/libsoftgl/src/*.c)
@@ -64,5 +68,5 @@ target_include_directories(softgl PRIVATE
 set_target_properties(softgl PROPERTIES
     OUTPUT_NAME softgl
     SUFFIX ".js"
-    LINK_FLAGS "-O2 -msimd128 -sEXPORTED_FUNCTIONS=_softgl_create,_softgl_destroy,_softgl_make_current,_softgl_read_rgba8,_sg_test_count,_sg_test_name,_sg_test_run,_sg_bench_slot_count,_sg_bench_slot_tag,_sg_bench_slot_test_index,_sg_bench_run_idx,_sg_bench_run_slot,_sg_tank_load,_sg_tank_render,_sg_tank_tri_count,_sg_tank_mat_count,_sg_tank_unload,_malloc,_free -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,HEAPU8,UTF8ToString -sMODULARIZE=1 -sEXPORT_NAME=createSoftGL -sALLOW_MEMORY_GROWTH=1 -sINITIAL_MEMORY=33554432 -sSTACK_SIZE=8388608"
+    LINK_FLAGS "-O2 -msimd128 -pthread -sPTHREAD_POOL_SIZE=8 -sEXPORTED_FUNCTIONS=_softgl_create,_softgl_destroy,_softgl_make_current,_softgl_read_rgba8,_sg_test_count,_sg_test_name,_sg_test_run,_sg_bench_slot_count,_sg_bench_slot_tag,_sg_bench_slot_test_index,_sg_bench_run_idx,_sg_bench_run_slot,_sg_tank_load,_sg_tank_render,_sg_tank_tri_count,_sg_tank_mat_count,_sg_tank_unload,_sg_thread_count,_sg_hwthreads,_malloc,_free -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,HEAPU8,UTF8ToString -sMODULARIZE=1 -sEXPORT_NAME=createSoftGL -sALLOW_MEMORY_GROWTH=1 -sINITIAL_MEMORY=33554432 -sSTACK_SIZE=8388608"
 )

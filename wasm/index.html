@@ -23,6 +23,11 @@
   button[disabled] { opacity: 0.4; cursor: not-allowed; }
   .cap { font-size: 12px; color: #8b8; margin-top: 8px; }
   .cap.bad { color: #c77; }
+  .stats { font-size: 11px; color: #666; margin-top: 12px;
+           border-top: 1px solid #222; padding-top: 8px; line-height: 1.5; }
+  .stats .k { color: #555; display: inline-block; width: 150px; }
+  .stats .v { color: #8b8; }
+  .stats .bad { color: #c77; }
   pre#bench-out { background: #111; border: 1px solid #333; padding: 10px;
                   color: #cec; font-size: 12px; max-height: 400px; overflow: auto;
                   margin-top: 16px; white-space: pre; }
@@ -47,6 +52,15 @@
         <button id="bench">Run Benchmark</button>
       </div>
       <div id="cap" class="cap">SIMD support: detecting…</div>
+      <div id="stats" class="stats">
+        <div><span class="k">WASM SIMD</span><span class="v" id="s-simd">–</span></div>
+        <div><span class="k">SharedArrayBuffer</span><span class="v" id="s-sab">–</span></div>
+        <div><span class="k">Render threads</span><span class="v" id="s-threads">–</span></div>
+        <div><span class="k">Logical cores</span><span class="v" id="s-cores">–</span></div>
+        <div><span class="k">Canvas</span><span class="v">640×360 RGBA8</span></div>
+        <div><span class="k">Frame (last)</span><span class="v" id="s-ms">–</span></div>
+        <div><span class="k">Frame (p50 / p95)</span><span class="v" id="s-p">–</span></div>
+      </div>
     </div>
   </div>
   <pre id="bench-out" hidden></pre>

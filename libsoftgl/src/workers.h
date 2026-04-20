@@ -116,4 +116,9 @@ const sg_vert *sg_workers_transform_range(softgl_ctx *c, int first, int count);
 /* Platform CPU count (logical cores). Returns 1 if unknown. */
 int sg_hwthreads(void);
 
+/* Number of render workers actually running in this context. 0 means the
+ * pool is absent (WASM without pthreads, or init failed) and the render
+ * pipeline is running fully on the calling thread. UI/debug use. */
+int sg_thread_count(softgl_ctx *c);
+
 #endif
