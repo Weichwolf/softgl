@@ -13,6 +13,11 @@
 #include "types.h"
 #include <math.h>
 
+/* POT detect helper — evaluates dim-1 for power-of-two dims, 0 otherwise. */
+static inline int sg_hot_pot_mask(int dim) {
+    return (dim > 0 && (dim & (dim - 1)) == 0) ? (dim - 1) : 0;
+}
+
 /* Inline bilinear-REPEAT 2D sample, returning u8 per channel. Matches
  * sg_sample_tex2d exactly for the LINEAR + REPEAT + REPEAT case. */
 static inline void sg_hot_sample_2d_linear_repeat_u8(
@@ -28,10 +33,14 @@ static inline void sg_hot_sample_2d_linear_repeat_u8(
     float fv = fy - (float)y0;
     int x1 = x0 + 1;
     int y1 = y0 + 1;
-    x0 %= tw; if (x0 < 0) x0 += tw;
-    x1 %= tw; if (x1 < 0) x1 += tw;
-    y0 %= th; if (y0 < 0) y0 += th;
-    y1 %= th; if (y1 < 0) y1 += th;
+    int tw_m = sg_hot_pot_mask(tw);
+    int th_m = sg_hot_pot_mask(th);
+    if (tw_m) { x0 &= tw_m; x1 &= tw_m; }
+    else      { x0 %= tw; if (x0 < 0) x0 += tw;
+                x1 %= tw; if (x1 < 0) x1 += tw; }
+    if (th_m) { y0 &= th_m; y1 &= th_m; }
+    else      { y0 %= th; if (y0 < 0) y0 += th;
+                y1 %= th; if (y1 < 0) y1 += th; }
     const uint8_t *p00 = data + (y0 * tw + x0) * 4;
     const uint8_t *p10 = data + (y0 * tw + x1) * 4;
     const uint8_t *p01 = data + (y1 * tw + x0) * 4;
@@ -81,10 +90,14 @@ static inline void sg_hot_sample_2d_linear_repeat_u8_fast(
 
     int x1 = x0 + 1;
     int y1 = y0 + 1;
-    x0 %= tw; if (x0 < 0) x0 += tw;
-    x1 %= tw; if (x1 < 0) x1 += tw;
-    y0 %= th; if (y0 < 0) y0 += th;
-    y1 %= th; if (y1 < 0) y1 += th;
+    int tw_m = sg_hot_pot_mask(tw);
+    int th_m = sg_hot_pot_mask(th);
+    if (tw_m) { x0 &= tw_m; x1 &= tw_m; }
+    else      { x0 %= tw; if (x0 < 0) x0 += tw;
+                x1 %= tw; if (x1 < 0) x1 += tw; }
+    if (th_m) { y0 &= th_m; y1 &= th_m; }
+    else      { y0 %= th; if (y0 < 0) y0 += th;
+                y1 %= th; if (y1 < 0) y1 += th; }
     const uint8_t *p00 = data + (y0 * tw + x0) * 4;
     const uint8_t *p10 = data + (y0 * tw + x1) * 4;
     const uint8_t *p01 = data + (y1 * tw + x0) * 4;

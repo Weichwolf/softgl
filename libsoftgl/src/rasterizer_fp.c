@@ -501,21 +501,71 @@ SG_INLINE void fp_shade_quad(softgl_ctx *c,
         int replace = (tctx->fastpath_kind == 2);
         const float inv255 = 1.f / 255.f;
 
+        /* POT masks (0 when dim is not power-of-two). Hoist out of lane loop.
+         * When tw is POT, replace (y*tw + x)*4 with ((y<<tw_log2)+x)<<2. */
+        const int tw_m = u0->tw_mask_pot;
+        const int th_m = u0->th_mask_pot;
+        const int tw_lg = u0->tw_log2;
         for (int l = 0; l < 4; l++) {
             if (!(cov & (1u << l))) continue;
             int x0i = x0A[l], y0i = y0A[l];
             int x1i = x0i + 1, y1i = y0i + 1;
-            x0i %= tw; if (x0i < 0) x0i += tw;
-            x1i %= tw; if (x1i < 0) x1i += tw;
-            y0i %= th; if (y0i < 0) y0i += th;
-            y1i %= th; if (y1i < 0) y1i += th;
-            const uint8_t *p00 = data + (y0i * tw + x0i) * 4;
-            const uint8_t *p10 = data + (y0i * tw + x1i) * 4;
-            const uint8_t *p01 = data + (y1i * tw + x0i) * 4;
-            const uint8_t *p11 = data + (y1i * tw + x1i) * 4;
+            if (tw_m) { x0i &= tw_m; x1i &= tw_m; }
+            else      { x0i %= tw; if (x0i < 0) x0i += tw;
+                        x1i %= tw; if (x1i < 0) x1i += tw; }
+            if (th_m) { y0i &= th_m; y1i &= th_m; }
+            else      { y0i %= th; if (y0i < 0) y0i += th;
+                        y1i %= th; if (y1i < 0) y1i += th; }
+            int row0, row1;
+            if (tw_m) { row0 = y0i << tw_lg; row1 = y1i << tw_lg; }
+            else      { row0 = y0i * tw;     row1 = y1i * tw; }
+            const uint8_t *p00 = data + (row0 + x0i) * 4;
+            const uint8_t *p10 = data + (row0 + x1i) * 4;
+            const uint8_t *p01 = data + (row1 + x0i) * 4;
+            const uint8_t *p11 = data + (row1 + x1i) * 4;
             int fu8 = fu8A[l]; if (fu8 < 0) fu8 = 0; else if (fu8 > 256) fu8 = 256;
             int fv8 = fv8A[l]; if (fv8 < 0) fv8 = 0; else if (fv8 > 256) fv8 = 256;
             int ifu = 256 - fu8, ifv = 256 - fv8;
+#if defined(SG_SIMD_SSE4)
+            /* SIMD bilinear over 4 RGBA8 channels. Per-channel arithmetic:
+             *   top = p00*ifu + p10*fu8                 (<= 255*256 + 255*256 = 130560)
+             *   bot = p01*ifu + p11*fu8
+             *   v   = (top*ifv + bot*fv8 + 32768) >> 16 (u8 saturate)
+             * top/bot exceed u16, so keep them in i32. _mm_madd_epi16 lets
+             * us fuse the two-term sum per channel as a single instruction:
+             *   pair = (p00, p10) i16×2  ·  (ifu, fu8) i16×2  →  i32 "top"
+             * For the vertical blend (top*ifv + bot*fv8) we re-use madd on
+             * (top, bot) interleaved with (ifv, fv8) — but top/bot are i32
+             * so we must pack them back into i16 first; top/bot fit in
+             * u17 (130560 < 131072) so we shift right by 1 first, then
+             * readjust the final rounding constant. */
+            __m128i c00 = _mm_cvtepu8_epi16(_mm_cvtsi32_si128(*(const int32_t*)p00));
+            __m128i c10 = _mm_cvtepu8_epi16(_mm_cvtsi32_si128(*(const int32_t*)p10));
+            __m128i c01 = _mm_cvtepu8_epi16(_mm_cvtsi32_si128(*(const int32_t*)p01));
+            __m128i c11 = _mm_cvtepu8_epi16(_mm_cvtsi32_si128(*(const int32_t*)p11));
+            /* Interleave (p00, p10) per channel as i16 pairs for madd. */
+            __m128i row0_lo = _mm_unpacklo_epi16(c00, c10);
+            __m128i row1_lo = _mm_unpacklo_epi16(c01, c11);
+            __m128i w_u     = _mm_set1_epi32((int32_t)((uint32_t)(uint16_t)ifu |
+                                                        ((uint32_t)(uint16_t)fu8 << 16)));
+            __m128i top32 = _mm_madd_epi16(row0_lo, w_u);  /* 4 × i32, range 0..130560 */
+            __m128i bot32 = _mm_madd_epi16(row1_lo, w_u);
+            /* Multiply by ifv / fv8 (16-bit) and sum: fall back to i32 mul
+             * via _mm_mullo_epi32 (SSE4.1). Then add and round+shift by 16. */
+            __m128i vifv = _mm_set1_epi32(ifv);
+            __m128i vfv8 = _mm_set1_epi32(fv8);
+            __m128i acc32 = _mm_add_epi32(_mm_mullo_epi32(top32, vifv),
+                                           _mm_mullo_epi32(bot32, vfv8));
+            acc32 = _mm_add_epi32(acc32, _mm_set1_epi32(1 << 15));
+            acc32 = _mm_srai_epi32(acc32, 16);
+            __m128i p16 = _mm_packus_epi32(acc32, acc32);      /* i32 -> u16 */
+            __m128i p8  = _mm_packus_epi16(p16, p16);          /* u16 -> u8  */
+            uint32_t rgba = (uint32_t)_mm_cvtsi128_si32(p8);
+            uint8_t tx0 = (uint8_t) rgba;
+            uint8_t tx1 = (uint8_t)(rgba >> 8);
+            uint8_t tx2 = (uint8_t)(rgba >> 16);
+            uint8_t tx3 = (uint8_t)(rgba >> 24);
+#else
             uint8_t tx[4];
             for (int k = 0; k < 4; k++) {
                 int top = p00[k] * ifu + p10[k] * fu8;
@@ -524,16 +574,18 @@ SG_INLINE void fp_shade_quad(softgl_ctx *c,
                 if (v2 > 255) v2 = 255; else if (v2 < 0) v2 = 0;
                 tx[k] = (uint8_t)v2;
             }
+            uint8_t tx0 = tx[0], tx1 = tx[1], tx2 = tx[2], tx3 = tx[3];
+#endif
             if (replace) {
-                crL[l] = tx[0] * inv255;
-                cgL[l] = tx[1] * inv255;
-                cbL[l] = tx[2] * inv255;
-                caL[l] = tx[3] * inv255;
+                crL[l] = tx0 * inv255;
+                cgL[l] = tx1 * inv255;
+                cbL[l] = tx2 * inv255;
+                caL[l] = tx3 * inv255;
             } else {
-                crL[l] *= tx[0] * inv255;
-                cgL[l] *= tx[1] * inv255;
-                cbL[l] *= tx[2] * inv255;
-                caL[l] *= tx[3] * inv255;
+                crL[l] *= tx0 * inv255;
+                cgL[l] *= tx1 * inv255;
+                cbL[l] *= tx2 * inv255;
+                caL[l] *= tx3 * inv255;
             }
         }
         cr = sg_f32x4_load(crL); cg = sg_f32x4_load(cgL);

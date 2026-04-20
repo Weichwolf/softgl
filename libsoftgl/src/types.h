@@ -448,6 +448,12 @@ typedef struct {
     GLenum         wrap_s, wrap_t, wrap_r;
     int            tw, th, td;
     const uint8_t *data0;              /* level-0 data for 2D/3D; NULL for cube */
+    /* POT-fastpath: >0 AND (dim&(dim-1))==0 means we can use a bitmask
+     * instead of `x %= dim; if(x<0) x += dim`. Stored as `dim - 1`. 0 means
+     * the dimension is NOT a power of two (or unknown). */
+    int            tw_mask_pot;
+    int            th_mask_pot;
+    int            tw_log2;            /* log2(tw), only meaningful when tw_mask_pot != 0 */
 } sg_tex_unit_tri;
 
 typedef struct {

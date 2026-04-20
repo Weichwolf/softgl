@@ -64,6 +64,16 @@ void sg_tex_tri_prepare(softgl_ctx *c, sg_tex_tri_ctx *t) {
         ut->tw = tex->w[0];
         ut->th = tex->h[0];
         ut->td = tex->d[0];
+        /* Power-of-two detection: `dim - 1` when `dim>0 && (dim&(dim-1))==0`,
+         * else 0. Consumers treat non-zero as "use bitmask wrap". */
+        ut->tw_mask_pot = (ut->tw > 0 && (ut->tw & (ut->tw - 1)) == 0) ? (ut->tw - 1) : 0;
+        ut->th_mask_pot = (ut->th > 0 && (ut->th & (ut->th - 1)) == 0) ? (ut->th - 1) : 0;
+        ut->tw_log2 = 0;
+        if (ut->tw_mask_pot) {
+            int v = ut->tw; int lg = 0;
+            while (v > 1) { v >>= 1; lg++; }
+            ut->tw_log2 = lg;
+        }
         if (active_slot != SG_TEX_TARGET_CUBE) ut->data0 = tex->data[0];
         if (first_active < 0) first_active = u;
         n_active++;

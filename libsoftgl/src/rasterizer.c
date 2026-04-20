@@ -297,15 +297,28 @@ void sg_raster_triangle(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1, con
                  + c->polygon_offset_units  * 1e-6f;
     }
 
+    /* Incremental edge evaluation: Pineda edge function values step by
+     * a constant dx per pixel and dy per row. The float rasterizer was
+     * re-computing sg_edge() three times per pixel; that's 9 mul/sub
+     * per pixel replaced by 3 adds. Compilers don't figure this out on
+     * their own because sg_edge signs can vary. */
+    float dE0_dx = -(y2 - y1),  dE0_dy = (x2 - x1);
+    float dE1_dx = -(y0 - y2),  dE1_dy = (x0 - x2);
+    float dE2_dx = -(y1 - y0),  dE2_dy = (x1 - x0);
+    float py_start = (float)iy0 + 0.5f;
+    float px_start = (float)ix0 + 0.5f;
+    float e0_row0 = sg_edge(x1, y1, x2, y2, px_start, py_start);
+    float e1_row0 = sg_edge(x2, y2, x0, y0, px_start, py_start);
+    float e2_row0 = sg_edge(x0, y0, x1, y1, px_start, py_start);
+
     /* Per-pixel loop. Sample at pixel centers (x+0.5, y+0.5). */
     for (int y = iy0; y < iy1; y++) {
-        float py = (float)y + 0.5f;
+        float e0 = e0_row0, e1 = e1_row0, e2 = e2_row0;
         for (int x = ix0; x < ix1; x++) {
-            float px = (float)x + 0.5f;
-            float e0 = sg_edge(x1, y1, x2, y2, px, py);  /* opposite v0 */
-            float e1 = sg_edge(x2, y2, x0, y0, px, py);  /* opposite v1 */
-            float e2 = sg_edge(x0, y0, x1, y1, px, py);  /* opposite v2 */
-            if (e0 < 0.f || e1 < 0.f || e2 < 0.f) continue;
+            if (e0 < 0.f || e1 < 0.f || e2 < 0.f) {
+                e0 += dE0_dx; e1 += dE1_dx; e2 += dE2_dx;
+                continue;
+            }
             /* Polygon stipple (Phase X): 32x32 bit pattern in window coords. */
             if (c->polygon_stipple_enable) {
                 int sx = x & 31;
@@ -397,6 +410,8 @@ void sg_raster_triangle(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1, con
             }
 
             sg_write_fragment(c, x, y, z, col[0], col[1], col[2], col[3]);
+            e0 += dE0_dx; e1 += dE1_dx; e2 += dE2_dx;
         }
+        e0_row0 += dE0_dy; e1_row0 += dE1_dy; e2_row0 += dE2_dy;
     }
 }

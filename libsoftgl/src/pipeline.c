@@ -3,6 +3,7 @@
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 /* Phase FP-0: backend dispatch scaffolding.
  *
@@ -433,11 +434,51 @@ static uint32_t sg_fetch_index(softgl_ctx *c, GLenum type, const void *indices, 
     }
 }
 
+/* ---- Vertex cache (per-draw-call FIFO) ----
+ *
+ * Transformed-vertex cache keyed by source index. Cleared at the top of
+ * every _sg_draw_{arrays,elements}_real() call so no stale entry can
+ * survive a state mutation between draws. 16 slot FIFO + linear scan;
+ * at 16 slots the scan is ~4 cycles, payload is small (4 u32 cachelines).
+ *
+ * Single-threaded (softgl has one global g_current), file-static is safe.
+ */
+#define SG_VCACHE_SIZE 32
+#define SG_VCACHE_INVALID 0xFFFFFFFFu
+static SG_ALIGN16 sg_vert sg_vcache_verts[SG_VCACHE_SIZE];
+static SG_ALIGN16 uint32_t sg_vcache_keys [SG_VCACHE_SIZE];
+static int                 sg_vcache_tail;
+
+SG_INLINE void sg_vcache_clear(void) {
+    for (int i = 0; i < SG_VCACHE_SIZE; i++) sg_vcache_keys[i] = SG_VCACHE_INVALID;
+    sg_vcache_tail = 0;
+}
+
+SG_INLINE void sg_vcache_fetch(softgl_ctx *c, uint32_t idx, sg_vert *out) {
+    /* Linear search — small enough the compiler can unroll. */
+    for (int i = 0; i < SG_VCACHE_SIZE; i++) {
+        if (sg_vcache_keys[i] == idx) {
+            *out = sg_vcache_verts[i]; return;
+        }
+    }
+    /* Miss: transform, insert at tail (FIFO eviction). */
+    int slot = sg_vcache_tail;
+    sg_process_vertex(c, (int)idx, &sg_vcache_verts[slot]);
+    sg_vcache_keys[slot] = idx;
+    sg_vcache_tail = (slot + 1) & (SG_VCACHE_SIZE - 1);
+    *out = sg_vcache_verts[slot];
+}
+
 /* ---- Public draw calls ---- */
 
 void _sg_draw_arrays_real(GLenum mode, GLint first, GLsizei count) {
     softgl_ctx *c = sg_current(); if (!c) return;
     if (count <= 0) return;
+
+    /* For TRIANGLES there is no index re-use, so the cache is dead weight;
+     * for STRIP and FAN a few slots hit. Clear at start — the same state-
+     * safety argument as in _sg_draw_elements_real applies. */
+    sg_vcache_clear();
 
     if (mode == GL_TRIANGLES) {
         int ntri = count / 3;
@@ -451,12 +492,12 @@ void _sg_draw_arrays_real(GLenum mode, GLint first, GLsizei count) {
     } else if (mode == GL_TRIANGLE_STRIP) {
         for (int t = 0; t < count - 2; t++) {
             SG_ALIGN16 sg_vert v[3];
-            int i0 = first + t;
-            int i1 = first + t + (t & 1 ? 2 : 1);
-            int i2 = first + t + (t & 1 ? 1 : 2);
-            sg_process_vertex(c, i0, &v[0]);
-            sg_process_vertex(c, i1, &v[1]);
-            sg_process_vertex(c, i2, &v[2]);
+            uint32_t i0 = (uint32_t)(first + t);
+            uint32_t i1 = (uint32_t)(first + t + (t & 1 ? 2 : 1));
+            uint32_t i2 = (uint32_t)(first + t + (t & 1 ? 1 : 2));
+            sg_vcache_fetch(c, i0, &v[0]);
+            sg_vcache_fetch(c, i1, &v[1]);
+            sg_vcache_fetch(c, i2, &v[2]);
             sg_process_triangle(c, &v[0], &v[1], &v[2]);
         }
     } else if (mode == GL_TRIANGLE_FAN) {
@@ -464,8 +505,8 @@ void _sg_draw_arrays_real(GLenum mode, GLint first, GLsizei count) {
         sg_process_vertex(c, first, &v0);
         for (int t = 1; t < count - 1; t++) {
             SG_ALIGN16 sg_vert v1, v2;
-            sg_process_vertex(c, first + t,     &v1);
-            sg_process_vertex(c, first + t + 1, &v2);
+            sg_vcache_fetch(c, (uint32_t)(first + t),     &v1);
+            sg_vcache_fetch(c, (uint32_t)(first + t + 1), &v2);
             sg_process_triangle(c, &v0, &v1, &v2);
         }
     } else if (mode == GL_LINES) {
@@ -572,6 +613,11 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
     softgl_ctx *c = sg_current(); if (!c) return;
     if (count <= 0) return;
 
+    /* Flush the transformed-vertex cache: any state the caller mutated
+     * between draws (matrix stack, lighting, material, texcoord-gen, etc.)
+     * must not carry over via a cached key. */
+    sg_vcache_clear();
+
     if (mode == GL_TRIANGLES) {
         int ntri = count / 3;
         for (int t = 0; t < ntri; t++) {
@@ -579,9 +625,9 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
             uint32_t i1 = sg_fetch_index(c, type, indices, t * 3 + 1);
             uint32_t i2 = sg_fetch_index(c, type, indices, t * 3 + 2);
             SG_ALIGN16 sg_vert v[3];
-            sg_process_vertex(c, (int)i0, &v[0]);
-            sg_process_vertex(c, (int)i1, &v[1]);
-            sg_process_vertex(c, (int)i2, &v[2]);
+            sg_vcache_fetch(c, i0, &v[0]);
+            sg_vcache_fetch(c, i1, &v[1]);
+            sg_vcache_fetch(c, i2, &v[2]);
             sg_process_triangle(c, &v[0], &v[1], &v[2]);
         }
     } else if (mode == GL_TRIANGLE_STRIP) {
@@ -590,21 +636,21 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
             uint32_t i1 = sg_fetch_index(c, type, indices, t + (t & 1 ? 2 : 1));
             uint32_t i2 = sg_fetch_index(c, type, indices, t + (t & 1 ? 1 : 2));
             SG_ALIGN16 sg_vert v[3];
-            sg_process_vertex(c, (int)i0, &v[0]);
-            sg_process_vertex(c, (int)i1, &v[1]);
-            sg_process_vertex(c, (int)i2, &v[2]);
+            sg_vcache_fetch(c, i0, &v[0]);
+            sg_vcache_fetch(c, i1, &v[1]);
+            sg_vcache_fetch(c, i2, &v[2]);
             sg_process_triangle(c, &v[0], &v[1], &v[2]);
         }
     } else if (mode == GL_TRIANGLE_FAN) {
         uint32_t ic = sg_fetch_index(c, type, indices, 0);
         SG_ALIGN16 sg_vert v0;
-        sg_process_vertex(c, (int)ic, &v0);
+        sg_vcache_fetch(c, ic, &v0);
         for (int t = 1; t < count - 1; t++) {
             uint32_t i1 = sg_fetch_index(c, type, indices, t);
             uint32_t i2 = sg_fetch_index(c, type, indices, t + 1);
             SG_ALIGN16 sg_vert v1, v2;
-            sg_process_vertex(c, (int)i1, &v1);
-            sg_process_vertex(c, (int)i2, &v2);
+            sg_vcache_fetch(c, i1, &v1);
+            sg_vcache_fetch(c, i2, &v2);
             sg_process_triangle(c, &v0, &v1, &v2);
         }
     } else if (mode == GL_LINES) {
@@ -613,26 +659,26 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
             uint32_t i0 = sg_fetch_index(c, type, indices, i*2 + 0);
             uint32_t i1 = sg_fetch_index(c, type, indices, i*2 + 1);
             SG_ALIGN16 sg_vert v[2];
-            sg_process_vertex(c, (int)i0, &v[0]);
-            sg_process_vertex(c, (int)i1, &v[1]);
+            sg_vcache_fetch(c, i0, &v[0]);
+            sg_vcache_fetch(c, i1, &v[1]);
             sg_process_line(c, &v[0], &v[1]);
         }
     } else if (mode == GL_LINE_STRIP) {
         if (count < 2) return;
         SG_ALIGN16 sg_vert prev, cur;
-        sg_process_vertex(c, (int)sg_fetch_index(c, type, indices, 0), &prev);
+        sg_vcache_fetch(c, sg_fetch_index(c, type, indices, 0), &prev);
         for (int i = 1; i < count; i++) {
-            sg_process_vertex(c, (int)sg_fetch_index(c, type, indices, i), &cur);
+            sg_vcache_fetch(c, sg_fetch_index(c, type, indices, i), &cur);
             sg_process_line(c, &prev, &cur);
             prev = cur;
         }
     } else if (mode == GL_LINE_LOOP) {
         if (count < 2) return;
         SG_ALIGN16 sg_vert first_v, prev, cur;
-        sg_process_vertex(c, (int)sg_fetch_index(c, type, indices, 0), &first_v);
+        sg_vcache_fetch(c, sg_fetch_index(c, type, indices, 0), &first_v);
         prev = first_v;
         for (int i = 1; i < count; i++) {
-            sg_process_vertex(c, (int)sg_fetch_index(c, type, indices, i), &cur);
+            sg_vcache_fetch(c, sg_fetch_index(c, type, indices, i), &cur);
             sg_process_line(c, &prev, &cur);
             prev = cur;
         }
@@ -640,7 +686,7 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
     } else if (mode == GL_POINTS) {
         for (int i = 0; i < count; i++) {
             SG_ALIGN16 sg_vert v;
-            sg_process_vertex(c, (int)sg_fetch_index(c, type, indices, i), &v);
+            sg_vcache_fetch(c, sg_fetch_index(c, type, indices, i), &v);
             sg_process_point(c, &v);
         }
     }
