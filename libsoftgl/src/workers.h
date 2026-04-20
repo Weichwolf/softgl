@@ -50,6 +50,13 @@ typedef struct {
     int            started;
 } sg_worker;
 
+/* Jobs the worker pool can be dispatched on. Each wake carries the
+ * current job type; workers branch on it. */
+enum {
+    SG_JOB_RASTER = 0,   /* drain own tile bin (default) */
+    SG_JOB_VERTEX = 1,   /* transform a slice of [job_first..job_first+job_count) */
+};
+
 typedef struct {
     int            nworkers;
     sg_worker      workers[SG_MAX_TILES];
@@ -62,6 +69,14 @@ typedef struct {
     int            vpool_count;
     int            vpool_cap;
 
+    /* Pre-transform scratch used by SG_JOB_VERTEX. Workers split the
+     * [job_first, job_first+job_count) range evenly and write each
+     * transformed vertex into transformed[i]. Main reads it via index. */
+    sg_vert       *transformed;
+    int            transformed_cap;
+    int            job_first;
+    int            job_count;
+
     /* Wake protocol: main bumps gen + broadcasts; each worker compares its
      * local_gen to the shared gen under the mutex to decide whether there
      * is new work. Workers atomic-increment done_count when their queue
@@ -72,6 +87,7 @@ typedef struct {
     atomic_int      done_count;
     atomic_int      alive;
     atomic_int      sort_safe;   /* main sets per-flush; 1 = worker may sort */
+    atomic_int      job_type;    /* SG_JOB_RASTER or SG_JOB_VERTEX, set per wake */
 } sg_worker_pool;
 
 void sg_workers_init(softgl_ctx *c, int nworkers_hint);
@@ -87,6 +103,15 @@ void sg_workers_bin_tri(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1, con
  * state change that the in-flight triangles would read (glBindTexture,
  * glDepthFunc, matrix changes, etc.) or before glFinish/glReadPixels. */
 void sg_workers_flush(softgl_ctx *c);
+
+/* Parallel vertex transform: transforms source-array vertex indices
+ * [first, first+count) via sg_process_vertex into the pool's shared
+ * transformed[] buffer. Returns a pointer to transformed[0] (indexed by
+ * the original vertex index). Main thread must have ensured any upstream
+ * state (MV/projection matrices, lighting material, sg_nm4 cache) is
+ * settled before this call; workers read ctx as read-only. Returns NULL
+ * and does nothing if the pool is absent (single-thread path). */
+const sg_vert *sg_workers_transform_range(softgl_ctx *c, int first, int count);
 
 /* Platform CPU count (logical cores). Returns 1 if unknown. */
 int sg_hwthreads(void);

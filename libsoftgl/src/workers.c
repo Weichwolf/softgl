@@ -14,6 +14,11 @@ void sg_raster_triangle_tile(softgl_ctx *c,
                              const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
                              int ix0, int ix1);
 
+/* Main-thread state: pipeline's per-vertex transform. Workers use the same
+ * entrypoint; matrices and lighting state are ctx-read-only during a
+ * SG_JOB_VERTEX phase because main is spin-waiting. */
+void sg_process_vertex_at(softgl_ctx *c, int index, sg_vert *out);
+
 int sg_hwthreads(void) {
 #if defined(_WIN32)
     SYSTEM_INFO si;
@@ -156,26 +161,40 @@ static void *sg_worker_main(void *arg) {
         pthread_mutex_unlock(&p->mtx);
         if (!alive) break;
 
-        int sort = atomic_load_explicit(&p->sort_safe, memory_order_acquire);
-        if (sort) sg_bin_sort_z(b);
-
-        /* Drain bin. Count is owned by main between flushes, so this read
-         * is a plain load — the wake protocol synchronises before it. */
-        int n = b->count;
-        const sg_vert *vp = p->vpool;
-        if (sort) {
-            const uint32_t *order = b->sort_keys;
-            for (int i = 0; i < n; i++) {
-                const sg_worker_tri *t = &b->tris[order[i]];
-                sg_raster_triangle_tile(c, &vp[t->v[0]], &vp[t->v[1]], &vp[t->v[2]], b->ix0, b->ix1);
+        int job = atomic_load_explicit(&p->job_type, memory_order_acquire);
+        if (job == SG_JOB_VERTEX) {
+            int first = p->job_first;
+            int count = p->job_count;
+            int n     = p->nworkers;
+            int tid   = w->tile_idx;
+            /* Even partition: worker i owns [first + i*count/n, first + (i+1)*count/n). */
+            int s = first + (int)((int64_t)tid * count / n);
+            int e = first + (int)((int64_t)(tid + 1) * count / n);
+            for (int i = s; i < e; i++) {
+                sg_process_vertex_at(c, i, &p->transformed[i]);
             }
         } else {
-            for (int i = 0; i < n; i++) {
-                const sg_worker_tri *t = &b->tris[i];
-                sg_raster_triangle_tile(c, &vp[t->v[0]], &vp[t->v[1]], &vp[t->v[2]], b->ix0, b->ix1);
+            int sort = atomic_load_explicit(&p->sort_safe, memory_order_acquire);
+            if (sort) sg_bin_sort_z(b);
+
+            /* Drain bin. Count is owned by main between flushes, so this read
+             * is a plain load — the wake protocol synchronises before it. */
+            int n = b->count;
+            const sg_vert *vp = p->vpool;
+            if (sort) {
+                const uint32_t *order = b->sort_keys;
+                for (int i = 0; i < n; i++) {
+                    const sg_worker_tri *t = &b->tris[order[i]];
+                    sg_raster_triangle_tile(c, &vp[t->v[0]], &vp[t->v[1]], &vp[t->v[2]], b->ix0, b->ix1);
+                }
+            } else {
+                for (int i = 0; i < n; i++) {
+                    const sg_worker_tri *t = &b->tris[i];
+                    sg_raster_triangle_tile(c, &vp[t->v[0]], &vp[t->v[1]], &vp[t->v[2]], b->ix0, b->ix1);
+                }
             }
+            b->count = 0;
         }
-        b->count = 0;
 
         atomic_fetch_add_explicit(&p->done_count, 1, memory_order_acq_rel);
     }
@@ -195,6 +214,7 @@ void sg_workers_init(softgl_ctx *c, int nworkers_hint) {
     atomic_init(&p->done_count, 0);
     atomic_init(&p->alive, 1);
     atomic_init(&p->sort_safe, 0);
+    atomic_init(&p->job_type, SG_JOB_RASTER);
     pthread_mutex_init(&p->mtx, NULL);
     pthread_cond_init(&p->wake, NULL);
 
@@ -240,7 +260,8 @@ void sg_workers_shutdown(softgl_ctx *c) {
         if (p->bins[t].tris)      sg_aligned_free(p->bins[t].tris);
         if (p->bins[t].sort_keys) sg_aligned_free(p->bins[t].sort_keys);
     }
-    if (p->vpool) sg_aligned_free(p->vpool);
+    if (p->vpool)       sg_aligned_free(p->vpool);
+    if (p->transformed) sg_aligned_free(p->transformed);
     pthread_mutex_destroy(&p->mtx);
     pthread_cond_destroy(&p->wake);
     free(p);
@@ -259,6 +280,39 @@ static int sg_pool_sort_safe(const softgl_ctx *c) {
     if (c->color_logic_op_enabled) return 0;
     if (c->polygon_stipple_enable) return 0;
     return 1;
+}
+
+const sg_vert *sg_workers_transform_range(softgl_ctx *c, int first, int count) {
+    sg_worker_pool *p = (sg_worker_pool*)c->workers;
+    if (!p || p->nworkers == 0 || count <= 0) return NULL;
+
+    int need = first + count;
+    if (p->transformed_cap < need) {
+        int cap = p->transformed_cap ? p->transformed_cap : 1024;
+        while (cap < need) cap *= 2;
+        sg_vert *n = (sg_vert*)sg_aligned_alloc((size_t)cap * sizeof(*n), 16);
+        if (p->transformed) sg_aligned_free(p->transformed);
+        p->transformed     = n;
+        p->transformed_cap = cap;
+    }
+
+    p->job_first = first;
+    p->job_count = count;
+    atomic_store_explicit(&p->job_type, SG_JOB_VERTEX, memory_order_release);
+    atomic_store_explicit(&p->done_count, 0, memory_order_release);
+    pthread_mutex_lock(&p->mtx);
+    atomic_fetch_add_explicit(&p->gen, 1, memory_order_acq_rel);
+    pthread_cond_broadcast(&p->wake);
+    pthread_mutex_unlock(&p->mtx);
+
+    while (atomic_load_explicit(&p->done_count, memory_order_acquire) < p->nworkers) {
+#if defined(__x86_64__) || defined(_M_X64) || defined(__i386__) || defined(_M_IX86)
+        __builtin_ia32_pause();
+#endif
+    }
+    /* Reset default job type so subsequent flushes do the right thing. */
+    atomic_store_explicit(&p->job_type, SG_JOB_RASTER, memory_order_release);
+    return p->transformed;
 }
 
 void sg_workers_flush(softgl_ctx *c) {

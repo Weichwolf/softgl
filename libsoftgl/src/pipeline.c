@@ -168,6 +168,18 @@ static void sg_apply_lighting(softgl_ctx *c, const sg_vec4 *eye_pos, const sg_ve
 static SG_ALIGN16 sg_mat4 sg_nm4;
 static int                sg_nm_valid = 0;
 
+/* Main-thread hook: materialise the nm4 cache before dispatching the worker
+ * pool to transform a vertex range. Without this the workers race on the
+ * file-static flag + matrix slot. Called from _sg_draw_* right before the
+ * parallel phase, no-op if lighting is off or the cache is already valid. */
+void sg_prepare_nm_cache(softgl_ctx *c) {
+    if (c->lighting && !sg_nm_valid) {
+        float nm9[9]; sg_mat4_normal_matrix(nm9, &c->mv_stack[c->mv_top]);
+        sg_mat4_from_normal_matrix(&sg_nm4, nm9);
+        sg_nm_valid = 1;
+    }
+}
+
 static void sg_process_vertex(softgl_ctx *c, int index, sg_vert *out) {
     float pos[4]    = {0,0,0,1};
     float normal[4] = {0,0,1,0};
@@ -428,6 +440,12 @@ SG_INLINE void sg_vcache_fetch(softgl_ctx *c, uint32_t idx, sg_vert *out) {
     *out = sg_vcache_verts[slot];
 }
 
+void sg_prepare_nm_cache(softgl_ctx *c);
+
+/* Triangle count threshold above which parallel vertex transform is a net
+ * win. Below this, wake+sync overhead (~5µs per worker) exceeds the save. */
+#define SG_PARALLEL_VTX_MIN_TRIS 256
+
 void _sg_draw_arrays_real(GLenum mode, GLint first, GLsizei count) {
     softgl_ctx *c = sg_current(); if (!c) return;
     if (count <= 0) return;
@@ -435,12 +453,32 @@ void _sg_draw_arrays_real(GLenum mode, GLint first, GLsizei count) {
 
     if (mode == GL_TRIANGLES) {
         int ntri = count / 3;
-        for (int t = 0; t < ntri; t++) {
-            SG_ALIGN16 sg_vert v[3];
-            sg_process_vertex(c, first + t * 3 + 0, &v[0]);
-            sg_process_vertex(c, first + t * 3 + 1, &v[1]);
-            sg_process_vertex(c, first + t * 3 + 2, &v[2]);
-            sg_process_triangle(c, &v[0], &v[1], &v[2]);
+        if (ntri >= SG_PARALLEL_VTX_MIN_TRIS) {
+            /* Parallel phase: workers transform [first, first+count) into
+             * the pool's transformed[] buffer. Main then bins triangles by
+             * index without re-transforming. */
+            sg_prepare_nm_cache(c);
+            const sg_vert *pre = sg_workers_transform_range(c, first, count);
+            if (pre) {
+                for (int t = 0; t < ntri; t++) {
+                    SG_ALIGN16 sg_vert v[3];
+                    v[0] = pre[first + t * 3 + 0];
+                    v[1] = pre[first + t * 3 + 1];
+                    v[2] = pre[first + t * 3 + 2];
+                    sg_process_triangle(c, &v[0], &v[1], &v[2]);
+                }
+            } else {
+                goto serial_triangles_arrays;
+            }
+        } else {
+        serial_triangles_arrays:
+            for (int t = 0; t < ntri; t++) {
+                SG_ALIGN16 sg_vert v[3];
+                sg_process_vertex(c, first + t * 3 + 0, &v[0]);
+                sg_process_vertex(c, first + t * 3 + 1, &v[1]);
+                sg_process_vertex(c, first + t * 3 + 2, &v[2]);
+                sg_process_triangle(c, &v[0], &v[1], &v[2]);
+            }
         }
     } else if (mode == GL_TRIANGLE_STRIP) {
         for (int t = 0; t < count - 2; t++) {
@@ -565,6 +603,32 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
 
     if (mode == GL_TRIANGLES) {
         int ntri = count / 3;
+        if (ntri >= SG_PARALLEL_VTX_MIN_TRIS) {
+            /* Find the index range so workers transform only the slice that
+             * is actually referenced. Scan once — cheap even at 130k indices. */
+            uint32_t imin = 0xFFFFFFFFu, imax = 0;
+            for (int k = 0; k < count; k++) {
+                uint32_t ix = sg_fetch_index(c, type, indices, k);
+                if (ix < imin) imin = ix;
+                if (ix > imax) imax = ix;
+            }
+            sg_prepare_nm_cache(c);
+            const sg_vert *pre = sg_workers_transform_range(c, (int)imin,
+                                                            (int)(imax - imin + 1));
+            if (pre) {
+                for (int t = 0; t < ntri; t++) {
+                    uint32_t i0 = sg_fetch_index(c, type, indices, t * 3 + 0);
+                    uint32_t i1 = sg_fetch_index(c, type, indices, t * 3 + 1);
+                    uint32_t i2 = sg_fetch_index(c, type, indices, t * 3 + 2);
+                    SG_ALIGN16 sg_vert v[3];
+                    v[0] = pre[i0];
+                    v[1] = pre[i1];
+                    v[2] = pre[i2];
+                    sg_process_triangle(c, &v[0], &v[1], &v[2]);
+                }
+                goto triangles_done;
+            }
+        }
         for (int t = 0; t < ntri; t++) {
             uint32_t i0 = sg_fetch_index(c, type, indices, t * 3 + 0);
             uint32_t i1 = sg_fetch_index(c, type, indices, t * 3 + 1);
@@ -575,6 +639,7 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
             sg_vcache_fetch(c, i2, &v[2]);
             sg_process_triangle(c, &v[0], &v[1], &v[2]);
         }
+    triangles_done:;
     } else if (mode == GL_TRIANGLE_STRIP) {
         for (int t = 0; t < count - 2; t++) {
             uint32_t i0 = sg_fetch_index(c, type, indices, t);
