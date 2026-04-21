@@ -59,14 +59,18 @@ add_executable(softgl
     ${CMAKE_CURRENT_BINARY_DIR}/dispatch.c
     ${CMAKE_CURRENT_SOURCE_DIR}/bench_wrap.c
     ${CMAKE_CURRENT_SOURCE_DIR}/tank_wrap.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/sdl_viewer.c
     $<TARGET_OBJECTS:softgl_objs>
     ${TEST_OBJECTS}
 )
 target_include_directories(softgl PRIVATE
     ${SRC}/libsoftgl/include
     ${SRC}/tests/harness)
+# sdl_viewer.c needs Emscripten's SDL2 port headers at compile time; the
+# same -sUSE_SDL=2 is also on the link line below so SDL_* symbols resolve.
+target_compile_options(softgl PRIVATE -sUSE_SDL=2)
 set_target_properties(softgl PROPERTIES
     OUTPUT_NAME softgl
     SUFFIX ".js"
-    LINK_FLAGS "-O2 -msimd128 -pthread -sPTHREAD_POOL_SIZE=8 -sEXPORTED_FUNCTIONS=_softgl_create,_softgl_destroy,_softgl_make_current,_softgl_read_rgba8,_sg_test_count,_sg_test_name,_sg_test_run,_sg_bench_slot_count,_sg_bench_slot_tag,_sg_bench_slot_test_index,_sg_bench_run_idx,_sg_bench_run_slot,_sg_tank_load,_sg_tank_render,_sg_tank_tri_count,_sg_tank_mat_count,_sg_tank_unload,_sg_thread_count,_sg_hwthreads,_malloc,_free -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,HEAPU8,UTF8ToString -sMODULARIZE=1 -sEXPORT_NAME=createSoftGL -sALLOW_MEMORY_GROWTH=1 -sINITIAL_MEMORY=33554432 -sSTACK_SIZE=8388608"
+    LINK_FLAGS "-O2 -msimd128 -pthread -sUSE_SDL=2 -sPTHREAD_POOL_SIZE=8 -sEXPORTED_FUNCTIONS=_softgl_create,_softgl_destroy,_softgl_make_current,_softgl_read_rgba8,_sg_test_count,_sg_test_name,_sg_test_run,_sg_bench_slot_count,_sg_bench_slot_tag,_sg_bench_slot_test_index,_sg_bench_run_idx,_sg_bench_run_slot,_sg_tank_load,_sg_tank_render,_sg_tank_tri_count,_sg_tank_mat_count,_sg_tank_unload,_sg_thread_count,_sg_hwthreads,_sg_viewer_create,_sg_viewer_present,_sg_viewer_destroy,_malloc,_free -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,HEAPU8,UTF8ToString -sMODULARIZE=1 -sEXPORT_NAME=createSoftGL -sALLOW_MEMORY_GROWTH=1 -sINITIAL_MEMORY=67108864 -sSTACK_SIZE=8388608"
 )

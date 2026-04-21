@@ -9,8 +9,13 @@
   .wrap { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
   h1 { font-weight: 400; font-size: 20px; margin: 0 0 16px; color: #aaa; }
   .stage { display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap; }
+  /* scaleY(-1): softgl's framebuffer is GL-convention (row 0 = bottom),
+     SDL textures are row 0 = top. SDL_RenderCopyEx(SDL_FLIP_VERTICAL)
+     is a no-op on Emscripten's GLES2 SDL renderer, so flip via CSS —
+     the browser absorbs it during GPU compositing at zero runtime cost. */
   canvas { image-rendering: pixelated; image-rendering: crisp-edges;
-           background: #000; border: 1px solid #333; width: 640px; height: 360px; }
+           background: #000; border: 1px solid #333; width: 640px; height: 360px;
+           transform: scaleY(-1); }
   .info { flex: 1; min-width: 320px; }
   .counter { font-size: 14px; color: #777; margin-bottom: 8px; }
   .name { font-size: 16px; color: #8bf; margin-bottom: 12px; word-break: break-all; }
@@ -37,7 +42,7 @@
 <div class="wrap">
   <h1>SoftGL — T-80 MBT Demo + 216 Tests @ 640×360</h1>
   <div class="stage">
-    <canvas id="c" width="640" height="360"></canvas>
+    <canvas id="canvas" width="640" height="360"></canvas>
     <div class="info">
       <div class="counter" id="counter">–</div>
       <div class="name" id="name">Loading WASM…</div>

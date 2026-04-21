@@ -16,9 +16,15 @@
   const sabOK  = (typeof SharedArrayBuffer !== 'undefined')
               && (typeof crossOriginIsolated === 'undefined' || crossOriginIsolated);
 
-  const canvas = document.getElementById('c');
-  const ctx = canvas.getContext('2d');
-  const img = ctx.createImageData(W, H);
+  /* The canvas is owned by the SDL2 WebGL binding — do NOT call
+   * getContext() on it from JS, SDL's emscripten shim grabs it
+   * when SDL_CreateWindow runs and fails if a 2d context is
+   * already bound. id must be "canvas": Emscripten's SDL2 port
+   * hardcodes "#canvas" as the CSS selector for event-target
+   * registration and for resolving Module.canvas from the DOM,
+   * so any other id makes SDL bind its GL context to a phantom
+   * element and the visible canvas stays black. */
+  const canvas = document.getElementById('canvas');
   const counterEl = document.getElementById('counter');
   const nameEl    = document.getElementById('name');
   const timingEl  = document.getElementById('timing');
@@ -49,13 +55,34 @@
   sStatsSab.classList.toggle('bad', !sabOK);
   sStatsCores.textContent = (navigator.hardwareConcurrency || 1) + ' (navigator.hardwareConcurrency)';
 
-  const Mod = await createSoftGL();
+  console.log('[main] starting module init');
+  /* Hand the specific canvas to Emscripten's SDL shim. Without this it
+   * falls back to the first canvas on the page, and SDL_CreateWindow
+   * does the getContext('webgl') call internally.
+   * print/printErr route stdio from the wasm side (fprintf in
+   * sg_viewer.c) to the browser console — without these overrides the
+   * modularize wrapper can swallow stdio. */
+  const Mod = await createSoftGL({
+    canvas,
+    print:    (...a) => console.log('[wasm]',  ...a),
+    printErr: (...a) => console.warn('[wasm]', ...a),
+  });
+  console.log('[main] module ready, calling sg_viewer_create');
 
   /* Render threads actually spawned — 0 when SAB is missing or
    * -pthread was off in the build. Matches sg_thread_count() on a
    * real context once one exists, so we read it lazily below. */
   const hwThreads = Mod.ccall('sg_hwthreads', 'number', [], []);
   sStatsCores.textContent = hwThreads + ' (emscripten_num_logical_cores)';
+
+  /* Init SDL viewer once. Subsequent render calls will reuse the same
+   * SDL texture + renderer; destroy is only needed on shutdown. */
+  const viewerOK = Mod.ccall('sg_viewer_create', 'number', ['number', 'number'], [W, H]);
+  console.log('[main] sg_viewer_create returned:', viewerOK);
+  if (!viewerOK) {
+    nameEl.textContent = 'SDL init failed — check console';
+    return;
+  }
 
   function updateThreadStats(ctx) {
     const threads = Mod.ccall('sg_thread_count', 'number', ['number'], [ctx]);
@@ -80,16 +107,15 @@
     }
   }
 
-  /* ---- Shared output path: softgl FB → canvas ----------------------- */
+  /* ---- Shared output path: softgl FB → SDL texture → canvas ---------
+   * sg_viewer_present uploads the softgl context's fb.color into the
+   * SDL streaming texture (SDL_UpdateTexture) and calls RenderCopyEx
+   * with SDL_FLIP_VERTICAL so the GL y=bottom convention reads correct
+   * in window space. Replaces the per-row putImageData Y-flip that ran
+   * on the JS side. */
   function blitContext(c) {
     const pixelsPtr = Mod.ccall('softgl_read_rgba8', 'number', ['number'], [c]);
-    const pixels = Mod.HEAPU8.subarray(pixelsPtr, pixelsPtr + W * H * 4);
-    for (let y = 0; y < H; y++) {
-      const src = (H - 1 - y) * W * 4;
-      const dst = y * W * 4;
-      img.data.set(pixels.subarray(src, src + W * 4), dst);
-    }
-    ctx.putImageData(img, 0, 0);
+    Mod.ccall('sg_viewer_present', null, ['number'], [pixelsPtr]);
   }
 
   /* ---- Test cycle mode -------------------------------------------- */
