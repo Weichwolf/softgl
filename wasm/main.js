@@ -33,6 +33,7 @@
   const prevBtn   = document.getElementById('prev');
   const nextBtn   = document.getElementById('next');
   const benchBtn  = document.getElementById('bench');
+  const fsBtn     = document.getElementById('fullscreen');
   const tankBtn   = document.getElementById('tank');
   const testsBtn  = document.getElementById('tests');
   const benchOut  = document.getElementById('bench-out');
@@ -161,6 +162,11 @@
   }
 
   /* ---- Tank mode -------------------------------------------------- */
+  /* 30 fps display cap. 2:2 cadence on 60 Hz, 4:4 on 120 Hz — clean,
+   * no judder. The compute-time measurement below (t1-t0 around
+   * sg_tank_render) is unaffected, so the "fps" shown in the UI stays
+   * the uncapped theoretical rate implied by render cost. */
+  const TANK_CAP_MS = 1000 / 30;
   let tankLoaded = false;
   let tankCtx = 0;
   let tankFrameId = 0;
@@ -196,6 +202,13 @@
 
   function tankFrame(t) {
     if (mode !== 'tank') { tankFrameId = 0; return; }
+    tankFrameId = requestAnimationFrame(tankFrame);
+    /* Drop rAF ticks that land before the 30 fps budget elapses.
+     * 0.95× tolerance absorbs rAF jitter on 60 Hz (→ every 2nd tick
+     * renders) and 120 Hz (→ every 4th). tankLastTime is only advanced
+     * on rendered frames, so angle dt stays true real time. */
+    if (tankLastTime !== 0 && (t - tankLastTime) < TANK_CAP_MS * 0.95) return;
+
     if (tankLastTime === 0) tankLastTime = t;
     const dt = Math.min(50, t - tankLastTime);    /* clamp to 50 ms */
     tankLastTime = t;
@@ -208,13 +221,11 @@
     const t1 = performance.now();
     blitContext(tankCtx);
     const ms = t1 - t0;
-    timingEl.textContent = `render: ${ms.toFixed(2)} ms   ·   ${(1000/ms).toFixed(0)} fps`;
+    timingEl.textContent = `render: ${ms.toFixed(2)} ms   ·   ${(1000/ms).toFixed(0)} fps theoretical (capped @ 30)`;
     recordFrameMs(ms);
     /* steady angle bar instead of test progress */
     progEl.style.transition = 'none';
     progEl.style.width = `${(tankAngle / 360) * 100}%`;
-
-    tankFrameId = requestAnimationFrame(tankFrame);
   }
 
   function startTank() {
@@ -298,6 +309,19 @@
     benchBtn.disabled = false;
   }
   benchBtn.onclick = runBenchmark;
+
+  /* Fullscreen the wrapper, not the canvas — browsers force
+   * transform: none on the fullscreen element, which would kill the
+   * scaleY(-1) y-flip. The wrapper stays untransformed; the canvas
+   * inside it keeps the flip. */
+  const canvasWrap = document.getElementById('canvas-wrap');
+  fsBtn.onclick = () => {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else canvasWrap.requestFullscreen().catch(e => console.warn('fullscreen denied:', e));
+  };
+  document.addEventListener('fullscreenchange', () => {
+    fsBtn.textContent = document.fullscreenElement ? 'Exit Fullscreen' : 'Fullscreen';
+  });
 
   /* ---- Boot: try tank, fall back to tests ------------------------- */
   nameEl.textContent = 'loading tank.pack…';

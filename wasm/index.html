@@ -16,6 +16,16 @@
   canvas { image-rendering: pixelated; image-rendering: crisp-edges;
            background: #000; border: 1px solid #333; width: 640px; height: 360px;
            transform: scaleY(-1); }
+  /* Fullscreen the wrapper, not the canvas: browser UA stylesheets apply
+     transform: none !important to the fullscreen element, which would kill
+     the scaleY(-1) y-flip. Wrapping keeps the canvas transform intact. */
+  #canvas-wrap { display: inline-block; line-height: 0; font-size: 0; }
+  #canvas-wrap:fullscreen { background: #000; width: 100vw; height: 100vh;
+                            display: flex; align-items: center; justify-content: center; }
+  #canvas-wrap:fullscreen canvas {
+      border: none;
+      width:  min(100vw, calc(100vh * 16 / 9));
+      height: min(100vh, calc(100vw * 9 / 16)); }
   .info { flex: 1; min-width: 320px; }
   .counter { font-size: 14px; color: #777; margin-bottom: 8px; }
   .name { font-size: 16px; color: #8bf; margin-bottom: 12px; word-break: break-all; }
@@ -42,7 +52,7 @@
 <div class="wrap">
   <h1>SoftGL — T-80 MBT Demo + 216 Tests @ 640×360</h1>
   <div class="stage">
-    <canvas id="canvas" width="640" height="360"></canvas>
+    <div id="canvas-wrap"><canvas id="canvas" width="640" height="360"></canvas></div>
     <div class="info">
       <div class="counter" id="counter">–</div>
       <div class="name" id="name">Loading WASM…</div>
@@ -55,6 +65,7 @@
         <button id="prev">&lsaquo; Prev</button>
         <button id="next">Next &rsaquo;</button>
         <button id="bench">Run Benchmark</button>
+        <button id="fullscreen">Fullscreen</button>
       </div>
       <div id="stats" class="stats">
         <div><span class="k">WASM SIMD</span><span class="v" id="s-simd">–</span></div>
