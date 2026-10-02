@@ -40,5 +40,5 @@ endif()
 # workers collapse to a no-op fallback via sg_workers_init().
 if(NOT EMSCRIPTEN)
     find_package(Threads REQUIRED)
-    target_link_libraries(softgl PUBLIC Threads::Threads)
+    target_link_libraries(softgl PUBLIC Threads::Threads m)
 endif()

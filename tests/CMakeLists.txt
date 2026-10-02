@@ -58,33 +58,13 @@ add_library(harness_softgl STATIC harness/harness_softgl.c harness/ppm_write.c)
 target_link_libraries(harness_softgl PUBLIC softgl)
 target_include_directories(harness_softgl PUBLIC harness)
 
-# --- Harness library: WGL reference backend ---
-if(WIN32)
-    add_library(harness_wgl STATIC harness/harness_wgl.c harness/ppm_write.c)
-    target_link_libraries(harness_wgl PUBLIC opengl32 gdi32 user32)
-    target_include_directories(harness_wgl PUBLIC harness)
-    target_compile_definitions(harness_wgl PUBLIC SG_HARNESS_WGL=1)
-endif()
-
-# Locate Mesa's opengl32.dll so we can copy it alongside reference executables
-# (MSYS2 install path). If not found, warn — ref tests will fall back to the
-# system opengl32.dll which is not llvmpipe.
-find_file(MESA_OPENGL32_DLL
-    NAMES opengl32.dll
-    PATHS "C:/msys64/ucrt64/bin" "$ENV{MINGW_PREFIX}/bin"
-    NO_DEFAULT_PATH
-)
-if(NOT MESA_OPENGL32_DLL)
-    message(WARNING "Mesa opengl32.dll not found — reference tests will not be llvmpipe.")
-else()
-    message(STATUS "Mesa opengl32.dll: ${MESA_OPENGL32_DLL}")
-endif()
-
-find_file(MESA_GALLIUM_DLL
-    NAMES libgallium_wgl.dll
-    PATHS "C:/msys64/ucrt64/bin" "$ENV{MINGW_PREFIX}/bin"
-    NO_DEFAULT_PATH
-)
+# --- Harness library: Mesa llvmpipe reference backend ---
+find_path(OSMESA_INCLUDE_DIR GL/osmesa.h REQUIRED)
+find_library(OSMESA_LIBRARY OSMesa REQUIRED)
+add_library(harness_mesa STATIC harness/harness_mesa.c harness/ppm_write.c)
+target_link_libraries(harness_mesa PUBLIC ${OSMESA_LIBRARY} m)
+target_include_directories(harness_mesa PUBLIC harness ${OSMESA_INCLUDE_DIR})
+target_compile_definitions(harness_mesa PUBLIC SG_HARNESS_MESA=1)
 
 set(SG_TEST_CASES
     01_clear_black
@@ -304,6 +284,7 @@ set(SG_TEST_CASES
     215_crt_emissive
     216_water_surface
     217_dot3_multipass_fog
+    218_worker_single_triangle
 )
 
 # Tolerances for reference/softgl pixel diff. Default exact; individual tests
@@ -526,12 +507,15 @@ endforeach()
 set(SG_TOL_217_dot3_multipass_fog_MAX_DELTA 16)
 set(SG_TOL_217_dot3_multipass_fog_MAX_BAD ${SG_DEMO_BIG_MAX_BAD})
 
+set(SG_TOL_218_worker_single_triangle_MAX_DELTA 2)
+set(SG_TOL_218_worker_single_triangle_MAX_BAD ${SG_RASTER_MAX_BAD})
+
 foreach(case_name IN LISTS SG_TEST_CASES)
     set(src cases/test_${case_name}.c)
 
     # Reference variant (Mesa llvmpipe).
     add_executable(ref_${case_name} ${src})
-    target_link_libraries(ref_${case_name} PRIVATE harness_wgl)
+    target_link_libraries(ref_${case_name} PRIVATE harness_mesa)
     set_target_properties(ref_${case_name} PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/tests_ref)
 
@@ -586,19 +570,6 @@ add_test(NAME benchmark_fp6
     COMMAND bench_scenes
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/bench)
 set_tests_properties(benchmark_fp6 PROPERTIES LABELS "bench")
-
-# Deploy Mesa DLLs next to reference executables on first configure.
-# Doing it via a custom target keeps rebuilds cheap.
-if(MESA_OPENGL32_DLL)
-    add_custom_target(deploy_mesa ALL
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/tests_ref
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different "${MESA_OPENGL32_DLL}" ${CMAKE_BINARY_DIR}/tests_ref/
-    )
-    if(MESA_GALLIUM_DLL)
-        add_custom_command(TARGET deploy_mesa POST_BUILD
-            COMMAND ${CMAKE_COMMAND} -E copy_if_different "${MESA_GALLIUM_DLL}" ${CMAKE_BINARY_DIR}/tests_ref/)
-    endif()
-endif()
 
 # Create out directory
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/out)

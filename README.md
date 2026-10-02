@@ -21,7 +21,8 @@ API-level compatibility with real OpenGL 1.5:
 - Occlusion queries, `glMapBuffer`, comprehensive `glGet*` state readback
 - Evaluators (`glMap1`/`glMap2`), accumulation buffer, selection / feedback modes
 
-322 entry points, 217 test cases × 6 backend/compare variants (1296 total), 100 % green against Mesa llvmpipe.
+322 entry points, 218 test cases. Each case runs against softgl and Mesa
+llvmpipe, followed by a pixel comparison (654 correctness checks).
 
 ## Architecture
 
@@ -37,39 +38,42 @@ API-level compatibility with real OpenGL 1.5:
 
 ### Native (test suite)
 
-Requires MSYS2 UCRT64 with `mingw-w64-ucrt-x86_64-mesa` for the Mesa llvmpipe reference:
+Requires an x86 CPU with SSE4.1, GCC or Clang, CMake 3.20+, pthreads,
+Mesa OSMesa development libraries. On Debian/Ubuntu:
 
+```sh
+sudo apt install build-essential cmake libosmesa6-dev
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j4
+ctest --test-dir build --output-on-failure -j1
 ```
-cd build
-C:/msys64/msys2_shell.cmd -ucrt64 -defterm -no-start -here -c \
-  "cmake .. && cmake --build . -j4 && ctest --output-on-failure -j1"
+
+The OSMesa harness renders without a display server, requests RGBA8 color,
+24-bit depth, 8-bit stencil, and a 16-bit accumulation buffer, and verifies
+that the reference renderer is Mesa llvmpipe. Raw images and PPM diffs are
+written to `build/out/`. The comparator uses the per-case tolerances in
+`tests/CMakeLists.txt`, typically a ~2 % pixel budget at triangle edges.
+
+Each test includes `harness.h`, which selects `<GL/gl.h>` and extension
+prototypes for the Mesa reference build, or `<GL/softgl.h>` for softgl.
+The same `.c` test file compiles against both backends unchanged.
+
+The scene benchmark is separate from the correctness suite:
+
+```sh
+ctest --test-dir build -C Bench -L bench --output-on-failure
 ```
-
-The harness wraps OpenGL calls so each test runs once against Mesa llvmpipe
-(reference) and once against softgl (both float and fixed-point backends). The
-comparator tolerates ~2 % pixel budget at triangle edges (fill-rule diff is
-unavoidable without replicating Mesa's exact top-left rule).
-
-Each test case includes `harness.h`, which pulls either `<GL/gl.h>` (reference
-build, via Mesa llvmpipe) or `<GL/softgl.h>` based on a build flag. VBO and
-multitexture entry points are loaded through `wglGetProcAddress` into `hx_gl*`
-pointers and redirected with `#define` macros in the reference build; the
-softgl header defines them directly. Immediate-mode functions
-(`glBegin`/`glVertex*` etc.) are exported from `opengl32.dll` and need no
-proxying. The same `.c` test file therefore compiles against both backends
-unchanged.
 
 ### WASM (browser preview)
 
-```
-cd wasm/cmake-build
-cmake -G "MinGW Makefiles" ..
-./build_debug.bat       # -O0 -g0, ~30 s; -O2 hangs binaryen on Windows
-cp softgl.{js,wasm} ../
-cd ../ && ./serve.sh 8000
+```sh
+emcmake cmake -S wasm -B wasm/build
+cmake --build wasm/build -j4
+cp wasm/build/softgl.js wasm/build/softgl.wasm wasm/
+bash wasm/serve.sh 8000
 ```
 
-Open http://localhost:8000. The preview page cycles the 217 tests and runs a
+Open http://localhost:8000. The preview page cycles the 218 tests and runs a
 live Tank demo with pthread tile workers (requires COOP/COEP headers —
 `serve.sh` sets them).
 
@@ -102,7 +106,6 @@ Model: "T-80 MBT [MAIN BATTLE TANK]" by Muhamad Mirza Arrafi
 
 ```
 libsoftgl/        the renderer (include/GL/softgl.h, src/*.c)
-tests/            harness + 217 test cases (build both backends + compare)
+tests/            harness + 218 test cases (build both backends + compare)
 wasm/             Emscripten preview: CMakeLists, SDL2 blit layer, index.html
 ```
-

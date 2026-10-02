@@ -14,21 +14,13 @@
 #include <string.h>
 #include <math.h>
 
-#if defined(_WIN32)
-  #include <windows.h>
-  static double now_ms(void) {
-      LARGE_INTEGER f, c;
-      QueryPerformanceFrequency(&f);
-      QueryPerformanceCounter(&c);
-      return (double)c.QuadPart * 1000.0 / (double)f.QuadPart;
-  }
-#else
-  #include <time.h>
-  static double now_ms(void) {
-      struct timespec t; clock_gettime(CLOCK_MONOTONIC, &t);
-      return (double)t.tv_sec * 1000.0 + (double)t.tv_nsec / 1e6;
-  }
-#endif
+#include <time.h>
+
+static double now_ms(void) {
+    struct timespec t;
+    clock_gettime(CLOCK_MONOTONIC, &t);
+    return (double)t.tv_sec * 1000.0 + (double)t.tv_nsec / 1e6;
+}
 
 #define W 640
 #define H 360

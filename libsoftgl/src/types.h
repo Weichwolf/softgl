@@ -6,15 +6,9 @@
 #include <string.h>
 #include <GL/softgl.h>
 
-#if defined(_MSC_VER)
-  #define SG_ALIGN16 __declspec(align(16))
-  #define SG_INLINE  __forceinline
-  #define SG_RESTRICT __restrict
-#else
-  #define SG_ALIGN16 __attribute__((aligned(16)))
-  #define SG_INLINE  static inline __attribute__((always_inline))
-  #define SG_RESTRICT __restrict__
-#endif
+#define SG_ALIGN16 __attribute__((aligned(16)))
+#define SG_INLINE  static inline __attribute__((always_inline))
+#define SG_RESTRICT __restrict__
 
 #define SG_MAX_LIGHTS        8
 #define SG_MAX_TEX_UNITS     4

@@ -4,8 +4,6 @@
 
 #if defined(__EMSCRIPTEN__)
   #include <emscripten/threading.h>
-#elif defined(_WIN32)
-  #include <windows.h>
 #elif defined(__unix__) || defined(__APPLE__)
   #include <unistd.h>
 #endif
@@ -34,11 +32,6 @@ int sg_hwthreads(void) {
      * for actual Web-Worker-backed threads; without, this still returns
      * the core count but the workers fall back to a no-op pool. */
     int n = emscripten_num_logical_cores();
-    return n > 0 ? n : 1;
-#elif defined(_WIN32)
-    SYSTEM_INFO si;
-    GetSystemInfo(&si);
-    int n = (int)si.dwNumberOfProcessors;
     return n > 0 ? n : 1;
 #elif defined(_SC_NPROCESSORS_ONLN)
     long n = sysconf(_SC_NPROCESSORS_ONLN);
@@ -135,7 +128,11 @@ void sg_workers_bin_tri(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1, con
  * zero touches to tri payload data. */
 static void sg_bin_sort_z(sg_worker_bin *b) {
     int n = b->count;
-    if (n < 2) return;
+    if (n == 0) return;
+    if (n == 1) {
+        b->sort_keys[0] = 0;
+        return;
+    }
     uint32_t *keys  = b->sort_keys;
     uint32_t *sorted = keys + n;   /* scatter destination, half of the 2×cap buffer */
     int counts[257];
@@ -321,7 +318,7 @@ const sg_vert *sg_workers_transform_range(softgl_ctx *c, int first, int count) {
     pthread_mutex_unlock(&p->mtx);
 
     while (atomic_load_explicit(&p->done_count, memory_order_acquire) < p->nworkers) {
-#if defined(__x86_64__) || defined(_M_X64) || defined(__i386__) || defined(_M_IX86)
+#if defined(__x86_64__) || defined(__i386__)
         __builtin_ia32_pause();
 #endif
     }
@@ -350,7 +347,7 @@ void sg_workers_flush(softgl_ctx *c) {
     /* Spin-wait: flush latency is sub-ms with 4 workers, condvar wakeup
      * of the main thread would add ~3µs vs ~50ns for a cached atomic. */
     while (atomic_load_explicit(&p->done_count, memory_order_acquire) < p->nworkers) {
-#if defined(__x86_64__) || defined(_M_X64) || defined(__i386__) || defined(_M_IX86)
+#if defined(__x86_64__) || defined(__i386__)
         __builtin_ia32_pause();
 #endif
     }
