@@ -24,7 +24,7 @@ API-level compatibility with real OpenGL 1.5:
 
 323 entry points, 234 test cases plus three Tank and three BMW camera views. Each runs
 against softgl and Mesa llvmpipe, followed by a pixel comparison
-(720 image correctness checks plus nine renderer contracts when the
+(720 image correctness checks plus ten renderer contracts when the
 BMW asset is prepared; `ctest -C Bench` also includes the native benchmark).
 
 ## Model preparation
@@ -48,6 +48,7 @@ materials and original texture dimensions remain available. Use
 - **AoS 16-byte aligned vertex** with vec4 clip / ndc / color / normal / eye + per-unit UVs
 - **Separate RGBA8 color + f32 depth planes**, row 0 = bottom (GL convention)
 - **Optional MSAA sample buffers**, with color/depth/stencil per sample and one texture/combiner evaluation per covered pixel
+- **Opaque 4× MSAA stores** reuse the rasterizer's tested sample mask and convert RGBA with SIMD; other fragment states retain the general writer
 - **Pthread tile worker pool** with X-stripe bins; bounded immutable draw buffers overlap indexed geometry preparation with prior raster work, preserving draw order; the caller helps drain outstanding bins
 - **Position and ordered-bin cache** shares a 4MiB payload budget; VBO storage revisions and matrix/viewport keys preserve fresh attributes and lighting across draws
 - **Prepared vertex inputs** resolve array/VBO addresses once per joined vertex job; bounded SIMD loads serve float arrays, with the original conversions for other types

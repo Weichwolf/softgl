@@ -14,6 +14,16 @@ target_link_libraries(multisample_contract PRIVATE softgl)
 add_test(NAME multisample_contract COMMAND multisample_contract)
 set_tests_properties(multisample_contract PROPERTIES TIMEOUT 30)
 
+# Strict byte-conversion and query-path oracle; renderer flags stay unchanged.
+add_executable(msaa_store_contract msaa_store.c)
+target_include_directories(msaa_store_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_link_libraries(msaa_store_contract PRIVATE softgl)
+if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(msaa_store_contract PRIVATE -O2 -fno-fast-math -ffp-contract=off -msse4.1)
+endif()
+add_test(NAME msaa_store_contract COMMAND msaa_store_contract)
+set_tests_properties(msaa_store_contract PROPERTIES TIMEOUT 30)
+
 add_executable(dot3_chain_contract dot3_chain.c)
 target_include_directories(dot3_chain_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
 target_link_libraries(dot3_chain_contract PRIVATE softgl)

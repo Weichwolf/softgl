@@ -4,6 +4,7 @@
 #include "frag_hot.h"
 #include "frag_combine_hot.h"
 #include "multisample.h"
+#include "raster_store.h"
 #include <math.h>
 
 /* Under Emscripten (-msimd128), <smmintrin.h> remaps _mm_* onto
@@ -666,13 +667,16 @@ typedef struct {
 
 SG_INLINE void sg_write_pixel_packet(softgl_ctx *c, const sg_tex_tri_ctx *t,
                                       const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
-                                      const sg_pixel_packet *p, float inv_area) {
+                                      const sg_pixel_packet *p, float inv_area, int opaque_store) {
     float color[4][4];
     unsigned live = sg_shade_packet(c, t, v0, v1, v2, p->edge0, p->edge1,
                                     inv_area, 15u, color);
     for (int l = 0; l < 4; l++) {
-        if (live & (1u << l))
-            sg_write_multisample(c, p->x[l], p->y[l], p->coverage[l], p->depths[l], color[l]);
+        if (live & (1u << l)) {
+            if (opaque_store)
+                sg_store_opaque_msaa4(c, p->x[l], p->y[l], p->coverage[l], p->depths[l], color[l]);
+            else sg_write_multisample(c, p->x[l], p->y[l], p->coverage[l], p->depths[l], color[l]);
+        }
     }
 }
 
