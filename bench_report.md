@@ -65,7 +65,7 @@
 
 | Ohne MSAA; 1 AB/BA-Paar | BMW F31 | T-80 |
 | --- | --- | --- |
-| FPS | 17.59 | 69.82 |
-| Kandidat / Basis | 56.84 / 57.62 ms | 14.32 / 14.48 ms |
-| Paarweise Zeitänderung | −0.85 % | +0.003 % |
-| BMW-Profil, Indizes + Dreiecksaufbereitung auf Caller | 19.06 ms/Frame | — |
+| FPS | 19.67 | 70.77 |
+| Kandidat / Basis | 50.84 / 55.48 ms | 14.13 / 14.26 ms |
+| Paarweise Zeitänderung | -8.62 % | +0.73 % |
+| BMW-Profil vor Geometriecache, Indizes + Dreiecksaufbereitung auf Caller | 19.06 ms/Frame | — |
