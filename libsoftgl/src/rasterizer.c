@@ -2,6 +2,7 @@
 #include "raster_types.h"
 #include "simd.h"
 #include "frag_hot.h"
+#include "frag_combine_hot.h"
 #include "multisample.h"
 #include <math.h>
 
@@ -138,11 +139,15 @@ SG_INLINE int sg_shade_pixel(softgl_ctx *c,
         sg_tex_tri_sample_units(tctx, v0, v1, v2,
                                 w0, w1, w2, one_over_wsum,
                                 unit_tex, unit_active);
-        for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
-            if (!unit_active[u]) continue;
-            float out[4];
-            sg_tex_env_combine_full(&c->tex_env[u], u, primary, col, unit_tex, out);
-            col[0] = out[0]; col[1] = out[1]; col[2] = out[2]; col[3] = out[3];
+        if (tctx->combine_kind) {
+            sg_dot3_chain_shade(tctx->combine_kind, c->tex_env, primary, unit_tex, col);
+        } else {
+            for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
+                if (!unit_active[u]) continue;
+                float out[4];
+                sg_tex_env_combine_full(&c->tex_env[u], u, primary, col, unit_tex, out);
+                col[0] = out[0]; col[1] = out[1]; col[2] = out[2]; col[3] = out[3];
+            }
         }
     }
 

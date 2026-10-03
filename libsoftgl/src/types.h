@@ -443,6 +443,7 @@ typedef struct {
     sg_tex_unit_tri unit[SG_MAX_TEX_UNITS];
     int             any_active;
     int             fastpath_kind;     /* 0=generic 1=mod 2=replace 3=none */
+    int             combine_kind;      /* 0=generic; complete DOT3 chain 1/2/3 */
     unsigned        sample_mask;       /* texture values consumed by active stages */
 } sg_tex_tri_ctx;
 

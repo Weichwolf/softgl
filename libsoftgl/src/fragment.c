@@ -1,4 +1,5 @@
 #include "types.h"
+#include "frag_combine_hot.h"
 #include <math.h>
 
 /* Texture sampling + tex-env combiner.
@@ -27,6 +28,7 @@ static unsigned source_texture(GLenum source, int current) {
 void sg_tex_tri_prepare(softgl_ctx *c, sg_tex_tri_ctx *t) {
     t->any_active = 0;
     t->fastpath_kind = 0;
+    t->combine_kind = 0;
     t->sample_mask = 0;
     int n_active = 0;
     int first_active = -1;
@@ -117,6 +119,7 @@ void sg_tex_tri_prepare(softgl_ctx *c, sg_tex_tri_ctx *t) {
         count = combine_arguments(env->combine_a);
         for (int i = 0; i < count; i++) t->sample_mask |= source_texture(env->src_a[i], u);
     }
+    if (n_active == 4) t->combine_kind = sg_dot3_chain_kind(c, t);
 }
 
 /* Generic sampler: populate unit_tex/unit_active for all enabled units. */

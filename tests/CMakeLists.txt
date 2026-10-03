@@ -14,6 +14,15 @@ target_link_libraries(multisample_contract PRIVATE softgl)
 add_test(NAME multisample_contract COMMAND multisample_contract)
 set_tests_properties(multisample_contract PROPERTIES TIMEOUT 30)
 
+add_executable(dot3_chain_contract dot3_chain.c)
+target_include_directories(dot3_chain_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_link_libraries(dot3_chain_contract PRIVATE softgl)
+if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(dot3_chain_contract PRIVATE -msse4.1)
+endif()
+add_test(NAME dot3_chain_contract COMMAND dot3_chain_contract)
+set_tests_properties(dot3_chain_contract PROPERTIES TIMEOUT 30)
+
 # --- Compare tool (native, no GL) ---
 add_executable(sg_compare harness/compare.c harness/ppm_write.c)
 target_include_directories(sg_compare PRIVATE harness)

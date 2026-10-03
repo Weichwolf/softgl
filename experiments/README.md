@@ -138,3 +138,21 @@ MSAA context switches). Two independent three-pair quiet audits showed BMW
 `build/controls/caller-all-raster-candidate`; 4x-MSAA render+resolve is about
 9 FPS BMW and 39 FPS Tank. Targets are still unmet. Evidence:
 `build/perf/tigerlake-20261003/caller-all-raster-*`.
+
+Prepared four-stage DOT3 chains are accepted against `1553d949`. Exact GL-state
+classification replaces four general combiner calls with one inlined sequence;
+all stage clamps and alpha operations remain, and other states use the general
+combiner. Arbitrary constants and texture targets are supported; no material or
+model identity enters classification. Profiles identified the general combiner
+as a significant BMW hotspot. Two independent three-pair quiet audits found BMW
+-9.26%/-8.92% frame time and Tank +1.07%/+0.11%, with no relevant repeated Tank
+regression. Current four-sample render+resolve is about 10 FPS BMW and 39 FPS
+Tank; both targets remain unmet. Candidate `fad35ca4` passes 724 native checks,
+240 unchanged WASM image hashes, 100 identical model-angle hashes and four exact
+frames per model, eight WASM multisample contracts, three sanitizer contracts
+and both browser previews. The new differential contract checks 300,000 exact
+float results against the original general combiner, including stage saturation,
+alpha, out-of-range constants and ignored arguments, in strict native, native
+Release and standard SIMD128 WASM builds. No tolerances or geometry changed.
+Evidence: `build/perf/tigerlake-20261003/dot3-chain-*`; frozen module:
+`build/controls/dot3-chain-candidate`.
