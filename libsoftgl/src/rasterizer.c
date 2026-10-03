@@ -182,6 +182,8 @@ SG_INLINE int sg_shade_pixel(softgl_ctx *c,
     return 1;
 }
 
+#include "frag_packet.h"
+
 /* SIMD 2x2-quad shader. Lanes: 0=TL, 1=TR, 2=BL, 3=BR. */
 
 /* Flags that force per-lane scalar fallback. */
@@ -655,140 +657,36 @@ SG_INLINE int sg_sample_depth_pass(GLenum func, float z, float d) {
 
 /* Shade once per pixel. Coverage and depth use each sample's actual location;
  * partially covered pixels interpolate color/UV at a covered sample. */
-static void sg_raster_triangle_multisample(softgl_ctx *c,
-                         const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
-                         const sg_tex_tri_ctx *tctx,
-                         int ix0, int iy0, int ix1, int iy1,
-                         int64_t area, int bias0, int bias1, int bias2,
-                         float z_offset) {
-    int32_t vx[3] = {sg_fp_screen_from_float(v0->ndc.x),
-                     sg_fp_screen_from_float(v1->ndc.x),
-                     sg_fp_screen_from_float(v2->ndc.x)};
-    int32_t vy[3] = {sg_fp_screen_from_float(v0->ndc.y),
-                     sg_fp_screen_from_float(v1->ndc.y),
-                     sg_fp_screen_from_float(v2->ndc.y)};
-    int64_t dx[3], dy[3], row[3], offsets[4][3], min_offset[3], max_offset[3];
-    for (int e = 0; e < 3; e++) {
-        int a = (e + 1) % 3, b = (e + 2) % 3;
-        dx[e] = -(int64_t)(vy[b] - vy[a]);
-        dy[e] = (int64_t)(vx[b] - vx[a]);
-        row[e] = dy[e] * ((int64_t)iy0 * 256 - vy[a])
-               + dx[e] * ((int64_t)ix0 * 256 - vx[a]);
-        for (int s = 0; s < c->fb.samples; s++) {
-            int sx = 128, sy = 128;
-            if (c->multisample) sg_sample_position(c->fb.samples, s, &sx, &sy);
-            offsets[s][e] = dx[e] * sx + dy[e] * sy;
-        }
-        min_offset[e] = max_offset[e] = offsets[0][e];
-        for (int s = 1; s < c->fb.samples; s++) {
-            if (offsets[s][e] < min_offset[e]) min_offset[e] = offsets[s][e];
-            if (offsets[s][e] > max_offset[e]) max_offset[e] = offsets[s][e];
-        }
-    }
-    int bias[3] = {bias0, bias1, bias2};
-    float inv_area = 1.f / (float)area;
-    unsigned full = (1u << c->fb.samples) - 1u;
-    /* A covered sample has raw barycentric edges in [0, area]. Other
-     * samples of that pixel differ by at most 256*(abs(dx)+abs(dy)).
-     * Only this proven range uses packed signed-32 conversion, after coverage
-     * is verified. Uncovered pixels can have arbitrarily large edge values. */
-    int small_edges = 1;
-    for (int e = 0; e < 2; e++) {
-        int64_t span = 256 * ((dx[e] < 0 ? -dx[e] : dx[e]) +
-                             (dy[e] < 0 ? -dy[e] : dy[e]));
-        if (span > INT32_MAX || area > INT32_MAX - span) small_edges = 0;
-    }
-    sg_i32x4 offset0 = sg_i32x4_splat(0), offset1 = sg_i32x4_splat(0);
-    if (small_edges && c->fb.samples == 4) {
-        offset0 = sg_i32x4_set((int32_t)offsets[0][0], (int32_t)offsets[1][0],
-                              (int32_t)offsets[2][0], (int32_t)offsets[3][0]);
-        offset1 = sg_i32x4_set((int32_t)offsets[0][1], (int32_t)offsets[1][1],
-                              (int32_t)offsets[2][1], (int32_t)offsets[3][1]);
-    }
-    for (int y = iy0; y < iy1; y++) {
-        int64_t edge[3] = {row[0], row[1], row[2]};
-        for (int x = ix0; x < ix1; x++) {
-            unsigned coverage = 0;
-            float depths[4];
-            /* Edge extrema reject an empty pixel or accept all samples with
-             * three comparisons. Only boundary pixels need individual tests. */
-            if (edge[0] + max_offset[0] + bias[0] >= 0 &&
-                edge[1] + max_offset[1] + bias[1] >= 0 &&
-                edge[2] + max_offset[2] + bias[2] >= 0) {
-                if (edge[0] + min_offset[0] + bias[0] >= 0 &&
-                    edge[1] + min_offset[1] + bias[1] >= 0 &&
-                    edge[2] + min_offset[2] + bias[2] >= 0) {
-                    coverage = full;
-                } else {
-                    for (int s = 0; s < c->fb.samples; s++) {
-                        if (edge[0] + offsets[s][0] + bias[0] >= 0 &&
-                            edge[1] + offsets[s][1] + bias[1] >= 0 &&
-                            edge[2] + offsets[s][2] + bias[2] >= 0)
-                            coverage |= 1u << s;
-                    }
-                }
-            }
-            if (coverage && c->fb.samples == 4) {
-                /* SIMD lanes are samples of one pixel. Keep scalar expression
-                 * grouping so sample depth and the selected shading point match. */
-                sg_f32x4 b0, b1;
-                if (small_edges) {
-                    b0 = sg_f32x4_mul(_mm_cvtepi32_ps(sg_i32x4_add(
-                        sg_i32x4_splat((int32_t)edge[0]), offset0)), sg_f32x4_splat(inv_area));
-                    b1 = sg_f32x4_mul(_mm_cvtepi32_ps(sg_i32x4_add(
-                        sg_i32x4_splat((int32_t)edge[1]), offset1)), sg_f32x4_splat(inv_area));
-                } else {
-                    b0 = sg_f32x4_mul(sg_f32x4_set(
-                        (float)(edge[0] + offsets[0][0]), (float)(edge[0] + offsets[1][0]),
-                        (float)(edge[0] + offsets[2][0]), (float)(edge[0] + offsets[3][0])),
-                        sg_f32x4_splat(inv_area));
-                    b1 = sg_f32x4_mul(sg_f32x4_set(
-                        (float)(edge[1] + offsets[0][1]), (float)(edge[1] + offsets[1][1]),
-                        (float)(edge[1] + offsets[2][1]), (float)(edge[1] + offsets[3][1])),
-                        sg_f32x4_splat(inv_area));
-                }
-                sg_f32x4 b2 = sg_f32x4_sub(sg_f32x4_sub(sg_f32x4_splat(1.f), b0), b1);
-                sg_f32x4 z = sg_f32x4_add(sg_f32x4_add(sg_f32x4_add(
-                    sg_f32x4_mul(b0, sg_f32x4_splat(v0->ndc.z)),
-                    sg_f32x4_mul(b1, sg_f32x4_splat(v1->ndc.z))),
-                    sg_f32x4_mul(b2, sg_f32x4_splat(v2->ndc.z))),
-                    sg_f32x4_splat(z_offset));
-                z = sg_f32x4_select(sg_f32x4_lt(z, sg_f32x4_splat(0.f)), sg_f32x4_splat(0.f), z);
-                z = sg_f32x4_select(sg_f32x4_gt(z, sg_f32x4_splat(1.f)), sg_f32x4_splat(1.f), z);
-                sg_f32x4_store(depths, z);
-                if (c->depth_test && !c->stencil_test) {
-                    size_t idx = ((size_t)y * c->fb.w + x) * 4;
-                    coverage &= sg_mask4_live(sg_depth_test_simd(c->depth_func, z,
-                        _mm_loadu_ps(&c->fb.sample_depth[idx])));
-                }
-            } else if (coverage) {
-                for (int s = 0; s < c->fb.samples; s++) {
-                    if (!(coverage & (1u << s))) continue;
-                    float b0 = (float)(edge[0] + offsets[s][0]) * inv_area;
-                    float b1 = (float)(edge[1] + offsets[s][1]) * inv_area;
-                    float b2 = 1.f - b0 - b1;
-                    float z = b0 * v0->ndc.z + b1 * v1->ndc.z + b2 * v2->ndc.z + z_offset;
-                    depths[s] = z < 0.f ? 0.f : z > 1.f ? 1.f : z;
-                    if (c->depth_test && !c->stencil_test &&
-                        !sg_sample_depth_pass(c->depth_func, depths[s],
-                            c->fb.sample_depth[((size_t)y * c->fb.w + x) * c->fb.samples + s]))
-                        coverage &= ~(1u << s);
-                }
-            }
-            if (coverage) {
-                int first = __builtin_ctz(coverage);
-                int64_t e0 = edge[0] + (coverage == full ? (dx[0] + dy[0]) * 128 : offsets[first][0]);
-                int64_t e1 = edge[1] + (coverage == full ? (dx[1] + dy[1]) * 128 : offsets[first][1]);
-                float color[4];
-                if (sg_shade_pixel(c, tctx, v0, v1, v2, x, y, e0, e1,
-                                  inv_area, v0->ndc.w, v1->ndc.w, v2->ndc.w, z_offset, color))
-                    sg_write_multisample(c, x, y, coverage, depths, color);
-            }
-            for (int e = 0; e < 3; e++) edge[e] += dx[e] * 256;
-        }
-        for (int e = 0; e < 3; e++) row[e] += dy[e] * 256;
+typedef struct {
+    int count, x[4], y[4];
+    unsigned coverage[4];
+    int64_t edge0[4], edge1[4];
+    float depths[4][4];
+} sg_pixel_packet;
+
+SG_INLINE void sg_write_pixel_packet(softgl_ctx *c, const sg_tex_tri_ctx *t,
+                                      const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
+                                      const sg_pixel_packet *p, float inv_area) {
+    float color[4][4];
+    unsigned live = sg_shade_packet(c, t, v0, v1, v2, p->edge0, p->edge1,
+                                    inv_area, 15u, color);
+    for (int l = 0; l < 4; l++) {
+        if (live & (1u << l))
+            sg_write_multisample(c, p->x[l], p->y[l], p->coverage[l], p->depths[l], color[l]);
     }
 }
+
+#define SG_MSAA_SAMPLES 2
+#define SG_MSAA_FUNCTION sg_raster_triangle_msaa2
+#include "raster_msaa_impl.h"
+#undef SG_MSAA_SAMPLES
+#undef SG_MSAA_FUNCTION
+
+#define SG_MSAA_SAMPLES 4
+#define SG_MSAA_FUNCTION sg_raster_triangle_msaa4
+#include "raster_msaa_impl.h"
+#undef SG_MSAA_SAMPLES
+#undef SG_MSAA_FUNCTION
 
 /* Internal: rasterize v0,v1,v2 restricted to x in [tile_ix0, tile_ix1).
  * tile_ix0=0, tile_ix1=fb.w reproduces the whole-FB behaviour exactly
@@ -888,8 +786,12 @@ void sg_raster_triangle_tile_prepared(softgl_ctx *c,
     float invw2 = v2->ndc.w;
 
     if (c->fb.samples) {
-        sg_raster_triangle_multisample(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
-                                       area2, bias0, bias1, bias2, z_offset);
+        if (c->fb.samples == 4)
+            sg_raster_triangle_msaa4(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
+                                    area2, bias0, bias1, bias2, z_offset);
+        else
+            sg_raster_triangle_msaa2(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
+                                    area2, bias0, bias1, bias2, z_offset);
         return;
     }
 
@@ -907,6 +809,7 @@ void sg_raster_triangle_tile_prepared(softgl_ctx *c,
     if (dE2_dy < 0) min_off2 += dE2_dy; else max_off2 += dE2_dy;
 
     int use_simd_quad = !sg_quad_needs_scalar(c, tctx);
+    int use_packet = tctx->combine_kind && sg_packet_supported(c, tctx);
 
     int64_t E0_row = E0_row0;
     int64_t E1_row = E1_row0;
@@ -974,6 +877,30 @@ void sg_raster_triangle_tile_prepared(softgl_ctx *c,
                                   E0, E1,
                                   dE0_dx, dE0_dy, dE1_dx, dE1_dy,
                                   inv_area_f, invw0, invw1, invw2, z_offset);
+                } else if (use_packet) {
+                    int64_t edges0[4] = {E0, E0 + dE0_dx, E0 + dE0_dy, E0 + dE0_dx + dE0_dy};
+                    int64_t edges1[4] = {E1, E1 + dE1_dx, E1 + dE1_dy, E1 + dE1_dx + dE1_dy};
+                    float depths[4] = {0}, colors[4][4];
+                    for (int l = 0; l < 4; l++) {
+                        if (!(cov & (1u << l))) continue;
+                        float b0 = (float)edges0[l] * inv_area_f;
+                        float b1 = (float)edges1[l] * inv_area_f;
+                        float b2 = 1.f - b0 - b1;
+                        depths[l] = b0 * v0->ndc.z + b1 * v1->ndc.z + b2 * v2->ndc.z + z_offset;
+                        int px = ix + (l & 1), py = iy + (l >> 1);
+                        if (c->depth_test && !c->stencil_test &&
+                            !sg_sample_depth_pass(c->depth_func, depths[l], c->fb.depth[py * c->fb.w + px]))
+                            cov &= ~(1u << l);
+                    }
+                    if (cov) {
+                        cov = sg_shade_packet(c, tctx, v0, v1, v2, edges0, edges1,
+                                              inv_area_f, cov, colors);
+                        for (int l = 0; l < 4; l++) {
+                            if (cov & (1u << l))
+                                sg_write_fragment(c, ix + (l & 1), iy + (l >> 1), depths[l],
+                                                  colors[l][0], colors[l][1], colors[l][2], colors[l][3]);
+                        }
+                    }
                 } else {
                     /* Per-lane scalar fallback (stencil/logic-op/stipple/
                      * occlusion); raw i64 edge values for byte-equal

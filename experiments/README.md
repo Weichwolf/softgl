@@ -219,3 +219,41 @@ upload/deletion and ineligible-state cases also pass. No image tolerances or
 geometry changed. Evidence: `build/perf/tigerlake-20261003/constant-texture-*`,
 `build/diagnostics/constant-texture/`; frozen module:
 `build/controls/constant-texture-candidate`.
+
+Four-pixel SIMD shading and fixed-count MSAA raster functions are accepted
+against `cd7998be`. MSAA2 and MSAA4 compile the shared raster implementation
+with constant sample counts; sample-count branches and loops can specialize
+outside the pixel shader. A triangle-local queue batches four surviving pixels
+for perspective-correct color/UV interpolation, 2D texture addressing/filtering
+and complete DOT3 chains. SIMD lanes now represent separate pixels. Integer
+bilinear filtering uses native signed-i16 dot instructions for four pixels'
+tap/weight pairs; float multi-texture sampling preserves its original grouping
+and every combiner-stage clamp. Cubemaps/1D/3D sample via existing scalar
+functions with SIMD-interpolated coordinates. Remainders and unsupported GL
+shader states retain the scalar path; all fragment tests/writes stay ordered.
+The single-sample DOT3 path also uses the shared SIMD shader on existing quads.
+
+Two independent three-pair quiet audits found BMW -10.37%/-9.46% and Tank
+-14.49%/-14.67% frame time. Current 4x-MSAA render+resolve is 12.79/12.68 FPS BMW
+and 48.98/49.20 FPS Tank; both targets remain unmet. A separate single guarded
+no-MSAA AB/BA screen found BMW -0.85% and Tank +0.003%, at 56.84/14.32 ms. This
+one screen establishes neither a substantial BMW no-MSAA gain nor 60 FPS.
+A warmed no-MSAA profile locates ~19.06 ms/frame on the caller in index/draw
+processing and cached primitive preparation. These are sampled function
+locations, not CPU-cycle counts; reducing this serial work is a next priority.
+
+Candidate `d02a6367` passes 726 native checks, 240 byte-identical WASM images,
+100 matching angle hashes and four exact byte frames per model with BOTH 2x
+and 4x MSAA, eight explicit sample/worker contracts, eighteen default-pool
+contracts, five ASan/UBSan/leak contracts and both browser previews. Per native
+strict-oracle/WASM, 331,447 texture comparisons and 128,054 complete shader
+comparisons are bit-exact, including partial lane masks, non-power-of-two sizes,
+wrap modes, constant textures, cube/1D/3D targets, alpha and saturated DOT3
+stages. Native image tests still exercise the optimized production library;
+the differential arithmetic contract compiles its scalar sampler oracle without
+fast-math. The module emits 26 native WASM signed-i16 dot opcode sites.
+Geometry, image tolerances and OpenGL state semantics are unchanged. Evidence:
+`build/perf/tigerlake-20261003/pixel-packet-*`,
+`build/diagnostics/pixel-packet/`; frozen module:
+`build/controls/pixel-packet-candidate`. Private next-design files under
+`build/diagnostics/parallel-triangle-prep/` are not implemented or accepted.

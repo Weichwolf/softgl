@@ -29,6 +29,19 @@ target_link_libraries(constant_texture_contract PRIVATE softgl)
 add_test(NAME constant_texture_contract COMMAND constant_texture_contract)
 set_tests_properties(constant_texture_contract PROPERTIES TIMEOUT 30)
 
+# Strict scalar texture/combiner oracle for the four-pixel SIMD math. The
+# renderer itself retains its native optimization flags; image tests cover it.
+add_executable(pixel_packet_contract pixel_packet.c
+    ${CMAKE_SOURCE_DIR}/libsoftgl/src/fragment.c
+    ${CMAKE_SOURCE_DIR}/libsoftgl/src/fragment_combine.c)
+target_include_directories(pixel_packet_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_link_libraries(pixel_packet_contract PRIVATE softgl)
+if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(pixel_packet_contract PRIVATE -O2 -fno-fast-math -ffp-contract=off -msse4.1)
+endif()
+add_test(NAME pixel_packet_contract COMMAND pixel_packet_contract)
+set_tests_properties(pixel_packet_contract PROPERTIES TIMEOUT 30)
+
 # --- Compare tool (native, no GL) ---
 add_executable(sg_compare harness/compare.c harness/ppm_write.c)
 target_include_directories(sg_compare PRIVATE harness)
