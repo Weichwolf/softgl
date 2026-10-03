@@ -14,6 +14,8 @@ const options = {
     output: 'build/perf/result.json', rounds: '7', warmup: '20', frames: '60', samples: '0',
     browser: process.env.CHROMIUM || '/usr/bin/chromium',
     'reference-build': '',
+    'candidate-workers': '',
+    'reference-workers': '',
     scenes: '',
     'profile-scene': '',
 };
@@ -32,6 +34,16 @@ if (![0, 2, 4].includes(options.samples)) throw new Error('Samples must be 0, 2 
 const wasmDir = path.resolve(repo, options['wasm-build']);
 if (options['bench-only'] && options['images-only']) throw new Error('Choose bench-only or images-only');
 const referenceDir = options['reference-build'] ? path.resolve(repo, options['reference-build']) : null;
+const expectedWorkerCounts = options['candidate-workers'] !== '' || options['reference-workers'] !== '';
+if (expectedWorkerCounts) {
+    if (!referenceDir || options['candidate-workers'] === '' || options['reference-workers'] === '') {
+        throw new Error('Worker expectations require a reference build and both --candidate-workers and --reference-workers');
+    }
+    for (const key of ['candidate-workers', 'reference-workers']) {
+        options[key] = Number(options[key]);
+        if (!Number.isInteger(options[key]) || options[key] < 0) throw new Error(`Invalid ${key}`);
+    }
+}
 const modelPack = fs.existsSync(path.join(wasmDir, 'bmw.pack')) ? path.join(wasmDir, 'bmw.pack') : path.join(repo, 'build/assets/bmw.pack');
 const referenceModelPack = referenceDir && fs.existsSync(path.join(referenceDir, 'bmw.pack')) ?
     path.join(referenceDir, 'bmw.pack') : modelPack;
@@ -351,6 +363,7 @@ async function main() {
             candidateGeometry: [], referenceGeometry: [],
         }]));
         let workers;
+        const workerCounts = {};
         for (let round = 0; round < options.rounds; round++) {
             for (let s = 0; s < scenes.length; s++) {
                 const name = scenes[(s + round) % scenes.length];
@@ -364,7 +377,17 @@ async function main() {
                     samples.get(name)[`${variant}Heap`].push(timing.heapBytes);
                     samples.get(name)[`${variant}Geometry`].push({workers:timing.workers, samples:timing.samples});
                     if (timing.samples !== options.samples) throw new Error('Sample count differs between variants');
-                    if (workers !== undefined && workers !== timing.workers) throw new Error('Worker count differs between variants');
+                    if (workerCounts[variant] !== undefined && workerCounts[variant] !== timing.workers) {
+                        throw new Error(`${variant} worker count changed between runs`);
+                    }
+                    workerCounts[variant] = timing.workers;
+                    if (expectedWorkerCounts) {
+                        if (timing.workers !== options[`${variant}-workers`]) {
+                            throw new Error(`${variant} workers: expected ${options[`${variant}-workers`]}, got ${timing.workers}`);
+                        }
+                    } else if (workers !== undefined && workers !== timing.workers) {
+                        throw new Error('Worker count differs between variants');
+                    }
                     workers = timing.workers;
                 }
             }
@@ -388,7 +411,9 @@ async function main() {
             return {samples: values, medianMs: sorted[Math.floor(sorted.length / 2)],
                 minMs: sorted[0], maxMs: sorted[sorted.length - 1], heapBytes};
         };
-        result.benchmarks = {workers, samples:options.samples, resolvePerFrame:options.samples > 0,
+        result.benchmarks = {
+            workers: !referencePage || workerCounts.candidate === workerCounts.reference ? workerCounts.candidate : null,
+            workerCounts, samples:options.samples, resolvePerFrame:options.samples > 0,
             protocol: options.crossover ? 'page crossover AB/BA, two-round geometric pairs' :
             referencePage ? 'interleaved AB/BA, foreground pages' : 'single variant',
             scenes: scenes.map(name => {

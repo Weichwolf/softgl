@@ -16,7 +16,7 @@ async function main() {
         const context = await browser.newContext({ignoreHTTPSErrors: true});
         // Fill the eight-worker pool to expose accidental overlapping contexts.
         await context.addInitScript(() => Object.defineProperty(navigator,
-            'hardwareConcurrency', {get: () => 8}));
+            'hardwareConcurrency', {get: () => 9}));
         const page = await context.newPage();
         page.setDefaultTimeout(30000);
         page.on('pageerror', error => errors.push(error.message));
@@ -93,7 +93,7 @@ async function main() {
         assert.equal((result.benchmark.match(/^scene=/gm) || []).length, 6);
         assert.ok(result.benchmark.includes('scene=bmw'));
         assert.ok(result.heartbeat - before >= 10, 'Browser event loop must run during the benchmark');
-        assert.equal(result.reportedProcessors, 8);
+        assert.equal(result.reportedProcessors, 9);
         assert.ok(result.threads.startsWith('8 ('));
         assert.equal(await page.locator('#render-cores').count(), 0);
         assert.equal(await page.locator('#render-mode').count(), 0);
@@ -115,7 +115,7 @@ async function main() {
             renderWorkers:8, bmwScene:true, cancelledBenchmark:true, offlineGeometry:true,
             multisampleModes:[0,2,4],
             wasmSha256, errors, passed:true}, null, 2) + '\n');
-        console.log(`Preview passed: BMW, ${count} tests, six benchmark scenes, cancellation and eight reported processors/workers.`);
+        console.log(`Preview passed: BMW, ${count} tests, six benchmark scenes, cancellation and eight workers on nine reported processors.`);
     } finally {
         await browser.close();
     }

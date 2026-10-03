@@ -294,6 +294,11 @@ static void *sg_worker_main(void *arg) {
 void sg_workers_init(softgl_ctx *c, int nworkers_hint) {
     if (c->workers) return;
     int n = nworkers_hint > 0 ? nworkers_hint : sg_hwthreads();
+#if defined(__EMSCRIPTEN__)
+    /* The caller performs vertex and raster work too. Reserve its logical
+     * CPU in the automatic pool; explicit worker counts remain available. */
+    if (nworkers_hint <= 0 && --n < 1) return;
+#endif
     if (n < 1) n = 1;
     if (n > SG_MAX_TILES) n = SG_MAX_TILES;
 

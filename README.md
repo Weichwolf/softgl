@@ -49,6 +49,7 @@ materials and original texture dimensions remain available. Use
 - **Separate RGBA8 color + f32 depth planes**, row 0 = bottom (GL convention)
 - **Optional MSAA sample buffers**, with color/depth/stencil per sample and one texture/combiner evaluation per covered pixel
 - **Pthread tile worker pool** for X-stripe binning; shared vertex pool for parallel transform; the calling thread also claims raster bins during every draw
+- **Automatic WASM pool** reserves one reported logical CPU for the calling thread; explicit worker counts remain available, and a one-CPU browser renders without raster workers
 - **Single rasterizer** (`rasterizer.c::sg_raster_triangle`); per-lane scalar fallback only for stencil / polygon stipple / color logic op / occlusion queries (pixel-serial state)
 
 ## Building
@@ -192,6 +193,11 @@ For further confirmation, use `--crossover --rounds 10`: the modules swap
 browser pages and loading order between rounds. Each reported comparison
 combines two rounds geometrically to reduce a consistent page/instance bias.
 Both pages are brought to the foreground before their measurements.
+Comparisons require equal worker counts by default. For pool-sizing changes,
+pass both `--candidate-workers N` and `--reference-workers N` to assert the
+expected counts for each build. These options validate the observed counts;
+they do not set the renderer's pool size. Results record `workerCounts` and
+each scene's actual worker count on both sides.
 Use `--scenes 98_city_block,tank` for focused follow-up measurements.
 Measured results and remaining candidates are recorded in
 [`bench_report.md`](bench_report.md).

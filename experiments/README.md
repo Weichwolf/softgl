@@ -174,3 +174,30 @@ and large viewports, match the prior sample-color, sample-depth and resolved
 buffers byte for byte. Evidence: `build/perf/tigerlake-20261003/msaa-edge32-*`;
 diagnostics: `build/diagnostics/msaa-edge32/`; frozen module:
 `build/controls/msaa-edge32-candidate`.
+
+The automatic WASM pool now reserves one reported logical CPU for the caller,
+which participates in both vertex and raster work. Native sizing and explicit
+worker counts remain unchanged; a one-CPU browser uses the serial renderer.
+Current warmed profiles (`msaa-edge32-profile-*-functions.json`) located 23.6%
+of BMW and 17.9% of Tank main-thread samples in active raster waiting. These are
+sampled locations, not exact CPU-cycle counts. Candidate `5fd00d4f` is accepted
+against `90947461`: two independent three-pair quiet audits found BMW
+-2.32%/-3.49% and Tank -2.33%/-3.69% frame time, at about 10.5/42 FPS with 4x MSAA
+and resolve each frame. The benchmark explicitly asserts and records three
+candidate versus four reference workers through `--candidate-workers 3
+--reference-workers 4`; without both expectations it still requires equal
+worker counts. Negative checks confirm both mismatch guards reject bad counts.
+Validation: 724 native checks, 240 unchanged-tolerance WASM/Mesa checks, eight
+explicit MSAA contracts, three sanitizer contracts and both browser previews.
+The previews still exercise all eight active workers, using nine reported CPUs
+to fill the preloaded pool, including 234 cases, six benchmarks, cancellation
+and sample-mode/context switches. Eighteen additional browser contracts verify
+automatic pools for 1/2/4/8/9/16 reported CPUs with zero/two/four samples, coverage
+and occlusion queries. All 100 four-sample angle hashes and four full byte frames
+per model match the reference. Of 240 single-sample images, 213 hashes match;
+27 change solely by one channel step because bin boundaries select different
+scalar/SIMD rounding paths. The two changed single-sample Tank views each differ
+at one pixel by one channel step. No image tolerances or geometry changed.
+Evidence: `build/perf/tigerlake-20261003/caller-core-*` and
+`build/diagnostics/caller-core-reservation/`; frozen module:
+`build/controls/caller-core-candidate`.

@@ -17,7 +17,9 @@
 | Prüfung | Ergebnis |
 | --- | --- |
 | Native | 724/724 |
-| WASM/Mesa | 240/240; bisherige 239 bytegleich |
+| WASM/Mesa | 240/240 |
+| MSAA aus, Bilder zur Basis | 213 bytegleich; 27 mit max. Kanaldelta 1 |
+| 4× MSAA, Modellbilder zur Basis | je 100 Hashes identisch; je 4 vollständige Bytevergleiche |
 | MSAA-Verträge | nativ + WASM; je 2×/4× mit 0/1/3/8 Workern |
 | Mesa, echte 4×-Samples | Kante / Blend / Tiefe / Stencil: bytegleich |
 | ASan/UBSan + Leaks | 3/3 |
@@ -25,7 +27,8 @@
 | BMW-Ansichten | 12; min. Silhouetten-IoU 0.99810 |
 | Chromium / Firefox | je 234 Tests; 6 Benchmarks; Abbruch; 8 Worker; MSAA-Wechsel |
 | Toleranzen | unverändert |
-| WASM / Pack SHA-256 | `90947461` / `fae69ce4` |
+| WASM / Pack SHA-256 | `5fd00d4f` / `fae69ce4` |
+| Automatischer WASM-Pool | CPUs 1/2/4/8/9/16 → Worker 0/1/3/7/8/8; 18 Verträge |
 | MSAA-Kantenvertrag | 1 Mio. exakt je native/WASM; 1.152 native Szenen bytegleich |
 | DOT3-Kettenvertrag | 300.000 exakt; native + WASM |
 | Optimierungsmessungen, WASM | `09d029e0` |
@@ -39,12 +42,14 @@
 | 4× MSAA; Render + Resolve / Frame | BMW F31 | T-80 |
 | --- | --- | --- |
 | Ziel | >30 FPS | >60 FPS |
-| Audit 1 / 2 | 10.29 / 10.32 FPS | 40.89 / 40.62 FPS |
+| Audit 1 / 2 | 10.46 / 10.46 FPS | 41.86 / 41.94 FPS |
 | MSAA-Packing, Zeitgewinn 1 / 2 | −14.14 / −13.35 % | −24.53 / −21.30 % |
 | MSAA-Clear, Zeitgewinn 1 / 2 | −8.92 / −8.97 % | −32.02 / −28.93 % |
 | Caller-Raster, Zeitgewinn 1 / 2 | −4.05 / −4.14 % | −2.15 / −2.76 % |
 | DOT3-Kette, Zeitänderung 1 / 2 | −9.26 / −8.92 % | +1.07 / +0.11 % |
 | MSAA-Kanten, Zeitänderung 1 / 2 | −1.14 / −0.84 % | −2.70 / −3.14 % |
+| Caller-CPU reserviert, Zeitänderung 1 / 2 | −2.32 / −3.49 % | −2.33 / −3.69 % |
+| Raster-Worker, Kandidat / Basis | 3 / 4 | 3 / 4 |
 | Frames / Warm-up / AB/BA-Paare | 100 / 80 / 2×3 | 100 / 80 / 2×3 |
 | Schattierte Pixel / Frame | 301.292 | 137.667 |
 | Texel-Lesezugriffe / Frame | 2.640.526 | 550.666 |
