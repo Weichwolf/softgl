@@ -456,10 +456,10 @@ void sg_workers_flush(softgl_ctx *c) {
     pthread_cond_broadcast(&p->wake);
     pthread_mutex_unlock(&p->mtx);
 
-    /* Large batches give the calling thread useful work while workers run.
-     * Claim the same exclusive bins and finish before merging query counts.
-     * Small draws keep their existing worker-only dispatch cost. */
-    if (total >= 4096) sg_drain_raster_bins(c, p);
+    /* Claim the same exclusive bins while workers run, including small draws.
+     * The browser caller cannot block in Atomics.wait; useful raster work
+     * avoids spending the entire small batch polling the completion counter. */
+    sg_drain_raster_bins(c, p);
 
     /* Spin-wait: flush latency is sub-ms with 4 workers, condvar wakeup
      * of the main thread would add ~3µs vs ~50ns for a cached atomic. */

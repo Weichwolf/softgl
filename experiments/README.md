@@ -122,3 +122,19 @@ browsers support the feature directly. A three-pair quiet audit found BMW +0.51%
 the initial positive screen did not reproduce. The second audit was stopped
 after this rejection. FMA remains explicitly allowed for future measured
 optimizations. Evidence: `fma-interpolation-*`.
+
+Current 4x-MSAA profiles (`msaa-clear-profile-bmw/tank-functions.json`)
+identified main-thread active polling in worker synchronization: 38.3% of BMW
+and 28.3% of Tank main-thread sample locations. These are sampled elapsed
+locations, not exact CPU-cycle counts; sleeping worker samples are separate.
+The caller now claims exclusive raster bins for every draw instead of only
+batches with at least 4096 bin records. Draw order, state and query merging
+remain unchanged. Candidate `1553d949` passed 723 native checks, 240 identical
+WASM images, 100 identical model-angle hashes and four exact representative
+frames per model, eight WASM sample contracts, two sanitizer contracts and
+both browser checks (234 cases, six benches, cancellation, eight workers and
+MSAA context switches). Two independent three-pair quiet audits showed BMW
+-4.05%/-4.14% and Tank -2.15%/-2.76% frame time. Current live module is
+`build/controls/caller-all-raster-candidate`; 4x-MSAA render+resolve is about
+9 FPS BMW and 39 FPS Tank. Targets are still unmet. Evidence:
+`build/perf/tigerlake-20261003/caller-all-raster-*`.
