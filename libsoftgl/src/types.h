@@ -362,6 +362,19 @@ struct softgl_ctx {
     GLubyte polygon_stipple[128];  /* 32 rows * 4 bytes */
 
     GLenum last_error;
+
+    /* Optional policy metadata follows existing state to preserve hot-field
+     * offsets and cache-line layout in the default Compliance path. */
+    int performance_mode;
+    float lod_pixel_error;
+    void *lod_cache;
+    uint64_t lod_input_triangles, lod_drawn_triangles;
+    float lod_frame_budget, lod_frame_ema;
+    double lod_frame_start, lod_frame_end;
+    unsigned lod_feedback_frames;
+    int lod_frame_open, lod_frame_eligible, lod_budget_limited;
+    float lod_effective_error;
+    int lod_can_coarsen;
 };
 
 SG_INLINE float sg_clampf(float v, float lo, float hi) {
@@ -428,6 +441,7 @@ typedef struct {
     sg_tex_unit_tri unit[SG_MAX_TEX_UNITS];
     int             any_active;
     int             fastpath_kind;     /* 0=generic 1=mod 2=replace 3=none */
+    unsigned        sample_mask;       /* texture values consumed by active stages */
 } sg_tex_tri_ctx;
 
 void sg_tex_tri_prepare(softgl_ctx *c, sg_tex_tri_ctx *t);
@@ -438,7 +452,7 @@ void sg_tex_tri_sample_units(const sg_tex_tri_ctx *t,
                              int   unit_active[SG_MAX_TEX_UNITS]);
 
 void sg_process_triangle_pub(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert *v2);
-void sg_process_vertex_at(softgl_ctx *c, int index, sg_vert *out);
+int sg_process_vertex_at(softgl_ctx *c, int index, sg_vert *out);
 
 void sg_process_line (softgl_ctx *c, const sg_vert *v0, const sg_vert *v1);
 void sg_process_point(softgl_ctx *c, const sg_vert *v);

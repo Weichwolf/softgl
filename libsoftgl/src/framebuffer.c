@@ -1,6 +1,7 @@
 #include "types.h"
 #include "dlist.h"
 #include "workers.h"
+#include "lod.h"
 #include <string.h>
 
 static void sg_effective_scissor(const softgl_ctx *c, int *x0, int *y0, int *x1, int *y1) {
@@ -20,6 +21,10 @@ static void sg_effective_scissor(const softgl_ctx *c, int *x0, int *y0, int *x1,
 
 void _sg_clear_real(GLbitfield mask) {
     softgl_ctx *c = sg_current(); if (!c) return;
+    if (mask & GL_COLOR_BUFFER_BIT) {
+        sg_lod_start_frame(c);
+        c->lod_input_triangles = c->lod_drawn_triangles = 0;
+    }
     int x0, y0, x1, y1;
     sg_effective_scissor(c, &x0, &y0, &x1, &y1);
     if (x1 <= x0 || y1 <= y0) return;

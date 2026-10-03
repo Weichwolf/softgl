@@ -918,6 +918,29 @@ void        softgl_destroy(softgl_ctx *c);
 void        softgl_make_current(softgl_ctx *c);
 const void *softgl_read_rgba8(softgl_ctx *c);
 
+/* Compliance is the default. Performance explicitly permits approximate
+ * geometry LOD inside indexed static-VBO draws; it is not GL conformance.
+ * Application buffers and GL state remain unchanged. */
+enum { SOFTGL_COMPLIANCE = 0, SOFTGL_PERFORMANCE = 1 };
+int softgl_set_mode(softgl_ctx *c, int mode);
+int softgl_get_mode(const softgl_ctx *c);
+/* A fixed projected-error limit (0.125..128 pixels) disables automatic LOD.
+ * Performance otherwise starts at 1 pixel and targets 30 FPS. */
+int softgl_set_lod_error(softgl_ctx *c, float pixels);
+/* Automatic maximum quality within a render-time budget; 1..1000 ms.
+ * Automatic error is bounded to 0.125..8 pixels to limit panel deformation.
+ * Zero disables feedback. Idle/presentation time and cold builds are excluded. */
+int softgl_set_frame_budget(softgl_ctx *c, float milliseconds);
+enum { SOFTGL_QUALITY_ERROR, SOFTGL_QUALITY_BUDGET, SOFTGL_QUALITY_FRAME_MS,
+       SOFTGL_QUALITY_BUDGET_LIMITED };
+float softgl_quality_stat(const softgl_ctx *c, int stat);
+enum {
+    SOFTGL_LOD_INPUT_TRIANGLES, SOFTGL_LOD_DRAWN_TRIANGLES,
+    SOFTGL_LOD_READY_MESHES, SOFTGL_LOD_PENDING_MESHES,
+    SOFTGL_LOD_CACHE_BUILDS
+};
+uint64_t softgl_performance_stat(softgl_ctx *c, int stat);
+
 #ifdef __cplusplus
 }
 #endif

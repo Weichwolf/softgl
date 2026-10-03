@@ -1,6 +1,7 @@
 #include "types.h"
 #include "dlist.h"
 #include "workers.h"
+#include "lod.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -270,6 +271,8 @@ softgl_ctx *softgl_create(GLsizei w, GLsizei h) {
     memset(c->fb.stencil, 0, (size_t)w * h);
     for (int i = 0; i < w * h; i++) c->fb.depth[i] = 1.0f;
     sg_reset_state(c);
+    c->lod_pixel_error = 1.f;
+    c->lod_frame_budget = 1000.f/30.f;
     /* One worker per logical core, up to SG_MAX_TILES. On WASM w/o pthreads
      * this is a no-op and sg_workers_bin_tri falls through to direct raster. */
     sg_workers_init(c, 0);
@@ -281,6 +284,7 @@ void softgl_destroy(softgl_ctx *c) {
     /* Drain + join workers before any state they may still be reading
      * gets torn down (fb.color/depth, textures, vbos). */
     sg_workers_flush(c);
+    sg_lod_shutdown(c);
     sg_workers_shutdown(c);
     if (c->fb.color)   sg_aligned_free(c->fb.color);
     if (c->fb.depth)   sg_aligned_free(c->fb.depth);
@@ -295,6 +299,9 @@ void softgl_destroy(softgl_ctx *c) {
         for (size_t i = 0; i < c->textures_cap; i++) {
             for (int l = 0; l < SG_MAX_MIPMAP_LEVELS; l++) {
                 if (c->textures[i].data[l]) sg_aligned_free(c->textures[i].data[l]);
+                for (int face = 0; face < 6; face++)
+                    if (c->textures[i].cube_faces[face][l])
+                        sg_aligned_free(c->textures[i].cube_faces[face][l]);
             }
         }
         free(c->textures);
@@ -321,6 +328,8 @@ const void *softgl_read_rgba8(softgl_ctx *c) {
     if (!c) return NULL;
     /* JS/WASM reads the FB directly — workers must be drained first. */
     sg_workers_flush(c);
+    sg_lod_finish_frame(c);
+    sg_lod_begin_frame(c);
     return c->fb.color;
 }
 

@@ -18,7 +18,13 @@ add_library(softgl STATIC
     src/pixels.c
     src/evaluators.c
     src/workers.c
+    src/lod.c
+    src/lod_bridge.cpp
 )
+
+include(${CMAKE_CURRENT_SOURCE_DIR}/lod_sources.cmake)
+target_sources(softgl PRIVATE ${SG_MESHOPT_SOURCES})
+target_include_directories(softgl PRIVATE third_party/meshoptimizer)
 
 target_include_directories(softgl
     PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR}/include

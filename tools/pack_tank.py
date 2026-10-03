@@ -19,14 +19,11 @@
 #
 # Vertices are deduped into a flat array by (v, vt, vn) tuple.
 
-import os, sys, struct
+import argparse
+import os
+import struct
+from pathlib import Path
 from PIL import Image
-
-SRC = r"D:\Temp\Tanks\t-80-mbt-main-battle-tank"
-OBJ = os.path.join(SRC, "source", "T-80 MBT [MAIN BATTLE TANK].obj")
-TEX = os.path.join(SRC, "textures")
-OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                   "..", "tests", "bench", "tank_data", "tank.pack")
 
 # group-name → material key (matches PNG filename sans _D/_d suffix)
 def group_to_material(g):
@@ -114,20 +111,22 @@ def load_texture(path):
         img = img.resize((nw, nh), Image.BILINEAR)
     return img.width, img.height, img.tobytes()
 
-def main():
+def main(source, output):
+    obj = source / "source" / "T-80 MBT [MAIN BATTLE TANK].obj"
+    textures = source / "textures"
     print("Parsing OBJ…")
-    V, T, N, tris = load_obj(OBJ)
+    V, T, N, tris = load_obj(obj)
     print(f"  {len(V)} unique (v/t/n) tuples, "
           f"triangles per material: " +
           ", ".join(f"{k}={len(v)//3}" for k, v in tris.items()))
 
     V = normalize_verts(V)
 
-    os.makedirs(os.path.dirname(OUT), exist_ok=True)
+    output.parent.mkdir(parents=True, exist_ok=True)
     mats = [k for k in TEX_FILES if tris[k]]
     print(f"Packing {len(mats)} materials…")
 
-    with open(OUT, "wb") as o:
+    with output.open("wb") as o:
         o.write(b"TANK")
         o.write(struct.pack("<I", 1))              # version
         o.write(struct.pack("<I", len(V)))         # n_verts
@@ -140,7 +139,7 @@ def main():
         for t in T:   o.write(struct.pack("<ff", *t))
         for k in mats:
             name = k.encode("utf-8")[:16].ljust(16, b"\0")
-            w, h, rgba = load_texture(os.path.join(TEX, TEX_FILES[k]))
+            w, h, rgba = load_texture(textures / TEX_FILES[k])
             idx = tris[k]
             o.write(name)
             o.write(struct.pack("<II", w, h))
@@ -149,8 +148,12 @@ def main():
             for i in idx: o.write(struct.pack("<I", i))
             print(f"  {k:16s}: {w}×{h} tex, {len(idx)//3} tris")
 
-    size = os.path.getsize(OUT)
-    print(f"Wrote {OUT}  ({size/1024/1024:.2f} MB)")
+    size = output.stat().st_size
+    print(f"Wrote {output}  ({size/1024/1024:.2f} MB)")
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description="Pack the extracted T-80 OBJ and textures.")
+    parser.add_argument("source", type=Path, help="Extracted model directory containing source/ and textures/")
+    parser.add_argument("--output", type=Path, default=Path("build/assets/tank.pack"))
+    args = parser.parse_args()
+    main(args.source, args.output)

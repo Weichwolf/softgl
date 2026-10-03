@@ -5,16 +5,29 @@
  *
  * fastpath_kind:
  *   0 = generic
- *   1 = unit 0, 2D LINEAR REPEAT, MODULATE, no fog
- *   2 = unit 0, 2D LINEAR REPEAT, REPLACE, no fog
+ *   1 = unit 0, 2D LINEAR REPEAT, MODULATE
+ *   2 = unit 0, 2D LINEAR REPEAT, REPLACE
  *   3 = no active units
  *
  * NEAREST REPEAT POT is NOT a fastpath: under -ffast-math scalar UV lerp
  * drifts ~1 ULP from SIMD, flipping texel picks across boundaries. */
 
+static int combine_arguments(GLenum operation) {
+    if (operation == GL_REPLACE) return 1;
+    if (operation == GL_INTERPOLATE) return 3;
+    return 2; /* MODULATE, ADD, SUBTRACT, ADD_SIGNED and DOT3 */
+}
+static unsigned source_texture(GLenum source, int current) {
+    if (source == GL_TEXTURE) return 1u << current;
+    if (source >= GL_TEXTURE0 && source < GL_TEXTURE0+SG_MAX_TEX_UNITS)
+        return 1u << (source-GL_TEXTURE0);
+    return 0;
+}
+
 void sg_tex_tri_prepare(softgl_ctx *c, sg_tex_tri_ctx *t) {
     t->any_active = 0;
     t->fastpath_kind = 0;
+    t->sample_mask = 0;
     int n_active = 0;
     int first_active = -1;
 
@@ -68,6 +81,7 @@ void sg_tex_tri_prepare(softgl_ctx *c, sg_tex_tri_ctx *t) {
         if (first_active < 0) first_active = u;
         n_active++;
         t->any_active = 1;
+        t->sample_mask |= 1u << u;
     }
 
     if (!t->any_active) {
@@ -81,13 +95,27 @@ void sg_tex_tri_prepare(softgl_ctx *c, sg_tex_tri_ctx *t) {
         sg_tex_env *env = &c->tex_env[0];
         if (u0->active_slot == SG_TEX_TARGET_2D &&
             u0->wrap_s == GL_REPEAT && u0->wrap_t == GL_REPEAT &&
-            u0->tw > 0 && u0->th > 0 && u0->data0 &&
-            !c->fog_enabled) {
+            u0->tw > 0 && u0->th > 0 && u0->data0) {
             if (u0->filter_mag == GL_LINEAR) {
                 if (env->env_mode == GL_MODULATE) t->fastpath_kind = 1;
                 else if (env->env_mode == GL_REPLACE) t->fastpath_kind = 2;
             }
         }
+    }
+    if (t->fastpath_kind) return;
+    /* A stage still executes when its own texture is unused. Collect sources
+     * globally before sampling: another stage can read it through crossbar.
+     * Ignored arguments and DOT3_RGBA alpha cannot introduce dependencies. */
+    t->sample_mask = 0;
+    for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
+        if (t->unit[u].active_slot < 0) continue;
+        const sg_tex_env *env = &c->tex_env[u];
+        if (env->env_mode != GL_COMBINE) { t->sample_mask |= 1u << u; continue; }
+        int count = combine_arguments(env->combine_rgb);
+        for (int i = 0; i < count; i++) t->sample_mask |= source_texture(env->src_rgb[i], u);
+        if (env->combine_rgb == GL_DOT3_RGBA) continue;
+        count = combine_arguments(env->combine_a);
+        for (int i = 0; i < count; i++) t->sample_mask |= source_texture(env->src_a[i], u);
     }
 }
 
@@ -104,6 +132,8 @@ void sg_tex_tri_sample_units(
         unit_active[u] = 0;
         const sg_tex_unit_tri *ut = &t->unit[u];
         if (ut->active_slot < 0 || !ut->tex) continue;
+        unit_active[u] = 1;
+        if (!(t->sample_mask & (1u << u))) continue;
 
         float uvp_x = (v0->uv[u].x * w0 + v1->uv[u].x * w1 + v2->uv[u].x * w2) * one_over_wsum;
         float uvp_y = (v0->uv[u].y * w0 + v1->uv[u].y * w1 + v2->uv[u].y * w2) * one_over_wsum;
@@ -133,7 +163,6 @@ void sg_tex_tri_sample_units(
                                 uvp_x, uvp_y, 1, tx);
                 break;
         }
-        unit_active[u] = 1;
     }
 }
 

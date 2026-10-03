@@ -13,6 +13,9 @@
 
 #if defined(__SSE4_1__)
     #include <smmintrin.h>
+    #if defined(__wasm_simd128__)
+        #include <wasm_simd128.h>
+    #endif
 
     typedef __m128i sg_i32x4;
     typedef __m128  sg_f32x4;
@@ -54,6 +57,19 @@
     static inline sg_f32x4 sg_f32x4_div(sg_f32x4 a, sg_f32x4 b) { return _mm_div_ps(a, b); }
     static inline sg_f32x4 sg_f32x4_min(sg_f32x4 a, sg_f32x4 b) { return _mm_min_ps(a, b); }
     static inline sg_f32x4 sg_f32x4_max(sg_f32x4 a, sg_f32x4 b) { return _mm_max_ps(a, b); }
+    static inline sg_i32x4 sg_f32x4_trunc_i32(sg_f32x4 v) {
+        #if defined(__wasm_simd128__)
+            /* SSE returns INT32_MIN for NaN/overflow; WASM saturation alone
+             * would produce zero/INT32_MAX. Preserve the SSE result in SIMD. */
+            v128_t value = (v128_t)v;
+            v128_t valid = wasm_f32x4_lt(wasm_f32x4_abs(value),
+                                        wasm_f32x4_splat(2147483648.f));
+            return (__m128i)wasm_v128_bitselect(wasm_i32x4_trunc_sat_f32x4(value),
+                                               wasm_i32x4_splat(INT32_MIN), valid);
+        #else
+            return _mm_cvttps_epi32(v);
+        #endif
+    }
     /* a*b+c; compiler may fuse to FMA. */
     static inline sg_f32x4 sg_f32x4_madd(sg_f32x4 a, sg_f32x4 b, sg_f32x4 c) {
         return _mm_add_ps(_mm_mul_ps(a, b), c);
@@ -87,7 +103,14 @@
     static inline uint32_t sg_f32x4_quantize_u8(sg_f32x4 v) {
         __m128 vv = _mm_max_ps(_mm_setzero_ps(), _mm_min_ps(_mm_set1_ps(1.0f), v));
         vv = _mm_mul_ps(vv, _mm_set1_ps(255.0f));
-        __m128i i = _mm_cvtps_epi32(vv);                    /* round-to-nearest-even */
+        #if defined(__wasm_simd128__)
+            /* Emscripten's SSE conversion calls scalar lrint per lane.
+             * Keep nearest-even rounding entirely in SIMD; vv is [0,255]. */
+            __m128i i = (__m128i)wasm_i32x4_trunc_sat_f32x4(
+                wasm_f32x4_nearest((v128_t)vv));
+        #else
+            __m128i i = _mm_cvtps_epi32(vv);                /* round-to-nearest-even */
+        #endif
         __m128i s16 = _mm_packs_epi32(i, i);
         __m128i u8  = _mm_packus_epi16(s16, s16);
         return (uint32_t)_mm_cvtsi128_si32(u8);
@@ -145,6 +168,12 @@
     static inline sg_f32x4 sg_f32x4_div(sg_f32x4 a, sg_f32x4 b) { return wasm_f32x4_div(a, b); }
     static inline sg_f32x4 sg_f32x4_min(sg_f32x4 a, sg_f32x4 b) { return wasm_f32x4_min(a, b); }
     static inline sg_f32x4 sg_f32x4_max(sg_f32x4 a, sg_f32x4 b) { return wasm_f32x4_max(a, b); }
+    static inline sg_i32x4 sg_f32x4_trunc_i32(sg_f32x4 v) {
+        v128_t valid = wasm_f32x4_lt(wasm_f32x4_abs(v),
+                                    wasm_f32x4_splat(2147483648.f));
+        return wasm_v128_bitselect(wasm_i32x4_trunc_sat_f32x4(v),
+                                   wasm_i32x4_splat(INT32_MIN), valid);
+    }
     static inline sg_f32x4 sg_f32x4_madd(sg_f32x4 a, sg_f32x4 b, sg_f32x4 c) {
         return wasm_f32x4_add(wasm_f32x4_mul(a, b), c);
     }

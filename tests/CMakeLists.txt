@@ -2,6 +2,18 @@ cmake_minimum_required(VERSION 3.20)
 
 enable_testing()
 
+add_executable(lod_cache lod_cache.c)
+target_include_directories(lod_cache PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_link_libraries(lod_cache PRIVATE softgl)
+add_test(NAME lod_cache_contract COMMAND lod_cache)
+set_tests_properties(lod_cache_contract PROPERTIES TIMEOUT 30)
+
+add_executable(worker_pool worker_pool.c)
+target_include_directories(worker_pool PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_link_libraries(worker_pool PRIVATE softgl)
+add_test(NAME worker_pool_contract COMMAND worker_pool)
+set_tests_properties(worker_pool_contract PROPERTIES TIMEOUT 30)
+
 # --- Compare tool (native, no GL) ---
 add_executable(sg_compare harness/compare.c harness/ppm_write.c)
 target_include_directories(sg_compare PRIVATE harness)
@@ -285,6 +297,21 @@ set(SG_TEST_CASES
     216_water_surface
     217_dot3_multipass_fog
     218_worker_single_triangle
+    219_normal_matrix_batches
+    220_texture_linear_fog
+    221_texture_state_batches
+    222_worker_quad_boundaries
+    223_parallel_vertex_projection
+    224_parallel_occlusion_queries
+    225_transformed_bin_lifetime
+    226_parallel_pool_queries
+    227_simd_color_rounding
+    228_texture_repeat_coordinates
+    229_scalar_early_depth
+    230_combiner_sampling_dependencies
+    231_order_sensitive_sorting
+    232_combiner_operand_channels
+    233_large_query_handoffs
 )
 
 # Tolerances for reference/softgl pixel diff. Default exact; individual tests
@@ -446,9 +473,9 @@ foreach(p8_case
 endforeach()
 
 # Phase 9: occlusion queries + buffer mapping.
-# 196/197 end in a clear-fill whose color encodes the query result — the
-# pixel output is a byte-exact uniform color, so there's no raster tolerance
-# needed, just the default 1-LSB slack for quantization rounding.
+# 196/197 encode query results in a uniform clear color. Preserve their
+# historical default thresholds; 224 below adds an exact query-count gate
+# with zero channel tolerance and zero allowed bad pixels.
 # 198 renders a triangle via mapped-buffer vertices — standard raster budget.
 set(SG_TOL_198_map_buffer_MAX_DELTA 4)
 set(SG_TOL_198_map_buffer_MAX_BAD ${SG_RASTER_MAX_BAD})
@@ -510,6 +537,43 @@ set(SG_TOL_217_dot3_multipass_fog_MAX_BAD ${SG_DEMO_BIG_MAX_BAD})
 set(SG_TOL_218_worker_single_triangle_MAX_DELTA 2)
 set(SG_TOL_218_worker_single_triangle_MAX_BAD ${SG_RASTER_MAX_BAD})
 
+set(SG_TOL_219_normal_matrix_batches_MAX_DELTA 2)
+set(SG_TOL_219_normal_matrix_batches_MAX_BAD ${SG_RASTER_MAX_BAD})
+
+set(SG_TOL_220_texture_linear_fog_MAX_DELTA 2)
+set(SG_TOL_220_texture_linear_fog_MAX_BAD ${SG_RASTER_MAX_BAD})
+
+set(SG_TOL_221_texture_state_batches_MAX_DELTA 2)
+set(SG_TOL_221_texture_state_batches_MAX_BAD ${SG_RASTER_MAX_BAD})
+
+set(SG_TOL_222_worker_quad_boundaries_MAX_DELTA 0)
+set(SG_TOL_222_worker_quad_boundaries_MAX_BAD 0)
+
+set(SG_TOL_223_parallel_vertex_projection_MAX_DELTA 2)
+set(SG_TOL_223_parallel_vertex_projection_MAX_BAD ${SG_RASTER_MAX_BAD})
+set(SG_TOL_224_parallel_occlusion_queries_MAX_DELTA 0)
+set(SG_TOL_224_parallel_occlusion_queries_MAX_BAD 0)
+set(SG_TOL_225_transformed_bin_lifetime_MAX_DELTA 2)
+set(SG_TOL_225_transformed_bin_lifetime_MAX_BAD ${SG_RASTER_MAX_BAD})
+set(SG_TOL_226_parallel_pool_queries_MAX_DELTA 0)
+set(SG_TOL_226_parallel_pool_queries_MAX_BAD 0)
+set(SG_TOL_227_simd_color_rounding_MAX_DELTA 1)
+set(SG_TOL_227_simd_color_rounding_MAX_BAD 0)
+set(SG_TOL_228_texture_repeat_coordinates_MAX_DELTA 2)
+set(SG_TOL_228_texture_repeat_coordinates_MAX_BAD 0)
+set(SG_TOL_229_scalar_early_depth_MAX_DELTA 0)
+set(SG_TOL_229_scalar_early_depth_MAX_BAD 0)
+
+set(SG_TOL_230_combiner_sampling_dependencies_MAX_DELTA 1)
+set(SG_TOL_230_combiner_sampling_dependencies_MAX_BAD 0)
+set(SG_TOL_231_order_sensitive_sorting_MAX_DELTA 0)
+set(SG_TOL_231_order_sensitive_sorting_MAX_BAD 0)
+# Constant-coordinate operands: permit one quantization step, no bad pixels.
+set(SG_TOL_232_combiner_operand_channels_MAX_DELTA 1)
+set(SG_TOL_232_combiner_operand_channels_MAX_BAD 0)
+set(SG_TOL_233_large_query_handoffs_MAX_DELTA 0)
+set(SG_TOL_233_large_query_handoffs_MAX_BAD 0)
+
 foreach(case_name IN LISTS SG_TEST_CASES)
     set(src cases/test_${case_name}.c)
 
@@ -570,6 +634,65 @@ add_test(NAME benchmark_fp6
     COMMAND bench_scenes
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/bench)
 set_tests_properties(benchmark_fp6 PROPERTIES LABELS "bench")
+
+# The browser tank scene also gets Mesa references at three camera angles.
+add_library(tank_image_scene OBJECT ${CMAKE_SOURCE_DIR}/wasm/tank_wrap.c)
+target_include_directories(tank_image_scene PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/include)
+foreach(angle 0 120 240)
+    set(case_name tank_view_${angle})
+    foreach(backend ref sgl)
+        add_executable(${backend}_${case_name} bench/tank_image.c
+            $<TARGET_OBJECTS:tank_image_scene>)
+        target_compile_definitions(${backend}_${case_name} PRIVATE
+            SG_TANK_ANGLE=${angle}
+            SG_TANK_PACK_PATH="${CMAKE_SOURCE_DIR}/tests/bench/tank_data/tank.pack")
+        if(backend STREQUAL "ref")
+            target_link_libraries(${backend}_${case_name} PRIVATE harness_mesa)
+        else()
+            target_link_libraries(${backend}_${case_name} PRIVATE harness_softgl)
+        endif()
+        add_test(NAME ${case_name}_run_${backend}
+            COMMAND ${backend}_${case_name}
+                ${CMAKE_BINARY_DIR}/out/${case_name}_${backend}.rgba
+                ${CMAKE_BINARY_DIR}/out/${case_name}_${backend}.ppm)
+    endforeach()
+    add_test(NAME ${case_name}_compare COMMAND sg_compare
+        ${CMAKE_BINARY_DIR}/out/${case_name}_ref.rgba
+        ${CMAKE_BINARY_DIR}/out/${case_name}_sgl.rgba
+        2 ${SG_RASTER_MAX_BAD}
+        ${CMAKE_BINARY_DIR}/out/${case_name}_diff.ppm)
+    set_tests_properties(${case_name}_compare PROPERTIES
+        DEPENDS "${case_name}_run_ref;${case_name}_run_sgl")
+endforeach()
+
+set(SG_MODEL_PACK "${CMAKE_SOURCE_DIR}/build/assets/bmw.pack" CACHE FILEPATH "Prepared BMW model pack")
+if(EXISTS "${SG_MODEL_PACK}")
+    add_library(model_image_scene OBJECT ${CMAKE_SOURCE_DIR}/wasm/model_wrap.c)
+    target_include_directories(model_image_scene PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/include)
+    foreach(angle 0 120 240)
+        set(case_name bmw_view_${angle})
+        foreach(backend ref sgl)
+            add_executable(${backend}_${case_name} bench/model_image.c $<TARGET_OBJECTS:model_image_scene>)
+            target_compile_definitions(${backend}_${case_name} PRIVATE
+                SG_MODEL_ANGLE=${angle} SG_MODEL_PACK_PATH="${SG_MODEL_PACK}")
+            if(backend STREQUAL "ref")
+                target_link_libraries(${backend}_${case_name} PRIVATE harness_mesa)
+            else()
+                target_link_libraries(${backend}_${case_name} PRIVATE harness_softgl)
+            endif()
+            add_test(NAME ${case_name}_run_${backend} COMMAND ${backend}_${case_name}
+                ${CMAKE_BINARY_DIR}/out/${case_name}_${backend}.rgba
+                ${CMAKE_BINARY_DIR}/out/${case_name}_${backend}.ppm)
+        endforeach()
+        # Match the established cube-map case delta and raster edge budget.
+        add_test(NAME ${case_name}_compare COMMAND sg_compare
+            ${CMAKE_BINARY_DIR}/out/${case_name}_ref.rgba
+            ${CMAKE_BINARY_DIR}/out/${case_name}_sgl.rgba
+            4 ${SG_RASTER_MAX_BAD} ${CMAKE_BINARY_DIR}/out/${case_name}_diff.ppm)
+        set_tests_properties(${case_name}_compare PROPERTIES
+            DEPENDS "${case_name}_run_ref;${case_name}_run_sgl")
+    endforeach()
+endif()
 
 # Create out directory
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/out)

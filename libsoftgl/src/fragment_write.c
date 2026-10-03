@@ -1,9 +1,9 @@
-#include "types.h"
+#include "workers.h"
 #include <math.h>
 
 /* Per-fragment write in GL spec order: scissor -> alpha test -> stencil ->
- * depth -> stencil op -> depth write -> logic-op -> blend -> color mask ->
- * occlusion. y=0 is bottom (matches glReadPixels). Used as scalar fallback
+ * depth -> stencil op -> depth write -> occlusion -> logic-op -> blend ->
+ * color mask. y=0 is bottom (matches glReadPixels). Used as scalar fallback
  * from SIMD quad path; primary path for lines/points/pixels. */
 
 void sg_write_fragment(softgl_ctx *c, int x, int y, float z, float r, float g, float b, float a);
@@ -96,6 +96,22 @@ void sg_write_fragment(softgl_ctx *c, int x, int y, float z, float r, float g, f
 
     if (c->depth_test && c->depth_mask) c->fb.depth[idx] = z;
 
+    /* Queries count surviving fragments even if color writes are masked
+     * or a logic operation leaves the framebuffer unchanged. Workers own
+     * their counters; only the calling thread writes query objects. */
+    GLuint qsid = c->current_query[SG_QUERY_TARGET_SAMPLES_PASSED];
+    GLuint qaid = c->current_query[SG_QUERY_TARGET_ANY_SAMPLES_PASSED];
+    if (qsid || qaid) {
+        if (sg_raster_bin) {
+            sg_raster_bin->query_samples++;
+        } else {
+            sg_query *qs = sg_query_get(c, qsid);
+            sg_query *qa = sg_query_get(c, qaid);
+            if (qs && qs->active) qs->result++;
+            if (qa && qa->active) qa->result = 1;
+        }
+    }
+
     uint8_t *px = c->fb.color + idx * 4;
     /* COLOR_LOGIC_OP takes priority over BLEND (spec). */
     if (c->color_logic_op_enabled) {
@@ -176,16 +192,4 @@ void sg_write_fragment(softgl_ctx *c, int x, int y, float z, float r, float g, f
     if (c->color_mask[2]) px[2] = sg_quantize(b);
     if (c->color_mask[3]) px[3] = sg_quantize(a);
 
-    /* Occlusion query: fragments that passed all tests + wrote color.
-     * SAMPLES_PASSED += 1; ANY_SAMPLES_PASSED is sticky. */
-    GLuint qsid = c->current_query[SG_QUERY_TARGET_SAMPLES_PASSED];
-    if (qsid) {
-        sg_query *q = sg_query_get(c, qsid);
-        if (q && q->active) q->result += 1;
-    }
-    GLuint qaid = c->current_query[SG_QUERY_TARGET_ANY_SAMPLES_PASSED];
-    if (qaid) {
-        sg_query *q = sg_query_get(c, qaid);
-        if (q && q->active) q->result = 1;
-    }
 }

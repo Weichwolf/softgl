@@ -1,11 +1,9 @@
 #ifndef SOFTGL_WORKERS_H
 #define SOFTGL_WORKERS_H
 
-/* Persistent tile-parallel raster workers. Each worker owns a contiguous
- * X-range of the framebuffer and a growable "bin" of triangles submitted
- * under the current GL state. Main thread pushes triangles into bins
- * during primitive processing, then triggers a flush — workers wake,
- * drain their bins, signal done, and sleep again.
+/* Persistent raster workers share a queue of independent X-range bins.
+ * Main pushes triangles into bins under the current GL state, then
+ * triggers a flush — workers claim bins, drain them, and signal done.
  *
  * Binning is primitive-agnostic: sg_worker_bin_tri is the only entry.
  * Lines/points fall back to direct raster with a prior flush for ordering. */
@@ -18,16 +16,21 @@
 #ifndef SG_MAX_TILES
 #define SG_MAX_TILES 8
 #endif
+#define SG_MAX_BINS (SG_MAX_TILES * 4)
 
-/* One triangle in a worker's bin. Vertices live in a pool-global array
- * shared across all bins (see sg_worker_pool.vpool); a tri records the
- * three indices into that pool plus its sort key. Triangles that span
+/* One triangle in a worker's bin. Vertices live in pool-global arrays
+ * shared across all bins (vpool or transformed); a tri records the
+ * three indices into its array plus its sort key. Triangles that span
  * multiple tiles are duplicated only as 16B index-triples instead of
  * 3×160B vertex copies. */
 typedef struct {
+    /* The high bit of v[0] selects transformed[]; unmarked tris use vpool.
+     * Both arrays stay immutable until this raster job completes. */
     uint32_t v[3];
     float    zkey;   /* min ndc.z across the 3 verts; front-most depth */
 } sg_worker_tri;
+
+#define SG_BIN_TRANSFORMED_VERTEX UINT32_C(0x80000000)
 
 typedef struct {
     sg_worker_tri *tris;     /* growable */
@@ -37,9 +40,14 @@ typedef struct {
     int            count;    /* written by main, read+reset by worker */
     int            cap;
     int            ix0, ix1; /* owned X-range of the framebuffer [ix0, ix1) */
+    GLuint64       query_samples; /* worker-local; merged after the raster job */
     /* Pad to keep bins on separate cachelines. */
     uint8_t        _pad[64];
 } sg_worker_bin;
+
+/* NULL on the calling thread: points/lines update query objects directly.
+ * Raster workers count locally to avoid shared per-fragment writes. */
+extern _Thread_local sg_worker_bin *sg_raster_bin;
 
 typedef struct softgl_ctx softgl_ctx;
 
@@ -53,14 +61,14 @@ typedef struct {
 /* Jobs the worker pool can be dispatched on. Each wake carries the
  * current job type; workers branch on it. */
 enum {
-    SG_JOB_RASTER = 0,   /* drain own tile bin (default) */
+    SG_JOB_RASTER = 0,   /* drain shared independent raster bins (default) */
     SG_JOB_VERTEX = 1,   /* transform a slice of [job_first..job_first+job_count) */
 };
 
 typedef struct {
     int            nworkers;
     sg_worker      workers[SG_MAX_TILES];
-    sg_worker_bin  bins[SG_MAX_TILES];
+    sg_worker_bin  bins[SG_MAX_BINS];
 
     /* Shared vertex pool: main thread appends post-viewport sg_vert triples
      * as they are submitted, bin entries carry indices into this array.
@@ -71,11 +79,14 @@ typedef struct {
 
     /* Pre-transform scratch used by SG_JOB_VERTEX. Workers split the
      * [job_first, job_first+job_count) range evenly and write each
-     * transformed vertex into transformed[i]. Main reads it via index. */
+     * transformed vertex into transformed[i]. Main and raster workers may
+     * read it until all bins drain, before the next vertex-transform job. */
     sg_vert       *transformed;
+    uint8_t       *inside_frustum; /* one classification per transformed vertex */
     int            transformed_cap;
     int            job_first;
     int            job_count;
+    const uint32_t *job_indices; /* optional sparse source-vertex list */
 
     /* Wake protocol: main bumps gen + broadcasts; each worker compares its
      * local_gen to the shared gen under the mutex to decide whether there
@@ -88,6 +99,9 @@ typedef struct {
     atomic_int      alive;
     atomic_int      sort_safe;   /* main sets per-flush; 1 = worker may sort */
     atomic_int      job_type;    /* SG_JOB_RASTER or SG_JOB_VERTEX, set per wake */
+    int             nbins;
+    atomic_int      next_bin;    /* each claimed bin has exactly one owner */
+    uint8_t        *column_bin;  /* screen column -> overlapping bin */
 } sg_worker_pool;
 
 void sg_workers_init(softgl_ctx *c, int nworkers_hint);
@@ -97,6 +111,12 @@ void sg_workers_shutdown(softgl_ctx *c);
  * bounding box. Vertices must be post-viewport-transform (ndc.xy already
  * in screen space). Called from the main thread only. */
 void sg_workers_bin_tri(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1, const sg_vert *v2);
+
+/* Same binning, but all three vertices must belong to transformed[].
+ * Store their source indices instead of copying them into vpool. The draw
+ * must flush its bins before transforming another vertex range. */
+void sg_workers_bin_transformed_tri(softgl_ctx *c, const sg_vert *v0,
+                                    const sg_vert *v1, const sg_vert *v2);
 
 /* Drain every bin in parallel, then return when all workers are idle.
  * Safe to call on an empty pool — no-op. Must be called before any
@@ -112,6 +132,9 @@ void sg_workers_flush(softgl_ctx *c);
  * settled before this call; workers read ctx as read-only. Returns NULL
  * and does nothing if the pool is absent (single-thread path). */
 const sg_vert *sg_workers_transform_range(softgl_ctx *c, int first, int count);
+const sg_vert *sg_workers_transform_indices(softgl_ctx *c, const uint32_t *indices,
+                                           int count, int vertex_limit);
+const uint8_t *sg_workers_inside_frustum(softgl_ctx *c);
 
 /* Platform CPU count (logical cores). Returns 1 if unknown. */
 int sg_hwthreads(void);

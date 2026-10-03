@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.20)
-project(softgl_wasm C)
+project(softgl_wasm C CXX)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if(NOT EMSCRIPTEN)
     message(FATAL_ERROR "this CMakeLists is only for Emscripten builds. Use emcmake cmake .")
@@ -23,7 +25,11 @@ add_compile_options(-O2 -msimd128 -msse -msse2 -msse3 -mssse3 -msse4.1 -pthread 
 
 # libsoftgl sources (wrapped rather than subdir to avoid toolchain clashes)
 file(GLOB SOFTGL_SRC ${SRC}/libsoftgl/src/*.c)
-add_library(softgl_objs OBJECT ${SOFTGL_SRC})
+include(${SRC}/libsoftgl/lod_sources.cmake)
+add_library(softgl_objs OBJECT ${SOFTGL_SRC} ${SRC}/libsoftgl/src/lod_bridge.cpp ${SG_MESHOPT_SOURCES})
+target_include_directories(softgl_objs PRIVATE ${SRC}/libsoftgl/third_party/meshoptimizer)
+# Preparation failures and cancellation return to the full-detail path.
+target_compile_options(softgl_objs PRIVATE $<$<COMPILE_LANGUAGE:CXX>:-fexceptions>)
 target_include_directories(softgl_objs PUBLIC
     ${SRC}/libsoftgl/include
     ${SRC}/libsoftgl/src)
@@ -59,10 +65,19 @@ add_executable(softgl
     ${CMAKE_CURRENT_BINARY_DIR}/dispatch.c
     ${CMAKE_CURRENT_SOURCE_DIR}/bench_wrap.c
     ${CMAKE_CURRENT_SOURCE_DIR}/tank_wrap.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/model_wrap.c
     ${CMAKE_CURRENT_SOURCE_DIR}/sdl_viewer.c
     $<TARGET_OBJECTS:softgl_objs>
     ${TEST_OBJECTS}
 )
+
+# The preview lives beside the compiled module under the single build tree.
+configure_file(index.html ${CMAKE_CURRENT_BINARY_DIR}/index.html COPYONLY)
+configure_file(main.js ${CMAKE_CURRENT_BINARY_DIR}/main.js COPYONLY)
+configure_file(${SRC}/tests/bench/tank_data/tank.pack ${CMAKE_CURRENT_BINARY_DIR}/tank.pack COPYONLY)
+if(EXISTS "${SRC}/build/assets/bmw.pack")
+    configure_file(${SRC}/build/assets/bmw.pack ${CMAKE_CURRENT_BINARY_DIR}/bmw.pack COPYONLY)
+endif()
 target_include_directories(softgl PRIVATE
     ${SRC}/libsoftgl/include
     ${SRC}/tests/harness)
@@ -72,5 +87,5 @@ target_compile_options(softgl PRIVATE -sUSE_SDL=2)
 set_target_properties(softgl PROPERTIES
     OUTPUT_NAME softgl
     SUFFIX ".js"
-    LINK_FLAGS "-O2 -msimd128 -pthread -sUSE_SDL=2 -sPTHREAD_POOL_SIZE=8 -sEXPORTED_FUNCTIONS=_softgl_create,_softgl_destroy,_softgl_make_current,_softgl_read_rgba8,_sg_test_count,_sg_test_name,_sg_test_run,_sg_bench_slot_count,_sg_bench_slot_tag,_sg_bench_slot_test_index,_sg_bench_run_idx,_sg_bench_run_slot,_sg_tank_load,_sg_tank_render,_sg_tank_tri_count,_sg_tank_mat_count,_sg_tank_unload,_sg_thread_count,_sg_hwthreads,_sg_viewer_create,_sg_viewer_present,_sg_viewer_destroy,_malloc,_free -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,HEAPU8,UTF8ToString -sMODULARIZE=1 -sEXPORT_NAME=createSoftGL -sALLOW_MEMORY_GROWTH=1 -sINITIAL_MEMORY=67108864 -sSTACK_SIZE=8388608"
+    LINK_FLAGS "-O2 -msimd128 -pthread -fexceptions -sUSE_SDL=2 -sPTHREAD_POOL_SIZE=9 -sEXPORTED_FUNCTIONS=_softgl_create,_softgl_destroy,_softgl_make_current,_softgl_read_rgba8,_softgl_set_mode,_softgl_get_mode,_softgl_set_lod_error,_softgl_set_frame_budget,_softgl_quality_stat,_softgl_performance_stat,_sg_test_count,_sg_test_name,_sg_test_run,_sg_bench_slot_count,_sg_bench_slot_tag,_sg_bench_slot_test_index,_sg_bench_run_idx,_sg_bench_run_slot,_sg_tank_load,_sg_tank_render,_sg_tank_tri_count,_sg_tank_mat_count,_sg_tank_unload,_sg_model_load,_sg_model_render,_sg_model_unload,_sg_model_tri_count,_sg_model_mat_count,_sg_thread_count,_sg_hwthreads,_sg_viewer_create,_sg_viewer_present,_sg_viewer_destroy,_malloc,_free -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,HEAPU8,UTF8ToString -sMODULARIZE=1 -sEXPORT_NAME=createSoftGL -sALLOW_MEMORY_GROWTH=1 -sINITIAL_MEMORY=67108864 -sSTACK_SIZE=8388608"
 )

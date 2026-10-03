@@ -94,6 +94,27 @@ SG_INLINE void sg_shade_pixel(softgl_ctx *c,
     /* Depth: screen-linear, not perspective-corrected. */
     float z = b0 * v0->ndc.z + b1 * v1->ndc.z + b2 * v2->ndc.z + z_offset;
 
+    /* Generic texture combiners use this scalar shader too. A failed
+     * depth test has no observable effect when stencil is disabled, even
+     * with alpha testing, blending or an occlusion query. Keep the final
+     * fragment test/write in spec order for surviving pixels. */
+    if (c->depth_test && !c->stencil_test) {
+        float d = c->fb.depth[y*c->fb.w+x];
+        int pass;
+        switch (c->depth_func) {
+            case GL_NEVER:    pass = 0; break;
+            case GL_LESS:     pass = z < d; break;
+            case GL_EQUAL:    pass = z == d; break;
+            case GL_LEQUAL:   pass = z <= d; break;
+            case GL_GREATER:  pass = z > d; break;
+            case GL_NOTEQUAL: pass = z != d; break;
+            case GL_GEQUAL:   pass = z >= d; break;
+            case GL_ALWAYS:   pass = 1; break;
+            default:          pass = z < d; break;
+        }
+        if (!pass) return;
+    }
+
     float col[4];
     sg_lerp_pc(col, &v0->color, &v1->color, &v2->color,
                w0, w1, w2, one_over_wsum);
@@ -102,7 +123,7 @@ SG_INLINE void sg_shade_pixel(softgl_ctx *c,
 
     float primary[4] = { col[0], col[1], col[2], col[3] };
 
-    /* Fast-path: 2D LINEAR REPEAT MODULATE/REPLACE, no fog. Integer
+    /* Fast-path: 2D LINEAR REPEAT MODULATE/REPLACE. Integer
      * bilinear variant (up to 1 LSB drift vs float sampler). */
     if (tctx->fastpath_kind == 1 || tctx->fastpath_kind == 2) {
         float uu = (v0->uv[0].x * w0 + v1->uv[0].x * w1 + v2->uv[0].x * w2) * one_over_wsum;
@@ -346,8 +367,8 @@ SG_INLINE void sg_shade_quad(softgl_ctx *c,
         SG_ALIGN16 int32_t x0A[4], y0A[4];
         sg_f32x4 fxfl = _mm_floor_ps(fxv);
         sg_f32x4 fyfl = _mm_floor_ps(fyv);
-        sg_i32x4 x0v = _mm_cvttps_epi32(fxfl);
-        sg_i32x4 y0v = _mm_cvttps_epi32(fyfl);
+        sg_i32x4 x0v = sg_f32x4_trunc_i32(fxfl);
+        sg_i32x4 y0v = sg_f32x4_trunc_i32(fyfl);
         _mm_store_si128((__m128i*)x0A, x0v);
         _mm_store_si128((__m128i*)y0A, y0v);
         sg_f32x4 fu = sg_f32x4_sub(fxv, fxfl);
@@ -363,8 +384,8 @@ SG_INLINE void sg_shade_quad(softgl_ctx *c,
         /* Round-half-up via +0.5 + trunc. Bridges SSE RNE cvtps vs
          * WASM trunc_sat; fu256/fv256 are in [0,256] so well-defined. */
         __m128 half256 = _mm_set1_ps(0.5f);
-        _mm_store_si128((__m128i*)fu8A, _mm_cvttps_epi32(_mm_add_ps(fu256, half256)));
-        _mm_store_si128((__m128i*)fv8A, _mm_cvttps_epi32(_mm_add_ps(fv256, half256)));
+        _mm_store_si128((__m128i*)fu8A, sg_f32x4_trunc_i32(_mm_add_ps(fu256, half256)));
+        _mm_store_si128((__m128i*)fv8A, sg_f32x4_trunc_i32(_mm_add_ps(fv256, half256)));
 
         SG_ALIGN16 float crL[4], cgL[4], cbL[4], caL[4];
         sg_f32x4_store(crL, cr);  sg_f32x4_store(cgL, cg);
@@ -614,11 +635,12 @@ SG_INLINE void sg_shade_quad(softgl_ctx *c,
  * tile_ix0=0, tile_ix1=fb.w reproduces the whole-FB behaviour exactly
  * (caller is the single-thread path). Workers pass their owned X-stripe
  * to parallelise across tiles without touching each other's columns. */
-void sg_raster_triangle_tile(softgl_ctx *c,
+void sg_raster_triangle_tile_prepared(softgl_ctx *c,
                              const sg_vert *v0,
                              const sg_vert *v1,
                              const sg_vert *v2,
-                             int tile_ix0, int tile_ix1) {
+                             int tile_ix0, int tile_ix1,
+                             const sg_tex_tri_ctx *tctx) {
     /* 16.8 fixed-point screen coords. */
     sg_screen_t x0 = sg_fp_screen_from_float(v0->ndc.x);
     sg_screen_t y0 = sg_fp_screen_from_float(v0->ndc.y);
@@ -705,8 +727,6 @@ void sg_raster_triangle_tile(softgl_ctx *c,
     float invw0 = v0->ndc.w;
     float invw1 = v1->ndc.w;
     float invw2 = v2->ndc.w;
-    sg_tex_tri_ctx tctx;
-    sg_tex_tri_prepare(c, &tctx);
 
     /* SIMD 2x2-quad path. Per-edge min/max-across-quad offsets enable
      * scalar trivial accept/reject; (E+bias) is computed per lane in
@@ -721,7 +741,7 @@ void sg_raster_triangle_tile(softgl_ctx *c,
     if (dE2_dx < 0) min_off2 += dE2_dx; else max_off2 += dE2_dx;
     if (dE2_dy < 0) min_off2 += dE2_dy; else max_off2 += dE2_dy;
 
-    int use_simd_quad = !sg_quad_needs_scalar(c, &tctx);
+    int use_simd_quad = !sg_quad_needs_scalar(c, tctx);
 
     int64_t E0_row = E0_row0;
     int64_t E1_row = E1_row0;
@@ -782,8 +802,10 @@ void sg_raster_triangle_tile(softgl_ctx *c,
             }
 
             if (cov) {
-                if (use_simd_quad) {
-                    sg_shade_quad(c, &tctx, v0, v1, v2, ix, iy, cov,
+                /* Quad loads/stores touch both pixels of each row. Keep
+                 * them inside this worker's stripe and framebuffer. */
+                if (use_simd_quad && ix + 1 < tile_ix1) {
+                    sg_shade_quad(c, tctx, v0, v1, v2, ix, iy, cov,
                                   E0, E1,
                                   dE0_dx, dE0_dy, dE1_dx, dE1_dy,
                                   inv_area_f, invw0, invw1, invw2, z_offset);
@@ -792,22 +814,22 @@ void sg_raster_triangle_tile(softgl_ctx *c,
                      * occlusion); raw i64 edge values for byte-equal
                      * barycentrics with scalar reference. */
                     if (cov & 0x1u) {
-                        sg_shade_pixel(c, &tctx, v0, v1, v2, ix, iy,
+                        sg_shade_pixel(c, tctx, v0, v1, v2, ix, iy,
                                        E0, E1,
                                        inv_area_f, invw0, invw1, invw2, z_offset);
                     }
                     if (cov & 0x2u) {
-                        sg_shade_pixel(c, &tctx, v0, v1, v2, ix + 1, iy,
+                        sg_shade_pixel(c, tctx, v0, v1, v2, ix + 1, iy,
                                        E0 + dE0_dx, E1 + dE1_dx,
                                        inv_area_f, invw0, invw1, invw2, z_offset);
                     }
                     if (cov & 0x4u) {
-                        sg_shade_pixel(c, &tctx, v0, v1, v2, ix, iy + 1,
+                        sg_shade_pixel(c, tctx, v0, v1, v2, ix, iy + 1,
                                        E0 + dE0_dy, E1 + dE1_dy,
                                        inv_area_f, invw0, invw1, invw2, z_offset);
                     }
                     if (cov & 0x8u) {
-                        sg_shade_pixel(c, &tctx, v0, v1, v2, ix + 1, iy + 1,
+                        sg_shade_pixel(c, tctx, v0, v1, v2, ix + 1, iy + 1,
                                        E0 + dE0_dx + dE0_dy,
                                        E1 + dE1_dx + dE1_dy,
                                        inv_area_f, invw0, invw1, invw2, z_offset);
@@ -825,6 +847,14 @@ void sg_raster_triangle_tile(softgl_ctx *c,
         E1_row += dE1_dy * 2;
         E2_row += dE2_dy * 2;
     }
+}
+
+void sg_raster_triangle_tile(softgl_ctx *c,
+                             const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
+                             int tile_ix0, int tile_ix1) {
+    sg_tex_tri_ctx tctx;
+    sg_tex_tri_prepare(c, &tctx);
+    sg_raster_triangle_tile_prepared(c, v0, v1, v2, tile_ix0, tile_ix1, &tctx);
 }
 
 /* Public (non-binned) entrypoint: rasterize across the whole framebuffer.

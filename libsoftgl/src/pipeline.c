@@ -1,6 +1,7 @@
 #include "types.h"
 #include "dlist.h"
 #include "workers.h"
+#include "lod.h"
 #include <smmintrin.h>
 #include <math.h>
 #include <string.h>
@@ -396,13 +397,51 @@ static void sg_process_triangle(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert
     }
 }
 
-static uint32_t sg_fetch_index(softgl_ctx *c, GLenum type, const void *indices, GLsizei i) {
+SG_INLINE int sg_can_reuse_screen_vertices(const softgl_ctx *c) {
+    if (c->polygon_mode_front != GL_FILL || c->polygon_mode_back != GL_FILL ||
+        c->light_model_two_side) return 0;
+    for (int i = 0; i < 6; i++) if (c->clip_plane_enabled[i]) return 0;
+    return 1;
+}
+
+/* Parallel transforms fill screen coordinates once per source vertex.
+ * Reuse the immutable pool for ordinary fully inside filled triangles.
+ * Qualification and culling match the general triangle path above. */
+static void sg_process_triangle_cached(softgl_ctx *c, const sg_vert *v0,
+                                       const sg_vert *v1, const sg_vert *v2,
+                                       int reuse_screen) {
+    if (reuse_screen) {
+        float ax = v1->ndc.x - v0->ndc.x, ay = v1->ndc.y - v0->ndc.y;
+        float bx = v2->ndc.x - v0->ndc.x, by = v2->ndc.y - v0->ndc.y;
+        float area2 = ax * by - ay * bx;
+        if (fabsf(area2) < 1e-10f) return;
+        int front = c->front_face == GL_CCW ? area2 > 0.f : area2 < 0.f;
+        if (c->cull_enabled) {
+            if (c->cull_face == GL_FRONT_AND_BACK) return;
+            if (front == (c->cull_face == GL_FRONT)) return;
+        }
+        if (area2 < 0.f) {
+            const sg_vert *tmp = v1; v1 = v2; v2 = tmp;
+        }
+        sg_workers_bin_transformed_tri(c, v0, v1, v2);
+        return;
+    }
+    SG_ALIGN16 sg_vert v[3] = {*v0, *v1, *v2};
+    sg_process_triangle(c, &v[0], &v[1], &v[2]);
+}
+
+static const uint8_t *sg_index_base(softgl_ctx *c, const void *indices) {
     const uint8_t *base = (const uint8_t*)indices;
     if (c->element_buffer_binding) {
         sg_buffer *b = sg_buffer_get(c, c->element_buffer_binding);
-        if (!b || !b->data) return 0;
+        if (!b || !b->data) return NULL;
         base = (const uint8_t*)b->data + (uintptr_t)indices;
     }
+    return base;
+}
+
+SG_INLINE uint32_t sg_fetch_index(GLenum type, const uint8_t *base, GLsizei i) {
+    if (!base) return 0;
     switch (type) {
         case GL_UNSIGNED_BYTE:  return base[i];
         case GL_UNSIGNED_SHORT: return ((const uint16_t*)base)[i];
@@ -460,12 +499,13 @@ void _sg_draw_arrays_real(GLenum mode, GLint first, GLsizei count) {
             sg_prepare_nm_cache(c);
             const sg_vert *pre = sg_workers_transform_range(c, first, count);
             if (pre) {
+                int reuse_screen = sg_can_reuse_screen_vertices(c);
+                const uint8_t *inside = sg_workers_inside_frustum(c);
                 for (int t = 0; t < ntri; t++) {
-                    SG_ALIGN16 sg_vert v[3];
-                    v[0] = pre[first + t * 3 + 0];
-                    v[1] = pre[first + t * 3 + 1];
-                    v[2] = pre[first + t * 3 + 2];
-                    sg_process_triangle(c, &v[0], &v[1], &v[2]);
+                    sg_process_triangle_cached(c, &pre[first + t * 3 + 0],
+                                                &pre[first + t * 3 + 1],
+                                                &pre[first + t * 3 + 2],
+                        reuse_screen && inside[first+t*3] && inside[first+t*3+1] && inside[first+t*3+2]);
                 }
             } else {
                 goto serial_triangles_arrays;
@@ -536,14 +576,33 @@ void _sg_draw_arrays_real(GLenum mode, GLint first, GLsizei count) {
         }
     }
     sg_workers_flush(c);
+    if (c->performance_mode && c->lod_frame_budget > 0.f) sg_lod_draw_finished(c);
 }
 
 void sg_process_triangle_pub(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert *v2) {
     sg_process_triangle(c, v0, v1, v2);
 }
 
-void sg_process_vertex_at(softgl_ctx *c, int index, sg_vert *out) {
+int sg_process_vertex_at(softgl_ctx *c, int index, sg_vert *out) {
     sg_process_vertex(c, index, out);
+    /* Match the general path's six-plane arithmetic, once per vertex. */
+    __m128 V = _mm_load_ps(&out->clip.x);
+    __m128 Vw = _mm_shuffle_ps(V, V, _MM_SHUFFLE(3,3,3,3));
+    __m128 Vxyz = _mm_blend_ps(V, _mm_setzero_ps(), 0x8);
+    __m128 plus = _mm_add_ps(Vxyz, Vw), minus = _mm_sub_ps(Vw, Vxyz);
+    int outside = _mm_movemask_ps(_mm_cmplt_ps(_mm_unpacklo_ps(plus, minus), _mm_setzero_ps())) |
+                 (_mm_movemask_ps(_mm_cmplt_ps(_mm_unpackhi_ps(plus, minus), _mm_setzero_ps())) & 3);
+    float w = out->clip.w;
+    if (w == 0.f) w = 1e-20f;
+    float invw = 1.0f / w;
+    out->ndc.x = out->clip.x * invw;
+    out->ndc.y = out->clip.y * invw;
+    out->ndc.z = out->clip.z * invw;
+    out->ndc.w = invw;
+    out->ndc.x = (float)c->viewport[0] + (out->ndc.x * 0.5f + 0.5f) * (float)c->viewport[2];
+    out->ndc.y = (float)c->viewport[1] + (out->ndc.y * 0.5f + 0.5f) * (float)c->viewport[3];
+    out->ndc.z = out->ndc.z * 0.5f + 0.5f;
+    return !outside;
 }
 
 /* Immediate-mode vertex: position direct, other attrs from current state. */
@@ -600,6 +659,16 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
     softgl_ctx *c = sg_current(); if (!c) return;
     if (count <= 0) return;
     sg_vcache_clear();
+    const uint8_t *index_data = sg_index_base(c, indices);
+    sg_lod_draw lod = {0};
+    if (c->performance_mode) lod = sg_lod_select(c, mode, count, type, indices);
+    if (mode == GL_TRIANGLES) c->lod_input_triangles += count/3;
+    if (lod.indices) {
+        index_data = (const uint8_t *)lod.indices;
+        type = GL_UNSIGNED_INT;
+        count = lod.count;
+    }
+    if (mode == GL_TRIANGLES) c->lod_drawn_triangles += count/3;
 
     if (mode == GL_TRIANGLES) {
         int ntri = count / 3;
@@ -608,31 +677,31 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
              * is actually referenced. Scan once — cheap even at 130k indices. */
             uint32_t imin = 0xFFFFFFFFu, imax = 0;
             for (int k = 0; k < count; k++) {
-                uint32_t ix = sg_fetch_index(c, type, indices, k);
+                uint32_t ix = sg_fetch_index(type, index_data, k);
                 if (ix < imin) imin = ix;
                 if (ix > imax) imax = ix;
             }
             sg_prepare_nm_cache(c);
-            const sg_vert *pre = sg_workers_transform_range(c, (int)imin,
-                                                            (int)(imax - imin + 1));
+            const sg_vert *pre = lod.indices ?
+                sg_workers_transform_indices(c, lod.vertices, lod.vertex_count, lod.vertex_limit) :
+                sg_workers_transform_range(c, (int)imin, (int)(imax - imin + 1));
             if (pre) {
+                int reuse_screen = sg_can_reuse_screen_vertices(c);
+                const uint8_t *inside = sg_workers_inside_frustum(c);
                 for (int t = 0; t < ntri; t++) {
-                    uint32_t i0 = sg_fetch_index(c, type, indices, t * 3 + 0);
-                    uint32_t i1 = sg_fetch_index(c, type, indices, t * 3 + 1);
-                    uint32_t i2 = sg_fetch_index(c, type, indices, t * 3 + 2);
-                    SG_ALIGN16 sg_vert v[3];
-                    v[0] = pre[i0];
-                    v[1] = pre[i1];
-                    v[2] = pre[i2];
-                    sg_process_triangle(c, &v[0], &v[1], &v[2]);
+                    uint32_t i0 = sg_fetch_index(type, index_data, t * 3 + 0);
+                    uint32_t i1 = sg_fetch_index(type, index_data, t * 3 + 1);
+                    uint32_t i2 = sg_fetch_index(type, index_data, t * 3 + 2);
+                    sg_process_triangle_cached(c, &pre[i0], &pre[i1], &pre[i2],
+                        reuse_screen && inside[i0] && inside[i1] && inside[i2]);
                 }
                 goto triangles_done;
             }
         }
         for (int t = 0; t < ntri; t++) {
-            uint32_t i0 = sg_fetch_index(c, type, indices, t * 3 + 0);
-            uint32_t i1 = sg_fetch_index(c, type, indices, t * 3 + 1);
-            uint32_t i2 = sg_fetch_index(c, type, indices, t * 3 + 2);
+            uint32_t i0 = sg_fetch_index(type, index_data, t * 3 + 0);
+            uint32_t i1 = sg_fetch_index(type, index_data, t * 3 + 1);
+            uint32_t i2 = sg_fetch_index(type, index_data, t * 3 + 2);
             SG_ALIGN16 sg_vert v[3];
             sg_vcache_fetch(c, i0, &v[0]);
             sg_vcache_fetch(c, i1, &v[1]);
@@ -642,9 +711,9 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
     triangles_done:;
     } else if (mode == GL_TRIANGLE_STRIP) {
         for (int t = 0; t < count - 2; t++) {
-            uint32_t i0 = sg_fetch_index(c, type, indices, t);
-            uint32_t i1 = sg_fetch_index(c, type, indices, t + (t & 1 ? 2 : 1));
-            uint32_t i2 = sg_fetch_index(c, type, indices, t + (t & 1 ? 1 : 2));
+            uint32_t i0 = sg_fetch_index(type, index_data, t);
+            uint32_t i1 = sg_fetch_index(type, index_data, t + (t & 1 ? 2 : 1));
+            uint32_t i2 = sg_fetch_index(type, index_data, t + (t & 1 ? 1 : 2));
             SG_ALIGN16 sg_vert v[3];
             sg_vcache_fetch(c, i0, &v[0]);
             sg_vcache_fetch(c, i1, &v[1]);
@@ -652,12 +721,12 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
             sg_process_triangle(c, &v[0], &v[1], &v[2]);
         }
     } else if (mode == GL_TRIANGLE_FAN) {
-        uint32_t ic = sg_fetch_index(c, type, indices, 0);
+        uint32_t ic = sg_fetch_index(type, index_data, 0);
         SG_ALIGN16 sg_vert v0;
         sg_vcache_fetch(c, ic, &v0);
         for (int t = 1; t < count - 1; t++) {
-            uint32_t i1 = sg_fetch_index(c, type, indices, t);
-            uint32_t i2 = sg_fetch_index(c, type, indices, t + 1);
+            uint32_t i1 = sg_fetch_index(type, index_data, t);
+            uint32_t i2 = sg_fetch_index(type, index_data, t + 1);
             SG_ALIGN16 sg_vert v1, v2;
             sg_vcache_fetch(c, i1, &v1);
             sg_vcache_fetch(c, i2, &v2);
@@ -666,8 +735,8 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
     } else if (mode == GL_LINES) {
         int nlines = count / 2;
         for (int i = 0; i < nlines; i++) {
-            uint32_t i0 = sg_fetch_index(c, type, indices, i*2 + 0);
-            uint32_t i1 = sg_fetch_index(c, type, indices, i*2 + 1);
+            uint32_t i0 = sg_fetch_index(type, index_data, i*2 + 0);
+            uint32_t i1 = sg_fetch_index(type, index_data, i*2 + 1);
             SG_ALIGN16 sg_vert v[2];
             sg_vcache_fetch(c, i0, &v[0]);
             sg_vcache_fetch(c, i1, &v[1]);
@@ -676,19 +745,19 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
     } else if (mode == GL_LINE_STRIP) {
         if (count < 2) return;
         SG_ALIGN16 sg_vert prev, cur;
-        sg_vcache_fetch(c, sg_fetch_index(c, type, indices, 0), &prev);
+        sg_vcache_fetch(c, sg_fetch_index(type, index_data, 0), &prev);
         for (int i = 1; i < count; i++) {
-            sg_vcache_fetch(c, sg_fetch_index(c, type, indices, i), &cur);
+            sg_vcache_fetch(c, sg_fetch_index(type, index_data, i), &cur);
             sg_process_line(c, &prev, &cur);
             prev = cur;
         }
     } else if (mode == GL_LINE_LOOP) {
         if (count < 2) return;
         SG_ALIGN16 sg_vert first_v, prev, cur;
-        sg_vcache_fetch(c, sg_fetch_index(c, type, indices, 0), &first_v);
+        sg_vcache_fetch(c, sg_fetch_index(type, index_data, 0), &first_v);
         prev = first_v;
         for (int i = 1; i < count; i++) {
-            sg_vcache_fetch(c, sg_fetch_index(c, type, indices, i), &cur);
+            sg_vcache_fetch(c, sg_fetch_index(type, index_data, i), &cur);
             sg_process_line(c, &prev, &cur);
             prev = cur;
         }
@@ -696,11 +765,12 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
     } else if (mode == GL_POINTS) {
         for (int i = 0; i < count; i++) {
             SG_ALIGN16 sg_vert v;
-            sg_vcache_fetch(c, sg_fetch_index(c, type, indices, i), &v);
+            sg_vcache_fetch(c, sg_fetch_index(type, index_data, i), &v);
             sg_process_point(c, &v);
         }
     }
     sg_workers_flush(c);
+    if (c->performance_mode && c->lod_frame_budget > 0.f) sg_lod_draw_finished(c);
 }
 
 void glDrawArrays(GLenum mode, GLint first, GLsizei count) {

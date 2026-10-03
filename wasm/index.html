@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<title>SoftGL — T-80 MBT + 216 Tests (640×360)</title>
+<title>SoftGL — T-80 MBT + Tests (640×360)</title>
 <style>
   html, body { margin: 0; padding: 0; background: #0a0a0a; color: #ddd;
                font-family: ui-monospace, monospace; }
@@ -36,6 +36,7 @@
            font: inherit; cursor: pointer; margin-right: 8px; margin-bottom: 4px; }
   button:hover { background: #333; }
   button[disabled] { opacity: 0.4; cursor: not-allowed; }
+  select { background: #222; color: #ddd; border: 1px solid #444; padding: 6px; font: inherit; }
   .cap { font-size: 12px; color: #8b8; margin-top: 8px; }
   .cap.bad { color: #c77; }
   .stats { font-size: 11px; color: #666; margin-top: 12px;
@@ -50,7 +51,7 @@
 </head>
 <body>
 <div class="wrap">
-  <h1>SoftGL — T-80 MBT Demo + 216 Tests @ 640×360</h1>
+  <h1>SoftGL — T-80 MBT Demo + Tests @ 640×360</h1>
   <div class="stage">
     <div id="canvas-wrap"><canvas id="canvas" width="640" height="360"></canvas></div>
     <div class="info">
@@ -60,6 +61,7 @@
       <div class="bar"><div id="prog"></div></div>
       <div style="margin-top: 16px;">
         <button id="tank">Tank</button>
+        <button id="bmw">BMW F31</button>
         <button id="tests">Tests</button>
         <button id="pause">Pause</button>
         <button id="prev">&lsaquo; Prev</button>
@@ -67,18 +69,34 @@
         <button id="bench">Run Benchmark</button>
         <button id="fullscreen">Fullscreen</button>
       </div>
+      <div style="margin-top: 8px; font-size: 12px;">
+        <label for="render-mode">SoftGL mode</label>
+        <select id="render-mode">
+          <option value="0">Compliance — full geometry</option>
+          <option value="1">Performance — target 30 FPS</option>
+        </select>
+      </div>
       <div id="stats" class="stats">
         <div><span class="k">WASM SIMD</span><span class="v" id="s-simd">–</span></div>
         <div><span class="k">SharedArrayBuffer</span><span class="v" id="s-sab">–</span></div>
         <div><span class="k">Render threads</span><span class="v" id="s-threads">–</span></div>
-        <div><span class="k">Logical cores</span><span class="v" id="s-cores">–</span></div>
+        <div><span class="k">Logical processors</span><span class="v" id="s-cores">–</span></div>
         <div><span class="k">Canvas</span><span class="v">640×360 RGBA8</span></div>
         <div><span class="k">Frame (last)</span><span class="v" id="s-ms">–</span></div>
         <div><span class="k">Frame (p50 / p95)</span><span class="v" id="s-p">–</span></div>
+        <div><span class="k">Indexed triangles</span><span class="v" id="s-lod-tris">–</span></div>
+        <div><span class="k">LOD cache</span><span class="v" id="s-lod-cache">–</span></div>
+        <div><span class="k">Quality / budget</span><span class="v" id="s-lod-quality">–</span></div>
       </div>
     </div>
   </div>
   <pre id="bench-out" hidden></pre>
+  <p id="model-credit" hidden style="font-size: 11px; color: #777;">
+    <a href="https://sketchfab.com/3d-models/2014-bmw-3-series-f31-71746440f98d48ca9ea41ceeaa3504c7">2014 BMW 3 Series (F31)</a>
+    by <a href="https://sketchfab.com/supercarmodels">DisneyCars</a>,
+    <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.
+    Converted geometry; derived normal maps and prepared studio reflections.
+  </p>
 </div>
 <script src="softgl.js"></script>
 <script src="main.js"></script>
