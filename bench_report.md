@@ -16,22 +16,24 @@
 
 | Prüfung | Ergebnis |
 | --- | --- |
-| Native | 726/726 |
+| Native | 727/727 |
 | WASM/Mesa | 240/240 |
 | MSAA aus, Bilder zu `cd7998be` | 240 bytegleich |
 | 2× / 4× MSAA, Modellbilder zu `cd7998be` | je Modell/Modus 100 Hashes + 4 Bytevergleiche identisch |
 | MSAA-Verträge | nativ + WASM; je 2×/4× mit 0/1/3/8 Workern |
 | Mesa, echte 4×-Samples | Kante / Blend / Tiefe / Stencil: bytegleich |
-| ASan/UBSan + Leaks | 5/5 |
+| ASan/UBSan + Leaks | 6/6 |
 | Offline-Simplifier | Budget, Materialgrenzen, Normalen, Indizes bestanden |
 | BMW-Ansichten | 12; min. Silhouetten-IoU 0.99810 |
 | Chromium / Firefox | je 234 Tests; 6 Benchmarks; Abbruch; 8 Worker; MSAA-Wechsel |
 | Toleranzen | unverändert |
-| WASM / Pack SHA-256 | `d02a6367` / `fae69ce4` |
+| WASM / Pack SHA-256 | `162bc25f` / `fae69ce4` |
 | Automatischer WASM-Pool | CPUs 1/2/4/8/9/16 → Worker 0/1/3/7/8/8; 18 Verträge |
 | MSAA-Kantenvertrag | 1 Mio. exakt je native/WASM; 1.152 native Szenen bytegleich |
 | DOT3-Kettenvertrag | 300.000 exakt; native + WASM |
 | Konstante Texturen | je 131.072 native/WASM; max. Delta 0 |
+| Geometriecache | 4 MiB; 9 native/WASM-Verträge; Positionen/Attribute frisch |
+| Modellbilder zu `d02a6367` | je ohne/2×/4× MSAA: 100 Hashes + 4 Bytevergleiche pro Modell identisch |
 | Vier-Pixel-Vertrag | je native/WASM: 331.447 Samples + 128.054 Shader exakt |
 | Optimierungsmessungen, WASM | `09d029e0` |
 | MSAA aus, Kontrollpaar | BMW −0.3 %; T-80 +0.9 % |
@@ -44,7 +46,7 @@
 | 4× MSAA; Render + Resolve / Frame | BMW F31 | T-80 |
 | --- | --- | --- |
 | Ziel | >30 FPS | >60 FPS |
-| Audit 1 / 2 | 12.79 / 12.68 FPS | 48.98 / 49.20 FPS |
+| Audit 1 / 2 | 14.08 / 13.97 FPS | 49.65 / 49.74 FPS |
 | MSAA-Packing, Zeitgewinn 1 / 2 | −14.14 / −13.35 % | −24.53 / −21.30 % |
 | MSAA-Clear, Zeitgewinn 1 / 2 | −8.92 / −8.97 % | −32.02 / −28.93 % |
 | Caller-Raster, Zeitgewinn 1 / 2 | −4.05 / −4.14 % | −2.15 / −2.76 % |
@@ -53,6 +55,7 @@
 | Caller-CPU reserviert, Zeitänderung 1 / 2 | −2.32 / −3.49 % | −2.33 / −3.69 % |
 | Konstante Texturen, Zeitänderung 1 / 2 | −8.56 / −8.95 % | −1.42 / −0.30 % |
 | Vier-Pixel-SIMD + MSAA-Spezialisierung, Zeitänderung 1 / 2 | −10.37 / −9.46 % | −14.49 / −14.67 % |
+| Geometriecache, Zeitänderung 1 / 2 | −6.86 / −6.52 % | −0.21 / −0.23 % |
 | Raster-Worker, Kandidat / Basis | 3 / 3 | 3 / 3 |
 | Frames / Warm-up / AB/BA-Paare | 100 / 80 / 2×3 | 100 / 80 / 2×3 |
 | Schattierte Pixel / Frame | 301.292 | 137.667 |

@@ -8,6 +8,7 @@ static sg_buffer *sg_alloc_slot(softgl_ctx *c, GLuint *out_id) {
     for (size_t i = 0; i < c->buffers_cap; i++) {
         if (!c->buffers[i].in_use) {
             c->buffers[i].in_use = 1;
+            c->buffers[i].revision++;
             c->buffers[i].id = (GLuint)(i + 1);
             *out_id = c->buffers[i].id;
             return &c->buffers[i];
@@ -21,6 +22,7 @@ static sg_buffer *sg_alloc_slot(softgl_ctx *c, GLuint *out_id) {
     size_t old = c->buffers_cap;
     c->buffers_cap = new_cap;
     c->buffers[old].in_use = 1;
+    c->buffers[old].revision++;
     c->buffers[old].id = (GLuint)(old + 1);
     *out_id = c->buffers[old].id;
     return &c->buffers[old];
@@ -72,7 +74,7 @@ void _sg_bind_buffer_real(GLenum target, GLuint id) {
     }
     if (id != 0) {
         sg_buffer *b = &c->buffers[id - 1];
-        if (!b->in_use) { b->in_use = 1; b->id = id; }
+        if (!b->in_use) { b->in_use = 1; b->id = id; b->revision++; }
     }
     switch (target) {
         case GL_ARRAY_BUFFER:         c->array_buffer_binding = id; break;
@@ -86,6 +88,7 @@ void _sg_buffer_data_real(GLenum target, GLsizeiptr size, const void *data, GLen
     GLuint id = (target == GL_ARRAY_BUFFER) ? c->array_buffer_binding : c->element_buffer_binding;
     sg_buffer *b = sg_buffer_get(c, id);
     if (!b) return;
+    b->revision++;
     if (b->data) free(b->data);
     b->data = size > 0 ? malloc((size_t)size) : NULL;
     b->size = (size_t)size;
@@ -100,6 +103,7 @@ void _sg_buffer_subdata_real(GLenum target, GLintptr offset, GLsizeiptr size, co
     if (!b || !b->data || !data) return;
     if (offset < 0 || size < 0) return;
     if ((size_t)(offset + size) > b->size) return;
+    b->revision++;
     memcpy((uint8_t*)b->data + offset, data, (size_t)size);
 }
 
@@ -292,6 +296,7 @@ void *glMapBuffer(GLenum target, GLenum access) {
     if (!b->data || b->size == 0) {
         sg_set_error(GL_OUT_OF_MEMORY); return NULL;
     }
+    if (access != GL_READ_ONLY) b->revision++;
     b->mapped = 1;
     b->access = access;
     return b->data;
@@ -302,6 +307,7 @@ GLboolean glUnmapBuffer(GLenum target) {
     sg_buffer *b = sg_bound_buffer(c, target);
     if (!b) return GL_FALSE;
     if (!b->mapped) { sg_set_error(GL_INVALID_OPERATION); return GL_FALSE; }
+    if (b->access != GL_READ_ONLY) b->revision++;
     b->mapped = 0;
     b->access = 0;
     /* In a pure-software implementation the mapped pointer IS the storage,

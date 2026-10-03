@@ -42,6 +42,12 @@ endif()
 add_test(NAME pixel_packet_contract COMMAND pixel_packet_contract)
 set_tests_properties(pixel_packet_contract PROPERTIES TIMEOUT 30)
 
+add_executable(geometry_cache_contract geometry_cache.c)
+target_include_directories(geometry_cache_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_link_libraries(geometry_cache_contract PRIVATE softgl)
+add_test(NAME geometry_cache_contract COMMAND geometry_cache_contract)
+set_tests_properties(geometry_cache_contract PROPERTIES TIMEOUT 30)
+
 # --- Compare tool (native, no GL) ---
 add_executable(sg_compare harness/compare.c harness/ppm_write.c)
 target_include_directories(sg_compare PRIVATE harness)

@@ -182,6 +182,140 @@ void sg_workers_bin_transformed_tri(softgl_ctx *c, const sg_vert *v0,
     }
 }
 
+/* Cache raw bin order, before optional raster sorting. Position/index VBO
+ * revisions and complete matrix/viewport/culling keys make hits independent of
+ * colors, materials, textures, blending and query state. No client-memory cache. */
+#define SG_GEOMETRY_CACHE_ENTRIES 64
+#define SG_GEOMETRY_CACHE_BYTES (4u * 1024u * 1024u)
+typedef struct {
+    sg_attrib_ptr position;
+    GLuint elements;
+    uint64_t position_revision, element_revision;
+    uintptr_t index_offset;
+    GLsizei count;
+    GLenum type, front_face, cull_face;
+    int cull_enabled;
+} sg_geometry_key;
+
+struct sg_geometry_entry {
+    sg_geometry_key key;
+    int occupied, valid;
+    uint32_t imin, imax;
+    uint64_t stamp;
+    sg_worker_tri *tris;
+    size_t capacity;
+    int offsets[SG_MAX_BINS + 1];
+};
+
+typedef struct sg_geometry_cache {
+    sg_mat4 mv, projection;
+    int viewport[4], multisample, initialized;
+    uint64_t clock;
+    size_t bytes;
+    sg_geometry_entry entries[SG_GEOMETRY_CACHE_ENTRIES];
+} sg_geometry_cache;
+
+static void sg_geometry_cache_destroy(sg_geometry_cache *cache) {
+    if (!cache) return;
+    for (int i = 0; i < SG_GEOMETRY_CACHE_ENTRIES; i++)
+        sg_aligned_free(cache->entries[i].tris);
+    free(cache);
+}
+
+sg_geometry_entry *sg_workers_geometry_lookup(softgl_ctx *c, GLsizei count,
+    GLenum type, const void *indices, uint32_t *imin, uint32_t *imax, int *hit) {
+    *hit = 0;
+    sg_worker_pool *p = (sg_worker_pool *)c->workers;
+    if (!p || !p->nworkers || count < 768 || c->render_mode != GL_RENDER ||
+        !c->attr_pos.enabled || !c->attr_pos.buffer || !c->element_buffer_binding ||
+        c->polygon_mode_front != GL_FILL || c->polygon_mode_back != GL_FILL ||
+        c->light_model_two_side) return NULL;
+    for (int i = 0; i < 6; i++) if (c->clip_plane_enabled[i]) return NULL;
+    for (int i = 0; i < p->nbins; i++) if (p->bins[i].count) return NULL;
+    sg_buffer *vertices = sg_buffer_get(c, c->attr_pos.buffer);
+    sg_buffer *elements = sg_buffer_get(c, c->element_buffer_binding);
+    if (!vertices || !elements || !vertices->data || !elements->data ||
+        vertices->mapped || elements->mapped) return NULL;
+    if (!p->geometry_cache) p->geometry_cache = calloc(1, sizeof(sg_geometry_cache));
+    sg_geometry_cache *cache = p->geometry_cache;
+    if (!cache) return NULL;
+    const sg_mat4 *mv = &c->mv_stack[c->mv_top], *pr = &c->pr_stack[c->pr_top];
+    int multisample = c->fb.samples && c->multisample;
+    if (!cache->initialized || memcmp(&cache->mv, mv, sizeof(*mv)) ||
+        memcmp(&cache->projection, pr, sizeof(*pr)) ||
+        memcmp(cache->viewport, c->viewport, sizeof(cache->viewport)) ||
+        cache->multisample != multisample) {
+        cache->mv = *mv; cache->projection = *pr;
+        memcpy(cache->viewport, c->viewport, sizeof(cache->viewport));
+        cache->multisample = multisample; cache->initialized = 1;
+        for (int i = 0; i < SG_GEOMETRY_CACHE_ENTRIES; i++) cache->entries[i].valid = 0;
+    }
+    sg_geometry_key key = {0};
+    key.position.enabled = c->attr_pos.enabled;
+    key.position.size = c->attr_pos.size;
+    key.position.type = c->attr_pos.type;
+    key.position.stride = c->attr_pos.stride;
+    key.position.ptr = c->attr_pos.ptr;
+    key.position.buffer = c->attr_pos.buffer;
+    key.elements = c->element_buffer_binding;
+    key.position_revision = vertices->revision; key.element_revision = elements->revision;
+    key.index_offset = (uintptr_t)indices; key.count = count; key.type = type;
+    key.front_face = c->front_face; key.cull_face = c->cull_face; key.cull_enabled = c->cull_enabled;
+    sg_geometry_entry *victim = &cache->entries[0];
+    for (int i = 0; i < SG_GEOMETRY_CACHE_ENTRIES; i++) {
+        sg_geometry_entry *entry = &cache->entries[i];
+        if (entry->occupied && !memcmp(&entry->key, &key, sizeof(key))) {
+            entry->stamp = ++cache->clock;
+            if (entry->valid) { *imin = entry->imin; *imax = entry->imax; *hit = 1; }
+            return entry;
+        }
+        if (!entry->occupied || (victim->occupied && entry->stamp < victim->stamp)) victim = entry;
+    }
+    victim->key = key; victim->occupied = 1; victim->valid = 0;
+    victim->stamp = ++cache->clock;
+    return victim;
+}
+
+void sg_workers_geometry_store(softgl_ctx *c, sg_geometry_entry *entry,
+                               uint32_t imin, uint32_t imax) {
+    if (!entry) return;
+    sg_worker_pool *p = (sg_worker_pool *)c->workers;
+    sg_geometry_cache *cache = p->geometry_cache;
+    size_t total = 0;
+    for (int b = 0; b < p->nbins; b++) total += (size_t)p->bins[b].count;
+    size_t need = total * sizeof(sg_worker_tri);
+    if (need > entry->capacity) {
+        if (need > SG_GEOMETRY_CACHE_BYTES ||
+            need - entry->capacity > SG_GEOMETRY_CACHE_BYTES - cache->bytes) return;
+        sg_worker_tri *next = sg_aligned_alloc(need, 16);
+        if (!next) return;
+        sg_aligned_free(entry->tris);
+        cache->bytes += need - entry->capacity;
+        entry->tris = next; entry->capacity = need;
+    }
+    int offset = 0;
+    for (int b = 0; b < p->nbins; b++) {
+        const sg_worker_bin *bin = &p->bins[b];
+        entry->offsets[b] = offset;
+        if (bin->count) memcpy(entry->tris + offset, bin->tris, (size_t)bin->count * sizeof(*bin->tris));
+        offset += bin->count;
+    }
+    entry->offsets[p->nbins] = offset;
+    entry->imin = imin; entry->imax = imax; entry->valid = 1;
+}
+
+void sg_workers_geometry_replay(softgl_ctx *c, const sg_geometry_entry *entry) {
+    sg_worker_pool *p = (sg_worker_pool *)c->workers;
+    for (int b = 0; b < p->nbins; b++) {
+        int first = entry->offsets[b], count = entry->offsets[b + 1] - first;
+        sg_worker_bin *bin = &p->bins[b];
+        if (!count) continue;
+        sg_bin_grow(bin, count);
+        memcpy(bin->tris, entry->tris + first, (size_t)count * sizeof(*bin->tris));
+        bin->count = count;
+    }
+}
+
 /* 256-bucket front-to-back sort. Builds a (zkey_q<<24 | idx) key array,
  * bucket-scatters the keys (tiny 4B/tri vs 496B), then rasterizes via
  * indirection through keys[i] & 0xFFFFFF. Two memory passes on keys,
@@ -366,6 +500,7 @@ void sg_workers_shutdown(softgl_ctx *c) {
     if (p->transformed) sg_aligned_free(p->transformed);
     free(p->inside_frustum);
     free(p->column_bin);
+    sg_geometry_cache_destroy(p->geometry_cache);
     pthread_mutex_destroy(&p->mtx);
     pthread_cond_destroy(&p->wake);
     free(p);

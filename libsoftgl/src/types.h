@@ -57,6 +57,7 @@ typedef struct {
     size_t   size;
     void    *data;
     GLenum   usage;
+    uint64_t revision;     /* content/storage identity for prepared-draw caches */
     int      mapped;       /* 1 between glMapBuffer / glUnmapBuffer */
     GLenum   access;
 } sg_buffer;

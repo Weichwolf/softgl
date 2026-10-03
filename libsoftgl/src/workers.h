@@ -68,6 +68,7 @@ enum {
 };
 
 typedef struct {
+    struct sg_geometry_cache *geometry_cache; /* main-only ordered bin snapshots */
     int            nworkers;
     sg_worker      workers[SG_MAX_TILES];
     sg_worker_bin  bins[SG_MAX_BINS];
@@ -134,6 +135,15 @@ void sg_workers_flush(softgl_ctx *c);
  * and does nothing if the pool is absent (single-thread path). */
 const sg_vert *sg_workers_transform_range(softgl_ctx *c, int first, int count);
 const uint8_t *sg_workers_inside_frustum(softgl_ctx *c);
+
+/* Reuse only geometry: refreshed vertex colors/UVs still come from each draw's
+ * transform job. The ticket is valid until the next cache lookup on this pool. */
+typedef struct sg_geometry_entry sg_geometry_entry;
+sg_geometry_entry *sg_workers_geometry_lookup(softgl_ctx *c, GLsizei count,
+    GLenum type, const void *indices, uint32_t *imin, uint32_t *imax, int *hit);
+void sg_workers_geometry_replay(softgl_ctx *c, const sg_geometry_entry *entry);
+void sg_workers_geometry_store(softgl_ctx *c, sg_geometry_entry *entry,
+    uint32_t imin, uint32_t imax);
 
 /* Platform CPU count (logical cores). Returns 1 if unknown. */
 int sg_hwthreads(void);

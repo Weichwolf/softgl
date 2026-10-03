@@ -665,7 +665,10 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
             /* Find the index range so workers transform only the slice that
              * is actually referenced. Scan once — cheap even at 130k indices. */
             uint32_t imin = 0xFFFFFFFFu, imax = 0;
-            for (int k = 0; k < count; k++) {
+            int geometry_hit;
+            sg_geometry_entry *geometry = sg_workers_geometry_lookup(c, count, type, indices,
+                                                                       &imin, &imax, &geometry_hit);
+            if (!geometry_hit) for (int k = 0; k < count; k++) {
                 uint32_t ix = sg_fetch_index(type, index_data, k);
                 if (ix < imin) imin = ix;
                 if (ix > imax) imax = ix;
@@ -673,15 +676,23 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
             sg_prepare_nm_cache(c);
             const sg_vert *pre = sg_workers_transform_range(c, (int)imin, (int)(imax - imin + 1));
             if (pre) {
+                if (geometry_hit) {
+                    sg_workers_geometry_replay(c, geometry);
+                    goto triangles_done;
+                }
+                int all_inside = geometry != NULL;
                 int reuse_screen = sg_can_reuse_screen_vertices(c);
                 const uint8_t *inside = sg_workers_inside_frustum(c);
                 for (int t = 0; t < ntri; t++) {
                     uint32_t i0 = sg_fetch_index(type, index_data, t * 3 + 0);
                     uint32_t i1 = sg_fetch_index(type, index_data, t * 3 + 1);
                     uint32_t i2 = sg_fetch_index(type, index_data, t * 3 + 2);
+                    int triangle_inside = inside[i0] && inside[i1] && inside[i2];
+                    if (!triangle_inside) all_inside = 0;
                     sg_process_triangle_cached(c, &pre[i0], &pre[i1], &pre[i2],
-                        reuse_screen && inside[i0] && inside[i1] && inside[i2]);
+                        reuse_screen && triangle_inside);
                 }
+                if (all_inside) sg_workers_geometry_store(c, geometry, imin, imax);
                 goto triangles_done;
             }
         }
