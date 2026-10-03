@@ -452,7 +452,10 @@ void sg_workers_init(softgl_ctx *c, int nworkers_hint) {
      * A column lookup keeps producer work proportional to overlapping bins. */
     int fbw = c->fb.w;
     p->column_bin = fbw > 0 ? (uint8_t*)malloc((size_t)fbw) : NULL;
-    p->nbins = p->column_bin ? n * 4 : n;
+    /* MSAA multiplies the active sample buffers. Fine bins keep their working
+     * set small and provide more independent caller/worker jobs. */
+    int target_bins = c->fb.samples ? SG_MAX_BINS : n * 4;
+    p->nbins = p->column_bin ? target_bins : n;
     if (p->column_bin && p->nbins > fbw) p->nbins = fbw;
     for (int t = 0; t < p->nbins; t++) {
         p->bins[t].ix0 = (int)((int64_t)fbw * t / p->nbins);
