@@ -65,6 +65,22 @@ enum {
     SG_JOB_ASYNC_RASTER = 2, /* drain the immutable draw snapshot */
 };
 
+/* Position-only data: attributes and lighting must be refreshed per draw. */
+typedef struct {
+    sg_vec4 clip, ndc, eye;
+} sg_position_vertex;
+
+#define SG_POSITION_PAGE_VERTICES 1024
+#define SG_POSITION_MAX_PAGES 64
+
+typedef struct sg_position_page {
+    sg_attrib_ptr position;
+    uint64_t revision, page, stamp;
+    int occupied;
+    sg_position_vertex *vertices;
+    uint8_t *flags; /* bit1 valid, bit0 inside; one producer per vertex */
+} sg_position_page;
+
 typedef struct {
     /* One immutable in-flight draw; main owns the separate producer arrays.
      * Vertex and bin arrays exchange ownership only after all workers join. */
@@ -72,7 +88,7 @@ typedef struct {
     int            async_pending;
     int            prepared_transformed;
     int            job_storage_first;
-    struct sg_geometry_cache *geometry_cache; /* main-only ordered bin snapshots */
+    struct sg_geometry_cache *geometry_cache; /* bounded bin and position cache */
     int            nworkers;
     sg_worker      workers[SG_MAX_TILES];
     sg_worker_bin  bins[SG_MAX_BINS];
@@ -93,6 +109,11 @@ typedef struct {
     int            transformed_cap;
     int            job_first;
     int            job_count;
+    /* Main selects stable pages before vertex workers run. Each vertex index
+     * has one producer; old raster jobs never access these cache pages. */
+    struct sg_position_page *job_position_pages[SG_POSITION_MAX_PAGES];
+    uint64_t       job_position_first;
+    int            job_position_count;
 
     /* Wake protocol: main bumps gen + broadcasts; each worker compares its
      * local_gen to the shared gen under the mutex to decide whether there
@@ -146,8 +167,9 @@ const sg_vert *sg_workers_transform_compact(softgl_ctx *c, int first, int count)
 int sg_workers_can_stream(softgl_ctx *c, GLenum mode, GLsizei count);
 void sg_workers_submit_stream(softgl_ctx *c);
 
-/* Reuse only geometry: refreshed vertex colors/UVs still come from each draw's
- * transform job. The ticket is valid until the next cache lookup on this pool. */
+/* Reuse geometry: colors, UVs, normals and lighting are refreshed per draw.
+ * Position pages share the 4MiB budget with ordered bin records. The ticket
+ * is valid until the next cache lookup on this pool. */
 typedef struct sg_geometry_entry sg_geometry_entry;
 sg_geometry_entry *sg_workers_geometry_lookup(softgl_ctx *c, GLsizei count,
     GLenum type, const void *indices, uint32_t *imin, uint32_t *imax, int *hit);

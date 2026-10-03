@@ -180,19 +180,8 @@ void sg_prepare_nm_cache(softgl_ctx *c) {
     }
 }
 
-static void sg_process_vertex(softgl_ctx *c, int index, sg_vert *out) {
-    float pos[4]    = {0,0,0,1};
-    float normal[4] = {0,0,1,0};
-    float color[4]  = {1,1,1,1};
-    float uv[4]     = {0,0,0,1};
-
-    const sg_attrib_ptr *p = &c->attr_pos;
-    if (p->enabled) {
-        sg_fetch_attrib(sg_attrib_base(c, p), index, p->stride ? p->stride : p->size * sizeof(float),
-                        p->size, p->type, pos, 4, (p->size < 4) ? ((p->size < 3) ? 0.f : 0.f) : 0.f);
-        if (p->size < 4) pos[3] = 1.0f;
-        if (p->size < 3) pos[2] = 0.0f;
-    }
+SG_INLINE void sg_fetch_vertex_attributes(softgl_ctx *c, int index, sg_vert *out,
+                                          float normal[4], float color[4]) {
     const sg_attrib_ptr *n = &c->attr_normal;
     if (n->enabled) {
         sg_fetch_attrib(sg_attrib_base(c, n), index, n->stride ? n->stride : 3 * sizeof(float),
@@ -225,15 +214,38 @@ static void sg_process_vertex(softgl_ctx *c, int index, sg_vert *out) {
             out->uv[u].w = 1.f;
         }
     }
+}
 
-    sg_vec4 p4 = { pos[0], pos[1], pos[2], pos[3] };
-    sg_vec4 eye; sg_mat4_mul_vec4(&eye, &c->mv_stack[c->mv_top], &p4);
-    out->eye = eye;
-    /* Edge flag stashed in unused eye.w for polygon-mode wireframe. */
-    out->eye.w = (float)c->current_edge_flag;
+static void sg_process_vertex(softgl_ctx *c, int index, sg_vert *out, const sg_position_vertex *cached) {
+    float pos[4]    = {0,0,0,1};
+    float normal[4] = {0,0,1,0};
+    float color[4]  = {1,1,1,1};
 
-    sg_vec4 clip; sg_mat4_mul_vec4(&clip, &c->pr_stack[c->pr_top], &eye);
-    out->clip = clip;
+    if (!cached) {
+        const sg_attrib_ptr *p = &c->attr_pos;
+        if (p->enabled) {
+            sg_fetch_attrib(sg_attrib_base(c, p), index, p->stride ? p->stride : p->size * sizeof(float),
+                            p->size, p->type, pos, 4, (p->size < 4) ? ((p->size < 3) ? 0.f : 0.f) : 0.f);
+            if (p->size < 4) pos[3] = 1.0f;
+            if (p->size < 3) pos[2] = 0.0f;
+        }
+    }
+    sg_fetch_vertex_attributes(c, index, out, normal, color);
+
+    sg_vec4 eye;
+    if (cached) {
+        eye = cached->eye;
+        out->eye = eye;
+        out->eye.w = (float)c->current_edge_flag;
+        out->clip = cached->clip;
+        out->ndc = cached->ndc;
+    } else {
+        sg_vec4 p4 = { pos[0], pos[1], pos[2], pos[3] };
+        sg_mat4_mul_vec4(&eye, &c->mv_stack[c->mv_top], &p4);
+        out->eye = eye;
+        out->eye.w = (float)c->current_edge_flag;
+        sg_mat4_mul_vec4(&out->clip, &c->pr_stack[c->pr_top], &eye);
+    }
 
     if (c->lighting) {
         if (!sg_nm_valid) {
@@ -472,7 +484,7 @@ SG_INLINE void sg_vcache_fetch(softgl_ctx *c, uint32_t idx, sg_vert *out) {
     }
     /* Miss: transform, FIFO-evict at tail. */
     int slot = sg_vcache_tail;
-    sg_process_vertex(c, (int)idx, &sg_vcache_verts[slot]);
+    sg_process_vertex(c, (int)idx, &sg_vcache_verts[slot], NULL);
     sg_vcache_keys[slot] = idx;
     sg_vcache_tail = (slot + 1) & (SG_VCACHE_SIZE - 1);
     *out = sg_vcache_verts[slot];
@@ -514,9 +526,9 @@ void _sg_draw_arrays_real(GLenum mode, GLint first, GLsizei count) {
         serial_triangles_arrays:
             for (int t = 0; t < ntri; t++) {
                 SG_ALIGN16 sg_vert v[3];
-                sg_process_vertex(c, first + t * 3 + 0, &v[0]);
-                sg_process_vertex(c, first + t * 3 + 1, &v[1]);
-                sg_process_vertex(c, first + t * 3 + 2, &v[2]);
+                sg_process_vertex(c, first + t * 3 + 0, &v[0], NULL);
+                sg_process_vertex(c, first + t * 3 + 1, &v[1], NULL);
+                sg_process_vertex(c, first + t * 3 + 2, &v[2], NULL);
                 sg_process_triangle(c, &v[0], &v[1], &v[2]);
             }
         }
@@ -533,7 +545,7 @@ void _sg_draw_arrays_real(GLenum mode, GLint first, GLsizei count) {
         }
     } else if (mode == GL_TRIANGLE_FAN) {
         SG_ALIGN16 sg_vert v0;
-        sg_process_vertex(c, first, &v0);
+        sg_process_vertex(c, first, &v0, NULL);
         for (int t = 1; t < count - 1; t++) {
             SG_ALIGN16 sg_vert v1, v2;
             sg_vcache_fetch(c, (uint32_t)(first + t),     &v1);
@@ -544,26 +556,26 @@ void _sg_draw_arrays_real(GLenum mode, GLint first, GLsizei count) {
         int nlines = count / 2;
         for (int i = 0; i < nlines; i++) {
             SG_ALIGN16 sg_vert v[2];
-            sg_process_vertex(c, first + i*2 + 0, &v[0]);
-            sg_process_vertex(c, first + i*2 + 1, &v[1]);
+            sg_process_vertex(c, first + i*2 + 0, &v[0], NULL);
+            sg_process_vertex(c, first + i*2 + 1, &v[1], NULL);
             sg_process_line(c, &v[0], &v[1]);
         }
     } else if (mode == GL_LINE_STRIP) {
         if (count < 2) return;
         SG_ALIGN16 sg_vert prev, cur;
-        sg_process_vertex(c, first, &prev);
+        sg_process_vertex(c, first, &prev, NULL);
         for (int i = 1; i < count; i++) {
-            sg_process_vertex(c, first + i, &cur);
+            sg_process_vertex(c, first + i, &cur, NULL);
             sg_process_line(c, &prev, &cur);
             prev = cur;
         }
     } else if (mode == GL_LINE_LOOP) {
         if (count < 2) return;
         SG_ALIGN16 sg_vert first_v, prev, cur;
-        sg_process_vertex(c, first, &first_v);
+        sg_process_vertex(c, first, &first_v, NULL);
         prev = first_v;
         for (int i = 1; i < count; i++) {
-            sg_process_vertex(c, first + i, &cur);
+            sg_process_vertex(c, first + i, &cur, NULL);
             sg_process_line(c, &prev, &cur);
             prev = cur;
         }
@@ -571,7 +583,7 @@ void _sg_draw_arrays_real(GLenum mode, GLint first, GLsizei count) {
     } else if (mode == GL_POINTS) {
         for (int i = 0; i < count; i++) {
             SG_ALIGN16 sg_vert v;
-            sg_process_vertex(c, first + i, &v);
+            sg_process_vertex(c, first + i, &v, NULL);
             sg_process_point(c, &v);
         }
     }
@@ -583,7 +595,7 @@ void sg_process_triangle_pub(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert *v
 }
 
 int sg_process_vertex_at(softgl_ctx *c, int index, sg_vert *out) {
-    sg_process_vertex(c, index, out);
+    sg_process_vertex(c, index, out, NULL);
     /* Match the general path's six-plane arithmetic, once per vertex. */
     __m128 V = _mm_load_ps(&out->clip.x);
     __m128 Vw = _mm_shuffle_ps(V, V, _MM_SHUFFLE(3,3,3,3));
@@ -602,6 +614,11 @@ int sg_process_vertex_at(softgl_ctx *c, int index, sg_vert *out) {
     out->ndc.y = (float)c->viewport[1] + (out->ndc.y * 0.5f + 0.5f) * (float)c->viewport[3];
     out->ndc.z = out->ndc.z * 0.5f + 0.5f;
     return !outside;
+}
+
+void sg_process_vertex_replay(softgl_ctx *c, int index,
+                              const sg_position_vertex *geometry, sg_vert *out) {
+    sg_process_vertex(c, index, out, geometry);
 }
 
 /* Immediate-mode vertex: position direct, other attrs from current state. */

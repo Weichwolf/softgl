@@ -24,6 +24,8 @@ void sg_raster_triangle_tile_prepared(softgl_ctx *c,
  * entrypoint; matrices and lighting state are ctx-read-only during a
  * SG_JOB_VERTEX phase, including the caller's own transform slice. */
 int sg_process_vertex_at(softgl_ctx *c, int index, sg_vert *out);
+void sg_process_vertex_replay(softgl_ctx *c, int index,
+                              const sg_position_vertex *geometry, sg_vert *out);
 
 int sg_thread_count(softgl_ctx *c) {
     if (!c) return 0;
@@ -213,13 +215,33 @@ typedef struct sg_geometry_cache {
     uint64_t clock;
     size_t bytes;
     sg_geometry_entry entries[SG_GEOMETRY_CACHE_ENTRIES];
+    sg_position_page position_pages[SG_POSITION_MAX_PAGES];
 } sg_geometry_cache;
 
 static void sg_geometry_cache_destroy(sg_geometry_cache *cache) {
     if (!cache) return;
     for (int i = 0; i < SG_GEOMETRY_CACHE_ENTRIES; i++)
         sg_aligned_free(cache->entries[i].tris);
+    for (int i = 0; i < SG_POSITION_MAX_PAGES; i++)
+        sg_aligned_free(cache->position_pages[i].vertices);
     free(cache);
+}
+
+static void sg_geometry_cache_epoch(softgl_ctx *c, sg_geometry_cache *cache) {
+    const sg_mat4 *mv = &c->mv_stack[c->mv_top], *pr = &c->pr_stack[c->pr_top];
+    int multisample = c->fb.samples && c->multisample;
+    if (!cache->initialized || memcmp(&cache->mv, mv, sizeof(*mv)) ||
+        memcmp(&cache->projection, pr, sizeof(*pr)) ||
+        memcmp(cache->viewport, c->viewport, sizeof(cache->viewport)) ||
+        cache->multisample != multisample) {
+        cache->mv = *mv; cache->projection = *pr;
+        memcpy(cache->viewport, c->viewport, sizeof(cache->viewport));
+        cache->multisample = multisample; cache->initialized = 1;
+        for (int i = 0; i < SG_GEOMETRY_CACHE_ENTRIES; i++) cache->entries[i].valid = 0;
+        for (int i = 0; i < SG_POSITION_MAX_PAGES; i++)
+            if (cache->position_pages[i].vertices)
+                memset(cache->position_pages[i].flags, 0, SG_POSITION_PAGE_VERTICES);
+    }
 }
 
 sg_geometry_entry *sg_workers_geometry_lookup(softgl_ctx *c, GLsizei count,
@@ -239,17 +261,7 @@ sg_geometry_entry *sg_workers_geometry_lookup(softgl_ctx *c, GLsizei count,
     if (!p->geometry_cache) p->geometry_cache = calloc(1, sizeof(sg_geometry_cache));
     sg_geometry_cache *cache = p->geometry_cache;
     if (!cache) return NULL;
-    const sg_mat4 *mv = &c->mv_stack[c->mv_top], *pr = &c->pr_stack[c->pr_top];
-    int multisample = c->fb.samples && c->multisample;
-    if (!cache->initialized || memcmp(&cache->mv, mv, sizeof(*mv)) ||
-        memcmp(&cache->projection, pr, sizeof(*pr)) ||
-        memcmp(cache->viewport, c->viewport, sizeof(cache->viewport)) ||
-        cache->multisample != multisample) {
-        cache->mv = *mv; cache->projection = *pr;
-        memcpy(cache->viewport, c->viewport, sizeof(cache->viewport));
-        cache->multisample = multisample; cache->initialized = 1;
-        for (int i = 0; i < SG_GEOMETRY_CACHE_ENTRIES; i++) cache->entries[i].valid = 0;
-    }
+    sg_geometry_cache_epoch(c, cache);
     sg_geometry_key key = {0};
     key.position.enabled = c->attr_pos.enabled;
     key.position.size = c->attr_pos.size;
@@ -313,6 +325,106 @@ void sg_workers_geometry_replay(softgl_ctx *c, const sg_geometry_entry *entry) {
         sg_bin_grow(bin, count);
         memcpy(bin->tris, entry->tris + first, (size_t)count * sizeof(*bin->tris));
         bin->count = count;
+    }
+}
+
+/* Canonicalize a VBO position address to its record field and global index.
+ * Part-local array offsets then share pages with other passes over the VBO. */
+static void sg_position_prepare(softgl_ctx *c, sg_worker_pool *p, int first, int count) {
+    p->job_position_count = 0;
+    const sg_attrib_ptr *position = &c->attr_pos;
+    if (!position->enabled || !position->buffer || first < 0 || count <= 0) return;
+    sg_buffer *buffer = sg_buffer_get(c, position->buffer);
+    if (!buffer || !buffer->data || buffer->mapped) return;
+    int stride = position->stride ? position->stride : position->size * (int)sizeof(float);
+    if (stride <= 0) return;
+    uint64_t offset = (uintptr_t)position->ptr;
+    uint64_t begin = offset / (unsigned)stride + (unsigned)first;
+    uint64_t end = begin + (unsigned)count;
+    uint64_t first_page = begin / SG_POSITION_PAGE_VERTICES;
+    uint64_t last_page = (end - 1) / SG_POSITION_PAGE_VERTICES;
+    if (last_page - first_page >= SG_POSITION_MAX_PAGES) return;
+    if (!p->geometry_cache) p->geometry_cache = calloc(1, sizeof(sg_geometry_cache));
+    sg_geometry_cache *cache = p->geometry_cache;
+    if (!cache) return;
+    sg_geometry_cache_epoch(c, cache);
+    sg_attrib_ptr key = {0};
+    key.enabled = position->enabled; key.size = position->size; key.type = position->type;
+    key.stride = stride; key.ptr = (const void *)(uintptr_t)(offset % (unsigned)stride);
+    key.buffer = position->buffer;
+    uint64_t stamp = ++cache->clock;
+    size_t bytes = SG_POSITION_PAGE_VERTICES * (sizeof(sg_position_vertex) + 1);
+    for (uint64_t page = first_page; page <= last_page; page++) {
+        sg_position_page *entry = NULL, *victim = NULL;
+        for (int i = 0; i < SG_POSITION_MAX_PAGES; i++) {
+            sg_position_page *candidate = &cache->position_pages[i];
+            if (candidate->occupied && candidate->revision == buffer->revision &&
+                candidate->page == page && !memcmp(&candidate->position, &key, sizeof(key))) {
+                entry = candidate; break;
+            }
+            if (candidate->stamp != stamp && (!victim ||
+                (victim->occupied && (!candidate->occupied || candidate->stamp < victim->stamp))))
+                victim = candidate;
+        }
+        if (!entry && victim) {
+            if (!victim->vertices && bytes > SG_GEOMETRY_CACHE_BYTES - cache->bytes) {
+                victim = NULL;
+                for (int i = 0; i < SG_POSITION_MAX_PAGES; i++) {
+                    sg_position_page *candidate = &cache->position_pages[i];
+                    if (candidate->vertices && candidate->stamp != stamp &&
+                        (!victim || candidate->stamp < victim->stamp)) victim = candidate;
+                }
+            }
+            if (!victim) { p->job_position_pages[page - first_page] = NULL; continue; }
+            if (!victim->vertices && bytes <= SG_GEOMETRY_CACHE_BYTES - cache->bytes) {
+                victim->vertices = sg_aligned_alloc(bytes, 16);
+                if (victim->vertices) {
+                    victim->flags = (uint8_t *)(victim->vertices + SG_POSITION_PAGE_VERTICES);
+                    cache->bytes += bytes;
+                }
+            }
+            if (victim->vertices) {
+                entry = victim;
+                entry->position = key; entry->revision = buffer->revision; entry->page = page;
+                entry->occupied = 1;
+                memset(entry->flags, 0, SG_POSITION_PAGE_VERTICES);
+            }
+        }
+        if (entry) entry->stamp = stamp;
+        p->job_position_pages[page - first_page] = entry;
+    }
+    p->job_position_first = begin;
+    p->job_position_count = (int)(last_page - first_page + 1);
+}
+
+static void sg_transform_slice(softgl_ctx *c, sg_worker_pool *p,
+                                int first, int end, int storage_first) {
+    if (!p->job_position_count) {
+        for (int i = first; i < end; i++)
+            p->inside_frustum[i - storage_first] = (uint8_t)sg_process_vertex_at(c, i,
+                &p->transformed[i - storage_first]);
+        return;
+    }
+    uint64_t page_base = p->job_position_first / SG_POSITION_PAGE_VERTICES;
+    for (int i = first; i < end; i++) {
+        uint64_t global = p->job_position_first + (unsigned)(i - p->job_first);
+        sg_position_page *page = p->job_position_pages[global / SG_POSITION_PAGE_VERTICES - page_base];
+        int slot = (int)(global % SG_POSITION_PAGE_VERTICES);
+        sg_vert *v = &p->transformed[i - storage_first];
+        int inside;
+        if (page && (page->flags[slot] & 2)) {
+            sg_process_vertex_replay(c, i, &page->vertices[slot], v);
+            inside = page->flags[slot] & 1;
+        } else {
+            inside = sg_process_vertex_at(c, i, v);
+            if (page) {
+                page->vertices[slot].clip = v->clip;
+                page->vertices[slot].ndc = v->ndc;
+                page->vertices[slot].eye = v->eye;
+                page->flags[slot] = (uint8_t)(2 | inside);
+            }
+        }
+        p->inside_frustum[i - storage_first] = (uint8_t)inside;
     }
 }
 
@@ -461,8 +573,7 @@ static void *sg_worker_main(void *arg) {
             /* Even partition: worker i owns [first + i*count/n, first + (i+1)*count/n). */
             int s = first + (int)((int64_t)tid * count / n);
             int e = first + (int)((int64_t)(tid + 1) * count / n);
-            for (int i = s; i < e; i++)
-                p->inside_frustum[i - p->job_storage_first] = (uint8_t)sg_process_vertex_at(c, i, &p->transformed[i - p->job_storage_first]);
+            sg_transform_slice(c, p, s, e, p->job_storage_first);
         } else if (job == SG_JOB_ASYNC_RASTER) {
             sg_async_raster *r = p->async_raster;
             sg_drain_bins(&r->state, p, r->bins, r->vpool,
@@ -607,11 +718,12 @@ static const sg_vert *sg_transform_range(softgl_ctx *c, int first, int count, in
         p->transformed_cap = cap;
     }
 
+    p->job_first = first;
+    sg_position_prepare(c, p, first, count);
     p->prepared_transformed = 1;
     if (p->async_pending) {
         /* Workers read only the old draw slot; prepare into main's arrays. */
-        for (int i = first; i < first + count; i++)
-            p->inside_frustum[i - storage_first] = (uint8_t)sg_process_vertex_at(c, i, &p->transformed[i - storage_first]);
+        sg_transform_slice(c, p, first, first + count, storage_first);
         return p->transformed;
     }
     p->job_storage_first = storage_first;
@@ -627,8 +739,7 @@ static const sg_vert *sg_transform_range(softgl_ctx *c, int first, int count, in
     pthread_cond_broadcast(&p->wake);
     pthread_mutex_unlock(&p->mtx);
 
-    for (int i = first + count - main_count; i < first + count; i++)
-        p->inside_frustum[i - storage_first] = (uint8_t)sg_process_vertex_at(c, i, &p->transformed[i - storage_first]);
+    sg_transform_slice(c, p, first + count - main_count, first + count, storage_first);
 
     while (atomic_load_explicit(&p->done_count, memory_order_acquire) < p->nworkers) {
 #if defined(__x86_64__) || defined(__i386__)

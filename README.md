@@ -24,7 +24,7 @@ API-level compatibility with real OpenGL 1.5:
 
 323 entry points, 234 test cases plus three Tank and three BMW camera views. Each runs
 against softgl and Mesa llvmpipe, followed by a pixel comparison
-(720 image correctness checks plus the worker-pool, multisample and DOT3 contracts when the
+(720 image correctness checks plus eight renderer contracts when the
 BMW asset is prepared; `ctest -C Bench` also includes the native benchmark).
 
 ## Model preparation
@@ -49,6 +49,7 @@ materials and original texture dimensions remain available. Use
 - **Separate RGBA8 color + f32 depth planes**, row 0 = bottom (GL convention)
 - **Optional MSAA sample buffers**, with color/depth/stencil per sample and one texture/combiner evaluation per covered pixel
 - **Pthread tile worker pool** with X-stripe bins; bounded immutable draw buffers overlap indexed geometry preparation with prior raster work, preserving draw order; the caller helps drain outstanding bins
+- **Position and ordered-bin cache** shares a 4MiB payload budget; VBO storage revisions and matrix/viewport keys preserve fresh attributes and lighting across draws
 - **Automatic WASM pool** reserves one reported logical CPU for the calling thread; explicit worker counts remain available, and a one-CPU browser renders without raster workers
 - **Single rasterizer** (`rasterizer.c::sg_raster_triangle`); per-lane scalar fallback only for stencil / polygon stipple / color logic op / occlusion queries (pixel-serial state)
 
