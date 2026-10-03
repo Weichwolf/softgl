@@ -1,7 +1,6 @@
 #include "types.h"
 #include "dlist.h"
 #include "workers.h"
-#include "lod.h"
 #include <smmintrin.h>
 #include <math.h>
 #include <string.h>
@@ -576,7 +575,6 @@ void _sg_draw_arrays_real(GLenum mode, GLint first, GLsizei count) {
         }
     }
     sg_workers_flush(c);
-    if (c->performance_mode && c->lod_frame_budget > 0.f) sg_lod_draw_finished(c);
 }
 
 void sg_process_triangle_pub(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert *v2) {
@@ -660,15 +658,6 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
     if (count <= 0) return;
     sg_vcache_clear();
     const uint8_t *index_data = sg_index_base(c, indices);
-    sg_lod_draw lod = {0};
-    if (c->performance_mode) lod = sg_lod_select(c, mode, count, type, indices);
-    if (mode == GL_TRIANGLES) c->lod_input_triangles += count/3;
-    if (lod.indices) {
-        index_data = (const uint8_t *)lod.indices;
-        type = GL_UNSIGNED_INT;
-        count = lod.count;
-    }
-    if (mode == GL_TRIANGLES) c->lod_drawn_triangles += count/3;
 
     if (mode == GL_TRIANGLES) {
         int ntri = count / 3;
@@ -682,9 +671,7 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
                 if (ix > imax) imax = ix;
             }
             sg_prepare_nm_cache(c);
-            const sg_vert *pre = lod.indices ?
-                sg_workers_transform_indices(c, lod.vertices, lod.vertex_count, lod.vertex_limit) :
-                sg_workers_transform_range(c, (int)imin, (int)(imax - imin + 1));
+            const sg_vert *pre = sg_workers_transform_range(c, (int)imin, (int)(imax - imin + 1));
             if (pre) {
                 int reuse_screen = sg_can_reuse_screen_vertices(c);
                 const uint8_t *inside = sg_workers_inside_frustum(c);
@@ -770,7 +757,6 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
         }
     }
     sg_workers_flush(c);
-    if (c->performance_mode && c->lod_frame_budget > 0.f) sg_lod_draw_finished(c);
 }
 
 void glDrawArrays(GLenum mode, GLint first, GLsizei count) {

@@ -1,4 +1,5 @@
 #include "workers.h"
+#include "raster_types.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -21,7 +22,7 @@ void sg_raster_triangle_tile_prepared(softgl_ctx *c,
 
 /* Main-thread state: pipeline's per-vertex transform. Workers use the same
  * entrypoint; matrices and lighting state are ctx-read-only during a
- * SG_JOB_VERTEX phase because main is spin-waiting. */
+ * SG_JOB_VERTEX phase, including the caller's own transform slice. */
 int sg_process_vertex_at(softgl_ctx *c, int index, sg_vert *out);
 
 int sg_thread_count(softgl_ctx *c) {
@@ -64,17 +65,32 @@ static void sg_bin_grow(sg_worker_bin *b, int need) {
     b->cap  = cap;
 }
 
-/* Screen-space X bounding box (viewport coords already applied at bin time). */
-static void sg_tri_xbounds(const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
-                           int *out_ix0, int *out_ix1) {
+/* Preserve the rasterizer's quad origins, but omit triangles whose fixed-point
+ * bounds contain no pixel center in single-sample rasterization. Multisample
+ * rasterization keeps conservative bounds, including subpixel-only geometry. */
+static int sg_tri_xbounds(const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
+                           int multisample, int *out_ix0, int *out_ix1) {
     float x0 = v0->ndc.x, x1 = v1->ndc.x, x2 = v2->ndc.x;
     float xmin = x0 < x1 ? x0 : x1; if (x2 < xmin) xmin = x2;
     float xmax = x0 > x1 ? x0 : x1; if (x2 > xmax) xmax = x2;
+    float y0 = v0->ndc.y, y1 = v1->ndc.y, y2 = v2->ndc.y;
+    float ymin = y0 < y1 ? y0 : y1; if (y2 < ymin) ymin = y2;
+    float ymax = y0 > y1 ? y0 : y1; if (y2 > ymax) ymax = y2;
+    const int half = SG_FP_SUBPIXEL_ONE / 2;
+    int64_t xmin_fp = sg_fp_screen_from_float(xmin);
+    int64_t xmax_fp = sg_fp_screen_from_float(xmax);
+    int64_t ymin_fp = sg_fp_screen_from_float(ymin);
+    int64_t ymax_fp = sg_fp_screen_from_float(ymax);
+    if (!multisample && (((xmin_fp + half - 1) >> SG_FP_SUBPIXEL_BITS) >
+        ((xmax_fp - half) >> SG_FP_SUBPIXEL_BITS) ||
+        ((ymin_fp + half - 1) >> SG_FP_SUBPIXEL_BITS) >
+        ((ymax_fp - half) >> SG_FP_SUBPIXEL_BITS))) return 0;
     int ia = (int)xmin;           /* conservative — pixel-centre sampling */
     int ib = (int)xmax + 1;
     if (ia < 0) ia = 0;
     *out_ix0 = ia;
     *out_ix1 = ib;
+    return 1;
 }
 
 static int sg_bin_range(const sg_worker_pool *p, int width, int ix0, int ix1,
@@ -106,7 +122,7 @@ void sg_workers_bin_tri(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1, con
         return;
     }
     int tri_ix0, tri_ix1;
-    sg_tri_xbounds(v0, v1, v2, &tri_ix0, &tri_ix1);
+    if (!sg_tri_xbounds(v0, v1, v2, c->fb.samples && c->multisample, &tri_ix0, &tri_ix1)) return;
     int first, end;
     if (!sg_bin_range(p, c->fb.w, tri_ix0, tri_ix1, &first, &end)) return;
 
@@ -146,7 +162,7 @@ void sg_workers_bin_transformed_tri(softgl_ctx *c, const sg_vert *v0,
         return;
     }
     int tri_ix0, tri_ix1;
-    sg_tri_xbounds(v0, v1, v2, &tri_ix0, &tri_ix1);
+    if (!sg_tri_xbounds(v0, v1, v2, c->fb.samples && c->multisample, &tri_ix0, &tri_ix1)) return;
     int first, end;
     if (!sg_bin_range(p, c->fb.w, tri_ix0, tri_ix1, &first, &end)) return;
     float z0 = v0->ndc.z, z1 = v1->ndc.z, z2 = v2->ndc.z;
@@ -198,6 +214,45 @@ static void sg_bin_sort_z(sg_worker_bin *b) {
     for (int i = 0; i < n; i++) keys[i] = sorted[i] & 0x00FFFFFFu;
 }
 
+static void sg_drain_raster_bins(softgl_ctx *c, sg_worker_pool *p) {
+    int sort = atomic_load_explicit(&p->sort_safe, memory_order_acquire);
+    const sg_vert *vp = p->vpool;
+    sg_tex_tri_ctx tctx;
+    int prepared = 0;
+    for (;;) {
+        int index = atomic_fetch_add_explicit(&p->next_bin, 1, memory_order_relaxed);
+        if (index >= p->nbins) break;
+        sg_worker_bin *b = &p->bins[index];
+        b->query_samples = 0;
+        int n = b->count;
+        if (!n) continue;
+        sg_raster_bin = b;
+        if (sort) sg_bin_sort_z(b);
+        /* GL state is immutable for the entire job. */
+        if (!prepared) { sg_tex_tri_prepare(c, &tctx); prepared = 1; }
+        if (sort) {
+            const uint32_t *order = b->sort_keys;
+            for (int i = 0; i < n; i++) {
+                const sg_worker_tri *t = &b->tris[order[i]];
+                const sg_vert *src = (t->v[0] & SG_BIN_TRANSFORMED_VERTEX) ? p->transformed : vp;
+                sg_raster_triangle_tile_prepared(c,
+                    &src[t->v[0] & ~SG_BIN_TRANSFORMED_VERTEX], &src[t->v[1]], &src[t->v[2]],
+                    b->ix0, b->ix1, &tctx);
+            }
+        } else {
+            for (int i = 0; i < n; i++) {
+                const sg_worker_tri *t = &b->tris[i];
+                const sg_vert *src = (t->v[0] & SG_BIN_TRANSFORMED_VERTEX) ? p->transformed : vp;
+                sg_raster_triangle_tile_prepared(c,
+                    &src[t->v[0] & ~SG_BIN_TRANSFORMED_VERTEX], &src[t->v[1]], &src[t->v[2]],
+                    b->ix0, b->ix1, &tctx);
+            }
+        }
+        b->count = 0;
+    }
+    sg_raster_bin = NULL;
+}
+
 static void *sg_worker_main(void *arg) {
     sg_worker *w = (sg_worker*)arg;
     softgl_ctx *c = w->ctx;
@@ -225,52 +280,10 @@ static void *sg_worker_main(void *arg) {
             /* Even partition: worker i owns [first + i*count/n, first + (i+1)*count/n). */
             int s = first + (int)((int64_t)tid * count / n);
             int e = first + (int)((int64_t)(tid + 1) * count / n);
-            if (p->job_indices) {
-                for (int i = s; i < e; i++) {
-                    int index = (int)p->job_indices[i];
-                    p->inside_frustum[index] = (uint8_t)sg_process_vertex_at(c, index, &p->transformed[index]);
-                }
-            } else {
-                for (int i = s; i < e; i++)
-                    p->inside_frustum[i] = (uint8_t)sg_process_vertex_at(c, i, &p->transformed[i]);
-            }
+            for (int i = s; i < e; i++)
+                p->inside_frustum[i] = (uint8_t)sg_process_vertex_at(c, i, &p->transformed[i]);
         } else {
-            int sort = atomic_load_explicit(&p->sort_safe, memory_order_acquire);
-            const sg_vert *vp = p->vpool;
-            sg_tex_tri_ctx tctx;
-            int prepared = 0;
-            for (;;) {
-                int index = atomic_fetch_add_explicit(&p->next_bin, 1, memory_order_relaxed);
-                if (index >= p->nbins) break;
-                sg_worker_bin *b = &p->bins[index];
-                b->query_samples = 0;
-                int n = b->count;
-                if (!n) continue;
-                sg_raster_bin = b;
-                if (sort) sg_bin_sort_z(b);
-                /* GL state is immutable for the entire job. */
-                if (!prepared) { sg_tex_tri_prepare(c, &tctx); prepared = 1; }
-                if (sort) {
-                    const uint32_t *order = b->sort_keys;
-                    for (int i = 0; i < n; i++) {
-                        const sg_worker_tri *t = &b->tris[order[i]];
-                        const sg_vert *src = (t->v[0] & SG_BIN_TRANSFORMED_VERTEX) ? p->transformed : vp;
-                        sg_raster_triangle_tile_prepared(c,
-                            &src[t->v[0] & ~SG_BIN_TRANSFORMED_VERTEX], &src[t->v[1]], &src[t->v[2]],
-                            b->ix0, b->ix1, &tctx);
-                    }
-                } else {
-                    for (int i = 0; i < n; i++) {
-                        const sg_worker_tri *t = &b->tris[i];
-                        const sg_vert *src = (t->v[0] & SG_BIN_TRANSFORMED_VERTEX) ? p->transformed : vp;
-                        sg_raster_triangle_tile_prepared(c,
-                            &src[t->v[0] & ~SG_BIN_TRANSFORMED_VERTEX], &src[t->v[1]], &src[t->v[2]],
-                            b->ix0, b->ix1, &tctx);
-                    }
-                }
-                b->count = 0;
-            }
-            sg_raster_bin = NULL;
+            sg_drain_raster_bins(c, p);
         }
 
         atomic_fetch_add_explicit(&p->done_count, 1, memory_order_acq_rel);
@@ -373,11 +386,11 @@ static int sg_pool_sort_safe(const softgl_ctx *c) {
     return 1;
 }
 
-static const sg_vert *sg_workers_transform(softgl_ctx *c, int first, int count,
-                                          int need, const uint32_t *indices) {
+const sg_vert *sg_workers_transform_range(softgl_ctx *c, int first, int count) {
     sg_worker_pool *p = (sg_worker_pool*)c->workers;
     if (!p || p->nworkers == 0 || count <= 0) return NULL;
 
+    int need = first + count;
     if (p->transformed_cap < need) {
         int cap = p->transformed_cap ? p->transformed_cap : 1024;
         while (cap < need) cap *= 2;
@@ -395,15 +408,20 @@ static const sg_vert *sg_workers_transform(softgl_ctx *c, int first, int count,
         p->transformed_cap = cap;
     }
 
+    /* Give the caller a disjoint tail instead of spending the whole vertex
+     * job spinning. Keep the worker loop and small-job partitions unchanged. */
+    int main_count = count >= 1024 ? count / (p->nworkers + 1) : 0;
     p->job_first = first;
-    p->job_count = count;
-    p->job_indices = indices;
+    p->job_count = count - main_count;
     atomic_store_explicit(&p->job_type, SG_JOB_VERTEX, memory_order_release);
     atomic_store_explicit(&p->done_count, 0, memory_order_release);
     pthread_mutex_lock(&p->mtx);
     atomic_fetch_add_explicit(&p->gen, 1, memory_order_acq_rel);
     pthread_cond_broadcast(&p->wake);
     pthread_mutex_unlock(&p->mtx);
+
+    for (int i = first + count - main_count; i < first + count; i++)
+        p->inside_frustum[i] = (uint8_t)sg_process_vertex_at(c, i, &p->transformed[i]);
 
     while (atomic_load_explicit(&p->done_count, memory_order_acquire) < p->nworkers) {
 #if defined(__x86_64__) || defined(__i386__)
@@ -412,17 +430,7 @@ static const sg_vert *sg_workers_transform(softgl_ctx *c, int first, int count,
     }
     /* Reset default job type so subsequent flushes do the right thing. */
     atomic_store_explicit(&p->job_type, SG_JOB_RASTER, memory_order_release);
-    p->job_indices = NULL;
     return p->transformed;
-}
-
-const sg_vert *sg_workers_transform_range(softgl_ctx *c, int first, int count) {
-    return sg_workers_transform(c, first, count, first+count, NULL);
-}
-
-const sg_vert *sg_workers_transform_indices(softgl_ctx *c, const uint32_t *indices,
-                                           int count, int vertex_limit) {
-    return sg_workers_transform(c, 0, count, vertex_limit, indices);
 }
 
 const uint8_t *sg_workers_inside_frustum(softgl_ctx *c) {
@@ -447,6 +455,11 @@ void sg_workers_flush(softgl_ctx *c) {
     atomic_fetch_add_explicit(&p->gen, 1, memory_order_acq_rel);
     pthread_cond_broadcast(&p->wake);
     pthread_mutex_unlock(&p->mtx);
+
+    /* Large batches give the calling thread useful work while workers run.
+     * Claim the same exclusive bins and finish before merging query counts.
+     * Small draws keep their existing worker-only dispatch cost. */
+    if (total >= 4096) sg_drain_raster_bins(c, p);
 
     /* Spin-wait: flush latency is sub-ms with 4 workers, condvar wakeup
      * of the main thread would add ~3µs vs ~50ns for a cached atomic. */

@@ -2,17 +2,17 @@ cmake_minimum_required(VERSION 3.20)
 
 enable_testing()
 
-add_executable(lod_cache lod_cache.c)
-target_include_directories(lod_cache PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
-target_link_libraries(lod_cache PRIVATE softgl)
-add_test(NAME lod_cache_contract COMMAND lod_cache)
-set_tests_properties(lod_cache_contract PROPERTIES TIMEOUT 30)
-
 add_executable(worker_pool worker_pool.c)
 target_include_directories(worker_pool PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
 target_link_libraries(worker_pool PRIVATE softgl)
 add_test(NAME worker_pool_contract COMMAND worker_pool)
 set_tests_properties(worker_pool_contract PROPERTIES TIMEOUT 30)
+
+add_executable(multisample_contract multisample.c)
+target_include_directories(multisample_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_link_libraries(multisample_contract PRIVATE softgl)
+add_test(NAME multisample_contract COMMAND multisample_contract)
+set_tests_properties(multisample_contract PROPERTIES TIMEOUT 30)
 
 # --- Compare tool (native, no GL) ---
 add_executable(sg_compare harness/compare.c harness/ppm_write.c)
@@ -312,6 +312,7 @@ set(SG_TEST_CASES
     231_order_sensitive_sorting
     232_combiner_operand_channels
     233_large_query_handoffs
+    234_multisample_state
 )
 
 # Tolerances for reference/softgl pixel diff. Default exact; individual tests
@@ -573,6 +574,8 @@ set(SG_TOL_232_combiner_operand_channels_MAX_DELTA 1)
 set(SG_TOL_232_combiner_operand_channels_MAX_BAD 0)
 set(SG_TOL_233_large_query_handoffs_MAX_DELTA 0)
 set(SG_TOL_233_large_query_handoffs_MAX_BAD 0)
+set(SG_TOL_234_multisample_state_MAX_DELTA 0)
+set(SG_TOL_234_multisample_state_MAX_BAD 0)
 
 foreach(case_name IN LISTS SG_TEST_CASES)
     set(src cases/test_${case_name}.c)

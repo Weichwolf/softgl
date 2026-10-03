@@ -16,7 +16,6 @@ const options = {
     'reference-build': '',
     scenes: '',
     'profile-scene': '',
-    'render-mode': 'compliance', 'reference-mode': 'compliance', 'lod-error': '1', 'frame-budget': '0',
 };
 for (let i = 2; i < process.argv.length; i++) {
     const key = process.argv[i].replace(/^--/, '');
@@ -31,14 +30,7 @@ for (const key of ['rounds', 'warmup', 'frames']) {
 const wasmDir = path.resolve(repo, options['wasm-build']);
 if (options['bench-only'] && options['images-only']) throw new Error('Choose bench-only or images-only');
 const referenceDir = options['reference-build'] ? path.resolve(repo, options['reference-build']) : null;
-for (const key of ['render-mode', 'reference-mode']) {
-    if (!['compliance', 'performance'].includes(options[key])) throw new Error(`Invalid ${key}`);
-}
-options['lod-error'] = Number(options['lod-error']);
-if (!(options['lod-error'] >= .125 && options['lod-error'] <= 128)) throw new Error('Invalid lod-error');
-options['frame-budget'] = Number(options['frame-budget']);
-if (!(options['frame-budget'] === 0 || (options['frame-budget'] >= 1 && options['frame-budget'] <= 1000))) throw new Error('Invalid frame-budget');
-const modelPack = path.join(repo, 'build/assets/bmw.pack');
+const modelPack = fs.existsSync(path.join(wasmDir, 'bmw.pack')) ? path.join(wasmDir, 'bmw.pack') : path.join(repo, 'build/assets/bmw.pack');
 const referenceModelPack = referenceDir && fs.existsSync(path.join(referenceDir, 'bmw.pack')) ?
     path.join(referenceDir, 'bmw.pack') : modelPack;
 const hashFile = file => fs.existsSync(file) ?
@@ -244,31 +236,29 @@ async function main() {
             await referencePage.goto(`http://127.0.0.1:${server.address().port}/reference/`);
             await referencePage.evaluate(async () => { await window.ready; });
             const referenceCount = await referencePage.evaluate(() => mod._sg_test_count());
-            if (referenceCount !== metadata.testCount) {
+            // Model scenes load the same frozen packs through dedicated exports;
+            // adding an unrelated correctness case does not change that workload.
+            if (referenceCount !== metadata.testCount &&
+                scenes.some(name => name !== 'bmw' && name !== 'tank')) {
                 throw new Error('Reference and candidate must have identical test catalogs');
             }
+            result.referenceTestCount = referenceCount;
             result.referenceWasmSha256 = crypto.createHash('sha256')
                 .update(fs.readFileSync(path.join(referenceDir, 'softgl.wasm'))).digest('hex');
         }
         const preparePage = async target => {
-            await target.evaluate(async ({includeBMW, candidateMode, referenceMode, pixelError, frameBudget}) => {
+            await target.evaluate(async ({includeBMW}) => {
                 const indices = new Map();
                 for (let i = 0; i < mod._sg_test_count(); i++) indices.set(mod.UTF8ToString(mod._sg_test_name(i)), i);
                 const tankBytes = new Uint8Array(await (await fetch('/tank.pack')).arrayBuffer());
                 const packURL = location.pathname.startsWith('/reference/') ? '/reference/bmw.pack' : '/bmw.pack';
                 const bmwBytes = includeBMW ? new Uint8Array(await (await fetch(packURL)).arrayBuffer()) : null;
-                const renderMode = location.pathname.startsWith('/reference/') ? referenceMode : candidateMode;
                 window.perfRun = async (name, warmup, frames) => {
                     const ctx = mod._softgl_create(640, 360);
                     if (!ctx) throw new Error(`Context allocation failed: ${name}`);
                     let tankPtr = 0;
                     try {
                         mod._softgl_make_current(ctx);
-                        if (renderMode === 'performance') {
-                            if (!mod._softgl_set_mode || !mod._softgl_set_lod_error) throw new Error('Module has no Performance mode');
-                            mod._softgl_set_mode(ctx, 1); mod._softgl_set_lod_error(ctx, pixelError);
-                            if (frameBudget > 0) mod._softgl_set_frame_budget(ctx, frameBudget);
-                        }
                         const workers = mod._sg_thread_count(ctx);
                         if (name === 'tank' || name === 'bmw') {
                             const bytes = name === 'tank' ? tankBytes : bmwBytes;
@@ -283,30 +273,13 @@ async function main() {
                             i => mod._sg_tank_render((i % frames) * 360 / frames, 640, 360) :
                             name === 'bmw' ? i => mod._sg_model_render((i % frames) * 360 / frames, 640, 360) :
                             () => mod._sg_test_run(indices.get(`test_${name}`), 640, 360);
-                        let preparationMs = 0;
-                        if (renderMode === 'performance') {
-                            const prepareStart = performance.now();
-                            render(0); mod._softgl_read_rgba8(ctx);
-                            while (Number(mod.ccall('softgl_performance_stat', 'number', ['number', 'number'], [ctx, 3])) > 0) {
-                                if (performance.now()-prepareStart > 30000) throw new Error('LOD preparation timed out');
-                                await new Promise(resolve => setTimeout(resolve, 0));
-                                render(0); mod._softgl_read_rgba8(ctx);
-                            }
-                            preparationMs = performance.now()-prepareStart;
-                        }
                         for (let i = 0; i < warmup; i++) render(i);
                         mod._softgl_read_rgba8(ctx);
                         const start = performance.now();
                         for (let i = 0; i < frames; i++) render(i);
                         mod._softgl_read_rgba8(ctx);
                         const ms = (performance.now() - start) / frames;
-                        const lod = mod._softgl_performance_stat ? Object.fromEntries(
-                            ['inputTriangles', 'drawnTriangles', 'readyMeshes', 'pendingMeshes', 'cacheBuilds']
-                                .map((key, id) => [key, Number(mod.ccall('softgl_performance_stat', 'number', ['number', 'number'], [ctx, id]))])) : null;
-                        const quality = mod._softgl_quality_stat ? Object.fromEntries(
-                            ['pixelError', 'frameBudget', 'smoothedFrameMs', 'budgetLimited']
-                                .map((key, id) => [key, mod._softgl_quality_stat(ctx, id)])) : null;
-                        return {ms, workers, quality, heapBytes: mod.HEAPU8.byteLength, renderMode, preparationMs, lod:lod ? {...lod, quality} : null};
+                        return {ms, workers, heapBytes: mod.HEAPU8.byteLength};
                     } finally {
                         if (name === 'tank') mod._sg_tank_unload();
                         if (name === 'bmw') mod._sg_model_unload();
@@ -333,10 +306,6 @@ async function main() {
                     profile = {ctx, name, ptr:0, frames};
                     try {
                         mod._softgl_make_current(ctx);
-                        if (renderMode === 'performance') {
-                            mod._softgl_set_mode(ctx, 1); mod._softgl_set_lod_error(ctx, pixelError);
-                            if (frameBudget > 0) mod._softgl_set_frame_budget(ctx, frameBudget);
-                        }
                         if (name === 'tank' || name === 'bmw') {
                             const bytes = name === 'tank' ? tankBytes : bmwBytes;
                             if (!bytes) throw new Error('Profiling model pack unavailable');
@@ -350,18 +319,9 @@ async function main() {
                             i => mod._sg_tank_render((i % frames) * 360 / frames, 640, 360) :
                             name === 'bmw' ? i => mod._sg_model_render((i % frames) * 360 / frames, 640, 360) :
                             () => mod._sg_test_run(indices.get(`test_${name}`), 640, 360);
-                        if (renderMode === 'performance') {
-                            const start = performance.now();
-                            profile.render(0); mod._softgl_read_rgba8(ctx);
-                            while (Number(mod.ccall('softgl_performance_stat', 'number', ['number','number'], [ctx,3])) > 0) {
-                                if (performance.now()-start > 30000) throw new Error('Profiling LOD preparation timed out');
-                                await new Promise(resolve => setTimeout(resolve, 0));
-                                profile.render(0); mod._softgl_read_rgba8(ctx);
-                            }
-                        }
                         for (let i = 0; i < warmup; i++) profile.render(i);
                         mod._softgl_read_rgba8(ctx);
-                        return {warmup, frames, renderMode, workers:mod._sg_thread_count(ctx)};
+                        return {warmup, frames, workers:mod._sg_thread_count(ctx)};
                     } catch (error) {
                         window.perfProfileFinish(); throw error;
                     }
@@ -371,8 +331,7 @@ async function main() {
                     for (let i = 0; i < profile.frames; i++) profile.render(i);
                     mod._softgl_read_rgba8(profile.ctx);
                 };
-            }, {includeBMW: scenes.includes('bmw'), candidateMode:options['render-mode'],
-                referenceMode:options['reference-mode'], pixelError:options['lod-error'], frameBudget:options['frame-budget']});
+            }, {includeBMW: scenes.includes('bmw')});
         };
         for (const target of [candidatePage, referencePage].filter(Boolean)) await preparePage(target);
         const samples = new Map(scenes.map(name => [name, {
@@ -391,8 +350,7 @@ async function main() {
                         {name, warmup: options.warmup, frames: options.frames});
                     samples.get(name)[variant].push(timing.ms);
                     samples.get(name)[`${variant}Heap`].push(timing.heapBytes);
-                    samples.get(name)[`${variant}Geometry`].push({renderMode:timing.renderMode,
-                        preparationMs:timing.preparationMs, lod:timing.lod});
+                    samples.get(name)[`${variant}Geometry`].push({workers:timing.workers});
                     if (workers !== undefined && workers !== timing.workers) throw new Error('Worker count differs between variants');
                     workers = timing.workers;
                 }
@@ -406,7 +364,8 @@ async function main() {
                     await target.goto(`http://127.0.0.1:${server.address().port}${route}`);
                     await target.evaluate(async () => { await window.ready; });
                     const count = await target.evaluate(() => mod._sg_test_count());
-                    if (count !== metadata.testCount) throw new Error('Test catalog changed during crossover');
+                    const expectedCount = route === '/' ? metadata.testCount : result.referenceTestCount;
+                    if (count !== expectedCount) throw new Error('Test catalog changed during crossover');
                     await preparePage(target);
                 }
             }

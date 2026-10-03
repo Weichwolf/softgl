@@ -45,6 +45,10 @@ typedef struct {
     uint8_t *color;    /* w*h*4 bytes RGBA8 */
     float   *depth;    /* w*h, 0..1 */
     uint8_t *stencil;  /* w*h, 8-bit */
+    int      samples; /* 0 for single sample; otherwise 2 or 4 */
+    uint8_t *sample_color; /* pixel-major RGBA8 sample values */
+    float   *sample_depth;
+    uint8_t *sample_stencil;
 } sg_framebuffer;
 
 typedef struct {
@@ -193,6 +197,13 @@ struct softgl_ctx {
     int    alpha_test;
     GLenum alpha_func;
     float  alpha_ref;
+
+    int    multisample;
+    int    sample_alpha_to_coverage;
+    int    sample_alpha_to_one;
+    int    sample_coverage;
+    float  sample_coverage_value;
+    int    sample_coverage_invert;
 
     int    stencil_test;
     GLenum stencil_func;
@@ -363,18 +374,6 @@ struct softgl_ctx {
 
     GLenum last_error;
 
-    /* Optional policy metadata follows existing state to preserve hot-field
-     * offsets and cache-line layout in the default Compliance path. */
-    int performance_mode;
-    float lod_pixel_error;
-    void *lod_cache;
-    uint64_t lod_input_triangles, lod_drawn_triangles;
-    float lod_frame_budget, lod_frame_ema;
-    double lod_frame_start, lod_frame_end;
-    unsigned lod_feedback_frames;
-    int lod_frame_open, lod_frame_eligible, lod_budget_limited;
-    float lod_effective_error;
-    int lod_can_coarsen;
 };
 
 SG_INLINE float sg_clampf(float v, float lo, float hi) {
@@ -390,6 +389,9 @@ void *sg_aligned_alloc(size_t size, size_t align);
 void  sg_aligned_free(void *p);
 
 struct softgl_ctx *sg_current(void);
+void sg_msaa_resolve(softgl_ctx *c);
+void sg_write_multisample(softgl_ctx *c, int x, int y, unsigned coverage,
+                          const float z[4], const float color[4]);
 void  sg_set_error(GLenum e);
 
 void sg_mat4_mul(sg_mat4 *out, const sg_mat4 *a, const sg_mat4 *b);

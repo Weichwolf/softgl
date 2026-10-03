@@ -4,6 +4,8 @@
 /* Persistent raster workers share a queue of independent X-range bins.
  * Main pushes triangles into bins under the current GL state, then
  * triggers a flush — workers claim bins, drain them, and signal done.
+ * The calling thread also claims bins during large raster jobs and fills
+ * a disjoint tail during large vertex jobs.
  *
  * Binning is primitive-agnostic: sg_worker_bin_tri is the only entry.
  * Lines/points fall back to direct raster with a prior flush for ordering. */
@@ -45,8 +47,8 @@ typedef struct {
     uint8_t        _pad[64];
 } sg_worker_bin;
 
-/* NULL on the calling thread: points/lines update query objects directly.
- * Raster workers count locally to avoid shared per-fragment writes. */
+/* Non-NULL only while a thread drains its exclusively claimed raster bin.
+ * Points/lines update query objects directly; bin drains count locally. */
 extern _Thread_local sg_worker_bin *sg_raster_bin;
 
 typedef struct softgl_ctx softgl_ctx;
@@ -86,7 +88,6 @@ typedef struct {
     int            transformed_cap;
     int            job_first;
     int            job_count;
-    const uint32_t *job_indices; /* optional sparse source-vertex list */
 
     /* Wake protocol: main bumps gen + broadcasts; each worker compares its
      * local_gen to the shared gen under the mutex to decide whether there
@@ -132,8 +133,6 @@ void sg_workers_flush(softgl_ctx *c);
  * settled before this call; workers read ctx as read-only. Returns NULL
  * and does nothing if the pool is absent (single-thread path). */
 const sg_vert *sg_workers_transform_range(softgl_ctx *c, int first, int count);
-const sg_vert *sg_workers_transform_indices(softgl_ctx *c, const uint32_t *indices,
-                                           int count, int vertex_limit);
 const uint8_t *sg_workers_inside_frustum(softgl_ctx *c);
 
 /* Platform CPU count (logical cores). Returns 1 if unknown. */

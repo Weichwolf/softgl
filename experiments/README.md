@@ -1,69 +1,69 @@
-# Optimization handoff
+# Optimization evidence
 
-The checked-in renderer is the approved control. Historical results are in
-`bench_report.md` and `tests/bench/wasm_results.json`; paths under `build/` refer
-to this machine's untracked artifacts. Rebuild and rerun correctness checks on
-the dedicated machine before measuring performance. Follow the root README for
-asset preparation, native/Mesa, Emscripten and Node/Chromium setup.
+The renderer uses normal OpenGL 1.5 geometry. BMW simplification runs only in
+`tools/pack_gltf.py`, targeting approximately 50,000 vertices. The runtime LOD
+cache, Performance mode, preparation thread and their APIs were removed.
 
-## Pending raster experiment
+`main-raster-participation.patch` is already applied and accepted. It gives the
+caller work from the exclusive raster-bin queue for large jobs. On this host,
+both BMW audits improved by 7.90%/7.10%, both Tank audits passed and all thirty
+Compliance audits passed. Historical raw evidence remains under
+`build/perf/tigerlake-20261003/main-raster/`.
 
-`main-raster-participation.patch` lets the calling thread drain the existing
-exclusive raster-bin queue for batches of at least 4096 triangle-bin records.
-It is **unapplied and unaccepted**. It passes 720 native checks, 239 identical
-WASM image comparisons, sanitizer checks, twelve F31 views and Chromium/Firefox
-controls on the original host. No valid quiet-host performance pair was obtained.
+The two subsequent vertex-participation trials were not adopted. The first
+regressed Shadow Volume by 6.07%/5.54%; the second was stopped when the requested
+architecture changed to offline asset preparation.
 
-Freeze a freshly built control before applying the patch:
+Current offline preparation, correctness, appearance, browser and profile
+artifacts are under `build/perf/tigerlake-20261003/`, with `offline-*` names.
+`bench_report.md` contains only the current essential numbers.
 
-```sh
-mkdir -p build/controls/main-raster-control
-cp build/wasm/{softgl.js,softgl.wasm,bmw.pack} build/controls/main-raster-control/
-git apply --check experiments/main-raster-participation.patch
-git apply experiments/main-raster-participation.patch
-cmake --build build/native -j4
-ctest --test-dir build/native -C Bench --output-on-failure -j1
-cmake --build build/wasm -j4
-node tools/wasm_perf.cjs --images-only --output build/perf/main-raster-images.json
-node tools/wasm_lod_check.cjs build/main-raster-check
-mkdir -p build/controls/main-raster-candidate
-cp build/wasm/{softgl.js,softgl.wasm,bmw.pack} build/controls/main-raster-candidate/
-```
+For renderer optimization comparisons, freeze both modules and the same
+prepared model pack under `build/controls/`. Run warmed fresh-browser AB/BA
+pairs through `tools/wasm_quiet_audit.py` and `tools/wasm_perf.cjs --crossover`.
+Retain raw samples, current module/pack hashes and quiet-host monitors. Test
+BMW, Tank, DOT3/multiple-texture cases and the broader scene set; retain only
+reproducible gains without relevant repeated regressions. Native/Mesa and WASM
+image tolerances must remain unchanged. Validate asset appearance separately
+with `tools/wasm_model_check.cjs`; changing geometry is not renderer speedup.
 
-Recheck sanitizers with both C and C++ instrumented:
+Generic 2D texture addressing and exact empty pixel-center bounds are accepted
+together. Two model audits, each aggregating three individually guarded complete
+AB/BA crossover pairs, improved BMW by 4.76%/4.25%; Tank changed by +0.23%/+0.35%.
+The guard remains unchanged at 0.10 foreign CPU cores. Both variants use the
+approved `fae69ce4` model pack. All 719 native checks pass and all 239 WASM images
+are byte-identical. Frozen builds and raw pair evidence use `empty-bounds-*`.
 
-```sh
-cmake -S . -B build/checks/lod-asan -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_C_FLAGS="-fsanitize=address,undefined -fno-omit-frame-pointer" \
-  -DCMAKE_CXX_FLAGS="-fsanitize=address,undefined -fno-omit-frame-pointer" \
-  -DCMAKE_EXE_LINKER_FLAGS="-fsanitize=address,undefined"
-cmake --build build/checks/lod-asan -j4 --target lod_cache worker_pool sgl_233_large_query_handoffs
-ASAN_OPTIONS=detect_leaks=1 ctest --test-dir build/checks/lod-asan \
-  -R '^(lod_cache_contract|worker_pool_contract|233_large_query_handoffs_run_sgl)$' \
-  --output-on-failure -j1
-```
+Caller participation in dense vertex jobs of at least 1,024 vertices is also
+accepted. The caller fills a disjoint tail while the unchanged workers fill
+the prefix. Two model audits improved BMW by 2.46%/2.35% and Tank by
+5.47%/4.74% against the accepted texture/bounds version. Evidence is in
+`dense-caller-*`; 719 native tests, 239 byte-identical WASM images, both browser
+checks and two sanitizer checks pass. Current user priority is BMW and Tank;
+slower trivial benchmarks are acceptable while image tolerances remain fixed.
+The broader eleven-scene screen passes: changes range from -4.52% to +3.82%,
+with Shadow Volume at +0.13%. Raw results are `dense-caller-broad-*.json`.
 
-Run `tools/wasm_preview_check.cjs` against the served candidate for Chromium.
-In Firefox, also verify BMW Performance/Compliance switching, all 233 tests,
-Prev/Next, the six-scene benchmark and cancellation, while the UI stays responsive.
-Compare control/candidate image hashes, fixed-quality geometry and appearance
-at unchanged tolerances. Restore the control source with
-`git apply -R experiments/main-raster-participation.patch` and rebuild the live
-preview while evaluating the frozen candidate.
+Optional 2x/4x MSAA is implemented with sample color, depth and stencil storage,
+sample coverage controls and one color/texture evaluation per covered pixel.
+The normal context still has no sample buffers. Validation: 723 native checks,
+240 WASM/Mesa images (all previous 239 hashes unchanged), two sanitizer contracts,
+eight WASM sample/worker configurations and both browsers. Raw evidence uses
+`msaa-*`; frozen module `build/controls/msaa-candidate` is `bbc7aad1`.
+Actual four-sample Mesa FBO comparisons exactly match triangle coverage,
+blending, depth, stencil and disabled multisampling. The eight-scene diagnostic
+also records differences with modern Mesa for circular point coverage,
+two line-boundary pixels and alpha-to-one before alpha testing. The contracts
+follow OpenGL 1.5 sections 3.3.3, 3.4.4 and 4.1.3; no image tolerances changed.
 
-## Performance acceptance
+The quiet-host monitor now recognizes its ancestor Codex app server and that
+server's daemon bookkeeping helper as session overhead, retaining their CPU
+samples in the audit record. The foreign-load threshold stays at 0.10 cores;
+compilers, other Codex CLI processes and unrelated workloads remain checked.
+Earlier attempts rejected due to the app server remain in the raw evidence.
 
-Use a **new output directory on each host**; do not reuse historical pairs:
-
-```sh
-python3 tools/wasm_main_raster_audit.py --output build/perf/dedicated-main-raster
-```
-
-The runner reads the new module hashes and checks reported processors, capped
-at eight render workers. Fresh-browser AB/BA pairs use fixed 8-pixel detail and
-no budget feedback. Both BMW audits must improve by more than 2%; two Tank
-Performance audits and two complete 15-scene Compliance sets must have no
-repeated slowdown of at least 5%. All rounds and current quiet-host monitors
-are required. The dispatcher stops early on a failed gate and never applies
-or accepts the patch automatically. Keep the goal blocked until the dedicated
-measurement environment is ready, then resume it explicitly.
+The combiner source-pointer experiment passed 719 native checks and all 239
+WASM hashes, but was not adopted before the MSAA request. It removes source
+copies and unused arguments without changing the float operation order.
+The frozen build is `build/controls/combiner-pointer-candidate`; performance
+validation remains pending. Current user goal has no prescribed FPS target.

@@ -12,8 +12,10 @@ float32 centroid). All numeric fields are little endian.
 import argparse
 import io
 import json
+import os
 from pathlib import Path
 import struct
+import subprocess
 import zipfile
 
 import numpy as np
@@ -190,7 +192,59 @@ def material_batches(vertex_data, indices, parts, materials):
     return np.concatenate(new_vertices), new_indices, new_parts
 
 
-def pack(archive, output, preserve_parts=False):
+def simplify_batches(vertices, indices, parts, target_vertices):
+    root = Path(__file__).resolve().parent.parent
+    directory = root/'build/tools'
+    directory.mkdir(parents=True, exist_ok=True)
+    executable = directory/('mesh_simplify.exe' if os.name == 'nt' else 'mesh_simplify')
+    vendor = root/'libsoftgl/third_party/meshoptimizer'
+    sources = [root/'tools/mesh_simplify.cpp', vendor/'simplifier.cpp', vendor/'allocator.cpp']
+    dependencies = sources+[vendor/'meshoptimizer.h']
+    if not executable.exists() or any(p.stat().st_mtime > executable.stat().st_mtime for p in dependencies):
+        subprocess.run([os.environ.get('CXX', 'c++'), '-std=c++11', '-O2', '-I', str(vendor),
+                        *map(str, sources), '-o', str(executable)], check=True)
+    limits = [p[1] for p in parts]+[len(vertices)]
+    # Lock shared interfaces, including transparent parts. A microscopic
+    # position grid identifies exporter roundoff without moving geometry.
+    grid = np.ascontiguousarray(np.rint(vertices[:, :3]*1000000), dtype='<i8')
+    keys = grid.view(np.dtype((np.void, 24))).reshape(-1)
+    batch_keys = [np.unique(keys[parts[i][1]:limits[i+1]]) for i in range(len(parts))]
+    shared, occurrences = np.unique(np.concatenate(batch_keys), return_counts=True)
+    interfaces = shared[occurrences > 1]
+    sizes = np.diff(limits)
+    # Tiny material/transparent parts include badges and number plates.
+    # Retain them; reserve a useful minimum before allocating large meshes.
+    minimum = np.where(sizes <= 512, sizes, 128)
+    if int(minimum.sum()) > target_vertices:
+        raise ValueError('Vertex budget is too small to preserve the scene parts')
+    remaining = sizes-minimum
+    budgets = minimum+np.rint((target_vertices-int(minimum.sum()))*remaining/max(1,int(remaining.sum()))).astype(int)
+    output_vertices, output_indices, output_parts, metrics = [], [], [], []
+    vertex_base = index_base = 0
+    for i, part in enumerate(parts):
+        block = np.ascontiguousarray(vertices[part[1]:limits[i+1], :8], dtype='<f4')
+        element = indices[i].astype('<u4')
+        budget = min(len(block), max(3, int(budgets[i])))
+        locks = np.isin(keys[part[1]:limits[i+1]], interfaces).astype('u1')
+        payload = struct.pack('<3I', len(block), len(element), budget)+block.tobytes()+element.tobytes()+locks.tobytes()
+        result = subprocess.run([str(executable)], input=payload, stdout=subprocess.PIPE, check=True).stdout
+        count, index_count, error = struct.unpack_from('<2If', result)
+        assert len(result) == 12+count*32+index_count*4
+        block = np.frombuffer(result, dtype='<f4', count=count*8, offset=12).reshape(-1, 8).copy()
+        element = np.frombuffer(result, dtype='<u4', count=index_count, offset=12+count*32).copy()
+        tangent = tangent_basis(block[:, :3], block[:, 3:6], block[:, 6:8], element)
+        output_vertices.append(np.column_stack((block, tangent)))
+        output_indices.append(element)
+        output_parts.append([part[0], vertex_base, index_base, index_count, *part[4:]])
+        metrics.append({'material': part[0], 'originalVertices': limits[i+1]-part[1],
+                        'vertices': count, 'targetVertices': budget, 'relativeError': error})
+        vertex_base += count
+        index_base += index_count
+        print(f'Prepared batch {i+1}/{len(parts)}: {count} vertices (budget {budget})', flush=True)
+    return np.concatenate(output_vertices), output_indices, output_parts, metrics
+
+
+def pack(archive, output, preserve_parts=False, target_vertices=50000):
     with zipfile.ZipFile(archive) as source:
         gltf_names = [n for n in source.namelist() if n.endswith('.gltf')]
         if len(gltf_names) != 1:
@@ -271,6 +325,11 @@ def pack(archive, output, preserve_parts=False):
         if not preserve_parts:
             vertex_data, indices, parts = material_batches(vertex_data, indices, parts, materials)
             vertex_count = len(vertex_data)
+        simplification = []
+        if target_vertices and vertex_count > target_vertices:
+            vertex_data, indices, parts, simplification = simplify_batches(vertex_data, indices, parts, target_vertices)
+            vertex_count = len(vertex_data)
+            index_count = sum(len(element) for element in indices)
         output = Path(output)
         output.parent.mkdir(parents=True, exist_ok=True)
         temporary = output.with_suffix(output.suffix+'.tmp')
@@ -318,8 +377,10 @@ def pack(archive, output, preserve_parts=False):
                     'materialBatches': not preserve_parts,
                     'triangles': index_count//3, 'materials': len(materials), 'textures': len(textures),
                     'parts': len(parts), 'boundsBeforeNormalization': [low.tolist(), high.tolist()],
-                    'preserved': ['all triangles', 'node transforms', 'normals', 'UVs', 'texture dimensions', 'alpha modes', 'double-sided flags'],
-                    'approximated': ['derived/procedural normal maps for DOT3', '128-sample GGX studio prefilter with N=V', 'clearcoat reflection strength'],
+                    'targetVertices': target_vertices, 'simplification': simplification,
+                    'preserved': ['node transforms', 'material boundaries', 'texture dimensions', 'alpha modes', 'double-sided flags'],
+                    'approximated': (['offline attribute-aware quadric mesh simplification'] if simplification else [])+
+                                    ['derived/procedural normal maps for DOT3', '128-sample GGX studio prefilter with N=V', 'clearcoat reflection strength'],
                     'materialParameters': [{'name': m.get('name'), **m.get('pbrMetallicRoughness', {}),
                                             'extensions': m.get('extensions', {})} for m in materials]}
         output.with_suffix('.json').write_text(json.dumps(metadata, indent=2)+'\n')
@@ -332,5 +393,9 @@ if __name__ == '__main__':
     parser.add_argument('archive', type=Path)
     parser.add_argument('--output', type=Path, default=Path('build/assets/bmw.pack'))
     parser.add_argument('--preserve-parts', action='store_true', help='Keep the original draw layout for comparisons')
+    parser.add_argument('--target-vertices', type=int, default=50000,
+                        help='Offline vertex budget; 0 retains the original geometry (default: 50000)')
     args = parser.parse_args()
-    pack(args.archive, args.output, args.preserve_parts)
+    if args.target_vertices < 0 or 0 < args.target_vertices < 3:
+        parser.error('--target-vertices must be 0 or at least 3')
+    pack(args.archive, args.output, args.preserve_parts, args.target_vertices)

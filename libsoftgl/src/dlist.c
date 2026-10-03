@@ -313,6 +313,8 @@ static void sg_replay_stream(softgl_ctx *c, const uint8_t *cmds, size_t size) {
             sg_rd_read(&R, sd, sizeof(sd)); _sg_blend_func_real(sd[0], sd[1]); break; }
         case SG_OP_ALPHA_FUNC: { struct { GLenum f; float r; } a;
             sg_rd_read(&R, &a, sizeof(a)); _sg_alpha_func_real(a.f, a.r); break; }
+        case SG_OP_SAMPLE_COVERAGE: { struct { float value; GLboolean invert; } a;
+            sg_rd_read(&R, &a, sizeof(a)); _sg_sample_coverage_real(a.value, a.invert); break; }
         case SG_OP_SHADE_MODEL: { GLenum e;
             sg_rd_read(&R, &e, sizeof(e)); _sg_shade_model_real(e); break; }
 

@@ -5,6 +5,6 @@ Unmodified sources from meshoptimizer v1.3, commit
 Upstream: https://github.com/zeux/meshoptimizer/tree/v1.3
 License: MIT; see `LICENSE.md` and the notice in `clusterlod.h`.
 
-Only algorithms needed by SoftGL's optional internal geometry LOD cache are
-included. The normal OpenGL path does not use this cache. No build-time
-download or asset-specific preprocessing is required.
+This pinned subset is used by `tools/mesh_simplify.cpp` during offline asset
+preparation. It is not compiled or linked into the native or WASM renderer.
+No download is required.

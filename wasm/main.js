@@ -36,7 +36,6 @@
   const fsBtn     = document.getElementById('fullscreen');
   const tankBtn   = document.getElementById('tank');
   const bmwBtn = document.getElementById('bmw');
-  const renderMode = document.getElementById('render-mode');
   const modelCredit = document.getElementById('model-credit');
   const testsBtn  = document.getElementById('tests');
   const benchOut  = document.getElementById('bench-out');
@@ -46,11 +45,9 @@
   const sStatsCores   = document.getElementById('s-cores');
   const sStatsMs      = document.getElementById('s-ms');
   const sStatsP       = document.getElementById('s-p');
-  const sLodTris = document.getElementById('s-lod-tris');
-  const sLodCache = document.getElementById('s-lod-cache');
-  const sLodQuality = document.getElementById('s-lod-quality');
-  const createContext = () => {
-    const c = Mod._softgl_create(W, H);
+  const msaaSelect = document.getElementById('msaa');
+  const createContext = (samples = 0) => {
+    const c = Mod._softgl_create_multisample(W, H, samples);
     if (!c) throw new Error('Could not create render context');
     return c;
   };
@@ -112,17 +109,6 @@
     sStatsThreads.classList.toggle('bad', threads === 0);
   }
 
-  function updateLodStats(ctx) {
-    const stat = id => Number(Mod.ccall('softgl_performance_stat', 'number', ['number', 'number'], [ctx, id]));
-    const input = stat(0), drawn = stat(1), pending = stat(3);
-    sLodTris.textContent = `${drawn.toLocaleString()} / ${input.toLocaleString()}`;
-    const performanceMode = Mod._softgl_get_mode(ctx);
-    sLodCache.textContent = performanceMode ? `${stat(2)} ready, ${pending} building` : 'Compliance';
-    const quality = id => Mod._softgl_quality_stat(ctx, id);
-    sLodQuality.textContent = performanceMode ?
-      `${quality(0).toFixed(2)} px / ${quality(1).toFixed(1)} ms · ${quality(2).toFixed(1)} ms${quality(3) ? ' · limit reached' : ''}` : 'Full geometry';
-  }
-
   /* Rolling frame-time window for p50/p95 stats. */
   const FT_MAX = 120;
   const frameTimes = [];
@@ -170,7 +156,6 @@
       const pixels = Mod._softgl_read_rgba8(c);
       ms = performance.now() - t0;
       Mod._sg_viewer_present(pixels);
-      updateLodStats(c);
     } finally {
       Mod._softgl_destroy(c);
     }
@@ -231,8 +216,7 @@
 
     /* A context must be current before glGenBuffers etc. can do anything */
     if (!tankCtx) {
-      tankCtx = createContext();
-      Mod._softgl_set_mode(tankCtx, Number(renderMode.value));
+      tankCtx = createContext(Number(msaaSelect.value));
     }
     Mod.ccall('softgl_make_current', null, ['number'], [tankCtx]);
 
@@ -271,7 +255,6 @@
     const ms = t1 - t0;
     timingEl.textContent = `render: ${ms.toFixed(2)} ms   ·   ${(1000/ms).toFixed(0)} fps theoretical (capped @ 30)`;
     recordFrameMs(ms);
-    updateLodStats(tankCtx);
     /* steady angle bar instead of test progress */
     progEl.style.transition = 'none';
     progEl.style.width = `${(tankAngle / 360) * 100}%`;
@@ -291,9 +274,8 @@
   }
 
   function setControlsBusy(busy) {
-    for (const button of [tankBtn, bmwBtn, testsBtn, prevBtn, nextBtn, pauseBtn, benchBtn])
+    for (const button of [tankBtn, bmwBtn, testsBtn, prevBtn, nextBtn, pauseBtn, benchBtn, msaaSelect])
       if (button) button.disabled = busy;
-    renderMode.disabled = busy || mode !== 'tank';
   }
 
   async function startTank() {
@@ -353,18 +335,6 @@
   }
 
   /* ---- Buttons ---------------------------------------------------- */
-  renderMode.onchange = () => {
-    if (!tankCtx || benching || transitioning) return;
-    Mod._softgl_set_mode(tankCtx, Number(renderMode.value));
-    frameTimes.length = 0;
-    tankLastTime = 0;
-    if (paused && mode === 'tank') {
-      Mod._softgl_make_current(tankCtx);
-      Mod.ccall(`${assets[selectedAsset].prefix}_render`, null, ['number', 'number', 'number'], [tankAngle, W, H]);
-      blitContext(tankCtx);
-      updateLodStats(tankCtx);
-    }
-  };
   pauseBtn.onclick = () => {
     if (benching || transitioning) return;
     paused = !paused;
@@ -397,6 +367,14 @@
   if (tankBtn) tankBtn.onclick = () => startAsset('tank').catch(reportError);
   if (bmwBtn) bmwBtn.onclick = () => startAsset('bmw').catch(reportError);
   if (testsBtn) testsBtn.onclick = () => startTests().catch(reportError);
+  msaaSelect.onchange = async () => {
+    if (transitioning || benching) return;
+    if (mode === 'tank') {
+      stopPlayback();
+      releaseTank();
+      await startTank();
+    }
+  };
   /* ---- Benchmark mode -------------------------------------------- */
   async function runBenchmark() {
     if (benching) { benchmarkCancelled = true; return; }
@@ -412,9 +390,9 @@
     benchOut.hidden = false;
     benchOut.textContent = '';
     const log = text => { benchOut.textContent += text + '\n'; benchOut.scrollTop = benchOut.scrollHeight; };
-    log(`# scenes WASM benchmark @ ${W}x${H} — SIMD=${simdOK}, reported processors=${hwThreads}`);
+    const benchmarkSamples = Number(msaaSelect.value);
+    log(`# scenes WASM benchmark @ ${W}x${H} — SIMD=${simdOK}, MSAA=${benchmarkSamples || 'off'}, reported processors=${hwThreads}`);
     log(`# userAgent: ${navigator.userAgent}`);
-    log(`# BMW mode: ${renderMode.value === '1' ? 'Performance (approximate geometry)' : 'Compliance'}; regression scenes: Compliance.`);
     log('# 3 runs of 20 frames per scene; warm-up excluded; min reported.');
     log('# Browser yields between frames; each timed frame includes worker completion.');
     log('');
@@ -436,13 +414,12 @@
         for (let run = 0; run < 3 && !benchmarkCancelled; run++) {
           // Context teardown posts worker-pool return messages to the browser.
           await yieldBrowser();
-          const c = createContext();
+          const c = createContext(benchmarkSamples);
           let modelPtr = 0;
           try {
             Mod._softgl_make_current(c);
             updateThreadStats(c);
             if (model) {
-              Mod._softgl_set_mode(c, Number(renderMode.value));
               const bytes = assetBytes.get('bmw');
               modelPtr = Mod._malloc(bytes.length);
               if (!modelPtr) throw new Error('BMW allocation failed');
@@ -453,22 +430,6 @@
                                  : () => Mod._sg_test_run(test, W, H);
             render(0);
             Mod._softgl_read_rgba8(c);
-            if (model && renderMode.value === '1') {
-              const deadline = performance.now() + 30000;
-              // Let internal preparation finish without blocking the UI; do
-              // not mix original and newly simplified frames in the timer.
-              while (Number(Mod.ccall('softgl_performance_stat', 'number', ['number', 'number'], [c, 3])) > 0) {
-                if (benchmarkCancelled) break;
-                if (performance.now() > deadline) throw new Error('LOD preparation timed out');
-                await yieldBrowser();
-                render(0); Mod._softgl_read_rgba8(c);
-              }
-              // Give feedback time to settle, yielding between every frame.
-              for (let frame = 0; frame < 60 && !benchmarkCancelled; frame++) {
-                await yieldBrowser();
-                render(frame); Mod._softgl_read_rgba8(c);
-              }
-            }
             let total = 0;
             for (let frame = 0; frame < 20 && !benchmarkCancelled; frame++) {
               await yieldBrowser();

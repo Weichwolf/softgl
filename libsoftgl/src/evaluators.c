@@ -1,5 +1,6 @@
 #include "types.h"
 #include "dlist.h"
+#include "workers.h"
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -414,6 +415,8 @@ static int ensure_accum(softgl_ctx *c) {
 
 void glAccum(GLenum op, GLfloat value) {
     softgl_ctx *c = sg_current(); if (!c) return;
+    sg_workers_flush(c);
+    sg_msaa_resolve(c);
     if (!ensure_accum(c)) return;
     int W = c->fb.w, H = c->fb.h;
     /* Spec: viewport bounds accum ops. */
@@ -484,6 +487,12 @@ void glAccum(GLenum op, GLfloat value) {
                 if (c->color_mask[1]) crow[x*4+1] = (uint8_t)(g * 255.f + 0.5f);
                 if (c->color_mask[2]) crow[x*4+2] = (uint8_t)(b * 255.f + 0.5f);
                 if (c->color_mask[3]) crow[x*4+3] = (uint8_t)(a * 255.f + 0.5f);
+                if (c->fb.samples) {
+                    size_t first = ((size_t)y * W + vx0 + x) * c->fb.samples;
+                    for (int s = 0; s < c->fb.samples; s++)
+                        for (int k = 0; k < 4; k++) if (c->color_mask[k])
+                            c->fb.sample_color[(first + s) * 4 + k] = crow[x*4+k];
+                }
             }
         }
         return;

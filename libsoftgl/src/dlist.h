@@ -46,6 +46,7 @@ enum {
     SG_OP_DISABLE,          /* GLenum                          */
     SG_OP_BLEND_FUNC,       /* GLenum s, GLenum d              */
     SG_OP_ALPHA_FUNC,       /* GLenum, float                   */
+    SG_OP_SAMPLE_COVERAGE,  /* float, GLboolean                */
     SG_OP_SHADE_MODEL,      /* GLenum                          */
 
     /* Fog / light */
@@ -194,6 +195,7 @@ void _sg_enable_real(GLenum cap);
 void _sg_disable_real(GLenum cap);
 void _sg_blend_func_real(GLenum s, GLenum d);
 void _sg_alpha_func_real(GLenum f, GLclampf ref);
+void _sg_sample_coverage_real(GLclampf value, GLboolean invert);
 void _sg_shade_model_real(GLenum m);
 void _sg_stencil_func_real(GLenum func, GLint ref, GLuint mask);
 void _sg_stencil_op_real(GLenum sfail, GLenum dpfail, GLenum dppass);

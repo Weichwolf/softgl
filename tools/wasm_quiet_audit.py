@@ -19,6 +19,23 @@ HEAVY_NAMES = {'cc1', 'cc1plus', 'clang', 'clang++', 'clang-19', 'clang++-19',
                'clang-tidy-19', 'wasm-opt', 'ld.lld', 'make', 'ninja'}
 cpu_snapshot = {}
 cpu_sample_time = None
+session_support_activity = []
+
+
+def session_support(rows):
+    """The Codex app server launching this wrapper is session overhead."""
+    ancestors = set()
+    pid = os.getpid()
+    while pid in rows and pid not in ancestors:
+        ancestors.add(pid)
+        pid = rows[pid][0]
+    servers = {p for p in ancestors if rows[p][1] == 'codex' and
+               'app-server --listen' in rows[p][2]}
+    support = set(servers)
+    parents = {rows[p][0] for p in servers}
+    support.update(p for p, row in rows.items() if row[0] in parents and
+                   row[1] == 'codex' and 'app-server daemon pid-update-loop' in row[2])
+    return support
 
 
 def processes():
@@ -48,10 +65,12 @@ def descendants(rows, pid):
 
 
 def busy(rows):
-    global cpu_snapshot, cpu_sample_time
+    global cpu_snapshot, cpu_sample_time, session_support_activity
     now = time.monotonic()
     elapsed = now - cpu_sample_time if cpu_sample_time is not None else 0
     owned = descendants(rows, os.getpid())
+    support = session_support(rows)
+    session_support_activity = []
     activity = []
     for pid, (parent, comm, argv, birth, ticks) in rows.items():
         if pid in owned:
@@ -64,6 +83,9 @@ def busy(rows):
         cores = 0
         if elapsed > 0 and previous and previous[0] == birth:
             cores = (ticks - previous[1]) / CPU_TICKS_PER_SECOND / elapsed
+        if pid in support:
+            session_support_activity.append({'pid': pid, 'command': comm, 'cpuCores': max(0, cores)})
+            continue
         if named or cores >= FOREIGN_CPU_CORES:
             activity.append({'pid': pid, 'command': comm,
                              'reason': 'compiler-or-known-benchmark' if named else 'foreign-cpu-load',
@@ -129,12 +151,14 @@ def main():
         trial_args = list(args)
         trial_args[trial_args.index('--output') + 1] = str(pending)
         activity = []
+        support_samples = []
         started = time.time()
         with log.open('w') as stream:
             child = subprocess.Popen(trial_args, stdout=stream, stderr=subprocess.STDOUT,
                                      start_new_session=True)
             while child.poll() is None:
                 activity = busy(processes())
+                support_samples.append(session_support_activity)
                 if activity:
                     stop(child)
                     break
@@ -143,6 +167,7 @@ def main():
                   'elapsedSeconds': time.time() - started, 'pollSeconds': POLL_SECONDS,
                   'foreignCPUThresholdCores': FOREIGN_CPU_CORES, 'settlePolls': SETTLE_POLLS,
                   'unexpectedActivity': activity, 'exitCode': child.returncode, 'attempt': attempt}
+        record['sessionSupportSamples'] = support_samples
         log.with_suffix('.monitor.json').write_text(json.dumps(record, indent=2) + '\n')
         if activity:
             pending.unlink(missing_ok=True)

@@ -2,6 +2,7 @@
 #include "raster_types.h"
 #include "simd.h"
 #include "frag_hot.h"
+#include "multisample.h"
 #include <math.h>
 
 /* Under Emscripten (-msimd128), <smmintrin.h> remaps _mm_* onto
@@ -65,19 +66,19 @@ SG_INLINE int32_t sg_sat_i64_to_i32(int64_t v) {
 
 /* Per-pixel shader. Caller has verified coverage; E0/E1 are raw i64
  * edge values used to build float barycentrics. */
-SG_INLINE void sg_shade_pixel(softgl_ctx *c,
+SG_INLINE int sg_shade_pixel(softgl_ctx *c,
                               const sg_tex_tri_ctx *tctx,
                               const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
                               int x, int y,
                               int64_t E0, int64_t E1,
                               float inv_area_f,
                               float invw0, float invw1, float invw2,
-                              float z_offset) {
+                              float z_offset, float result[4]) {
     if (c->polygon_stipple_enable) {
         int sx = x & 31;
         int sy = y & 31;
         GLubyte row = c->polygon_stipple[sy * 4 + (sx >> 3)];
-        if (!(row & (0x80u >> (sx & 7)))) return;
+        if (!(row & (0x80u >> (sx & 7)))) return 0;
     }
 
     float b0 = (float)E0 * inv_area_f;
@@ -88,7 +89,7 @@ SG_INLINE void sg_shade_pixel(softgl_ctx *c,
     float w1 = b1 * invw1;
     float w2 = b2 * invw2;
     float wsum = w0 + w1 + w2;
-    if (wsum <= 0.f) return;
+    if (wsum <= 0.f) return 0;
     float one_over_wsum = 1.0f / wsum;
 
     /* Depth: screen-linear, not perspective-corrected. */
@@ -98,7 +99,7 @@ SG_INLINE void sg_shade_pixel(softgl_ctx *c,
      * depth test has no observable effect when stencil is disabled, even
      * with alpha testing, blending or an occlusion query. Keep the final
      * fragment test/write in spec order for surviving pixels. */
-    if (c->depth_test && !c->stencil_test) {
+    if (!result && c->depth_test && !c->stencil_test) {
         float d = c->fb.depth[y*c->fb.w+x];
         int pass;
         switch (c->depth_func) {
@@ -112,7 +113,7 @@ SG_INLINE void sg_shade_pixel(softgl_ctx *c,
             case GL_ALWAYS:   pass = 1; break;
             default:          pass = z < d; break;
         }
-        if (!pass) return;
+        if (!pass) return 0;
     }
 
     float col[4];
@@ -171,7 +172,9 @@ SG_INLINE void sg_shade_pixel(softgl_ctx *c,
         col[2] = f * col[2] + (1.f - f) * c->fog_color[2];
     }
 
-    sg_write_fragment(c, x, y, z, col[0], col[1], col[2], col[3]);
+    if (result) memcpy(result, col, sizeof(col));
+    else sg_write_fragment(c, x, y, z, col[0], col[1], col[2], col[3]);
+    return 1;
 }
 
 /* SIMD 2x2-quad shader. Lanes: 0=TL, 1=TR, 2=BL, 3=BR. */
@@ -631,6 +634,85 @@ SG_INLINE void sg_shade_quad(softgl_ctx *c,
     }
 }
 
+SG_INLINE int sg_sample_depth_pass(GLenum func, float z, float d) {
+    switch (func) {
+        case GL_NEVER: return 0;
+        case GL_LESS: return z < d;
+        case GL_EQUAL: return z == d;
+        case GL_LEQUAL: return z <= d;
+        case GL_GREATER: return z > d;
+        case GL_NOTEQUAL: return z != d;
+        case GL_GEQUAL: return z >= d;
+        case GL_ALWAYS: return 1;
+        default: return z < d;
+    }
+}
+
+/* Shade once per pixel. Coverage and depth use each sample's actual location;
+ * partially covered pixels interpolate color/UV at a covered sample. */
+static void sg_raster_triangle_multisample(softgl_ctx *c,
+                         const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
+                         const sg_tex_tri_ctx *tctx,
+                         int ix0, int iy0, int ix1, int iy1,
+                         int64_t area, int bias0, int bias1, int bias2,
+                         float z_offset) {
+    int32_t vx[3] = {sg_fp_screen_from_float(v0->ndc.x),
+                     sg_fp_screen_from_float(v1->ndc.x),
+                     sg_fp_screen_from_float(v2->ndc.x)};
+    int32_t vy[3] = {sg_fp_screen_from_float(v0->ndc.y),
+                     sg_fp_screen_from_float(v1->ndc.y),
+                     sg_fp_screen_from_float(v2->ndc.y)};
+    int64_t dx[3], dy[3], row[3], offsets[4][3];
+    for (int e = 0; e < 3; e++) {
+        int a = (e + 1) % 3, b = (e + 2) % 3;
+        dx[e] = -(int64_t)(vy[b] - vy[a]);
+        dy[e] = (int64_t)(vx[b] - vx[a]);
+        row[e] = dy[e] * ((int64_t)iy0 * 256 - vy[a])
+               + dx[e] * ((int64_t)ix0 * 256 - vx[a]);
+        for (int s = 0; s < c->fb.samples; s++) {
+            int sx = 128, sy = 128;
+            if (c->multisample) sg_sample_position(c->fb.samples, s, &sx, &sy);
+            offsets[s][e] = dx[e] * sx + dy[e] * sy;
+        }
+    }
+    int bias[3] = {bias0, bias1, bias2};
+    float inv_area = 1.f / (float)area;
+    unsigned full = (1u << c->fb.samples) - 1u;
+    for (int y = iy0; y < iy1; y++) {
+        int64_t edge[3] = {row[0], row[1], row[2]};
+        for (int x = ix0; x < ix1; x++) {
+            unsigned coverage = 0;
+            float depths[4];
+            int first = -1;
+            for (int s = 0; s < c->fb.samples; s++) {
+                if (edge[0] + offsets[s][0] + bias[0] < 0 ||
+                    edge[1] + offsets[s][1] + bias[1] < 0 ||
+                    edge[2] + offsets[s][2] + bias[2] < 0) continue;
+                float b0 = (float)(edge[0] + offsets[s][0]) * inv_area;
+                float b1 = (float)(edge[1] + offsets[s][1]) * inv_area;
+                float b2 = 1.f - b0 - b1;
+                float z = b0 * v0->ndc.z + b1 * v1->ndc.z + b2 * v2->ndc.z + z_offset;
+                depths[s] = z < 0.f ? 0.f : z > 1.f ? 1.f : z;
+                if (c->depth_test && !c->stencil_test &&
+                    !sg_sample_depth_pass(c->depth_func, depths[s],
+                        c->fb.sample_depth[((size_t)y * c->fb.w + x) * c->fb.samples + s])) continue;
+                coverage |= 1u << s;
+                if (first < 0) first = s;
+            }
+            if (coverage) {
+                int64_t e0 = edge[0] + (coverage == full ? (dx[0] + dy[0]) * 128 : offsets[first][0]);
+                int64_t e1 = edge[1] + (coverage == full ? (dx[1] + dy[1]) * 128 : offsets[first][1]);
+                float color[4];
+                if (sg_shade_pixel(c, tctx, v0, v1, v2, x, y, e0, e1,
+                                  inv_area, v0->ndc.w, v1->ndc.w, v2->ndc.w, z_offset, color))
+                    sg_write_multisample(c, x, y, coverage, depths, color);
+            }
+            for (int e = 0; e < 3; e++) edge[e] += dx[e] * 256;
+        }
+        for (int e = 0; e < 3; e++) row[e] += dy[e] * 256;
+    }
+}
+
 /* Internal: rasterize v0,v1,v2 restricted to x in [tile_ix0, tile_ix1).
  * tile_ix0=0, tile_ix1=fb.w reproduces the whole-FB behaviour exactly
  * (caller is the single-thread path). Workers pass their owned X-stripe
@@ -728,6 +810,12 @@ void sg_raster_triangle_tile_prepared(softgl_ctx *c,
     float invw1 = v1->ndc.w;
     float invw2 = v2->ndc.w;
 
+    if (c->fb.samples) {
+        sg_raster_triangle_multisample(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
+                                       area2, bias0, bias1, bias2, z_offset);
+        return;
+    }
+
     /* SIMD 2x2-quad path. Per-edge min/max-across-quad offsets enable
      * scalar trivial accept/reject; (E+bias) is computed per lane in
      * full i64 then saturated to i32 to avoid wrap when TL is at INT32_MAX. */
@@ -816,23 +904,23 @@ void sg_raster_triangle_tile_prepared(softgl_ctx *c,
                     if (cov & 0x1u) {
                         sg_shade_pixel(c, tctx, v0, v1, v2, ix, iy,
                                        E0, E1,
-                                       inv_area_f, invw0, invw1, invw2, z_offset);
+                                       inv_area_f, invw0, invw1, invw2, z_offset, NULL);
                     }
                     if (cov & 0x2u) {
                         sg_shade_pixel(c, tctx, v0, v1, v2, ix + 1, iy,
                                        E0 + dE0_dx, E1 + dE1_dx,
-                                       inv_area_f, invw0, invw1, invw2, z_offset);
+                                       inv_area_f, invw0, invw1, invw2, z_offset, NULL);
                     }
                     if (cov & 0x4u) {
                         sg_shade_pixel(c, tctx, v0, v1, v2, ix, iy + 1,
                                        E0 + dE0_dy, E1 + dE1_dy,
-                                       inv_area_f, invw0, invw1, invw2, z_offset);
+                                       inv_area_f, invw0, invw1, invw2, z_offset, NULL);
                     }
                     if (cov & 0x8u) {
                         sg_shade_pixel(c, tctx, v0, v1, v2, ix + 1, iy + 1,
                                        E0 + dE0_dx + dE0_dy,
                                        E1 + dE1_dx + dE1_dy,
-                                       inv_area_f, invw0, invw1, invw2, z_offset);
+                                       inv_area_f, invw0, invw1, invw2, z_offset, NULL);
                     }
                 }
             }
@@ -872,7 +960,8 @@ void sg_raster_triangle(softgl_ctx *c,
  * persists across LINE_STRIP / LINE_LOOP segments. */
 
 SG_INLINE void sg_line_fragment(softgl_ctx *c, int x, int y,
-                                float z, float col[4], float eye_z) {
+                                float z, float col[4], float eye_z,
+                                unsigned coverage, const float depths[4]) {
     if (c->fog_enabled) {
         float ez = eye_z < 0.f ? -eye_z : eye_z;
         float f = 1.f;
@@ -898,7 +987,74 @@ SG_INLINE void sg_line_fragment(softgl_ctx *c, int x, int y,
         col[1] = f * col[1] + (1.f - f) * c->fog_color[1];
         col[2] = f * col[2] + (1.f - f) * c->fog_color[2];
     }
-    sg_write_fragment(c, x, y, z, col[0], col[1], col[2], col[3]);
+    if (depths) sg_write_multisample(c, x, y, coverage, depths, col);
+    else sg_write_fragment(c, x, y, z, col[0], col[1], col[2], col[3]);
+}
+
+static void sg_multisample_primitive_color(softgl_ctx *c, const sg_tex_tri_ctx *tctx,
+                            const sg_vert *v0, const sg_vert *v1, float t,
+                            float color[4], float *eye_z) {
+    float w0 = (1.f - t) * v0->ndc.w, w1 = t * v1->ndc.w;
+    float invsum = 1.f / (w0 + w1);
+    sg_lerp_pc(color, &v0->color, &v1->color, &v1->color, w0, w1, 0.f, invsum);
+    *eye_z = (v0->eye.z * w0 + v1->eye.z * w1) * invsum;
+    if (!tctx->any_active) return;
+    float primary[4]; memcpy(primary, color, sizeof(primary));
+    float unit_tex[SG_MAX_TEX_UNITS][4];
+    int active[SG_MAX_TEX_UNITS];
+    sg_tex_tri_sample_units(tctx, v0, v1, v1, w0, w1, 0.f, invsum, unit_tex, active);
+    for (int u = 0; u < SG_MAX_TEX_UNITS; u++) if (active[u]) {
+        float out[4];
+        sg_tex_env_combine_full(&c->tex_env[u], u, primary, color, unit_tex, out);
+        memcpy(color, out, sizeof(out));
+    }
+}
+
+static void sg_raster_line_multisample(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1) {
+    float dx = v1->ndc.x - v0->ndc.x, dy = v1->ndc.y - v0->ndc.y;
+    float length = sqrtf(dx * dx + dy * dy);
+    if (length == 0.f) return;
+    float inv_length = 1.f / length, half = .5f * c->line_width;
+    int x0 = (int)floorf(fminf(v0->ndc.x, v1->ndc.x) - half);
+    int y0 = (int)floorf(fminf(v0->ndc.y, v1->ndc.y) - half);
+    int x1 = (int)ceilf(fmaxf(v0->ndc.x, v1->ndc.x) + half);
+    int y1 = (int)ceilf(fmaxf(v0->ndc.y, v1->ndc.y) + half);
+    if (x0 < 0) x0 = 0; if (y0 < 0) y0 = 0;
+    if (x1 > c->fb.w) x1 = c->fb.w; if (y1 > c->fb.h) y1 = c->fb.h;
+    sg_tex_tri_ctx tctx; sg_tex_tri_prepare(c, &tctx);
+    float z_offset = c->polygon_offset_line ? c->polygon_offset_units * 1e-6f : 0.f;
+    if (c->polygon_offset_line) {
+        float slope = fabsf((v1->ndc.z - v0->ndc.z) / fmaxf(fabsf(dx), fabsf(dy)));
+        z_offset += c->polygon_offset_factor * slope;
+    }
+    int stipple_start = c->line_stipple_counter;
+    for (int y = y0; y < y1; y++) for (int x = x0; x < x1; x++) {
+        unsigned coverage = 0;
+        float depths[4], first_t = 0.f;
+        for (int s = 0; s < c->fb.samples; s++) {
+            int sx, sy; sg_sample_position(c->fb.samples, s, &sx, &sy);
+            float px = x + sx * (1.f/256.f) - v0->ndc.x;
+            float py = y + sy * (1.f/256.f) - v0->ndc.y;
+            float along = (px * dx + py * dy) * inv_length;
+            float across = (py * dx - px * dy) * inv_length;
+            if (along < 0.f || along >= length || across < -half || across >= half) continue;
+            if (c->line_stipple_enable) {
+                int bit = ((stipple_start + (int)along) / c->line_stipple_factor) & 15;
+                if (!(c->line_stipple_pattern & (1u << bit))) continue;
+            }
+            float t = along * inv_length;
+            float z = v0->ndc.z + (v1->ndc.z - v0->ndc.z) * t + z_offset;
+            depths[s] = z < 0.f ? 0.f : z > 1.f ? 1.f : z;
+            if (!coverage) first_t = t;
+            coverage |= 1u << s;
+        }
+        if (coverage) {
+            float color[4], eye_z;
+            sg_multisample_primitive_color(c, &tctx, v0, v1, first_t, color, &eye_z);
+            sg_line_fragment(c, x, y, 0.f, color, eye_z, coverage, depths);
+        }
+    }
+    if (c->line_stipple_enable) c->line_stipple_counter += (int)ceilf(length);
 }
 
 static void sg_raster_line_1px(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1) {
@@ -959,7 +1115,7 @@ static void sg_raster_line_1px(softgl_ctx *c, const sg_vert *v0, const sg_vert *
             col[2] = v0->color.z + (v1->color.z - v0->color.z) * t;
             col[3] = v0->color.w + (v1->color.w - v0->color.w) * t;
             float ez = v0->eye.z + (v1->eye.z - v0->eye.z) * t;
-            sg_line_fragment(c, ix, iy, z, col, ez);
+            sg_line_fragment(c, ix, iy, z, col, ez, 0, NULL);
         }
 
         x_fp += step_dx_fp;
@@ -1012,7 +1168,7 @@ static void sg_raster_line_wide(softgl_ctx *c, const sg_vert *v0, const sg_vert 
             if (vertical_major) { px = ix + k; py = iy; }
             else                { px = ix;     py = iy + k; }
             float c4[4] = { col[0], col[1], col[2], col[3] };
-            sg_line_fragment(c, px, py, z, c4, ez);
+            sg_line_fragment(c, px, py, z, c4, ez, 0, NULL);
         }
 
         x_fp += step_dx_fp;
@@ -1024,12 +1180,43 @@ void sg_raster_line_impl(softgl_ctx *c,
                        const sg_vert *v0,
                        const sg_vert *v1,
                        int width) {
+    if (c->fb.samples && c->multisample) {
+        sg_raster_line_multisample(c, v0, v1);
+        return;
+    }
     if (width <= 1) sg_raster_line_1px (c, v0, v1);
     else            sg_raster_line_wide(c, v0, v1, width);
 }
 
 /* Integer stamp centered on rounded pixel; bounds handled by sg_write_fragment. */
 void sg_raster_point_impl(softgl_ctx *c, const sg_vert *v) {
+    if (c->fb.samples && c->multisample) {
+        float radius = .5f * c->point_size;
+        int x0 = (int)floorf(v->ndc.x - radius), x1 = (int)ceilf(v->ndc.x + radius);
+        int y0 = (int)floorf(v->ndc.y - radius), y1 = (int)ceilf(v->ndc.y + radius);
+        if (x0 < 0) x0 = 0; if (y0 < 0) y0 = 0;
+        if (x1 > c->fb.w) x1 = c->fb.w; if (y1 > c->fb.h) y1 = c->fb.h;
+        float z = v->ndc.z + (c->polygon_offset_point ? c->polygon_offset_units * 1e-6f : 0.f);
+        z = z < 0.f ? 0.f : z > 1.f ? 1.f : z;
+        float depths[4] = {z, z, z, z};
+        sg_tex_tri_ctx tctx; sg_tex_tri_prepare(c, &tctx);
+        float color[4], eye_z;
+        sg_multisample_primitive_color(c, &tctx, v, v, 0.f, color, &eye_z);
+        for (int y = y0; y < y1; y++) for (int x = x0; x < x1; x++) {
+            unsigned coverage = 0;
+            for (int s = 0; s < c->fb.samples; s++) {
+                int sx, sy; sg_sample_position(c->fb.samples, s, &sx, &sy);
+                float dx = x + sx * (1.f/256.f) - v->ndc.x;
+                float dy = y + sy * (1.f/256.f) - v->ndc.y;
+                if (dx * dx + dy * dy <= radius * radius) coverage |= 1u << s;
+            }
+            if (coverage) {
+                float col[4]; memcpy(col, color, sizeof(col));
+                sg_line_fragment(c, x, y, z, col, eye_z, coverage, depths);
+            }
+        }
+        return;
+    }
     float sz = c->point_size;
     if (sz < 1.f) sz = 1.f;
     int size = (int)(sz + 0.5f);
@@ -1058,7 +1245,7 @@ void sg_raster_point_impl(softgl_ctx *c, const sg_vert *v) {
     for (int y = y0; y < y1; y++) {
         for (int x = x0; x < x1; x++) {
             float c4[4] = { col[0], col[1], col[2], col[3] };
-            sg_line_fragment(c, x, y, z, c4, ez);
+            sg_line_fragment(c, x, y, z, c4, ez, 0, NULL);
         }
     }
 }

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "multisample.h"
 #include "dlist.h"
 #include "workers.h"
 #include <math.h>
@@ -363,10 +364,12 @@ static void sg_drawpixel_color(softgl_ctx *c, int i, int j, int src_w, int src_h
                                const sg_unpacked *up, int rx, int ry) {
     float zx = c->pixel_zoom_x;
     float zy = c->pixel_zoom_y;
-    float dx0 = (float)rx + (float)i     * zx;
-    float dx1 = (float)rx + (float)(i+1) * zx;
-    float dy0 = (float)ry + (float)j     * zy;
-    float dy1 = (float)ry + (float)(j+1) * zy;
+    float origin_x = c->fb.samples && c->multisample ? c->raster_pos[0] : (float)rx;
+    float origin_y = c->fb.samples && c->multisample ? c->raster_pos[1] : (float)ry;
+    float dx0 = origin_x + (float)i     * zx;
+    float dx1 = origin_x + (float)(i+1) * zx;
+    float dy0 = origin_y + (float)j     * zy;
+    float dy1 = origin_y + (float)(j+1) * zy;
     if (dx1 < dx0) { float t = dx0; dx0 = dx1; dx1 = t; }
     if (dy1 < dy0) { float t = dy0; dy0 = dy1; dy1 = t; }
     int ix0 = (int)floorf(dx0), ix1 = (int)ceilf(dx1);
@@ -375,8 +378,12 @@ static void sg_drawpixel_color(softgl_ctx *c, int i, int j, int src_w, int src_h
     if (z < 0.f) z = 0.f; else if (z > 1.f) z = 1.f;
     for (int y = iy0; y < iy1; y++) {
         for (int x = ix0; x < ix1; x++) {
-            sg_write_fragment(c, x, y, z,
-                              up->rgba[0], up->rgba[1], up->rgba[2], up->rgba[3]);
+            if (c->fb.samples && c->multisample) {
+                unsigned mask = sg_rect_sample_mask(c, x, y, dx0, dy0, dx1, dy1);
+                float depths[4] = {z, z, z, z};
+                sg_write_multisample(c, x, y, mask, depths, up->rgba);
+            } else sg_write_fragment(c, x, y, z,
+                                     up->rgba[0], up->rgba[1], up->rgba[2], up->rgba[3]);
         }
     }
     (void)src_w; (void)src_h;
@@ -387,10 +394,12 @@ static void sg_drawpixel_depth(softgl_ctx *c, int i, int j, float z_val,
                                int rx, int ry) {
     float zx = c->pixel_zoom_x;
     float zy = c->pixel_zoom_y;
-    float dx0 = (float)rx + (float)i     * zx;
-    float dx1 = (float)rx + (float)(i+1) * zx;
-    float dy0 = (float)ry + (float)j     * zy;
-    float dy1 = (float)ry + (float)(j+1) * zy;
+    float origin_x = c->fb.samples && c->multisample ? c->raster_pos[0] : (float)rx;
+    float origin_y = c->fb.samples && c->multisample ? c->raster_pos[1] : (float)ry;
+    float dx0 = origin_x + (float)i     * zx;
+    float dx1 = origin_x + (float)(i+1) * zx;
+    float dy0 = origin_y + (float)j     * zy;
+    float dy1 = origin_y + (float)(j+1) * zy;
     if (dx1 < dx0) { float t = dx0; dx0 = dx1; dx1 = t; }
     if (dy1 < dy0) { float t = dy0; dy0 = dy1; dy1 = t; }
     int ix0 = (int)floorf(dx0), ix1 = (int)ceilf(dx1);
@@ -403,7 +412,15 @@ static void sg_drawpixel_depth(softgl_ctx *c, int i, int j, float z_val,
                     x >= c->scissor[0]+c->scissor[2] ||
                     y >= c->scissor[1]+c->scissor[3]) continue;
             }
-            if (c->depth_mask) c->fb.depth[y*c->fb.w + x] = z_val;
+            if (c->depth_mask) {
+                int pixel = y*c->fb.w + x;
+                if (c->fb.samples) {
+                    unsigned mask = c->multisample ? sg_rect_sample_mask(c, x, y, dx0, dy0, dx1, dy1) :
+                                                    (1u << c->fb.samples) - 1u;
+                    for (int s = 0; s < c->fb.samples; s++)
+                        if (mask & (1u << s)) c->fb.sample_depth[(size_t)pixel * c->fb.samples + s] = z_val;
+                } else c->fb.depth[pixel] = z_val;
+            }
         }
     }
 }
@@ -412,10 +429,12 @@ static void sg_drawpixel_stencil(softgl_ctx *c, int i, int j, uint32_t s,
                                  int rx, int ry) {
     float zx = c->pixel_zoom_x;
     float zy = c->pixel_zoom_y;
-    float dx0 = (float)rx + (float)i     * zx;
-    float dx1 = (float)rx + (float)(i+1) * zx;
-    float dy0 = (float)ry + (float)j     * zy;
-    float dy1 = (float)ry + (float)(j+1) * zy;
+    float origin_x = c->fb.samples && c->multisample ? c->raster_pos[0] : (float)rx;
+    float origin_y = c->fb.samples && c->multisample ? c->raster_pos[1] : (float)ry;
+    float dx0 = origin_x + (float)i     * zx;
+    float dx1 = origin_x + (float)(i+1) * zx;
+    float dy0 = origin_y + (float)j     * zy;
+    float dy1 = origin_y + (float)(j+1) * zy;
     if (dx1 < dx0) { float t = dx0; dx0 = dx1; dx1 = t; }
     if (dy1 < dy0) { float t = dy0; dy0 = dy1; dy1 = t; }
     int ix0 = (int)floorf(dx0), ix1 = (int)ceilf(dx1);
@@ -430,8 +449,13 @@ static void sg_drawpixel_stencil(softgl_ctx *c, int i, int j, uint32_t s,
                     x >= c->scissor[0]+c->scissor[2] ||
                     y >= c->scissor[1]+c->scissor[3]) continue;
             }
-            uint8_t cur = c->fb.stencil[y*c->fb.w + x];
-            c->fb.stencil[y*c->fb.w + x] = (uint8_t)((sv & wm) | (cur & (uint8_t)~wm));
+            int pixel = y*c->fb.w + x;
+            int n = c->fb.samples ? c->fb.samples : 1;
+            uint8_t *dst = c->fb.samples ? c->fb.sample_stencil + (size_t)pixel * n : c->fb.stencil + pixel;
+            unsigned mask = c->fb.samples && c->multisample ?
+                            sg_rect_sample_mask(c, x, y, dx0, dy0, dx1, dy1) : (1u << n) - 1u;
+            for (int s = 0; s < n; s++) if (mask & (1u << s))
+                dst[s] = (uint8_t)((sv & wm) | (dst[s] & (uint8_t)~wm));
         }
     }
 }
@@ -490,6 +514,7 @@ void glDrawPixels(GLsizei w, GLsizei h, GLenum format, GLenum type, const void *
 void _sg_read_pixels_real(GLint x, GLint y, GLsizei width, GLsizei height,
                           GLenum format, GLenum type, void *pixels) {
     softgl_ctx *c = sg_current(); if (!c) return;
+    sg_msaa_resolve(c);
     if (width <= 0 || height <= 0 || !pixels) return;
     int ncomp = sg_fmt_components(format);
     int tsz   = sg_type_size(type);
@@ -525,6 +550,7 @@ void glReadPixels(GLint x, GLint y, GLsizei w, GLsizei h,
 
 void _sg_copy_pixels_real(GLint x, GLint y, GLsizei width, GLsizei height, GLenum type) {
     softgl_ctx *c = sg_current(); if (!c) return;
+    sg_msaa_resolve(c);
     if (width <= 0 || height <= 0) return;
     if (!c->raster_pos_valid) return;
     if (type != GL_COLOR && type != GL_DEPTH && type != GL_STENCIL) {

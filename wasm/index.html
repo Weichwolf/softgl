@@ -68,12 +68,11 @@
         <button id="next">Next &rsaquo;</button>
         <button id="bench">Run Benchmark</button>
         <button id="fullscreen">Fullscreen</button>
-      </div>
-      <div style="margin-top: 8px; font-size: 12px;">
-        <label for="render-mode">SoftGL mode</label>
-        <select id="render-mode">
-          <option value="0">Compliance — full geometry</option>
-          <option value="1">Performance — target 30 FPS</option>
+        <label for="msaa">MSAA</label>
+        <select id="msaa">
+          <option value="0">Aus</option>
+          <option value="2">2×</option>
+          <option value="4">4×</option>
         </select>
       </div>
       <div id="stats" class="stats">
@@ -84,9 +83,6 @@
         <div><span class="k">Canvas</span><span class="v">640×360 RGBA8</span></div>
         <div><span class="k">Frame (last)</span><span class="v" id="s-ms">–</span></div>
         <div><span class="k">Frame (p50 / p95)</span><span class="v" id="s-p">–</span></div>
-        <div><span class="k">Indexed triangles</span><span class="v" id="s-lod-tris">–</span></div>
-        <div><span class="k">LOD cache</span><span class="v" id="s-lod-cache">–</span></div>
-        <div><span class="k">Quality / budget</span><span class="v" id="s-lod-quality">–</span></div>
       </div>
     </div>
   </div>

@@ -352,6 +352,7 @@ void _sg_tex_sub_image_2d_real(GLenum target, GLint level, GLint xoff, GLint yof
 
 /* Read w*h RGBA from fb at (sx,sy), clipped. malloc'd or NULL. */
 static uint8_t *sg_fb_read_rect(softgl_ctx *c, int sx, int sy, int w, int h) {
+    sg_msaa_resolve(c);
     if (w <= 0 || h <= 0) return NULL;
     uint8_t *buf = (uint8_t*)malloc((size_t)w * h * 4);
     if (!buf) return NULL;

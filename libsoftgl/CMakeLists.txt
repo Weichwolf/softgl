@@ -6,6 +6,7 @@ add_library(softgl STATIC
     src/pipeline.c
     src/clip.c
     src/fragment_write.c
+    src/multisample.c
     src/fragment_combine.c
     src/rasterizer.c
     src/lines.c
@@ -18,13 +19,7 @@ add_library(softgl STATIC
     src/pixels.c
     src/evaluators.c
     src/workers.c
-    src/lod.c
-    src/lod_bridge.cpp
 )
-
-include(${CMAKE_CURRENT_SOURCE_DIR}/lod_sources.cmake)
-target_sources(softgl PRIVATE ${SG_MESHOPT_SOURCES})
-target_include_directories(softgl PRIVATE third_party/meshoptimizer)
 
 target_include_directories(softgl
     PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR}/include

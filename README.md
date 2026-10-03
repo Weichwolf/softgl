@@ -1,6 +1,6 @@
 # softgl
 
-GL 1.5 software renderer in C, with a C++11 geometry preparation helper — fixed-point SIMD rasterizer, pthread tile pool,
+GL 1.5 software renderer in C11 — fixed-point SIMD rasterizer, pthread tile pool,
 WASM + native, Mesa-referenced.
 
 ## Scope
@@ -16,61 +16,29 @@ API-level compatibility with real OpenGL 1.5:
 - Tex-env: `MODULATE` / `REPLACE` / `DECAL` / `COMBINE` including `DOT3_RGB`, `INTERPOLATE`, `SUBTRACT`, `ADD_SIGNED`
 - Fog (`LINEAR`/`EXP`/`EXP2`), alpha test, alpha blending, color logic op
 - Stencil, depth test, scissor, polygon stipple, line stipple
+- Optional 2x/4x MSAA: sample coverage, alpha-to-coverage and alpha-to-one
 - Sutherland-Hodgman frustum clipping, back-face cull, clip planes
 - Pixel transfer (`glDrawPixels`/`ReadPixels`/`CopyPixels`/`PixelStore`/`PixelZoom`/`RasterPos`)
 - Occlusion queries, `glMapBuffer`, comprehensive `glGet*` state readback
 - Evaluators (`glMap1`/`glMap2`), accumulation buffer, selection / feedback modes
 
-322 entry points, 233 test cases plus three Tank and three BMW camera views. Each runs
+323 entry points, 234 test cases plus three Tank and three BMW camera views. Each runs
 against softgl and Mesa llvmpipe, followed by a pixel comparison
-(717 image correctness checks plus worker-pool and internal LOD cache contracts when the
+(720 image correctness checks plus the worker-pool and multisample contracts when the
 BMW asset is prepared; `ctest -C Bench` also includes the native benchmark).
 
-## Rendering modes
+## Model preparation
 
-Contexts default to **Compliance**: SoftGL processes the submitted geometry
-without approximation, and the complete Mesa regression suite uses this mode.
-The browser preview offers an explicit **Performance** option for model scenes.
-Applications can enable it once, without changing their OpenGL draw calls:
+SoftGL renders the geometry supplied by the application with normal OpenGL 1.5
+semantics. There is no runtime mesh simplification, LOD cache or Performance
+mode. Model complexity is chosen offline during asset preparation.
 
-```c
-softgl_set_mode(ctx, SOFTGL_PERFORMANCE);
-softgl_set_frame_budget(ctx, 1000.0f / 30.0f); /* default: 30 FPS */
-```
-
-Performance mode seeks maximum geometry quality within the render-time budget.
-It smooths completed-frame measurements, reduces detail above the budget and
-restores detail when there is at least 15% headroom. Browser idle time and cold preparation
-are excluded. The budget is a target, not an FPS guarantee: rasterization and
-application work can remain limiting. The preview displays the current error,
-measured time and whether the geometry or error limit was reached. At the
-geometry floor it retains the smallest error selecting that cut rather than
-continuing to increase the threshold. For reproducible fixed
-quality, `softgl_set_lod_error(ctx, 1.0f)` disables feedback; it accepts
-0.125–128 estimated pixels. Automatic mode caps error at 8 pixels to limit panel deformation. If the
-budget cannot be reached within that quality limit, the preview reports the
-limit rather than promising the target FPS.
-
-Performance mode permits approximate geometry. Internally, SoftGL snapshots
-large indexed static-VBO draws and prepares a cluster hierarchy on one background
-worker, protecting hard normal edges, UVs and colors. It selects detail using the current matrix and
-viewport. It retains the application's VBO/EBO bytes and transforms only the
-selected source vertices. `glBufferData`, `glBufferSubData`, writable unmapping
-and deletion invalidate affected caches. Full detail renders until preparation
-finishes. This is an initial CPU implementation inspired by clustered LOD,
-using a pinned MIT-licensed meshoptimizer subset; it does not implement all
-of Unreal Nanite.
-
-Static attributes currently require float components; other formats keep full
-detail. Unsupported draws, active queries, selection/feedback, wireframe, flat shading,
-alpha testing, nonadditive blending, stencil and user clipping use full geometry.
-Returning to Compliance restores
-full geometry immediately. The error estimate guides quality; Performance mode
-does not promise exact OpenGL images. Image regressions and approximate-mode
-appearance comparisons are validated separately, without loosening existing
-tolerances. The preparation worker is additional to the unchanged render pool.
-The triangle statistics count indexed `GL_TRIANGLES` draws across material
-passes and reset at color-buffer clears; cache statistics are per context.
+The BMW packer targets approximately 50,000 vertices using attribute-aware
+quadric simplification with meshoptimizer. It protects interfaces between parts,
+retains small parts such as badges and number plates, and includes normals and
+UVs in its error metric. Tangents are rebuilt for the prepared geometry; all
+materials and original texture dimensions remain available. Use
+`--target-vertices 0` to prepare full detail for appearance comparisons.
 
 ## Architecture
 
@@ -79,6 +47,7 @@ passes and reset at color-buffer clears; cache statistics are per context.
 - **Packed 2-row 64-bit framebuffer I/O** for depth load / blend-dst load / color write
 - **AoS 16-byte aligned vertex** with vec4 clip / ndc / color / normal / eye + per-unit UVs
 - **Separate RGBA8 color + f32 depth planes**, row 0 = bottom (GL convention)
+- **Optional MSAA sample buffers**, with color/depth/stencil per sample and one texture/combiner evaluation per covered pixel
 - **Pthread tile worker pool** for X-stripe binning; shared vertex pool for parallel transform
 - **Single rasterizer** (`rasterizer.c::sg_raster_triangle`); per-lane scalar fallback only for stencil / polygon stipple / color logic op / occlusion queries (pixel-serial state)
 
@@ -101,8 +70,8 @@ build/python/bin/python tools/pack_gltf.py assets/bmw/source.zip
 
 Select **BMW F31** in the preview. Its material lighting uses OpenGL 1.5 DOT3
 combiners, authored metallic/roughness parameters, prepared normal maps and
-GGX-filtered studio cube maps. The asset retains all 939,641 triangles;
-Performance mode chooses a subset internally. See
+GGX-filtered studio cube maps. The source contains 939,641 triangles; the
+prepared pack targets approximately 50,000 vertices. See
 [asset preparation and attribution](assets/bmw/README.md) for fidelity limits.
 Selecting BMW before **Run Benchmark** adds it to the interactive benchmark.
 The benchmark yields between frames and can be stopped. Scene switches
@@ -110,7 +79,7 @@ release the active render context before starting the next one.
 
 ### Native (test suite)
 
-Requires an x86 CPU with SSE4.1, GCC or Clang with C++11 support, CMake 3.20+, pthreads,
+Requires an x86 CPU with SSE4.1, GCC or Clang, CMake 3.20+, pthreads,
 Mesa OSMesa development libraries. On Debian/Ubuntu:
 
 ```sh
@@ -154,7 +123,15 @@ The cache settings let Emscripten build its SDL2 and pthread dependencies in
 the writable `build/` tree. Keep them exported for subsequent WASM builds.
 
 Open http://localhost:8000. The preview page cycles the tests and runs a
-live Tank demo with pthread tile workers. Threads require a secure browser
+live Tank demo with pthread tile workers. Its **MSAA** selector switches the
+model viewer and interactive benchmark between off, 2x and 4x. Correctness tests
+use single-sample contexts. Applications select samples through
+`softgl_create_multisample(w, h, samples)` at context creation; the default
+`softgl_create` remains single-sample. `GL_MULTISAMPLE` starts enabled and controls
+sample coverage within a multisample context. The GL states and
+`glSampleCoverage` follow [OpenGL 1.5 sections 3.2.1 and 4.1.3](https://registry.khronos.org/OpenGL/specs/gl/glspec15.pdf).
+
+Threads require a secure browser
 context (HTTPS or localhost) and COOP/COEP headers; `serve.sh` sets the headers
 and listens on all IPv4 interfaces. For access over a LAN IP, supply a TLS
 certificate and key outside the served `build/wasm/` directory:
@@ -178,23 +155,19 @@ ctest --test-dir build/native -C Bench --output-on-failure -j1
 node tools/wasm_perf.cjs --output build/perf/current.json
 ```
 
-Compare internal approximate mode to full detail using the same module:
+Compare prepared model appearance against full source geometry with the same
+renderer (C++11 is required only for the offline simplifier):
 
 ```sh
-node tools/wasm_perf.cjs --render-mode performance --reference-mode compliance \
-  --reference-build build/wasm --scenes bmw --frame-budget 33.333333 \
-  --rounds 8 --warmup 60 --frames 12 \
-  --crossover --output build/perf/bmw-lod.json
-node tools/wasm_lod_check.cjs build/lod-check
+build/python/bin/python tools/pack_gltf.py assets/bmw/source.zip \
+  --target-vertices 0 --output build/assets/bmw-original.pack
+node tools/wasm_model_check.cjs build/model-check build/wasm \
+  build/assets/bmw-original.pack build/assets/bmw.pack
 ```
 
-The image gate always uses Compliance. Approximate-mode measurements wait for
-background preparation before warm-up, record preparation cost and actual
-triangle counts and controller state, and exclude that one-time cost from
-steady-state frame time. The benchmark driver defaults to fixed one-pixel
-quality; `--frame-budget` enables feedback and needs enough warm-up to settle.
-The appearance check compares twelve views, verifies a reversible switch,
-fills all eight render workers and checks browser responsiveness.
+The appearance tool captures twelve original/prepared views, reports image and
+silhouette differences and verifies that runtime simplification APIs are absent.
+These asset diagnostics are separate from the unchanged Mesa regression gate.
 
 The tool renders every WASM test, three Tank views and the prepared BMW views in headless Chromium,
 then compares RGBA output against Mesa using the unchanged CTest tolerances.
@@ -253,8 +226,8 @@ const uint8_t *rgba = softgl_read_rgba8(ctx);   /* row 0 = bottom */
 softgl_destroy(ctx);
 ```
 
-Drawing uses standard GL 1.5. The optional context policy and LOD statistics
-are SoftGL-specific functions described under Rendering modes.
+Drawing uses standard GL 1.5. Sample-buffer selection through
+`softgl_create_multisample` is specific to SoftGL context creation.
 
 ## Tank demo
 
@@ -269,7 +242,7 @@ Model: "T-80 MBT [MAIN BATTLE TANK]" by Muhamad Mirza Arrafi
 ## Directory layout
 
 ```
-libsoftgl/        renderer API, C pipeline, C++ LOD helper, pinned MIT dependency
+libsoftgl/        renderer API, C pipeline; pinned MIT dependency for offline preparation
 tests/            harness + test cases + Tank views (both backends + compare)
 wasm/             Emscripten preview: CMakeLists, SDL2 blit layer, index.html
 ```

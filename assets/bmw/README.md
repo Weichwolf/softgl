@@ -10,15 +10,19 @@ Prepare it with NumPy and Pillow installed:
 python3 tools/pack_gltf.py assets/bmw/source.zip --output build/assets/bmw.pack
 ```
 
-The pack retains all 939,641 triangles, node transforms, 23 materials and
-five original textures at their original dimensions. It batches opaque parts
-by material and welds only bitidentical complete vertex records, preserving
-normals, UV seams, tangents and handedness. This produces 614,066 vertices and
-41 parts from the original 614,139 vertices and 258 parts. Transparent parts
-keep their separate centers for sorting. Local indices keep each draw's
-vertex range small. Tangent frames are prepared offline from authored normals
-and UVs. Use `--preserve-parts` to reproduce the original draw layout.
-No geometry LOD or approximate mesh simplification is applied.
+The source contains 939,641 triangles and 614,139 vertices. The packer targets
+approximately 50,000 vertices offline, retaining 23 materials, five original
+textures at their original dimensions and separate transparent parts.
+An attribute-aware quadric simplifier protects shared material/part interfaces
+and incorporates normals and UVs. Small parts, including badges and number
+plates, retain their original geometry. Large parts share the remaining vertex
+budget. Tangents are rebuilt after simplification, and transparent centers
+remain unchanged for sorting. No simplifier or LOD cache runs in SoftGL.
+
+Use `--target-vertices 0` to preserve all source geometry for comparisons;
+`--preserve-parts --target-vertices 0` also retains the original draw layout.
+The pinned C++11 helper builds under `build/tools/` on the first preparation run.
+The generated JSON records per-part budgets, resulting counts and error metrics.
 
 The renderer uses OpenGL 1.5 VBOs, DOT3 texture combiners, two lighting passes,
 alpha blending and cube maps. Diffuse colors and dielectric/metallic reflection

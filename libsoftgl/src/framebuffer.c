@@ -1,7 +1,6 @@
 #include "types.h"
 #include "dlist.h"
 #include "workers.h"
-#include "lod.h"
 #include <string.h>
 
 static void sg_effective_scissor(const softgl_ctx *c, int *x0, int *y0, int *x1, int *y1) {
@@ -21,13 +20,30 @@ static void sg_effective_scissor(const softgl_ctx *c, int *x0, int *y0, int *x1,
 
 void _sg_clear_real(GLbitfield mask) {
     softgl_ctx *c = sg_current(); if (!c) return;
-    if (mask & GL_COLOR_BUFFER_BIT) {
-        sg_lod_start_frame(c);
-        c->lod_input_triangles = c->lod_drawn_triangles = 0;
-    }
     int x0, y0, x1, y1;
     sg_effective_scissor(c, &x0, &y0, &x1, &y1);
     if (x1 <= x0 || y1 <= y0) return;
+
+    if (c->fb.samples) {
+        uint8_t clear[4];
+        for (int k = 0; k < 4; k++) clear[k] = sg_quantize(c->clear_color[k]);
+        uint8_t wm = (uint8_t)c->stencil_write_mask;
+        for (int y = y0; y < y1; y++) for (int x = x0; x < x1; x++) {
+            size_t first = ((size_t)y * c->fb.w + x) * c->fb.samples;
+            for (int s = 0; s < c->fb.samples; s++) {
+                size_t i = first + s;
+                if (mask & GL_COLOR_BUFFER_BIT)
+                    for (int k = 0; k < 4; k++) if (c->color_mask[k])
+                        c->fb.sample_color[i * 4 + k] = clear[k];
+                if ((mask & GL_DEPTH_BUFFER_BIT) && c->depth_mask)
+                    c->fb.sample_depth[i] = c->clear_depth;
+                if (mask & GL_STENCIL_BUFFER_BIT)
+                    c->fb.sample_stencil[i] = (uint8_t)((c->clear_stencil & wm) |
+                        (c->fb.sample_stencil[i] & (uint8_t)~wm));
+            }
+        }
+        mask &= ~(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    }
 
     if (mask & GL_COLOR_BUFFER_BIT) {
         uint8_t r = sg_quantize(c->clear_color[0]);

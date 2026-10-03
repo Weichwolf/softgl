@@ -35,6 +35,13 @@ async function main() {
         const waitWorkers = n => page.waitForFunction(n => document.querySelector('#s-threads').textContent.startsWith(`${n} (`), n);
         await waitTank();
         await waitWorkers(8);
+        for (const samples of ['2', '4', '0']) {
+            await page.selectOption('#msaa', samples);
+            await waitTank();
+            await waitWorkers(8);
+            await page.waitForTimeout(150);
+            assert.equal(await page.locator('#msaa').inputValue(), samples);
+        }
         await page.evaluate(() => {
             window.previewHeartbeat = 0;
             setInterval(() => window.previewHeartbeat++, 10);
@@ -42,21 +49,21 @@ async function main() {
         await page.click('#bmw');
         await waitBMW();
         await waitWorkers(8);
+        await page.selectOption('#msaa', '4');
+        await waitBMW();
+        await waitWorkers(8);
+        await page.waitForTimeout(200);
+        await page.screenshot({path:path.join(path.dirname(output), 'bmw-msaa4.png')});
+        await page.selectOption('#msaa', '0');
+        await waitBMW();
+        await waitWorkers(8);
         await page.screenshot({path:path.join(path.dirname(output), 'bmw.png')});
-        await page.selectOption('#render-mode', '1');
-        await page.waitForFunction(() => document.querySelector('#s-lod-cache').textContent.includes('6 ready, 0 building'), null, {timeout:30000});
-        await page.waitForFunction(() => document.querySelector('#s-lod-quality').textContent.includes('/ 33.3 ms'));
-        const adaptiveQuality = await page.locator('#s-lod-quality').textContent();
-        await page.screenshot({path:path.join(path.dirname(output), 'bmw-performance.png')});
         await page.click('#bench');
         await page.waitForFunction(() => document.querySelector('#name').textContent === 'Benchmark: bmw');
         await page.click('#bench');
         await page.waitForFunction(() => document.querySelector('#bench-out').textContent.includes('# stopped.'));
         await page.click('#bmw');
         await waitBMW();
-        await page.waitForFunction(() => document.querySelector('#s-lod-cache').textContent.includes('6 ready, 0 building'), null, {timeout:30000});
-        await page.selectOption('#render-mode', '0');
-        await page.waitForFunction(() => document.querySelector('#s-lod-cache').textContent === 'Compliance');
         await page.click('#tests');
         await waitTest();
         await page.click('#pause');
@@ -73,7 +80,6 @@ async function main() {
         await page.waitForFunction(() => document.querySelector('#bench-out').textContent.includes('# stopped.'));
         await page.click('#bmw');
         await waitBMW();
-        await page.selectOption('#render-mode', '1');
         const before = await page.evaluate(() => window.previewHeartbeat);
         await page.click('#bench');
         await page.waitForFunction(() => document.querySelector('#bench-out').textContent.includes('# done.'), null, {timeout:120000});
@@ -90,6 +96,7 @@ async function main() {
         assert.equal(result.reportedProcessors, 8);
         assert.ok(result.threads.startsWith('8 ('));
         assert.equal(await page.locator('#render-cores').count(), 0);
+        assert.equal(await page.locator('#render-mode').count(), 0);
         await page.click('#tests');
         await waitTest();
         await page.click('#pause');
@@ -105,8 +112,8 @@ async function main() {
         fs.mkdirSync(path.dirname(output), {recursive: true});
         fs.writeFileSync(output, JSON.stringify({url, browser:browser.version(), ...result,
             heartbeatDuringBenchmark:result.heartbeat - before, displayedTests:count,
-            renderWorkers:8, bmwScene:true, cancelledBenchmark:true, performanceMode:true,
-            performanceCancellation:true, adaptiveQuality,
+            renderWorkers:8, bmwScene:true, cancelledBenchmark:true, offlineGeometry:true,
+            multisampleModes:[0,2,4],
             wasmSha256, errors, passed:true}, null, 2) + '\n');
         console.log(`Preview passed: BMW, ${count} tests, six benchmark scenes, cancellation and eight reported processors/workers.`);
     } finally {

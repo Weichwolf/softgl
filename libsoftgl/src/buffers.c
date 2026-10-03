@@ -1,6 +1,5 @@
 #include "types.h"
 #include "dlist.h"
-#include "lod.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -51,7 +50,6 @@ void glDeleteBuffers(GLsizei n, const GLuint *ids) {
         GLuint id = ids[i];
         sg_buffer *b = sg_buffer_get(c, id);
         if (!b) continue;
-        sg_lod_invalidate(c, id);
         if (b->data) { free(b->data); b->data = NULL; }
         b->in_use = 0;
         b->size = 0;
@@ -88,7 +86,6 @@ void _sg_buffer_data_real(GLenum target, GLsizeiptr size, const void *data, GLen
     GLuint id = (target == GL_ARRAY_BUFFER) ? c->array_buffer_binding : c->element_buffer_binding;
     sg_buffer *b = sg_buffer_get(c, id);
     if (!b) return;
-    sg_lod_invalidate(c, id);
     if (b->data) free(b->data);
     b->data = size > 0 ? malloc((size_t)size) : NULL;
     b->size = (size_t)size;
@@ -103,7 +100,6 @@ void _sg_buffer_subdata_real(GLenum target, GLintptr offset, GLsizeiptr size, co
     if (!b || !b->data || !data) return;
     if (offset < 0 || size < 0) return;
     if ((size_t)(offset + size) > b->size) return;
-    sg_lod_invalidate(c, id);
     memcpy((uint8_t*)b->data + offset, data, (size_t)size);
 }
 
@@ -307,7 +303,6 @@ GLboolean glUnmapBuffer(GLenum target) {
     if (!b) return GL_FALSE;
     if (!b->mapped) { sg_set_error(GL_INVALID_OPERATION); return GL_FALSE; }
     b->mapped = 0;
-    if (b->access != GL_READ_ONLY) sg_lod_invalidate(c, b->id);
     b->access = 0;
     /* In a pure-software implementation the mapped pointer IS the storage,
      * so there is never a transfer step that could invalidate it. Always

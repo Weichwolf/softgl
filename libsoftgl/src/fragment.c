@@ -178,26 +178,18 @@ SG_INLINE float sg_wrap_coord(float c, GLenum wrap) {
     }
 }
 
-SG_INLINE void sg_fetch_texel(uint8_t out[4], const sg_texture *t, int level, int x, int y) {
-    int tw = t->w[level];
-    int th = t->h[level];
-    if (tw > 0) { x %= tw; if (x < 0) x += tw; } else x = 0;
-    if (th > 0) { y %= th; if (y < 0) y += th; } else y = 0;
-    const uint8_t *p = t->data[level] + (y * tw + x) * 4;
-    out[0] = p[0]; out[1] = p[1]; out[2] = p[2]; out[3] = p[3];
-}
-
-static void sg_clamp_texel_coord(int *x, int *y, int w, int h, GLenum wrap_s, GLenum wrap_t) {
-    if (wrap_s == GL_CLAMP || wrap_s == GL_CLAMP_TO_EDGE) {
-        if (*x < 0) *x = 0; else if (*x >= w) *x = w - 1;
+/* sg_wrap_coord bounds a finite coordinate to [0, 1]. Consequently nearest
+ * and bilinear taps lie in [-1, size]; a single adjustment handles REPEAT,
+ * including NPOT and one-texel textures, without an integer remainder. */
+SG_INLINE int sg_address_wrapped_texel(int x, int size, GLenum wrap) {
+    if (wrap == GL_CLAMP || wrap == GL_CLAMP_TO_EDGE) {
+        if (x < 0) return 0;
+        if (x >= size) return size - 1;
     } else {
-        *x = *x % w; if (*x < 0) *x += w;
+        if (x < 0) return x + size;
+        if (x >= size) return x - size;
     }
-    if (wrap_t == GL_CLAMP || wrap_t == GL_CLAMP_TO_EDGE) {
-        if (*y < 0) *y = 0; else if (*y >= h) *y = h - 1;
-    } else {
-        *y = *y % h; if (*y < 0) *y += h;
-    }
+    return x;
 }
 
 void sg_sample_tex2d(const sg_texture *t, GLenum min_filter, GLenum mag_filter,
@@ -221,8 +213,9 @@ void sg_sample_tex2d(const sg_texture *t, GLenum min_filter, GLenum mag_filter,
     if (filter == GL_NEAREST) {
         int x = (int)floorf(uu * (float)tw);
         int y = (int)floorf(vv * (float)th);
-        sg_clamp_texel_coord(&x, &y, tw, th, wrap_s, wrap_t);
-        uint8_t tx[4]; sg_fetch_texel(tx, t, level, x, y);
+        x = sg_address_wrapped_texel(x, tw, wrap_s);
+        y = sg_address_wrapped_texel(y, th, wrap_t);
+        const uint8_t *tx = t->data[level] + (y * tw + x) * 4;
         out[0] = tx[0] * (1.f/255.f);
         out[1] = tx[1] * (1.f/255.f);
         out[2] = tx[2] * (1.f/255.f);
@@ -233,15 +226,17 @@ void sg_sample_tex2d(const sg_texture *t, GLenum min_filter, GLenum mag_filter,
         int x0 = (int)floorf(fx), y0 = (int)floorf(fy);
         float fu = fx - (float)x0;
         float fv = fy - (float)y0;
-        int corners_x[2] = { x0, x0 + 1 };
-        int corners_y[2] = { y0, y0 + 1 };
-        uint8_t s[4][4];
-        for (int i = 0; i < 4; i++) {
-            int cx = corners_x[i & 1];
-            int cy = corners_y[(i >> 1) & 1];
-            sg_clamp_texel_coord(&cx, &cy, tw, th, wrap_s, wrap_t);
-            sg_fetch_texel(s[i], t, level, cx, cy);
-        }
+        int x1 = sg_address_wrapped_texel(x0 + 1, tw, wrap_s);
+        int y1 = sg_address_wrapped_texel(y0 + 1, th, wrap_t);
+        x0 = sg_address_wrapped_texel(x0, tw, wrap_s);
+        y0 = sg_address_wrapped_texel(y0, th, wrap_t);
+        const uint8_t *data = t->data[level];
+        const uint8_t *s[4] = {
+            data + (y0 * tw + x0) * 4,
+            data + (y0 * tw + x1) * 4,
+            data + (y1 * tw + x0) * 4,
+            data + (y1 * tw + x1) * 4
+        };
         float ira = 1.f - fu, irb = fu;
         float ica = 1.f - fv, icb = fv;
         for (int k = 0; k < 4; k++) {

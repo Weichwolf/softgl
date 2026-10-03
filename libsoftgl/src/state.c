@@ -1,7 +1,6 @@
 #include "types.h"
 #include "dlist.h"
 #include "workers.h"
-#include "lod.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -56,6 +55,12 @@ static void sg_reset_state(softgl_ctx *c) {
     c->alpha_test = 0;
     c->alpha_func = GL_ALWAYS;
     c->alpha_ref = 0.f;
+    c->multisample = 1;
+    c->sample_alpha_to_coverage = 0;
+    c->sample_alpha_to_one = 0;
+    c->sample_coverage = 0;
+    c->sample_coverage_value = 1.f;
+    c->sample_coverage_invert = 0;
 
     c->stencil_test = 0;
     c->stencil_func = GL_ALWAYS;
@@ -256,10 +261,18 @@ static void sg_reset_state(softgl_ctx *c) {
 }
 
 softgl_ctx *softgl_create(GLsizei w, GLsizei h) {
+    return softgl_create_multisample(w, h, 0);
+}
+
+softgl_ctx *softgl_create_multisample(GLsizei w, GLsizei h, GLsizei samples) {
+    if (w <= 0 || h <= 0 || (samples != 0 && samples != 2 && samples != 4)) return NULL;
+    size_t pixels = (size_t)w * (size_t)h;
+    if (pixels > INT32_MAX / 4u || pixels > SIZE_MAX / (samples ? 16u : 4u)) return NULL;
     softgl_ctx *c = (softgl_ctx*)calloc(1, sizeof(*c));
     if (!c) return NULL;
     c->fb.w = w;
     c->fb.h = h;
+    c->fb.samples = samples;
     c->fb.color   = (uint8_t*)sg_aligned_alloc((size_t)w * h * 4, 16);
     c->fb.depth   = (float*)  sg_aligned_alloc((size_t)w * h * sizeof(float), 16);
     c->fb.stencil = (uint8_t*)sg_aligned_alloc((size_t)w * h, 16);
@@ -270,9 +283,20 @@ softgl_ctx *softgl_create(GLsizei w, GLsizei h) {
     memset(c->fb.color, 0, (size_t)w * h * 4);
     memset(c->fb.stencil, 0, (size_t)w * h);
     for (int i = 0; i < w * h; i++) c->fb.depth[i] = 1.0f;
+    if (samples) {
+        size_t values = pixels * (size_t)samples;
+        c->fb.sample_color = sg_aligned_alloc(values * 4, 16);
+        c->fb.sample_depth = sg_aligned_alloc(values * sizeof(float), 16);
+        c->fb.sample_stencil = sg_aligned_alloc(values, 16);
+        if (!c->fb.sample_color || !c->fb.sample_depth || !c->fb.sample_stencil) {
+            softgl_destroy(c);
+            return NULL;
+        }
+        memset(c->fb.sample_color, 0, values * 4);
+        memset(c->fb.sample_stencil, 0, values);
+        for (size_t i = 0; i < values; i++) c->fb.sample_depth[i] = 1.f;
+    }
     sg_reset_state(c);
-    c->lod_pixel_error = 1.f;
-    c->lod_frame_budget = 1000.f/30.f;
     /* One worker per logical core, up to SG_MAX_TILES. On WASM w/o pthreads
      * this is a no-op and sg_workers_bin_tri falls through to direct raster. */
     sg_workers_init(c, 0);
@@ -284,11 +308,13 @@ void softgl_destroy(softgl_ctx *c) {
     /* Drain + join workers before any state they may still be reading
      * gets torn down (fb.color/depth, textures, vbos). */
     sg_workers_flush(c);
-    sg_lod_shutdown(c);
     sg_workers_shutdown(c);
     if (c->fb.color)   sg_aligned_free(c->fb.color);
     if (c->fb.depth)   sg_aligned_free(c->fb.depth);
     if (c->fb.stencil) sg_aligned_free(c->fb.stencil);
+    sg_aligned_free(c->fb.sample_color);
+    sg_aligned_free(c->fb.sample_depth);
+    sg_aligned_free(c->fb.sample_stencil);
     if (c->buffers) {
         for (size_t i = 0; i < c->buffers_cap; i++) {
             if (c->buffers[i].data) free(c->buffers[i].data);
@@ -328,8 +354,7 @@ const void *softgl_read_rgba8(softgl_ctx *c) {
     if (!c) return NULL;
     /* JS/WASM reads the FB directly — workers must be drained first. */
     sg_workers_flush(c);
-    sg_lod_finish_frame(c);
-    sg_lod_begin_frame(c);
+    sg_msaa_resolve(c);
     return c->fb.color;
 }
 
@@ -353,6 +378,10 @@ static int *sg_enable_flag(softgl_ctx *c, GLenum cap, int *light_slot) {
         case GL_DEPTH_TEST:   return &c->depth_test;
         case GL_BLEND:        return &c->blend;
         case GL_ALPHA_TEST:   return &c->alpha_test;
+        case GL_MULTISAMPLE: return &c->multisample;
+        case GL_SAMPLE_ALPHA_TO_COVERAGE: return &c->sample_alpha_to_coverage;
+        case GL_SAMPLE_ALPHA_TO_ONE: return &c->sample_alpha_to_one;
+        case GL_SAMPLE_COVERAGE: return &c->sample_coverage;
         case GL_STENCIL_TEST: return &c->stencil_test;
         case GL_SCISSOR_TEST: return &c->scissor_enabled;
         case GL_FOG:          return &c->fog_enabled;
@@ -823,6 +852,10 @@ void glIndexMask(GLuint mask) {
  * All glGet* variants funnel through here. */
 static int sg_query_state(softgl_ctx *c, GLenum p, double out[16]) {
     switch (p) {
+        case GL_SAMPLE_BUFFERS: out[0] = c->fb.samples != 0; return 1;
+        case GL_SAMPLES: out[0] = c->fb.samples; return 1;
+        case GL_SAMPLE_COVERAGE_VALUE: out[0] = c->sample_coverage_value; return 1;
+        case GL_SAMPLE_COVERAGE_INVERT: out[0] = c->sample_coverage_invert; return 1;
         case GL_VIEWPORT:
             out[0] = c->viewport[0]; out[1] = c->viewport[1];
             out[2] = c->viewport[2]; out[3] = c->viewport[3];
