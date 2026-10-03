@@ -688,6 +688,23 @@ static void sg_raster_triangle_multisample(softgl_ctx *c,
     int bias[3] = {bias0, bias1, bias2};
     float inv_area = 1.f / (float)area;
     unsigned full = (1u << c->fb.samples) - 1u;
+    /* A covered sample has raw barycentric edges in [0, area]. Other
+     * samples of that pixel differ by at most 256*(abs(dx)+abs(dy)).
+     * Only this proven range uses packed signed-32 conversion, after coverage
+     * is verified. Uncovered pixels can have arbitrarily large edge values. */
+    int small_edges = 1;
+    for (int e = 0; e < 2; e++) {
+        int64_t span = 256 * ((dx[e] < 0 ? -dx[e] : dx[e]) +
+                             (dy[e] < 0 ? -dy[e] : dy[e]));
+        if (span > INT32_MAX || area > INT32_MAX - span) small_edges = 0;
+    }
+    sg_i32x4 offset0 = sg_i32x4_splat(0), offset1 = sg_i32x4_splat(0);
+    if (small_edges && c->fb.samples == 4) {
+        offset0 = sg_i32x4_set((int32_t)offsets[0][0], (int32_t)offsets[1][0],
+                              (int32_t)offsets[2][0], (int32_t)offsets[3][0]);
+        offset1 = sg_i32x4_set((int32_t)offsets[0][1], (int32_t)offsets[1][1],
+                              (int32_t)offsets[2][1], (int32_t)offsets[3][1]);
+    }
     for (int y = iy0; y < iy1; y++) {
         int64_t edge[3] = {row[0], row[1], row[2]};
         for (int x = ix0; x < ix1; x++) {
@@ -714,14 +731,22 @@ static void sg_raster_triangle_multisample(softgl_ctx *c,
             if (coverage && c->fb.samples == 4) {
                 /* SIMD lanes are samples of one pixel. Keep scalar expression
                  * grouping so sample depth and the selected shading point match. */
-                sg_f32x4 b0 = sg_f32x4_mul(sg_f32x4_set(
-                    (float)(edge[0] + offsets[0][0]), (float)(edge[0] + offsets[1][0]),
-                    (float)(edge[0] + offsets[2][0]), (float)(edge[0] + offsets[3][0])),
-                    sg_f32x4_splat(inv_area));
-                sg_f32x4 b1 = sg_f32x4_mul(sg_f32x4_set(
-                    (float)(edge[1] + offsets[0][1]), (float)(edge[1] + offsets[1][1]),
-                    (float)(edge[1] + offsets[2][1]), (float)(edge[1] + offsets[3][1])),
-                    sg_f32x4_splat(inv_area));
+                sg_f32x4 b0, b1;
+                if (small_edges) {
+                    b0 = sg_f32x4_mul(_mm_cvtepi32_ps(sg_i32x4_add(
+                        sg_i32x4_splat((int32_t)edge[0]), offset0)), sg_f32x4_splat(inv_area));
+                    b1 = sg_f32x4_mul(_mm_cvtepi32_ps(sg_i32x4_add(
+                        sg_i32x4_splat((int32_t)edge[1]), offset1)), sg_f32x4_splat(inv_area));
+                } else {
+                    b0 = sg_f32x4_mul(sg_f32x4_set(
+                        (float)(edge[0] + offsets[0][0]), (float)(edge[0] + offsets[1][0]),
+                        (float)(edge[0] + offsets[2][0]), (float)(edge[0] + offsets[3][0])),
+                        sg_f32x4_splat(inv_area));
+                    b1 = sg_f32x4_mul(sg_f32x4_set(
+                        (float)(edge[1] + offsets[0][1]), (float)(edge[1] + offsets[1][1]),
+                        (float)(edge[1] + offsets[2][1]), (float)(edge[1] + offsets[3][1])),
+                        sg_f32x4_splat(inv_area));
+                }
                 sg_f32x4 b2 = sg_f32x4_sub(sg_f32x4_sub(sg_f32x4_splat(1.f), b0), b1);
                 sg_f32x4 z = sg_f32x4_add(sg_f32x4_add(sg_f32x4_add(
                     sg_f32x4_mul(b0, sg_f32x4_splat(v0->ndc.z)),

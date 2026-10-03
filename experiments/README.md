@@ -156,3 +156,21 @@ alpha, out-of-range constants and ignored arguments, in strict native, native
 Release and standard SIMD128 WASM builds. No tolerances or geometry changed.
 Evidence: `build/perf/tigerlake-20261003/dot3-chain-*`; frozen module:
 `build/controls/dot3-chain-candidate`.
+
+Packed MSAA edge conversion is accepted against `fad35ca4`. After verifying pixel
+coverage, a per-triangle bound proves that all sample edges fit signed 32 bits:
+`area + 256*(abs(dx)+abs(dy)) <= INT32_MAX`. Four sample edges then use one native
+WASM SIMD integer-to-float conversion instead of four scalar i64 conversions.
+Large triangles retain the original i64 path. No coverage, barycentric grouping,
+sample selection, depth or shading operations change. Two independent three-pair
+quiet audits found BMW -1.14%/-0.84% and Tank -2.70%/-3.14% frame time. Current
+4x-MSAA render+resolve is about 10.3 FPS BMW and 40.6–40.9 FPS Tank; targets remain
+unmet. Candidate `90947461` passes 724 native checks, 240 identical WASM image
+hashes, 100 identical model-angle hashes and four byte-compared frames per model,
+eight WASM multisample contracts, three sanitizer contracts and both browser
+previews. An additional million exact conversion comparisons pass on native and
+WASM; 1,152 native scenes, including viewport sizes on both sides of the bound
+and large viewports, match the prior sample-color, sample-depth and resolved
+buffers byte for byte. Evidence: `build/perf/tigerlake-20261003/msaa-edge32-*`;
+diagnostics: `build/diagnostics/msaa-edge32/`; frozen module:
+`build/controls/msaa-edge32-candidate`.
