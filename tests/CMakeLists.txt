@@ -23,6 +23,12 @@ endif()
 add_test(NAME dot3_chain_contract COMMAND dot3_chain_contract)
 set_tests_properties(dot3_chain_contract PROPERTIES TIMEOUT 30)
 
+add_executable(constant_texture_contract constant_texture.c)
+target_include_directories(constant_texture_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_link_libraries(constant_texture_contract PRIVATE softgl)
+add_test(NAME constant_texture_contract COMMAND constant_texture_contract)
+set_tests_properties(constant_texture_contract PROPERTIES TIMEOUT 30)
+
 # --- Compare tool (native, no GL) ---
 add_executable(sg_compare harness/compare.c harness/ppm_write.c)
 target_include_directories(sg_compare PRIVATE harness)

@@ -53,6 +53,7 @@ void sg_tex_tri_prepare(softgl_ctx *c, sg_tex_tri_ctx *t) {
         ut->active_slot = active_slot;
         ut->tex = NULL;
         ut->data0 = NULL;
+        ut->constant_color_valid = 0;
         ut->tw = ut->th = ut->td = 0;
 
         if (active_slot < 0) continue;
@@ -80,6 +81,14 @@ void sg_tex_tri_prepare(softgl_ctx *c, sg_tex_tri_ctx *t) {
             ut->tw_log2 = lg;
         }
         if (active_slot != SG_TEX_TARGET_CUBE) ut->data0 = tex->data[0];
+        /* Repeat/edge sampling of a single texel cannot depend on UV. */
+        if (active_slot == SG_TEX_TARGET_2D && ut->tw == 1 && ut->th == 1 && ut->data0 &&
+            (ut->wrap_s == GL_REPEAT || ut->wrap_s == GL_CLAMP_TO_EDGE) &&
+            (ut->wrap_t == GL_REPEAT || ut->wrap_t == GL_CLAMP_TO_EDGE) &&
+            (ut->filter_mag == GL_NEAREST || ut->filter_mag == GL_LINEAR)) {
+            ut->constant_color_valid = 1;
+            for (int k = 0; k < 4; k++) ut->constant_color[k] = ut->data0[k] * (1.f / 255.f);
+        }
         if (first_active < 0) first_active = u;
         n_active++;
         t->any_active = 1;
@@ -137,6 +146,10 @@ void sg_tex_tri_sample_units(
         if (ut->active_slot < 0 || !ut->tex) continue;
         unit_active[u] = 1;
         if (!(t->sample_mask & (1u << u))) continue;
+        if (ut->constant_color_valid) {
+            sg_f32x4_store(unit_tex[u], sg_f32x4_load(ut->constant_color));
+            continue;
+        }
 
         float uvp_x = (v0->uv[u].x * w0 + v1->uv[u].x * w1 + v2->uv[u].x * w2) * one_over_wsum;
         float uvp_y = (v0->uv[u].y * w0 + v1->uv[u].y * w1 + v2->uv[u].y * w2) * one_over_wsum;

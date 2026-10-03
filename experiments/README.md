@@ -201,3 +201,21 @@ at one pixel by one channel step. No image tolerances or geometry changed.
 Evidence: `build/perf/tigerlake-20261003/caller-core-*` and
 `build/diagnostics/caller-core-reservation/`; frozen module:
 `build/controls/caller-core-candidate`.
+
+Prepared constant one-texel 2D sampling is accepted against `5fd00d4f`. With
+REPEAT/CLAMP_TO_EDGE and NEAREST/LINEAR magnification, a 1x1 texture has a
+coordinate-independent color. A fresh per-draw cache skips UV interpolation,
+wrapping and four equal bilinear taps. Other targets/wraps use the existing
+sampler; no model or material identifiers select this path. Two independent
+three-pair quiet audits found BMW -8.56%/-8.95% and Tank -1.42%/-0.30% frame
+time. Current 4x-MSAA render+resolve is 11.29/11.42 FPS BMW and 41.37/41.40 FPS
+Tank; targets remain unmet. Candidate `cd7998be` passes 725 native checks, all
+240 byte-identical WASM images, 100 matching angle hashes and four byte-compared
+frames per model, eight explicit sample/worker contracts, eighteen default-pool
+contracts, four sanitizer contracts and both browser previews. An additional
+131,072 comparisons per native/WASM match the original texture sampler exactly
+(maximum delta zero), covering both filters, wraps, varied UVs and four colors;
+upload/deletion and ineligible-state cases also pass. No image tolerances or
+geometry changed. Evidence: `build/perf/tigerlake-20261003/constant-texture-*`,
+`build/diagnostics/constant-texture/`; frozen module:
+`build/controls/constant-texture-candidate`.

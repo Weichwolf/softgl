@@ -437,6 +437,8 @@ typedef struct {
     int            tw_mask_pot;
     int            th_mask_pot;
     int            tw_log2;            /* valid only when tw_mask_pot != 0 */
+    int            constant_color_valid;
+    float          constant_color[4]; /* prepared one-texel 2D sampler result */
 } sg_tex_unit_tri;
 
 typedef struct {
