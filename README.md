@@ -138,11 +138,20 @@ ctest --test-dir build/native -C Bench -L bench --output-on-failure
 
 ### WASM (browser preview)
 
+On Debian, use the distribution's `emscripten` package (validated with
+`3.1.69+dfsg-3`). Run these commands from the repository root:
+
 ```sh
+sudo apt install emscripten cmake python3
+export EM_CACHE="$PWD/build/emscripten-cache"
+export EM_FROZEN_CACHE=0
 emcmake cmake -S wasm -B build/wasm
 cmake --build build/wasm -j4
 bash wasm/serve.sh 8000
 ```
+
+The cache settings let Emscripten build its SDL2 and pthread dependencies in
+the writable `build/` tree. Keep them exported for subsequent WASM builds.
 
 Open http://localhost:8000. The preview page cycles the tests and runs a
 live Tank demo with pthread tile workers. Threads require a secure browser
