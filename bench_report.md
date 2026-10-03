@@ -25,7 +25,7 @@
 | BMW-Ansichten | 12; min. Silhouetten-IoU 0.99810 |
 | Chromium / Firefox | je 234 Tests; 6 Benchmarks; Abbruch; 8 Worker; MSAA-Wechsel |
 | Toleranzen | unverändert |
-| WASM / Pack SHA-256 | `bbc7aad1` / `fae69ce4` |
+| WASM / Pack SHA-256 | `3f078581` / `fae69ce4` |
 | Optimierungsmessungen, WASM | `09d029e0` |
 | MSAA aus, Kontrollpaar | BMW −0.3 %; T-80 +0.9 % |
 | Messung | 2×3 AB/BA-Paare; 80 Warm-up; 100 Frames |
@@ -33,3 +33,15 @@
 | BMW, Vertex-Jobs | −2.46 % / −2.35 %; 68.936 / 69.144 ms |
 | T-80, Vertex-Jobs | −5.47 % / −4.74 %; 14.725 / 14.179 ms |
 | Rohdaten | `build/perf/tigerlake-20261003/` |
+
+| 4× MSAA; Render + Resolve / Frame | BMW F31 | T-80 |
+| --- | --- | --- |
+| Ziel | >30 FPS | >60 FPS |
+| Audit 1 / 2 | 8.63 / 8.63 FPS | 38.15 / 38.17 FPS |
+| MSAA-Packing, Zeitgewinn 1 / 2 | −14.14 / −13.35 % | −24.53 / −21.30 % |
+| MSAA-Clear, Zeitgewinn 1 / 2 | −8.92 / −8.97 % | −32.02 / −28.93 % |
+| Frames / Warm-up / AB/BA-Paare | 100 / 80 / 2×3 | 100 / 80 / 2×3 |
+| Schattierte Pixel / Frame | 301.292 | 137.667 |
+| Texel-Lesezugriffe / Frame | 2.640.526 | 550.666 |
+| DOT3-Stufen / Frame | 301.292 | 0 |
+| Worker-Aufträge / Frame | 128 | 12 |

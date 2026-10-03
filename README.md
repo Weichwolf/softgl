@@ -153,7 +153,12 @@ Requires Node.js 20+, Chromium, and the native/Mesa and WASM builds above:
 npm ci --prefix tools
 ctest --test-dir build/native -C Bench --output-on-failure -j1
 node tools/wasm_perf.cjs --output build/perf/current.json
+node tools/wasm_perf.cjs --bench-only --samples 4 --scenes bmw,tank \
+  --output build/perf/msaa4.json
 ```
+
+`--samples` selects 0, 2 or 4 samples for benchmarks and profiles. Multisample
+timings include resolve on every frame; the Mesa image gate uses single samples.
 
 Compare prepared model appearance against full source geometry with the same
 renderer (C++11 is required only for the offline simplifier):

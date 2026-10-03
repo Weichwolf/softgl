@@ -1,6 +1,7 @@
 #include "types.h"
 #include "dlist.h"
 #include "workers.h"
+#include "simd.h"
 #include <string.h>
 
 static void sg_effective_scissor(const softgl_ctx *c, int *x0, int *y0, int *x1, int *y1) {
@@ -25,21 +26,58 @@ void _sg_clear_real(GLbitfield mask) {
     if (x1 <= x0 || y1 <= y0) return;
 
     if (c->fb.samples) {
-        uint8_t clear[4];
-        for (int k = 0; k < 4; k++) clear[k] = sg_quantize(c->clear_color[k]);
-        uint8_t wm = (uint8_t)c->stencil_write_mask;
-        for (int y = y0; y < y1; y++) for (int x = x0; x < x1; x++) {
-            size_t first = ((size_t)y * c->fb.w + x) * c->fb.samples;
-            for (int s = 0; s < c->fb.samples; s++) {
-                size_t i = first + s;
-                if (mask & GL_COLOR_BUFFER_BIT)
-                    for (int k = 0; k < 4; k++) if (c->color_mask[k])
-                        c->fb.sample_color[i * 4 + k] = clear[k];
-                if ((mask & GL_DEPTH_BUFFER_BIT) && c->depth_mask)
-                    c->fb.sample_depth[i] = c->clear_depth;
-                if (mask & GL_STENCIL_BUFFER_BIT)
-                    c->fb.sample_stencil[i] = (uint8_t)((c->clear_stencil & wm) |
-                        (c->fb.sample_stencil[i] & (uint8_t)~wm));
+        int n = c->fb.samples;
+        if (mask & GL_COLOR_BUFFER_BIT) {
+            uint32_t rgba = 0, channels = 0;
+            for (int k = 0; k < 4; k++) {
+                rgba |= (uint32_t)sg_quantize(c->clear_color[k]) << (k * 8);
+                if (c->color_mask[k]) channels |= UINT32_C(255) << (k * 8);
+            }
+            sg_i32x4 packed = sg_i32x4_splat((int32_t)rgba);
+            sg_i32x4 cmask = sg_i32x4_splat((int32_t)channels);
+            for (int y = y0; y < y1; y++) {
+                uint32_t *row = (uint32_t*)c->fb.sample_color + ((size_t)y * c->fb.w + x0) * n;
+                size_t count = (size_t)(x1 - x0) * n, i = 0;
+                if (channels == UINT32_MAX) {
+                    for (; i + 4 <= count; i += 4) _mm_storeu_si128((__m128i*)(row + i), packed);
+                    for (; i < count; i++) row[i] = rgba;
+                } else if (channels) {
+                    sg_i32x4 selected = _mm_and_si128(packed, cmask);
+                    for (; i + 4 <= count; i += 4) {
+                        sg_i32x4 old = _mm_loadu_si128((const __m128i*)(row + i));
+                        _mm_storeu_si128((__m128i*)(row + i),
+                            _mm_or_si128(selected, _mm_andnot_si128(cmask, old)));
+                    }
+                    for (; i < count; i++) row[i] = (rgba & channels) | (row[i] & ~channels);
+                }
+            }
+        }
+        if ((mask & GL_DEPTH_BUFFER_BIT) && c->depth_mask) {
+            sg_f32x4 depth = sg_f32x4_splat(c->clear_depth);
+            for (int y = y0; y < y1; y++) {
+                float *row = c->fb.sample_depth + ((size_t)y * c->fb.w + x0) * n;
+                size_t count = (size_t)(x1 - x0) * n, i = 0;
+                for (; i + 4 <= count; i += 4) _mm_storeu_ps(row + i, depth);
+                for (; i < count; i++) row[i] = c->clear_depth;
+            }
+        }
+        if (mask & GL_STENCIL_BUFFER_BIT) {
+            uint8_t wm = (uint8_t)c->stencil_write_mask;
+            uint8_t value = (uint8_t)c->clear_stencil & wm;
+            sg_i32x4 write_mask = _mm_set1_epi8((char)wm);
+            sg_i32x4 clear = _mm_set1_epi8((char)value);
+            for (int y = y0; y < y1; y++) {
+                uint8_t *row = c->fb.sample_stencil + ((size_t)y * c->fb.w + x0) * n;
+                size_t count = (size_t)(x1 - x0) * n, i = 0;
+                if (wm == 255) memset(row, value, count);
+                else if (wm) {
+                    for (; i + 16 <= count; i += 16) {
+                        sg_i32x4 old = _mm_loadu_si128((const __m128i*)(row + i));
+                        _mm_storeu_si128((__m128i*)(row + i),
+                            _mm_or_si128(clear, _mm_andnot_si128(write_mask, old)));
+                    }
+                    for (; i < count; i++) row[i] = (uint8_t)(value | (row[i] & (uint8_t)~wm));
+                }
             }
         }
         mask &= ~(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);

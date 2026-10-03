@@ -66,4 +66,59 @@ The combiner source-pointer experiment passed 719 native checks and all 239
 WASM hashes, but was not adopted before the MSAA request. It removes source
 copies and unused arguments without changing the float operation order.
 The frozen build is `build/controls/combiner-pointer-candidate`; performance
-validation remains pending. Current user goal has no prescribed FPS target.
+validation remains pending.
+
+Packed four-sample coverage/depth, common sample writes/blends and SIMD resolve
+are accepted. Two audits, each three individually guarded warmed AB/BA pairs,
+improved BMW by 14.14%/13.35% and Tank by 24.53%/21.30% against `bbc7aad1`.
+The driver now accepts `--samples 0|2|4`; multisample timings resolve every frame.
+Candidate `build/controls/msaa-packed-candidate` (`9dc975e0`) is live. Validation:
+723 native checks, 240 unchanged WASM image hashes, 100 matching four-sample
+model-frame hashes per vehicle (four representative frames byte-compared), eight
+WASM sample/worker contracts, two sanitizer contracts and both browser previews.
+All eight native MSAA diagnostic scenes remain byte-identical to the accepted
+MSAA implementation; the pre-existing modern-Mesa differences remain recorded.
+New contracts compare common sample writes with the ordered query path across
+all depth comparisons, coverage masks and common blend modes, and check resolve
+rounding/readback on an odd-sized framebuffer. No image tolerances changed.
+The latest user targets are >60 FPS Tank and >30 FPS F31 **with 4x MSAA**; both remain
+unmet. Current medians are BMW 127.03/127.22 ms and Tank 36.98/37.59 ms at 640x360.
+Raw evidence: `build/perf/tigerlake-20261003/msaa-packed-*`.
+
+Contiguous SIMD multisample clears are accepted against `9dc975e0`. Two
+three-pair audits improved BMW by 8.92%/8.97% and Tank by 32.02%/28.93%.
+Color channels, depth masks and partial stencil masks apply over each scissor
+row; common clears use contiguous vector stores. Masked/scissored odd-sized
+sample-buffer contracts were added. All 723 native checks, 240 unchanged WASM
+images, 100 matching four-sample frame hashes per model, eight WASM contracts,
+two sanitizer contracts and both browser previews pass. Current live module
+is `3f078581`; current four-sample medians are BMW 115.85/115.87 ms and Tank
+26.21/26.20 ms, including resolve every frame. Targets remain unmet.
+Raw evidence uses `msaa-clear-*`. Accepted four-sample workload counters and
+profiles are in `build/diagnostics/workload/result-msaa4.json` and
+`build/perf/tigerlake-20261003/msaa-packed-profile*.json`. Sleep samples are
+not CPU work; the measured clear hotspot motivated this change.
+
+WASM opcode mapping trials (not adopted): explicit RGBA float bilinear SIMD
+(`01e5f016`) passed 723 native checks, 240 identical WASM images and both
+100-angle model hash comparisons. One quiet AB/BA screen showed BMW -1.46%
+and Tank +9.05%; it did not establish a useful gain. Exact integer bilinear
+using three signed i16 dot products (`9cdc926e`) passed 1,256,784 strict
+comparisons, the same correctness gates and identical model images. Its one
+quiet screen showed only about -0.6% Tank frame time. Both source changes were
+restored, with candidates and raw `rgba-sampler-*`/`i16-bilinear-*` evidence
+retained under `build/`.
+
+Relaxed SIMD FMA and explicit four-component color/UV interpolation
+(`11381f06`) were not adopted after repeated performance evaluation. Native SSE4.1
+retains separate multiply/add; WASM uses relaxed FMA without global fast-math.
+The candidate emits 17 relaxed SIMD multiply-add instruction sites and passes
+723 native checks, all 240 unchanged-tolerance Mesa image comparisons, eight
+WASM multisample contracts, two sanitizer contracts and both browser checks.
+Of 100 angles per model, 65 BMW and 87 Tank frames remain byte-identical; four
+changed views per model differ at only one or two pixels by one channel step.
+Node 20 contracts require `--experimental-wasm-relaxed-simd`; both tested
+browsers support the feature directly. A three-pair quiet audit found BMW +0.51% and Tank -0.26% frame time, so
+the initial positive screen did not reproduce. The second audit was stopped
+after this rejection. FMA remains explicitly allowed for future measured
+optimizations. Evidence: `fma-interpolation-*`.

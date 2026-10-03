@@ -6,7 +6,7 @@
     fprintf(stderr, "%s:%d: %s\n", __FILE__, __LINE__, #expr); return 0; \
 } } while (0)
 
-enum { W = 32, H = 24 };
+enum { W = 31, H = 23 };
 
 static void rect(float x0, float y0, float x1, float y1, float z) {
     glBegin(GL_QUADS);
@@ -25,6 +25,109 @@ static int pixel(softgl_ctx *c, int x, int y, int r, int g, int b) {
     return 1;
 }
 
+/* Queries select the ordered fragment path. With no other state change,
+ * its sample color and depth must match the common packed write path. */
+static int check_sample_writes(softgl_ctx *c, int n) {
+    const GLenum funcs[] = {GL_NEVER, GL_LESS, GL_EQUAL, GL_LEQUAL,
+                            GL_GREATER, GL_NOTEQUAL, GL_GEQUAL, GL_ALWAYS};
+    const GLenum sources[] = {GL_ONE, GL_SRC_ALPHA};
+    const GLenum dests[] = {GL_ONE, GL_ONE_MINUS_SRC_ALPHA};
+    GLuint query;
+    glGenQueries(1, &query);
+    glEnable(GL_DEPTH_TEST);
+    size_t first = (3 * W + 7) * n;
+    uint32_t random = 17;
+    for (int f = 0; f < 8; f++) for (int blend = 0; blend < 5; blend++) {
+        glDepthFunc(funcs[f]);
+        if (blend) {
+            glEnable(GL_BLEND);
+            glBlendFunc(sources[(blend-1)/2], dests[(blend-1)%2]);
+        } else glDisable(GL_BLEND);
+        for (unsigned coverage = 1; coverage < (1u << n); coverage++) {
+            for (int iteration = 0; iteration < 32; iteration++) {
+                uint8_t initial[16], expected[16];
+                float old_depth[4], expected_depth[4], z[4], color[4];
+                for (int i = 0; i < 16; i++) {
+                    random = random * 1664525u + 1013904223u;
+                    initial[i] = (uint8_t)(random >> 24);
+                }
+                for (int s = 0; s < 4; s++) {
+                    color[s] = initial[s] * (1.f / 255.f);
+                    old_depth[s] = (s + 1) * .2f;
+                    z[s] = iteration % 2 ? old_depth[s] : (4 - s) * .2f;
+                }
+                glDepthMask(iteration % 3 ? GL_TRUE : GL_FALSE);
+                memcpy(c->fb.sample_color + first * 4, initial, n * 4);
+                memcpy(c->fb.sample_depth + first, old_depth, n * sizeof(float));
+                sg_write_multisample(c, 7, 3, coverage, z, color);
+                memcpy(expected, c->fb.sample_color + first * 4, n * 4);
+                memcpy(expected_depth, c->fb.sample_depth + first, n * sizeof(float));
+                memcpy(c->fb.sample_color + first * 4, initial, n * 4);
+                memcpy(c->fb.sample_depth + first, old_depth, n * sizeof(float));
+                glBeginQuery(GL_SAMPLES_PASSED, query);
+                sg_write_multisample(c, 7, 3, coverage, z, color);
+                glEndQuery(GL_SAMPLES_PASSED);
+                CHECK(!memcmp(expected, c->fb.sample_color + first * 4, n * 4));
+                CHECK(!memcmp(expected_depth, c->fb.sample_depth + first, n * sizeof(float)));
+            }
+        }
+    }
+    glDeleteQueries(1, &query);
+    glDisable(GL_BLEND); glBlendFunc(GL_ONE, GL_ZERO);
+    glDisable(GL_DEPTH_TEST); glDepthFunc(GL_LESS); glDepthMask(GL_TRUE);
+    return 1;
+}
+
+static int check_resolve(softgl_ctx *c, int n) {
+    for (int i = 0; i < W * H; i++) for (int s = 0; s < n; s++) {
+        for (int k = 0; k < 4; k++)
+            c->fb.sample_color[(i*n+s)*4+k] = (uint8_t)(i*73+s*51+k*37);
+        c->fb.sample_depth[i*n+s] = (s+1) * .2f;
+        c->fb.sample_stencil[i*n+s] = (uint8_t)(i+s);
+    }
+    const uint8_t *image = softgl_read_rgba8(c);
+    for (int i = 0; i < W * H; i++) {
+        for (int k = 0; k < 4; k++) {
+            unsigned sum = 0;
+            for (int s = 0; s < n; s++) sum += (uint8_t)(i*73+s*51+k*37);
+            CHECK(image[i*4+k] == (sum+n/2)/(unsigned)n);
+        }
+        CHECK(c->fb.depth[i] == .2f);
+        CHECK(c->fb.stencil[i] == (uint8_t)i);
+    }
+    return 1;
+}
+
+static int check_masked_clear(softgl_ctx *c, int n) {
+    for (int i = 0; i < W * H * n; i++) {
+        for (int k = 0; k < 4; k++) c->fb.sample_color[i*4+k] = (uint8_t)((k+1)*51);
+        c->fb.sample_depth[i] = 1.f;
+        c->fb.sample_stencil[i] = 0x96;
+    }
+    glEnable(GL_SCISSOR_TEST); glScissor(2, 3, 7, 5);
+    glColorMask(GL_FALSE, GL_TRUE, GL_FALSE, GL_TRUE);
+    glStencilMask(0x5a); glClearStencil(0xc3);
+    glClearColor(.7f, .1f, .8f, .3f); glClearDepth(.25f);
+    glEnable(GL_SAMPLE_COVERAGE); glSampleCoverage(0.f, GL_FALSE);
+    glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE); glEnable(GL_SAMPLE_ALPHA_TO_ONE);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    for (int y = 0; y < H; y++) for (int x = 0; x < W; x++) for (int s = 0; s < n; s++) {
+        int inside = x >= 2 && x < 9 && y >= 3 && y < 8;
+        size_t i = ((size_t)y * W + x) * n + s;
+        const uint8_t *color = c->fb.sample_color + i * 4;
+        CHECK(color[0] == 51 && color[2] == 153);
+        CHECK(color[1] == (inside ? 26 : 102));
+        CHECK(color[3] == (inside ? 77 : 204));
+        CHECK(c->fb.sample_depth[i] == (inside ? .25f : 1.f));
+        CHECK(c->fb.sample_stencil[i] == (inside ? 0xc6 : 0x96));
+    }
+    glDisable(GL_SCISSOR_TEST); glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    glStencilMask(255); glClearStencil(0); glClearDepth(1.f);
+    glDisable(GL_SAMPLE_COVERAGE); glSampleCoverage(1.f, GL_FALSE);
+    glDisable(GL_SAMPLE_ALPHA_TO_COVERAGE); glDisable(GL_SAMPLE_ALPHA_TO_ONE);
+    return 1;
+}
+
 static int check_context(int n, int workers) {
     softgl_ctx *c = softgl_create_multisample(W, H, n); CHECK(c);
     softgl_make_current(c);
@@ -32,6 +135,9 @@ static int check_context(int n, int workers) {
     if (workers) sg_workers_init(c, workers);
     glMatrixMode(GL_PROJECTION); glLoadIdentity(); glOrtho(0, W, 0, H, -1, 1);
     glMatrixMode(GL_MODELVIEW); glLoadIdentity();
+    CHECK(check_sample_writes(c, n));
+    CHECK(check_resolve(c, n));
+    CHECK(check_masked_clear(c, n));
     GLint count, buffers;
     glGetIntegerv(GL_SAMPLES, &count); glGetIntegerv(GL_SAMPLE_BUFFERS, &buffers);
     CHECK(count == n && buffers == 1 && glIsEnabled(GL_MULTISAMPLE));

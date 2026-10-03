@@ -11,7 +11,7 @@ const {chromium} = require('playwright');
 const repo = path.resolve(__dirname, '..');
 const options = {
     'wasm-build': 'build/wasm', 'native-build': 'build/native',
-    output: 'build/perf/result.json', rounds: '7', warmup: '20', frames: '60',
+    output: 'build/perf/result.json', rounds: '7', warmup: '20', frames: '60', samples: '0',
     browser: process.env.CHROMIUM || '/usr/bin/chromium',
     'reference-build': '',
     scenes: '',
@@ -27,6 +27,8 @@ for (const key of ['rounds', 'warmup', 'frames']) {
     options[key] = Number(options[key]);
     if (!Number.isInteger(options[key]) || options[key] < 1) throw new Error(`Invalid ${key}`);
 }
+options.samples = Number(options.samples);
+if (![0, 2, 4].includes(options.samples)) throw new Error('Samples must be 0, 2 or 4');
 const wasmDir = path.resolve(repo, options['wasm-build']);
 if (options['bench-only'] && options['images-only']) throw new Error('Choose bench-only or images-only');
 const referenceDir = options['reference-build'] ? path.resolve(repo, options['reference-build']) : null;
@@ -247,14 +249,16 @@ async function main() {
                 .update(fs.readFileSync(path.join(referenceDir, 'softgl.wasm'))).digest('hex');
         }
         const preparePage = async target => {
-            await target.evaluate(async ({includeBMW}) => {
+            await target.evaluate(async ({includeBMW, samples}) => {
                 const indices = new Map();
                 for (let i = 0; i < mod._sg_test_count(); i++) indices.set(mod.UTF8ToString(mod._sg_test_name(i)), i);
                 const tankBytes = new Uint8Array(await (await fetch('/tank.pack')).arrayBuffer());
                 const packURL = location.pathname.startsWith('/reference/') ? '/reference/bmw.pack' : '/bmw.pack';
                 const bmwBytes = includeBMW ? new Uint8Array(await (await fetch(packURL)).arrayBuffer()) : null;
+                const createContext = () => samples ?
+                    mod._softgl_create_multisample(640, 360, samples) : mod._softgl_create(640, 360);
                 window.perfRun = async (name, warmup, frames) => {
-                    const ctx = mod._softgl_create(640, 360);
+                    const ctx = createContext();
                     if (!ctx) throw new Error(`Context allocation failed: ${name}`);
                     let tankPtr = 0;
                     try {
@@ -269,17 +273,21 @@ async function main() {
                             const load = name === 'tank' ? mod._sg_tank_load : mod._sg_model_load;
                             if (!load(tankPtr, bytes.length)) throw new Error(`${name} load failed`);
                         } else if (!indices.has(`test_${name}`)) throw new Error(`Missing scene: ${name}`);
-                        const render = name === 'tank' ?
+                        const draw = name === 'tank' ?
                             i => mod._sg_tank_render((i % frames) * 360 / frames, 640, 360) :
                             name === 'bmw' ? i => mod._sg_model_render((i % frames) * 360 / frames, 640, 360) :
                             () => mod._sg_test_run(indices.get(`test_${name}`), 640, 360);
+                        const render = samples ? i => {
+                            draw(i);
+                            mod._softgl_read_rgba8(ctx);
+                        } : draw;
                         for (let i = 0; i < warmup; i++) render(i);
                         mod._softgl_read_rgba8(ctx);
                         const start = performance.now();
                         for (let i = 0; i < frames; i++) render(i);
                         mod._softgl_read_rgba8(ctx);
                         const ms = (performance.now() - start) / frames;
-                        return {ms, workers, heapBytes: mod.HEAPU8.byteLength};
+                        return {ms, workers, samples, heapBytes: mod.HEAPU8.byteLength};
                     } finally {
                         if (name === 'tank') mod._sg_tank_unload();
                         if (name === 'bmw') mod._sg_model_unload();
@@ -301,7 +309,7 @@ async function main() {
                 };
                 window.perfProfilePrepare = async ({name, warmup, frames}) => {
                     if (profile) throw new Error('Profiling context already exists');
-                    const ctx = mod._softgl_create(640, 360);
+                    const ctx = createContext();
                     if (!ctx) throw new Error(`Profiling context allocation failed: ${name}`);
                     profile = {ctx, name, ptr:0, frames};
                     try {
@@ -315,10 +323,14 @@ async function main() {
                             const load = name === 'tank' ? mod._sg_tank_load : mod._sg_model_load;
                             if (!load(profile.ptr, bytes.length)) throw new Error(`Profiling model load failed: ${name}`);
                         } else if (!indices.has(`test_${name}`)) throw new Error(`Missing profile scene: ${name}`);
-                        profile.render = name === 'tank' ?
+                        const draw = name === 'tank' ?
                             i => mod._sg_tank_render((i % frames) * 360 / frames, 640, 360) :
                             name === 'bmw' ? i => mod._sg_model_render((i % frames) * 360 / frames, 640, 360) :
                             () => mod._sg_test_run(indices.get(`test_${name}`), 640, 360);
+                        profile.render = samples ? i => {
+                            draw(i);
+                            mod._softgl_read_rgba8(ctx);
+                        } : draw;
                         for (let i = 0; i < warmup; i++) profile.render(i);
                         mod._softgl_read_rgba8(ctx);
                         return {warmup, frames, workers:mod._sg_thread_count(ctx)};
@@ -331,7 +343,7 @@ async function main() {
                     for (let i = 0; i < profile.frames; i++) profile.render(i);
                     mod._softgl_read_rgba8(profile.ctx);
                 };
-            }, {includeBMW: scenes.includes('bmw')});
+            }, {includeBMW: scenes.includes('bmw'), samples: options.samples});
         };
         for (const target of [candidatePage, referencePage].filter(Boolean)) await preparePage(target);
         const samples = new Map(scenes.map(name => [name, {
@@ -350,7 +362,8 @@ async function main() {
                         {name, warmup: options.warmup, frames: options.frames});
                     samples.get(name)[variant].push(timing.ms);
                     samples.get(name)[`${variant}Heap`].push(timing.heapBytes);
-                    samples.get(name)[`${variant}Geometry`].push({workers:timing.workers});
+                    samples.get(name)[`${variant}Geometry`].push({workers:timing.workers, samples:timing.samples});
+                    if (timing.samples !== options.samples) throw new Error('Sample count differs between variants');
                     if (workers !== undefined && workers !== timing.workers) throw new Error('Worker count differs between variants');
                     workers = timing.workers;
                 }
@@ -375,7 +388,8 @@ async function main() {
             return {samples: values, medianMs: sorted[Math.floor(sorted.length / 2)],
                 minMs: sorted[0], maxMs: sorted[sorted.length - 1], heapBytes};
         };
-        result.benchmarks = {workers, protocol: options.crossover ? 'page crossover AB/BA, two-round geometric pairs' :
+        result.benchmarks = {workers, samples:options.samples, resolvePerFrame:options.samples > 0,
+            protocol: options.crossover ? 'page crossover AB/BA, two-round geometric pairs' :
             referencePage ? 'interleaved AB/BA, foreground pages' : 'single variant',
             scenes: scenes.map(name => {
                 const values = samples.get(name);

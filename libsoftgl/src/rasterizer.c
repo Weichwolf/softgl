@@ -662,7 +662,7 @@ static void sg_raster_triangle_multisample(softgl_ctx *c,
     int32_t vy[3] = {sg_fp_screen_from_float(v0->ndc.y),
                      sg_fp_screen_from_float(v1->ndc.y),
                      sg_fp_screen_from_float(v2->ndc.y)};
-    int64_t dx[3], dy[3], row[3], offsets[4][3];
+    int64_t dx[3], dy[3], row[3], offsets[4][3], min_offset[3], max_offset[3];
     for (int e = 0; e < 3; e++) {
         int a = (e + 1) % 3, b = (e + 2) % 3;
         dx[e] = -(int64_t)(vy[b] - vy[a]);
@@ -674,6 +674,11 @@ static void sg_raster_triangle_multisample(softgl_ctx *c,
             if (c->multisample) sg_sample_position(c->fb.samples, s, &sx, &sy);
             offsets[s][e] = dx[e] * sx + dy[e] * sy;
         }
+        min_offset[e] = max_offset[e] = offsets[0][e];
+        for (int s = 1; s < c->fb.samples; s++) {
+            if (offsets[s][e] < min_offset[e]) min_offset[e] = offsets[s][e];
+            if (offsets[s][e] > max_offset[e]) max_offset[e] = offsets[s][e];
+        }
     }
     int bias[3] = {bias0, bias1, bias2};
     float inv_area = 1.f / (float)area;
@@ -683,23 +688,65 @@ static void sg_raster_triangle_multisample(softgl_ctx *c,
         for (int x = ix0; x < ix1; x++) {
             unsigned coverage = 0;
             float depths[4];
-            int first = -1;
-            for (int s = 0; s < c->fb.samples; s++) {
-                if (edge[0] + offsets[s][0] + bias[0] < 0 ||
-                    edge[1] + offsets[s][1] + bias[1] < 0 ||
-                    edge[2] + offsets[s][2] + bias[2] < 0) continue;
-                float b0 = (float)(edge[0] + offsets[s][0]) * inv_area;
-                float b1 = (float)(edge[1] + offsets[s][1]) * inv_area;
-                float b2 = 1.f - b0 - b1;
-                float z = b0 * v0->ndc.z + b1 * v1->ndc.z + b2 * v2->ndc.z + z_offset;
-                depths[s] = z < 0.f ? 0.f : z > 1.f ? 1.f : z;
-                if (c->depth_test && !c->stencil_test &&
-                    !sg_sample_depth_pass(c->depth_func, depths[s],
-                        c->fb.sample_depth[((size_t)y * c->fb.w + x) * c->fb.samples + s])) continue;
-                coverage |= 1u << s;
-                if (first < 0) first = s;
+            /* Edge extrema reject an empty pixel or accept all samples with
+             * three comparisons. Only boundary pixels need individual tests. */
+            if (edge[0] + max_offset[0] + bias[0] >= 0 &&
+                edge[1] + max_offset[1] + bias[1] >= 0 &&
+                edge[2] + max_offset[2] + bias[2] >= 0) {
+                if (edge[0] + min_offset[0] + bias[0] >= 0 &&
+                    edge[1] + min_offset[1] + bias[1] >= 0 &&
+                    edge[2] + min_offset[2] + bias[2] >= 0) {
+                    coverage = full;
+                } else {
+                    for (int s = 0; s < c->fb.samples; s++) {
+                        if (edge[0] + offsets[s][0] + bias[0] >= 0 &&
+                            edge[1] + offsets[s][1] + bias[1] >= 0 &&
+                            edge[2] + offsets[s][2] + bias[2] >= 0)
+                            coverage |= 1u << s;
+                    }
+                }
+            }
+            if (coverage && c->fb.samples == 4) {
+                /* SIMD lanes are samples of one pixel. Keep scalar expression
+                 * grouping so sample depth and the selected shading point match. */
+                sg_f32x4 b0 = sg_f32x4_mul(sg_f32x4_set(
+                    (float)(edge[0] + offsets[0][0]), (float)(edge[0] + offsets[1][0]),
+                    (float)(edge[0] + offsets[2][0]), (float)(edge[0] + offsets[3][0])),
+                    sg_f32x4_splat(inv_area));
+                sg_f32x4 b1 = sg_f32x4_mul(sg_f32x4_set(
+                    (float)(edge[1] + offsets[0][1]), (float)(edge[1] + offsets[1][1]),
+                    (float)(edge[1] + offsets[2][1]), (float)(edge[1] + offsets[3][1])),
+                    sg_f32x4_splat(inv_area));
+                sg_f32x4 b2 = sg_f32x4_sub(sg_f32x4_sub(sg_f32x4_splat(1.f), b0), b1);
+                sg_f32x4 z = sg_f32x4_add(sg_f32x4_add(sg_f32x4_add(
+                    sg_f32x4_mul(b0, sg_f32x4_splat(v0->ndc.z)),
+                    sg_f32x4_mul(b1, sg_f32x4_splat(v1->ndc.z))),
+                    sg_f32x4_mul(b2, sg_f32x4_splat(v2->ndc.z))),
+                    sg_f32x4_splat(z_offset));
+                z = sg_f32x4_select(sg_f32x4_lt(z, sg_f32x4_splat(0.f)), sg_f32x4_splat(0.f), z);
+                z = sg_f32x4_select(sg_f32x4_gt(z, sg_f32x4_splat(1.f)), sg_f32x4_splat(1.f), z);
+                sg_f32x4_store(depths, z);
+                if (c->depth_test && !c->stencil_test) {
+                    size_t idx = ((size_t)y * c->fb.w + x) * 4;
+                    coverage &= sg_mask4_live(sg_depth_test_simd(c->depth_func, z,
+                        _mm_loadu_ps(&c->fb.sample_depth[idx])));
+                }
+            } else if (coverage) {
+                for (int s = 0; s < c->fb.samples; s++) {
+                    if (!(coverage & (1u << s))) continue;
+                    float b0 = (float)(edge[0] + offsets[s][0]) * inv_area;
+                    float b1 = (float)(edge[1] + offsets[s][1]) * inv_area;
+                    float b2 = 1.f - b0 - b1;
+                    float z = b0 * v0->ndc.z + b1 * v1->ndc.z + b2 * v2->ndc.z + z_offset;
+                    depths[s] = z < 0.f ? 0.f : z > 1.f ? 1.f : z;
+                    if (c->depth_test && !c->stencil_test &&
+                        !sg_sample_depth_pass(c->depth_func, depths[s],
+                            c->fb.sample_depth[((size_t)y * c->fb.w + x) * c->fb.samples + s]))
+                        coverage &= ~(1u << s);
+                }
             }
             if (coverage) {
+                int first = __builtin_ctz(coverage);
                 int64_t e0 = edge[0] + (coverage == full ? (dx[0] + dy[0]) * 128 : offsets[first][0]);
                 int64_t e1 = edge[1] + (coverage == full ? (dx[1] + dy[1]) * 128 : offsets[first][1]);
                 float color[4];
@@ -1019,8 +1066,10 @@ static void sg_raster_line_multisample(softgl_ctx *c, const sg_vert *v0, const s
     int y0 = (int)floorf(fminf(v0->ndc.y, v1->ndc.y) - half);
     int x1 = (int)ceilf(fmaxf(v0->ndc.x, v1->ndc.x) + half);
     int y1 = (int)ceilf(fmaxf(v0->ndc.y, v1->ndc.y) + half);
-    if (x0 < 0) x0 = 0; if (y0 < 0) y0 = 0;
-    if (x1 > c->fb.w) x1 = c->fb.w; if (y1 > c->fb.h) y1 = c->fb.h;
+    if (x0 < 0) x0 = 0;
+    if (y0 < 0) y0 = 0;
+    if (x1 > c->fb.w) x1 = c->fb.w;
+    if (y1 > c->fb.h) y1 = c->fb.h;
     sg_tex_tri_ctx tctx; sg_tex_tri_prepare(c, &tctx);
     float z_offset = c->polygon_offset_line ? c->polygon_offset_units * 1e-6f : 0.f;
     if (c->polygon_offset_line) {
@@ -1194,8 +1243,10 @@ void sg_raster_point_impl(softgl_ctx *c, const sg_vert *v) {
         float radius = .5f * c->point_size;
         int x0 = (int)floorf(v->ndc.x - radius), x1 = (int)ceilf(v->ndc.x + radius);
         int y0 = (int)floorf(v->ndc.y - radius), y1 = (int)ceilf(v->ndc.y + radius);
-        if (x0 < 0) x0 = 0; if (y0 < 0) y0 = 0;
-        if (x1 > c->fb.w) x1 = c->fb.w; if (y1 > c->fb.h) y1 = c->fb.h;
+        if (x0 < 0) x0 = 0;
+        if (y0 < 0) y0 = 0;
+        if (x1 > c->fb.w) x1 = c->fb.w;
+        if (y1 > c->fb.h) y1 = c->fb.h;
         float z = v->ndc.z + (c->polygon_offset_point ? c->polygon_offset_units * 1e-6f : 0.f);
         z = z < 0.f ? 0.f : z > 1.f ? 1.f : z;
         float depths[4] = {z, z, z, z};
