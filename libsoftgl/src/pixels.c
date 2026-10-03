@@ -463,6 +463,7 @@ static void sg_drawpixel_stencil(softgl_ctx *c, int i, int j, uint32_t s,
 void _sg_draw_pixels_real(GLsizei width, GLsizei height,
                           GLenum format, GLenum type, const void *pixels) {
     softgl_ctx *c = sg_current(); if (!c) return;
+    sg_workers_flush(c);
     if (width <= 0 || height <= 0 || !pixels) return;
     if (!c->raster_pos_valid) return;
     int ncomp = sg_fmt_components(format);

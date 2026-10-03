@@ -1,3 +1,4 @@
+#include "workers.h"
 #include "types.h"
 #include "dlist.h"
 #include <stdlib.h>
@@ -416,6 +417,7 @@ GLboolean glIsQuery(GLuint id) {
 
 void glBeginQuery(GLenum target, GLuint id) {
     softgl_ctx *c = sg_current(); if (!c) return;
+    sg_workers_flush(c);
     int slot = sg_query_target_slot(target);
     if (slot < 0) { sg_set_error(GL_INVALID_ENUM); return; }
     if (id == 0) { sg_set_error(GL_INVALID_OPERATION); return; }

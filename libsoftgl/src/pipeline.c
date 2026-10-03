@@ -486,6 +486,7 @@ void sg_prepare_nm_cache(softgl_ctx *c);
 
 void _sg_draw_arrays_real(GLenum mode, GLint first, GLsizei count) {
     softgl_ctx *c = sg_current(); if (!c) return;
+    sg_workers_flush(c);
     if (count <= 0) return;
     sg_vcache_clear();
 
@@ -655,6 +656,9 @@ void sg_build_vertex_imm(softgl_ctx *c, float px, float py, float pz, float pw, 
 
 void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void *indices) {
     softgl_ctx *c = sg_current(); if (!c) return;
+    int stream = sg_workers_can_stream(c, mode, count);
+    if (!stream) sg_workers_flush(c);
+    if (c->workers) ((sg_worker_pool *)c->workers)->prepared_transformed = 0;
     if (count <= 0) return;
     sg_vcache_clear();
     const uint8_t *index_data = sg_index_base(c, indices);
@@ -674,7 +678,7 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
                 if (ix > imax) imax = ix;
             }
             sg_prepare_nm_cache(c);
-            const sg_vert *pre = sg_workers_transform_range(c, (int)imin, (int)(imax - imin + 1));
+            const sg_vert *pre = sg_workers_transform_compact(c, (int)imin, (int)(imax - imin + 1));
             if (pre) {
                 if (geometry_hit) {
                     sg_workers_geometry_replay(c, geometry);
@@ -687,6 +691,7 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
                     uint32_t i0 = sg_fetch_index(type, index_data, t * 3 + 0);
                     uint32_t i1 = sg_fetch_index(type, index_data, t * 3 + 1);
                     uint32_t i2 = sg_fetch_index(type, index_data, t * 3 + 2);
+                    i0 -= imin; i1 -= imin; i2 -= imin;
                     int triangle_inside = inside[i0] && inside[i1] && inside[i2];
                     if (!triangle_inside) all_inside = 0;
                     sg_process_triangle_cached(c, &pre[i0], &pre[i1], &pre[i2],
@@ -767,7 +772,8 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
             sg_process_point(c, &v);
         }
     }
-    sg_workers_flush(c);
+    if (stream) sg_workers_submit_stream(c);
+    else sg_workers_flush(c);
 }
 
 void glDrawArrays(GLenum mode, GLint first, GLsizei count) {

@@ -293,6 +293,7 @@ static void imm_push(softgl_ctx *c, const sg_vert *v) {
 
 void _sg_begin_real(GLenum mode) {
     softgl_ctx *c = sg_current(); if (!c) return;
+    sg_workers_flush(c);
     if (c->imm_active) { sg_set_error(GL_INVALID_OPERATION); return; }
     switch (mode) {
         case GL_POINTS: case GL_LINES: case GL_LINE_STRIP: case GL_LINE_LOOP:

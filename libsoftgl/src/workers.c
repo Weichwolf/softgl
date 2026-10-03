@@ -348,15 +348,32 @@ static void sg_bin_sort_z(sg_worker_bin *b) {
     for (int i = 0; i < n; i++) keys[i] = sorted[i] & 0x00FFFFFFu;
 }
 
-static void sg_drain_raster_bins(softgl_ctx *c, sg_worker_pool *p) {
+/* Two draw slots, at most 2MiB of vertex storage per submitted draw. Bin
+ * records, classification and texture/snapshot metadata are additional. */
+#define SG_STREAM_BYTES (2u * 1024u * 1024u)
+#define SG_STREAM_VERTICES (SG_STREAM_BYTES / sizeof(sg_vert))
+typedef struct sg_async_raster {
+    softgl_ctx state;
+    sg_tex_tri_ctx texture_context;
+    sg_texture textures[SG_MAX_TEX_UNITS];
+    sg_worker_bin bins[SG_MAX_BINS];
+    sg_vert *transformed, *vpool;
+    uint8_t *inside_frustum;
+    int transformed_cap, vpool_cap;
+} sg_async_raster;
+
+static void sg_drain_bins(softgl_ctx *c, sg_worker_pool *p,
+                          sg_worker_bin *bins, const sg_vert *vp,
+                          const sg_vert *transformed,
+                          const sg_tex_tri_ctx *prepared_context) {
     int sort = atomic_load_explicit(&p->sort_safe, memory_order_acquire);
-    const sg_vert *vp = p->vpool;
     sg_tex_tri_ctx tctx;
-    int prepared = 0;
+    if (prepared_context) tctx = *prepared_context;
+    int prepared = prepared_context != NULL;
     for (;;) {
         int index = atomic_fetch_add_explicit(&p->next_bin, 1, memory_order_relaxed);
         if (index >= p->nbins) break;
-        sg_worker_bin *b = &p->bins[index];
+        sg_worker_bin *b = &bins[index];
         b->query_samples = 0;
         int n = b->count;
         if (!n) continue;
@@ -368,7 +385,7 @@ static void sg_drain_raster_bins(softgl_ctx *c, sg_worker_pool *p) {
             const uint32_t *order = b->sort_keys;
             for (int i = 0; i < n; i++) {
                 const sg_worker_tri *t = &b->tris[order[i]];
-                const sg_vert *src = (t->v[0] & SG_BIN_TRANSFORMED_VERTEX) ? p->transformed : vp;
+                const sg_vert *src = (t->v[0] & SG_BIN_TRANSFORMED_VERTEX) ? transformed : vp;
                 sg_raster_triangle_tile_prepared(c,
                     &src[t->v[0] & ~SG_BIN_TRANSFORMED_VERTEX], &src[t->v[1]], &src[t->v[2]],
                     b->ix0, b->ix1, &tctx);
@@ -376,7 +393,7 @@ static void sg_drain_raster_bins(softgl_ctx *c, sg_worker_pool *p) {
         } else {
             for (int i = 0; i < n; i++) {
                 const sg_worker_tri *t = &b->tris[i];
-                const sg_vert *src = (t->v[0] & SG_BIN_TRANSFORMED_VERTEX) ? p->transformed : vp;
+                const sg_vert *src = (t->v[0] & SG_BIN_TRANSFORMED_VERTEX) ? transformed : vp;
                 sg_raster_triangle_tile_prepared(c,
                     &src[t->v[0] & ~SG_BIN_TRANSFORMED_VERTEX], &src[t->v[1]], &src[t->v[2]],
                     b->ix0, b->ix1, &tctx);
@@ -385,6 +402,36 @@ static void sg_drain_raster_bins(softgl_ctx *c, sg_worker_pool *p) {
         b->count = 0;
     }
     sg_raster_bin = NULL;
+}
+
+static void sg_drain_raster_bins(softgl_ctx *c, sg_worker_pool *p) {
+    sg_drain_bins(c, p, p->bins, p->vpool, p->transformed, NULL);
+}
+
+static void sg_finish_stream(sg_worker_pool *p) {
+    if (!p->async_pending) return;
+    sg_async_raster *job = p->async_raster;
+    sg_drain_bins(&job->state, p, job->bins, job->vpool,
+                  job->transformed, &job->texture_context);
+    while (atomic_load_explicit(&p->done_count, memory_order_acquire) < p->nworkers) {
+#if defined(__x86_64__) || defined(__i386__)
+        __builtin_ia32_pause();
+#endif
+    }
+    p->async_pending = 0;
+    atomic_store_explicit(&p->job_type, SG_JOB_RASTER, memory_order_release);
+}
+
+static void sg_stream_destroy(sg_async_raster *job, int nbins) {
+    if (!job) return;
+    for (int i = 0; i < nbins; i++) {
+        sg_aligned_free(job->bins[i].tris);
+        sg_aligned_free(job->bins[i].sort_keys);
+    }
+    sg_aligned_free(job->transformed);
+    sg_aligned_free(job->vpool);
+    free(job->inside_frustum);
+    sg_aligned_free(job);
 }
 
 static void *sg_worker_main(void *arg) {
@@ -415,7 +462,11 @@ static void *sg_worker_main(void *arg) {
             int s = first + (int)((int64_t)tid * count / n);
             int e = first + (int)((int64_t)(tid + 1) * count / n);
             for (int i = s; i < e; i++)
-                p->inside_frustum[i] = (uint8_t)sg_process_vertex_at(c, i, &p->transformed[i]);
+                p->inside_frustum[i - p->job_storage_first] = (uint8_t)sg_process_vertex_at(c, i, &p->transformed[i - p->job_storage_first]);
+        } else if (job == SG_JOB_ASYNC_RASTER) {
+            sg_async_raster *r = p->async_raster;
+            sg_drain_bins(&r->state, p, r->bins, r->vpool,
+                          r->transformed, &r->texture_context);
         } else {
             sg_drain_raster_bins(c, p);
         }
@@ -485,6 +536,7 @@ void sg_workers_init(softgl_ctx *c, int nworkers_hint) {
 void sg_workers_shutdown(softgl_ctx *c) {
     sg_worker_pool *p = (sg_worker_pool*)c->workers;
     if (!p) return;
+    sg_workers_flush(c);
 
     atomic_store_explicit(&p->alive, 0, memory_order_release);
     pthread_mutex_lock(&p->mtx);
@@ -504,6 +556,7 @@ void sg_workers_shutdown(softgl_ctx *c) {
     free(p->inside_frustum);
     free(p->column_bin);
     sg_geometry_cache_destroy(p->geometry_cache);
+    sg_stream_destroy(p->async_raster, p->nbins);
     pthread_mutex_destroy(&p->mtx);
     pthread_cond_destroy(&p->wake);
     free(p);
@@ -529,14 +582,17 @@ static int sg_pool_sort_safe(const softgl_ctx *c) {
     return 1;
 }
 
-const sg_vert *sg_workers_transform_range(softgl_ctx *c, int first, int count) {
+static const sg_vert *sg_transform_range(softgl_ctx *c, int first, int count, int compact) {
     sg_worker_pool *p = (sg_worker_pool*)c->workers;
     if (!p || p->nworkers == 0 || count <= 0) return NULL;
 
-    int need = first + count;
-    if (p->transformed_cap < need) {
+    int storage_first = compact ? first : 0;
+    int need = compact ? count : first + count;
+    int bounded = compact && (size_t)count <= SG_STREAM_VERTICES;
+    if (p->transformed_cap < need || (bounded && (size_t)p->transformed_cap > SG_STREAM_VERTICES)) {
         int cap = p->transformed_cap ? p->transformed_cap : 1024;
         while (cap < need) cap *= 2;
+        if (bounded && (size_t)cap > SG_STREAM_VERTICES) cap = (int)SG_STREAM_VERTICES;
         sg_vert *n = (sg_vert*)sg_aligned_alloc((size_t)cap * sizeof(*n), 16);
         uint8_t *inside = (uint8_t*)malloc((size_t)cap);
         if (!n || !inside) {
@@ -551,6 +607,14 @@ const sg_vert *sg_workers_transform_range(softgl_ctx *c, int first, int count) {
         p->transformed_cap = cap;
     }
 
+    p->prepared_transformed = 1;
+    if (p->async_pending) {
+        /* Workers read only the old draw slot; prepare into main's arrays. */
+        for (int i = first; i < first + count; i++)
+            p->inside_frustum[i - storage_first] = (uint8_t)sg_process_vertex_at(c, i, &p->transformed[i - storage_first]);
+        return p->transformed;
+    }
+    p->job_storage_first = storage_first;
     /* Give the caller a disjoint tail instead of spending the whole vertex
      * job spinning. Keep the worker loop and small-job partitions unchanged. */
     int main_count = count >= 1024 ? count / (p->nworkers + 1) : 0;
@@ -564,7 +628,7 @@ const sg_vert *sg_workers_transform_range(softgl_ctx *c, int first, int count) {
     pthread_mutex_unlock(&p->mtx);
 
     for (int i = first + count - main_count; i < first + count; i++)
-        p->inside_frustum[i] = (uint8_t)sg_process_vertex_at(c, i, &p->transformed[i]);
+        p->inside_frustum[i - storage_first] = (uint8_t)sg_process_vertex_at(c, i, &p->transformed[i - storage_first]);
 
     while (atomic_load_explicit(&p->done_count, memory_order_acquire) < p->nworkers) {
 #if defined(__x86_64__) || defined(__i386__)
@@ -576,6 +640,81 @@ const sg_vert *sg_workers_transform_range(softgl_ctx *c, int first, int count) {
     return p->transformed;
 }
 
+const sg_vert *sg_workers_transform_range(softgl_ctx *c, int first, int count) {
+    return sg_transform_range(c, first, count, 0);
+}
+
+const sg_vert *sg_workers_transform_compact(softgl_ctx *c, int first, int count) {
+    return sg_transform_range(c, first, count, 1);
+}
+
+int sg_workers_can_stream(softgl_ctx *c, GLenum mode, GLsizei count) {
+    sg_worker_pool *p = (sg_worker_pool *)c->workers;
+    return p && p->nworkers && mode == GL_TRIANGLES && count >= 3 &&
+        !c->imm_active && c->render_mode == GL_RENDER &&
+        c->polygon_mode_front == GL_FILL && c->polygon_mode_back == GL_FILL &&
+        !c->current_query[SG_QUERY_TARGET_SAMPLES_PASSED] &&
+        !c->current_query[SG_QUERY_TARGET_ANY_SAMPLES_PASSED];
+}
+
+void sg_workers_submit_stream(softgl_ctx *c) {
+    sg_worker_pool *p = (sg_worker_pool *)c->workers;
+    int total = 0;
+    for (int i = 0; i < p->nbins; i++) total += p->bins[i].count;
+    if (!total) return;
+    size_t geometry_vertices = (p->prepared_transformed ? (size_t)p->transformed_cap : 0) +
+        (p->vpool_count ? (size_t)p->vpool_cap : 0);
+    if (geometry_vertices > SG_STREAM_VERTICES) {
+        sg_workers_flush(c); return;
+    }
+    if (!p->async_raster) {
+        p->async_raster = sg_aligned_alloc(sizeof(sg_async_raster), 16);
+        if (!p->async_raster) { sg_workers_flush(c); return; }
+        memset(p->async_raster, 0, sizeof(sg_async_raster));
+        for (int i = 0; i < p->nbins; i++) {
+            p->async_raster->bins[i].ix0 = p->bins[i].ix0;
+            p->async_raster->bins[i].ix1 = p->bins[i].ix1;
+        }
+    }
+    /* Finish the previous raster job after preparing this draw, preserving
+     * GL draw order while overlapping geometry with previous fragment work. */
+    sg_finish_stream(p);
+    sg_async_raster *job = p->async_raster;
+    job->state = *c;
+    sg_tex_tri_prepare(c, &job->texture_context);
+    /* Sampler object metadata may move/change on the caller. Image storage
+     * remains shared until the mutation/deletion entrypoints drain this job. */
+    for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
+        if (job->texture_context.unit[u].tex) {
+            job->textures[u] = *job->texture_context.unit[u].tex;
+            job->texture_context.unit[u].tex = &job->textures[u];
+        }
+    }
+    /* Old slot arrays are idle now: swap ownership instead of vertex copies. */
+    for (int i = 0; i < p->nbins; i++) {
+        sg_worker_bin tmp = p->bins[i]; p->bins[i] = job->bins[i]; job->bins[i] = tmp;
+    }
+    if (p->prepared_transformed) {
+        sg_vert *v = p->transformed; p->transformed = job->transformed; job->transformed = v;
+        uint8_t *inside = p->inside_frustum; p->inside_frustum = job->inside_frustum; job->inside_frustum = inside;
+        int cap = p->transformed_cap; p->transformed_cap = job->transformed_cap; job->transformed_cap = cap;
+    }
+    if (p->vpool_count) {
+        sg_vert *v = p->vpool; p->vpool = job->vpool; job->vpool = v;
+        int cap = p->vpool_cap; p->vpool_cap = job->vpool_cap; job->vpool_cap = cap;
+    }
+    p->vpool_count = 0; p->prepared_transformed = 0;
+    p->async_pending = 1;
+    atomic_store_explicit(&p->sort_safe, sg_pool_sort_safe(c), memory_order_release);
+    atomic_store_explicit(&p->next_bin, 0, memory_order_relaxed);
+    atomic_store_explicit(&p->job_type, SG_JOB_ASYNC_RASTER, memory_order_release);
+    atomic_store_explicit(&p->done_count, 0, memory_order_release);
+    pthread_mutex_lock(&p->mtx);
+    atomic_fetch_add_explicit(&p->gen, 1, memory_order_acq_rel);
+    pthread_cond_broadcast(&p->wake);
+    pthread_mutex_unlock(&p->mtx);
+}
+
 const uint8_t *sg_workers_inside_frustum(softgl_ctx *c) {
     sg_worker_pool *p = (sg_worker_pool*)c->workers;
     return p ? p->inside_frustum : NULL;
@@ -584,6 +723,7 @@ const uint8_t *sg_workers_inside_frustum(softgl_ctx *c) {
 void sg_workers_flush(softgl_ctx *c) {
     sg_worker_pool *p = (sg_worker_pool*)c->workers;
     if (!p) return;
+    sg_finish_stream(p);
 
     /* Short-circuit if no pending work — avoids the condvar round-trip on
      * drivers where flush is called defensively from every state-setter. */
@@ -626,4 +766,5 @@ void sg_workers_flush(softgl_ctx *c) {
         if (qa && qa->active && samples) qa->result = 1;
     }
     p->vpool_count = 0;
+    p->prepared_transformed = 0;
 }

@@ -505,6 +505,7 @@ void glAccum(GLenum op, GLfloat value) {
 
 GLint glRenderMode(GLenum mode) {
     softgl_ctx *c = sg_current(); if (!c) return 0;
+    sg_workers_flush(c);
     GLint ret = 0;
     switch (c->render_mode) {
         case GL_SELECT:

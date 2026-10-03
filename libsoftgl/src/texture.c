@@ -1,3 +1,4 @@
+#include "workers.h"
 #include "types.h"
 #include "dlist.h"
 #include <stdlib.h>
@@ -141,6 +142,7 @@ void glGenTextures(GLsizei n, GLuint *out) {
 
 void glDeleteTextures(GLsizei n, const GLuint *ids) {
     softgl_ctx *c = sg_current(); if (!c || !ids) return;
+    sg_workers_flush(c);
     for (GLsizei i = 0; i < n; i++) {
         sg_texture *t = sg_texture_get(c, ids[i]);
         if (!t) continue;
@@ -210,6 +212,7 @@ void _sg_tex_image_1d_real(GLenum target, GLint level, GLint ifmt, GLsizei w,
                            GLint border, GLenum format, GLenum type, const void *pixels) {
     (void)ifmt; (void)border;
     softgl_ctx *c = sg_current(); if (!c) return;
+    sg_workers_flush(c);
     if (target != GL_TEXTURE_1D && target != GL_PROXY_TEXTURE_1D) {
         sg_set_error(GL_INVALID_ENUM); return;
     }
@@ -233,6 +236,7 @@ void _sg_tex_image_2d_real(GLenum target, GLint level, GLint ifmt, GLsizei w, GL
                            GLint border, GLenum format, GLenum type, const void *pixels) {
     (void)ifmt; (void)border;
     softgl_ctx *c = sg_current(); if (!c) return;
+    sg_workers_flush(c);
     if (level < 0 || level >= SG_MAX_MIPMAP_LEVELS) { sg_set_error(GL_INVALID_VALUE); return; }
 
     int face = sg_cube_face_index(target);
@@ -280,6 +284,7 @@ void _sg_tex_image_3d_real(GLenum target, GLint level, GLint ifmt, GLsizei w, GL
                            const void *pixels) {
     (void)ifmt; (void)border;
     softgl_ctx *c = sg_current(); if (!c) return;
+    sg_workers_flush(c);
     if (target != GL_TEXTURE_3D && target != GL_PROXY_TEXTURE_3D) {
         sg_set_error(GL_INVALID_ENUM); return;
     }
@@ -302,6 +307,7 @@ void _sg_tex_image_3d_real(GLenum target, GLint level, GLint ifmt, GLsizei w, GL
 void _sg_tex_sub_image_1d_real(GLenum target, GLint level, GLint xoff, GLsizei w,
                                GLenum format, GLenum type, const void *pixels) {
     softgl_ctx *c = sg_current(); if (!c) return;
+    sg_workers_flush(c);
     if (target != GL_TEXTURE_1D) { sg_set_error(GL_INVALID_ENUM); return; }
     sg_texture *t = sg_active_tex_for_target(c, SG_TEX_TARGET_1D);
     if (!t || level < 0 || level >= SG_MAX_MIPMAP_LEVELS || !t->data[level]) {
@@ -318,6 +324,7 @@ void _sg_tex_sub_image_2d_real(GLenum target, GLint level, GLint xoff, GLint yof
                                GLsizei w, GLsizei h, GLenum format, GLenum type,
                                const void *pixels) {
     softgl_ctx *c = sg_current(); if (!c) return;
+    sg_workers_flush(c);
     int face = sg_cube_face_index(target);
     uint8_t *dst = NULL;
     int tw = 0, th = 0;
@@ -669,6 +676,7 @@ void _sg_tex_sub_image_3d_real(GLenum target, GLint level, GLint xoff, GLint yof
                                GLsizei w, GLsizei h, GLsizei d, GLenum format, GLenum type,
                                const void *pixels) {
     softgl_ctx *c = sg_current(); if (!c) return;
+    sg_workers_flush(c);
     if (target != GL_TEXTURE_3D) { sg_set_error(GL_INVALID_ENUM); return; }
     sg_texture *t = sg_active_tex_for_target(c, SG_TEX_TARGET_3D);
     if (!t || level < 0 || level >= SG_MAX_MIPMAP_LEVELS || !t->data[level]) {

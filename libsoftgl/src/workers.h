@@ -1,14 +1,11 @@
 #ifndef SOFTGL_WORKERS_H
 #define SOFTGL_WORKERS_H
 
-/* Persistent raster workers share a queue of independent X-range bins.
- * Main pushes triangles into bins under the current GL state, then
- * triggers a flush — workers claim bins, drain them, and signal done.
- * The calling thread also claims bins during large raster jobs and fills
- * a disjoint tail during large vertex jobs.
- *
- * Binning is primitive-agnostic: sg_worker_bin_tri is the only entry.
- * Lines/points fall back to direct raster with a prior flush for ordering. */
+/* Persistent workers share a queue of independent X-range bins. Indexed
+ * triangle draws can prepare the next draw while an immutable snapshot of
+ * the previous draw rasterizes. Only one raster job runs at a time: publishing
+ * the next snapshot first joins the old job, with the caller claiming bins.
+ * Other primitives and framebuffer/storage mutations drain pending work. */
 
 #include "types.h"
 #include <stdint.h>
@@ -65,9 +62,16 @@ typedef struct {
 enum {
     SG_JOB_RASTER = 0,   /* drain shared independent raster bins (default) */
     SG_JOB_VERTEX = 1,   /* transform a slice of [job_first..job_first+job_count) */
+    SG_JOB_ASYNC_RASTER = 2, /* drain the immutable draw snapshot */
 };
 
 typedef struct {
+    /* One immutable in-flight draw; main owns the separate producer arrays.
+     * Vertex and bin arrays exchange ownership only after all workers join. */
+    struct sg_async_raster *async_raster;
+    int            async_pending;
+    int            prepared_transformed;
+    int            job_storage_first;
     struct sg_geometry_cache *geometry_cache; /* main-only ordered bin snapshots */
     int            nworkers;
     sg_worker      workers[SG_MAX_TILES];
@@ -82,8 +86,8 @@ typedef struct {
 
     /* Pre-transform scratch used by SG_JOB_VERTEX. Workers split the
      * [job_first, job_first+job_count) range evenly and write each
-     * transformed vertex into transformed[i]. Main and raster workers may
-     * read it until all bins drain, before the next vertex-transform job. */
+     * transformed vertex into transformed[i - job_storage_first]. Main may
+     * publish it to the immutable draw slot before transforming another draw. */
     sg_vert       *transformed;
     uint8_t       *inside_frustum; /* one classification per transformed vertex */
     int            transformed_cap;
@@ -100,7 +104,7 @@ typedef struct {
     atomic_int      done_count;
     atomic_int      alive;
     atomic_int      sort_safe;   /* main sets per-flush; 1 = worker may sort */
-    atomic_int      job_type;    /* SG_JOB_RASTER or SG_JOB_VERTEX, set per wake */
+    atomic_int      job_type;    /* SG_JOB_*, set per wake */
     int             nbins;
     atomic_int      next_bin;    /* each claimed bin has exactly one owner */
     uint8_t        *column_bin;  /* screen column -> overlapping bin */
@@ -116,14 +120,13 @@ void sg_workers_bin_tri(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1, con
 
 /* Same binning, but all three vertices must belong to transformed[].
  * Store their source indices instead of copying them into vpool. The draw
- * must flush its bins before transforming another vertex range. */
+ * must flush or publish its bins before transforming another vertex range. */
 void sg_workers_bin_transformed_tri(softgl_ctx *c, const sg_vert *v0,
                                     const sg_vert *v1, const sg_vert *v2);
 
-/* Drain every bin in parallel, then return when all workers are idle.
- * Safe to call on an empty pool — no-op. Must be called before any
- * state change that the in-flight triangles would read (glBindTexture,
- * glDepthFunc, matrix changes, etc.) or before glFinish/glReadPixels. */
+/* Join the immutable draw and drain producer bins. Framebuffer consumers,
+ * texture image mutation/deletion and query/mode handovers must drain first.
+ * Ordinary GL state changes can proceed: the pending draw owns its snapshot. */
 void sg_workers_flush(softgl_ctx *c);
 
 /* Parallel vertex transform: transforms source-array vertex indices
@@ -135,6 +138,13 @@ void sg_workers_flush(softgl_ctx *c);
  * and does nothing if the pool is absent (single-thread path). */
 const sg_vert *sg_workers_transform_range(softgl_ctx *c, int first, int count);
 const uint8_t *sg_workers_inside_frustum(softgl_ctx *c);
+/* Same transform with local storage [0,count), for source [first,first+count).
+ * Avoid allocating and touching an unreferenced prefix of a global VBO. */
+const sg_vert *sg_workers_transform_compact(softgl_ctx *c, int first, int count);
+/* Query-free filled indexed triangles may publish bounded geometry. Other
+ * paths, allocation failures and oversized draw slots drain synchronously. */
+int sg_workers_can_stream(softgl_ctx *c, GLenum mode, GLsizei count);
+void sg_workers_submit_stream(softgl_ctx *c);
 
 /* Reuse only geometry: refreshed vertex colors/UVs still come from each draw's
  * transform job. The ticket is valid until the next cache lookup on this pool. */

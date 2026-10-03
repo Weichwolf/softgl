@@ -48,7 +48,7 @@ materials and original texture dimensions remain available. Use
 - **AoS 16-byte aligned vertex** with vec4 clip / ndc / color / normal / eye + per-unit UVs
 - **Separate RGBA8 color + f32 depth planes**, row 0 = bottom (GL convention)
 - **Optional MSAA sample buffers**, with color/depth/stencil per sample and one texture/combiner evaluation per covered pixel
-- **Pthread tile worker pool** for X-stripe binning; shared vertex pool for parallel transform; the calling thread also claims raster bins during every draw
+- **Pthread tile worker pool** with X-stripe bins; bounded immutable draw buffers overlap indexed geometry preparation with prior raster work, preserving draw order; the caller helps drain outstanding bins
 - **Automatic WASM pool** reserves one reported logical CPU for the calling thread; explicit worker counts remain available, and a one-CPU browser renders without raster workers
 - **Single rasterizer** (`rasterizer.c::sg_raster_triangle`); per-lane scalar fallback only for stencil / polygon stipple / color logic op / occlusion queries (pixel-serial state)
 

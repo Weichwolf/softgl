@@ -48,6 +48,12 @@ target_link_libraries(geometry_cache_contract PRIVATE softgl)
 add_test(NAME geometry_cache_contract COMMAND geometry_cache_contract)
 set_tests_properties(geometry_cache_contract PROPERTIES TIMEOUT 30)
 
+add_executable(async_raster_contract async_raster.c)
+target_include_directories(async_raster_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_link_libraries(async_raster_contract PRIVATE softgl)
+add_test(NAME async_raster_contract COMMAND async_raster_contract)
+set_tests_properties(async_raster_contract PROPERTIES TIMEOUT 30)
+
 # --- Compare tool (native, no GL) ---
 add_executable(sg_compare harness/compare.c harness/ppm_write.c)
 target_include_directories(sg_compare PRIVATE harness)

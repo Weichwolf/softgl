@@ -33,9 +33,10 @@ SG_INLINE sg_i32x4 sg_resolve_pixel4(const uint8_t *samples) {
     return _mm_srli_epi16(_mm_add_epi16(sum, _mm_set1_epi16(2)), 2);
 }
 
-/* All consumers call this after draining raster jobs. Sample zero is the
+/* Drain raster jobs before any framebuffer consumer. Sample zero is the
  * implementation's depth/stencil readback sample; color is the rounded mean. */
 void sg_msaa_resolve(softgl_ctx *c) {
+    sg_workers_flush(c);
     int n = c->fb.samples;
     if (!n) return;
     size_t pixels = (size_t)c->fb.w * (size_t)c->fb.h;
