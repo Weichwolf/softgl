@@ -24,6 +24,9 @@ void sg_raster_triangle_tile_prepared(softgl_ctx *c,
  * entrypoint; matrices and lighting state are ctx-read-only during a
  * SG_JOB_VERTEX phase, including the caller's own transform slice. */
 int sg_process_vertex_at(softgl_ctx *c, int index, sg_vert *out);
+int sg_process_vertex_prepared(softgl_ctx *c, int index, sg_vert *out, const sg_vertex_inputs *inputs);
+void sg_process_vertex_replay_prepared(softgl_ctx *c, int index,
+    const sg_position_vertex *geometry, sg_vert *out, const sg_vertex_inputs *inputs);
 void sg_process_vertex_replay(softgl_ctx *c, int index,
                               const sg_position_vertex *geometry, sg_vert *out);
 
@@ -401,8 +404,8 @@ static void sg_transform_slice(softgl_ctx *c, sg_worker_pool *p,
                                 int first, int end, int storage_first) {
     if (!p->job_position_count) {
         for (int i = first; i < end; i++)
-            p->inside_frustum[i - storage_first] = (uint8_t)sg_process_vertex_at(c, i,
-                &p->transformed[i - storage_first]);
+            p->inside_frustum[i - storage_first] = (uint8_t)sg_process_vertex_prepared(c, i,
+                &p->transformed[i - storage_first], &p->vertex_inputs);
         return;
     }
     uint64_t page_base = p->job_position_first / SG_POSITION_PAGE_VERTICES;
@@ -413,10 +416,10 @@ static void sg_transform_slice(softgl_ctx *c, sg_worker_pool *p,
         sg_vert *v = &p->transformed[i - storage_first];
         int inside;
         if (page && (page->flags[slot] & 2)) {
-            sg_process_vertex_replay(c, i, &page->vertices[slot], v);
+            sg_process_vertex_replay_prepared(c, i, &page->vertices[slot], v, &p->vertex_inputs);
             inside = page->flags[slot] & 1;
         } else {
-            inside = sg_process_vertex_at(c, i, v);
+            inside = sg_process_vertex_prepared(c, i, v, &p->vertex_inputs);
             if (page) {
                 page->vertices[slot].clip = v->clip;
                 page->vertices[slot].ndc = v->ndc;
@@ -719,6 +722,7 @@ static const sg_vert *sg_transform_range(softgl_ctx *c, int first, int count, in
     }
 
     p->job_first = first;
+    sg_prepare_vertex_inputs(c, &p->vertex_inputs);
     sg_position_prepare(c, p, first, count);
     p->prepared_transformed = 1;
     if (p->async_pending) {

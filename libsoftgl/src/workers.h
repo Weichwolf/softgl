@@ -8,6 +8,7 @@
  * Other primitives and framebuffer/storage mutations drain pending work. */
 
 #include "types.h"
+#include "vertex_inputs.h"
 #include <stdint.h>
 #include <pthread.h>
 #include <stdatomic.h>
@@ -109,6 +110,7 @@ typedef struct {
     int            transformed_cap;
     int            job_first;
     int            job_count;
+    sg_vertex_inputs vertex_inputs; /* joined vertex job only */
     /* Main selects stable pages before vertex workers run. Each vertex index
      * has one producer; old raster jobs never access these cache pages. */
     struct sg_position_page *job_position_pages[SG_POSITION_MAX_PAGES];

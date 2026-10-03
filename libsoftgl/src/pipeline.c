@@ -49,6 +49,42 @@ static void sg_fetch_attrib(const uint8_t *base, int index, int stride, int n, G
     for (int i = got; i < dst_len; i++) dst[i] = def;
 }
 
+/* Resolve VBO metadata once per joined vertex job; client attributes are
+ * still fetched during the draw. No data survives an attribute/storage change. */
+static sg_resolved_attrib sg_resolve_attrib(softgl_ctx *c, const sg_attrib_ptr *a, int size, int stride) {
+    sg_resolved_attrib result;
+    result.base = a->enabled ? sg_attrib_base(c, a) : NULL;
+    result.stride = stride;
+    result.size = size; result.type = a->type;
+    return result;
+}
+void sg_prepare_vertex_inputs(softgl_ctx *c, sg_vertex_inputs *inputs) {
+    const sg_attrib_ptr *p = &c->attr_pos, *n = &c->attr_normal, *cp = &c->attr_color;
+    int cs = cp->size ? cp->size : 4;
+    inputs->position = sg_resolve_attrib(c, p, p->size, p->stride ? p->stride : p->size * (int)sizeof(float));
+    inputs->normal = sg_resolve_attrib(c, n, 3, n->stride ? n->stride : 3 * (int)sizeof(float));
+    inputs->color = sg_resolve_attrib(c, cp, cs, cp->stride ? cp->stride : cs * (cp->type == GL_UNSIGNED_BYTE ? 1 : 4));
+    for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
+        const sg_attrib_ptr *t = &c->attr_tex[u]; int size = t->size ? t->size : 2;
+        inputs->uv[u] = sg_resolve_attrib(c, t, size, t->stride ? t->stride : size * (int)sizeof(float));
+    }
+}
+SG_INLINE void sg_fetch_resolved(const sg_resolved_attrib *a, int index, float *dst, float def) {
+    if (!a->base || a->type != GL_FLOAT) {
+        sg_fetch_attrib(a->base, index, a->stride, a->size, a->type, dst, 4, def);
+        return;
+    }
+    const float *source = (const float *)(a->base + (size_t)index * (size_t)a->stride);
+    if (a->size >= 4) {
+        _mm_storeu_ps(dst, _mm_loadu_ps(source));
+    } else {
+        dst[0] = a->size > 0 ? source[0] : def;
+        dst[1] = a->size > 1 ? source[1] : def;
+        dst[2] = a->size > 2 ? source[2] : def;
+        dst[3] = def;
+    }
+}
+
 /* One side of lighting. Caller flips normal for back face.
  * Color-material overrides selected material channels with vcolor. */
 static void sg_apply_lighting_side(softgl_ctx *c, const sg_vec4 *eye_pos, const sg_vec4 *eye_n,
@@ -181,11 +217,12 @@ void sg_prepare_nm_cache(softgl_ctx *c) {
 }
 
 SG_INLINE void sg_fetch_vertex_attributes(softgl_ctx *c, int index, sg_vert *out,
-                                          float normal[4], float color[4]) {
+                                          float normal[4], float color[4], const sg_vertex_inputs *inputs) {
     const sg_attrib_ptr *n = &c->attr_normal;
     if (n->enabled) {
-        sg_fetch_attrib(sg_attrib_base(c, n), index, n->stride ? n->stride : 3 * sizeof(float),
-                        3, n->type, normal, 3, 0.f);
+        if (inputs) sg_fetch_resolved(&inputs->normal, index, normal, 0.f);
+        else sg_fetch_attrib(sg_attrib_base(c, n), index, n->stride ? n->stride : 3 * (int)sizeof(float),
+                             3, n->type, normal, 3, 0.f);
         normal[3] = 0.f;
     } else {
         normal[0] = c->current_normal[0];
@@ -196,8 +233,9 @@ SG_INLINE void sg_fetch_vertex_attributes(softgl_ctx *c, int index, sg_vert *out
     const sg_attrib_ptr *cp = &c->attr_color;
     if (cp->enabled) {
         int sz = cp->size ? cp->size : 4;
-        sg_fetch_attrib(sg_attrib_base(c, cp), index, cp->stride ? cp->stride : sz * (cp->type == GL_UNSIGNED_BYTE ? 1 : 4),
-                        sz, cp->type, color, 4, 1.f);
+        if (inputs) sg_fetch_resolved(&inputs->color, index, color, 1.f);
+        else sg_fetch_attrib(sg_attrib_base(c, cp), index, cp->stride ? cp->stride : sz * (cp->type == GL_UNSIGNED_BYTE ? 1 : 4),
+                             sz, cp->type, color, 4, 1.f);
         if (sz < 4) color[3] = 1.f;
     } else {
         memcpy(color, c->current_color, sizeof(float) * 4);
@@ -206,8 +244,9 @@ SG_INLINE void sg_fetch_vertex_attributes(softgl_ctx *c, int index, sg_vert *out
         const sg_attrib_ptr *tp = &c->attr_tex[u];
         if (tp->enabled) {
             int sz = tp->size ? tp->size : 2;
-            sg_fetch_attrib(sg_attrib_base(c, tp), index, tp->stride ? tp->stride : sz * sizeof(float),
-                            sz, tp->type, &out->uv[u].x, 4, 0.f);
+            if (inputs) sg_fetch_resolved(&inputs->uv[u], index, &out->uv[u].x, 0.f);
+            else sg_fetch_attrib(sg_attrib_base(c, tp), index, tp->stride ? tp->stride : sz * (int)sizeof(float),
+                                 sz, tp->type, &out->uv[u].x, 4, 0.f);
             if (sz < 4) out->uv[u].w = 1.f;
         } else {
             out->uv[u].x = out->uv[u].y = out->uv[u].z = 0.f;
@@ -216,7 +255,8 @@ SG_INLINE void sg_fetch_vertex_attributes(softgl_ctx *c, int index, sg_vert *out
     }
 }
 
-static void sg_process_vertex(softgl_ctx *c, int index, sg_vert *out, const sg_position_vertex *cached) {
+static void sg_process_vertex(softgl_ctx *c, int index, sg_vert *out,
+                               const sg_position_vertex *cached, const sg_vertex_inputs *inputs) {
     float pos[4]    = {0,0,0,1};
     float normal[4] = {0,0,1,0};
     float color[4]  = {1,1,1,1};
@@ -224,13 +264,14 @@ static void sg_process_vertex(softgl_ctx *c, int index, sg_vert *out, const sg_p
     if (!cached) {
         const sg_attrib_ptr *p = &c->attr_pos;
         if (p->enabled) {
-            sg_fetch_attrib(sg_attrib_base(c, p), index, p->stride ? p->stride : p->size * sizeof(float),
-                            p->size, p->type, pos, 4, (p->size < 4) ? ((p->size < 3) ? 0.f : 0.f) : 0.f);
+            if (inputs) sg_fetch_resolved(&inputs->position, index, pos, 0.f);
+            else sg_fetch_attrib(sg_attrib_base(c, p), index, p->stride ? p->stride : p->size * (int)sizeof(float),
+                                 p->size, p->type, pos, 4, 0.f);
             if (p->size < 4) pos[3] = 1.0f;
             if (p->size < 3) pos[2] = 0.0f;
         }
     }
-    sg_fetch_vertex_attributes(c, index, out, normal, color);
+    sg_fetch_vertex_attributes(c, index, out, normal, color, inputs);
 
     sg_vec4 eye;
     if (cached) {
@@ -484,7 +525,7 @@ SG_INLINE void sg_vcache_fetch(softgl_ctx *c, uint32_t idx, sg_vert *out) {
     }
     /* Miss: transform, FIFO-evict at tail. */
     int slot = sg_vcache_tail;
-    sg_process_vertex(c, (int)idx, &sg_vcache_verts[slot], NULL);
+    sg_process_vertex(c, (int)idx, &sg_vcache_verts[slot], NULL, NULL);
     sg_vcache_keys[slot] = idx;
     sg_vcache_tail = (slot + 1) & (SG_VCACHE_SIZE - 1);
     *out = sg_vcache_verts[slot];
@@ -526,9 +567,9 @@ void _sg_draw_arrays_real(GLenum mode, GLint first, GLsizei count) {
         serial_triangles_arrays:
             for (int t = 0; t < ntri; t++) {
                 SG_ALIGN16 sg_vert v[3];
-                sg_process_vertex(c, first + t * 3 + 0, &v[0], NULL);
-                sg_process_vertex(c, first + t * 3 + 1, &v[1], NULL);
-                sg_process_vertex(c, first + t * 3 + 2, &v[2], NULL);
+                sg_process_vertex(c, first + t * 3 + 0, &v[0], NULL, NULL);
+                sg_process_vertex(c, first + t * 3 + 1, &v[1], NULL, NULL);
+                sg_process_vertex(c, first + t * 3 + 2, &v[2], NULL, NULL);
                 sg_process_triangle(c, &v[0], &v[1], &v[2]);
             }
         }
@@ -545,7 +586,7 @@ void _sg_draw_arrays_real(GLenum mode, GLint first, GLsizei count) {
         }
     } else if (mode == GL_TRIANGLE_FAN) {
         SG_ALIGN16 sg_vert v0;
-        sg_process_vertex(c, first, &v0, NULL);
+        sg_process_vertex(c, first, &v0, NULL, NULL);
         for (int t = 1; t < count - 1; t++) {
             SG_ALIGN16 sg_vert v1, v2;
             sg_vcache_fetch(c, (uint32_t)(first + t),     &v1);
@@ -556,26 +597,26 @@ void _sg_draw_arrays_real(GLenum mode, GLint first, GLsizei count) {
         int nlines = count / 2;
         for (int i = 0; i < nlines; i++) {
             SG_ALIGN16 sg_vert v[2];
-            sg_process_vertex(c, first + i*2 + 0, &v[0], NULL);
-            sg_process_vertex(c, first + i*2 + 1, &v[1], NULL);
+            sg_process_vertex(c, first + i*2 + 0, &v[0], NULL, NULL);
+            sg_process_vertex(c, first + i*2 + 1, &v[1], NULL, NULL);
             sg_process_line(c, &v[0], &v[1]);
         }
     } else if (mode == GL_LINE_STRIP) {
         if (count < 2) return;
         SG_ALIGN16 sg_vert prev, cur;
-        sg_process_vertex(c, first, &prev, NULL);
+        sg_process_vertex(c, first, &prev, NULL, NULL);
         for (int i = 1; i < count; i++) {
-            sg_process_vertex(c, first + i, &cur, NULL);
+            sg_process_vertex(c, first + i, &cur, NULL, NULL);
             sg_process_line(c, &prev, &cur);
             prev = cur;
         }
     } else if (mode == GL_LINE_LOOP) {
         if (count < 2) return;
         SG_ALIGN16 sg_vert first_v, prev, cur;
-        sg_process_vertex(c, first, &first_v, NULL);
+        sg_process_vertex(c, first, &first_v, NULL, NULL);
         prev = first_v;
         for (int i = 1; i < count; i++) {
-            sg_process_vertex(c, first + i, &cur, NULL);
+            sg_process_vertex(c, first + i, &cur, NULL, NULL);
             sg_process_line(c, &prev, &cur);
             prev = cur;
         }
@@ -583,7 +624,7 @@ void _sg_draw_arrays_real(GLenum mode, GLint first, GLsizei count) {
     } else if (mode == GL_POINTS) {
         for (int i = 0; i < count; i++) {
             SG_ALIGN16 sg_vert v;
-            sg_process_vertex(c, first + i, &v, NULL);
+            sg_process_vertex(c, first + i, &v, NULL, NULL);
             sg_process_point(c, &v);
         }
     }
@@ -594,8 +635,7 @@ void sg_process_triangle_pub(softgl_ctx *c, sg_vert *v0, sg_vert *v1, sg_vert *v
     sg_process_triangle(c, v0, v1, v2);
 }
 
-int sg_process_vertex_at(softgl_ctx *c, int index, sg_vert *out) {
-    sg_process_vertex(c, index, out, NULL);
+SG_INLINE int sg_finish_vertex_at(softgl_ctx *c, sg_vert *out) {
     /* Match the general path's six-plane arithmetic, once per vertex. */
     __m128 V = _mm_load_ps(&out->clip.x);
     __m128 Vw = _mm_shuffle_ps(V, V, _MM_SHUFFLE(3,3,3,3));
@@ -615,10 +655,23 @@ int sg_process_vertex_at(softgl_ctx *c, int index, sg_vert *out) {
     out->ndc.z = out->ndc.z * 0.5f + 0.5f;
     return !outside;
 }
+int sg_process_vertex_at(softgl_ctx *c, int index, sg_vert *out) {
+    sg_process_vertex(c, index, out, NULL, NULL);
+    return sg_finish_vertex_at(c, out);
+}
+int sg_process_vertex_prepared(softgl_ctx *c, int index, sg_vert *out, const sg_vertex_inputs *inputs) {
+    sg_process_vertex(c, index, out, NULL, inputs);
+    return sg_finish_vertex_at(c, out);
+}
+void sg_process_vertex_replay_prepared(softgl_ctx *c, int index,
+                                      const sg_position_vertex *geometry, sg_vert *out,
+                                      const sg_vertex_inputs *inputs) {
+    sg_process_vertex(c, index, out, geometry, inputs);
+}
 
 void sg_process_vertex_replay(softgl_ctx *c, int index,
                               const sg_position_vertex *geometry, sg_vert *out) {
-    sg_process_vertex(c, index, out, geometry);
+    sg_process_vertex(c, index, out, geometry, NULL);
 }
 
 /* Immediate-mode vertex: position direct, other attrs from current state. */

@@ -60,6 +60,12 @@ target_link_libraries(position_cache_contract PRIVATE softgl)
 add_test(NAME position_cache_contract COMMAND position_cache_contract)
 set_tests_properties(position_cache_contract PROPERTIES TIMEOUT 30)
 
+add_executable(vertex_inputs_contract vertex_inputs.c)
+target_include_directories(vertex_inputs_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_link_libraries(vertex_inputs_contract PRIVATE softgl)
+add_test(NAME vertex_inputs_contract COMMAND vertex_inputs_contract)
+set_tests_properties(vertex_inputs_contract PROPERTIES TIMEOUT 30)
+
 # --- Compare tool (native, no GL) ---
 add_executable(sg_compare harness/compare.c harness/ppm_write.c)
 target_include_directories(sg_compare PRIVATE harness)
