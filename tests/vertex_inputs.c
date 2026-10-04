@@ -32,6 +32,66 @@ static int compare_inputs(softgl_ctx *c) {
     return 0;
 }
 
+static int compare_uv_aliases(softgl_ctx *c, GLuint buffer) {
+    float positions[N + 1][4], floats[N + 1][4];
+    GLshort shorts[N + 1][4]; GLint integers[N + 1][4];
+    for (int i = 0; i <= N; i++) for (int k = 0; k < 4; k++) {
+        positions[i][k] = k == 2 ? -1.f : (float)(i + k) * .01f;
+        floats[i][k] = (float)(i * 4 + k - 30) * .125f;
+        shorts[i][k] = (GLshort)(i * 17 + k - 40);
+        integers[i][k] = i * 997 + k - 17000;
+    }
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glVertexPointer(3, GL_FLOAT, sizeof(positions[0]), positions);
+    glDisable(GL_LIGHTING); glDisableClientState(GL_NORMAL_ARRAY);
+    glDisableClientState(GL_COLOR_ARRAY);
+    const GLenum types[] = {GL_FLOAT, GL_SHORT, GL_INT};
+    const void *sources[] = {floats, shorts, integers};
+    const size_t lengths[] = {sizeof(floats), sizeof(shorts), sizeof(integers)};
+    const int strides[] = {sizeof(floats[0]), sizeof(shorts[0]), sizeof(integers[0])};
+    for (int type = 0; type < 3; type++) for (int storage = 0; storage < 2; storage++) {
+        glBindBuffer(GL_ARRAY_BUFFER, storage ? buffer : 0);
+        if (storage) glBufferData(GL_ARRAY_BUFFER, lengths[type], sources[type], GL_STATIC_DRAW);
+        const void *base = storage ? NULL : sources[type];
+        for (int size = 1; size <= 4; size++) {
+            for (int unit = 0; unit < 4; unit++) {
+                glClientActiveTexture(GL_TEXTURE0 + unit);
+                glTexCoordPointer(size, types[type], strides[type], base);
+                glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+            }
+            sg_vertex_inputs inputs; sg_prepare_vertex_inputs(c, &inputs);
+            for (int unit = 1; unit < 4; unit++) {
+                CHECK(inputs.uv[unit].type == SG_INPUT_UV_COPY);
+                CHECK(inputs.uv[unit].stride == 0);
+            }
+            CHECK(!compare_inputs(c));
+            glClientActiveTexture(GL_TEXTURE1);
+            const void *offset = (const void *)((uintptr_t)base + (type == 1 ? 2 : 4));
+            glTexCoordPointer(size, types[type], strides[type], offset);
+            CHECK(!compare_inputs(c));
+            glTexCoordPointer(size, types[type], strides[type] - (type == 1 ? 2 : 4), base);
+            CHECK(!compare_inputs(c));
+            glTexCoordPointer(size == 4 ? 3 : size + 1, types[type], strides[type], base);
+            CHECK(!compare_inputs(c));
+            glTexCoordPointer(size, types[type] == GL_FLOAT ? GL_INT : GL_FLOAT, strides[type], base);
+            CHECK(!compare_inputs(c));
+            glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+            CHECK(!compare_inputs(c));
+            glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+            glClientActiveTexture(GL_TEXTURE0);
+            glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+            CHECK(!compare_inputs(c));
+            glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        }
+        /* A new allocation or client contents must be read by the next job. */
+        if (storage) glBufferData(GL_ARRAY_BUFFER, lengths[type], sources[type], GL_DYNAMIC_DRAW);
+        else if (!type) floats[0][0] = -.375f;
+        CHECK(!compare_inputs(c));
+    }
+    glClientActiveTexture(GL_TEXTURE0);
+    return 0;
+}
+
 int sg_input_contract(int samples, int workers) {
     softgl_ctx *c = softgl_create_multisample(65, 35, samples);
     CHECK(c);
@@ -99,6 +159,7 @@ int sg_input_contract(int samples, int workers) {
         CHECK(!compare_inputs(c));
         for (int a = 0; a < 7; a++) free(data[a]);
     }
+    CHECK(!compare_uv_aliases(c, buffers[0]));
     softgl_destroy(c);
     return 0;
 }

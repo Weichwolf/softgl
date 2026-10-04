@@ -67,6 +67,17 @@ void sg_prepare_vertex_inputs(softgl_ctx *c, sg_vertex_inputs *inputs) {
     for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
         const sg_attrib_ptr *t = &c->attr_tex[u]; int size = t->size ? t->size : 2;
         inputs->uv[u] = sg_resolve_attrib(c, t, size, t->stride ? t->stride : size * (int)sizeof(float));
+        sg_resolved_attrib *a = &inputs->uv[u];
+        if (!a->base) continue;
+        for (int previous = 0; previous < u; previous++) {
+            const sg_resolved_attrib *b = &inputs->uv[previous];
+            if (a->base == b->base && a->stride == b->stride &&
+                a->type == b->type && a->size == b->size) {
+                a->type = SG_INPUT_UV_COPY;
+                a->stride = previous;
+                break;
+            }
+        }
     }
 }
 SG_INLINE void sg_fetch_resolved(const sg_resolved_attrib *a, int index, float *dst, float def) {
@@ -243,6 +254,10 @@ SG_INLINE void sg_fetch_vertex_attributes(softgl_ctx *c, int index, sg_vert *out
     for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
         const sg_attrib_ptr *tp = &c->attr_tex[u];
         if (tp->enabled) {
+            if (u && inputs && inputs->uv[u].type != tp->type) {
+                out->uv[u] = out->uv[inputs->uv[u].stride];
+                continue;
+            }
             int sz = tp->size ? tp->size : 2;
             if (inputs) sg_fetch_resolved(&inputs->uv[u], index, &out->uv[u].x, 0.f);
             else sg_fetch_attrib(sg_attrib_base(c, tp), index, tp->stride ? tp->stride : sz * (int)sizeof(float),
