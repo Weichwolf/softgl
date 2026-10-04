@@ -12,6 +12,11 @@ struct sg_stream_queue {
     sg_queue_slot slots[SG_QUEUE_SLOTS];
     int head, count, stopping;
     atomic_uint change;
+    /* Current caller-owned inputs remain immutable until all slices finish. */
+    softgl_ctx *vertex_context;
+    int vertex_next, vertex_end, vertex_storage_first;
+    atomic_int vertex_done;
+    int vertex_active;
 };
 
 static int sg_queue_multitexture(const softgl_ctx *c) {
@@ -85,6 +90,24 @@ static void sg_queue_render(sg_worker_pool *p, sg_queue_slot *slot, int index) {
     pthread_mutex_unlock(&p->mtx);
 }
 
+/* A slice's output, source attributes and position-cache entries fit a
+ * small local working set. Claimed intervals are disjoint, including flags. */
+#define SG_QUEUE_VERTEX_SLICE 128
+static int sg_queue_vertex_claim(struct sg_stream_queue *q, int *first, int *end) {
+    if (!q->vertex_active || q->vertex_next >= q->vertex_end) return 0;
+    *first = q->vertex_next;
+    *end = *first + SG_QUEUE_VERTEX_SLICE;
+    if (*end > q->vertex_end) *end = q->vertex_end;
+    q->vertex_next = *end;
+    return 1;
+}
+
+static void sg_queue_vertex_run(sg_worker_pool *p, int first, int end) {
+    struct sg_stream_queue *q = p->stream_queue;
+    sg_transform_slice(q->vertex_context, p, first, end, q->vertex_storage_first);
+    atomic_fetch_add_explicit(&q->vertex_done, end - first, memory_order_release);
+}
+
 static void sg_queue_worker(sg_worker_pool *p) {
     struct sg_stream_queue *q = p->stream_queue;
     pthread_mutex_lock(&p->mtx);
@@ -95,13 +118,54 @@ static void sg_queue_worker(sg_worker_pool *p) {
             pthread_mutex_unlock(&p->mtx);
             sg_queue_render(p, slot, bin);
             pthread_mutex_lock(&p->mtx);
-        } else if (q->stopping) {
-            pthread_mutex_unlock(&p->mtx);
-            return;
         } else {
-            pthread_cond_wait(&p->wake, &p->mtx);
+            int first, end;
+            if (sg_queue_vertex_claim(q, &first, &end)) {
+                pthread_mutex_unlock(&p->mtx);
+                sg_queue_vertex_run(p, first, end);
+                pthread_mutex_lock(&p->mtx);
+            } else if (q->stopping) {
+                pthread_mutex_unlock(&p->mtx);
+                return;
+            } else {
+                pthread_cond_wait(&p->wake, &p->mtx);
+            }
         }
     }
+}
+
+/* Raster keeps priority, preserving producer/consumer overlap. Idle
+ * workers help prepare the next draw instead of waiting for its submission.
+ * The caller processes the same slices, with no fifth coordinator thread. */
+static void sg_queue_transform(softgl_ctx *c, sg_worker_pool *p,
+                               int first, int count, int storage_first) {
+    struct sg_stream_queue *q = p->stream_queue;
+    pthread_mutex_lock(&p->mtx);
+    q->vertex_context = c;
+    q->vertex_next = first; q->vertex_end = first + count;
+    q->vertex_storage_first = storage_first;
+    atomic_store_explicit(&q->vertex_done, 0, memory_order_relaxed);
+    q->vertex_active = 1;
+    pthread_cond_broadcast(&p->wake);
+    pthread_mutex_unlock(&p->mtx);
+    for (;;) {
+        int begin, end;
+        pthread_mutex_lock(&p->mtx);
+        int claimed = sg_queue_vertex_claim(q, &begin, &end);
+        pthread_mutex_unlock(&p->mtx);
+        if (!claimed) break;
+        sg_queue_vertex_run(p, begin, end);
+    }
+    /* Do not help an arbitrarily long raster bin here: it could delay the
+     * next submission after its geometry has already completed. */
+    while (atomic_load_explicit(&q->vertex_done, memory_order_acquire) < count) {
+#if defined(__x86_64__) || defined(__i386__)
+        __builtin_ia32_pause();
+#endif
+    }
+    pthread_mutex_lock(&p->mtx);
+    q->vertex_active = 0; q->vertex_context = NULL;
+    pthread_mutex_unlock(&p->mtx);
 }
 
 /* The browser caller cannot block in Atomics.wait. Help rasterize whenever
@@ -159,6 +223,7 @@ static int sg_queue_submit(softgl_ctx *c, sg_worker_pool *p) {
         struct sg_stream_queue *q = calloc(1, sizeof(*q));
         if (!q) return 0;
         atomic_init(&q->change, 0);
+        atomic_init(&q->vertex_done, 0);
         p->stream_queue = q;
         for (int s = 0; s < SG_QUEUE_SLOTS; s++) {
             sg_async_raster *r = sg_aligned_alloc(sizeof(*r), 16);

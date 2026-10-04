@@ -81,11 +81,14 @@ int sg_queue_contract(int samples, int workers, int eager, uint64_t result[STAGE
      * and aggregate-budget backpressure. Every draw overlaps earlier pixels.
      * The eager oracle uses the identical worker count and bin layout. */
     glEnable(GL_BLEND); glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    /* Cross the 1024-vertex stage threshold and leave partial 128-vertex
+     * tails. Completion must include every slice before inputs are reused. */
+    const GLsizei stage_counts[] = {COUNT, 1020, 1023, 1026, 1152};
     for (int i = 0; i < 48; i++) {
         glColor4f((i % 7) / 7.f, (i % 5) / 5.f, (i % 3) / 3.f, .25f);
         glDepthMask(i % 3 != 0); glDepthFunc(i % 2 ? GL_LEQUAL : GL_ALWAYS);
         glColorMask(GL_TRUE, i % 4 != 0, GL_TRUE, GL_TRUE);
-        glDrawElements(GL_TRIANGLES, i % 5 == 0 ? COUNT : 1152, GL_UNSIGNED_INT, NULL);
+        glDrawElements(GL_TRIANGLES, stage_counts[i % 5], GL_UNSIGNED_INT, NULL);
         CHECK(((sg_worker_pool *)c->workers)->async_pending == 3);
         if (eager) sg_workers_flush(c);
     }

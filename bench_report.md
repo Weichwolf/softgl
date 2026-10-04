@@ -11,7 +11,7 @@
 | BMW / T-80, Dreiecke | 63.087 / 44.513 |
 | BMW, Vertices / Teile / Materialien | 48.428 / 41 / 23 |
 | BMW-Pack / SHA-256 | 19.69 MiB / `fae69ce4` |
-| WASM SHA-256 | `acfc66bb` |
+| WASM SHA-256 | `32338ac5` |
 | Worker / Raster-Bins, 4× | 3 + Caller / 32 |
 | MSAA Farbe + Tiefe / aktiver Bin | 225 KiB |
 | Bin- + Positionscache | ≤4 MiB gemeinsam; 64×1024 Positionen |
@@ -20,32 +20,35 @@
 | Additives 2×/4×-Blending | 8/16 Byte-Kanäle mit `i8x16.add_sat_u`; Float-Fallback |
 | UV-Eingaben | Identische Arrays einmal je Vertex/Job laden; exakte Float-Kopie |
 | Texturadressen | 4 Pixel SIMD; REPEAT/POT per Bitmaske; volle Gather ohne Lane-Checks |
+| Geometrie-Stufe / Paket | freie Raster-Worker + Caller / ≤128 Vertices |
+| BMW Stufen / Worker-Anteil, 4× | 9 pro Frame / 14,2 % der 585 Pakete; Diagnose |
 | Multitextur-Queue | ≤4 Draws; ≤2 MiB Vertex-Kapazität gemeinsam |
 | Hierarchische Tiefe, 4× / Budget | 230,06 KiB inkl. Header / ≤256 KiB |
 
 | 4× MSAA; Render + Resolve / Frame | BMW F31 | T-80 |
 | --- | --- | --- |
 | Ziel | >30 FPS | >60 FPS |
-| Kontrollaudit / Framezeit | 22.71 FPS / 44.03 ms | 61.12 FPS / 16.36 ms |
-| Δ Zeit zu `cd80da51`; 3 AB/BA-Paare | -0.64 % | +0.39 % |
+| Audit 1 / 2, FPS | 22.17 / 22.15 | 58.95 / 59.26 |
+| Framezeit 1 / 2, ms | 45.11 / 45.15 | 16.96 / 16.88 |
+| Δ Zeit zu `acfc66bb`, % | -1.37 / -1.48 | -0.59 / -2.11 |
+| Warm-up / Frames / AB/BA-Paare | 80 / 100 / 2×3 | 80 / 100 / 2×3 |
 
 | 2× MSAA; Render + Resolve / Frame | BMW F31 | T-80 | sphere_lit |
 | --- | --- | --- | --- |
-| Audit 1 / 2, FPS | 23.63 / 23.55 | 66.13 / 66.07 | 629.53 / 748.56 |
-| Framezeit 1 / 2, ms | 42.31 / 42.47 | 15.12 / 15.14 | 1.59 / 1.34 |
-| Post-Z-Store, Δ Zeit zu `cd80da51`, % | -2.83 / -2.19 | -5.82 / -5.94 | -5.31 / -26.19 |
-| Warm-up / Frames / AB/BA-Paare | 80 / 100 / 2×3 | 80 / 100 / 2×3 | 80 / 100 / 2×3 |
+| FPS / Framezeit, ms | 22.90 / 43.67 | 63.44 / 15.76 | 648.75 / 1.54 |
+| Δ Zeit zu `acfc66bb`, % | -1.07 | -0.08 | -12.15 |
+| Warm-up / Frames / AB/BA-Paare | 80 / 100 / 3 | 80 / 100 / 3 | 80 / 100 / 3 |
 
 | Ohne MSAA; Readback/Frame; 3 AB/BA-Paare | BMW F31 | T-80 |
 | --- | --- | --- |
-| FPS / Framezeit | 29.76 / 33.60 ms | 85.50 / 11.70 ms |
-| Paarweise Δ Zeit zu `cd80da51` | -0.48 % | -0.03 % |
+| FPS / Framezeit | 29.23 / 34.21 ms | 81.79 / 12.23 ms |
+| Δ Zeit zu `acfc66bb` | -2.18 % | -0.22 % |
 
 | Prüfung | Ergebnis |
 | --- | --- |
 | Native / WASM-Mesa | 737/737 / 240/240 |
-| WASM zu `cd80da51` | 240 Bilder bytegleich |
-| Alle Tests, 2× / 4× MSAA zu `cd80da51` | je 234 Bilder bytegleich |
+| WASM zu `acfc66bb` | 240 Bilder bytegleich |
+| Alle Tests, 2× / 4× MSAA zu `acfc66bb` | je 234 Bilder bytegleich |
 | MSAA-Store, RGBA / Samples / Query-Frames | 262.144 / 131.072 / 256 bytegleich |
 | Modelle je aus/2×/4× | je 100 Hashes + 4 Bytevergleiche pro Modell identisch |
 | 2× Resolve / Farbkanal | alle 65.536 Byte-Paare exakt; ungerade Bildgröße |

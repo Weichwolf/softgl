@@ -1176,3 +1176,65 @@ All 234 rendering cases and each model's 100 hashes plus four raw frames
 match baseline exactly for both 2x and 4x. Full gates/browser/publication
 status: `build/diagnostics/msaa2-opaque-store/validation.json`.
 Raw timings: `build/perf/tigerlake-20261004/msaa2-opaque-store*-summary.json`.
+
+
+## Shared packet UV calculation (2026-10-04, rejected)
+
+Two private variants share perspective XY interpolation and normalized wrapping
+between sampled 2D units 0 and 2 when all three vertex coordinate bit patterns
+and wrap modes match. Each sampler keeps its own dimensions, filtering, texel
+addresses and weights. BMW material inspection finds several normal/albedo
+pairs with different resolutions, so identical texture grids are not assumed.
+Constants, different targets, mismatched coordinates and wraps retain the
+original sampler. Both variants pass strict native/WASM scalar sampler and
+DOT3 oracles, each model's 100 hashes and four raw frames, and all 234 rendering
+cases for both 2x and 4x MSAA. The second numeric fixture also exercises shared
+coordinates with different dimensions, filtering and wrapping.
+
+The per-packet proof variant 8d6a5160 regresses BMW in all three quiet 4x pairs
+(+5.49/+1.26/+1.05%; aggregate +1.26%). T80 gives -8.30/-1.20/+1.46%,
+which does not prove a repeatable gain. Hoisting the proof to triangle setup
+(cef3fe1b) gives BMW -1.64/-0.73/+0.53% and T80 -0.39/+1.36/-0.95%.
+Neither variant is retained. Full gates and additional sample-mode performance
+controls are intentionally not run for rejected variants. Renderer arithmetic,
+assets and image tolerances remain unchanged. Baseline is acfc66bb throughout.
+Evidence: build/diagnostics/packet-shared-uv*/validation.json and
+build/perf/tigerlake-20261004/packet-shared-uv*-summary.json.
+
+
+## Geometry help inside the ordered draw queue (2026-10-04)
+
+The queue adds a finite geometry stage for next-draw ranges of at least 1,024
+vertices. Ready raster bins keep priority. Otherwise, workers claim disjoint
+slices of at most 128 vertices in the caller-owned arrays, using the existing
+prepared inputs and position cache. The GL caller processes the same slices.
+Queue metadata is protected by the existing mutex; release/acquire completion
+ensures all attributes and cache flags are consumed before the caller changes
+inputs or submits the new snapshot. Ordered per-bin raster claims, float
+geometry arithmetic, texture evaluation and existing memory budgets are
+unchanged. This uses three workers plus caller without a fifth coordinator.
+
+Candidate 32338ac5 improves BMW four-sample frame time by 1.37/1.48% in two
+independent quiet three-pair audits against acfc66bb. All six BMW pairs improve.
+T80 changes by -0.59/-2.11%. Two-sample control gives BMW -1.07%, T80 -0.08%;
+no-MSAA/readback control gives -2.18%/-0.22%. All twelve complete AB/BA pairs
+pass the unchanged activity guard on attempt one, at 640x360, three workers
+plus caller, 80 warm-up and 100 measured frames per arm, resolve every frame.
+No compiles, image tests or profiling overlap acceptance measurements.
+
+A separate counter-bearing build preserves both models' 100 hashes and four
+raw frames. BMW uses nine geometry stages and 585 vertex slices per frame;
+workers claim about 83.1 slices (14.2%), caller about 501.9. T80 does not use
+this stage in the tested views, so its timing differences cannot be attributed
+to transferred vertex work. The lit icosphere's -12.15% control also does not
+establish a geometry-stage benefit. Counters are scheduling diagnostics, not
+hardware cache/DRAM measurements. Current four-sample audit medians are BMW
+22.17/22.15 FPS and T80 58.95/59.26 FPS; both target thresholds remain open.
+
+The existing ordered-draw regression now crosses the 1,024-vertex threshold
+with 1,020/1,023/1,026/1,152/6,144-vertex ranges and partial 128-vertex tails.
+It compares 99 whole-frame/sample-plane hashes against eager flushing while
+reusing slots, changing inputs/state, blending and exercising storage drains.
+Full validation/publication status: build/diagnostics/queue-vertex-stage/validation.json.
+Design and next hypotheses: build/diagnostics/queue-vertex-stage/design.md.
+Raw evidence: build/perf/tigerlake-20261004/queue-vertex-stage*-summary.json.

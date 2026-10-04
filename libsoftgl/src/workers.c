@@ -788,8 +788,11 @@ static const sg_vert *sg_transform_range(softgl_ctx *c, int first, int count, in
     /* Positive: compact source count; negative: original-index storage. */
     p->prepared_transformed = compact ? count : -count;
     if (p->async_pending) {
-        /* Workers read only the old draw slot; prepare into main's arrays. */
-        sg_transform_slice(c, p, first, first + count, storage_first);
+        /* Old raster slots stay immutable. Idle queue workers may prepare
+         * disjoint slices of the next draw in the caller-owned arrays. */
+        if (p->async_pending == 3 && count >= 1024)
+            sg_queue_transform(c, p, first, count, storage_first);
+        else sg_transform_slice(c, p, first, first + count, storage_first);
         return p->transformed;
     }
     p->job_storage_first = storage_first;
