@@ -74,8 +74,8 @@ target_link_libraries(async_raster_contract PRIVATE softgl)
 add_test(NAME async_raster_contract COMMAND async_raster_contract)
 set_tests_properties(async_raster_contract PROPERTIES TIMEOUT 30)
 
-# Exact packed fields, collision-safe decoding, and large draw state/sample parity.
-foreach(contract raster_vertex_pack packed_stream)
+# Exact raster fields, collision-safe decoding, draw state/sample parity and clamps.
+foreach(contract raster_vertex_pack packed_stream simd_clamp)
     add_executable(${contract}_contract ${contract}.c)
     target_include_directories(${contract}_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
     target_link_libraries(${contract}_contract PRIVATE softgl)

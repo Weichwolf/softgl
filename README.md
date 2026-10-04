@@ -24,7 +24,7 @@ API-level compatibility with real OpenGL 1.5:
 
 323 entry points, 234 test cases plus three Tank and three BMW camera views. Each runs
 against softgl and Mesa llvmpipe, followed by a pixel comparison
-(720 image correctness checks plus thirteen renderer contracts when the
+(720 image correctness checks plus fourteen renderer contracts when the
 BMW asset is prepared; `ctest -C Bench` also includes the native benchmark).
 
 ## Model preparation
@@ -48,6 +48,7 @@ materials and original texture dimensions remain available. Use
 - **AoS 16-byte aligned vertex** with vec4 clip / ndc / color / normal / eye + per-unit UVs
 - **Separate RGBA8 color + f32 depth planes**, row 0 = bottom (GL convention)
 - **Optional MSAA sample buffers**, with color/depth/stencil per sample and one texture/combiner evaluation per covered pixel
+- **Direct WASM pseudo-min/max color clamps** preserve each combiner stage, NaN payloads and signed zero; native SSE4.1 retains its existing path
 - **Opaque 4× MSAA stores** reuse the rasterizer's tested sample mask and convert RGBA with SIMD; other fragment states retain the general writer
 - **Hierarchical 4× sample depth** rejects fully hidden triangles with conservative 4×4-cell bounds; the optional table is capped at 256KiB, and WASM keeps the 2×/4× raster loops separate from the common rasterizer
 - **Packed large raster draws** retain exact float NDC, front color, eye.z and every active UV set (64 bytes with one UV set); a 64-entry collision-safe vertex cache feeds the existing rasterizer, allowing formerly oversized draws to overlap preparation within the 2MiB submitted-vertex budget
