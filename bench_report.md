@@ -5,69 +5,38 @@
 | Rechner / CPUs | i5-1135G7; WSL2/Debian 13; 4 logisch |
 | Cache / Kern | L1D 48 KiB; L2 1.25 MiB; L3 8 MiB geteilt |
 | WASM SIMD / Streaming, 4 Threads | 47–52 GFLOP/s; 26–27 GB/s |
-| Toolchain | Emscripten 3.1.69; Mesa 25.0.7 |
-| Browser | Chromium 154; Firefox ESR 153.4 |
-| Auflösung / MSAA | 640×360; aus / 2× / 4× |
+| Toolchain / Browser | Emscripten 3.1.69; Mesa 25.0.7 / Chromium 154; Firefox 153.4 |
+| Auflösung / Threads | 640×360 / 3 Worker + Caller |
 | BMW / T-80, Dreiecke | 63.087 / 44.513 |
-| BMW, Vertices / Teile / Materialien | 48.428 / 41 / 23 |
-| BMW-Pack / SHA-256 | 19.69 MiB / `fae69ce4` |
-| WASM SHA-256 | `0a9df7ee` |
-| Worker automatisch / Raster-Bins, 4× | ≤3 + Caller / 32 |
-| MSAA Farbe + Tiefe / aktiver Bin | 225 KiB |
-| Bin- + Positionscache | ≤4 MiB gemeinsam; 64×1024 Positionen |
-| Raster-Vertex / T-80 | 160 → 64 Byte; Float-Präzision unverändert |
-| Queue-DOT3 Vertex / Cache je Kontext | 160 → 48–96 Byte / 64 + 3 Einträge; 10,72 KiB |
-| Geometrie pro asynchronem Draw | ≤2 MiB; volle / gepackte Vertices |
-| Additives 2×/4×-Blending | 8/16 Byte-Kanäle mit `i8x16.add_sat_u`; Float-Fallback |
-| UV-Eingaben | Identische Arrays einmal je Vertex/Job laden; exakte Float-Kopie |
-| Texturadressen / bilineare Loads | 4 Pixel SIMD; REPEAT/POT Bitmaske / 16×4 → 8×8 Byte bei Nachbar-Taps |
-| Geometrie-Stufe / Paket | Worker + Caller / ≤128 Vertices oder Dreiecke |
-| Dreiecksdeskriptor / Scratch | 28 Byte / ≤224 KiB; Resize ≤448 KiB |
-| Dreiecksstufen, BMW / T-80 | 8 / 3 pro Frame; Diagnose |
-| Dreiecke vorbereitet, BMW / T-80 | 51.894 / 17.424 pro Frame; Diagnose |
-| Worker-Anteil, BMW / T-80 | 39,93 % / 57,30 %; Diagnose |
-| Multitextur-Queue | ≤4 Draws; ≤2 MiB Vertex-Kapazität gemeinsam |
-| Hierarchische Tiefe, 4× / Budget | 230,06 KiB inkl. Header / ≤256 KiB |
+| BMW Vertices / Teile / Materialien | 48.428 / 41 / 23 |
+| BMW-Pack / WASM, SHA-256 | `fae69ce4` / `36aa8414` |
+| Aktiver 4×-Bin / MSAA Farbe+Tiefe | 20×360 Pixel / 225 KiB |
+| Positions+Bin-Cache / HZ / Draw-Geometrie | ≤4 MiB / 230 KiB / ≤2 MiB |
+| Queue / Dreieck-Scratch / Paket | ≤4 Draws / ≤224 KiB / ≤128 Vertices oder Dreiecke |
+| Raster-/Queue-Vertex / Decode-Cache | 160→64 / 48–96 Byte / 10,72 KiB je Kontext |
 
-| 4× MSAA; Render + Resolve / Frame | BMW F31 | T-80 |
+| Render+Resolve/Readback je Frame | BMW F31 | T-80 |
 | --- | --- | --- |
-| Ziel | >30 FPS | >60 FPS |
-| Audit 1 / 2, FPS | 24.23 / 24.17 | 62.83 / 62.95 |
-| Framezeit 1 / 2, ms | 41.28 / 41.37 | 15.92 / 15.88 |
-| Δ Zeit zu `f72016fd`, % | -0.88 / -0.37 | -1.29 / -0.97 |
-| Warm-up / Frames / AB/BA-Paare | 80 / 100 / 2×3 | 80 / 100 / 2×3 |
-
-| 2× MSAA; Render + Resolve / Frame | BMW F31 | T-80 |
-| --- | --- | --- |
-| FPS / Framezeit, ms | 25.36 / 39.43 | 67.23 / 14.88 |
-| Δ Zeit zu `f72016fd`, % | -0.83 | -2.43 |
-| Warm-up / Frames / AB/BA-Paare | 80 / 100 / 3 | 80 / 100 / 3 |
-
-| Ohne MSAA; Readback/Frame | BMW F31 | T-80 |
-| --- | --- | --- |
-| FPS / Framezeit, ms | 33.56 / 29.80 | 86.93 / 11.50 |
-| Δ Zeit zu `f72016fd`, % | -2.27 | -0.69 |
-| Warm-up / Frames / AB/BA-Paare | 80 / 100 / 3 | 80 / 100 / 3 |
+| Ziel, 4× MSAA | >30 FPS | >60 FPS |
+| 4× Audit 1 / 2, FPS | 24.50 / 24.29 | 64.59 / 64.36 |
+| 4× Framezeit 1 / 2, ms | 40.81 / 41.16 | 15.48 / 15.54 |
+| 4× Δ Zeit zu `0a9df7ee`, % | -1.12 / -0.04 | -3.19 / -4.07 |
+| 2× FPS / ms | 25.60 / 39.06 | 69.60 / 14.37 |
+| 2× Δ Zeit, % | -1.87 | -2.67 |
+| Ohne MSAA, FPS / ms | 33.63 / 29.73 | 88.64 / 11.28 |
+| Ohne MSAA, Δ Zeit, % | -0.83 | +0.68 |
+| Warm-up / Frames / AB/BA-Paare | 80 / 100 / 4×: 2×3; sonst 3 | 80 / 100 / 4×: 2×3; sonst 3 |
 
 | Prüfung | Ergebnis |
 | --- | --- |
-| Native / WASM-Mesa | 738/738 / 240/240 |
-| WASM zu `f72016fd` | 240 Bilder bytegleich |
-| Alle Tests, 2× / 4× MSAA zu `f72016fd` | je 234 Bilder bytegleich |
-| MSAA-Store, RGBA / Samples / Query-Frames | 262.144 / 131.072 / 256 bytegleich |
-| Modelle je aus/2×/4× | je 100 Hashes + 4 Bytevergleiche pro Modell identisch |
-| 2× Resolve / Farbkanal | alle 65.536 Byte-Paare exakt; ungerade Bildgröße |
-| ASan/UBSan + Leaks | 17/17 |
-| Vertex-Zugriff / Positionscache, WASM | 9 / 9 Verträge |
-| MSAA-Store / hierarchische Tiefe, WASM | je 1 Vertrag |
-| Hierarchische Tiefe, Writes / Zahlen / Query-Frames | 131.072 / 1.048.576 / 1.536 exakt |
-| SIMD-Clamp / Pixel-Sampler / Shader / DOT3, exakt | 18.087.936 / 331.447 / 128.054 / 300.000 |
-| Packen / Dreieck-Fetch / Zustand+Samples | 16 UV-Masken / 524.288 / 90 exakt |
-| Additive Bytes / Sample-Writes, exakt | 266.461.184 Kanäle / 65.536 |
-| Draw-Queue / Zustände+Samples / Worker | 135 Hashes exakt / aus+2×+4× / 1+3+8 |
-| Geometrie / MSAA / Standardpool, WASM | 9 / 8 / 18 Verträge |
-| Chromium / Firefox | je 234 Tests; 3×6 Benchmarks; Abbruch; 3 Worker bei 9 CPUs; MSAA-Wechsel |
-| Texturspeicher-Ende / inaktive Lanes | 23.360 exakt / NaN+∞ ohne Texelzugriffe |
-| Dreiecksstufe / serieller Producer | 54 Bild+Sample-Hashes exakt; aus+2×+4× / 1+3+8 Worker |
+| Native inkl. Bench / WASM-Mesa | 739/739 / 240/240 |
+| WASM-Bilder zu `0a9df7ee`, aus / 2× / 4× | 240 / 234 / 234 bytegleich |
+| Modelle je aus/2×/4×, pro Modell | 100 Hashes + 4 Bytevergleiche exakt |
+| ASan/UBSan + Leaks | 18/18 |
+| Scanline-Oracle, Frames / Sample-Masken | 4.480 / 46.688.256 exakt; SSE4.1 + WASM |
+| WASM Renderer / Queue / Dreieck / Pool | 51 / 135 / 54 / 18 exakt |
+| SIMD-Clamp / Sampler / Shader / DOT3 | 18.087.936 / 331.447 / 128.054 / 300.000 exakt |
+| Additive Bytekanäle / Sample-Writes | 266.461.184 / 65.536 exakt |
+| Chromium / Firefox | je 234 Tests + 18 Benchmarkzeilen; Abbruch; MSAA-Wechsel |
 | Geometrie / Bildtoleranzen | unverändert |
-| Rohdaten | `build/perf/tigerlake-20261004/` |
+| Rohdaten / Nachweis | `build/perf/tigerlake-20261004/` / `build/diagnostics/msaa-incremental-spans/` |

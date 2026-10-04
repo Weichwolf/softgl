@@ -1497,3 +1497,84 @@ measured model sequence. Both counter modules preserve the model images.
 More saved shading does not by itself offset visibility, scheduling and
 storage costs. Counter evidence: build/diagnostics/opaque-deferred-batched-counts/
 and build/diagnostics/opaque-deferred-batched-4m-counts/frame-equivalence-4.json.
+
+
+Conservative incremental MSAA scanlines against `0a9df7ee` reduce raster work
+without changing the coverage predicates. Three floating-point edge
+intersections are initialized per triangle and advanced once per row. They
+only propose excluded left/right tails: exact signed 64-bit edge extrema
+must prove each tail has no covered sample. Rounding or accumulated drift
+can therefore only leave extra work. Pixel/sample order, post-Z shading
+points, depth/query semantics and shader arithmetic remain unchanged. The
+shared template applies to both 2x and 4x; ordinary non-MSAA is unchanged.
+Spans are enabled only for bounding boxes at least eight pixels wide and
+64 pixels in area. No new retained allocation or worker coordination.
+
+Untimed counters on the previous production module show BMW visits
+2,840,601 bounding-box pixels versus 641,674 covered pixels per frame;
+T80 visits 1,022,817 versus 215,722. Whole-triangle HZ has already run at
+that point. Counters preserve 100 rotating frame hashes and four exact
+frames per model. These are logical operations, not cache-miss counters.
+Evidence: build/diagnostics/current-a99c3ad-raster-counts/.
+
+The incremental candidate `36aa8414` has two independent 4x audits,
+three complete quiet AB/BA pairs each, resolving every frame at 640x360,
+three workers plus caller, 80 warm-up and 100 measured frames per arm:
+
+| Scene | 4x frame-time change, audit 1 / 2 | FPS, audit 1 / 2 |
+| --- | --- | --- |
+| BMW | -1.12% / -0.04% | 24.50 / 24.29 |
+| T80 | -3.19% / -4.07% | 64.59 / 64.36 |
+
+T80 improves in all six pairs. BMW's initial gain does not reproduce in
+the confirmation audit, so no reliable 4x BMW speedup is claimed and its
+30 FPS target remains unmet. Three-pair 2x audit: BMW -1.87%, T80 -2.67%.
+Without MSAA: BMW -0.83%, T80 +0.68%, mixed pairs; no algorithmic change
+or reliable speedup is claimed for that path. A per-row multiplication
+prototype and a tighter sample-aware bounding-box variant were also
+image-exact, but did not provide a clearer two-model improvement.
+Raw data: build/perf/tigerlake-20261004/msaa-incremental-spans*-summary.json;
+validation: build/diagnostics/msaa-incremental-spans/validation.json.
+
+Three private tiled level-zero 2D texture layouts are rejected. Canonical
+texture storage and mipmap semantics are preserved; optional aligned
+64-byte tiles serve packet sampling, with paired loads only when physical
+addresses are adjacent. Upload builds the cache; mutation joins pending
+work before invalidation; allocation failure uses canonical storage.
+
+| Tile trial | BMW time | T80 time | Exact channel comparisons |
+| --- | --- | --- | --- |
+| 4x4 RGBA8 | -0.06% | +1.67% | 4,834,816 |
+| 8x2 RGBA8 | -0.68% | +1.88% | 5,729,792 |
+| 8x2 shared float scalar/packet sampling | +0.15% | +1.92% | 11,158,016 |
+
+Each trial has three quiet AB/BA pairs and exact model frames; no full
+compliance rerun after the performance rejection. The scalar-sharing trial
+also compares actual scalar sampling against a canonical texture clone.
+Evidence: build/diagnostics/texture-tile{4,8x2,8x2-float}/validation.json.
+
+A separate current-module CPU profile outlines packet, unit, 2D and scalar
+shader boundaries; the emitted WASM verifies those calls remain outlined.
+Across 300 frames, BMW MSAA raster self samples total 22.71 s across caller
+and three workers, versus 1.37 s in packet shading and 0.42 s in packet 2D
+sampling; cube sampling totals 4.09 s. T80 raster totals 6.62 s, packet 2D
+0.79 s. Sampling can include waiting/preemption and outlining changes code
+generation, so these are diagnostic locations, not CPU busy time or an
+acceptance benchmark. Logical HZ counters show BMW performs 10,755 cell
+refreshes and rejects 73,323 of 155,291 valid triangle-bound queries per
+frame. Evidence: build/diagnostics/current-a99c3ad-shader-profile/ and
+build/diagnostics/current-a99c3ad-hz-counts/.
+
+The independent full-frame scanline oracle checks 4,480 actual renderings
+and 46,688,256 exact sample masks in native SSE4.1 and WASM: thin/wide/tall
+triangles, negative and large coordinates, both MSAA modes, and disabled
+multisampling. It does not duplicate the optimized intersection algorithm.
+Full gates: 738 native tests plus benchmark_fp6, 18 sanitizer contracts,
+240 Mesa images, 240 exact previous-production images, 234 exact images
+at each of 2x/4x, model hashes/bytes in all three modes, 51 WASM renderer,
+135 queue, 54 triangle, eighteen default-pool and strict numeric/writer
+contracts. Canonical JS/WASM match the timed frozen module exactly.
+Both Chromium and Firefox pass 234 viewer scenes, all eighteen benchmark
+rows in off/2x/4x order, cancellation and MSAA restoration with three workers.
+Firefox exits successfully; its Python mozprofile destructor logs a cleanup
+ImportError after the passed result during interpreter shutdown.

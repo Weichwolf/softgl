@@ -65,9 +65,38 @@ void SG_MSAA_FUNCTION(softgl_ctx *c,
     int opaque_store = SG_MSAA_OPAQUE_CAN(c);
     sg_pixel_packet packet;
     packet.count = 0;
+    /* Approximate intersections propose bounds only. Exact integer edge
+     * predicates prove that excluded pixels cannot cover any sample. */
+    int use_spans = ix1-ix0 >= 8 && (int64_t)(ix1-ix0)*(iy1-iy0) >= 64;
+    float intersection_x[3] = {0.f,0.f,0.f}, intersection_step[3] = {0.f,0.f,0.f};
+    if (use_spans) for (int e = 0; e < 3; e++) if (dx[e]) {
+        float inverse_step = 1.f/(float)(dx[e]*256);
+        intersection_x[e] = -(float)(row[e]+max_offset[e]+bias[e])*inverse_step;
+        intersection_step[e] = (float)(dy[e]*256)*inverse_step;
+    }
     for (int y = iy0; y < iy1; y++) {
-        int64_t edge[3] = {row[0], row[1], row[2]};
-        for (int x = ix0; x < ix1; x++) {
+        int first_x = ix0, end_x = ix1;
+        if (use_spans) for (int e = 0; e < 3; e++) {
+            int64_t step = dx[e]*256;
+            int64_t at_first = row[e]+max_offset[e]+bias[e];
+            if (step > 0) {
+                if (at_first + step*(ix1-ix0-1) < 0) { end_x = first_x; break; }
+                if (at_first >= 0) continue;
+                float intersection = intersection_x[e];
+                int candidate = intersection <= 0.f ? ix0 : intersection >= (float)(ix1-ix0) ? ix1 : ix0+(int)intersection;
+                if (candidate > first_x && at_first + step*(candidate-ix0-1) < 0) first_x = candidate;
+            } else if (step < 0) {
+                if (at_first < 0) { end_x = first_x; break; }
+                if (at_first + step*(ix1-ix0-1) >= 0) continue;
+                float intersection = intersection_x[e];
+                int candidate = intersection < 0.f ? ix0 : intersection >= (float)(ix1-ix0-2) ? ix1 : ix0+(int)intersection+2;
+                if (candidate < end_x && at_first + step*(candidate-ix0) < 0) end_x = candidate;
+            } else if (at_first < 0) { end_x = first_x; break; }
+        }
+        int64_t edge[3] = {row[0]+dx[0]*256*(first_x-ix0),
+                          row[1]+dx[1]*256*(first_x-ix0),
+                          row[2]+dx[2]*256*(first_x-ix0)};
+        for (int x = first_x; x < end_x; x++) {
             unsigned coverage = 0;
             float depths[4];
             /* Edge extrema reject an empty pixel or accept all samples with
@@ -161,6 +190,7 @@ void SG_MSAA_FUNCTION(softgl_ctx *c,
             for (int e = 0; e < 3; e++) edge[e] += dx[e] * 256;
         }
         for (int e = 0; e < 3; e++) row[e] += dy[e] * 256;
+        if (use_spans) for (int e = 0; e < 3; e++) intersection_x[e] -= intersection_step[e];
     }
     for (int l = 0; l < packet.count; l++) {
         float color[4];
