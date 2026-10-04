@@ -14,7 +14,7 @@ async function main() {
     const errors = [];
     try {
         const context = await browser.newContext({ignoreHTTPSErrors: true});
-        // Fill the eight-worker pool to expose accidental overlapping contexts.
+        // Report nine CPUs to verify the four-context default and context recycling.
         await context.addInitScript(() => Object.defineProperty(navigator,
             'hardwareConcurrency', {get: () => 9}));
         const page = await context.newPage();
@@ -34,11 +34,11 @@ async function main() {
         const waitTest = () => page.waitForFunction(() => document.querySelector('#name').textContent.startsWith('test_'));
         const waitWorkers = n => page.waitForFunction(n => document.querySelector('#s-threads').textContent.startsWith(`${n} (`), n);
         await waitTank();
-        await waitWorkers(8);
+        await waitWorkers(3);
         for (const samples of ['2', '4', '0']) {
             await page.selectOption('#msaa', samples);
             await waitTank();
-            await waitWorkers(8);
+            await waitWorkers(3);
             await page.waitForTimeout(150);
             assert.equal(await page.locator('#msaa').inputValue(), samples);
         }
@@ -48,15 +48,15 @@ async function main() {
         });
         await page.click('#bmw');
         await waitBMW();
-        await waitWorkers(8);
+        await waitWorkers(3);
         await page.selectOption('#msaa', '4');
         await waitBMW();
-        await waitWorkers(8);
+        await waitWorkers(3);
         await page.waitForTimeout(200);
         await page.screenshot({path:path.join(path.dirname(output), 'bmw-msaa4.png')});
         await page.selectOption('#msaa', '0');
         await waitBMW();
-        await waitWorkers(8);
+        await waitWorkers(3);
         await page.screenshot({path:path.join(path.dirname(output), 'bmw.png')});
         await page.click('#bench');
         await page.waitForFunction(() => document.querySelector('#name').textContent === 'Benchmark: bmw');
@@ -73,7 +73,7 @@ async function main() {
         await page.waitForFunction(() => document.querySelector('#name').textContent === 'test_01_clear_black');
         await page.click('#tank');
         await waitTank();
-        await waitWorkers(8);
+        await waitWorkers(3);
         await page.click('#bench');
         await page.waitForFunction(() => document.querySelector('#bench').textContent === 'Stop Benchmark');
         await page.click('#bench');
@@ -82,7 +82,7 @@ async function main() {
         await waitBMW();
         await page.selectOption('#msaa', '2');
         await waitBMW();
-        await waitWorkers(8);
+        await waitWorkers(3);
         const before = await page.evaluate(() => window.previewHeartbeat);
         await page.click('#bench');
         await page.waitForFunction(() => document.querySelector('#bench-out').textContent.includes('# done.'), null, {timeout:240000});
@@ -104,7 +104,7 @@ async function main() {
         assert.ok(result.benchmark.includes('scene=bmw'));
         assert.ok(result.heartbeat - before >= 10, 'Browser event loop must run during the benchmark');
         assert.equal(result.reportedProcessors, 9);
-        assert.ok(result.threads.startsWith('8 ('));
+        assert.ok(result.threads.startsWith('3 ('));
         assert.equal(await page.locator('#render-cores').count(), 0);
         assert.equal(await page.locator('#render-mode').count(), 0);
         await page.click('#tests');
@@ -117,15 +117,15 @@ async function main() {
         }
         await page.click('#tank');
         await waitTank();
-        await waitWorkers(8);
+        await waitWorkers(3);
         assert.deepEqual(errors, []);
         fs.mkdirSync(path.dirname(output), {recursive: true});
         fs.writeFileSync(output, JSON.stringify({url, browser:browser.version(), ...result,
             heartbeatDuringBenchmark:result.heartbeat - before, displayedTests:count,
-            renderWorkers:8, bmwScene:true, cancelledBenchmark:true, offlineGeometry:true,
+            renderWorkers:3, bmwScene:true, cancelledBenchmark:true, offlineGeometry:true,
             multisampleModes:[0,2,4],
             wasmSha256, errors, passed:true}, null, 2) + '\n');
-        console.log(`Preview passed: BMW, ${count} tests, six scenes in each of three MSAA passes, cancellation and eight workers on nine reported processors.`);
+        console.log(`Preview passed: BMW, ${count} tests, six scenes in each of three MSAA passes, cancellation and three workers plus caller on nine reported processors.`);
     } finally {
         await browser.close();
     }

@@ -655,7 +655,11 @@ void sg_workers_init(softgl_ctx *c, int nworkers_hint) {
 #if defined(__EMSCRIPTEN__)
     /* The caller performs vertex and raster work too. Reserve its logical
      * CPU in the automatic pool; explicit worker counts remain available. */
-    if (nworkers_hint <= 0 && --n < 1) return;
+    if (nworkers_hint <= 0) {
+        if (--n < 1) return;
+        /* Three helpers plus caller are the fixed performance target. */
+        if (n > 3) n = 3;
+    }
 #endif
     if (n < 1) n = 1;
     if (n > SG_MAX_TILES) n = SG_MAX_TILES;

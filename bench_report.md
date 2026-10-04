@@ -11,8 +11,8 @@
 | BMW / T-80, Dreiecke | 63.087 / 44.513 |
 | BMW, Vertices / Teile / Materialien | 48.428 / 41 / 23 |
 | BMW-Pack / SHA-256 | 19.69 MiB / `fae69ce4` |
-| WASM SHA-256 | `58d27457` |
-| Worker / Raster-Bins, 4× | 3 + Caller / 32 |
+| WASM live / gemessen, SHA-256 | `700e203b` / `58d27457` |
+| Worker automatisch / Raster-Bins, 4× | ≤3 + Caller / 32 |
 | MSAA Farbe + Tiefe / aktiver Bin | 225 KiB |
 | Bin- + Positionscache | ≤4 MiB gemeinsam; 64×1024 Positionen |
 | Raster-Vertex / T-80 | 160 → 64 Byte; Float-Präzision unverändert |
@@ -61,7 +61,7 @@
 | Additive Bytes / Sample-Writes, exakt | 266.461.184 Kanäle / 65.536 |
 | Draw-Queue / Zustände+Samples / Worker | 99 Hashes exakt / aus+2×+4× / 1+3+8 |
 | Geometrie / MSAA / Standardpool, WASM | 9 / 8 / 18 Verträge |
-| Chromium / Firefox | je 234 Tests; 3×6 Benchmarks; Abbruch; 8 Worker; MSAA-Wechsel |
+| Chromium / Firefox | je 234 Tests; 3×6 Benchmarks; Abbruch; 3 Worker bei 9 CPUs; MSAA-Wechsel |
 | Inaktive Sampler-Lanes | NaN/∞-Koordinaten; keine Texelzugriffe |
 | Geometrie / Bildtoleranzen | unverändert |
 | Rohdaten | `build/perf/tigerlake-20261004/` |

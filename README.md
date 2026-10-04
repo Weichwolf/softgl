@@ -58,7 +58,7 @@ materials and original texture dimensions remain available. Use
 - **Pthread tile worker pool** with X-stripe bins; a four-slot queue overlaps filled multitexture draws while preserving order within each stripe, with a shared 2MiB budget for retained vertex arrays; ordinary full/packed draws retain their bounded snapshots, and the caller helps drain outstanding bins
 - **Position and ordered-bin cache** shares a 4MiB payload budget; VBO storage revisions and matrix/viewport keys preserve fresh attributes and lighting across draws
 - **Prepared vertex inputs** resolve array/VBO addresses once per joined vertex job; bounded SIMD loads serve float arrays, with the original conversions for other types; identical enabled UV arrays share one fetch within the job
-- **Automatic WASM pool** reserves one reported logical CPU for the calling thread; explicit worker counts remain available, and a one-CPU browser renders without raster workers
+- **Automatic WASM pool** uses at most three workers plus the calling thread, capped at the reported logical CPU count; explicit worker counts remain available, and a one-CPU browser renders without raster workers
 - **Single rasterizer** (`rasterizer.c::sg_raster_triangle`); per-lane scalar fallback only for stencil / polygon stipple / color logic op / occlusion queries (pixel-serial state)
 
 ## Building
