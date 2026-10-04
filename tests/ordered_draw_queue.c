@@ -5,7 +5,33 @@
 #define CHECK(x) do { if (!(x)) { \
     fprintf(stderr, "%s:%d: %s\n", __FILE__, __LINE__, #x); return 1; \
 } } while (0)
-enum { W = 65, H = 35, N = 2048, COUNT = N * 3, FIRST = 17, STAGES = 11 };
+enum { W = 65, H = 35, N = 2048, COUNT = N * 3, FIRST = 17, STAGES = 15 };
+
+/* Complete DOT3 chains exercise packed and raw queue slots with the same
+ * ordering oracle. Other combinations deliberately retain raw storage. */
+static void dot3_chain(int kind) {
+    for (int u = 0; u < 4; u++) {
+        glActiveTexture(GL_TEXTURE0 + u);
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
+        glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, u == 0 ? GL_DOT3_RGB :
+                  (kind == 1 && (u == 1 || u == 3) ? GL_ADD : GL_MODULATE));
+        glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, u == 0 ? GL_TEXTURE : GL_PREVIOUS);
+        glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, u == 0 ? GL_PRIMARY_COLOR :
+                  u == 1 ? (kind == 1 ? GL_CONSTANT : GL_PREVIOUS) :
+                  u == 2 ? (kind == 3 ? GL_PREVIOUS : GL_TEXTURE) :
+                  (kind == 1 ? GL_TEXTURE : GL_CONSTANT));
+        glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, u == 2 && kind == 1 ? GL_MODULATE : GL_REPLACE);
+        glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, u == 3 && kind != 1 ? GL_CONSTANT : GL_PREVIOUS);
+        glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_ALPHA, GL_TEXTURE);
+        glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_RGB, GL_SRC_COLOR);
+        glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_RGB, GL_SRC_COLOR);
+        glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA);
+        glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_ALPHA, GL_SRC_ALPHA);
+        const float tint[4] = {.15f, .25f, .35f, .5f};
+        glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, tint);
+    }
+    glActiveTexture(GL_TEXTURE0);
+}
 
 static int draw(softgl_ctx *c, int eager) {
     glDrawElements(GL_TRIANGLES, COUNT, GL_UNSIGNED_INT, NULL);
@@ -93,6 +119,49 @@ int sg_queue_contract(int samples, int workers, int eager, uint64_t result[STAGE
         if (eager) sg_workers_flush(c);
     }
     result[9] = frame(c);
+    /* Recycle all four slots across different exact UV layouts and raw draws.
+     * Constant textures omit UVs; nonconstant textures consume freshly copied
+     * client arrays. Compare this fixture against the prior raw-only module too. */
+    glDepthMask(GL_FALSE); glDepthFunc(GL_ALWAYS);
+    glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+    for (int kind = 1; kind <= 3; kind++) {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        for (int i = 0; i < 32; i++) {
+            for (int u = 0; u < 4; u++) {
+                glActiveTexture(GL_TEXTURE0 + u); glEnable(GL_TEXTURE_2D);
+                glBindTexture(GL_TEXTURE_2D, i & (1 << u) ? texture : white_texture);
+                glClientActiveTexture(GL_TEXTURE0 + u);
+                glTexCoordPointer(2, GL_FLOAT, 0, uv); glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+            }
+            dot3_chain(kind);
+            if (i & 1) {
+                glActiveTexture(GL_TEXTURE0);
+                glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+            }
+            glColor4f(.65f, .8f, .9f, .25f);
+            for (int j = FIRST; j < FIRST + COUNT; j++) uv[j][0] = (i & 2) ? .25f : .75f;
+            glDrawElements(GL_TRIANGLES, stage_counts[i % 5], GL_UNSIGNED_INT, NULL);
+            CHECK(((sg_worker_pool *)c->workers)->async_pending == 3);
+            if (eager) sg_workers_flush(c);
+        }
+        result[10 + kind] = frame(c);
+    }
+    /* Clipped vertices use the second packed source range and must survive
+     * source-array reuse just like all-inside transformed vertices. */
+    dot3_chain(1);
+    const GLdouble plane[4] = {1., 0., 0., -15.};
+    glClipPlane(GL_CLIP_PLANE0, plane); glEnable(GL_CLIP_PLANE0);
+    for (int i = 0; i < 8; i++) CHECK(!draw(c, eager));
+    result[14] = frame(c); glDisable(GL_CLIP_PLANE0);
+    for (int u = 0; u < 4; u++) {
+        glActiveTexture(GL_TEXTURE0 + u);
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+        if (u >= 2) glDisable(GL_TEXTURE_2D);
+        else glBindTexture(GL_TEXTURE_2D, u ? white_texture : texture);
+        glClientActiveTexture(GL_TEXTURE0 + u);
+        if (u) glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+    }
+    glActiveTexture(GL_TEXTURE0); glClientActiveTexture(GL_TEXTURE0);
     glColor4f(1,1,1,1); glColorMask(GL_TRUE,GL_TRUE,GL_TRUE,GL_TRUE);
     glDepthMask(GL_TRUE); glDepthFunc(GL_LEQUAL); glDisable(GL_BLEND);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
@@ -200,6 +269,6 @@ int main(void) {
         for (int i=0;i<STAGES;i++) printf(" %016llx",(unsigned long long)queue[i]);
         putchar('\n');
     }
-    puts("99 queue/eager state and full sample-plane hashes exact");
+    puts("135 queue/eager state and full sample-plane hashes exact");
     return 0;
 }

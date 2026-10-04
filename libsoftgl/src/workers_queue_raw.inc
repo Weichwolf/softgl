@@ -5,7 +5,7 @@
 typedef struct {
     sg_async_raster *draw;
     uint32_t pending, claimed;
-    int sort;
+    int sort, packed_mode;
 } sg_queue_slot;
 
 struct sg_stream_queue {
@@ -33,13 +33,18 @@ static int sg_queue_multitexture(const softgl_ctx *c) {
 }
 
 static size_t sg_queue_bytes(const sg_async_raster *r) {
-    return ((size_t)r->transformed_cap + (size_t)r->vpool_cap) * sizeof(sg_vert);
+    return ((size_t)r->transformed_cap + (size_t)r->vpool_cap) * sizeof(sg_vert) + r->packed.capacity;
 }
 
-static void sg_queue_free_vertices(sg_async_raster *r) {
+static void sg_queue_free_raw_vertices(sg_async_raster *r) {
     sg_aligned_free(r->transformed); r->transformed = NULL; r->transformed_cap = 0;
     sg_aligned_free(r->vpool); r->vpool = NULL; r->vpool_cap = 0;
     free(r->inside_frustum); r->inside_frustum = NULL;
+}
+
+static void sg_queue_free_vertices(sg_async_raster *r) {
+    sg_queue_free_raw_vertices(r);
+    sg_aligned_free(r->packed.data); memset(&r->packed, 0, sizeof(r->packed));
 }
 
 /* Caller holds p->mtx, including when waiting workers inspect the queue. */
@@ -65,6 +70,29 @@ static sg_queue_slot *sg_queue_claim(struct sg_stream_queue *q, int *bin) {
     return NULL;
 }
 
+/* Each render context has private decoded values. Tags reset for every bin;
+ * retained float values contain no references to a retired draw's storage. */
+static _Thread_local sg_packed_vertex_cache sg_queue_packed_cache;
+#ifdef __EMSCRIPTEN__
+__attribute__((used, noinline))
+#else
+static __attribute__((noinline))
+#endif
+void sg_queue_render_packed(sg_async_raster *r, sg_worker_bin *b, int sort) {
+    sg_packed_vertex_cache *cache = &sg_queue_packed_cache;
+    for (int j = 0; j < SG_PACKED_VERTEX_CACHE_SIZE; j++) cache->tags[j] = UINT32_MAX;
+    for (int i = 0; i < b->count; i++) {
+        const sg_worker_tri *t = &b->tris[sort ? b->sort_keys[i] : (uint32_t)i];
+        uint32_t marker = t->v[0] & SG_BIN_TRANSFORMED_VERTEX;
+        uint64_t pinned = 0;
+        const sg_vert *v0 = sg_packed_vertex_fetch(&r->packed, cache, t->v[0], &pinned, 0);
+        const sg_vert *v1 = sg_packed_vertex_fetch(&r->packed, cache, t->v[1] | marker, &pinned, 1);
+        const sg_vert *v2 = sg_packed_vertex_fetch(&r->packed, cache, t->v[2] | marker, &pinned, 2);
+        sg_raster_triangle_tile_prepared(&r->state, v0, v1, v2,
+            b->ix0, b->ix1, &r->texture_context);
+    }
+}
+
 static void sg_queue_render(sg_worker_pool *p, sg_queue_slot *slot, int index) {
     sg_async_raster *r = slot->draw;
     sg_worker_bin *b = &r->bins[index];
@@ -72,7 +100,8 @@ static void sg_queue_render(sg_worker_pool *p, sg_queue_slot *slot, int index) {
     b->query_samples = 0;
     sg_raster_bin = b;
     if (slot->sort) sg_bin_sort_z(b);
-    for (int i = 0; i < n; i++) {
+    if (slot->packed_mode) sg_queue_render_packed(r, b, slot->sort);
+    else for (int i = 0; i < n; i++) {
         const sg_worker_tri *t = &b->tris[slot->sort ? b->sort_keys[i] : (uint32_t)i];
         const sg_vert *src = (t->v[0] & SG_BIN_TRANSFORMED_VERTEX) ? r->transformed : r->vpool;
         sg_raster_triangle_tile_prepared(&r->state,
@@ -221,6 +250,32 @@ static void sg_queue_destroy(sg_worker_pool *p) {
 }
 
 static int sg_queue_submit(softgl_ctx *c, sg_worker_pool *p) {
+    sg_tex_tri_ctx texture_context;
+    sg_tex_tri_prepare(c, &texture_context);
+    size_t count = (p->prepared_transformed > 0 ? (size_t)p->prepared_transformed : 0) +
+        (size_t)p->vpool_count;
+    /* Complete DOT3 chains have proven sampler dependencies. Keep the exact
+     * float fields consumed by filled rasterization, omitting constant UVs.
+     * Small and unrecognized draws retain their zero-copy raw ownership swap. */
+    int packed_mode = texture_context.combine_kind && p->prepared_transformed >= 0 && count >= 1024;
+    sg_packed_raster_vertices layout = {0};
+    size_t packed_capacity = 0;
+    if (packed_mode) {
+        unsigned uv_mask = 0;
+        for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
+            if ((texture_context.sample_mask & (1u << u)) &&
+                !texture_context.unit[u].constant_color_valid)
+                uv_mask |= 1u << u;
+        }
+        sg_packed_vertex_layout(&layout, uv_mask, p->prepared_transformed);
+        size_t stride = (size_t)layout.stride * sizeof(sg_vec4);
+        if (count > SG_STREAM_BYTES / stride) return 0;
+        size_t need = count * stride;
+        packed_capacity = 16384;
+        while (packed_capacity < need) packed_capacity *= 2;
+        if (packed_capacity > SG_STREAM_BYTES) packed_capacity = SG_STREAM_BYTES;
+    }
+
     if (!p->stream_queue) {
         struct sg_stream_queue *q = calloc(1, sizeof(*q));
         if (!q) return 0;
@@ -255,11 +310,12 @@ static int sg_queue_submit(softgl_ctx *c, sg_worker_pool *p) {
         for (int i = 0; i < SG_QUEUE_SLOTS; i++) bytes += sg_queue_bytes(q->slots[i].draw);
         if (q->count < SG_QUEUE_SLOTS) {
             sg_async_raster *r = slot->draw;
-            size_t projected = bytes;
-            if (p->prepared_transformed)
+            size_t projected = packed_mode ? bytes - sg_queue_bytes(r) + packed_capacity
+                : bytes - r->packed.capacity;
+            if (!packed_mode && p->prepared_transformed)
                 projected = projected - (size_t)r->transformed_cap * sizeof(sg_vert) +
                     (size_t)p->transformed_cap * sizeof(sg_vert);
-            if (p->vpool_count)
+            if (!packed_mode && p->vpool_count)
                 projected = projected - (size_t)r->vpool_cap * sizeof(sg_vert) +
                     (size_t)p->vpool_cap * sizeof(sg_vert);
             if (projected > SG_STREAM_BYTES) {
@@ -269,8 +325,9 @@ static int sg_queue_submit(softgl_ctx *c, sg_worker_pool *p) {
                 }
                 bytes = 0;
                 for (int i = 0; i < SG_QUEUE_SLOTS; i++) bytes += sg_queue_bytes(q->slots[i].draw);
-                projected = bytes + ((p->prepared_transformed ? (size_t)p->transformed_cap : 0) +
-                    (p->vpool_count ? (size_t)p->vpool_cap : 0)) * sizeof(sg_vert);
+                projected = bytes + (packed_mode ? packed_capacity :
+                    ((p->prepared_transformed ? (size_t)p->transformed_cap : 0) +
+                     (p->vpool_count ? (size_t)p->vpool_cap : 0)) * sizeof(sg_vert));
             }
             if (projected <= SG_STREAM_BYTES) {
                 pthread_mutex_unlock(&p->mtx);
@@ -281,8 +338,26 @@ static int sg_queue_submit(softgl_ctx *c, sg_worker_pool *p) {
         sg_queue_help(p, before);
     }
     sg_async_raster *r = slot->draw;
+    if (packed_mode) {
+        sg_queue_free_raw_vertices(r);
+        if (r->packed.capacity != packed_capacity) {
+            sg_aligned_free(r->packed.data);
+            r->packed.data = NULL; r->packed.capacity = 0;
+            r->packed.data = sg_aligned_alloc(packed_capacity, 64);
+            if (!r->packed.data) return 0;
+            r->packed.capacity = packed_capacity;
+        }
+        layout.data = r->packed.data; layout.capacity = r->packed.capacity;
+        r->packed = layout;
+        if (layout.transformed_count)
+            sg_packed_vertex_write(&r->packed, 0, p->transformed, layout.transformed_count);
+        if (p->vpool_count)
+            sg_packed_vertex_write(&r->packed, layout.transformed_count, p->vpool, p->vpool_count);
+    } else {
+        sg_aligned_free(r->packed.data); memset(&r->packed, 0, sizeof(r->packed));
+    }
     r->state = *c;
-    sg_tex_tri_prepare(c, &r->texture_context);
+    r->texture_context = texture_context;
     for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
         if (r->texture_context.unit[u].tex) {
             r->textures[u] = *r->texture_context.unit[u].tex;
@@ -294,17 +369,18 @@ static int sg_queue_submit(softgl_ctx *c, sg_worker_pool *p) {
         sg_worker_bin tmp = p->bins[i]; p->bins[i] = r->bins[i]; r->bins[i] = tmp;
         if (r->bins[i].count) pending |= UINT32_C(1) << i;
     }
-    if (p->prepared_transformed) {
+    if (!packed_mode && p->prepared_transformed) {
         sg_vert *v = p->transformed; p->transformed = r->transformed; r->transformed = v;
         uint8_t *inside = p->inside_frustum; p->inside_frustum = r->inside_frustum; r->inside_frustum = inside;
         int cap = p->transformed_cap; p->transformed_cap = r->transformed_cap; r->transformed_cap = cap;
     }
-    if (p->vpool_count) {
+    if (!packed_mode && p->vpool_count) {
         sg_vert *v = p->vpool; p->vpool = r->vpool; r->vpool = v;
         int cap = p->vpool_cap; p->vpool_cap = r->vpool_cap; r->vpool_cap = cap;
     }
     p->vpool_count = 0; p->prepared_transformed = 0;
     slot->sort = sg_pool_sort_safe(c);
+    slot->packed_mode = packed_mode;
     pthread_mutex_lock(&p->mtx);
     slot->pending = pending; slot->claimed = 0;
     q->count++;
