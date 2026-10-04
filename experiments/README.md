@@ -1406,3 +1406,54 @@ timings: build/perf/tigerlake-20261004/queue-packed-dot3*-summary.json.
 An outlined queue-submission follow-up is prepared separately under
 build/diagnostics/queue-packed-dot3-outlined. It has not been compiled,
 measured or integrated; it is not part of this retained improvement.
+
+
+## Parallel ordered triangle preparation (2026-10-04)
+
+The existing three workers plus caller also prepare triangle descriptors.
+Each disjoint 128-triangle slice computes the original float area/culling,
+fixed-point conservative bounds, bin range and depth key. A 28-byte descriptor
+records the result; the caller appends bins in original primitive order and
+processes clipped triangles through the existing path. The retained scratch
+is capped at 8,192 records (224KiB), with at most 448KiB during allocation
+growth. Work boundaries start on separate 64-byte cache lines. Queue workers
+finish claimed raster bins before taking the finite geometry stage; ordinary
+idle pools share the same stage. Small/ineligible jobs, two-sided lighting,
+user clip planes and existing single-draw asynchronous raster epochs keep
+their prior path. Position/bin cache qualification and ownership are unchanged.
+
+Candidate 0a9df7ee versus f72016fd improves all six BMW four-sample pairs;
+the independent quiet three-pair audits give -0.88/-0.37% frame time. T80
+improves five of six (-1.29/-0.97%), with one +0.26%. Two-sample controls
+improve all three pairs for both models (BMW -0.83%, T80 -2.43%); off-MSAA
+BMW improves all three (-2.27%), while T80 is mixed (-0.69%, including one
++6.52% outlier). All twelve complete AB/BA pairs pass the unchanged activity
+guard on attempt one, 640x360, three workers plus caller, 80 warm-up and
+100 timed frames per arm with resolve/readback every frame. The two-sample
+lit icosphere is mixed (+1.50%); no stable gain is claimed. Four-sample
+medians are BMW 24.23/24.17 FPS, T80 62.83/62.95 FPS; BMW >30 FPS remains open.
+
+Separate counters preserve 100 model hashes and four raw frames each.
+BMW prepares 51,894 triangles through eight stage jobs per frame, all ready,
+with 39.93% mean worker participation; T80 prepares 17,424 through three
+jobs, 57.30% worker participation, with clipped/rejected counts varying by
+angle. These are scheduling diagnostics, not cache counters or acceptance
+timings. Evidence: build/diagnostics/parallel-triangle-stage-counts/
+frame-equivalence-4.json. The native isolated build initially lacked wrapper
+source links; its failed configuration and empty CTest run are not accepted
+as tests. After adding the sources, all sixteen preliminary contracts pass.
+Preexisting warnings in unchanged dlist.c/evaluators.c are recorded separately.
+
+A new triangle_stage contract compares large staged draws with the original
+serial producer using <=512-triangle draws, preserving the exact primitive
+order and bin layout. Its 54 whole-frame/sample-plane hashes cover u8/u16/u32
+indices, 1,023/1,024/1,152/8,192/8,193-triangle boundaries, winding, culling,
+clipping, an older queued draw, off/2x/4x and 1/3/8 workers. It passes native,
+sanitized and WASM builds and checks retained scratch capacity. Final gates:
+738 native checks, seventeen ASan/UBSan/leak contracts, 240 Mesa and exact
+baseline images, 234 exact images per MSAA mode, all rotating model frames,
+51 WASM renderer + 135 queue + 54 triangle + eighteen default-pool contracts,
+strict numeric/writer checks and both browser previews. Canonical JS/WASM
+are identical to the measured frozen module. Validation/publication:
+build/diagnostics/parallel-triangle-stage/validation.json and publication-proof.json.
+Timings: build/perf/tigerlake-20261004/parallel-triangle-stage*-summary.json.

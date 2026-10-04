@@ -24,7 +24,7 @@ API-level compatibility with real OpenGL 1.5:
 
 323 entry points, 234 test cases plus three Tank and three BMW camera views. Each runs
 against softgl and Mesa llvmpipe, followed by a pixel comparison
-(720 image correctness checks plus sixteen renderer contracts when the
+(720 image correctness checks plus seventeen renderer contracts when the
 BMW asset is prepared; `ctest -C Bench` also includes the native benchmark).
 
 ## Model preparation
@@ -59,6 +59,7 @@ materials and original texture dimensions remain available. Use
 - **Compact DOT3 queue payloads** retain exact float raster fields and UVs consumed by nonconstant samplers, using 48–96 bytes per vertex and a private 64-entry decoded cache per rendering thread; small and other-state draws retain raw ownership swaps
 - **Position and ordered-bin cache** shares a 4MiB payload budget; VBO storage revisions and matrix/viewport keys preserve fresh attributes and lighting across draws
 - **Prepared vertex inputs** resolve array/VBO addresses once per joined vertex job; bounded SIMD loads serve float arrays, with the original conversions for other types; identical enabled UV arrays share one fetch within the job
+- **Parallel triangle preparation** shares the same workers and caller for 128-triangle slices; exact culling, bounds and bin descriptors use at most 224KiB retained scratch (448KiB during growth), then the caller appends in primitive order; clipping and small/ineligible jobs retain the original path
 - **Automatic WASM pool** uses at most three workers plus the calling thread, capped at the reported logical CPU count; explicit worker counts remain available, and a one-CPU browser renders without raster workers
 - **Single rasterizer** (`rasterizer.c::sg_raster_triangle`); per-lane scalar fallback only for stencil / polygon stipple / color logic op / occlusion queries (pixel-serial state)
 

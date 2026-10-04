@@ -189,6 +189,67 @@ void sg_workers_bin_transformed_tri(softgl_ctx *c, const sg_vert *v0,
     }
 }
 
+/* No allocations or shared bin writes in the parallel preparation stage. */
+static uint32_t sg_triangle_index(const sg_worker_pool *p, int index) {
+    switch (p->triangle_index_type) {
+        case GL_UNSIGNED_BYTE: return p->triangle_indices[index];
+        case GL_UNSIGNED_SHORT: return ((const uint16_t *)p->triangle_indices)[index];
+        default: return ((const uint32_t *)p->triangle_indices)[index];
+    }
+}
+
+static void sg_prepare_triangle_slice(softgl_ctx *c, sg_worker_pool *p, int first, int end) {
+    for (int t = first; t < end; t++) {
+        sg_prepared_tri *r = &p->triangle_scratch[t];
+        uint32_t i0 = sg_triangle_index(p, t * 3) - p->triangle_index_min;
+        uint32_t i1 = sg_triangle_index(p, t * 3 + 1) - p->triangle_index_min;
+        uint32_t i2 = sg_triangle_index(p, t * 3 + 2) - p->triangle_index_min;
+        r->tri.v[0] = i0; r->tri.v[1] = i1; r->tri.v[2] = i2;
+        r->kind = SG_TRI_GENERAL;
+        if (!(p->inside_frustum[i0] && p->inside_frustum[i1] && p->inside_frustum[i2])) continue;
+        r->kind = SG_TRI_REJECT;
+        const sg_vert *v0 = &p->transformed[i0], *v1 = &p->transformed[i1], *v2 = &p->transformed[i2];
+        float ax = v1->ndc.x - v0->ndc.x, ay = v1->ndc.y - v0->ndc.y;
+        float bx = v2->ndc.x - v0->ndc.x, by = v2->ndc.y - v0->ndc.y;
+        float area2 = ax * by - ay * bx;
+        if (fabsf(area2) < 1e-10f) continue;
+        int front = c->front_face == GL_CCW ? area2 > 0.f : area2 < 0.f;
+        if (c->cull_enabled && (c->cull_face == GL_FRONT_AND_BACK ||
+            front == (c->cull_face == GL_FRONT))) continue;
+        if (area2 < 0.f) {
+            const sg_vert *v = v1; v1 = v2; v2 = v;
+            uint32_t index = i1; i1 = i2; i2 = index;
+        }
+        if (!sg_tri_xbounds(v0, v1, v2, c->fb.samples && c->multisample, &r->ix0, &r->ix1)) continue;
+        int first_bin, end_bin;
+        if (!sg_bin_range(p, c->fb.w, r->ix0, r->ix1, &first_bin, &end_bin)) continue;
+        r->first = (uint8_t)first_bin; r->end = (uint8_t)end_bin;
+        float z0 = v0->ndc.z, z1 = v1->ndc.z, z2 = v2->ndc.z;
+        float zmin = z0 < z1 ? z0 : z1; if (z2 < zmin) zmin = z2;
+        r->tri = (sg_worker_tri){{i0 | SG_BIN_TRANSFORMED_VERTEX, i1, i2}, zmin};
+        r->kind = SG_TRI_READY;
+    }
+}
+
+static void sg_prepare_triangle_run(softgl_ctx *c, sg_worker_pool *p) {
+    for (;;) {
+        int first = atomic_fetch_add_explicit(&p->triangle_next, 128, memory_order_relaxed);
+        if (first >= p->triangle_count) break;
+        int end = first + 128; if (end > p->triangle_count) end = p->triangle_count;
+        sg_prepare_triangle_slice(c, p, first, end);
+    }
+}
+
+void sg_workers_bin_prepared_tri(softgl_ctx *c, const sg_prepared_tri *r) {
+    sg_worker_pool *p = (sg_worker_pool *)c->workers;
+    for (int t = r->first; t < r->end; t++) {
+        sg_worker_bin *b = &p->bins[t];
+        if (r->ix1 <= b->ix0 || r->ix0 >= b->ix1) continue;
+        sg_bin_grow(b, b->count + 1);
+        b->tris[b->count++] = r->tri;
+    }
+}
+
 /* Cache raw bin order, before optional raster sorting. Position/index VBO
  * revisions and complete matrix/viewport/culling keys make hits independent of
  * colors, materials, textures, blending and query state. No client-memory cache. */
@@ -626,6 +687,8 @@ static void *sg_worker_main(void *arg) {
             int s = first + (int)((int64_t)tid * count / n);
             int e = first + (int)((int64_t)(tid + 1) * count / n);
             sg_transform_slice(c, p, s, e, p->job_storage_first);
+        } else if (job == SG_JOB_TRIANGLES) {
+            sg_prepare_triangle_run(c, p);
         } else if (job == SG_JOB_ASYNC_RASTER) {
             sg_async_raster *r = p->async_raster;
             sg_drain_bins(&r->state, p, r->bins, r->vpool,
@@ -698,6 +761,7 @@ void sg_workers_init(softgl_ctx *c, int nworkers_hint) {
         p->bins[t].cap       = 0;
     }
 
+    atomic_init(&p->triangle_next, 0);
     c->workers = p;
 
     /* Spawn AFTER c->workers is wired so sg_worker_main's ctx->workers read sees it. */
@@ -732,6 +796,7 @@ void sg_workers_shutdown(softgl_ctx *c) {
     if (p->vpool)       sg_aligned_free(p->vpool);
     if (p->transformed) sg_aligned_free(p->transformed);
     free(p->inside_frustum);
+    sg_aligned_free(p->triangle_scratch);
     free(p->column_bin);
     sg_geometry_cache_destroy(p->geometry_cache);
     sg_stream_destroy(p->async_raster, p->nbins);
@@ -795,7 +860,7 @@ static const sg_vert *sg_transform_range(softgl_ctx *c, int first, int count, in
         /* Old raster slots stay immutable. Idle queue workers may prepare
          * disjoint slices of the next draw in the caller-owned arrays. */
         if (p->async_pending == 3 && count >= 1024)
-            sg_queue_transform(c, p, first, count, storage_first);
+            sg_queue_transform(c, p, first, count, storage_first, 0);
         else sg_transform_slice(c, p, first, first + count, storage_first);
         return p->transformed;
     }
@@ -822,6 +887,43 @@ static const sg_vert *sg_transform_range(softgl_ctx *c, int first, int count, in
     /* Reset default job type so subsequent flushes do the right thing. */
     atomic_store_explicit(&p->job_type, SG_JOB_RASTER, memory_order_release);
     return p->transformed;
+}
+
+const sg_prepared_tri *sg_workers_prepare_triangles(softgl_ctx *c,
+    const uint8_t *indices, GLenum type, uint32_t minimum, int count) {
+    sg_worker_pool *p = (sg_worker_pool *)c->workers;
+    if (!p || !p->nworkers || !indices ||
+        (type != GL_UNSIGNED_BYTE && type != GL_UNSIGNED_SHORT && type != GL_UNSIGNED_INT) ||
+        count < 1024 || count > SG_TRIANGLE_STAGE_MAX ||
+        (p->async_pending && p->async_pending != 3)) return NULL;
+    if (p->triangle_capacity < count) {
+        sg_prepared_tri *next = sg_aligned_alloc((size_t)count * sizeof(*next), 64);
+        if (!next) return NULL;
+        sg_aligned_free(p->triangle_scratch); p->triangle_scratch = next;
+        p->triangle_capacity = count;
+    }
+    p->triangle_indices = indices; p->triangle_index_type = type;
+    p->triangle_index_min = minimum; p->triangle_count = count;
+    if (p->async_pending == 3) {
+        sg_queue_transform(c, p, 0, count, 0, 1);
+    } else {
+        atomic_store_explicit(&p->triangle_next, 0, memory_order_relaxed);
+        atomic_store_explicit(&p->job_type, SG_JOB_TRIANGLES, memory_order_release);
+        atomic_store_explicit(&p->done_count, 0, memory_order_release);
+        pthread_mutex_lock(&p->mtx);
+        atomic_fetch_add_explicit(&p->gen, 1, memory_order_acq_rel);
+        pthread_cond_broadcast(&p->wake);
+        pthread_mutex_unlock(&p->mtx);
+        sg_prepare_triangle_run(c, p);
+        while (atomic_load_explicit(&p->done_count, memory_order_acquire) < p->nworkers) {
+#if defined(__x86_64__) || defined(__i386__)
+            __builtin_ia32_pause();
+#endif
+        }
+        atomic_store_explicit(&p->job_type, SG_JOB_RASTER, memory_order_release);
+    }
+    p->triangle_indices = NULL;
+    return p->triangle_scratch;
 }
 
 const sg_vert *sg_workers_transform_range(softgl_ctx *c, int first, int count) {

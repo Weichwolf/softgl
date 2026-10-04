@@ -133,7 +133,8 @@ static int sg_queue_vertex_claim(struct sg_stream_queue *q, int *first, int *end
 
 static void sg_queue_vertex_run(sg_worker_pool *p, int first, int end) {
     struct sg_stream_queue *q = p->stream_queue;
-    sg_transform_slice(q->vertex_context, p, first, end, q->vertex_storage_first);
+    if (q->vertex_active == 2) sg_prepare_triangle_slice(q->vertex_context, p, first, end);
+    else sg_transform_slice(q->vertex_context, p, first, end, q->vertex_storage_first);
     atomic_fetch_add_explicit(&q->vertex_done, end - first, memory_order_release);
 }
 
@@ -169,14 +170,14 @@ static void sg_queue_worker(sg_worker_pool *p) {
  * Workers finish their claimed raster bins before joining this finite stage.
  * The caller processes the same slices, with no fifth coordinator thread. */
 static void sg_queue_transform(softgl_ctx *c, sg_worker_pool *p,
-                               int first, int count, int storage_first) {
+                               int first, int count, int storage_first, int triangles) {
     struct sg_stream_queue *q = p->stream_queue;
     pthread_mutex_lock(&p->mtx);
     q->vertex_context = c;
     q->vertex_next = first; q->vertex_end = first + count;
     q->vertex_storage_first = storage_first;
     atomic_store_explicit(&q->vertex_done, 0, memory_order_relaxed);
-    q->vertex_active = 1;
+    q->vertex_active = triangles ? 2 : 1;
     pthread_cond_broadcast(&p->wake);
     pthread_mutex_unlock(&p->mtx);
     for (;;) {

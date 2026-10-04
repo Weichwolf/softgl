@@ -45,6 +45,17 @@ typedef struct {
     uint8_t        _pad[64];
 } sg_worker_bin;
 
+/* Bounded preparation scratch: workers write disjoint records; the caller
+ * appends bins in original primitive order and handles general clipping. */
+enum { SG_TRI_REJECT, SG_TRI_READY, SG_TRI_GENERAL };
+#define SG_TRIANGLE_STAGE_MAX 8192
+typedef struct {
+    sg_worker_tri tri;
+    int ix0, ix1;
+    uint8_t first, end, kind;
+} sg_prepared_tri;
+_Static_assert(sizeof(sg_prepared_tri) == 28, "triangle descriptor size");
+
 /* Non-NULL only while a thread drains its exclusively claimed raster bin.
  * Points/lines update query objects directly; bin drains count locally. */
 extern _Thread_local sg_worker_bin *sg_raster_bin;
@@ -65,6 +76,7 @@ enum {
     SG_JOB_VERTEX = 1,   /* transform a slice of [job_first..job_first+job_count) */
     SG_JOB_ASYNC_RASTER = 2, /* drain the immutable full-vertex snapshot */
     SG_JOB_PACKED_RASTER = 3, /* drain an immutable exact packed large draw */
+    SG_JOB_TRIANGLES = 5, /* joined triangle descriptor stage */
     SG_JOB_STREAM_QUEUE = 4, /* ordered multitexture draw queue */
 };
 
@@ -134,6 +146,12 @@ typedef struct {
     atomic_int      next_bin;    /* each claimed bin has exactly one owner */
     uint8_t        *column_bin;  /* screen column -> overlapping bin */
     struct sg_stream_queue *stream_queue; /* bounded ordered multitexture draws */
+    sg_prepared_tri *triangle_scratch;
+    int triangle_capacity, triangle_count;
+    const uint8_t *triangle_indices;
+    GLenum triangle_index_type;
+    uint32_t triangle_index_min;
+    atomic_int triangle_next;
 } sg_worker_pool;
 
 void sg_workers_init(softgl_ctx *c, int nworkers_hint);
@@ -149,6 +167,12 @@ void sg_workers_bin_tri(softgl_ctx *c, const sg_vert *v0, const sg_vert *v1, con
  * must flush or publish its bins before transforming another vertex range. */
 void sg_workers_bin_transformed_tri(softgl_ctx *c, const sg_vert *v0,
                                     const sg_vert *v1, const sg_vert *v2);
+
+/* Prepare at most SG_TRIANGLE_STAGE_MAX compact indexed triangles. NULL
+ * keeps the caller's serial path. The returned records last until next job. */
+const sg_prepared_tri *sg_workers_prepare_triangles(softgl_ctx *c,
+    const uint8_t *indices, GLenum type, uint32_t minimum, int count);
+void sg_workers_bin_prepared_tri(softgl_ctx *c, const sg_prepared_tri *r);
 
 /* Join the immutable draw and drain producer bins. Framebuffer consumers,
  * texture image mutation/deletion and query/mode handovers must drain first.

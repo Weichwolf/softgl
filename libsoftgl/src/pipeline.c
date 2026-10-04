@@ -772,15 +772,27 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
                 int all_inside = geometry != NULL;
                 int reuse_screen = sg_can_reuse_screen_vertices(c);
                 const uint8_t *inside = sg_workers_inside_frustum(c);
-                for (int t = 0; t < ntri; t++) {
-                    uint32_t i0 = sg_fetch_index(type, index_data, t * 3 + 0);
-                    uint32_t i1 = sg_fetch_index(type, index_data, t * 3 + 1);
-                    uint32_t i2 = sg_fetch_index(type, index_data, t * 3 + 2);
-                    i0 -= imin; i1 -= imin; i2 -= imin;
-                    int triangle_inside = inside[i0] && inside[i1] && inside[i2];
-                    if (!triangle_inside) all_inside = 0;
-                    sg_process_triangle_cached(c, &pre[i0], &pre[i1], &pre[i2],
-                        reuse_screen && triangle_inside);
+                const int index_size = type == GL_UNSIGNED_BYTE ? 1 : type == GL_UNSIGNED_SHORT ? 2 : 4;
+                for (int base = 0; base < ntri; ) {
+                    int batch = ntri - base;
+                    if (batch > SG_TRIANGLE_STAGE_MAX) batch = SG_TRIANGLE_STAGE_MAX;
+                    const sg_prepared_tri *records = reuse_screen && index_data ? sg_workers_prepare_triangles(c,
+                        index_data + (size_t)base * 3 * index_size, type, imin, batch) : NULL;
+                    for (int j = 0; j < batch; j++) {
+                        if (records && records[j].kind != SG_TRI_GENERAL) {
+                            if (records[j].kind == SG_TRI_READY) sg_workers_bin_prepared_tri(c, &records[j]);
+                            continue;
+                        }
+                        int t = base + j;
+                        uint32_t i0 = sg_fetch_index(type, index_data, t * 3 + 0) - imin;
+                        uint32_t i1 = sg_fetch_index(type, index_data, t * 3 + 1) - imin;
+                        uint32_t i2 = sg_fetch_index(type, index_data, t * 3 + 2) - imin;
+                        int triangle_inside = inside[i0] && inside[i1] && inside[i2];
+                        if (!triangle_inside) all_inside = 0;
+                        sg_process_triangle_cached(c, &pre[i0], &pre[i1], &pre[i2],
+                            reuse_screen && triangle_inside);
+                    }
+                    base += batch;
                 }
                 if (all_inside) sg_workers_geometry_store(c, geometry, imin, imax);
                 goto triangles_done;
