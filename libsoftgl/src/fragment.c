@@ -1,6 +1,7 @@
 #include "types.h"
 #include "frag_combine_hot.h"
 #include <math.h>
+#include <string.h>
 
 /* Texture sampling + tex-env combiner.
  *
@@ -408,6 +409,13 @@ static int sg_cube_select_face(float x, float y, float z,
     return face;
 }
 
+/* One exact RGBA tap per load; SIMD lanes are channels of one fragment. */
+SG_INLINE sg_f32x4 sg_cube_load_rgba(const uint8_t *data) {
+    uint32_t rgba;
+    memcpy(&rgba, data, sizeof(rgba));
+    return _mm_cvtepi32_ps(_mm_cvtepu8_epi32(_mm_cvtsi32_si128((int32_t)rgba)));
+}
+
 /* Sample cube face as 2D; seam-bleed not handled. */
 static void sg_sample_cube_face(const sg_texture *t, int face, int level,
                                 GLenum filter, GLenum wrap_s, GLenum wrap_t,
@@ -456,11 +464,15 @@ static void sg_sample_cube_face(const sg_texture *t, int face, int level,
         const uint8_t *p10 = data + (y0 * tw + x1) * 4;
         const uint8_t *p01 = data + (y1 * tw + x0) * 4;
         const uint8_t *p11 = data + (y1 * tw + x1) * 4;
-        for (int k = 0; k < 4; k++) {
-            float top = p00[k] * (1.f - fu) + p10[k] * fu;
-            float bot = p01[k] * (1.f - fu) + p11[k] * fu;
-            out[k] = (top * (1.f - fv) + bot * fv) * (1.f/255.f);
-        }
+        sg_f32x4 u0 = sg_f32x4_splat(1.f - fu), u1 = sg_f32x4_splat(fu);
+        sg_f32x4 v0 = sg_f32x4_splat(1.f - fv), v1 = sg_f32x4_splat(fv);
+        sg_f32x4 top = sg_f32x4_add(sg_f32x4_mul(sg_cube_load_rgba(p00), u0),
+                                  sg_f32x4_mul(sg_cube_load_rgba(p10), u1));
+        sg_f32x4 bot = sg_f32x4_add(sg_f32x4_mul(sg_cube_load_rgba(p01), u0),
+                                  sg_f32x4_mul(sg_cube_load_rgba(p11), u1));
+        sg_f32x4 result = sg_f32x4_mul(sg_f32x4_add(sg_f32x4_mul(top, v0),
+            sg_f32x4_mul(bot, v1)), sg_f32x4_splat(1.f / 255.f));
+        sg_f32x4_store(out, result);
     }
 }
 

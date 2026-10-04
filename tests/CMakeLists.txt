@@ -75,8 +75,14 @@ add_test(NAME async_raster_contract COMMAND async_raster_contract)
 set_tests_properties(async_raster_contract PROPERTIES TIMEOUT 30)
 
 # Exact raster fields, collision-safe decoding, draw state/sample parity and clamps.
-foreach(contract raster_vertex_pack packed_stream simd_clamp ordered_draw_queue msaa_additive triangle_stage msaa_scanline)
+foreach(contract raster_vertex_pack packed_stream simd_clamp ordered_draw_queue msaa_additive triangle_stage msaa_scanline cube_filter)
     add_executable(${contract}_contract ${contract}.c)
+    if(contract STREQUAL "cube_filter")
+        # Match the packet oracle: strict sampler arithmetic, regular renderer image gates.
+        target_sources(${contract}_contract PRIVATE
+            ${CMAKE_SOURCE_DIR}/libsoftgl/src/fragment.c
+            ${CMAKE_SOURCE_DIR}/libsoftgl/src/fragment_combine.c)
+    endif()
     target_include_directories(${contract}_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
     target_link_libraries(${contract}_contract PRIVATE softgl)
     if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")

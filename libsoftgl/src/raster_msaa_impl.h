@@ -61,10 +61,13 @@ void SG_MSAA_FUNCTION(softgl_ctx *c,
         offset1 = sg_i32x4_set((int32_t)offsets[0][1], (int32_t)offsets[1][1],
                               (int32_t)offsets[2][1], (int32_t)offsets[3][1]);
     }
-#if SG_MSAA_SAMPLES == 4
     /* Coverage is packed only after bounding all samples over the complete
      * rectangle. A one-unit margin also covers the top-left bias. */
+#if SG_MSAA_SAMPLES == 4
     int coverage32 = small_edges && ix1 - ix0 <= 65536 && iy1 - iy0 <= 65536;
+#else
+    int coverage32 = ix1 - ix0 <= 65536 && iy1 - iy0 <= 65536;
+#endif
     sg_i32x4 coverage_offsets[3];
     if (coverage32) for (int e = 0; e < 3; e++) {
         /* Reject a large origin before adding spans: the remaining sums
@@ -79,11 +82,15 @@ void SG_MSAA_FUNCTION(softgl_ctx *c,
         }
         /* SIMD additions wrap modulo 2^32. The proved final sample sums
          * fit signed 32 bits, even if a base or offset cast wraps. */
+#if SG_MSAA_SAMPLES == 4
         coverage_offsets[e] = sg_i32x4_set((int32_t)(offsets[0][e] + bias[e]),
             (int32_t)(offsets[1][e] + bias[e]), (int32_t)(offsets[2][e] + bias[e]),
             (int32_t)(offsets[3][e] + bias[e]));
-    }
+#else
+        coverage_offsets[e] = sg_i32x4_set((int32_t)(offsets[0][e] + bias[e]),
+            (int32_t)(offsets[1][e] + bias[e]), 0, 0);
 #endif
+    }
     int packet_shader = sg_packet_supported(c, tctx);
     int opaque_store = SG_MSAA_OPAQUE_CAN(c);
     sg_pixel_packet packet;
@@ -122,14 +129,15 @@ void SG_MSAA_FUNCTION(softgl_ctx *c,
         for (int x = first_x; x < end_x; x++) {
             unsigned coverage = 0;
             float depths[4];
-#if SG_MSAA_SAMPLES == 4
             if (coverage32) {
                 sg_i32x4 e0 = sg_i32x4_add(sg_i32x4_splat((int32_t)edge[0]), coverage_offsets[0]);
                 sg_i32x4 e1 = sg_i32x4_add(sg_i32x4_splat((int32_t)edge[1]), coverage_offsets[1]);
                 sg_i32x4 e2 = sg_i32x4_add(sg_i32x4_splat((int32_t)edge[2]), coverage_offsets[2]);
                 coverage = sg_i32x4_mask_nonneg(_mm_or_si128(_mm_or_si128(e0, e1), e2));
-            } else
+#if SG_MSAA_SAMPLES == 2
+                coverage &= full;
 #endif
+            } else
             {
                 /* Edge extrema reject an empty pixel or accept all samples with
                  * three comparisons. Only boundary pixels need individual tests. */
