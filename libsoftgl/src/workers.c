@@ -561,8 +561,14 @@ static void sg_drain_raster_bins(softgl_ctx *c, sg_worker_pool *p) {
     sg_drain_bins(c, p, p->bins, p->vpool, p->transformed, NULL);
 }
 
+static void sg_queue_finish(sg_worker_pool *p);
+
 static void sg_finish_stream(sg_worker_pool *p) {
     if (!p->async_pending) return;
+    if (p->async_pending == 3) {
+        sg_queue_finish(p);
+        return;
+    }
     sg_async_raster *job = p->async_raster;
     if (p->async_pending == 2) sg_drain_packed_bins(p, job);
     else sg_drain_bins(&job->state, p, job->bins, job->vpool,
@@ -588,6 +594,9 @@ static void sg_stream_destroy(sg_async_raster *job, int nbins) {
     sg_aligned_free(job->packed.data);
     sg_aligned_free(job);
 }
+
+static int sg_pool_sort_safe(const softgl_ctx *c);
+#include "workers_queue_raw.inc"
 
 static void *sg_worker_main(void *arg) {
     sg_worker *w = (sg_worker*)arg;
@@ -623,6 +632,8 @@ static void *sg_worker_main(void *arg) {
                           r->transformed, &r->texture_context);
         } else if (job == SG_JOB_PACKED_RASTER) {
             sg_drain_packed_bins(p, p->async_raster);
+        } else if (job == SG_JOB_STREAM_QUEUE) {
+            sg_queue_worker(p);
         } else {
             sg_drain_raster_bins(c, p);
         }
@@ -720,6 +731,7 @@ void sg_workers_shutdown(softgl_ctx *c) {
     free(p->column_bin);
     sg_geometry_cache_destroy(p->geometry_cache);
     sg_stream_destroy(p->async_raster, p->nbins);
+    sg_queue_destroy(p);
     pthread_mutex_destroy(&p->mtx);
     pthread_cond_destroy(&p->wake);
     free(p);
@@ -937,6 +949,7 @@ void sg_workers_submit_stream(softgl_ctx *c) {
         if (!sg_submit_packed_stream(c, p)) sg_workers_flush(c);
         return;
     }
+    if (sg_queue_multitexture(c) && sg_queue_submit(c, p)) return;
     if (!p->async_raster) {
         p->async_raster = sg_aligned_alloc(sizeof(sg_async_raster), 16);
         if (!p->async_raster) { sg_workers_flush(c); return; }

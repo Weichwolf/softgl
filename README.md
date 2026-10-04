@@ -24,7 +24,7 @@ API-level compatibility with real OpenGL 1.5:
 
 323 entry points, 234 test cases plus three Tank and three BMW camera views. Each runs
 against softgl and Mesa llvmpipe, followed by a pixel comparison
-(720 image correctness checks plus fourteen renderer contracts when the
+(720 image correctness checks plus fifteen renderer contracts when the
 BMW asset is prepared; `ctest -C Bench` also includes the native benchmark).
 
 ## Model preparation
@@ -52,7 +52,7 @@ materials and original texture dimensions remain available. Use
 - **Opaque 4× MSAA stores** reuse the rasterizer's tested sample mask and convert RGBA with SIMD; other fragment states retain the general writer
 - **Hierarchical 4× sample depth** rejects fully hidden triangles with conservative 4×4-cell bounds; the optional table is capped at 256KiB, and WASM keeps the 2×/4× raster loops separate from the common rasterizer
 - **Packed large raster draws** retain exact float NDC, front color, eye.z and every active UV set (64 bytes with one UV set); a 64-entry collision-safe vertex cache feeds the existing rasterizer, allowing formerly oversized draws to overlap preparation within the 2MiB submitted-vertex budget
-- **Pthread tile worker pool** with X-stripe bins; bounded immutable draw buffers overlap indexed geometry preparation with prior raster work, preserving draw order; the caller helps drain outstanding bins
+- **Pthread tile worker pool** with X-stripe bins; a four-slot queue overlaps filled multitexture draws while preserving order within each stripe, with a shared 2MiB budget for retained vertex arrays; ordinary full/packed draws retain their bounded snapshots, and the caller helps drain outstanding bins
 - **Position and ordered-bin cache** shares a 4MiB payload budget; VBO storage revisions and matrix/viewport keys preserve fresh attributes and lighting across draws
 - **Prepared vertex inputs** resolve array/VBO addresses once per joined vertex job; bounded SIMD loads serve float arrays, with the original conversions for other types
 - **Automatic WASM pool** reserves one reported logical CPU for the calling thread; explicit worker counts remain available, and a one-CPU browser renders without raster workers

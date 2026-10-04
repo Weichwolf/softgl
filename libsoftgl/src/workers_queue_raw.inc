@@ -1,0 +1,255 @@
+/* Private experiment: ordered draws can progress independently per X bin.
+ * All queue bookkeeping uses p->mtx. Pixel work runs outside that mutex;
+ * completion release/acquire orders writes before the next draw in a bin. */
+#define SG_QUEUE_SLOTS 4
+typedef struct {
+    sg_async_raster *draw;
+    uint32_t pending, claimed;
+    int sort;
+} sg_queue_slot;
+
+struct sg_stream_queue {
+    sg_queue_slot slots[SG_QUEUE_SLOTS];
+    int head, count, stopping;
+    atomic_uint change;
+};
+
+static int sg_queue_multitexture(const softgl_ctx *c) {
+    int units = 0;
+    for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
+        for (int t = 0; t < SG_TEX_TARGET_COUNT; t++) {
+            if (c->tex_env[u].enabled_target[t] && c->tex_env[u].bound_tex_target[t]) {
+                if (++units >= 2) return 1;
+                break;
+            }
+        }
+    }
+    return 0;
+}
+
+static size_t sg_queue_bytes(const sg_async_raster *r) {
+    return ((size_t)r->transformed_cap + (size_t)r->vpool_cap) * sizeof(sg_vert);
+}
+
+static void sg_queue_free_vertices(sg_async_raster *r) {
+    sg_aligned_free(r->transformed); r->transformed = NULL; r->transformed_cap = 0;
+    sg_aligned_free(r->vpool); r->vpool = NULL; r->vpool_cap = 0;
+    free(r->inside_frustum); r->inside_frustum = NULL;
+}
+
+/* Caller holds p->mtx, including when waiting workers inspect the queue. */
+static void sg_queue_retire(struct sg_stream_queue *q) {
+    while (q->count && !q->slots[q->head].pending) {
+        q->head = (q->head + 1) % SG_QUEUE_SLOTS;
+        q->count--;
+    }
+}
+
+static sg_queue_slot *sg_queue_claim(struct sg_stream_queue *q, int *bin) {
+    uint32_t blocked = 0;
+    for (int i = 0; i < q->count; i++) {
+        sg_queue_slot *s = &q->slots[(q->head + i) % SG_QUEUE_SLOTS];
+        uint32_t ready = s->pending & ~s->claimed & ~blocked;
+        if (ready) {
+            *bin = __builtin_ctz(ready);
+            s->claimed |= UINT32_C(1) << *bin;
+            return s;
+        }
+        blocked |= s->pending;
+    }
+    return NULL;
+}
+
+static void sg_queue_render(sg_worker_pool *p, sg_queue_slot *slot, int index) {
+    sg_async_raster *r = slot->draw;
+    sg_worker_bin *b = &r->bins[index];
+    int n = b->count;
+    b->query_samples = 0;
+    sg_raster_bin = b;
+    if (slot->sort) sg_bin_sort_z(b);
+    for (int i = 0; i < n; i++) {
+        const sg_worker_tri *t = &b->tris[slot->sort ? b->sort_keys[i] : (uint32_t)i];
+        const sg_vert *src = (t->v[0] & SG_BIN_TRANSFORMED_VERTEX) ? r->transformed : r->vpool;
+        sg_raster_triangle_tile_prepared(&r->state,
+            &src[t->v[0] & ~SG_BIN_TRANSFORMED_VERTEX], &src[t->v[1]], &src[t->v[2]],
+            b->ix0, b->ix1, &r->texture_context);
+    }
+    b->count = 0;
+    sg_raster_bin = NULL;
+    pthread_mutex_lock(&p->mtx);
+    uint32_t mask = UINT32_C(1) << index;
+    slot->claimed &= ~mask;
+    slot->pending &= ~mask;
+    atomic_fetch_add_explicit(&p->stream_queue->change, 1, memory_order_release);
+    pthread_cond_broadcast(&p->wake);
+    pthread_mutex_unlock(&p->mtx);
+}
+
+static void sg_queue_worker(sg_worker_pool *p) {
+    struct sg_stream_queue *q = p->stream_queue;
+    pthread_mutex_lock(&p->mtx);
+    for (;;) {
+        int bin;
+        sg_queue_slot *slot = sg_queue_claim(q, &bin);
+        if (slot) {
+            pthread_mutex_unlock(&p->mtx);
+            sg_queue_render(p, slot, bin);
+            pthread_mutex_lock(&p->mtx);
+        } else if (q->stopping) {
+            pthread_mutex_unlock(&p->mtx);
+            return;
+        } else {
+            pthread_cond_wait(&p->wake, &p->mtx);
+        }
+    }
+}
+
+/* The browser caller cannot block in Atomics.wait. Help rasterize whenever
+ * a bin is claimable; otherwise wait on completion, outside the queue lock. */
+static void sg_queue_help(sg_worker_pool *p, unsigned before) {
+    int bin;
+    pthread_mutex_lock(&p->mtx);
+    sg_queue_slot *slot = sg_queue_claim(p->stream_queue, &bin);
+    pthread_mutex_unlock(&p->mtx);
+    if (slot) {
+        sg_queue_render(p, slot, bin);
+    } else {
+        while (atomic_load_explicit(&p->stream_queue->change, memory_order_acquire) == before) {
+#if defined(__x86_64__) || defined(__i386__)
+            __builtin_ia32_pause();
+#endif
+        }
+    }
+}
+
+static void sg_queue_finish(sg_worker_pool *p) {
+    struct sg_stream_queue *q = p->stream_queue;
+    for (;;) {
+        unsigned before = atomic_load_explicit(&q->change, memory_order_acquire);
+        pthread_mutex_lock(&p->mtx);
+        sg_queue_retire(q);
+        if (!q->count) {
+            q->stopping = 1;
+            pthread_cond_broadcast(&p->wake);
+            pthread_mutex_unlock(&p->mtx);
+            break;
+        }
+        pthread_mutex_unlock(&p->mtx);
+        sg_queue_help(p, before);
+    }
+    while (atomic_load_explicit(&p->done_count, memory_order_acquire) < p->nworkers) {
+#if defined(__x86_64__) || defined(__i386__)
+        __builtin_ia32_pause();
+#endif
+    }
+    for (int i = 0; i < SG_QUEUE_SLOTS; i++) sg_queue_free_vertices(q->slots[i].draw);
+    p->async_pending = 0;
+    atomic_store_explicit(&p->job_type, SG_JOB_RASTER, memory_order_release);
+}
+
+static void sg_queue_destroy(sg_worker_pool *p) {
+    if (!p->stream_queue) return;
+    for (int i = 0; i < SG_QUEUE_SLOTS; i++)
+        sg_stream_destroy(p->stream_queue->slots[i].draw, p->nbins);
+    free(p->stream_queue); p->stream_queue = NULL;
+}
+
+static int sg_queue_submit(softgl_ctx *c, sg_worker_pool *p) {
+    if (!p->stream_queue) {
+        struct sg_stream_queue *q = calloc(1, sizeof(*q));
+        if (!q) return 0;
+        atomic_init(&q->change, 0);
+        p->stream_queue = q;
+        for (int s = 0; s < SG_QUEUE_SLOTS; s++) {
+            sg_async_raster *r = sg_aligned_alloc(sizeof(*r), 16);
+            if (!r) { sg_queue_destroy(p); return 0; }
+            memset(r, 0, sizeof(*r));
+            q->slots[s].draw = r;
+            for (int b = 0; b < p->nbins; b++) {
+                r->bins[b].ix0 = p->bins[b].ix0;
+                r->bins[b].ix1 = p->bins[b].ix1;
+            }
+        }
+    }
+    struct sg_stream_queue *q = p->stream_queue;
+    int start = p->async_pending != 3;
+    if (start) {
+        sg_finish_stream(p);
+        /* Keep no second idle raw/packed storage budget behind this queue. */
+        sg_stream_destroy(p->async_raster, p->nbins); p->async_raster = NULL;
+    }
+    sg_queue_slot *slot;
+    for (;;) {
+        unsigned before = atomic_load_explicit(&q->change, memory_order_acquire);
+        pthread_mutex_lock(&p->mtx);
+        sg_queue_retire(q);
+        slot = &q->slots[(q->head + q->count) % SG_QUEUE_SLOTS];
+        size_t bytes = 0;
+        for (int i = 0; i < SG_QUEUE_SLOTS; i++) bytes += sg_queue_bytes(q->slots[i].draw);
+        if (q->count < SG_QUEUE_SLOTS) {
+            sg_async_raster *r = slot->draw;
+            size_t projected = bytes;
+            if (p->prepared_transformed)
+                projected = projected - (size_t)r->transformed_cap * sizeof(sg_vert) +
+                    (size_t)p->transformed_cap * sizeof(sg_vert);
+            if (p->vpool_count)
+                projected = projected - (size_t)r->vpool_cap * sizeof(sg_vert) +
+                    (size_t)p->vpool_cap * sizeof(sg_vert);
+            if (projected > SG_STREAM_BYTES) {
+                for (int i = 0; i < SG_QUEUE_SLOTS; i++) {
+                    sg_queue_slot *idle = &q->slots[i];
+                    if (!idle->pending) sg_queue_free_vertices(idle->draw);
+                }
+                bytes = 0;
+                for (int i = 0; i < SG_QUEUE_SLOTS; i++) bytes += sg_queue_bytes(q->slots[i].draw);
+                projected = bytes + ((p->prepared_transformed ? (size_t)p->transformed_cap : 0) +
+                    (p->vpool_count ? (size_t)p->vpool_cap : 0)) * sizeof(sg_vert);
+            }
+            if (projected <= SG_STREAM_BYTES) {
+                pthread_mutex_unlock(&p->mtx);
+                break;
+            }
+        }
+        pthread_mutex_unlock(&p->mtx);
+        sg_queue_help(p, before);
+    }
+    sg_async_raster *r = slot->draw;
+    r->state = *c;
+    sg_tex_tri_prepare(c, &r->texture_context);
+    for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
+        if (r->texture_context.unit[u].tex) {
+            r->textures[u] = *r->texture_context.unit[u].tex;
+            r->texture_context.unit[u].tex = &r->textures[u];
+        }
+    }
+    uint32_t pending = 0;
+    for (int i = 0; i < p->nbins; i++) {
+        sg_worker_bin tmp = p->bins[i]; p->bins[i] = r->bins[i]; r->bins[i] = tmp;
+        if (r->bins[i].count) pending |= UINT32_C(1) << i;
+    }
+    if (p->prepared_transformed) {
+        sg_vert *v = p->transformed; p->transformed = r->transformed; r->transformed = v;
+        uint8_t *inside = p->inside_frustum; p->inside_frustum = r->inside_frustum; r->inside_frustum = inside;
+        int cap = p->transformed_cap; p->transformed_cap = r->transformed_cap; r->transformed_cap = cap;
+    }
+    if (p->vpool_count) {
+        sg_vert *v = p->vpool; p->vpool = r->vpool; r->vpool = v;
+        int cap = p->vpool_cap; p->vpool_cap = r->vpool_cap; r->vpool_cap = cap;
+    }
+    p->vpool_count = 0; p->prepared_transformed = 0;
+    slot->sort = sg_pool_sort_safe(c);
+    pthread_mutex_lock(&p->mtx);
+    slot->pending = pending; slot->claimed = 0;
+    q->count++;
+    if (start) {
+        q->stopping = 0;
+        p->async_pending = 3;
+        atomic_store_explicit(&p->done_count, 0, memory_order_release);
+        atomic_store_explicit(&p->job_type, SG_JOB_STREAM_QUEUE, memory_order_release);
+        atomic_fetch_add_explicit(&p->gen, 1, memory_order_acq_rel);
+    }
+    atomic_fetch_add_explicit(&q->change, 1, memory_order_release);
+    pthread_cond_broadcast(&p->wake);
+    pthread_mutex_unlock(&p->mtx);
+    return 1;
+}

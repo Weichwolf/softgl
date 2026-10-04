@@ -1,11 +1,11 @@
 #ifndef SOFTGL_WORKERS_H
 #define SOFTGL_WORKERS_H
 
-/* Persistent workers share a queue of independent X-range bins. Indexed
- * triangle draws can prepare the next draw while an immutable snapshot of
- * the previous draw rasterizes. Only one raster job runs at a time: publishing
- * the next snapshot first joins the old job, with the caller claiming bins.
- * Other primitives and framebuffer/storage mutations drain pending work. */
+/* Persistent workers claim independent X-range bins. Filled multitexture
+ * indexed draws can queue immutable snapshots, ordered within each bin.
+ * Ordinary full/packed streaming overlaps preparation with one raster draw.
+ * The caller helps drain; other primitives and framebuffer/storage mutations
+ * join pending work before accessing shared storage. */
 
 #include "types.h"
 #include "vertex_inputs.h"
@@ -65,6 +65,7 @@ enum {
     SG_JOB_VERTEX = 1,   /* transform a slice of [job_first..job_first+job_count) */
     SG_JOB_ASYNC_RASTER = 2, /* drain the immutable full-vertex snapshot */
     SG_JOB_PACKED_RASTER = 3, /* drain an immutable exact packed large draw */
+    SG_JOB_STREAM_QUEUE = 4, /* ordered multitexture draw queue */
 };
 
 /* Position-only data: attributes and lighting must be refreshed per draw. */
@@ -84,8 +85,8 @@ typedef struct sg_position_page {
 } sg_position_page;
 
 typedef struct {
-    /* One immutable in-flight draw; main owns the separate producer arrays.
-     * Vertex and bin arrays exchange ownership only after all workers join. */
+    /* Immutable raster snapshots; the caller owns separate producer arrays.
+     * pending: 0 idle, 1 raw draw, 2 packed draw, 3 ordered draw queue. */
     struct sg_async_raster *async_raster;
     int            async_pending;
     int            prepared_transformed; /* 0 idle; compact count; negative original-index count */
@@ -120,8 +121,8 @@ typedef struct {
 
     /* Wake protocol: main bumps gen + broadcasts; each worker compares its
      * local_gen to the shared gen under the mutex to decide whether there
-     * is new work. Workers atomic-increment done_count when their queue
-     * drains; main spins on done_count == nworkers. */
+     * is new work. Workers atomic-increment done_count after an ordinary job
+     * or an explicitly stopped queue epoch; main joins via that counter. */
     pthread_mutex_t mtx;
     pthread_cond_t  wake;
     atomic_int      gen;
@@ -132,6 +133,7 @@ typedef struct {
     int             nbins;
     atomic_int      next_bin;    /* each claimed bin has exactly one owner */
     uint8_t        *column_bin;  /* screen column -> overlapping bin */
+    struct sg_stream_queue *stream_queue; /* bounded ordered multitexture draws */
 } sg_worker_pool;
 
 void sg_workers_init(softgl_ctx *c, int nworkers_hint);
