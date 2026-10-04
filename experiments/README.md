@@ -1578,3 +1578,65 @@ Both Chromium and Firefox pass 234 viewer scenes, all eighteen benchmark
 rows in off/2x/4x order, cancellation and MSAA restoration with three workers.
 Firefox exits successfully; its Python mozprofile destructor logs a cleanup
 ImportError after the passed result during interpreter shutdown.
+
+
+Exact four-sample coverage SIMD against `36aa8414` is accepted.
+A per-triangle i64 bound proves that all three raw sample edges across the
+entire clipped bounding rectangle fit signed 32 bits, with a one-unit margin
+for the top-left bias. Extreme origins or spans take the original i64 path.
+The checked origin and dimension cap keep the bound arithmetic inside i64.
+Packed additions deliberately wrap modulo 2^32: proved final sample sums fit
+signed i32, so their signs are exact even when a base/offset cast wraps.
+Four lanes now test the actual four samples of one pixel with three vector
+adds, two ORs and one sign mask. All geometry, sample locations, shading
+points, depth expressions and float interpolation remain unchanged. Native
+SSE4.1 and standard WASM SIMD128 use the same predicates; no extra retained
+allocation, threading or texture storage. Only the 4x coverage path changes.
+
+Two independent three-pair quiet AB/BA audits at 640x360, three workers plus
+caller, 80 warm-up and 100 measured frames per arm, resolving every frame:
+
+| Scene | Frame-time change, audit 1 / 2 | FPS, audit 1 / 2 |
+| --- | --- | --- |
+| BMW | -8.94% / -7.71% | 26.51 / 26.38 |
+| T80 | -5.50% / -5.86% | 68.03 / 67.80 |
+
+Both improve in all six pairs; BMW remains below 30 FPS. Additional three-pair
+2x audits give BMW -0.39%, T80 -0.97%; without MSAA -1.21%/-1.97%. Those
+paths have no algorithm change, so these small differences are not claimed
+as SIMD-coverage gains. Raw timings: build/perf/tigerlake-20261004/
+msaa-sample-coverage32*-summary.json. Frozen module: `69e0b1d3`.
+
+Two preceding private row-level hierarchical-depth trials are rejected.
+They use the existing conservative vertex-depth lower bound to skip aligned
+four-pixel segments inside partly visible triangles. Stencil or unsupported
+depth functions retain the ordinary path. An untimed diagnostic shows BMW
+checks 73,426 groups, skipping 100,827 pixels; T80 checks 30,030, skipping
+25,529. These are logical operations, not hardware cache misses.
+
+| Private trial | BMW time | T80 time |
+| --- | --- | --- |
+| Probe each aligned segment | +2.83% | +2.93% |
+| Reuse proved hidden cells across four rows | +1.47% | +1.21% |
+
+Each has three quiet AB/BA pairs, 100 exact model hashes and four exact
+frames per model, and the 1,536-frame HZ-on/off depth/query oracle. BMW is
+slower in all six pairs; no full compliance rerun after rejection. Evidence:
+build/diagnostics/msaa-cell-span-depth{,-cached,-counts}/validation.json.
+Both remain private. A source-only experiment postponing ordinary non-MSAA
+setup was prepared but not built or timed; no performance claim is made.
+
+The independent full-frame oracle now includes positive, screen-crossing
+triangles around the signed-32 dispatch boundaries (180/181 and 16383/16384
+pixel extents). Native SSE4.1 and WASM check 4,480 frames and 46,688,256 exact
+sample masks. Full runtime gates pass: 738 native tests plus benchmark_fp6,
+18 ASan/UBSan/leak contracts, 240 unchanged-tolerance Mesa images, 240 exact
+baseline hashes, all 234 images in each of 2x/4x, both rotating models in
+0/2/4 samples, 51 WASM renderer, 135 queue, 54 triangle, eighteen pool and
+strict sampler/combiner/byte-writer contracts. The regular canonical JS/WASM
+match the measured frozen module exactly. Final browser/publication evidence:
+build/diagnostics/msaa-sample-coverage32/validation.json and publication-proof.json.
+Both Chromium and Firefox pass 234 viewer scenes, all eighteen benchmark
+rows in off/2x/4x order, cancellation and MSAA restoration with three workers.
+Firefox exits successfully; its Python mozprofile destructor logs a cleanup
+ImportError after the passed result during interpreter shutdown.

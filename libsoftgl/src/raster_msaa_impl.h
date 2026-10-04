@@ -61,6 +61,29 @@ void SG_MSAA_FUNCTION(softgl_ctx *c,
         offset1 = sg_i32x4_set((int32_t)offsets[0][1], (int32_t)offsets[1][1],
                               (int32_t)offsets[2][1], (int32_t)offsets[3][1]);
     }
+#if SG_MSAA_SAMPLES == 4
+    /* Coverage is packed only after bounding all samples over the complete
+     * rectangle. A one-unit margin also covers the top-left bias. */
+    int coverage32 = small_edges && ix1 - ix0 <= 65536 && iy1 - iy0 <= 65536;
+    sg_i32x4 coverage_offsets[3];
+    if (coverage32) for (int e = 0; e < 3; e++) {
+        /* Reject a large origin before adding spans: the remaining sums
+         * then stay far inside i64 even for extreme fixed coordinates. */
+        if (row[e] < INT32_MIN || row[e] > INT32_MAX) { coverage32 = 0; break; }
+        int64_t xs = dx[e] * 256 * (ix1 - ix0 - 1);
+        int64_t ys = dy[e] * 256 * (iy1 - iy0 - 1);
+        int64_t low = row[e] + min_offset[e] + (xs < 0 ? xs : 0) + (ys < 0 ? ys : 0);
+        int64_t high = row[e] + max_offset[e] + (xs > 0 ? xs : 0) + (ys > 0 ? ys : 0);
+        if (low < (int64_t)INT32_MIN + 1 || high > (int64_t)INT32_MAX - 1) {
+            coverage32 = 0; break;
+        }
+        /* SIMD additions wrap modulo 2^32. The proved final sample sums
+         * fit signed 32 bits, even if a base or offset cast wraps. */
+        coverage_offsets[e] = sg_i32x4_set((int32_t)(offsets[0][e] + bias[e]),
+            (int32_t)(offsets[1][e] + bias[e]), (int32_t)(offsets[2][e] + bias[e]),
+            (int32_t)(offsets[3][e] + bias[e]));
+    }
+#endif
     int packet_shader = sg_packet_supported(c, tctx);
     int opaque_store = SG_MSAA_OPAQUE_CAN(c);
     sg_pixel_packet packet;
@@ -99,21 +122,31 @@ void SG_MSAA_FUNCTION(softgl_ctx *c,
         for (int x = first_x; x < end_x; x++) {
             unsigned coverage = 0;
             float depths[4];
-            /* Edge extrema reject an empty pixel or accept all samples with
-             * three comparisons. Only boundary pixels need individual tests. */
-            if (edge[0] + max_offset[0] + bias[0] >= 0 &&
-                edge[1] + max_offset[1] + bias[1] >= 0 &&
-                edge[2] + max_offset[2] + bias[2] >= 0) {
-                if (edge[0] + min_offset[0] + bias[0] >= 0 &&
-                    edge[1] + min_offset[1] + bias[1] >= 0 &&
-                    edge[2] + min_offset[2] + bias[2] >= 0) {
-                    coverage = full;
-                } else {
-                    for (int s = 0; s < SG_MSAA_SAMPLES; s++) {
-                        if (edge[0] + offsets[s][0] + bias[0] >= 0 &&
-                            edge[1] + offsets[s][1] + bias[1] >= 0 &&
-                            edge[2] + offsets[s][2] + bias[2] >= 0)
-                            coverage |= 1u << s;
+#if SG_MSAA_SAMPLES == 4
+            if (coverage32) {
+                sg_i32x4 e0 = sg_i32x4_add(sg_i32x4_splat((int32_t)edge[0]), coverage_offsets[0]);
+                sg_i32x4 e1 = sg_i32x4_add(sg_i32x4_splat((int32_t)edge[1]), coverage_offsets[1]);
+                sg_i32x4 e2 = sg_i32x4_add(sg_i32x4_splat((int32_t)edge[2]), coverage_offsets[2]);
+                coverage = sg_i32x4_mask_nonneg(_mm_or_si128(_mm_or_si128(e0, e1), e2));
+            } else
+#endif
+            {
+                /* Edge extrema reject an empty pixel or accept all samples with
+                 * three comparisons. Only boundary pixels need individual tests. */
+                if (edge[0] + max_offset[0] + bias[0] >= 0 &&
+                    edge[1] + max_offset[1] + bias[1] >= 0 &&
+                    edge[2] + max_offset[2] + bias[2] >= 0) {
+                    if (edge[0] + min_offset[0] + bias[0] >= 0 &&
+                        edge[1] + min_offset[1] + bias[1] >= 0 &&
+                        edge[2] + min_offset[2] + bias[2] >= 0) {
+                        coverage = full;
+                    } else {
+                        for (int s = 0; s < SG_MSAA_SAMPLES; s++) {
+                            if (edge[0] + offsets[s][0] + bias[0] >= 0 &&
+                                edge[1] + offsets[s][1] + bias[1] >= 0 &&
+                                edge[2] + offsets[s][2] + bias[2] >= 0)
+                                coverage |= 1u << s;
+                        }
                     }
                 }
             }

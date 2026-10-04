@@ -65,6 +65,17 @@ int main(void) {
                         height = 2000000.f;
                         tilt = 0;
                     }
+                    /* Exercise both sides of the packed-edge range bound
+                     * with positive, screen-crossing triangles. */
+                    if (test >= (size == 2 ? 64 : 480)) {
+                        const float limits[] = {180.f, 181.f, 16383.f, 16384.f};
+                        width = limits[test & 3];
+                        height = width < 1000.f ? width : 1.f;
+                        left = -31.f - 1.f / 256.f;
+                        bottom = (test & 4) ? -1.5f : 0.f;
+                        shear = width * .5f;
+                        tilt = 0.f;
+                    }
                     sg_vert v[3];
                     memset(v, 0, sizeof(v));
                     v[0].ndc = (sg_vec4){left, bottom, .5f, 1.f};
@@ -116,7 +127,7 @@ int main(void) {
         }
     }
     printf("%u frames and %llu exact sample masks versus full-frame edge oracle; "
-        "2x/4x, center/rotated, thin/wide/tall and large coordinates passed\n",
+        "2x/4x, center/rotated, thin/wide/tall, large coordinates and 32-bit boundaries passed\n",
         frames, (unsigned long long)checked);
     return 0;
 }
