@@ -112,30 +112,32 @@ static void sg_queue_worker(sg_worker_pool *p) {
     struct sg_stream_queue *q = p->stream_queue;
     pthread_mutex_lock(&p->mtx);
     for (;;) {
+        int first, end;
+        /* A finite geometry stage unblocks the next draw's producer. Work
+         * already claimed by a raster worker finishes before it switches. */
+        if (sg_queue_vertex_claim(q, &first, &end)) {
+            pthread_mutex_unlock(&p->mtx);
+            sg_queue_vertex_run(p, first, end);
+            pthread_mutex_lock(&p->mtx);
+            continue;
+        }
         int bin;
         sg_queue_slot *slot = sg_queue_claim(q, &bin);
         if (slot) {
             pthread_mutex_unlock(&p->mtx);
             sg_queue_render(p, slot, bin);
             pthread_mutex_lock(&p->mtx);
+        } else if (q->stopping) {
+            pthread_mutex_unlock(&p->mtx);
+            return;
         } else {
-            int first, end;
-            if (sg_queue_vertex_claim(q, &first, &end)) {
-                pthread_mutex_unlock(&p->mtx);
-                sg_queue_vertex_run(p, first, end);
-                pthread_mutex_lock(&p->mtx);
-            } else if (q->stopping) {
-                pthread_mutex_unlock(&p->mtx);
-                return;
-            } else {
-                pthread_cond_wait(&p->wake, &p->mtx);
-            }
+            pthread_cond_wait(&p->wake, &p->mtx);
         }
     }
 }
 
-/* Raster keeps priority, preserving producer/consumer overlap. Idle
- * workers help prepare the next draw instead of waiting for its submission.
+/* Ready geometry briefly takes priority to unblock the next draw.
+ * Workers finish their claimed raster bins before joining this finite stage.
  * The caller processes the same slices, with no fifth coordinator thread. */
 static void sg_queue_transform(softgl_ctx *c, sg_worker_pool *p,
                                int first, int count, int storage_first) {
