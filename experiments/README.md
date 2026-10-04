@@ -1457,3 +1457,43 @@ strict numeric/writer checks and both browser previews. Canonical JS/WASM
 are identical to the measured frozen module. Validation/publication:
 build/diagnostics/parallel-triangle-stage/validation.json and publication-proof.json.
 Timings: build/perf/tigerlake-20261004/parallel-triangle-stage*-summary.json.
+
+Ordered opaque visibility trials against `0a9df7ee` are rejected. A separate
+four-sample diagnostic records successful shader color writes and final
+distinct primitive owners per pixel, including mixed sample owners at edges.
+BMW averages 158,827 shader writes, 142,120 surviving primitive/pixel pairs
+within individual draws, and 104,079 across compatible opaque queue segments.
+The corresponding 10.52%/34.47% redundancy is a logical upper bound for that
+queue scope, not a whole-frame speedup or a cache-miss measurement. T80 does
+not use this path. Evidence: build/diagnostics/opaque-visibility-counts/.
+
+Private prototypes preserve the original post-depth-test coverage mask for
+each primitive/pixel, so deferred shading retains the original shading point
+even when later primitives overwrite some samples. Same-bin order and queue
+ownership are preserved; alpha, blending, stencil, queries and incompatible
+sample/color states retain the ordinary path. Four variants all preserve
+100 rotating model hashes and four exact frames per model at 640x360/4x.
+Each timed variant has three complete quiet AB/BA pairs, three workers plus
+caller, 80 warm-up and 100 timed frames per arm, resolving every frame:
+
+| Private trial | BMW frame-time change | T80 frame-time change |
+| --- | --- | --- |
+| Visibility followed by another triangle scan | +11.09% | -0.73% |
+| Sparse surviving-fragment lists | +1.20% | -0.63% |
+| Sparse lists, gathered batches, 4 MiB queue | +7.38% | -0.64% |
+| Sparse lists, SIMD depth/owner writes, 2 MiB queue | +0.66% | -0.70% |
+
+BMW is slower in all twelve pairs; T80 is outside the new path, so its small
+mixed changes are not attributed to this architecture. Full native/Mesa and
+WASM compliance gates were not rerun for rejected prototypes. Production,
+live assets, geometry and tolerances remain unchanged. Raw trials and proof:
+build/perf/tigerlake-20261004/opaque-deferred-*-audit-1-summary.json and
+build/diagnostics/opaque-visibility-counts/trials.json.
+
+Separate untimed batch counters show that a gathered 2 MiB queue forms only
+two-draw groups, saving 16,988 shader calls per frame. A 4 MiB queue adds
+three-draw groups and saves 25,053; neither forms four-draw groups in the
+measured model sequence. Both counter modules preserve the model images.
+More saved shading does not by itself offset visibility, scheduling and
+storage costs. Counter evidence: build/diagnostics/opaque-deferred-batched-counts/
+and build/diagnostics/opaque-deferred-batched-4m-counts/frame-equivalence-4.json.
