@@ -78,6 +78,35 @@ static int check_sample_writes(softgl_ctx *c, int n) {
     return 1;
 }
 
+/* Every byte pair in every RGBA channel; odd dimensions also exercise the
+ * scalar tail and sample-zero depth/stencil readback. */
+static int check_two_sample_means(softgl_ctx *c) {
+    for (unsigned base = 0; base < 65536; base += W * H) {
+        for (int i = 0; i < W * H; i++) {
+            unsigned pair = (base + (unsigned)i) & 65535u;
+            for (int k = 0; k < 4; k++) {
+                c->fb.sample_color[i * 8 + k] = (uint8_t)((pair & 255u) ^ (k * 51));
+                c->fb.sample_color[i * 8 + 4 + k] = (uint8_t)((pair >> 8) ^ (k * 73));
+            }
+            c->fb.sample_depth[i * 2] = (float)i * (1.f / 1024.f);
+            c->fb.sample_depth[i * 2 + 1] = 1.f;
+            c->fb.sample_stencil[i * 2] = (uint8_t)i;
+            c->fb.sample_stencil[i * 2 + 1] = (uint8_t)~i;
+        }
+        const uint8_t *image = softgl_read_rgba8(c);
+        for (int i = 0; i < W * H; i++) {
+            for (int k = 0; k < 4; k++) {
+                unsigned a = c->fb.sample_color[i * 8 + k];
+                unsigned b = c->fb.sample_color[i * 8 + 4 + k];
+                CHECK(image[i * 4 + k] == (a + b + 1u) / 2u);
+            }
+            CHECK(c->fb.depth[i] == c->fb.sample_depth[i * 2]);
+            CHECK(c->fb.stencil[i] == (uint8_t)i);
+        }
+    }
+    return 1;
+}
+
 static int check_resolve(softgl_ctx *c, int n) {
     for (int i = 0; i < W * H; i++) for (int s = 0; s < n; s++) {
         for (int k = 0; k < 4; k++)
@@ -137,6 +166,7 @@ static int check_context(int n, int workers) {
     glMatrixMode(GL_MODELVIEW); glLoadIdentity();
     CHECK(check_sample_writes(c, n));
     CHECK(check_resolve(c, n));
+    if (n == 2) CHECK(check_two_sample_means(c));
     CHECK(check_masked_clear(c, n));
     GLint count, buffers;
     glGetIntegerv(GL_SAMPLES, &count); glGetIntegerv(GL_SAMPLE_BUFFERS, &buffers);

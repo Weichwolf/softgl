@@ -1007,3 +1007,51 @@ additive byte channels and 32,768 actual writer comparisons. Canonical
 JS/WASM exactly match the timed frozen candidate. Browser and publication
 status are recorded in `build/diagnostics/vertex-uv-alias/validation.json`.
 Raw measurements: `build/perf/tigerlake-20261004/vertex-uv-alias*-summary.json`.
+
+
+## Partial four-sample shader packets (2026-10-04, rejected)
+
+A private variant shades two- and three-pixel triangle remainders with a
+masked SIMD packet, padding inactive edge lanes and retaining scalar single
+pixels. Both models' 100 hashes plus four raw frames and all 234 four-sample
+test images match 2da59ac9. One three-pair quiet audit gives BMW
+-1.06 / +1.18 / +0.29% (median +0.29%) and T80
+-0.50 / +4.12 / -2.27% (median -0.50%). There is no reproducible BMW gain,
+so the variant is not retained. The second pair passes on attempt five;
+four CPU-contaminated attempts and their monitors remain recorded. Full
+acceptance gates and a confirmation audit are not run for this rejection.
+Evidence: `build/diagnostics/msaa-partial-packets/validation.json` and
+`build/perf/tigerlake-20261004/msaa-partial-packets-audit-1-summary.json`.
+
+## SIMD two-sample resolve (2026-10-04)
+
+The two-sample resolve now handles four pixels per iteration. Two 16-byte
+loads contain their RGBA sample pairs; unsigned rounded byte averages and
+shuffles produce four resolved pixels. Sample-zero depth/stencil readback
+is unchanged, and remaining pixels use the existing scalar loop. Both native
+SSE and WASM SIMD paths share this implementation. The actual WASM module
+1fce9677 contains two native i8x16.avgr_u opcodes. No framebuffer representation,
+sample locations, shading, coverage rules or sample writes change.
+
+Two independent three-pair quiet 2x audits against 2da59ac9 give BMW
+-7.70 / -8.60%, T80 -12.48 / -14.76%, and the lit icosphere
+-56.77 / -54.62% frame time. Every pair improves all three scenes.
+Candidate times are BMW 45.14 / 44.87ms, T80 17.03 / 16.88ms and
+icosphere 2.10 / 2.23ms. A three-pair 4x control gives BMW -0.97% and
+T80 -1.35%, at 22.52 / 61.17 FPS; this single series is regression control,
+not proof of a new useful 4x gain. A no-MSAA/readback control gives BMW
++0.18% and T80 -1.15%, without repeated regressions. All twelve complete
+AB/BA pairs pass the quiet guard on attempt one, using 640x360, three workers
+plus caller, 80 warm-up and 100 measured frames per arm, resolve/readback
+every frame. No builds, tests or profiles run during timings. BMW's 4x
+30 FPS goal remains open, and other 2x scalar paths still need optimization.
+
+The extended multisample contract checks all 65,536 byte pairs independently
+in each RGBA channel, sample-zero depth/stencil and the scalar tail on an odd
+31x23 framebuffer. Native and WASM pass with direct rendering and 1/3/8
+workers, along with all existing 2x/4x coverage, state and query checks.
+All 234 rendering cases are byte-identical to baseline for both 2x and 4x;
+each model matches 100 hashes plus four raw frames in both modes.
+Full regression/browser results and publication status are recorded in
+`build/diagnostics/msaa2-resolve-simd/validation.json`. Raw timings:
+`build/perf/tigerlake-20261004/msaa2-resolve-simd*-summary.json`.

@@ -11,7 +11,7 @@
 | BMW / T-80, Dreiecke | 63.087 / 44.513 |
 | BMW, Vertices / Teile / Materialien | 48.428 / 41 / 23 |
 | BMW-Pack / SHA-256 | 19.69 MiB / `fae69ce4` |
-| WASM SHA-256 | `2da59ac9` |
+| WASM SHA-256 | `1fce9677` |
 | Worker / Raster-Bins, 4× | 3 + Caller / 32 |
 | MSAA Farbe + Tiefe / aktiver Bin | 225 KiB |
 | Bin- + Positionscache | ≤4 MiB gemeinsam; 64×1024 Positionen |
@@ -26,24 +26,29 @@
 | 4× MSAA; Render + Resolve / Frame | BMW F31 | T-80 |
 | --- | --- | --- |
 | Ziel | >30 FPS | >60 FPS |
-| Audit 1 / 2 | 22.71 / 22.52 FPS | 61.86 / 61.52 FPS |
-| Framezeit 1 / 2 | 44.03 / 44.40 ms | 16.17 / 16.26 ms |
-| UV-Eingaben, Δ Zeit 1 / 2 zu `a05d5778` | -0.63 / -1.15 % | +0.21 / -1.04 % |
-| Warm-up / Frames / AB/BA-Paare | 80 / 100 / 2×3 | 80 / 100 / 2×3 |
+| Kontrollaudit / Framezeit | 22.52 FPS / 44.41 ms | 61.17 FPS / 16.35 ms |
+| Δ Zeit zu `2da59ac9`; 3 AB/BA-Paare | -0.97 % | -1.35 % |
 
-| Ohne MSAA; Readback/Frame; 2×3 AB/BA-Paare | BMW F31 | T-80 |
+| 2× MSAA; Render + Resolve / Frame | BMW F31 | T-80 | sphere_lit |
+| --- | --- | --- | --- |
+| Audit 1 / 2, FPS | 22.15 / 22.29 | 58.70 / 59.25 | 476.97 / 447.73 |
+| Framezeit 1 / 2, ms | 45.14 / 44.87 | 17.03 / 16.88 | 2.10 / 2.23 |
+| SIMD-Resolve, Δ Zeit zu `2da59ac9`, % | -7.70 / -8.60 | -12.48 / -14.76 | -56.77 / -54.62 |
+| Warm-up / Frames / AB/BA-Paare | 80 / 100 / 2×3 | 80 / 100 / 2×3 | 80 / 100 / 2×3 |
+
+| Ohne MSAA; Readback/Frame; 3 AB/BA-Paare | BMW F31 | T-80 |
 | --- | --- | --- |
-| FPS 1 / 2 | 29.45 / 29.51 | 84.86 / 85.81 |
-| Framezeit 1 / 2 | 33.95 / 33.89 ms | 11.78 / 11.65 ms |
-| Paarweise Δ Zeit 1 / 2 zu `a05d5778` | -1.17 / -0.83 % | -1.93 / +0.77 % |
+| FPS / Framezeit | 29.81 / 33.54 ms | 85.20 / 11.74 ms |
+| Paarweise Δ Zeit zu `2da59ac9` | +0.18 % | -1.15 % |
 
 | Prüfung | Ergebnis |
 | --- | --- |
 | Native / WASM-Mesa | 737/737 / 240/240 |
-| WASM zu `a05d5778` | 240 Bilder bytegleich |
-| Alle Tests, 4× MSAA zu `a05d5778` | 234 Bilder bytegleich |
+| WASM zu `2da59ac9` | 240 Bilder bytegleich |
+| Alle Tests, 2× / 4× MSAA zu `2da59ac9` | je 234 Bilder bytegleich |
 | MSAA-Store, RGBA / Samples / Query-Frames | 262.144 / 65.536 / 128 bytegleich |
 | Modelle je aus/2×/4× | je 100 Hashes + 4 Bytevergleiche pro Modell identisch |
+| 2× Resolve / Farbkanal | alle 65.536 Byte-Paare exakt; ungerade Bildgröße |
 | ASan/UBSan + Leaks | 16/16 |
 | Vertex-Zugriff / Positionscache, WASM | 9 / 9 Verträge |
 | MSAA-Store / hierarchische Tiefe, WASM | je 1 Vertrag |

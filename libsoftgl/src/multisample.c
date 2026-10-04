@@ -56,6 +56,22 @@ void sg_msaa_resolve(softgl_ctx *c) {
             for (int k = 0; k < 4; k++) c->fb.stencil[i + k] = c->fb.sample_stencil[(i + k) * 4];
         }
     }
+    if (n == 2) {
+        const sg_i32x4 pick = _mm_setr_epi8(0, 1, 2, 3, 8, 9, 10, 11,
+                                            -1, -1, -1, -1, -1, -1, -1, -1);
+        for (; i + 4 <= pixels; i += 4) {
+            const uint8_t *src = c->fb.sample_color + i * 8;
+            sg_i32x4 a = _mm_loadu_si128((const sg_i32x4 *)src);
+            sg_i32x4 b = _mm_loadu_si128((const sg_i32x4 *)(src + 16));
+            /* Rounded pair means exactly match (sample0 + sample1 + 1)/2. */
+            a = _mm_shuffle_epi8(_mm_avg_epu8(a, _mm_srli_si128(a, 4)), pick);
+            b = _mm_shuffle_epi8(_mm_avg_epu8(b, _mm_srli_si128(b, 4)), pick);
+            _mm_storeu_si128((sg_i32x4 *)(c->fb.color + i * 4), _mm_unpacklo_epi64(a, b));
+            const float *depth = c->fb.sample_depth + i * 2;
+            _mm_storeu_ps(c->fb.depth + i, sg_f32x4_set(depth[0], depth[2], depth[4], depth[6]));
+            for (int k = 0; k < 4; k++) c->fb.stencil[i + k] = c->fb.sample_stencil[(i + k) * 2];
+        }
+    }
     for (; i < pixels; i++) {
         for (int k = 0; k < 4; k++) {
             unsigned sum = 0;
