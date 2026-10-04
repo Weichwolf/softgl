@@ -1,6 +1,7 @@
 #include "workers.h"
 #include "simd.h"
 #include "raster_hz.h"
+#include "msaa_additive.h"
 #include <math.h>
 
 /* Per-fragment write in GL spec order: scissor -> alpha test -> stencil ->
@@ -244,6 +245,18 @@ SG_INLINE sg_i32x4 sg_blend_sample_channel(float source, sg_i32x4 packed,
     return sg_quantize_samples(value);
 }
 
+#ifdef __EMSCRIPTEN__
+/* Retain a separate WASM root so the additive conversion scratch and guard
+ * stay outside the general writer's other fragment states. */
+__attribute__((used, noinline))
+int sg_blend_additive_msaa4_bytes(const float color[4], float alpha, float factor,
+                                 sg_i32x4 destination, sg_i32x4 *result) {
+    return sg_try_blend_additive_msaa4(color, alpha, factor, destination, result);
+}
+#else
+#define sg_blend_additive_msaa4_bytes sg_try_blend_additive_msaa4
+#endif
+
 void sg_write_multisample(softgl_ctx *c, int x, int y, unsigned coverage,
                           const float z[4], const float color[4]) {
     if (!sg_fragment_in_bounds(c, x, y)) return;
@@ -283,12 +296,15 @@ void sg_write_multisample(softgl_ctx *c, int x, int y, unsigned coverage,
             sg_i32x4 old_color = _mm_loadu_si128((const __m128i*)px);
             float sf = c->blend_src == GL_SRC_ALPHA ? alpha : 1.f;
             float df = c->blend_dst == GL_ONE ? 1.f : 1.f - alpha;
-            sg_i32x4 r = sg_blend_sample_channel(color[0], old_color, 0, sf, df);
-            sg_i32x4 g = sg_blend_sample_channel(color[1], old_color, 8, sf, df);
-            sg_i32x4 b = sg_blend_sample_channel(color[2], old_color, 16, sf, df);
-            sg_i32x4 a = sg_blend_sample_channel(alpha, old_color, 24, sf, df);
-            packed = _mm_or_si128(_mm_or_si128(r, _mm_slli_epi32(g, 8)),
-                                 _mm_or_si128(_mm_slli_epi32(b, 16), _mm_slli_epi32(a, 24)));
+            if (c->blend_dst != GL_ONE ||
+                !sg_blend_additive_msaa4_bytes(color, alpha, sf, old_color, &packed)) {
+                sg_i32x4 r = sg_blend_sample_channel(color[0], old_color, 0, sf, df);
+                sg_i32x4 g = sg_blend_sample_channel(color[1], old_color, 8, sf, df);
+                sg_i32x4 b = sg_blend_sample_channel(color[2], old_color, 16, sf, df);
+                sg_i32x4 a = sg_blend_sample_channel(alpha, old_color, 24, sf, df);
+                packed = _mm_or_si128(_mm_or_si128(r, _mm_slli_epi32(g, 8)),
+                                     _mm_or_si128(_mm_slli_epi32(b, 16), _mm_slli_epi32(a, 24)));
+            }
         } else {
             uint32_t rgba = (uint32_t)sg_quantize(color[0]) |
                             ((uint32_t)sg_quantize(color[1]) << 8) |
