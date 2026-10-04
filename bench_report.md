@@ -51,6 +51,6 @@
 | Additive Bytes / Sample-Writes, exakt | 266.461.184 Kanäle / 32.768 |
 | Draw-Queue / Zustände+Samples / Worker | 99 Hashes exakt / aus+2×+4× / 1+3+8 |
 | Geometrie / MSAA / Standardpool, WASM | 9 / 8 / 18 Verträge |
-| Chromium / Firefox | je 234 Tests; 6 Benchmarks; Abbruch; 8 Worker; MSAA-Wechsel |
+| Chromium / Firefox | je 234 Tests; 3×6 Benchmarks; Abbruch; 8 Worker; MSAA-Wechsel |
 | Geometrie / Bildtoleranzen | unverändert |
 | Rohdaten | `build/perf/tigerlake-20261004/` |

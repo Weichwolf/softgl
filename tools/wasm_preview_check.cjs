@@ -80,9 +80,12 @@ async function main() {
         await page.waitForFunction(() => document.querySelector('#bench-out').textContent.includes('# stopped.'));
         await page.click('#bmw');
         await waitBMW();
+        await page.selectOption('#msaa', '2');
+        await waitBMW();
+        await waitWorkers(8);
         const before = await page.evaluate(() => window.previewHeartbeat);
         await page.click('#bench');
-        await page.waitForFunction(() => document.querySelector('#bench-out').textContent.includes('# done.'), null, {timeout:120000});
+        await page.waitForFunction(() => document.querySelector('#bench-out').textContent.includes('# done.'), null, {timeout:240000});
         const result = await page.evaluate(() => ({
             benchmark: document.querySelector('#bench-out').textContent,
             heartbeat: window.previewHeartbeat,
@@ -90,7 +93,14 @@ async function main() {
             threads: document.querySelector('#s-threads').textContent,
             isolated: crossOriginIsolated,
         }));
-        assert.equal((result.benchmark.match(/^scene=/gm) || []).length, 6);
+        assert.equal((result.benchmark.match(/^scene=/gm) || []).length, 18);
+        const passes = [...result.benchmark.matchAll(/^# MSAA=(off|2x|4x)\n([\s\S]*?)(?=^# MSAA=|^# done\.)/gm)];
+        assert.deepEqual(passes.map(pass => pass[1]), ['off', '2x', '4x']);
+        for (const pass of passes) {
+            assert.equal((pass[2].match(/^scene=/gm) || []).length, 6);
+            assert.ok(pass[2].includes('scene=bmw'));
+        }
+        assert.equal(await page.locator('#msaa').inputValue(), '2', 'Restore previous MSAA selection');
         assert.ok(result.benchmark.includes('scene=bmw'));
         assert.ok(result.heartbeat - before >= 10, 'Browser event loop must run during the benchmark');
         assert.equal(result.reportedProcessors, 9);
@@ -115,7 +125,7 @@ async function main() {
             renderWorkers:8, bmwScene:true, cancelledBenchmark:true, offlineGeometry:true,
             multisampleModes:[0,2,4],
             wasmSha256, errors, passed:true}, null, 2) + '\n');
-        console.log(`Preview passed: BMW, ${count} tests, six benchmark scenes, cancellation and eight workers on nine reported processors.`);
+        console.log(`Preview passed: BMW, ${count} tests, six scenes in each of three MSAA passes, cancellation and eight workers on nine reported processors.`);
     } finally {
         await browser.close();
     }

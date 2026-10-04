@@ -82,7 +82,9 @@ GGX-filtered studio cube maps. The source contains 939,641 triangles; the
 prepared pack targets approximately 50,000 vertices. See
 [asset preparation and attribution](assets/bmw/README.md) for fidelity limits.
 Selecting BMW before **Run Benchmark** adds it to the interactive benchmark.
-The benchmark yields between frames and can be stopped. Scene switches
+The benchmark runs MSAA off, 2× and 4× sequentially, appends all three passes
+to the log, then restores the selected MSAA setting. It yields between frames
+and can be stopped. Scene switches
 release the active render context before starting the next one.
 
 ### Native (test suite)

@@ -390,8 +390,8 @@
     benchOut.hidden = false;
     benchOut.textContent = '';
     const log = text => { benchOut.textContent += text + '\n'; benchOut.scrollTop = benchOut.scrollHeight; };
-    const benchmarkSamples = Number(msaaSelect.value);
-    log(`# scenes WASM benchmark @ ${W}x${H} — SIMD=${simdOK}, MSAA=${benchmarkSamples || 'off'}, reported processors=${hwThreads}`);
+    const previousSamples = msaaSelect.value;
+    log(`# scenes WASM benchmark @ ${W}x${H} — SIMD=${simdOK}, reported processors=${hwThreads}`);
     log(`# userAgent: ${navigator.userAgent}`);
     log('# 3 runs of 20 frames per scene; warm-up excluded; min reported.');
     log('# Browser yields between frames; each timed frame includes worker completion.');
@@ -406,51 +406,57 @@
         test:Mod._sg_bench_slot_test_index(s),
       }));
       if (includeBMW) scenes.push({tag:'bmw', model:true});
-      for (const {tag, test, model} of scenes) {
+      for (const benchmarkSamples of [0, 2, 4]) {
         if (benchmarkCancelled) break;
-        if (!model && test < 0) throw new Error(`Missing benchmark scene: ${tag}`);
-        let best = Infinity;
-        nameEl.textContent = `Benchmark: ${tag}`;
-        for (let run = 0; run < 3 && !benchmarkCancelled; run++) {
-          // Context teardown posts worker-pool return messages to the browser.
-          await yieldBrowser();
-          const c = createContext(benchmarkSamples);
-          let modelPtr = 0;
-          try {
-            Mod._softgl_make_current(c);
-            updateThreadStats(c);
-            if (model) {
-              const bytes = assetBytes.get('bmw');
-              modelPtr = Mod._malloc(bytes.length);
-              if (!modelPtr) throw new Error('BMW allocation failed');
-              Mod.HEAPU8.set(bytes, modelPtr);
-              if (!Mod._sg_model_load(modelPtr, bytes.length)) throw new Error('BMW load failed');
-            }
-            const render = model ? frame => Mod._sg_model_render(frame*18, W, H)
-                                 : () => Mod._sg_test_run(test, W, H);
-            render(0);
-            Mod._softgl_read_rgba8(c);
-            let total = 0;
-            for (let frame = 0; frame < 20 && !benchmarkCancelled; frame++) {
-              await yieldBrowser();
-              if (benchmarkCancelled) break;
-              const t0 = performance.now();
-              render(frame);
+        msaaSelect.value = String(benchmarkSamples);
+        log(`# MSAA=${benchmarkSamples ? `${benchmarkSamples}x` : 'off'}`);
+        for (const {tag, test, model} of scenes) {
+          if (benchmarkCancelled) break;
+          if (!model && test < 0) throw new Error(`Missing benchmark scene: ${tag}`);
+          let best = Infinity;
+          nameEl.textContent = `Benchmark: ${tag}`;
+          for (let run = 0; run < 3 && !benchmarkCancelled; run++) {
+            // Context teardown posts worker-pool return messages to the browser.
+            await yieldBrowser();
+            const c = createContext(benchmarkSamples);
+            let modelPtr = 0;
+            try {
+              Mod._softgl_make_current(c);
+              updateThreadStats(c);
+              if (model) {
+                const bytes = assetBytes.get('bmw');
+                modelPtr = Mod._malloc(bytes.length);
+                if (!modelPtr) throw new Error('BMW allocation failed');
+                Mod.HEAPU8.set(bytes, modelPtr);
+                if (!Mod._sg_model_load(modelPtr, bytes.length)) throw new Error('BMW load failed');
+              }
+              const render = model ? frame => Mod._sg_model_render(frame*18, W, H)
+                                   : () => Mod._sg_test_run(test, W, H);
+              render(0);
               Mod._softgl_read_rgba8(c);
-              total += performance.now() - t0;
+              let total = 0;
+              for (let frame = 0; frame < 20 && !benchmarkCancelled; frame++) {
+                await yieldBrowser();
+                if (benchmarkCancelled) break;
+                const t0 = performance.now();
+                render(frame);
+                Mod._softgl_read_rgba8(c);
+                total += performance.now() - t0;
+              }
+              if (!benchmarkCancelled) {
+                best = Math.min(best, total / 20);
+                blitContext(c);
+              }
+            } finally {
+              if (model) Mod._sg_model_unload();
+              if (modelPtr) Mod._free(modelPtr);
+              Mod._softgl_destroy(c);
             }
-            if (!benchmarkCancelled) {
-              best = Math.min(best, total / 20);
-              blitContext(c);
-            }
-          } finally {
-            if (model) Mod._sg_model_unload();
-            if (modelPtr) Mod._free(modelPtr);
-            Mod._softgl_destroy(c);
           }
+          if (!benchmarkCancelled)
+            log(`scene=${tag.padEnd(10)} ms=${best.toFixed(3)} fps=${(1000 / best).toFixed(1)}`);
         }
-        if (!benchmarkCancelled)
-          log(`scene=${tag.padEnd(10)} ms=${best.toFixed(3)} fps=${(1000 / best).toFixed(1)}`);
+        log('');
       }
       log('');
       log(benchmarkCancelled ? '# stopped. click "Tank" or "Tests" to resume.'
@@ -459,6 +465,7 @@
       log(`# error: ${error.message}`);
       reportError(error);
     } finally {
+      msaaSelect.value = previousSamples;
       benching = false;
       benchBtn.textContent = 'Run Benchmark';
       setControlsBusy(false);
