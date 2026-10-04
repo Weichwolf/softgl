@@ -625,3 +625,70 @@ Smaller active regions alone did not compensate for added bin work.
 Evidence: `build/diagnostics/msaa-cache-alignment/`, `hz-depth-error-bound/`,
 `hz-quad-cells/`, `msaa-64-aligned-bins/`, `msaa-40-aligned-bins/` and the
 corresponding JSON results under `build/perf/tigerlake-20261004/`.
+
+### Caller phases and tighter strip depth bounds (2026-10-04)
+
+Caller-only wall timers outside the worker spin loops preserve both models'
+100 frame hashes and four raw frames. BMW has 82 indexed draws per frame
+(41 parts in two passes), not 41. Of its diagnostic 52.43ms frame, caller raster
+work takes 24.05ms, actual raster/vertex waits 5.86ms, and serial transformation
+of asynchronous draws 6.65ms. Draw preparation excluding raster and waits is
+19.01ms, including transformation. These are instrumented wall times, not
+CPU cycles, sampled self time, measured cache traffic or acceptance timings.
+T80 has six draws, 1.19ms actual waits and 6.86ms non-raster/non-wait draw work;
+large jobs frequently use synchronous rasterization under the 2MiB geometry
+limit. The current pack contains 51,342 vertices; its hull's 20,340 unique
+indexed vertices alone exceed that limit at the full 160-byte vertex stride.
+
+A tighter depth lower bound clips a triangle to a bin's vertical strip only
+after a complete depth cell fails the global bound. Strict numerical oracles
+pass, and tested variants preserve both models' four-sample frames. Preliminary
+quiet AB/BA screens give BMW/T80 frame-time changes: ungated double precision
++0.66%/+2.77%; float with a 256-pixel bounding-box gate -0.50%/+0.78%; the
+same gate with an outlined helper -0.82%/+1.87%; lazy coordinate conversion
+-0.65%/+1.90%. All are rejected. Ungated float passed numerical contracts but
+was not timed or checked against model frames. Logical counters show too few
+additional rejections to repay the bound calculation in these scenes.
+
+Splitting oversized indexed triangle draws into bounded, ordered subdraws
+preserves BMW frames but changes T80 hashes. At angle zero, 220 pixels and
+365 channels differ, with maximum channel delta six. The old oversized-draw
+drain-policy contract also fails. The exact image cause is unproven; no timed
+benchmark was run and this variant is rejected.
+
+Evidence: `build/diagnostics/caller-wait-phases/phase-summary.json`,
+`build/diagnostics/caller-wait-phases/tank-index-spans.json`,
+the `hz-strip-depth*` directories and
+`build/diagnostics/bounded-index-segments/frame0-diff.json`.
+
+### Coherent SIMD cube sampling (2026-10-04, rejected)
+
+Packets whose live lanes select the same cube face share SIMD projection and
+the existing float-bilinear four-pixel sampler. Mixed faces, nonfinite live
+coordinates and missing faces retain scalar sampling. Axis ties, signed zero,
+small directions, wraps, filters, inactive lanes and RGBA operation grouping
+match the original sampler. The direct native/WASM oracle checks 262,144
+packets: 243,712 take the SIMD path with bit-exact float RGBA, 18,432 fall back.
+Both private variants pass 50 WASM contracts and both models' 100 four-sample
+hashes plus four raw frames. Full image, sanitizer and browser gates were not
+run because neither variant was retained.
+
+Two independent three-pair quiet four-sample audits of the coherent sampler
+give BMW -2.45%/-4.02% frame time and T80 +0.15%/+1.40%. One three-pair
+no-MSAA/readback audit gives BMW +0.12%, T80 +0.58%; its third pair required
+a second attempt after the activity guard discarded the first. The BMW gain
+was not retained with the T80 tradeoff.
+
+Outlining the non-2D packet fallback additionally reduces the code inside the
+ordinary raster loops. Its first quiet screen gives BMW -3.2%, T80 +0.4%,
+but two independently guarded pairs give BMW -4.15%/-3.94% and T80
++4.55%/+1.71%. Remaining audits were intentionally stopped, and this variant
+is rejected. Smaller encoded code is not evidence of improved native cache
+behavior. An extended fallback oracle was prepared but not run.
+
+All timed four-sample frames use 640x360, three workers plus caller, resolve
+every frame, 80 warm-up and 100 measured frames. Accepted renderer source,
+canonical WASM and live port 8000 remain unchanged. Evidence:
+`build/diagnostics/cube-coherent-packets/validation.json`,
+`build/diagnostics/cube-outlined-sampling/validation.json` and the corresponding
+JSON results under `build/perf/tigerlake-20261004/`.
