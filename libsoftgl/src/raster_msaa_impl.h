@@ -1,10 +1,22 @@
 /* Included twice with compile-time sample count and function name. */
-static void SG_MSAA_FUNCTION(softgl_ctx *c,
+#ifdef __EMSCRIPTEN__
+/* LLVM noinline alone is lost before Binaryen. Retain these two roots so
+ * the whole-program optimizer keeps sample-count loops outside the common
+ * rasterizer. No additional GL API is declared. */
+__attribute__((used, noinline))
+#else
+static __attribute__((noinline))
+#endif
+void SG_MSAA_FUNCTION(softgl_ctx *c,
                          const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
                          const sg_tex_tri_ctx *tctx,
                          int ix0, int iy0, int ix1, int iy1,
                          int64_t area, int bias0, int bias1, int bias2,
                          float z_offset) {
+#if SG_MSAA_SAMPLES == 4
+    if (sg_hz_occluded(c, ix0, iy0, ix1, iy1,
+        v0->ndc.z, v1->ndc.z, v2->ndc.z, z_offset)) return;
+#endif
     int32_t vx[3] = {sg_fp_screen_from_float(v0->ndc.x),
                      sg_fp_screen_from_float(v1->ndc.x),
                      sg_fp_screen_from_float(v2->ndc.x)};

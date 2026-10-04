@@ -41,6 +41,19 @@ typedef struct SG_ALIGN16 {
 } sg_vert;
 
 typedef struct {
+    uint64_t written;
+    float maximum;
+    uint32_t maximum_sample;
+} sg_hz_tile;
+
+/* Prefix of the four-sample color allocation, shared by draw snapshots.
+ * Keep the original framebuffer/context layout and align color to 64 bytes. */
+typedef struct __attribute__((aligned(64))) {
+    sg_hz_tile *tiles;
+    int rows, active;
+} sg_hz_state;
+
+typedef struct {
     int w, h;
     uint8_t *color;    /* w*h*4 bytes RGBA8 */
     float   *depth;    /* w*h, 0..1 */

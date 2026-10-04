@@ -268,6 +268,10 @@ softgl_ctx *softgl_create_multisample(GLsizei w, GLsizei h, GLsizei samples) {
     if (w <= 0 || h <= 0 || (samples != 0 && samples != 2 && samples != 4)) return NULL;
     size_t pixels = (size_t)w * (size_t)h;
     if (pixels > INT32_MAX / 4u || pixels > SIZE_MAX / (samples ? 16u : 4u)) return NULL;
+    /* Include the four-sample prefix and aligned-allocation overhead before
+     * any allocation, including on a 32-bit WASM address space. */
+    if (samples == 4 && pixels >
+        (SIZE_MAX - sizeof(sg_hz_state) - 64u - sizeof(void *)) / 16u) return NULL;
     softgl_ctx *c = (softgl_ctx*)calloc(1, sizeof(*c));
     if (!c) return NULL;
     c->fb.w = w;
@@ -285,7 +289,13 @@ softgl_ctx *softgl_create_multisample(GLsizei w, GLsizei h, GLsizei samples) {
     for (int i = 0; i < w * h; i++) c->fb.depth[i] = 1.0f;
     if (samples) {
         size_t values = pixels * (size_t)samples;
-        c->fb.sample_color = sg_aligned_alloc(values * 4, 16);
+        if (samples == 4) {
+            sg_hz_state *state = sg_aligned_alloc(sizeof(sg_hz_state) + values * 4, 64);
+            if (state) {
+                memset(state, 0, sizeof(sg_hz_state));
+                c->fb.sample_color = (uint8_t *)(state + 1);
+            }
+        } else c->fb.sample_color = sg_aligned_alloc(values * 4, 16);
         c->fb.sample_depth = sg_aligned_alloc(values * sizeof(float), 16);
         c->fb.sample_stencil = sg_aligned_alloc(values, 16);
         if (!c->fb.sample_color || !c->fb.sample_depth || !c->fb.sample_stencil) {
@@ -295,6 +305,21 @@ softgl_ctx *softgl_create_multisample(GLsizei w, GLsizei h, GLsizei samples) {
         memset(c->fb.sample_color, 0, values * 4);
         memset(c->fb.sample_stencil, 0, values);
         for (size_t i = 0; i < values; i++) c->fb.sample_depth[i] = 1.f;
+    }
+    /* The optional table lives outside hot context state. Width and bin
+     * alignment guarantee exclusive complete cells; failure falls back. */
+    if (samples == 4 && w % 128 == 0) {
+        sg_hz_state *state = ((sg_hz_state *)c->fb.sample_color) - 1;
+        int rows = (((h + 3) / 4) + 3) & ~3;
+        size_t count = (size_t)(w / 4) * (size_t)rows;
+        if (count <= (262144u - sizeof(sg_hz_state)) / sizeof(sg_hz_tile)) {
+            state->tiles = sg_aligned_alloc(count * sizeof(sg_hz_tile), 64);
+            if (state->tiles) {
+                memset(state->tiles, 0, count * sizeof(sg_hz_tile));
+                state->rows = rows;
+                state->active = 1;
+            }
+        }
     }
     sg_reset_state(c);
     /* One worker per logical core, up to SG_MAX_TILES. On WASM w/o pthreads
@@ -312,7 +337,11 @@ void softgl_destroy(softgl_ctx *c) {
     if (c->fb.color)   sg_aligned_free(c->fb.color);
     if (c->fb.depth)   sg_aligned_free(c->fb.depth);
     if (c->fb.stencil) sg_aligned_free(c->fb.stencil);
-    sg_aligned_free(c->fb.sample_color);
+    if (c->fb.samples == 4 && c->fb.sample_color) {
+        sg_hz_state *state = ((sg_hz_state *)c->fb.sample_color) - 1;
+        sg_aligned_free(state->tiles);
+        sg_aligned_free(state);
+    } else sg_aligned_free(c->fb.sample_color);
     sg_aligned_free(c->fb.sample_depth);
     sg_aligned_free(c->fb.sample_stencil);
     if (c->buffers) {

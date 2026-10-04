@@ -1,3 +1,4 @@
+#include "raster_hz.h"
 #include "types.h"
 #include "dlist.h"
 #include "workers.h"
@@ -54,6 +55,10 @@ void _sg_clear_real(GLbitfield mask) {
             }
         }
         if ((mask & GL_DEPTH_BUFFER_BIT) && c->depth_mask) {
+            sg_hz_state *state = sg_hz_state_from_ctx(c);
+            if (state && state->tiles)
+                memset(state->tiles, 0,
+                    (size_t)(c->fb.w / 4) * state->rows * sizeof(sg_hz_tile));
             sg_f32x4 depth = sg_f32x4_splat(c->clear_depth);
             for (int y = y0; y < y1; y++) {
                 float *row = c->fb.sample_depth + ((size_t)y * c->fb.w + x0) * n;

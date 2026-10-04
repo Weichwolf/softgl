@@ -11,36 +11,38 @@
 | BMW / T-80, Dreiecke | 63.087 / 44.513 |
 | BMW, Vertices / Teile / Materialien | 48.428 / 41 / 23 |
 | BMW-Pack / SHA-256 | 19.69 MiB / `fae69ce4` |
-| WASM SHA-256 | `5f2835f4` |
+| WASM SHA-256 | `2a926624` |
 | Worker / Raster-Bins, 4× | 3 + Caller / 32 |
 | MSAA Farbe + Tiefe / aktiver Bin | 225 KiB |
 | Bin- + Positionscache | ≤4 MiB gemeinsam; 64×1024 Positionen |
 | Geometrie pro asynchronem Draw | ≤2 MiB; 2 Slots |
+| Hierarchische Tiefe, 4× / Budget | 230,06 KiB inkl. Header / ≤256 KiB |
 
 | 4× MSAA; Render + Resolve / Frame | BMW F31 | T-80 |
 | --- | --- | --- |
 | Ziel | >30 FPS | >60 FPS |
-| Audit 1 / 2 | 17.54 / 17.61 FPS | 54.57 / 54.55 FPS |
-| Framezeit 1 / 2 | 57.02 / 56.80 ms | 18.32 / 18.33 ms |
-| MSAA-Store, Δ Zeit 1 / 2 | -2.41 / -2.33 % | -4.54 / -4.35 % |
+| Audit 1 / 2 | 19.15 / 19.13 FPS | 55.23 / 55.37 FPS |
+| Framezeit 1 / 2 | 52.22 / 52.29 ms | 18.11 / 18.06 ms |
+| Hierarchische Tiefe, Δ Zeit 1 / 2 zu `5f2835f4` | -9.09 / -9.12 % | -2.27 / -2.27 % |
 | Warm-up / Frames / AB/BA-Paare | 80 / 100 / 2×3 | 80 / 100 / 2×3 |
-| Bedeckte / schattierte Pixel pro Frame | 1.142.683 / 301.292 | 338.326 / 137.667 |
 
-| Ohne MSAA; MSAA-Store; Readback/Frame; 1 AB/BA-Paar | BMW F31 | T-80 |
+| Ohne MSAA; Readback/Frame; 2×3 AB/BA-Paare | BMW F31 | T-80 |
 | --- | --- | --- |
-| FPS / Framezeit | 25.37 / 39.42 ms | 78.55 / 12.73 ms |
-| Paarweise Δ Zeit | +0.51 % | +0.64 % |
+| FPS 1 / 2 | 25.26 / 25.25 | 78.76 / 77.75 |
+| Framezeit 1 / 2 | 39.58 / 39.61 ms | 12.70 / 12.86 ms |
+| Paarweise Δ Zeit 1 / 2 zu `5f2835f4` | 0.83 / -0.66 % | -0.48 / 0.06 % |
 
 | Prüfung | Ergebnis |
 | --- | --- |
-| Native / WASM-Mesa | 731/731 / 240/240 |
-| WASM zu `c566ddc0` | 240 Bilder bytegleich |
-| Alle Tests, 4× MSAA zu `c566ddc0` | 234 Bilder bytegleich |
+| Native / WASM-Mesa | 732/732 / 240/240 |
+| WASM zu `5f2835f4` | 240 Bilder bytegleich |
+| Alle Tests, 4× MSAA zu `5f2835f4` | 234 Bilder bytegleich |
 | MSAA-Store, RGBA / Samples / Query-Frames | 262.144 / 65.536 / 128 bytegleich |
 | Modelle je aus/2×/4× | je 100 Hashes + 4 Bytevergleiche pro Modell identisch |
-| ASan/UBSan + Leaks | 10/10 |
+| ASan/UBSan + Leaks | 11/11 |
 | Vertex-Zugriff / Positionscache / Pipeline / lokale Transformation, WASM | 9 / 9 / 9 / 3 Verträge |
-| MSAA-Store, WASM | 1 Vertrag |
+| MSAA-Store / hierarchische Tiefe, WASM | je 1 Vertrag |
+| Hierarchische Tiefe, Writes / Zahlen / Query-Frames | 131.072 / 1.048.576 / 1.536 exakt |
 | Geometrie / MSAA / Standardpool, WASM | 9 / 8 / 18 Verträge |
 | Chromium / Firefox | je 234 Tests; 6 Benchmarks; Abbruch; 8 Worker; MSAA-Wechsel |
 | Geometrie / Bildtoleranzen | unverändert |

@@ -2,6 +2,7 @@
 #include "multisample.h"
 #include "dlist.h"
 #include "workers.h"
+#include "raster_hz.h"
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
@@ -419,6 +420,9 @@ static void sg_drawpixel_depth(softgl_ctx *c, int i, int j, float z_val,
                                                     (1u << c->fb.samples) - 1u;
                     for (int s = 0; s < c->fb.samples; s++)
                         if (mask & (1u << s)) c->fb.sample_depth[(size_t)pixel * c->fb.samples + s] = z_val;
+                    /* Pixel depth transfer can raise values regardless of the
+                     * depth comparison; the cell's previous maximum expires. */
+                    if (mask && sg_hz_active(c)) sg_hz_at(c, x, y)->written = 0;
                 } else c->fb.depth[pixel] = z_val;
             }
         }

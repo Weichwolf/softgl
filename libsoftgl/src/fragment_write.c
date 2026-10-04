@@ -1,5 +1,6 @@
 #include "workers.h"
 #include "simd.h"
+#include "raster_hz.h"
 #include <math.h>
 
 /* Per-fragment write in GL spec order: scissor -> alpha test -> stencil ->
@@ -9,7 +10,7 @@
 
 SG_INLINE void sg_write_sample(softgl_ctx *c, size_t idx, uint8_t *color,
                                 float *depth, uint8_t *stencil,
-                                float z, float r, float g, float b, float a) {
+                                float z, float r, float g, float b, float a, int track_hz) {
 
     /* Alpha test before stencil (spec 4.1). */
     if (c->alpha_test) {
@@ -89,7 +90,10 @@ SG_INLINE void sg_write_sample(softgl_ctx *c, size_t idx, uint8_t *color,
     if (!s_pass) return;
     if (!d_pass) return;
 
-    if (c->depth_test && c->depth_mask) depth[idx] = z;
+    if (c->depth_test && c->depth_mask) {
+        depth[idx] = z;
+        if (track_hz && sg_hz_active(c)) sg_hz_record_sample(c, idx, z);
+    }
 
     /* Queries count surviving fragments even if color writes are masked
      * or a logic operation leaves the framebuffer unchanged. Workers own
@@ -268,8 +272,10 @@ void sg_write_multisample(softgl_ctx *c, int x, int y, unsigned coverage,
             mask = sg_i32x4_and(mask, sg_sample_depth_mask(c->depth_func, zv, old_depth));
             coverage = sg_mask4_live(mask);
             if (!coverage) return;
-            if (c->depth_mask)
+            if (c->depth_mask) {
                 _mm_storeu_ps(&c->fb.sample_depth[first], sg_f32x4_select(mask, zv, old_depth));
+                sg_hz_record_pixel(c, x, y, coverage, z);
+            }
         } else if (!coverage) return;
         uint8_t *px = &c->fb.sample_color[first * 4];
         sg_i32x4 packed;
@@ -300,7 +306,7 @@ void sg_write_multisample(softgl_ctx *c, int x, int y, unsigned coverage,
     for (int s = 0; s < n; s++) {
         if (!(coverage & (1u << s))) continue;
         sg_write_sample(c, first + s, c->fb.sample_color, c->fb.sample_depth,
-                         c->fb.sample_stencil, z[s], color[0], color[1], color[2], alpha);
+                         c->fb.sample_stencil, z[s], color[0], color[1], color[2], alpha, n == 4);
     }
 }
 
@@ -314,5 +320,5 @@ void sg_write_fragment(softgl_ctx *c, int x, int y, float z,
         return;
     }
     sg_write_sample(c, (size_t)y * c->fb.w + x, c->fb.color, c->fb.depth,
-                     c->fb.stencil, z, r, g, b, a);
+                     c->fb.stencil, z, r, g, b, a, 0);
 }

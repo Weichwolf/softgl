@@ -24,6 +24,16 @@ endif()
 add_test(NAME msaa_store_contract COMMAND msaa_store_contract)
 set_tests_properties(msaa_store_contract PROPERTIES TIMEOUT 30)
 
+# Conservative numerical bound and exact sample/query oracle.
+add_executable(hierarchical_depth_contract hierarchical_depth.c)
+target_include_directories(hierarchical_depth_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_link_libraries(hierarchical_depth_contract PRIVATE softgl)
+if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(hierarchical_depth_contract PRIVATE -O2 -fno-fast-math -ffp-contract=off -msse4.1)
+endif()
+add_test(NAME hierarchical_depth_contract COMMAND hierarchical_depth_contract)
+set_tests_properties(hierarchical_depth_contract PROPERTIES TIMEOUT 90)
+
 add_executable(dot3_chain_contract dot3_chain.c)
 target_include_directories(dot3_chain_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
 target_link_libraries(dot3_chain_contract PRIVATE softgl)

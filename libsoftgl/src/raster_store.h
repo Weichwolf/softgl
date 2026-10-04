@@ -2,6 +2,7 @@
 #define SG_RASTER_STORE_H
 #include "types.h"
 #include "simd.h"
+#include "raster_hz.h"
 
 /* Triangle bounds include framebuffer/scissor. Its early depth test already
  * selected these samples. Each triangle flushes its distinct pixel packet
@@ -47,5 +48,6 @@ SG_INLINE void sg_store_opaque_msaa4(softgl_ctx *c, int x, int y, unsigned cover
         packed = _mm_or_si128(_mm_and_si128(mask, packed), _mm_andnot_si128(mask, old));
     }
     _mm_storeu_si128((sg_i32x4 *)px, packed);
+    if (c->depth_test && c->depth_mask) sg_hz_record_pixel(c, x, y, coverage, depths);
 }
 #endif

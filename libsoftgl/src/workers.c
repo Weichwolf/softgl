@@ -1,3 +1,4 @@
+#include "raster_hz.h"
 #include "workers.h"
 #include "raster_types.h"
 #include <stdlib.h>
@@ -592,6 +593,12 @@ static void *sg_worker_main(void *arg) {
 
 void sg_workers_init(softgl_ctx *c, int nworkers_hint) {
     if (c->workers) return;
+    sg_hz_state *state = sg_hz_state_from_ctx(c);
+    if (state && state->tiles) {
+        memset(state->tiles, 0,
+            (size_t)(c->fb.w / 4) * state->rows * sizeof(sg_hz_tile));
+        state->active = 1;
+    }
     int n = nworkers_hint > 0 ? nworkers_hint : sg_hwthreads();
 #if defined(__EMSCRIPTEN__)
     /* The caller performs vertex and raster work too. Reserve its logical
@@ -625,6 +632,7 @@ void sg_workers_init(softgl_ctx *c, int nworkers_hint) {
     for (int t = 0; t < p->nbins; t++) {
         p->bins[t].ix0 = (int)((int64_t)fbw * t / p->nbins);
         p->bins[t].ix1 = (int)((int64_t)fbw * (t + 1) / p->nbins);
+        if (state && ((p->bins[t].ix0 & 3) || (p->bins[t].ix1 & 3))) state->active = 0;
         if (p->column_bin)
             memset(p->column_bin + p->bins[t].ix0, t,
                    (size_t)(p->bins[t].ix1 - p->bins[t].ix0));
