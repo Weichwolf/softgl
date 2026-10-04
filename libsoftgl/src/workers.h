@@ -63,7 +63,8 @@ typedef struct {
 enum {
     SG_JOB_RASTER = 0,   /* drain shared independent raster bins (default) */
     SG_JOB_VERTEX = 1,   /* transform a slice of [job_first..job_first+job_count) */
-    SG_JOB_ASYNC_RASTER = 2, /* drain the immutable draw snapshot */
+    SG_JOB_ASYNC_RASTER = 2, /* drain the immutable full-vertex snapshot */
+    SG_JOB_PACKED_RASTER = 3, /* drain an immutable exact packed large draw */
 };
 
 /* Position-only data: attributes and lighting must be refreshed per draw. */
@@ -87,7 +88,7 @@ typedef struct {
      * Vertex and bin arrays exchange ownership only after all workers join. */
     struct sg_async_raster *async_raster;
     int            async_pending;
-    int            prepared_transformed;
+    int            prepared_transformed; /* 0 idle; compact count; negative original-index count */
     int            job_storage_first;
     struct sg_geometry_cache *geometry_cache; /* bounded bin and position cache */
     int            nworkers;

@@ -11,38 +11,40 @@
 | BMW / T-80, Dreiecke | 63.087 / 44.513 |
 | BMW, Vertices / Teile / Materialien | 48.428 / 41 / 23 |
 | BMW-Pack / SHA-256 | 19.69 MiB / `fae69ce4` |
-| WASM SHA-256 | `2a926624` |
+| WASM SHA-256 | `b1f61553` |
 | Worker / Raster-Bins, 4× | 3 + Caller / 32 |
 | MSAA Farbe + Tiefe / aktiver Bin | 225 KiB |
 | Bin- + Positionscache | ≤4 MiB gemeinsam; 64×1024 Positionen |
-| Geometrie pro asynchronem Draw | ≤2 MiB; 2 Slots |
+| Raster-Vertex / T-80 | 160 → 64 Byte; Float-Präzision unverändert |
+| Geometrie pro asynchronem Draw | ≤2 MiB; volle / gepackte Vertices |
 | Hierarchische Tiefe, 4× / Budget | 230,06 KiB inkl. Header / ≤256 KiB |
 
 | 4× MSAA; Render + Resolve / Frame | BMW F31 | T-80 |
 | --- | --- | --- |
 | Ziel | >30 FPS | >60 FPS |
-| Audit 1 / 2 | 19.15 / 19.13 FPS | 55.23 / 55.37 FPS |
-| Framezeit 1 / 2 | 52.22 / 52.29 ms | 18.11 / 18.06 ms |
-| Hierarchische Tiefe, Δ Zeit 1 / 2 zu `5f2835f4` | -9.09 / -9.12 % | -2.27 / -2.27 % |
+| Audit 1 / 2 | 19.32 / 19.40 FPS | 57.21 / 57.65 FPS |
+| Framezeit 1 / 2 | 51.77 / 51.54 ms | 17.48 / 17.34 ms |
+| Gepackte Rasterdaten, Δ Zeit 1 / 2 zu `2a926624` | -0.70 / -0.18 % | -0.70 / -1.92 % |
 | Warm-up / Frames / AB/BA-Paare | 80 / 100 / 2×3 | 80 / 100 / 2×3 |
 
 | Ohne MSAA; Readback/Frame; 2×3 AB/BA-Paare | BMW F31 | T-80 |
 | --- | --- | --- |
-| FPS 1 / 2 | 25.26 / 25.25 | 78.76 / 77.75 |
-| Framezeit 1 / 2 | 39.58 / 39.61 ms | 12.70 / 12.86 ms |
-| Paarweise Δ Zeit 1 / 2 zu `5f2835f4` | 0.83 / -0.66 % | -0.48 / 0.06 % |
+| FPS 1 / 2 | 25.68 / 25.38 | 82.78 / 82.53 |
+| Framezeit 1 / 2 | 38.94 / 39.39 ms | 12.08 / 12.12 ms |
+| Paarweise Δ Zeit 1 / 2 zu `2a926624` | -0.35 / 1.09 % | -4.72 / -4.72 % |
 
 | Prüfung | Ergebnis |
 | --- | --- |
-| Native / WASM-Mesa | 732/732 / 240/240 |
-| WASM zu `5f2835f4` | 240 Bilder bytegleich |
-| Alle Tests, 4× MSAA zu `5f2835f4` | 234 Bilder bytegleich |
+| Native / WASM-Mesa | 734/734 / 240/240 |
+| WASM zu `2a926624` | 240 Bilder bytegleich |
+| Alle Tests, 4× MSAA zu `2a926624` | 234 Bilder bytegleich |
 | MSAA-Store, RGBA / Samples / Query-Frames | 262.144 / 65.536 / 128 bytegleich |
 | Modelle je aus/2×/4× | je 100 Hashes + 4 Bytevergleiche pro Modell identisch |
-| ASan/UBSan + Leaks | 11/11 |
-| Vertex-Zugriff / Positionscache / Pipeline / lokale Transformation, WASM | 9 / 9 / 9 / 3 Verträge |
+| ASan/UBSan + Leaks | 13/13 |
+| Vertex-Zugriff / Positionscache, WASM | 9 / 9 Verträge |
 | MSAA-Store / hierarchische Tiefe, WASM | je 1 Vertrag |
 | Hierarchische Tiefe, Writes / Zahlen / Query-Frames | 131.072 / 1.048.576 / 1.536 exakt |
+| Packen / Dreieck-Fetch / Zustand+Samples | 16 UV-Masken / 524.288 / 90 exakt |
 | Geometrie / MSAA / Standardpool, WASM | 9 / 8 / 18 Verträge |
 | Chromium / Firefox | je 234 Tests; 6 Benchmarks; Abbruch; 8 Worker; MSAA-Wechsel |
 | Geometrie / Bildtoleranzen | unverändert |

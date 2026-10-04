@@ -5,11 +5,14 @@
 #define CHECK(x) do { if (!(x)) { \
     fprintf(stderr, "%s:%d: %s\n", __FILE__, __LINE__, #x); return 1; \
 } } while (0)
-enum { W = 65, H = 35, N = 384, COUNT = N * 3, FIRST = 17, STAGES = 9 };
+enum { W = 65, H = 35, N = 4666, COUNT = N * 3, FIRST = 17, STAGES = 10 };
 
 static int draw(softgl_ctx *c, int eager) {
-    glDrawElements(GL_TRIANGLES, COUNT, GL_UNSIGNED_INT, NULL);
-    CHECK(((sg_worker_pool *)c->workers)->async_pending);
+    /* A trailing degenerate triangle forces a full-vertex synchronous draw
+     * without changing any rendered primitive or any shader state. */
+    glDrawElements(GL_TRIANGLES, eager ? COUNT + 3 : COUNT, GL_UNSIGNED_INT, NULL);
+    CHECK(eager ? !((sg_worker_pool *)c->workers)->async_pending :
+                  ((sg_worker_pool *)c->workers)->async_pending);
     if (eager) sg_workers_flush(c);
     return 0;
 }
@@ -24,7 +27,13 @@ static uint64_t frame(softgl_ctx *c) {
     const void *pixels = softgl_read_rgba8(c);
     uint64_t h = hash(pixels, W*H*4, UINT64_C(1469598103934665603));
     h = hash(c->fb.depth, W*H*sizeof(float), h);
-    return hash(c->fb.stencil, W*H, h);
+    h = hash(c->fb.stencil, W*H, h);
+    if (c->fb.samples) {
+        h = hash(c->fb.sample_color, W*H*c->fb.samples*4, h);
+        h = hash(c->fb.sample_depth, W*H*c->fb.samples*sizeof(float), h);
+        h = hash(c->fb.sample_stencil, W*H*c->fb.samples, h);
+    }
+    return h;
 }
 
 static int drained(softgl_ctx *c) {
@@ -32,9 +41,10 @@ static int drained(softgl_ctx *c) {
     return 0;
 }
 
-int sg_stream_contract(int samples, int workers, int eager, uint64_t result[STAGES]) {
-    float positions[FIRST+COUNT][3] = {0}, uv[FIRST+COUNT][2] = {0};
-    GLuint indices[COUNT];
+int sg_large_stream_contract(int samples, int workers, int eager, uint64_t result[STAGES]) {
+    enum { RANGE = 45001 };
+    float positions[RANGE][3] = {0}, uv[RANGE][2] = {0};
+    GLuint indices[COUNT + 3];
     for (int t = 0; t<N; t++) for (int v = 0; v<3; v++) {
         int i = FIRST+t*3+v;
         positions[i][0] = 1.f+(t%16)*3.f+(v == 1?5.f:0.f);
@@ -43,6 +53,7 @@ int sg_stream_contract(int samples, int workers, int eager, uint64_t result[STAG
         uv[i][0] = (t&1)?.75f:.25f; uv[i][1] = .5f;
         indices[t*3+v] = (GLuint)i;
     }
+    indices[COUNT] = indices[COUNT + 1] = indices[COUNT + 2] = RANGE - 1;
     softgl_ctx *c = softgl_create_multisample(W, H, samples); CHECK(c);
     softgl_make_current(c); sg_workers_shutdown(c); sg_workers_init(c, workers);
     CHECK(sg_thread_count(c) == workers);
@@ -72,6 +83,14 @@ int sg_stream_contract(int samples, int workers, int eager, uint64_t result[STAG
     glEnable(GL_SCISSOR_TEST); glScissor(7, 3, 43, 23);
     CHECK(!draw(c, eager)); result[0] = frame(c);
     glDisable(GL_BLEND); glDisable(GL_SCISSOR_TEST); glLoadIdentity();
+    /* Large packed fragments keep exact eye.z for the general fog writer. */
+    glEnable(GL_FOG); glFogi(GL_FOG_MODE, GL_EXP2); glFogf(GL_FOG_DENSITY, .75f);
+    const float fog_color[4] = {.2f, .3f, .4f, .5f}; glFogfv(GL_FOG_COLOR, fog_color);
+    glEnable(GL_ALPHA_TEST); glAlphaFunc(GL_GREATER, .125f);
+    glEnable(GL_STENCIL_TEST); glStencilFunc(GL_ALWAYS, 3, 255);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+    CHECK(!draw(c, eager)); result[9] = frame(c);
+    glDisable(GL_FOG); glDisable(GL_ALPHA_TEST); glDisable(GL_STENCIL_TEST);
     CHECK(!draw(c, eager));
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 2, 1, GL_RGBA, GL_UNSIGNED_BYTE, green);
     CHECK(!drained(c)); result[1] = frame(c);
@@ -132,7 +151,6 @@ int sg_stream_contract(int samples, int workers, int eager, uint64_t result[STAG
     glBufferData(GL_ARRAY_BUFFER, sizeof(large), large, GL_STATIC_DRAW);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(large_indices), large_indices, GL_STATIC_DRAW);
     glDrawElements(GL_TRIANGLES, 13998, GL_UNSIGNED_INT, NULL);
-    CHECK(((sg_worker_pool *)c->workers)->async_pending);
     glDrawElements(GL_TRIANGLES, LARGE_COUNT, GL_UNSIGNED_INT, NULL);
     CHECK(!drained(c));
     glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
@@ -143,60 +161,16 @@ int sg_stream_contract(int samples, int workers, int eager, uint64_t result[STAG
     return 0;
 }
 
-void sg_prepare_nm_cache(softgl_ctx *c);
-static int compact(int workers) {
-    const int first = 50003, limit = 65536;
-    const int counts[] = {1023, 1024, 1025, 4097, 8193, 13107, 13108};
-    float (*positions)[3] = malloc((size_t)limit*sizeof(*positions));
-    CHECK(positions);
-    for (int i = 0; i<limit; i++) {
-        positions[i][0] = (i%23-11)*.25f;
-        positions[i][1] = (i%19-9)*.25f;
-        positions[i][2] = -1.f-(i%37)*.125f;
-    }
-    softgl_ctx *c = softgl_create(W, H); CHECK(c); softgl_make_current(c);
-    sg_workers_shutdown(c); sg_workers_init(c, workers);
-    glVertexPointer(3, GL_FLOAT, 0, positions); glEnableClientState(GL_VERTEX_ARRAY);
-    glMatrixMode(GL_PROJECTION); glLoadIdentity(); glFrustum(-1, 1, -1, 1, 1, 9);
-    glMatrixMode(GL_MODELVIEW); glLoadIdentity(); glRotatef(23, 0, 1, 0);
-    glScalef(.9f, 1.2f, .8f); glNormal3f(.3f, .4f, .8f);
-    glEnable(GL_NORMALIZE); glEnable(GL_LIGHT0);
-    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
-    for (int lighting = 0; lighting<2; lighting++) {
-        if (lighting) glEnable(GL_LIGHTING); else glDisable(GL_LIGHTING);
-        sg_prepare_nm_cache(c);
-        for (unsigned k = 0; k<sizeof(counts)/sizeof(counts[0]); k++) {
-            int count = counts[k];
-            const sg_vert *actual = sg_workers_transform_compact(c, first, count);
-            const uint8_t *inside = sg_workers_inside_frustum(c); CHECK(actual && inside);
-            for (int i = 0; i<count; i++) {
-                sg_vert expected;
-                int expected_inside = sg_process_vertex_at(c, first+i, &expected);
-                CHECK(!memcmp(&expected, &actual[i], sizeof(expected)));
-                CHECK(inside[i] == expected_inside);
-            }
-            if (count <= 13107)
-                CHECK(((sg_worker_pool *)c->workers)->transformed_cap <= 13107);
+int main(void) {
+    for (int samples = 0; samples <= 4; samples += 2) {
+        const int workers[] = {1, 3, 8};
+        for (int w = 0; w < 3; w++) {
+            uint64_t full[STAGES], packed[STAGES];
+            CHECK(!sg_large_stream_contract(samples, workers[w], 1, full));
+            CHECK(!sg_large_stream_contract(samples, workers[w], 0, packed));
+            CHECK(!memcmp(full, packed, sizeof(full)));
         }
     }
-    CHECK(glGetError() == GL_NO_ERROR); softgl_destroy(c); free(positions);
-    return 0;
-}
-
-int sg_compact_contract(int workers) { return compact(workers); }
-
-int main(void) {
-    const int samples[] = {0, 2, 4}, workers[] = {1, 3, 8};
-    for (int s = 0; s<3; s++) for (int w = 0; w<3; w++) {
-        uint64_t sync[STAGES], stream[STAGES];
-        CHECK(!sg_stream_contract(samples[s], workers[w], 1, sync));
-        CHECK(!sg_stream_contract(samples[s], workers[w], 0, stream));
-        CHECK(!memcmp(sync, stream, sizeof(sync)));
-        printf("%d/%d", samples[s], workers[w]);
-        for (int i = 0; i<STAGES; i++) printf(" %016llx", (unsigned long long)stream[i]);
-        putchar('\n');
-    }
-    for (int w = 0; w < 3; w++) CHECK(!compact(workers[w]));
-    puts("Async raster: draw snapshots, storage lifetime, ordered drains and compact ranges passed");
+    puts("90 exact packed/full state and sample-plane hashes passed; 1/3/8 workers, 0/2/4 samples");
     return 0;
 }
