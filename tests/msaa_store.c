@@ -42,26 +42,20 @@ static void render_triangles(int query, int variant, GLenum func) {
     }
     if (query) { glEndQuery(GL_SAMPLES_PASSED); glDeleteQueries(1, &id); }
 }
-int sg_store_contract(void) {
-    for (int n = 0; n < 262144; n++) {
-        float color[4];
-        uint32_t expected = 0;
-        for (int k = 0; k < 4; k++) {
-            color[k] = value() * 4.f - 1.f;
-            if (n % 5 == 0) {
-                color[k] = ((n % 256) + .5f) / 255.f;
-                if (k == 0) color[k] = nextafterf(color[k], -INFINITY);
-                if (k == 1) color[k] = nextafterf(color[k], INFINITY);
-            }
-            expected |= (uint32_t)sg_quantize(color[k]) << (k * 8);
-        }
-        CHECK(sg_store_quantize_rgba(color) == expected);
-    }
-    softgl_ctx *c = softgl_create_multisample(9, 7, 4);
+static int can_store(const softgl_ctx *c, int samples) {
+    return samples == 4 ? sg_can_store_opaque_msaa4(c) : sg_can_store_opaque_msaa2(c);
+}
+static void store(softgl_ctx *c, int samples, int x, int y, unsigned coverage,
+                    const float z[4], const float color[4]) {
+    if (samples == 4) sg_store_opaque_msaa4(c, x, y, coverage, z, color);
+    else sg_store_opaque_msaa2(c, x, y, coverage, z, color);
+}
+static int check_context(int samples) {
+    softgl_ctx *c = softgl_create_multisample(9, 7, samples);
     CHECK(c); softgl_make_current(c);
-    CHECK(sg_can_store_opaque_msaa4(c));
-    size_t pixel_bytes = (size_t)9 * 7 * 4 * 4;
-    size_t stencil_bytes = (size_t)9 * 7 * 4;
+    CHECK(can_store(c, samples));
+    size_t pixel_bytes = (size_t)9 * 7 * samples * 4;
+    size_t stencil_bytes = (size_t)9 * 7 * samples;
     uint8_t *original_color = malloc(pixel_bytes), *expected_color = malloc(pixel_bytes);
     float *original_depth = malloc(pixel_bytes), *expected_depth = malloc(pixel_bytes);
     uint8_t *original_stencil = malloc(stencil_bytes), *expected_stencil = malloc(stencil_bytes);
@@ -80,12 +74,12 @@ int sg_store_contract(void) {
                 }
                 float z[4], color[4];
                 for (int s = 0; s < 4; s++) {
-                    z[s] = n & 1 ? value() : original_depth[((size_t)y * 9 + x) * 4 + s];
+                    z[s] = n & 1 ? value() : original_depth[((size_t)y * 9 + x) * samples + s % samples];
                     color[s] = value() * 4.f - 1.f;
                 }
-                unsigned coverage = (unsigned)n & 15u, passed = coverage;
-                if (test) for (int s = 0; s < 4; s++)
-                    if (!depth_pass(funcs[f], z[s], original_depth[((size_t)y * 9 + x) * 4 + s]))
+                unsigned coverage = (unsigned)n & ((1u << samples) - 1u), passed = coverage;
+                if (test) for (int s = 0; s < samples; s++)
+                    if (!depth_pass(funcs[f], z[s], original_depth[((size_t)y * 9 + x) * samples + s % samples]))
                         passed &= ~(1u << s);
                 memcpy(c->fb.sample_color, original_color, pixel_bytes);
                 memcpy(c->fb.sample_depth, original_depth, pixel_bytes);
@@ -97,7 +91,7 @@ int sg_store_contract(void) {
                 memcpy(c->fb.sample_color, original_color, pixel_bytes);
                 memcpy(c->fb.sample_depth, original_depth, pixel_bytes);
                 memcpy(c->fb.sample_stencil, original_stencil, stencil_bytes);
-                if (passed) sg_store_opaque_msaa4(c, x, y, passed, z, color);
+                if (passed) store(c, samples, x, y, passed, z, color);
                 CHECK(!memcmp(c->fb.sample_color, expected_color, pixel_bytes));
                 CHECK(!memcmp(c->fb.sample_depth, expected_depth, pixel_bytes));
                 CHECK(!memcmp(c->fb.sample_stencil, expected_stencil, stencil_bytes));
@@ -105,19 +99,19 @@ int sg_store_contract(void) {
             }
         }
     }
-    c->alpha_test = 1; CHECK(!sg_can_store_opaque_msaa4(c)); c->alpha_test = 0;
-    c->stencil_test = 1; CHECK(!sg_can_store_opaque_msaa4(c)); c->stencil_test = 0;
-    c->blend = 1; CHECK(!sg_can_store_opaque_msaa4(c)); c->blend = 0;
-    c->color_logic_op_enabled = 1; CHECK(!sg_can_store_opaque_msaa4(c)); c->color_logic_op_enabled = 0;
-    c->current_query[0] = 1; CHECK(!sg_can_store_opaque_msaa4(c)); c->current_query[0] = 0;
-    c->current_query[1] = 1; CHECK(!sg_can_store_opaque_msaa4(c)); c->current_query[1] = 0;
+    c->alpha_test = 1; CHECK(!can_store(c, samples)); c->alpha_test = 0;
+    c->stencil_test = 1; CHECK(!can_store(c, samples)); c->stencil_test = 0;
+    c->blend = 1; CHECK(!can_store(c, samples)); c->blend = 0;
+    c->color_logic_op_enabled = 1; CHECK(!can_store(c, samples)); c->color_logic_op_enabled = 0;
+    c->current_query[0] = 1; CHECK(!can_store(c, samples)); c->current_query[0] = 0;
+    c->current_query[1] = 1; CHECK(!can_store(c, samples)); c->current_query[1] = 0;
     for (int k = 0; k < 4; k++) {
-        c->color_mask[k] = 0; CHECK(!sg_can_store_opaque_msaa4(c)); c->color_mask[k] = 1;
+        c->color_mask[k] = 0; CHECK(!can_store(c, samples)); c->color_mask[k] = 1;
     }
-    c->sample_coverage = 1; CHECK(!sg_can_store_opaque_msaa4(c)); c->sample_coverage = 0;
-    c->sample_alpha_to_coverage = 1; CHECK(!sg_can_store_opaque_msaa4(c)); c->sample_alpha_to_coverage = 0;
-    c->sample_alpha_to_one = 1; CHECK(!sg_can_store_opaque_msaa4(c)); c->sample_alpha_to_one = 0;
-    c->fb.samples = 2; CHECK(!sg_can_store_opaque_msaa4(c)); c->fb.samples = 4;
+    c->sample_coverage = 1; CHECK(!can_store(c, samples)); c->sample_coverage = 0;
+    c->sample_alpha_to_coverage = 1; CHECK(!can_store(c, samples)); c->sample_alpha_to_coverage = 0;
+    c->sample_alpha_to_one = 1; CHECK(!can_store(c, samples)); c->sample_alpha_to_one = 0;
+    c->fb.samples = samples == 4 ? 2 : 4; CHECK(!can_store(c, samples)); c->fb.samples = samples;
     for (int f = 0; f < 8; f++) for (int variant = 0; variant < 16; variant++) {
         render_triangles(0, variant, funcs[f]);
         softgl_read_rgba8(c);
@@ -133,7 +127,28 @@ int sg_store_contract(void) {
     }
     free(original_color); free(expected_color); free(original_depth); free(expected_depth);
     free(original_stencil); free(expected_stencil); softgl_destroy(c);
-    printf("262144 exact RGBA quantizations, %u exact post-Z stores, 128 query-oracle frames and fallback states passed\n", comparisons);
+    printf("%dx: %u exact post-Z stores, 128 query-oracle frames and fallback states passed\n", samples, comparisons);
     return 0;
 }
+int sg_store_contract(void) {
+    for (int n = 0; n < 262144; n++) {
+        float color[4];
+        uint32_t expected = 0;
+        for (int k = 0; k < 4; k++) {
+            color[k] = value() * 4.f - 1.f;
+            if (n % 5 == 0) {
+                color[k] = ((n % 256) + .5f) / 255.f;
+                if (k == 0) color[k] = nextafterf(color[k], -INFINITY);
+                if (k == 1) color[k] = nextafterf(color[k], INFINITY);
+            }
+            expected |= (uint32_t)sg_quantize(color[k]) << (k * 8);
+        }
+        CHECK(sg_store_quantize_rgba(color) == expected);
+    }
+    CHECK(!check_context(2));
+    CHECK(!check_context(4));
+    puts("262144 exact RGBA quantizations passed");
+    return 0;
+}
+
 int main(void) { return sg_store_contract(); }

@@ -11,7 +11,7 @@
 | BMW / T-80, Dreiecke | 63.087 / 44.513 |
 | BMW, Vertices / Teile / Materialien | 48.428 / 41 / 23 |
 | BMW-Pack / SHA-256 | 19.69 MiB / `fae69ce4` |
-| WASM SHA-256 | `cd80da51` |
+| WASM SHA-256 | `acfc66bb` |
 | Worker / Raster-Bins, 4× | 3 + Caller / 32 |
 | MSAA Farbe + Tiefe / aktiver Bin | 225 KiB |
 | Bin- + Positionscache | ≤4 MiB gemeinsam; 64×1024 Positionen |
@@ -26,27 +26,27 @@
 | 4× MSAA; Render + Resolve / Frame | BMW F31 | T-80 |
 | --- | --- | --- |
 | Ziel | >30 FPS | >60 FPS |
-| Kontrollaudit / Framezeit | 22.39 FPS / 44.67 ms | 61.28 FPS / 16.32 ms |
-| Δ Zeit zu `1fce9677`; 3 AB/BA-Paare | -0.18 % | -1.01 % |
+| Kontrollaudit / Framezeit | 22.71 FPS / 44.03 ms | 61.12 FPS / 16.36 ms |
+| Δ Zeit zu `cd80da51`; 3 AB/BA-Paare | -0.64 % | +0.39 % |
 
 | 2× MSAA; Render + Resolve / Frame | BMW F31 | T-80 | sphere_lit |
 | --- | --- | --- | --- |
-| Audit 1 / 2, FPS | 23.02 / 23.06 | 61.34 / 62.41 | 565.07 / 551.31 |
-| Framezeit 1 / 2, ms | 43.44 / 43.36 | 16.30 / 16.02 | 1.77 / 1.81 |
-| SIMD-Writer, Δ Zeit zu `1fce9677`, % | -3.48 / -3.66 | -4.28 / -7.04 | -12.05 / -14.02 |
+| Audit 1 / 2, FPS | 23.63 / 23.55 | 66.13 / 66.07 | 629.53 / 748.56 |
+| Framezeit 1 / 2, ms | 42.31 / 42.47 | 15.12 / 15.14 | 1.59 / 1.34 |
+| Post-Z-Store, Δ Zeit zu `cd80da51`, % | -2.83 / -2.19 | -5.82 / -5.94 | -5.31 / -26.19 |
 | Warm-up / Frames / AB/BA-Paare | 80 / 100 / 2×3 | 80 / 100 / 2×3 | 80 / 100 / 2×3 |
 
 | Ohne MSAA; Readback/Frame; 3 AB/BA-Paare | BMW F31 | T-80 |
 | --- | --- | --- |
-| FPS / Framezeit | 29.80 / 33.56 ms | 85.50 / 11.70 ms |
-| Paarweise Δ Zeit zu `1fce9677` | -0.27 % | +0.33 % |
+| FPS / Framezeit | 29.76 / 33.60 ms | 85.50 / 11.70 ms |
+| Paarweise Δ Zeit zu `cd80da51` | -0.48 % | -0.03 % |
 
 | Prüfung | Ergebnis |
 | --- | --- |
 | Native / WASM-Mesa | 737/737 / 240/240 |
-| WASM zu `1fce9677` | 240 Bilder bytegleich |
-| Alle Tests, 2× / 4× MSAA zu `1fce9677` | je 234 Bilder bytegleich |
-| MSAA-Store, RGBA / Samples / Query-Frames | 262.144 / 65.536 / 128 bytegleich |
+| WASM zu `cd80da51` | 240 Bilder bytegleich |
+| Alle Tests, 2× / 4× MSAA zu `cd80da51` | je 234 Bilder bytegleich |
+| MSAA-Store, RGBA / Samples / Query-Frames | 262.144 / 131.072 / 256 bytegleich |
 | Modelle je aus/2×/4× | je 100 Hashes + 4 Bytevergleiche pro Modell identisch |
 | 2× Resolve / Farbkanal | alle 65.536 Byte-Paare exakt; ungerade Bildgröße |
 | ASan/UBSan + Leaks | 16/16 |

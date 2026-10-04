@@ -680,17 +680,44 @@ SG_INLINE void sg_write_pixel_packet(softgl_ctx *c, const sg_tex_tri_ctx *t,
     }
 }
 
+SG_INLINE void sg_write_pixel_packet2(softgl_ctx *c, const sg_tex_tri_ctx *t,
+                                      const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
+                                      const sg_pixel_packet *p, float inv_area, int opaque_store) {
+    float color[4][4];
+    unsigned live = sg_shade_packet(c, t, v0, v1, v2, p->edge0, p->edge1,
+                                    inv_area, 15u, color);
+    for (int l = 0; l < 4; l++) {
+        if (live & (1u << l)) {
+            if (opaque_store)
+                sg_store_opaque_msaa2(c, p->x[l], p->y[l], p->coverage[l], p->depths[l], color[l]);
+            else sg_write_multisample(c, p->x[l], p->y[l], p->coverage[l], p->depths[l], color[l]);
+        }
+    }
+}
+
+#define SG_MSAA_OPAQUE_CAN sg_can_store_opaque_msaa2
+#define SG_MSAA_OPAQUE_STORE sg_store_opaque_msaa2
+#define SG_MSAA_PACKET_WRITE sg_write_pixel_packet2
 #define SG_MSAA_SAMPLES 2
 #define SG_MSAA_FUNCTION sg_raster_triangle_msaa2
 #include "raster_msaa_impl.h"
 #undef SG_MSAA_SAMPLES
 #undef SG_MSAA_FUNCTION
+#undef SG_MSAA_OPAQUE_CAN
+#undef SG_MSAA_OPAQUE_STORE
+#undef SG_MSAA_PACKET_WRITE
 
+#define SG_MSAA_OPAQUE_CAN sg_can_store_opaque_msaa4
+#define SG_MSAA_OPAQUE_STORE sg_store_opaque_msaa4
+#define SG_MSAA_PACKET_WRITE sg_write_pixel_packet
 #define SG_MSAA_SAMPLES 4
 #define SG_MSAA_FUNCTION sg_raster_triangle_msaa4
 #include "raster_msaa_impl.h"
 #undef SG_MSAA_SAMPLES
 #undef SG_MSAA_FUNCTION
+#undef SG_MSAA_OPAQUE_CAN
+#undef SG_MSAA_OPAQUE_STORE
+#undef SG_MSAA_PACKET_WRITE
 
 /* Internal: rasterize v0,v1,v2 restricted to x in [tile_ix0, tile_ix1).
  * tile_ix0=0, tile_ix1=fb.w reproduces the whole-FB behaviour exactly

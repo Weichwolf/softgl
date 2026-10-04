@@ -52,7 +52,7 @@ materials and original texture dimensions remain available. Use
 - **SIMD texture addresses** wrap/clamp four pixels together and share bilinear row offsets; prepared power-of-two masks shorten REPEAT addressing while filtering arithmetic stays unchanged
 - **Exact additive 2×/4× MSAA blending** uses native saturated byte addition when a conservative rounding guard proves parity with the float writer; boundary and exceptional values retain the float path
 - **Separate 2× MSAA sample writer** vectorizes depth tests and common opaque/blended writes with bounded 64-bit loads/stores; alpha/stencil/logic/query/color-mask states retain the scalar fallback
-- **Opaque 4× MSAA stores** reuse the rasterizer's tested sample mask and convert RGBA with SIMD; other fragment states retain the general writer
+- **Opaque 2×/4× MSAA stores** reuse the rasterizer's tested sample mask and convert RGBA with SIMD; other fragment states retain the general writer
 - **Hierarchical 4× sample depth** rejects fully hidden triangles with conservative 4×4-cell bounds; the optional table is capped at 256KiB, and WASM keeps the 2×/4× raster loops separate from the common rasterizer
 - **Packed large raster draws** retain exact float NDC, front color, eye.z and every active UV set (64 bytes with one UV set); a 64-entry collision-safe vertex cache feeds the existing rasterizer, allowing formerly oversized draws to overlap preparation within the 2MiB submitted-vertex budget
 - **Pthread tile worker pool** with X-stripe bins; a four-slot queue overlaps filled multitexture draws while preserving order within each stripe, with a shared 2MiB budget for retained vertex arrays; ordinary full/packed draws retain their bounded snapshots, and the caller helps drain outstanding bins

@@ -62,7 +62,7 @@ void SG_MSAA_FUNCTION(softgl_ctx *c,
                               (int32_t)offsets[2][1], (int32_t)offsets[3][1]);
     }
     int packet_shader = sg_packet_supported(c, tctx);
-    int opaque_store = SG_MSAA_SAMPLES == 4 && sg_can_store_opaque_msaa4(c);
+    int opaque_store = SG_MSAA_OPAQUE_CAN(c);
     sg_pixel_packet packet;
     packet.count = 0;
     for (int y = iy0; y < iy1; y++) {
@@ -146,14 +146,14 @@ void SG_MSAA_FUNCTION(softgl_ctx *c,
                     packet.edge0[l] = e0; packet.edge1[l] = e1;
                     memcpy(packet.depths[l], depths, SG_MSAA_SAMPLES * sizeof(float));
                     if (packet.count == 4) {
-                        sg_write_pixel_packet(c, tctx, v0, v1, v2, &packet, inv_area, opaque_store);
+                        SG_MSAA_PACKET_WRITE(c, tctx, v0, v1, v2, &packet, inv_area, opaque_store);
                         packet.count = 0;
                     }
                 } else {
                     float color[4];
                     if (sg_shade_pixel(c, tctx, v0, v1, v2, x, y, e0, e1,
                                       inv_area, v0->ndc.w, v1->ndc.w, v2->ndc.w, z_offset, color)) {
-                        if (opaque_store) sg_store_opaque_msaa4(c, x, y, coverage, depths, color);
+                        if (opaque_store) SG_MSAA_OPAQUE_STORE(c, x, y, coverage, depths, color);
                         else sg_write_multisample(c, x, y, coverage, depths, color);
                     }
                 }
@@ -168,7 +168,7 @@ void SG_MSAA_FUNCTION(softgl_ctx *c,
                           packet.edge0[l], packet.edge1[l], inv_area,
                           v0->ndc.w, v1->ndc.w, v2->ndc.w, z_offset, color)) {
             if (opaque_store)
-                sg_store_opaque_msaa4(c, packet.x[l], packet.y[l], packet.coverage[l], packet.depths[l], color);
+                SG_MSAA_OPAQUE_STORE(c, packet.x[l], packet.y[l], packet.coverage[l], packet.depths[l], color);
             else sg_write_multisample(c, packet.x[l], packet.y[l], packet.coverage[l],
                                      packet.depths[l], color);
         }

@@ -1096,3 +1096,83 @@ each model matches 100 hashes and four raw frames per mode. Full regression,
 browser and publication results are recorded in
 `build/diagnostics/msaa2-writer-isolated/validation.json`. Raw timings:
 `build/perf/tigerlake-20261004/msaa2-writer-isolated*-summary.json`.
+
+
+## SIMD two-sample raster depth (2026-10-04, rejected)
+
+A private variant db3f5ee4 extends the four-sample SIMD barycentric depth and
+early-depth path to two samples when the existing signed-32 edge range proof
+holds. Larger triangles retain the scalar i64 path, and sample depth loads
+are bounded to eight bytes. Native and WASM multisample contracts pass;
+both models' 100 hashes and four raw frames plus all 234 images match
+cd80da51 exactly for each of 2x and 4x.
+
+Two independent quiet three-pair 2x audits give BMW -0.70/+0.89%,
+T80 -0.63/-0.79%, and lit icosphere -3.31/-6.68%. All three confirmation
+BMW pairs are slower (+0.37/+0.94/+0.89%), and sphere results have large
+positive and negative outliers in both audits. The variant is rejected:
+BMW's gain does not repeat. The first confirmation pair passes on attempt
+two; its contaminated attempt and monitor remain recorded. Four-sample and
+no-MSAA timing controls and full acceptance gates are not run for this
+rejection. Production remains cd80da51. Evidence:
+`build/diagnostics/msaa2-depth-simd/validation.json` and
+`build/perf/tigerlake-20261004/msaa2-depth-simd*-summary.json`.
+
+
+## Current four-sample CPU profile (2026-10-04)
+
+A separate symbol-bearing diagnostic links the accepted 822a406 production
+objects with -g1/--profiling-funcs. CDP samples the main thread and all eight
+reserved workers at 1ms after model/context preparation and warm-up. Both
+scenes run 300 diagnostic frames at 640x360, four samples, three active
+workers plus caller, resolve every frame. The other five reserved workers
+are idle. These sampled self times include inlined callees; they cannot
+separate coverage, interpolation and inline texture/combiner work, and they
+are not acceptance timings or measured cache traffic.
+
+BMW main-thread samples span 14.17s: the MSAA raster root contributes 4.76s,
+queue helping 1.59s, vertex processing 1.19s and cached triangle processing
+1.18s. Each active worker spans about 14s, with 6.44-6.57s in the raster root,
+4.36-4.39s in timed waits and 0.97-1.02s in scalar cube sampling. T80 also
+spends most active-worker execution in the raster root (2.05-2.12s per
+worker); timed waits contribute 2.56-2.63s. This confirms that raster work
+including inline shading remains a major target while producer geometry
+and synchronization also matter. It does not prove a specific arithmetic
+or memory bottleneck. Evidence:
+`build/diagnostics/msaa-current-profile/summary.json` and
+`build/perf/tigerlake-20261004/current-822a406-*-profile.profiles.json`.
+
+
+## Opaque post-Z two-sample stores (2026-10-04)
+
+The two-sample raster path now selects the same proven opaque fragment states
+as four samples. It reuses the already-tested sample coverage/depth mask,
+quantizes RGBA channels together with SIMD, and writes exactly eight bytes
+of sample color and depth. Partial coverage preserves untouched samples.
+Queries, alpha/stencil/logic/blend/color masks and enabled multisample alpha
+or coverage controls retain the general writer. Packet stores use a separate
+two-sample helper; compile-time macros select eligibility, direct store and
+packet store for each sample count. Four-sample helper bodies are unchanged.
+
+Candidate acfc66bb has two independent quiet three-pair 2x audits against
+cd80da51: BMW -2.83/-2.19% and T80 -5.82/-5.94% frame time; all six pairs
+improve both models. Candidate times are BMW 42.31/42.47ms (23.63/23.55 FPS)
+and T80 15.12/15.14ms (66.13/66.07 FPS). Lit icosphere gives -5.31/-26.19%
+with large outliers, including a +7.30% first-audit pair; those measurements
+do not support a precise expected gain for that small scene. Four-sample
+control is BMW -0.64% and T80 +0.39%, at 22.71/61.12 FPS. No-MSAA control
+is BMW -0.48% and T80 -0.03%. The controls show no material regression and
+are not proof of a useful new four-sample/no-MSAA optimization. All twelve
+complete AB/BA pairs pass the quiet guard on attempt one, with the unchanged
+640x360 / three workers plus caller / 80 warm-up / 100 timed frames per arm /
+resolve-readback every frame protocol. Builds/tests/profiling are absent from
+timings. BMW's four-sample 30 FPS goal remains open.
+
+The store regression contract now runs both sample counts, with 262,144
+independent RGBA quantizations, 65,536 whole-plane color/depth/stencil store
+comparisons and 128 rendered query-oracle frames for each sample count.
+Eligibility rejection states and final framebuffer pixels are covered.
+All 234 rendering cases and each model's 100 hashes plus four raw frames
+match baseline exactly for both 2x and 4x. Full gates/browser/publication
+status: `build/diagnostics/msaa2-opaque-store/validation.json`.
+Raw timings: `build/perf/tigerlake-20261004/msaa2-opaque-store*-summary.json`.
