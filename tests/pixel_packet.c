@@ -4,6 +4,10 @@
 #include "frag_combine_hot.h"
 #include "frag_packet.h"
 #include <stdio.h>
+#if defined(__unix__) && !defined(__EMSCRIPTEN__)
+#include <sys/mman.h>
+#include <unistd.h>
+#endif
 
 static uint32_t random_state = 17;
 static uint32_t random_bits(void) {
@@ -14,7 +18,72 @@ static uint32_t random_bits(void) {
 }
 static float random_float(void) { return (random_bits() >> 8) * (1.f / 16777216.f); }
 
+static int check_texture_tail(void) {
+    const int widths[] = {1, 2, 3, 16, 31};
+    const GLenum wraps[] = {GL_REPEAT, GL_CLAMP_TO_EDGE, GL_CLAMP};
+    unsigned checks = 0;
+    for (unsigned dim = 0; dim < sizeof(widths) / sizeof(widths[0]); dim++) {
+        int width = widths[dim], height = 3;
+        size_t bytes = (size_t)width * height * 4;
+        uint8_t *data;
+#if defined(__unix__) && !defined(__EMSCRIPTEN__)
+        size_t page = (size_t)sysconf(_SC_PAGESIZE);
+        uint8_t *mapping = mmap(NULL, page * 2, PROT_READ | PROT_WRITE,
+                               MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+        if (mapping == MAP_FAILED) return 1;
+        if (mprotect(mapping + page, page, PROT_NONE)) return 1;
+        data = mapping + page - bytes;
+#else
+        data = malloc(bytes);
+        if (!data) return 1;
+#endif
+        for (size_t i = 0; i < bytes; i++) data[i] = (uint8_t)(i * 37 + 11);
+        sg_texture texture; memset(&texture, 0, sizeof(texture));
+        texture.levels = 1; texture.data[0] = data;
+        texture.w[0] = width; texture.h[0] = height;
+        sg_tex_unit_tri u; memset(&u, 0, sizeof(u));
+        u.active_slot = SG_TEX_TARGET_2D; u.tex = &texture; u.data0 = data;
+        u.tw = width; u.th = height; u.filter_mag = GL_LINEAR;
+        u.tw_mask_pot = sg_hot_pot_mask(width); u.th_mask_pot = sg_hot_pot_mask(height);
+        for (int ws = 0; ws < 3; ws++) for (int wt = 0; wt < 3; wt++)
+        for (int integer_filter = 0; integer_filter < 2; integer_filter++) {
+            if (integer_filter && (ws || wt)) continue;
+            u.wrap_s = wraps[ws]; u.wrap_t = wraps[wt];
+            for (int edge = -2; edge <= width + 1; edge++) for (unsigned live = 1; live < 16; live++) {
+                float x[4], y[4], actual[4][4];
+                for (int lane = 0; lane < 4; lane++) {
+                    x[lane] = (edge + lane * .25f + .5f) / width;
+                    y[lane] = (height - .25f) / height;
+                    if (!(live & (1u << lane))) { x[lane] = NAN; y[lane] = INFINITY; }
+                }
+                sg_f32x4 out[4];
+                sg_packet_sample_2d(&u, sg_f32x4_load(x), sg_f32x4_load(y), live, integer_filter, out);
+                _MM_TRANSPOSE4_PS(out[0], out[1], out[2], out[3]);
+                for (int lane = 0; lane < 4; lane++) if (live & (1u << lane)) {
+                    float reference[4]; sg_f32x4_store(actual[lane], out[lane]);
+                    if (integer_filter) {
+                        uint8_t rgba[4];
+                        sg_hot_sample_2d_linear_repeat_u8_fast(data, width, height, x[lane], y[lane], rgba);
+                        for (int k = 0; k < 4; k++) reference[k] = rgba[k] * (1.f / 255.f);
+                    } else sg_sample_tex2d(&texture, GL_NEAREST, GL_LINEAR, u.wrap_s, u.wrap_t,
+                                          x[lane], y[lane], 1, reference);
+                    if (memcmp(reference, actual[lane], sizeof(reference))) return 1;
+                    checks++;
+                }
+            }
+        }
+#if defined(__unix__) && !defined(__EMSCRIPTEN__)
+        munmap(mapping, page * 2);
+#else
+        free(data);
+#endif
+    }
+    printf("%u exact texture-tail comparisons; bounded full/partial packets passed\n", checks);
+    return 0;
+}
+
 int main(void) {
+    if (check_texture_tail()) return 1;
     uint8_t data[32 * 32 * 4];
     for (unsigned k = 0; k < sizeof(data); k++) data[k] = (uint8_t)random_bits();
     const GLenum wraps[] = {GL_REPEAT, GL_CLAMP_TO_EDGE, GL_CLAMP};

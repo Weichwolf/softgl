@@ -59,6 +59,20 @@ SG_INLINE sg_i32x4 sg_packet_gather(const uint8_t *data, const int address[4],
                          (int32_t)rgba[2], (int32_t)rgba[3]);
 }
 
+/* Each horizontal pair is proven adjacent inside its texture row.
+ * Full packets can gather eight-byte pairs, then separate left/right taps. */
+SG_INLINE void sg_packet_gather_pairs(const uint8_t *data, const int address[4],
+                                       sg_i32x4 *left, sg_i32x4 *right) {
+    sg_i32x4 a = _mm_loadl_epi64((const sg_i32x4 *)(data + (size_t)address[0] * 4));
+    sg_i32x4 b = _mm_loadl_epi64((const sg_i32x4 *)(data + (size_t)address[1] * 4));
+    sg_i32x4 d = _mm_loadl_epi64((const sg_i32x4 *)(data + (size_t)address[2] * 4));
+    sg_i32x4 e = _mm_loadl_epi64((const sg_i32x4 *)(data + (size_t)address[3] * 4));
+    sg_f32x4 ab = _mm_castsi128_ps(_mm_unpacklo_epi64(a, b));
+    sg_f32x4 de = _mm_castsi128_ps(_mm_unpacklo_epi64(d, e));
+    *left = _mm_castps_si128(_mm_shuffle_ps(ab, de, _MM_SHUFFLE(2, 0, 2, 0)));
+    *right = _mm_castps_si128(_mm_shuffle_ps(ab, de, _MM_SHUFFLE(3, 1, 3, 1)));
+}
+
 /* Pair four pixels' signed-i16 tap values and weights for native WASM dot. */
 SG_INLINE sg_i32x4 sg_packet_pairs(sg_i32x4 a, sg_i32x4 b) {
     sg_i32x4 p = _mm_packs_epi32(a, b);
@@ -82,6 +96,7 @@ SG_INLINE void sg_packet_sample_2d(const sg_tex_unit_tri *u,
     sg_i32x4 x0 = sg_packet_address4(xi, u->tw, u->wrap_s, u->tw_mask_pot);
     sg_i32x4 y0 = sg_packet_address4(yi, u->th, u->wrap_t, u->th_mask_pot);
     sg_i32x4 row0 = _mm_mullo_epi32(y0, sg_i32x4_splat(u->tw));
+    int paired = 0;
     SG_ALIGN16 int address[4][4];
     _mm_store_si128((sg_i32x4 *)address[0], sg_i32x4_add(row0, x0));
     if (linear) {
@@ -91,10 +106,12 @@ SG_INLINE void sg_packet_sample_2d(const sg_tex_unit_tri *u,
         _mm_store_si128((sg_i32x4 *)address[1], sg_i32x4_add(row0, x1));
         _mm_store_si128((sg_i32x4 *)address[2], sg_i32x4_add(row1, x0));
         _mm_store_si128((sg_i32x4 *)address[3], sg_i32x4_add(row1, x1));
+        paired = live == 15 && sg_mask4_live(_mm_cmpeq_epi32(x1,
+            sg_i32x4_add(x0, sg_i32x4_splat(1)))) == 15;
     }
     sg_i32x4 taps[4];
-    taps[0] = sg_packet_gather(u->data0, address[0], live);
     if (!linear) {
+        taps[0] = sg_packet_gather(u->data0, address[0], live);
         for (int k = 0; k < 4; k++) {
             out[k] = sg_f32x4_mul(_mm_cvtepi32_ps(sg_i32x4_and(taps[0],
                 sg_i32x4_splat(255))), sg_f32x4_splat(inv255));
@@ -102,7 +119,12 @@ SG_INLINE void sg_packet_sample_2d(const sg_tex_unit_tri *u,
         }
         return;
     }
-    for (int s = 1; s < 4; s++) taps[s] = sg_packet_gather(u->data0, address[s], live);
+    if (paired) {
+        sg_packet_gather_pairs(u->data0, address[0], &taps[0], &taps[1]);
+        sg_packet_gather_pairs(u->data0, address[2], &taps[2], &taps[3]);
+    } else {
+        for (int s = 0; s < 4; s++) taps[s] = sg_packet_gather(u->data0, address[s], live);
+    }
     sg_f32x4 fu = sg_f32x4_sub(fx, bx), fv = sg_f32x4_sub(fy, by);
     sg_f32x4 ifu = sg_f32x4_sub(sg_f32x4_splat(1.f), fu);
     sg_f32x4 ifv = sg_f32x4_sub(sg_f32x4_splat(1.f), fv);
