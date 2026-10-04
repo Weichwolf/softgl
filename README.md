@@ -49,6 +49,7 @@ materials and original texture dimensions remain available. Use
 - **Separate RGBA8 color + f32 depth planes**, row 0 = bottom (GL convention)
 - **Optional MSAA sample buffers**, with color/depth/stencil per sample and one texture/combiner evaluation per covered pixel
 - **Direct WASM pseudo-min/max color clamps** preserve each combiner stage, NaN payloads and signed zero; native SSE4.1 retains its existing path
+- **SIMD texture addresses** wrap/clamp four pixels together and share bilinear row offsets; prepared power-of-two masks shorten REPEAT addressing while filtering arithmetic stays unchanged
 - **Exact additive 4× MSAA blending** uses native saturated byte addition when a conservative rounding guard proves parity with the float writer; boundary and exceptional values retain the float path
 - **Opaque 4× MSAA stores** reuse the rasterizer's tested sample mask and convert RGBA with SIMD; other fragment states retain the general writer
 - **Hierarchical 4× sample depth** rejects fully hidden triangles with conservative 4×4-cell bounds; the optional table is capped at 256KiB, and WASM keeps the 2×/4× raster loops separate from the common rasterizer

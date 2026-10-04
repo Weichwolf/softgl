@@ -28,6 +28,8 @@ int main(void) {
         u.wrap_s = wraps[ws]; u.wrap_t = wraps[wt];
         for (int dim = 0; dim < 4; dim++) {
             texture.w[0] = u.tw = sizes[dim]; texture.h[0] = u.th = sizes[3 - dim];
+            u.tw_mask_pot = sg_hot_pot_mask(u.tw);
+            u.th_mask_pot = sg_hot_pot_mask(u.th);
             for (int filter = 0; filter < 3; filter++) {
                 if (filter == 2 && (ws || wt)) continue;
                 u.filter_mag = filter ? GL_LINEAR : GL_NEAREST;
@@ -38,6 +40,10 @@ int main(void) {
                         y[l] = random_float() * 16.f - 8.f;
                     }
                     unsigned live = 1u + random_bits() % 15u;
+                    /* Inactive coordinates must never cause a texel read. */
+                    if (n % 64 == 0) for (int l = 0; l < 4; l++) {
+                        if (!(live & (1u << l))) { x[l] = NAN; y[l] = INFINITY; }
+                    }
                     sg_f32x4 out[4];
                     sg_packet_sample_2d(&u, sg_f32x4_load(x), sg_f32x4_load(y), live, filter == 2, out);
                     _MM_TRANSPOSE4_PS(out[0], out[1], out[2], out[3]);

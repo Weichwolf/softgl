@@ -28,9 +28,30 @@ SG_INLINE int sg_packet_address(int x, int size, GLenum wrap) {
     return x;
 }
 
+/* Address all pixels together; masked lanes remain unread by the gather. */
+SG_INLINE sg_i32x4 sg_packet_address4(sg_i32x4 x, int size, GLenum wrap, int pot_mask) {
+    sg_i32x4 zero = sg_i32x4_splat(0), limit = sg_i32x4_splat(size - 1);
+    if (wrap == GL_CLAMP || wrap == GL_CLAMP_TO_EDGE)
+        return _mm_min_epi32(_mm_max_epi32(x, zero), limit);
+    if (pot_mask) return _mm_and_si128(x, sg_i32x4_splat(pot_mask));
+    sg_i32x4 low = _mm_cmpgt_epi32(zero, x), high = _mm_cmpgt_epi32(x, limit);
+    sg_i32x4 lower = sg_i32x4_add(x, sg_i32x4_splat(size));
+    sg_i32x4 upper = _mm_sub_epi32(x, sg_i32x4_splat(size));
+    sg_i32x4 result = _mm_or_si128(_mm_and_si128(high, upper), _mm_andnot_si128(high, x));
+    return _mm_or_si128(_mm_and_si128(low, lower), _mm_andnot_si128(low, result));
+}
+
 SG_INLINE sg_i32x4 sg_packet_gather(const uint8_t *data, const int address[4],
                                     unsigned live) {
     uint32_t rgba[4] = {0, 0, 0, 0};
+    if (live == 15) {
+        memcpy(&rgba[0], data + (size_t)address[0] * 4, 4);
+        memcpy(&rgba[1], data + (size_t)address[1] * 4, 4);
+        memcpy(&rgba[2], data + (size_t)address[2] * 4, 4);
+        memcpy(&rgba[3], data + (size_t)address[3] * 4, 4);
+        return sg_i32x4_set((int32_t)rgba[0], (int32_t)rgba[1],
+                             (int32_t)rgba[2], (int32_t)rgba[3]);
+    }
     for (int l = 0; l < 4; l++) {
         if (live & (1u << l)) memcpy(&rgba[l], data + (size_t)address[l] * 4, 4);
     }
@@ -57,22 +78,19 @@ SG_INLINE void sg_packet_sample_2d(const sg_tex_unit_tri *u,
         fy = sg_f32x4_sub(fy, sg_f32x4_splat(.5f));
     }
     sg_f32x4 bx = _mm_floor_ps(fx), by = _mm_floor_ps(fy);
-    SG_ALIGN16 int xi[4], yi[4];
-    _mm_store_si128((sg_i32x4 *)xi, sg_f32x4_trunc_i32(bx));
-    _mm_store_si128((sg_i32x4 *)yi, sg_f32x4_trunc_i32(by));
-    int address[4][4] = {{0}};
-    for (int l = 0; l < 4; l++) {
-        if (!(live & (1u << l))) continue;
-        int x0 = sg_packet_address(xi[l], u->tw, u->wrap_s);
-        int y0 = sg_packet_address(yi[l], u->th, u->wrap_t);
-        address[0][l] = y0 * u->tw + x0;
-        if (linear) {
-            int x1 = sg_packet_address(xi[l] + 1, u->tw, u->wrap_s);
-            int y1 = sg_packet_address(yi[l] + 1, u->th, u->wrap_t);
-            address[1][l] = y0 * u->tw + x1;
-            address[2][l] = y1 * u->tw + x0;
-            address[3][l] = y1 * u->tw + x1;
-        }
+    sg_i32x4 xi = sg_f32x4_trunc_i32(bx), yi = sg_f32x4_trunc_i32(by);
+    sg_i32x4 x0 = sg_packet_address4(xi, u->tw, u->wrap_s, u->tw_mask_pot);
+    sg_i32x4 y0 = sg_packet_address4(yi, u->th, u->wrap_t, u->th_mask_pot);
+    sg_i32x4 row0 = _mm_mullo_epi32(y0, sg_i32x4_splat(u->tw));
+    SG_ALIGN16 int address[4][4];
+    _mm_store_si128((sg_i32x4 *)address[0], sg_i32x4_add(row0, x0));
+    if (linear) {
+        sg_i32x4 x1 = sg_packet_address4(sg_i32x4_add(xi, sg_i32x4_splat(1)), u->tw, u->wrap_s, u->tw_mask_pot);
+        sg_i32x4 y1 = sg_packet_address4(sg_i32x4_add(yi, sg_i32x4_splat(1)), u->th, u->wrap_t, u->th_mask_pot);
+        sg_i32x4 row1 = _mm_mullo_epi32(y1, sg_i32x4_splat(u->tw));
+        _mm_store_si128((sg_i32x4 *)address[1], sg_i32x4_add(row0, x1));
+        _mm_store_si128((sg_i32x4 *)address[2], sg_i32x4_add(row1, x0));
+        _mm_store_si128((sg_i32x4 *)address[3], sg_i32x4_add(row1, x1));
     }
     sg_i32x4 taps[4];
     taps[0] = sg_packet_gather(u->data0, address[0], live);
