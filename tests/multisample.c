@@ -35,7 +35,6 @@ static int check_sample_writes(softgl_ctx *c, int n) {
     GLuint query;
     glGenQueries(1, &query);
     glEnable(GL_DEPTH_TEST);
-    size_t first = (3 * W + 7) * n;
     uint32_t random = 17;
     for (int f = 0; f < 8; f++) for (int blend = 0; blend < 5; blend++) {
         glDepthFunc(funcs[f]);
@@ -45,30 +44,35 @@ static int check_sample_writes(softgl_ctx *c, int n) {
         } else glDisable(GL_BLEND);
         for (unsigned coverage = 1; coverage < (1u << n); coverage++) {
             for (int iteration = 0; iteration < 32; iteration++) {
-                uint8_t initial[16], expected[16];
-                float old_depth[4], expected_depth[4], z[4], color[4];
-                for (int i = 0; i < 16; i++) {
-                    random = random * 1664525u + 1013904223u;
-                    initial[i] = (uint8_t)(random >> 24);
+                for (int boundary = 0; boundary < 2; boundary++) {
+                    int x = boundary ? W - 1 : 7;
+                    int y = boundary ? H - 1 : 3;
+                    size_t first = ((size_t)y * W + x) * n;
+                    uint8_t initial[16], expected[16];
+                    float old_depth[4], expected_depth[4], z[4], color[4];
+                    for (int i = 0; i < 16; i++) {
+                        random = random * 1664525u + 1013904223u;
+                        initial[i] = (uint8_t)(random >> 24);
+                    }
+                    for (int s = 0; s < 4; s++) {
+                        color[s] = initial[s] * (1.f / 255.f);
+                        old_depth[s] = (s + 1) * .2f;
+                        z[s] = iteration % 2 ? old_depth[s] : (4 - s) * .2f;
+                    }
+                    glDepthMask(iteration % 3 ? GL_TRUE : GL_FALSE);
+                    memcpy(c->fb.sample_color + first * 4, initial, n * 4);
+                    memcpy(c->fb.sample_depth + first, old_depth, n * sizeof(float));
+                    sg_write_multisample(c, x, y, coverage, z, color);
+                    memcpy(expected, c->fb.sample_color + first * 4, n * 4);
+                    memcpy(expected_depth, c->fb.sample_depth + first, n * sizeof(float));
+                    memcpy(c->fb.sample_color + first * 4, initial, n * 4);
+                    memcpy(c->fb.sample_depth + first, old_depth, n * sizeof(float));
+                    glBeginQuery(GL_SAMPLES_PASSED, query);
+                    sg_write_multisample(c, x, y, coverage, z, color);
+                    glEndQuery(GL_SAMPLES_PASSED);
+                    CHECK(!memcmp(expected, c->fb.sample_color + first * 4, n * 4));
+                    CHECK(!memcmp(expected_depth, c->fb.sample_depth + first, n * sizeof(float)));
                 }
-                for (int s = 0; s < 4; s++) {
-                    color[s] = initial[s] * (1.f / 255.f);
-                    old_depth[s] = (s + 1) * .2f;
-                    z[s] = iteration % 2 ? old_depth[s] : (4 - s) * .2f;
-                }
-                glDepthMask(iteration % 3 ? GL_TRUE : GL_FALSE);
-                memcpy(c->fb.sample_color + first * 4, initial, n * 4);
-                memcpy(c->fb.sample_depth + first, old_depth, n * sizeof(float));
-                sg_write_multisample(c, 7, 3, coverage, z, color);
-                memcpy(expected, c->fb.sample_color + first * 4, n * 4);
-                memcpy(expected_depth, c->fb.sample_depth + first, n * sizeof(float));
-                memcpy(c->fb.sample_color + first * 4, initial, n * 4);
-                memcpy(c->fb.sample_depth + first, old_depth, n * sizeof(float));
-                glBeginQuery(GL_SAMPLES_PASSED, query);
-                sg_write_multisample(c, 7, 3, coverage, z, color);
-                glEndQuery(GL_SAMPLES_PASSED);
-                CHECK(!memcmp(expected, c->fb.sample_color + first * 4, n * 4));
-                CHECK(!memcmp(expected_depth, c->fb.sample_depth + first, n * sizeof(float)));
             }
         }
     }

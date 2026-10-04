@@ -257,8 +257,94 @@ int sg_blend_additive_msaa4_bytes(const float color[4], float alpha, float facto
 #define sg_blend_additive_msaa4_bytes sg_try_blend_additive_msaa4
 #endif
 
+SG_INLINE void sg_write_msaa2_fast(softgl_ctx *c, unsigned coverage,
+                         const float z[4], const float color[4], float alpha, size_t first) {
+    sg_i32x4 mask = sg_mask4_expand(coverage & 3u);
+    if (c->depth_test) {
+        sg_f32x4 zv = _mm_castsi128_ps(_mm_loadl_epi64((const sg_i32x4 *)z));
+        sg_f32x4 old_depth = _mm_castsi128_ps(_mm_loadl_epi64((const sg_i32x4 *)&c->fb.sample_depth[first]));
+        mask = sg_i32x4_and(mask, sg_sample_depth_mask(c->depth_func, zv, old_depth));
+        coverage = sg_mask4_live(mask);
+        if (!coverage) return;
+        if (c->depth_mask) {
+            _mm_storel_epi64((sg_i32x4 *)&c->fb.sample_depth[first],
+                _mm_castps_si128(sg_f32x4_select(mask, zv, old_depth)));
+        }
+    } else if (!coverage) return;
+    uint8_t *px = &c->fb.sample_color[first * 4];
+    sg_i32x4 packed;
+    if (c->blend) {
+        sg_i32x4 old_color = _mm_loadl_epi64((const sg_i32x4 *)px);
+        float sf = c->blend_src == GL_SRC_ALPHA ? alpha : 1.f;
+        float df = c->blend_dst == GL_ONE ? 1.f : 1.f - alpha;
+        if (c->blend_dst != GL_ONE ||
+            !sg_blend_additive_msaa4_bytes(color, alpha, sf, old_color, &packed)) {
+            sg_i32x4 r = sg_blend_sample_channel(color[0], old_color, 0, sf, df);
+            sg_i32x4 g = sg_blend_sample_channel(color[1], old_color, 8, sf, df);
+            sg_i32x4 b = sg_blend_sample_channel(color[2], old_color, 16, sf, df);
+            sg_i32x4 a = sg_blend_sample_channel(alpha, old_color, 24, sf, df);
+            packed = _mm_or_si128(_mm_or_si128(r, _mm_slli_epi32(g, 8)),
+                                 _mm_or_si128(_mm_slli_epi32(b, 16), _mm_slli_epi32(a, 24)));
+        }
+    } else {
+        uint32_t rgba = (uint32_t)sg_quantize(color[0]) |
+                        ((uint32_t)sg_quantize(color[1]) << 8) |
+                        ((uint32_t)sg_quantize(color[2]) << 16) |
+                        ((uint32_t)sg_quantize(alpha) << 24);
+        packed = sg_i32x4_splat((int32_t)rgba);
+    }
+    if (coverage != 3) {
+        sg_i32x4 old_color = _mm_loadl_epi64((const sg_i32x4 *)px);
+        packed = _mm_or_si128(_mm_and_si128(mask, packed), _mm_andnot_si128(mask, old_color));
+    }
+    _mm_storel_epi64((sg_i32x4 *)px, packed);
+    return;
+}
+
+/* Retain a separate two-sample root; the four-sample writer keeps its
+ * existing fragment-state dispatch and scratch. */
+#ifdef __EMSCRIPTEN__
+__attribute__((used, noinline))
+#else
+static __attribute__((noinline))
+#endif
+void sg_write_multisample2(softgl_ctx *c, int x, int y, unsigned coverage,
+                          const float z[4], const float color[4]) {
+    if (!sg_fragment_in_bounds(c, x, y)) return;
+    const int n = 2;
+    float alpha = color[3];
+    if (c->multisample) {
+        if (c->sample_alpha_to_coverage) coverage &= sg_coverage_mask(alpha, n, x, y);
+        if (c->sample_alpha_to_one) alpha = 1.f;
+        if (c->sample_coverage) {
+            unsigned mask = sg_coverage_mask(c->sample_coverage_value, n, x, y);
+            if (c->sample_coverage_invert) mask ^= (1u << n) - 1u;
+            coverage &= mask;
+        }
+    }
+    size_t first = ((size_t)y * c->fb.w + x) * n;
+    if (!c->alpha_test && !c->stencil_test && !c->color_logic_op_enabled &&
+        !c->current_query[SG_QUERY_TARGET_SAMPLES_PASSED] &&
+        !c->current_query[SG_QUERY_TARGET_ANY_SAMPLES_PASSED] &&
+        c->color_mask[0] && c->color_mask[1] && c->color_mask[2] && c->color_mask[3] &&
+        (!c->blend || ((c->blend_src == GL_SRC_ALPHA || c->blend_src == GL_ONE) &&
+                       (c->blend_dst == GL_ONE || c->blend_dst == GL_ONE_MINUS_SRC_ALPHA)))) {
+        sg_write_msaa2_fast(c, coverage, z, color, alpha, first);
+        return;
+    }
+    for (int s = 0; s < n; s++) {
+        if (!(coverage & (1u << s))) continue;
+        sg_write_sample(c, first + s, c->fb.sample_color, c->fb.sample_depth,
+                         c->fb.sample_stencil, z[s], color[0], color[1], color[2], alpha, n == 4);
+    }
+}
+
 void sg_write_multisample(softgl_ctx *c, int x, int y, unsigned coverage,
                           const float z[4], const float color[4]) {
+    if (c->fb.samples == 2) {
+        sg_write_multisample2(c, x, y, coverage, z, color);
+        return;
+    }
     if (!sg_fragment_in_bounds(c, x, y)) return;
     int n = c->fb.samples;
     float alpha = color[3];

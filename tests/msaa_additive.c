@@ -69,10 +69,11 @@ static void configure(softgl_ctx *c, unsigned flags, GLenum func) {
     c->scissor[0] = c->scissor[1] = 1; c->scissor[2] = 7; c->scissor[3] = 5;
 }
 
-static int writer_contract(void) {
-    enum { W = 9, H = 7, SAMPLES = 4, PIXELS = W * H * SAMPLES };
-    softgl_ctx *c = softgl_create_multisample(W, H, SAMPLES);
-    softgl_ctx *reference = softgl_create_multisample(W, H, SAMPLES);
+static int writer_contract(int samples) {
+    enum { W = 9, H = 7 };
+    int pixels = W * H * samples;
+    softgl_ctx *c = softgl_create_multisample(W, H, samples);
+    softgl_ctx *reference = softgl_create_multisample(W, H, samples);
     CHECK(c && reference);
     /* A real active query forces the unchanged scalar sample writer. Its
      * count is irrelevant here; framebuffer/sample storage is the oracle. */
@@ -82,30 +83,30 @@ static int writer_contract(void) {
     for (int n = 0; n < 32768; n++) {
         configure(c, (unsigned)n, funcs[n % 8]);
         configure(reference, (unsigned)n, funcs[n % 8]);
-        for (int i = 0; i < PIXELS; i++) {
+        for (int i = 0; i < pixels; i++) {
             for (int k = 0; k < 4; k++) c->fb.sample_color[i*4+k] = (uint8_t)bits();
             c->fb.sample_depth[i] = (bits() >> 8) * (1.f / 16777216.f);
             c->fb.sample_stencil[i] = (uint8_t)bits();
         }
-        memcpy(reference->fb.sample_color, c->fb.sample_color, PIXELS*4);
-        memcpy(reference->fb.sample_depth, c->fb.sample_depth, PIXELS*sizeof(float));
-        memcpy(reference->fb.sample_stencil, c->fb.sample_stencil, PIXELS);
+        memcpy(reference->fb.sample_color, c->fb.sample_color, pixels*4);
+        memcpy(reference->fb.sample_depth, c->fb.sample_depth, pixels*sizeof(float));
+        memcpy(reference->fb.sample_stencil, c->fb.sample_stencil, pixels);
         int x = n % 11 - 1, y = (n / 11) % 9 - 1;
         float color[4], z[4];
         for (int k = 0; k < 4; k++) {
             color[k] = (bits() >> 8) * (2.f / 16777216.f) - .25f;
             z[k] = n & 1 ? (bits() >> 8) * (1.f / 16777216.f) : .5f;
         }
-        unsigned coverage = (unsigned)(n / 8) & 15;
+        unsigned coverage = (unsigned)(n / 8) & ((1u << samples) - 1u);
         sg_write_multisample(c,x,y,coverage,z,color);
         sg_write_multisample(reference,x,y,coverage,z,color);
-        CHECK(!memcmp(c->fb.sample_color,reference->fb.sample_color,PIXELS*4));
-        CHECK(!memcmp(c->fb.sample_depth,reference->fb.sample_depth,PIXELS*sizeof(float)));
-        CHECK(!memcmp(c->fb.sample_stencil,reference->fb.sample_stencil,PIXELS));
+        CHECK(!memcmp(c->fb.sample_color,reference->fb.sample_color,pixels*4));
+        CHECK(!memcmp(c->fb.sample_depth,reference->fb.sample_depth,pixels*sizeof(float)));
+        CHECK(!memcmp(c->fb.sample_stencil,reference->fb.sample_stencil,pixels));
     }
     softgl_make_current(reference); glEndQuery(GL_SAMPLES_PASSED); glDeleteQueries(1,&query);
     softgl_destroy(reference); softgl_destroy(c);
-    puts("32768 actual four-sample color/depth/stencil writes exact to scalar query path");
+    printf("32768 actual %d-sample color/depth/stencil writes exact to scalar query path\n", samples);
     return 0;
 }
 
@@ -138,6 +139,7 @@ int main(void) {
     CHECK(fast && fallback && compared);
     printf("Additive bytes: %llu exact lanes, %llu accepted source packets, %llu fallback packets\n",
         (unsigned long long)compared,(unsigned long long)fast,(unsigned long long)fallback);
-    CHECK(!writer_contract());
+    CHECK(!writer_contract(2));
+    CHECK(!writer_contract(4));
     return 0;
 }
