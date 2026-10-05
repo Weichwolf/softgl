@@ -38,7 +38,7 @@ API-level compatibility with real OpenGL 1.5:
 
 323 entry points, 234 test cases plus three Tank and three BMW camera views. Each runs
 against softgl and Mesa llvmpipe, followed by a pixel comparison
-(720 image correctness checks plus twenty-one renderer contracts when the
+(720 image correctness checks plus twenty-two renderer contracts when the
 BMW asset is prepared; `ctest -C Bench` also includes the native benchmark).
 
 ## Model preparation
@@ -66,6 +66,7 @@ materials and original texture dimensions remain available. Use
 - **Direct WASM pseudo-min/max color clamps** preserve each combiner stage, NaN payloads and signed zero; native SSE4.1 retains its existing path
 - **SIMD texture addresses** wrap/clamp four pixels together and share bilinear row offsets; full packets coalesce adjacent tap pairs into bounded 64-bit loads; prepared power-of-two masks shorten REPEAT addressing while filtering arithmetic stays unchanged
 - **RGBA cube-filter SIMD** loads each four-byte texel once and filters four channels together with the original float arithmetic; face selection and addressing stay scalar
+- **Coherent cube packets** project pixels sharing one cube face together and reuse the SIMD 2D addressing/filter kernel; mixed faces and exceptional inputs retain the scalar sampler in a separate cube kernel
 - **Exact additive 2×/4× MSAA blending** uses native saturated byte addition when a conservative rounding guard proves parity with the float writer; boundary and exceptional values retain the float path
 - **Separate 2× MSAA sample writer** vectorizes depth tests and common opaque/blended writes with bounded 64-bit loads/stores; alpha/stencil/logic/query/color-mask states retain the scalar fallback
 - **Opaque 2×/4× MSAA stores** reuse the rasterizer's tested sample mask and convert RGBA with SIMD; other fragment states retain the general writer

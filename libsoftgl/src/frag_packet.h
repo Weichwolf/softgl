@@ -3,6 +3,13 @@
 
 /* All lanes are independent pixels. Coverage and fragment writes remain ordered
  * in the caller; interpolation, addressing and combiners share SIMD work. */
+int sg_packet_sample_cube_coherent(const sg_tex_unit_tri *u,
+    const float xx[4], const float yy[4], const float zz[4],
+    unsigned live, sg_f32x4 out[4]);
+
+void sg_packet_sample_cube_target(const sg_tex_unit_tri *u,
+    sg_f32x4 x, sg_f32x4 y, sg_f32x4 z, unsigned live, sg_f32x4 out[4]);
+
 SG_INLINE sg_f32x4 sg_packet_lerp(float a, float b, float d,
                                   sg_f32x4 w0, sg_f32x4 w1, sg_f32x4 w2,
                                   sg_f32x4 inverse) {
@@ -179,14 +186,16 @@ SG_INLINE void sg_packet_sample_unit(const sg_tex_unit_tri *u, int unit,
     }
     sg_f32x4 z = sg_packet_lerp(v0->uv[unit].z, v1->uv[unit].z, v2->uv[unit].z,
                                 w0, w1, w2, inverse);
+    if (u->active_slot == SG_TEX_TARGET_CUBE) {
+        sg_packet_sample_cube_target(u, x, y, z, live, out);
+        return;
+    }
     float xx[4], yy[4], zz[4], tex[4][4] = {{0}};
     sg_f32x4_store(xx, x); sg_f32x4_store(yy, y); sg_f32x4_store(zz, z);
+
     for (int l = 0; l < 4; l++) {
         if (!(live & (1u << l))) continue;
-        if (u->active_slot == SG_TEX_TARGET_CUBE)
-            sg_sample_tex_cube(u->tex, u->filter_min, u->filter_mag, u->wrap_s, u->wrap_t,
-                               xx[l], yy[l], zz[l], 1, tex[l]);
-        else if (u->active_slot == SG_TEX_TARGET_3D)
+        if (u->active_slot == SG_TEX_TARGET_3D)
             sg_sample_tex3d(u->tex, u->filter_min, u->filter_mag, u->wrap_s, u->wrap_t, u->wrap_r,
                            xx[l], yy[l], zz[l], 1, tex[l]);
         else if (u->active_slot == SG_TEX_TARGET_1D)

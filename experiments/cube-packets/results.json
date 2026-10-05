@@ -1,0 +1,3716 @@
+{
+  "status": "retained-validated-pending-publication",
+  "rendererBaseCommit": "2e4ea8ba63cefa147cdbf079dcd2061a0cf5bbae",
+  "researchBaseCommit": "c76069b1fe319d278ee6a214c48c5d009a88a487",
+  "sourceSha256": {
+    "libsoftgl/src/frag_packet.h": "217cd6bfcae38b7c2428077bc4c1e772ca178d82498a21d963c0cc86061c4dc6",
+    "libsoftgl/src/rasterizer.c": "219a16424cb961d5359f3023fb118d80feb6d355837606ac5548c6845810bbcf"
+  },
+  "jsSha256": "c98f9c10d467803056f49e42c6f9c138fd0c8581525e247a8ad2078cee529921",
+  "bmwPackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+  "tankPackSha256": "d1c27204f91788e5e80aa42eaf4a5e95ce8dd713485ec00ae513323bc8e9ca99",
+  "decision": "All six BMW 4x pairs improve. Small off changes, mixed BMW 2x and reported T80 costs. Retained under BMW priority.",
+  "statistics": "Median of three per-pair geometric crossover ratios per audit. FPS uses pooled median candidate frame time.",
+  "guardLimit": "Linux guard cannot establish Windows host idleness. Session-bookkeeping CPU records remain in original local monitors bound by SHA-256.",
+  "initialFailures": [
+    "Native strict pixel-packet oracle originally linked the external cube kernel compiled with production fast-math flags, causing mismatched floats. Strict target now compiles rasterizer.c with its own strict flags; production flags and pixel tolerances are unchanged.",
+    "Initial standalone native strict-cube oracle had the same flag mismatch.",
+    "Initial canonical link used the unwritable system Emscripten cache; retry used build/emscripten-cache.",
+    "Initial standalone native object glob included stale unlinked LOD objects; fixed by selecting current 20 source names."
+  ],
+  "regressions": [
+    {
+      "name": "native-full-tests.log",
+      "passed": 742,
+      "sha256": "12b4e6526f4dbe6b9056ff1f24579c8a15c2a59808c74d8fc4779bb21bbb06e5"
+    },
+    {
+      "name": "native-full-bench.log",
+      "passed": 1,
+      "sha256": "cf92cfad1a60e3265c0916125c19277f71093033c634f8ca213bbb65c55fb8ee"
+    },
+    {
+      "name": "asan-full-tests.log",
+      "passed": 22,
+      "sha256": "7174f131f2984e6eea6892aa0fe9779bf9215b7ea6d8846249775483673fc1e0"
+    },
+    {
+      "name": "contracts-results.json",
+      "sha256": "fda0b8393bbcb27c26629c175c484704b5c0844d3eec90bf0b3982d49c02859f",
+      "result": {
+        "passed": true,
+        "checks": [
+          {
+            "test": "exact packed vertices and collision-safe cache",
+            "passed": true
+          },
+          {
+            "test": "hierarchical sample-depth rejection and query oracle",
+            "passed": true
+          },
+          {
+            "test": "post-Z opaque store and query-frame oracle",
+            "passed": true
+          },
+          {
+            "test": "exact large packed/full state and sample-plane oracle",
+            "passed": true
+          },
+          {
+            "test": "prepared inputs exact and typed storage",
+            "samples": 0,
+            "workers": 1,
+            "passed": true
+          },
+          {
+            "test": "position exact and invalidation",
+            "samples": 0,
+            "workers": 1,
+            "passed": true
+          },
+          {
+            "test": "stream",
+            "samples": 0,
+            "workers": 1,
+            "passed": true
+          },
+          {
+            "test": "geometry",
+            "samples": 0,
+            "workers": 1,
+            "passed": true
+          },
+          {
+            "test": "prepared inputs exact and typed storage",
+            "samples": 0,
+            "workers": 3,
+            "passed": true
+          },
+          {
+            "test": "position exact and invalidation",
+            "samples": 0,
+            "workers": 3,
+            "passed": true
+          },
+          {
+            "test": "stream",
+            "samples": 0,
+            "workers": 3,
+            "passed": true
+          },
+          {
+            "test": "geometry",
+            "samples": 0,
+            "workers": 3,
+            "passed": true
+          },
+          {
+            "test": "prepared inputs exact and typed storage",
+            "samples": 0,
+            "workers": 8,
+            "passed": true
+          },
+          {
+            "test": "position exact and invalidation",
+            "samples": 0,
+            "workers": 8,
+            "passed": true
+          },
+          {
+            "test": "stream",
+            "samples": 0,
+            "workers": 8,
+            "passed": true
+          },
+          {
+            "test": "geometry",
+            "samples": 0,
+            "workers": 8,
+            "passed": true
+          },
+          {
+            "test": "prepared inputs exact and typed storage",
+            "samples": 2,
+            "workers": 1,
+            "passed": true
+          },
+          {
+            "test": "position exact and invalidation",
+            "samples": 2,
+            "workers": 1,
+            "passed": true
+          },
+          {
+            "test": "stream",
+            "samples": 2,
+            "workers": 1,
+            "passed": true
+          },
+          {
+            "test": "geometry",
+            "samples": 2,
+            "workers": 1,
+            "passed": true
+          },
+          {
+            "test": "prepared inputs exact and typed storage",
+            "samples": 2,
+            "workers": 3,
+            "passed": true
+          },
+          {
+            "test": "position exact and invalidation",
+            "samples": 2,
+            "workers": 3,
+            "passed": true
+          },
+          {
+            "test": "stream",
+            "samples": 2,
+            "workers": 3,
+            "passed": true
+          },
+          {
+            "test": "geometry",
+            "samples": 2,
+            "workers": 3,
+            "passed": true
+          },
+          {
+            "test": "prepared inputs exact and typed storage",
+            "samples": 2,
+            "workers": 8,
+            "passed": true
+          },
+          {
+            "test": "position exact and invalidation",
+            "samples": 2,
+            "workers": 8,
+            "passed": true
+          },
+          {
+            "test": "stream",
+            "samples": 2,
+            "workers": 8,
+            "passed": true
+          },
+          {
+            "test": "geometry",
+            "samples": 2,
+            "workers": 8,
+            "passed": true
+          },
+          {
+            "test": "prepared inputs exact and typed storage",
+            "samples": 4,
+            "workers": 1,
+            "passed": true
+          },
+          {
+            "test": "position exact and invalidation",
+            "samples": 4,
+            "workers": 1,
+            "passed": true
+          },
+          {
+            "test": "stream",
+            "samples": 4,
+            "workers": 1,
+            "passed": true
+          },
+          {
+            "test": "geometry",
+            "samples": 4,
+            "workers": 1,
+            "passed": true
+          },
+          {
+            "test": "prepared inputs exact and typed storage",
+            "samples": 4,
+            "workers": 3,
+            "passed": true
+          },
+          {
+            "test": "position exact and invalidation",
+            "samples": 4,
+            "workers": 3,
+            "passed": true
+          },
+          {
+            "test": "stream",
+            "samples": 4,
+            "workers": 3,
+            "passed": true
+          },
+          {
+            "test": "geometry",
+            "samples": 4,
+            "workers": 3,
+            "passed": true
+          },
+          {
+            "test": "prepared inputs exact and typed storage",
+            "samples": 4,
+            "workers": 8,
+            "passed": true
+          },
+          {
+            "test": "position exact and invalidation",
+            "samples": 4,
+            "workers": 8,
+            "passed": true
+          },
+          {
+            "test": "stream",
+            "samples": 4,
+            "workers": 8,
+            "passed": true
+          },
+          {
+            "test": "geometry",
+            "samples": 4,
+            "workers": 8,
+            "passed": true
+          },
+          {
+            "test": "compact nonzero first and capacity boundaries",
+            "workers": 1,
+            "passed": true
+          },
+          {
+            "test": "compact nonzero first and capacity boundaries",
+            "workers": 3,
+            "passed": true
+          },
+          {
+            "test": "compact nonzero first and capacity boundaries",
+            "workers": 8,
+            "passed": true
+          },
+          {
+            "test": "msaa",
+            "samples": 2,
+            "workers": 0,
+            "passed": true
+          },
+          {
+            "test": "msaa",
+            "samples": 2,
+            "workers": 1,
+            "passed": true
+          },
+          {
+            "test": "msaa",
+            "samples": 2,
+            "workers": 3,
+            "passed": true
+          },
+          {
+            "test": "msaa",
+            "samples": 2,
+            "workers": 8,
+            "passed": true
+          },
+          {
+            "test": "msaa",
+            "samples": 4,
+            "workers": 0,
+            "passed": true
+          },
+          {
+            "test": "msaa",
+            "samples": 4,
+            "workers": 1,
+            "passed": true
+          },
+          {
+            "test": "msaa",
+            "samples": 4,
+            "workers": 3,
+            "passed": true
+          },
+          {
+            "test": "msaa",
+            "samples": 4,
+            "workers": 8,
+            "passed": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "numeric-results.json",
+      "sha256": "f44507dd4444d58e2650d25af3aaf0faeb68f912c4785ff42dca42e876ca6abb",
+      "result": {
+        "passed": true,
+        "checks": [
+          {
+            "name": "simd_clamp",
+            "passed": true
+          },
+          {
+            "name": "pixel_packet",
+            "passed": true
+          },
+          {
+            "name": "dot3_chain",
+            "passed": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "queue-contract-results.json",
+      "sha256": "bbfeb208f823e26a0033d7533955c70f7e7fc2608b015ac21c775b7999c2cada",
+      "result": {
+        "passed": true,
+        "stateHashes": 135,
+        "samples": [
+          0,
+          2,
+          4
+        ],
+        "workers": [
+          1,
+          3,
+          8
+        ],
+        "drawsBeforeReadback": 48,
+        "oracle": "same-bin eager flush; raw resolved and sample color/depth/stencil planes hashed"
+      }
+    },
+    {
+      "name": "triangle-contract-results.json",
+      "sha256": "26e687d40c3c7905567cf3bd6393671235740102bd9b5f43de0c15270e916a96",
+      "result": {
+        "passed": true,
+        "exactFrameAndSampleHashes": 54,
+        "samples": [
+          0,
+          2,
+          4
+        ],
+        "workers": [
+          1,
+          3,
+          8
+        ],
+        "indexTypes": [
+          "u8",
+          "u16",
+          "u32"
+        ],
+        "triangles": [
+          1023,
+          1024,
+          1152,
+          8192,
+          8193,
+          1024
+        ],
+        "oracle": "same-bin original serial producer in <=512-triangle submissions; identical primitive order"
+      }
+    },
+    {
+      "name": "default-contract-results.json",
+      "sha256": "75be28f5912fcc14f9180467c18d4fb9abf0c48e2825cae57dadf5c910c23681",
+      "result": {
+        "checks": [
+          {
+            "cores": 1,
+            "workers": 0,
+            "samples": 0,
+            "passed": true
+          },
+          {
+            "cores": 1,
+            "workers": 0,
+            "samples": 2,
+            "passed": true
+          },
+          {
+            "cores": 1,
+            "workers": 0,
+            "samples": 4,
+            "passed": true
+          },
+          {
+            "cores": 2,
+            "workers": 1,
+            "samples": 0,
+            "passed": true
+          },
+          {
+            "cores": 2,
+            "workers": 1,
+            "samples": 2,
+            "passed": true
+          },
+          {
+            "cores": 2,
+            "workers": 1,
+            "samples": 4,
+            "passed": true
+          },
+          {
+            "cores": 4,
+            "workers": 3,
+            "samples": 0,
+            "passed": true
+          },
+          {
+            "cores": 4,
+            "workers": 3,
+            "samples": 2,
+            "passed": true
+          },
+          {
+            "cores": 4,
+            "workers": 3,
+            "samples": 4,
+            "passed": true
+          },
+          {
+            "cores": 8,
+            "workers": 3,
+            "samples": 0,
+            "passed": true
+          },
+          {
+            "cores": 8,
+            "workers": 3,
+            "samples": 2,
+            "passed": true
+          },
+          {
+            "cores": 8,
+            "workers": 3,
+            "samples": 4,
+            "passed": true
+          },
+          {
+            "cores": 9,
+            "workers": 3,
+            "samples": 0,
+            "passed": true
+          },
+          {
+            "cores": 9,
+            "workers": 3,
+            "samples": 2,
+            "passed": true
+          },
+          {
+            "cores": 9,
+            "workers": 3,
+            "samples": 4,
+            "passed": true
+          },
+          {
+            "cores": 16,
+            "workers": 3,
+            "samples": 0,
+            "passed": true
+          },
+          {
+            "cores": 16,
+            "workers": 3,
+            "samples": 2,
+            "passed": true
+          },
+          {
+            "cores": 16,
+            "workers": 3,
+            "samples": 4,
+            "passed": true
+          }
+        ],
+        "passed": true
+      }
+    },
+    {
+      "name": "preview-chromium.json",
+      "sha256": "ac61470282a4ea8f6320b94c64782d4d7c04b20cfaf504e7580ec91423b331e4",
+      "result": {
+        "url": "http://127.0.0.1:8001/",
+        "browser": "154.0.8037.92",
+        "benchmark": "# scenes WASM benchmark @ 640x360 \u2014 SIMD=true, reported processors=9\n# userAgent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36\n# 3 runs of 20 frames per scene; warm-up excluded; min reported.\n# Browser yields between frames; each timed frame includes worker completion.\n\n# MSAA=off\nscene=showcase   ms=11.925 fps=83.9\nscene=shadow     ms=5.795 fps=172.6\nscene=particles  ms=7.644 fps=130.8\nscene=city       ms=9.964 fps=100.4\nscene=sphere_lit ms=1.639 fps=610.0\nscene=bmw        ms=92.513 fps=10.8\n\n# MSAA=2x\nscene=showcase   ms=24.086 fps=41.5\nscene=shadow     ms=9.337 fps=107.1\nscene=particles  ms=9.171 fps=109.0\nscene=city       ms=9.255 fps=108.0\nscene=sphere_lit ms=3.361 fps=297.6\nscene=bmw        ms=110.092 fps=9.1\n\n# MSAA=4x\nscene=showcase   ms=28.896 fps=34.6\nscene=shadow     ms=20.941 fps=47.8\nscene=particles  ms=12.170 fps=82.2\nscene=city       ms=13.479 fps=74.2\nscene=sphere_lit ms=6.967 fps=143.5\nscene=bmw        ms=122.603 fps=8.2\n\n\n# done. click \"Tank\" or \"Tests\" to resume.\n",
+        "heartbeat": 1727,
+        "reportedProcessors": 9,
+        "threads": "3 (tile workers + parallel vertex transform)",
+        "isolated": true,
+        "heartbeatDuringBenchmark": 1280,
+        "displayedTests": 234,
+        "renderWorkers": 3,
+        "bmwScene": true,
+        "cancelledBenchmark": true,
+        "offlineGeometry": true,
+        "multisampleModes": [
+          0,
+          2,
+          4
+        ],
+        "wasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "errors": [],
+        "passed": true
+      }
+    },
+    {
+      "name": "preview-firefox/result.json",
+      "sha256": "f4195965d0da4a4c049db937add2437a9be1533ac2970befe3973ffdbe6d666d",
+      "result": {
+        "passed": true,
+        "displayedTests": 234,
+        "displayed": [
+          "test_01_clear_black",
+          "test_02_clear_red",
+          "test_03_scissor_clear",
+          "test_04_partial_viewport_clear",
+          "test_05_multi_clear_stripes",
+          "test_06_get_viewport",
+          "test_07_matrix_identity",
+          "test_08_matrix_translate",
+          "test_09_matrix_stack",
+          "test_100_showcase",
+          "test_101_begin_triangles",
+          "test_102_vertex_variants",
+          "test_103_triangle_strip",
+          "test_104_triangle_fan",
+          "test_105_quads_one",
+          "test_106_quads_two",
+          "test_107_quad_strip",
+          "test_108_polygon_hexagon",
+          "test_109_lit_triangle",
+          "test_10_ortho_projection",
+          "test_110_textured_quad",
+          "test_111_multitexture_imm",
+          "test_112_rectf",
+          "test_113_type_conversion",
+          "test_114_array_element",
+          "test_115_lit_polygon",
+          "test_116_dlist_empty",
+          "test_117_dlist_triangle",
+          "test_118_dlist_transform",
+          "test_119_dlist_compile_and_execute",
+          "test_11_triangle_ccw",
+          "test_120_call_lists_byte",
+          "test_121_nested_lists",
+          "test_122_dlist_lit",
+          "test_123_dlist_texture",
+          "test_124_dlist_vbo_draw",
+          "test_125_dlist_vbo_alloc",
+          "test_126_dlist_color_order",
+          "test_127_dlist_matrix_stack",
+          "test_128_dlist_repeat_outer_mv",
+          "test_129_dlist_id_recycle",
+          "test_12_triangle_cw_culled",
+          "test_130_call_lists_2bytes",
+          "test_131_lines_basic",
+          "test_132_line_strip",
+          "test_133_line_loop",
+          "test_134_line_width",
+          "test_135_points_grid",
+          "test_136_point_size",
+          "test_137_polygon_mode_line",
+          "test_138_polygon_mode_point",
+          "test_139_polygon_mode_two_faces",
+          "test_13_triangle_depth",
+          "test_140_polygon_offset",
+          "test_141_line_color_gradient",
+          "test_142_line_perspective_depth",
+          "test_143_line_clip",
+          "test_144_edge_flag_polygon",
+          "test_145_mixed_primitives",
+          "test_146_stencil_clear",
+          "test_147_stencil_mask_basic",
+          "test_148_stencil_incr_overlap",
+          "test_149_stencil_invert_xor",
+          "test_14_triangle_frustum",
+          "test_150_stencil_zfail_shadow",
+          "test_151_stencil_write_mask",
+          "test_152_stencil_value_mask",
+          "test_153_stencil_dpfail_incr",
+          "test_154_stencil_portal",
+          "test_155_stencil_mirror",
+          "test_156_tex1d_gradient",
+          "test_157_tex1d_lookup",
+          "test_158_tex3d_corners",
+          "test_159_tex3d_slices",
+          "test_15_two_tris_depth",
+          "test_160_cubemap_skybox",
+          "test_161_cubemap_reflect",
+          "test_162_cubemap_faces",
+          "test_163_copy_tex_image_2d",
+          "test_164_copy_tex_sub_image_2d",
+          "test_165_tex_sub_image_2d",
+          "test_166_tex_sub_image_3d",
+          "test_167_cubemap_lit",
+          "test_168_tex3d_trilinear",
+          "test_169_cube_and_2d",
+          "test_16_flat_shaded",
+          "test_170_all_targets",
+          "test_171_clip_plane_y",
+          "test_172_clip_plane_diagonal",
+          "test_173_clip_plane_two",
+          "test_174_color_material_diffuse",
+          "test_175_light_model_local_viewer",
+          "test_176_light_model_two_side",
+          "test_177_color_mask",
+          "test_178_logic_op_xor",
+          "test_179_logic_op_invert",
+          "test_17_gouraud_rgb",
+          "test_180_hint_and_index_mask",
+          "test_181_drawpixels_rgba",
+          "test_182_drawpixels_luminance",
+          "test_183_drawpixels_rgb_float",
+          "test_184_readpixels_echo",
+          "test_185_copypixels",
+          "test_186_pixelzoom_2x",
+          "test_187_pixelzoom_flip",
+          "test_188_unpack_alignment",
+          "test_189_unpack_rowlength_skip",
+          "test_18_fullscreen_quad",
+          "test_190_rasterpos_clipped",
+          "test_191_combine_interpolate",
+          "test_192_combine_subtract",
+          "test_193_combine_add_signed_scale",
+          "test_194_combine_split_alpha",
+          "test_195_combine_dot3_rgba",
+          "test_196_occlusion_samples",
+          "test_197_occlusion_any",
+          "test_198_map_buffer",
+          "test_199_evaluators_patch",
+          "test_19_degenerate_triangle",
+          "test_200_accum_jitter",
+          "test_201_stipple",
+          "test_202_shadow_volume",
+          "test_203_bump_brick",
+          "test_204_lightmap_corridor",
+          "test_205_chrome_sphere",
+          "test_206_spot_projector",
+          "test_207_glass_window",
+          "test_208_terrain_blend",
+          "test_209_particles_additive",
+          "test_20_triangle_at_edges",
+          "test_210_portal_rooms",
+          "test_211_billboard_trees",
+          "test_212_skybox_sun",
+          "test_213_lens_flare",
+          "test_214_decal_stencil",
+          "test_215_crt_emissive",
+          "test_216_water_surface",
+          "test_217_dot3_multipass_fog",
+          "test_218_worker_single_triangle",
+          "test_219_normal_matrix_batches",
+          "test_21_clip_left",
+          "test_220_texture_linear_fog",
+          "test_221_texture_state_batches",
+          "test_222_worker_quad_boundaries",
+          "test_223_parallel_vertex_projection",
+          "test_224_parallel_occlusion_queries",
+          "test_225_transformed_bin_lifetime",
+          "test_226_parallel_pool_queries",
+          "test_227_simd_color_rounding",
+          "test_228_texture_repeat_coordinates",
+          "test_229_scalar_early_depth",
+          "test_22_clip_right",
+          "test_230_combiner_sampling_dependencies",
+          "test_231_order_sensitive_sorting",
+          "test_232_combiner_operand_channels",
+          "test_233_large_query_handoffs",
+          "test_234_multisample_state",
+          "test_23_clip_top",
+          "test_24_clip_bottom",
+          "test_25_clip_near",
+          "test_26_clip_far",
+          "test_27_clip_all_planes",
+          "test_28_clip_offscreen_but_visible",
+          "test_29_clip_quad_seam",
+          "test_30_clip_many_triangles",
+          "test_31_translate",
+          "test_32_rotate_x",
+          "test_33_rotate_y",
+          "test_34_rotate_z",
+          "test_35_scale_nonuniform",
+          "test_36_rotate_translate",
+          "test_37_orbit",
+          "test_38_perspective_60fov",
+          "test_39_aspect_correction",
+          "test_40_hierarchical_transform",
+          "test_41_tex_checkerboard",
+          "test_42_tex_gradient_bilinear",
+          "test_43_tex_repeat",
+          "test_44_tex_clamp",
+          "test_45_tex_many_repeats",
+          "test_46_tex_alpha_cutout",
+          "test_47_tex_modulate",
+          "test_48_tex_replace",
+          "test_49_tex_decal",
+          "test_50_multitexture",
+          "test_51_directional_light",
+          "test_52_ambient_only",
+          "test_53_diffuse_lambert",
+          "test_54_specular_blinn",
+          "test_55_point_light_attenuation",
+          "test_56_multi_lights",
+          "test_57_icosphere_lit",
+          "test_58_colored_material",
+          "test_59_emission",
+          "test_60_normalize",
+          "test_61_tessellated_grid",
+          "test_62_icosphere_subdiv",
+          "test_63_uv_sphere",
+          "test_64_cylinder",
+          "test_65_torus",
+          "test_66_bezier_patch",
+          "test_67_extrusion",
+          "test_68_loft",
+          "test_69_superquadric",
+          "test_70_heightfield",
+          "test_71_fog_exp2",
+          "test_72_fog_linear",
+          "test_73_fog_exp",
+          "test_74_fog_colored",
+          "test_75_alpha_blend",
+          "test_76_additive_blend",
+          "test_77_alpha_test_edge",
+          "test_78_transparent_stack",
+          "test_79_premult_alpha",
+          "test_80_blend_depth",
+          "test_81_vbo_simple",
+          "test_82_vbo_interleaved_pc",
+          "test_83_vbo_interleaved_pnct",
+          "test_84_indexed_draw",
+          "test_85_multi_vbos",
+          "test_86_buffer_subdata",
+          "test_87_large_mesh",
+          "test_88_instanced_manual",
+          "test_89_dynamic_vbo",
+          "test_90_multi_drawarrays",
+          "test_91_dot3_baseline",
+          "test_92_normalmap_pattern",
+          "test_93_normalmap_depth",
+          "test_94_lit_textured_sphere",
+          "test_95_scene_sphere_ground",
+          "test_96_building_cube",
+          "test_97_multiple_buildings",
+          "test_98_city_block",
+          "test_99_moving_camera"
+        ],
+        "benchmark": "# scenes WASM benchmark @ 640x360 \u2014 SIMD=true, reported processors=9\n# userAgent: Mozilla/5.0 (X11; Linux x86_64; rv:153.0) Gecko/20100101 Firefox/153.0\n# 3 runs of 20 frames per scene; warm-up excluded; min reported.\n# Browser yields between frames; each timed frame includes worker completion.\n\n# MSAA=off\nscene=showcase   ms=16.479 fps=60.7\nscene=shadow     ms=8.886 fps=112.5\nscene=particles  ms=8.451 fps=118.3\nscene=city       ms=10.328 fps=96.8\nscene=sphere_lit ms=2.191 fps=456.4\nscene=bmw        ms=138.170 fps=7.2\n\n# MSAA=2x\nscene=showcase   ms=34.621 fps=28.9\nscene=shadow     ms=19.651 fps=50.9\nscene=particles  ms=15.240 fps=65.6\nscene=city       ms=19.012 fps=52.6\nscene=sphere_lit ms=4.461 fps=224.2\nscene=bmw        ms=168.824 fps=5.9\n\n# MSAA=4x\nscene=showcase   ms=43.030 fps=23.2\nscene=shadow     ms=20.763 fps=48.2\nscene=particles  ms=13.406 fps=74.6\nscene=city       ms=20.008 fps=50.0\nscene=sphere_lit ms=4.992 fps=200.3\nscene=bmw        ms=119.064 fps=8.4\n\n\n# done. click \"Tank\" or \"Tests\" to resume.\n",
+        "heartbeatDuringBenchmark": 1070,
+        "reportedProcessors": 9,
+        "renderWorkers": 3,
+        "isolated": true,
+        "errors": [],
+        "offlineGeometry": true,
+        "cancelledBenchmark": true,
+        "multisampleModes": [
+          0,
+          2,
+          4
+        ],
+        "browser": "153.4.0",
+        "wasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898"
+      }
+    },
+    {
+      "name": "all-tests-ms0-results.json",
+      "passed": 234,
+      "samples": 0,
+      "sha256": "223d0227cfaf746b2f057cb5ecdf5d87b534422cb2606fe8f53066ea3e2f5eda"
+    },
+    {
+      "name": "frame-equivalence-0.json",
+      "samples": 0,
+      "models": [
+        "bmw",
+        "tank"
+      ],
+      "hashFramesEach": 100,
+      "rawFramesEach": 4,
+      "sha256": "7ea4a1003bf1f77f57cada23b6e8c64f4301dfe076f40c62df2d3b537fffb47f"
+    },
+    {
+      "name": "all-tests-msaa-results.json",
+      "passed": 234,
+      "samples": 2,
+      "sha256": "39bfab0f91b382ab5e3b982016fd327335b1103f57632f571e20c6cb0d60ec21"
+    },
+    {
+      "name": "frame-equivalence-2.json",
+      "samples": 2,
+      "models": [
+        "bmw",
+        "tank"
+      ],
+      "hashFramesEach": 100,
+      "rawFramesEach": 4,
+      "sha256": "9c6ddb5e0dcaeccf17f1a763a562324f5bd0e6d9b780a37207f0184e984831b8"
+    },
+    {
+      "name": "all-tests-msaa4-results.json",
+      "passed": 234,
+      "samples": 4,
+      "sha256": "e2450db9d1ce67fedb1735eed2f0cc3df9d678b35af82946f79e7f23da57ad4f"
+    },
+    {
+      "name": "frame-equivalence-4.json",
+      "samples": 4,
+      "models": [
+        "bmw",
+        "tank"
+      ],
+      "hashFramesEach": 100,
+      "rawFramesEach": 4,
+      "sha256": "320c0fa204a52c1c79ec6f7a6edce18f410cd382023d632040545c8e2901212b"
+    },
+    {
+      "name": "mesa-images.json",
+      "passed": 240,
+      "samples": 0,
+      "sha256": "c2387e6ffe47332e5091370c4570b22767b0d0825c8982dccb1b43f412029beb"
+    },
+    {
+      "name": "depth-gates-current.log",
+      "sha256": "faa23d85c5ef51fa801066023c9503620c7665ed3e983df81d5735eea8e8b5f6",
+      "output": "native ['depth classification: 2048 exact comparisons, 686 strictly hidden, 256 full equality ties preserved', 'depth replay: 18 function/state/epoch/stale-publication checks passed']\nasan ['depth classification: 2048 exact comparisons, 686 strictly hidden, 256 full equality ties preserved', 'depth replay: 18 function/state/epoch/stale-publication checks passed']\nWASM depth classification: 2048 exact comparisons, 686 strictly hidden, 256 full equality ties preserved\ndepth replay: 18 function/state/epoch/stale-publication checks passed\n"
+    },
+    {
+      "name": "replay-gates-current.log",
+      "sha256": "ead35dacb1dbccffdf98cd99e0f73facad2a4d999b28aed0790945d084739d74",
+      "output": "native depth replay: 47x31 samples=2 workers=1, 18 actual queued state/sample-plane cases exact\ndepth replay: 47x31 samples=2 workers=3, 18 actual queued state/sample-plane cases exact\ndepth replay: 47x31 samples=2 workers=8, 18 actual queued state/sample-plane cases exact\ndepth replay: 47x31 samples=4 workers=1, 18 actual queued state/sample-plane cases exact\ndepth replay: 47x31 samples=4 workers=3, 18 actual queued state/sample-plane cases exact\ndepth replay: 47x31 samples=4 workers=8, 18 actual queued state/sample-plane cases exact\ndepth replay: 128x32 samples=2 workers=1, 18 actual queued state/sample-plane cases exact\ndepth replay: 128x32 samples=2 workers=3, 18 actual queued state/sample-plane cases exact\ndepth replay: 128x32 samples=2 workers=8, 18 actual queued state/sample-plane cases exact\ndepth replay: 128x32 samples=4 workers=1, 18 actual queued state/sample-plane cases exact\ndepth replay: 128x32 samples=4 workers=3, 18 actual queued state/sample-plane cases exact\ndepth replay: 128x32 samples=4 workers=8, 18 actual queued state/sample-plane cases exact\nasan depth replay: 47x31 samples=2 workers=1, 18 actual queued state/sample-plane cases exact\ndepth replay: 47x31 samples=2 workers=3, 18 actual queued state/sample-plane cases exact\ndepth replay: 47x31 samples=2 workers=8, 18 actual queued state/sample-plane cases exact\ndepth replay: 47x31 samples=4 workers=1, 18 actual queued state/sample-plane cases exact\ndepth replay: 47x31 samples=4 workers=3, 18 actual queued state/sample-plane cases exact\ndepth replay: 47x31 samples=4 workers=8, 18 actual queued state/sample-plane cases exact\ndepth replay: 128x32 samples=2 workers=1, 18 actual queued state/sample-plane cases exact\ndepth replay: 128x32 samples=2 workers=3, 18 actual queued state/sample-plane cases exact\ndepth replay: 128x32 samples=2 workers=8, 18 actual queued state/sample-plane cases exact\ndepth replay: 128x32 samples=4 workers=1, 18 actual queued state/sample-plane cases exact\ndepth replay: 128x32 samples=4 workers=3, 18 actual queued state/sample-plane cases exact\ndepth replay: 128x32 samples=4 workers=8, 18 actual queued state/sample-plane cases exact\nWASM depth replay: 47x31 samples=2 workers=1, 18 actual queued state/sample-plane cases exact\ndepth replay: 47x31 samples=2 workers=3, 18 actual queued state/sample-plane cases exact\ndepth replay: 47x31 samples=2 workers=8, 18 actual queued state/sample-plane cases exact\ndepth replay: 47x31 samples=4 workers=1, 18 actual queued state/sample-plane cases exact\ndepth replay: 47x31 samples=4 workers=3, 18 actual queued state/sample-plane cases exact\ndepth replay: 47x31 samples=4 workers=8, 18 actual queued state/sample-plane cases exact\ndepth replay: 128x32 samples=2 workers=1, 18 actual queued state/sample-plane cases exact\ndepth replay: 128x32 samples=2 workers=3, 18 actual queued state/sample-plane cases exact\ndepth replay: 128x32 samples=2 workers=8, 18 actual queued state/sample-plane cases exact\ndepth replay: 128x32 samples=4 workers=1, 18 actual queued state/sample-plane cases exact\ndepth replay: 128x32 samples=4 workers=3, 18 actual queued state/sample-plane cases exact\ndepth replay: 128x32 samples=4 workers=8, 18 actual queued state/sample-plane cases exact\n"
+    },
+    {
+      "name": "hz-gates-current.log",
+      "sha256": "63eec8f4136c2c3383f11235f2fe5c06440b36a4c3ee789795c2ae028578744f",
+      "output": "native 131072 tracked writes, 1048576 numerical bounds, 1536 exact HZ-on/off frames and sample queries, 1/3/8 workers, fallbacks passed\nasan 131072 tracked writes, 1048576 numerical bounds, 1536 exact HZ-on/off frames and sample queries, 1/3/8 workers, fallbacks passed\nWASM 131072 tracked writes, 1048576 numerical bounds, 1536 exact HZ-on/off frames and sample queries, 1/3/8 workers, fallbacks passed\n"
+    },
+    {
+      "name": "cube-contract-run.log",
+      "sha256": "30bfe7e575614d45becfd7a46565c37a740023bba8f20a1ed6290297f800a83f",
+      "output": "262144 cube packets: 243712 fast exact, 18432 fallback; ties, zero, tiny/large, masks, wraps/filters and invalid states passed\n"
+    },
+    {
+      "name": "native-cube-gates.log",
+      "sha256": "cdb9e644d0671876a7082b3561e0c21aa5f6ab13fc8093ea0071afbc85e1805a",
+      "output": "native 262144 cube packets: 243712 fast exact, 18432 fallback; ties, zero, tiny/large, masks, wraps/filters and invalid states passed\nasan 262144 cube packets: 243712 fast exact, 18432 fallback; ties, zero, tiny/large, masks, wraps/filters and invalid states passed\n"
+    },
+    {
+      "name": "scanline-contract-run.log",
+      "sha256": "2dce83506ea5f639b6b708a1c82066254865c1db5e7a7931d4d589a752ffd226",
+      "output": "4480 frames and 46688256 exact sample masks versus full-frame edge oracle; 2x/4x, center/rotated, thin/wide/tall, large coordinates and 32-bit boundaries passed\n"
+    },
+    {
+      "name": "writer-run.log",
+      "sha256": "449ee0738d94ae85dcee5569874a0ec0de00c8407667987dd35d702230a56d5f",
+      "output": "Additive bytes: 266461184 exact lanes, 65054 accepted source packets, 33528 fallback packets\n32768 actual 2-sample color/depth/stencil writes exact to scalar query path\n32768 actual 4-sample color/depth/stencil writes exact to scalar query path\n"
+    },
+    {
+      "name": "scalar-cube-run.log",
+      "sha256": "a545792285df3c4f98c7dffae00196dd80d8b836b4d5859277c24eb4302ade59",
+      "output": "262144 cube packets, 524288 scalar samples exactly match original scalar filtering\n"
+    },
+    {
+      "name": "cache-gates.log",
+      "sha256": "a8b8963d3855dbd6e2ebdec93d4717f13f431e779ede496a09e4257deac193f6",
+      "output": "cache replay sample planes/query counts: samples=2 workers=1, 14 state/mutation cases passed\ncache replay sample planes/query counts: samples=2 workers=3, 14 state/mutation cases passed\ncache replay sample planes/query counts: samples=2 workers=8, 14 state/mutation cases passed\ncache replay sample planes/query counts: samples=4 workers=1, 14 state/mutation cases passed\ncache replay sample planes/query counts: samples=4 workers=3, 14 state/mutation cases passed\ncache replay sample planes/query counts: samples=4 workers=8, 14 state/mutation cases passed\n"
+    }
+  ],
+  "candidateWasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+  "referenceWasmSha256": "031038cfba1043eb5560de8016611b86910125ca8ffda4b78efa08536d95eddb",
+  "audits": [
+    {
+      "samples": 0,
+      "audit": 1,
+      "scenes": [
+        {
+          "name": "bmw",
+          "medianMs": 29.719125000089406,
+          "referenceMedianMs": 30.040849999934437,
+          "fps": 33.64836616141935,
+          "pairRatios": [
+            0.9574815748309294,
+            0.9960796221551079,
+            1.0110840636010048
+          ],
+          "changePercent": -0.39203778448920756
+        },
+        {
+          "name": "tank",
+          "medianMs": 11.447000000029803,
+          "referenceMedianMs": 11.470775000005961,
+          "fps": 87.35913339716926,
+          "pairRatios": [
+            0.9904877580127357,
+            0.9945763749118223,
+            0.9990383613663154
+          ],
+          "changePercent": -0.542362508817773
+        }
+      ]
+    },
+    {
+      "samples": 2,
+      "audit": 1,
+      "scenes": [
+        {
+          "name": "bmw",
+          "medianMs": 35.60370000004768,
+          "referenceMedianMs": 35.90222499996424,
+          "fps": 28.086968489192436,
+          "pairRatios": [
+            1.0136007391353279,
+            1.0284917120886865,
+            0.9909532475885221
+          ],
+          "changePercent": 1.3600739135327888
+        },
+        {
+          "name": "tank",
+          "medianMs": 14.447650000005961,
+          "referenceMedianMs": 14.16235000014305,
+          "fps": 69.21540873426387,
+          "pairRatios": [
+            1.0022086635016874,
+            1.0492757740552994,
+            1.0195191172382148
+          ],
+          "changePercent": 1.9519117238214756
+        }
+      ]
+    },
+    {
+      "samples": 2,
+      "audit": 2,
+      "scenes": [
+        {
+          "name": "bmw",
+          "medianMs": 35.75102500006557,
+          "referenceMedianMs": 35.968250000029805,
+          "fps": 27.97122599976269,
+          "pairRatios": [
+            0.9996789877587569,
+            0.9842905670232355,
+            1.0102732538426853
+          ],
+          "changePercent": -0.0321012241243146
+        },
+        {
+          "name": "tank",
+          "medianMs": 14.362199999839067,
+          "referenceMedianMs": 14.100474999845027,
+          "fps": 69.62721588692577,
+          "pairRatios": [
+            1.0206043894372807,
+            1.002762156466429,
+            1.003033674398438
+          ],
+          "changePercent": 0.30336743984380465
+        }
+      ]
+    },
+    {
+      "samples": 4,
+      "audit": 1,
+      "scenes": [
+        {
+          "name": "bmw",
+          "medianMs": 33.920275000035765,
+          "referenceMedianMs": 34.3582500000298,
+          "fps": 29.480893064662524,
+          "pairRatios": [
+            0.9833152780416651,
+            0.9909146588607027,
+            0.9906071345552014
+          ],
+          "changePercent": -0.9392865444798559
+        },
+        {
+          "name": "tank",
+          "medianMs": 14.648050000220536,
+          "referenceMedianMs": 14.717074999958278,
+          "fps": 68.26847259430056,
+          "pairRatios": [
+            1.0110999344002387,
+            0.9794364566906616,
+            0.9989599447780865
+          ],
+          "changePercent": -0.10400552219135273
+        }
+      ]
+    },
+    {
+      "samples": 4,
+      "audit": 2,
+      "scenes": [
+        {
+          "name": "bmw",
+          "medianMs": 33.976899999976155,
+          "referenceMedianMs": 34.671125000119204,
+          "fps": 29.431760990576002,
+          "pairRatios": [
+            0.9761557536891157,
+            0.9757947925133035,
+            0.9779422403035255
+          ],
+          "changePercent": -2.384424631088433
+        },
+        {
+          "name": "tank",
+          "medianMs": 14.877949999868871,
+          "referenceMedianMs": 14.825074999928475,
+          "fps": 67.21356100866139,
+          "pairRatios": [
+            0.9940882209329671,
+            1.0078619607819521,
+            1.032067406662556
+          ],
+          "changePercent": 0.7861960781952115
+        }
+      ]
+    }
+  ],
+  "pairs": [
+    {
+      "file": "cube-target-hz-ms0-audit-1-pair-1.json",
+      "measurement": {
+        "timestamp": "2026-10-05T11:21:12.196Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "2e4ea8ba63cefa147cdbf079dcd2061a0cf5bbae",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/cube-target-hz-ms0-audit-1-pair-1.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 0,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/depth-replay-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "031038cfba1043eb5560de8016611b86910125ca8ffda4b78efa08536d95eddb",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 0,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                29.659699999988078,
+                29.544300000071527
+              ],
+              "medianMs": 29.659699999988078,
+              "minMs": 29.544300000071527,
+              "maxMs": 29.659699999988078,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 0
+                },
+                {
+                  "workers": 3,
+                  "samples": 0
+                }
+              ],
+              "reference": {
+                "samples": [
+                  31.725349999964237,
+                  30.1282000002265
+                ],
+                "medianMs": 31.725349999964237,
+                "minMs": 30.1282000002265,
+                "maxMs": 31.725349999964237,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  }
+                ]
+              },
+              "medianRatio": 0.9574815748309294,
+              "changePercent": -4.251842516907056
+            },
+            {
+              "name": "tank",
+              "samples": [
+                11.17375,
+                11.4825
+              ],
+              "medianMs": 11.4825,
+              "minMs": 11.17375,
+              "maxMs": 11.4825,
+              "heapBytes": [
+                115998720,
+                80543744
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 0
+                },
+                {
+                  "workers": 3,
+                  "samples": 0
+                }
+              ],
+              "reference": {
+                "samples": [
+                  11.493849999904633,
+                  11.378149999976158
+                ],
+                "medianMs": 11.493849999904633,
+                "minMs": 11.378149999976158,
+                "maxMs": 11.493849999904633,
+                "heapBytes": [
+                  115998720,
+                  80543744
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  }
+                ]
+              },
+              "medianRatio": 0.9904877580127357,
+              "changePercent": -0.9512241987264303
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "cube-target-hz-ms0-audit-1-pair-1.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791199270.7405536,
+            "elapsedSeconds": 34.50134301185608,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 68
+          },
+          "originalSha256": "84e4631f9674804cd7bf773488ee7d92807f755f351ee913e4bd9d16838a8d8f"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "cube-target-hz-ms0-audit-1-pair-1.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "cube-target-hz-ms0-audit-1-pair-2.json",
+      "measurement": {
+        "timestamp": "2026-10-05T11:21:49.744Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "c76069b1fe319d278ee6a214c48c5d009a88a487",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/cube-target-hz-ms0-audit-1-pair-2.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 0,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/depth-replay-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "031038cfba1043eb5560de8016611b86910125ca8ffda4b78efa08536d95eddb",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 0,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                29.778550000190734,
+                29.292299999892712
+              ],
+              "medianMs": 29.778550000190734,
+              "minMs": 29.292299999892712,
+              "maxMs": 29.778550000190734,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 0
+                },
+                {
+                  "workers": 3,
+                  "samples": 0
+                }
+              ],
+              "reference": {
+                "samples": [
+                  29.26935000002384,
+                  30.036949999928474
+                ],
+                "medianMs": 30.036949999928474,
+                "minMs": 29.26935000002384,
+                "maxMs": 30.036949999928474,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  }
+                ]
+              },
+              "medianRatio": 0.9960796221551079,
+              "changePercent": -0.39203778448920756
+            },
+            {
+              "name": "tank",
+              "samples": [
+                11.480099999904633,
+                11.413900000154973
+              ],
+              "medianMs": 11.480099999904633,
+              "minMs": 11.413900000154973,
+              "maxMs": 11.480099999904633,
+              "heapBytes": [
+                115998720,
+                80543744
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 0
+                },
+                {
+                  "workers": 3,
+                  "samples": 0
+                }
+              ],
+              "reference": {
+                "samples": [
+                  11.512100000083446,
+                  11.506649999916554
+                ],
+                "medianMs": 11.512100000083446,
+                "minMs": 11.506649999916554,
+                "maxMs": 11.512100000083446,
+                "heapBytes": [
+                  115998720,
+                  80543744
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  }
+                ]
+              },
+              "medianRatio": 0.9945763749118223,
+              "changePercent": -0.542362508817773
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "cube-target-hz-ms0-audit-1-pair-2.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791199308.3095586,
+            "elapsedSeconds": 33.99535870552063,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 67
+          },
+          "originalSha256": "4824ef04fb673e78633c29733712e76a91752d56880458fd1f46096aea0407ab"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "cube-target-hz-ms0-audit-1-pair-2.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "cube-target-hz-ms0-audit-1-pair-3.json",
+      "measurement": {
+        "timestamp": "2026-10-05T11:22:26.796Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "c76069b1fe319d278ee6a214c48c5d009a88a487",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/cube-target-hz-ms0-audit-1-pair-3.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 0,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/depth-replay-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "031038cfba1043eb5560de8016611b86910125ca8ffda4b78efa08536d95eddb",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 0,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                30.081150000095366,
+                30.160300000011922
+              ],
+              "medianMs": 30.160300000011922,
+              "minMs": 30.081150000095366,
+              "maxMs": 30.160300000011922,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 0
+                },
+                {
+                  "workers": 3,
+                  "samples": 0
+                }
+              ],
+              "reference": {
+                "samples": [
+                  29.538400000035764,
+                  30.044749999940397
+                ],
+                "medianMs": 30.044749999940397,
+                "minMs": 29.538400000035764,
+                "maxMs": 30.044749999940397,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  }
+                ]
+              },
+              "medianRatio": 1.0110840636010048,
+              "changePercent": 1.1084063601004779
+            },
+            {
+              "name": "tank",
+              "samples": [
+                11.220600000023842,
+                11.590400000214578
+              ],
+              "medianMs": 11.590400000214578,
+              "minMs": 11.220600000023842,
+              "maxMs": 11.590400000214578,
+              "heapBytes": [
+                115998720,
+                80543744
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 0
+                },
+                {
+                  "workers": 3,
+                  "samples": 0
+                }
+              ],
+              "reference": {
+                "samples": [
+                  11.447700000107288,
+                  11.38235000014305
+                ],
+                "medianMs": 11.447700000107288,
+                "minMs": 11.38235000014305,
+                "maxMs": 11.447700000107288,
+                "heapBytes": [
+                  115998720,
+                  80543744
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  }
+                ]
+              },
+              "medianRatio": 0.9990383613663154,
+              "changePercent": -0.09616386336845917
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "cube-target-hz-ms0-audit-1-pair-3.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791199345.3721797,
+            "elapsedSeconds": 34.48416996002197,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 68
+          },
+          "originalSha256": "d16aee23c69a63551b9e0297a481cd678be1da6384b3a0681a840a716ad7b514"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "cube-target-hz-ms0-audit-1-pair-3.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "cube-target-hz-ms2-audit-1-pair-1.json",
+      "measurement": {
+        "timestamp": "2026-10-05T11:23:04.353Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "c76069b1fe319d278ee6a214c48c5d009a88a487",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/cube-target-hz-ms2-audit-1-pair-1.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 2,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/depth-replay-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "031038cfba1043eb5560de8016611b86910125ca8ffda4b78efa08536d95eddb",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 2,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                35.895750000178815,
+                36.88849999994039
+              ],
+              "medianMs": 36.88849999994039,
+              "minMs": 35.895750000178815,
+              "maxMs": 36.88849999994039,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  36.277399999797346,
+                  35.52744999974966
+                ],
+                "medianMs": 36.277399999797346,
+                "minMs": 35.52744999974966,
+                "maxMs": 36.277399999797346,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 1.0136007391353279,
+              "changePercent": 1.3600739135327888
+            },
+            {
+              "name": "tank",
+              "samples": [
+                14.029899999797344,
+                14.293899999856949
+              ],
+              "medianMs": 14.293899999856949,
+              "minMs": 14.029899999797344,
+              "maxMs": 14.293899999856949,
+              "heapBytes": [
+                115998720,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  13.932650000154972,
+                  14.33030000001192
+                ],
+                "medianMs": 14.33030000001192,
+                "minMs": 13.932650000154972,
+                "maxMs": 14.33030000001192,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 1.0022086635016874,
+              "changePercent": 0.2208663501687358
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "cube-target-hz-ms2-audit-1-pair-1.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791199382.9229777,
+            "elapsedSeconds": 40.64183783531189,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 80
+          },
+          "originalSha256": "3facf1dd53582fad19ed0720dbcba334b00a8b0c00336c95cb3297e5c79a2c7f"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "cube-target-hz-ms2-audit-1-pair-1.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "cube-target-hz-ms2-audit-1-pair-2.json",
+      "measurement": {
+        "timestamp": "2026-10-05T11:23:48.090Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "c76069b1fe319d278ee6a214c48c5d009a88a487",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/cube-target-hz-ms2-audit-1-pair-2.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 2,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/depth-replay-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "031038cfba1043eb5560de8016611b86910125ca8ffda4b78efa08536d95eddb",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 2,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                35.311649999916554,
+                39.533350000083445
+              ],
+              "medianMs": 39.533350000083445,
+              "minMs": 35.311649999916554,
+              "maxMs": 39.533350000083445,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  36.23344999998808,
+                  36.42254999995232
+                ],
+                "medianMs": 36.42254999995232,
+                "minMs": 36.23344999998808,
+                "maxMs": 36.42254999995232,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 1.0284917120886865,
+              "changePercent": 2.8491712088686505
+            },
+            {
+              "name": "tank",
+              "samples": [
+                14.943949999809265,
+                14.629900000095368
+              ],
+              "medianMs": 14.943949999809265,
+              "minMs": 14.629900000095368,
+              "maxMs": 14.943949999809265,
+              "heapBytes": [
+                115998720,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  13.980949999988079,
+                  14.203350000083447
+                ],
+                "medianMs": 14.203350000083447,
+                "minMs": 13.980949999988079,
+                "maxMs": 14.203350000083447,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 1.0492757740552994,
+              "changePercent": 4.927577405529937
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "cube-target-hz-ms2-audit-1-pair-2.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791199426.631973,
+            "elapsedSeconds": 41.67760467529297,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 82
+          },
+          "originalSha256": "d999b1c58639286c20dcb8527ec77b7d9334064a1f8fe2f2b106b6f44dc8c3b1"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "cube-target-hz-ms2-audit-1-pair-2.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "cube-target-hz-ms2-audit-1-pair-3.json",
+      "measurement": {
+        "timestamp": "2026-10-05T11:24:32.823Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "c76069b1fe319d278ee6a214c48c5d009a88a487",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/cube-target-hz-ms2-audit-1-pair-3.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 2,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/depth-replay-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "031038cfba1043eb5560de8016611b86910125ca8ffda4b78efa08536d95eddb",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 2,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                35.06894999980926,
+                35.25965000003576
+              ],
+              "medianMs": 35.25965000003576,
+              "minMs": 35.06894999980926,
+              "maxMs": 35.25965000003576,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  35.39959999978542,
+                  35.5709999999404
+                ],
+                "medianMs": 35.5709999999404,
+                "minMs": 35.39959999978542,
+                "maxMs": 35.5709999999404,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 0.9909532475885221,
+              "changePercent": -0.9046752411477899
+            },
+            {
+              "name": "tank",
+              "samples": [
+                14.328799999952317,
+                14.566500000059605
+              ],
+              "medianMs": 14.566500000059605,
+              "minMs": 14.328799999952317,
+              "maxMs": 14.566500000059605,
+              "heapBytes": [
+                115998720,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  14.219950000047684,
+                  14.121350000202655
+                ],
+                "medianMs": 14.219950000047684,
+                "minMs": 14.121350000202655,
+                "maxMs": 14.219950000047684,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 1.0195191172382148,
+              "changePercent": 1.9519117238214756
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "cube-target-hz-ms2-audit-1-pair-3.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791199471.3775253,
+            "elapsedSeconds": 40.60472917556763,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 80
+          },
+          "originalSha256": "545878372f0d85e67bf5d820af5adc5ecce082192a87b60b831a5f7ee9a44c3c"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "cube-target-hz-ms2-audit-1-pair-3.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "cube-target-hz-ms2-audit-2-pair-1.json",
+      "measurement": {
+        "timestamp": "2026-10-05T11:25:16.508Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "c76069b1fe319d278ee6a214c48c5d009a88a487",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/cube-target-hz-ms2-audit-2-pair-1.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 2,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/depth-replay-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "031038cfba1043eb5560de8016611b86910125ca8ffda4b78efa08536d95eddb",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 2,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                34.858650000095366,
+                36.51915000021458
+              ],
+              "medianMs": 36.51915000021458,
+              "minMs": 34.858650000095366,
+              "maxMs": 36.51915000021458,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  35.225149999856946,
+                  36.162399999797344
+                ],
+                "medianMs": 36.162399999797344,
+                "minMs": 35.225149999856946,
+                "maxMs": 36.162399999797344,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 0.9996789877587569,
+              "changePercent": -0.0321012241243146
+            },
+            {
+              "name": "tank",
+              "samples": [
+                14.352049999833106,
+                14.429449999928474
+              ],
+              "medianMs": 14.429449999928474,
+              "minMs": 14.352049999833106,
+              "maxMs": 14.429449999928474,
+              "heapBytes": [
+                115998720,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  14.16589999973774,
+                  14.034750000238418
+                ],
+                "medianMs": 14.16589999973774,
+                "minMs": 14.034750000238418,
+                "maxMs": 14.16589999973774,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 1.0206043894372807,
+              "changePercent": 2.0604389437280712
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "cube-target-hz-ms2-audit-2-pair-1.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791199515.0492554,
+            "elapsedSeconds": 40.648873805999756,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 80
+          },
+          "originalSha256": "2d64b7092237e3b65f6400e896dd396670f7faf13f332a9af57abe99324d56d3"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "cube-target-hz-ms2-audit-2-pair-1.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "cube-target-hz-ms2-audit-2-pair-2.json",
+      "measurement": {
+        "timestamp": "2026-10-05T11:26:00.209Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "c76069b1fe319d278ee6a214c48c5d009a88a487",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/cube-target-hz-ms2-audit-2-pair-2.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 2,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/depth-replay-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "031038cfba1043eb5560de8016611b86910125ca8ffda4b78efa08536d95eddb",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 2,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                35.25969999998808,
+                35.644300000071524
+              ],
+              "medianMs": 35.644300000071524,
+              "minMs": 35.25969999998808,
+              "maxMs": 35.644300000071524,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  35.99,
+                  36.04460000008345
+                ],
+                "medianMs": 36.04460000008345,
+                "minMs": 35.99,
+                "maxMs": 36.04460000008345,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 0.9842905670232355,
+              "changePercent": -1.5709432976764526
+            },
+            {
+              "name": "tank",
+              "samples": [
+                14.554299999773502,
+                14.295900000035763
+              ],
+              "medianMs": 14.554299999773502,
+              "minMs": 14.295900000035763,
+              "maxMs": 14.554299999773502,
+              "heapBytes": [
+                115998720,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  14.266949999928475,
+                  14.50360000014305
+                ],
+                "medianMs": 14.50360000014305,
+                "minMs": 14.266949999928475,
+                "maxMs": 14.50360000014305,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 1.002762156466429,
+              "changePercent": 0.27621564664290776
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "cube-target-hz-ms2-audit-2-pair-2.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791199558.7656794,
+            "elapsedSeconds": 40.64063906669617,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 80
+          },
+          "originalSha256": "adb786e73abb946e5bf2c11a6c56b952068f55374ec16b4634c776df78331429"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "cube-target-hz-ms2-audit-2-pair-2.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "cube-target-hz-ms2-audit-2-pair-3.json",
+      "measurement": {
+        "timestamp": "2026-10-05T11:26:43.860Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "c76069b1fe319d278ee6a214c48c5d009a88a487",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/cube-target-hz-ms2-audit-2-pair-3.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 2,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/depth-replay-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "031038cfba1043eb5560de8016611b86910125ca8ffda4b78efa08536d95eddb",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 2,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                36.59974999994039,
+                35.8577500000596
+              ],
+              "medianMs": 36.59974999994039,
+              "minMs": 35.8577500000596,
+              "maxMs": 36.59974999994039,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  35.94650000005961,
+                  35.77064999997616
+                ],
+                "medianMs": 35.94650000005961,
+                "minMs": 35.77064999997616,
+                "maxMs": 35.94650000005961,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 1.0102732538426853,
+              "changePercent": 1.0273253842685293
+            },
+            {
+              "name": "tank",
+              "samples": [
+                14.372349999845028,
+                13.78330000013113
+              ],
+              "medianMs": 14.372349999845028,
+              "minMs": 13.78330000013113,
+              "maxMs": 14.372349999845028,
+              "heapBytes": [
+                115998720,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  14.035049999952316,
+                  14.029299999773503
+                ],
+                "medianMs": 14.035049999952316,
+                "minMs": 14.029299999773503,
+                "maxMs": 14.035049999952316,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 1.003033674398438,
+              "changePercent": 0.30336743984380465
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "cube-target-hz-ms2-audit-2-pair-3.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791199602.474329,
+            "elapsedSeconds": 40.604634046554565,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 80
+          },
+          "originalSha256": "cbf29da03a0c1c1f6117d339e4d761fd045f7435e6a5c5b0ca1b5a006849ba7c"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "cube-target-hz-ms2-audit-2-pair-3.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "cube-target-hz-audit-1-pair-1.json",
+      "measurement": {
+        "timestamp": "2026-10-05T11:27:27.557Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "c76069b1fe319d278ee6a214c48c5d009a88a487",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/cube-target-hz-audit-1-pair-1.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 4,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/depth-replay-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "031038cfba1043eb5560de8016611b86910125ca8ffda4b78efa08536d95eddb",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 4,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                33.49199999988079,
+                33.9025
+              ],
+              "medianMs": 33.9025,
+              "minMs": 33.49199999988079,
+              "maxMs": 33.9025,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  33.98980000019073,
+                  34.549249999821185
+                ],
+                "medianMs": 34.549249999821185,
+                "minMs": 33.98980000019073,
+                "maxMs": 34.549249999821185,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 0.9833152780416651,
+              "changePercent": -1.6684721958334925
+            },
+            {
+              "name": "tank",
+              "samples": [
+                14.734700000286102,
+                15.11744999974966
+              ],
+              "medianMs": 15.11744999974966,
+              "minMs": 14.734700000286102,
+              "maxMs": 15.11744999974966,
+              "heapBytes": [
+                115998720,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  14.700849999785424,
+                  14.821399999856949
+                ],
+                "medianMs": 14.821399999856949,
+                "minMs": 14.700849999785424,
+                "maxMs": 14.821399999856949,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 1.0110999344002387,
+              "changePercent": 1.109993440023871
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "cube-target-hz-audit-1-pair-1.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791199646.1458998,
+            "elapsedSeconds": 39.60833144187927,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 78
+          },
+          "originalSha256": "6e0d7279c50ecb56657e0f7a133646665f1a9c22cd6ad3be71d29a921fa5079a"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "cube-target-hz-audit-1-pair-1.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "cube-target-hz-audit-1-pair-2.json",
+      "measurement": {
+        "timestamp": "2026-10-05T11:28:10.288Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "c76069b1fe319d278ee6a214c48c5d009a88a487",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/cube-target-hz-audit-1-pair-2.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 4,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/depth-replay-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "031038cfba1043eb5560de8016611b86910125ca8ffda4b78efa08536d95eddb",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 4,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                34.15439999997616,
+                33.93805000007153
+              ],
+              "medianMs": 34.15439999997616,
+              "minMs": 33.93805000007153,
+              "maxMs": 34.15439999997616,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  34.411200000047685,
+                  34.30530000001192
+                ],
+                "medianMs": 34.411200000047685,
+                "minMs": 34.30530000001192,
+                "maxMs": 34.411200000047685,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 0.9909146588607027,
+              "changePercent": -0.9085341139297265
+            },
+            {
+              "name": "tank",
+              "samples": [
+                14.321149999797344,
+                14.209900000095367
+              ],
+              "medianMs": 14.321149999797344,
+              "minMs": 14.209900000095367,
+              "maxMs": 14.321149999797344,
+              "heapBytes": [
+                115998720,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  14.415250000059604,
+                  14.716150000095368
+                ],
+                "medianMs": 14.716150000095368,
+                "minMs": 14.415250000059604,
+                "maxMs": 14.716150000095368,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 0.9794364566906616,
+              "changePercent": -2.0563543309338406
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "cube-target-hz-audit-1-pair-2.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791199688.8221521,
+            "elapsedSeconds": 39.55603885650635,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 78
+          },
+          "originalSha256": "25adc998f48fbc3ce454330eb353a68be0be794f41cf53f3d37c28c2acd2af4c"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "cube-target-hz-audit-1-pair-2.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "cube-target-hz-audit-1-pair-3.json",
+      "measurement": {
+        "timestamp": "2026-10-05T11:28:52.893Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "c76069b1fe319d278ee6a214c48c5d009a88a487",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/cube-target-hz-audit-1-pair-3.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 4,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/depth-replay-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "031038cfba1043eb5560de8016611b86910125ca8ffda4b78efa08536d95eddb",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 4,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                33.39314999997616,
+                34.482899999916555
+              ],
+              "medianMs": 34.482899999916555,
+              "minMs": 33.39314999997616,
+              "maxMs": 34.482899999916555,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  34.49655000001192,
+                  34.015950000286104
+                ],
+                "medianMs": 34.49655000001192,
+                "minMs": 34.015950000286104,
+                "maxMs": 34.49655000001192,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 0.9906071345552014,
+              "changePercent": -0.9392865444798559
+            },
+            {
+              "name": "tank",
+              "samples": [
+                14.561400000154972,
+                14.86214999973774
+              ],
+              "medianMs": 14.86214999973774,
+              "minMs": 14.561400000154972,
+              "maxMs": 14.86214999973774,
+              "heapBytes": [
+                115998720,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  14.717999999821187,
+                  14.734650000035764
+                ],
+                "medianMs": 14.734650000035764,
+                "minMs": 14.717999999821187,
+                "maxMs": 14.734650000035764,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 0.9989599447780865,
+              "changePercent": -0.10400552219135273
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "cube-target-hz-audit-1-pair-3.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791199731.4454682,
+            "elapsedSeconds": 40.130279541015625,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 79
+          },
+          "originalSha256": "13b0aadf41167f7239cda1244af128a3c6848df640b34d94c6cfd0492571e343"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "cube-target-hz-audit-1-pair-3.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "cube-target-hz-audit-2-pair-1.json",
+      "measurement": {
+        "timestamp": "2026-10-05T11:29:36.045Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "c76069b1fe319d278ee6a214c48c5d009a88a487",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/cube-target-hz-audit-2-pair-1.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 4,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/depth-replay-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "031038cfba1043eb5560de8016611b86910125ca8ffda4b78efa08536d95eddb",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 4,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                33.39145000010729,
+                34.54120000004768
+              ],
+              "medianMs": 34.54120000004768,
+              "minMs": 33.39145000010729,
+              "maxMs": 34.54120000004768,
+              "heapBytes": [
+                139198464,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  35.10164999991655,
+                  34.483149999976156
+                ],
+                "medianMs": 35.10164999991655,
+                "minMs": 34.483149999976156,
+                "maxMs": 35.10164999991655,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 0.9761557536891157,
+              "changePercent": -2.384424631088433
+            },
+            {
+              "name": "tank",
+              "samples": [
+                15.017849999964238,
+                14.789849999845028
+              ],
+              "medianMs": 15.017849999964238,
+              "minMs": 14.789849999845028,
+              "maxMs": 15.017849999964238,
+              "heapBytes": [
+                139198464,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  15.005850000083447,
+                  14.978249999880791
+                ],
+                "medianMs": 15.005850000083447,
+                "minMs": 14.978249999880791,
+                "maxMs": 15.005850000083447,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 0.9940882209329671,
+              "changePercent": -0.5911779067032885
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "cube-target-hz-audit-2-pair-1.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791199774.6435916,
+            "elapsedSeconds": 40.07857537269592,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 79
+          },
+          "originalSha256": "9f0fae0fdc2943bd86a0c41b1f81b597274bc3d043b07677d7b03de9c9223c90"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "cube-target-hz-audit-2-pair-1.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "cube-target-hz-audit-2-pair-2.json",
+      "measurement": {
+        "timestamp": "2026-10-05T11:30:19.209Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "c76069b1fe319d278ee6a214c48c5d009a88a487",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/cube-target-hz-audit-2-pair-2.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 4,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/depth-replay-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "031038cfba1043eb5560de8016611b86910125ca8ffda4b78efa08536d95eddb",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 4,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                33.55530000001192,
+                34.451899999976156
+              ],
+              "medianMs": 34.451899999976156,
+              "minMs": 33.55530000001192,
+              "maxMs": 34.451899999976156,
+              "heapBytes": [
+                139198464,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  35.124900000095366,
+                  34.56545000016689
+                ],
+                "medianMs": 35.124900000095366,
+                "minMs": 34.56545000016689,
+                "maxMs": 35.124900000095366,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 0.9757947925133035,
+              "changePercent": -2.4205207486696523
+            },
+            {
+              "name": "tank",
+              "samples": [
+                14.660399999916553,
+                14.909899999797345
+              ],
+              "medianMs": 14.909899999797345,
+              "minMs": 14.660399999916553,
+              "maxMs": 14.909899999797345,
+              "heapBytes": [
+                139198464,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  14.656349999904632,
+                  14.682249999940396
+                ],
+                "medianMs": 14.682249999940396,
+                "minMs": 14.656349999904632,
+                "maxMs": 14.682249999940396,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 1.0078619607819521,
+              "changePercent": 0.7861960781952115
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "cube-target-hz-audit-2-pair-2.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791199817.7899475,
+            "elapsedSeconds": 40.08639407157898,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 79
+          },
+          "originalSha256": "e0ebaf78a0ae02863f5f280431bf61539726c2a4b36ac16a25c4dcf8faddbf69"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "cube-target-hz-audit-2-pair-2.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "cube-target-hz-audit-2-pair-3.json",
+      "measurement": {
+        "timestamp": "2026-10-05T11:31:02.359Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "c76069b1fe319d278ee6a214c48c5d009a88a487",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/cube-target-hz-audit-2-pair-3.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 4,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/depth-replay-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "031038cfba1043eb5560de8016611b86910125ca8ffda4b78efa08536d95eddb",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 4,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                33.23539999991655,
+                34.3984999999404
+              ],
+              "medianMs": 34.3984999999404,
+              "minMs": 33.23539999991655,
+              "maxMs": 34.3984999999404,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  34.37354999989271,
+                  34.776800000071525
+                ],
+                "medianMs": 34.776800000071525,
+                "minMs": 34.37354999989271,
+                "maxMs": 34.776800000071525,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 0.9779422403035255,
+              "changePercent": -2.20577596964745
+            },
+            {
+              "name": "tank",
+              "samples": [
+                14.845999999940396,
+                15.350349999964237
+              ],
+              "medianMs": 15.350349999964237,
+              "minMs": 14.845999999940396,
+              "maxMs": 15.350349999964237,
+              "heapBytes": [
+                115998720,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  14.293899999856949,
+                  14.967899999916554
+                ],
+                "medianMs": 14.967899999916554,
+                "minMs": 14.293899999856949,
+                "maxMs": 14.967899999916554,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 1.032067406662556,
+              "changePercent": 3.206740666255592
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "cube-target-hz-audit-2-pair-3.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791199860.945527,
+            "elapsedSeconds": 40.13247275352478,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 79
+          },
+          "originalSha256": "60369566d7df389a93a31ecbbcb14978a73bb7abcc9912397dab3dc070a738f2"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "cube-target-hz-audit-2-pair-3.attempt-1.monitor.json"
+      ]
+    }
+  ]
+}

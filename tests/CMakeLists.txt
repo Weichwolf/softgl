@@ -52,6 +52,7 @@ set_tests_properties(constant_texture_contract PROPERTIES TIMEOUT 30)
 # Strict scalar texture/combiner oracle for the four-pixel SIMD math. The
 # renderer itself retains its native optimization flags; image tests cover it.
 add_executable(pixel_packet_contract pixel_packet.c
+    ${CMAKE_SOURCE_DIR}/libsoftgl/src/rasterizer.c
     ${CMAKE_SOURCE_DIR}/libsoftgl/src/fragment.c
     ${CMAKE_SOURCE_DIR}/libsoftgl/src/fragment_combine.c)
 target_include_directories(pixel_packet_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
@@ -61,6 +62,20 @@ if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
 endif()
 add_test(NAME pixel_packet_contract COMMAND pixel_packet_contract)
 set_tests_properties(pixel_packet_contract PROPERTIES TIMEOUT 30)
+
+# Cube projection/face coherence shares the strict arithmetic settings of the
+# packet and cube-filter oracles. Production flags remain covered by images.
+add_executable(cube_packet_contract cube_packet.c
+    ${CMAKE_SOURCE_DIR}/libsoftgl/src/rasterizer.c
+    ${CMAKE_SOURCE_DIR}/libsoftgl/src/fragment.c
+    ${CMAKE_SOURCE_DIR}/libsoftgl/src/fragment_combine.c)
+target_include_directories(cube_packet_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_link_libraries(cube_packet_contract PRIVATE softgl)
+if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(cube_packet_contract PRIVATE -O2 -fno-fast-math -ffp-contract=off -msse4.1)
+endif()
+add_test(NAME cube_packet_contract COMMAND cube_packet_contract)
+set_tests_properties(cube_packet_contract PROPERTIES TIMEOUT 90)
 
 add_executable(geometry_cache_contract geometry_cache.c)
 target_include_directories(geometry_cache_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)

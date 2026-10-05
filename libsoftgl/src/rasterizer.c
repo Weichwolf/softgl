@@ -1307,3 +1307,85 @@ void sg_raster_point_impl(softgl_ctx *c, const sg_vert *v) {
         }
     }
 }
+
+/* Coherent cube packets share one face and sampler state. Keep this rare
+ * target outside the ordinary 2D/sample raster loop. */
+#ifdef __EMSCRIPTEN__
+__attribute__((used, noinline))
+#else
+__attribute__((noinline))
+#endif
+int sg_packet_sample_cube_coherent(const sg_tex_unit_tri *u,
+                                    const float xx[4], const float yy[4], const float zz[4],
+                                    unsigned live, sg_f32x4 out[4]) {
+    if (!live || !u->tex) return 0;
+    sg_f32x4 x = sg_f32x4_load(xx), y = sg_f32x4_load(yy), z = sg_f32x4_load(zz);
+    sg_i32x4 absolute = sg_i32x4_splat(0x7fffffff);
+    sg_f32x4 ax = _mm_castsi128_ps(sg_i32x4_and(_mm_castps_si128(x), absolute));
+    sg_f32x4 ay = _mm_castsi128_ps(sg_i32x4_and(_mm_castps_si128(y), absolute));
+    sg_f32x4 az = _mm_castsi128_ps(sg_i32x4_and(_mm_castps_si128(z), absolute));
+    sg_f32x4 largest = sg_f32x4_splat(0x1.fffffep127f);
+    sg_i32x4 finite = sg_i32x4_and(sg_i32x4_and(sg_f32x4_le(ax, largest),
+        sg_f32x4_le(ay, largest)), sg_f32x4_le(az, largest));
+    if ((sg_mask4_live(finite) & live) != live) return 0;
+    unsigned xaxis = sg_mask4_live(sg_i32x4_and(sg_f32x4_ge(ax, ay), sg_f32x4_ge(ax, az)));
+    unsigned yaxis = ~xaxis & sg_mask4_live(sg_i32x4_and(sg_f32x4_ge(ay, ax), sg_f32x4_ge(ay, az)));
+    sg_f32x4 sign = sg_f32x4_splat(-0.f), zero = sg_f32x4_splat(0.f);
+    sg_f32x4 major, sc, tc, direction;
+    int face;
+    if ((xaxis & live) == live) {
+        major = ax; direction = x; face = 0;
+        sc = _mm_xor_ps(z, sign); tc = _mm_xor_ps(y, sign);
+    } else if ((yaxis & live) == live) {
+        major = ay; direction = y; face = 2;
+        sc = x; tc = z;
+    } else if (((xaxis | yaxis) & live) == 0) {
+        major = az; direction = z; face = 4;
+        sc = x; tc = _mm_xor_ps(y, sign);
+    } else return 0;
+    unsigned positive = sg_mask4_live(sg_f32x4_ge(direction, zero)) & live;
+    if (!positive) {
+        face++;
+        if (face == 1 || face == 5) sc = _mm_xor_ps(sc, sign);
+        if (face == 3) tc = _mm_xor_ps(tc, sign);
+    } else if (positive != live) return 0;
+    const uint8_t *data = u->tex->cube_faces[face][0];
+    int width = u->tex->cube_w[face][0], height = u->tex->cube_h[face][0];
+    if (!data || width <= 0 || height <= 0) return 0;
+    sg_f32x4 tiny = sg_f32x4_splat(1e-20f);
+    major = sg_f32x4_select(sg_f32x4_lt(major, tiny), tiny, major);
+    sg_f32x4 s = sg_f32x4_mul(sg_f32x4_add(sg_f32x4_div(sc, major),
+        sg_f32x4_splat(1.f)), sg_f32x4_splat(.5f));
+    sg_f32x4 t = sg_f32x4_mul(sg_f32x4_add(sg_f32x4_div(tc, major),
+        sg_f32x4_splat(1.f)), sg_f32x4_splat(.5f));
+    sg_tex_unit_tri view = *u;
+    view.data0 = data; view.tw = width; view.th = height;
+    view.tw_mask_pot = (width & (width - 1)) == 0 ? width - 1 : 0;
+    view.th_mask_pot = (height & (height - 1)) == 0 ? height - 1 : 0;
+    sg_packet_sample_2d(&view, s, t, live, 0, out);
+    sg_i32x4 mask = sg_i32x4_set(live & 1 ? -1 : 0, live & 2 ? -1 : 0,
+        live & 4 ? -1 : 0, live & 8 ? -1 : 0);
+    for (int k = 0; k < 4; k++) out[k] = sg_f32x4_select(mask, out[k], zero);
+    return 1;
+}
+
+/* Cube projection and scalar fallback share a target-specific kernel. The
+ * ordinary 2D shader does not carry this target's temporary arrays. */
+#ifdef __EMSCRIPTEN__
+__attribute__((used, noinline))
+#else
+__attribute__((noinline))
+#endif
+void sg_packet_sample_cube_target(const sg_tex_unit_tri *u,
+    sg_f32x4 x, sg_f32x4 y, sg_f32x4 z, unsigned live, sg_f32x4 out[4]) {
+    float xx[4], yy[4], zz[4], tex[4][4] = {{0}};
+    sg_f32x4_store(xx, x); sg_f32x4_store(yy, y); sg_f32x4_store(zz, z);
+    if (sg_packet_sample_cube_coherent(u, xx, yy, zz, live, out)) return;
+    for (int l = 0; l < 4; l++) if (live & (1u << l))
+        sg_sample_tex_cube(u->tex, u->filter_min, u->filter_mag, u->wrap_s, u->wrap_t,
+                          xx[l], yy[l], zz[l], 1, tex[l]);
+    sg_f32x4 a = sg_f32x4_load(tex[0]), b = sg_f32x4_load(tex[1]);
+    sg_f32x4 d = sg_f32x4_load(tex[2]), e = sg_f32x4_load(tex[3]);
+    _MM_TRANSPOSE4_PS(a, b, d, e);
+    out[0] = a; out[1] = b; out[2] = d; out[3] = e;
+}
