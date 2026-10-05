@@ -264,9 +264,22 @@ For CPU sampling, link a separate diagnostic build with
 `--profiling-funcs` to retain WASM function names, then pass
 `--wasm-build DIR --profile-scene tank --scenes tank --rounds 1`.
 The tool writes a separate `.profiles.json` with main-thread and Web-Worker
-profiles from an additional render run. Profiling includes setup and is
-excluded from the reported benchmark samples; use the ordinary build for
-performance decisions.
+profiles from an additional warmed render run. Model/context setup and warm-up
+are excluded. Profiling is separate from the reported benchmark samples; use
+the ordinary build for performance decisions. An ordinary module can instead
+use a byte-matched symbol map emitted with `--emit-symbol-map`.
+
+Summarize and bind the raw samples to the profiled module with:
+
+```sh
+python3 tools/wasm_profile_summary.py --result build/profile/result.json \
+    --wasm build/profile/softgl.wasm --symbols build/profile/softgl.js.symbols \
+    --output build/profile/summary.json
+```
+
+The summary preserves inactive workers and distinguishes sampled self time
+from frame latency or hardware counters. Published raw profiles and diagnostic
+limitations are in [the BMW profile package](experiments/raster-profile-20261005/README.md).
 
 ## Consumer API
 

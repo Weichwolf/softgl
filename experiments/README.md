@@ -2876,3 +2876,21 @@ Both browser UIs pass 234 tests, 18 sequential benchmark rows, cancellation
 and sample switching. Canonical JS/WASM match the measured candidate
 902bcf8c byte-for-byte. Source patch, complete raw comparisons and gate
 bindings are in [the retained experiment package](hz2-static/README.md).
+
+### Warmed raster profiles and rejected row-span HZ
+
+[Module-bound BMW profiles](raster-profile-20261005/README.md) preserve raw
+CDP samples for off and 4x, matching symbol maps, an outlined diagnostic patch,
+image-equivalence checks and complete summaries. The public
+`tools/wasm_profile_summary.py` verifies the profiled module's hash and retains
+all worker profiles. Samples include waiting/preemption and inlined work;
+they cannot establish cycles, cache misses or a hardware-limit percentage.
+
+Strict HZ rejection of row spans in partially visible triangles reduces
+logical raster candidates, but all six BMW 4x pairs are slower. Paired audit
+changes are +2.821% / +3.148%, so the production renderer remains unchanged.
+The trial passes 743 native tests plus the benchmark, 23 sanitizer contracts,
+240 WASM/Mesa images, 234 exact controls in each sample mode, both models'
+100 hashes/four raw frames per mode and an observed-skip sample-plane contract.
+[The rejected trial package](hz4-span/README.md) publishes source, all fifteen
+guarded pairs, regression bindings and separate logical-counter observations.

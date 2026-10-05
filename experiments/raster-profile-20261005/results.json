@@ -1,0 +1,82 @@
+{
+  "sourceRendererCommit": "bb2ff9c7e9a7fcc35def395f66f24cb9f74ffdf5",
+  "note": "Diagnostic CDP self samples, including inlined work and waiting/preemption; not cycles, cache-miss counts, CPU busy time or acceptance timings. Outlining changes code generation and is not an optimized renderer.",
+  "variants": {
+    "accepted": {
+      "symbolMapSha256": "169de742aff29d09f1068995101eba55f51495a5d8221fac08fcbb395cc35685",
+      "profiles": {
+        "0": {
+          "resultFile": "accepted-bmw0.json",
+          "profileFile": "accepted-bmw0.profiles.json",
+          "summaryFile": "accepted-bmw0-summary.json",
+          "resultSha256": "e9fcdedc1af40d9f1310629d4ed2f05182b6af3c6e74793963c7d02adaffd341",
+          "profileSha256": "f328828d13f0018a512d542cc2bc059e85229776d6de37aefcb0b23070a71975",
+          "wasmSha256": "902bcf8cdbde85fc1f8b172503c06f00090f8ebc423b2d1b8b186a1aa4d4b9af",
+          "frames": 240,
+          "workerCapacity": 3,
+          "observedActiveWorkers": 3,
+          "summarySha256": "029702bc15efeb24bf24eaf9c0111251fd21f531f27ceb68f25721cd2c1675ef"
+        },
+        "4": {
+          "resultFile": "accepted-bmw4.json",
+          "profileFile": "accepted-bmw4.profiles.json",
+          "summaryFile": "accepted-bmw4-summary.json",
+          "resultSha256": "2a10a225364aa4ef3ca43a9e76a726e3da789b8135153e592767e63630f953fb",
+          "profileSha256": "ca6b9fc977cc1ddf559459b20284415b2f7b879c299679a3ef3d7726c7398b0c",
+          "wasmSha256": "902bcf8cdbde85fc1f8b172503c06f00090f8ebc423b2d1b8b186a1aa4d4b9af",
+          "frames": 240,
+          "workerCapacity": 3,
+          "observedActiveWorkers": 3,
+          "summarySha256": "6ca5d75e30b9da1340d52fdfa718829fa5946e66c1c7b6d5c684cfa1ebdb4e50"
+        }
+      }
+    },
+    "outlined": {
+      "symbolMapSha256": "5f69128e416f886c5565cf76ba1d99157a79d4db1374a5bac1f28e94f757ae79",
+      "profiles": {
+        "0": {
+          "resultFile": "outlined-bmw0.json",
+          "profileFile": "outlined-bmw0.profiles.json",
+          "summaryFile": "outlined-bmw0-summary.json",
+          "resultSha256": "79cacb7c2bd8d95c9ce36dd7f5b3b0f8fc0a8354be8554d62710ef89d9116344",
+          "profileSha256": "c3f637698517492f9e0c457a29a1e6e7c763eb7e444d8bf0a3eaf372011b88ec",
+          "wasmSha256": "d570ea871c01eb0351d8032e8dd192e818909d6a77ad4acae02838b94176538d",
+          "frames": 240,
+          "workerCapacity": 3,
+          "observedActiveWorkers": 3,
+          "summarySha256": "bd9c1a71209c981cb793b5c8917f0bd66db51c65d14f5151fdb759fa1ec58ed0"
+        },
+        "4": {
+          "resultFile": "outlined-bmw4.json",
+          "profileFile": "outlined-bmw4.profiles.json",
+          "summaryFile": "outlined-bmw4-summary.json",
+          "resultSha256": "52b8893e201dc5b6c5104d20357ee3a9233fc4c6c906c31e378d2d7e3ecae6e6",
+          "profileSha256": "7c50a0382a7a9d3c2608fb2ebb6847c80abf51e29a4ff0dd0cb2c9eea45c9afd",
+          "wasmSha256": "d570ea871c01eb0351d8032e8dd192e818909d6a77ad4acae02838b94176538d",
+          "frames": 240,
+          "workerCapacity": 3,
+          "observedActiveWorkers": 3,
+          "summarySha256": "13128de0725c6866c483eda463e66407c7f26be7f30f1c8d546fa6deaa0abdd0"
+        }
+      }
+    }
+  },
+  "diagnosticPatchSha256": "ec25c25b63199f4529521249cfd7d3cdab5a2819bc5b64c295cfcb104523e919",
+  "diagnosticImages": {
+    "0": {
+      "models": 2,
+      "hashesPerModel": 100,
+      "rawFramesPerModel": 4,
+      "proofSha256": "dc4990366d3358c34e20d510041ebf6d7dc20ba0cc215c47551f6a3ac5cefa6b",
+      "proofFile": "outlined-frame-equivalence-0.json"
+    },
+    "4": {
+      "models": 2,
+      "hashesPerModel": 100,
+      "rawFramesPerModel": 4,
+      "proofSha256": "0e5d6d6a2b3ce635523a7d00adc13f21a7a7e7c405d3922f3ed88461cbc9b77a",
+      "proofFile": "outlined-frame-equivalence-4.json"
+    }
+  },
+  "summarizerSha256": "5f490d2e620eb2472be7e80f3bc3c5f5e1ca942d0ce3af5701a614e9e1856c21"
+}

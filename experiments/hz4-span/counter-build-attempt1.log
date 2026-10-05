@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "/home/cosmo/Git/softgl/build/diagnostics/hz4-span-counter/build-wasm.py", line 19, in <module>
+    exports=__import__('ast').literal_eval(arg.split('=',1)[1]);exports.append('_sg_tiny_diag_counter');command[j]='-sEXPORTED_FUNCTIONS='+__import__('json').dumps(exports);break
+  File "/usr/lib/python3.13/ast.py", line 110, in literal_eval
+    return _convert(node_or_string)
+  File "/usr/lib/python3.13/ast.py", line 88, in _convert
+    return tuple(map(_convert, node.elts))
+  File "/usr/lib/python3.13/ast.py", line 109, in _convert
+    return _convert_signed_num(node)
+  File "/usr/lib/python3.13/ast.py", line 83, in _convert_signed_num
+    return _convert_num(node)
+  File "/usr/lib/python3.13/ast.py", line 74, in _convert_num
+    _raise_malformed_node(node)
+    ~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/usr/lib/python3.13/ast.py", line 71, in _raise_malformed_node
+    raise ValueError(msg + f': {node!r}')
+ValueError: malformed node or string on line 1: <ast.Name object at 0x71ba21713f50>

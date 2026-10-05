@@ -1,0 +1,74 @@
+--- a/libsoftgl/src/rasterizer.c
++++ b/libsoftgl/src/rasterizer.c
+@@ -7,6 +7,17 @@
+ #include "raster_store.h"
+ #include "workers.h"
+ #include <math.h>
++
++#ifdef SG_HZ_SPAN_COUNTERS
++typedef struct __attribute__((aligned(64))) { uint64_t values[7]; } sg_hz_span_counts;
++static sg_hz_span_counts sg_hz_span_bins[32];
++__attribute__((used, noinline)) double sg_tiny_diag_counter(int which) {
++    uint64_t sum = 0;
++    if (which < 0 || which >= 7) return 0;
++    for (int i = 0; i < 32; i++) sum += sg_hz_span_bins[i].values[which];
++    return (double)sum;
++}
++#endif
+ 
+ /* Under Emscripten (-msimd128), <smmintrin.h> remaps _mm_* onto
+  * wasm_simd128. simd.h only pulls it on native SSE4.1, so include
+--- a/libsoftgl/src/raster_msaa_impl.h
++++ b/libsoftgl/src/raster_msaa_impl.h
+@@ -126,6 +126,11 @@
+     float span_lower = 0.f;
+     const sg_hz_state *span_state = sg_hz_span_prepare4(c,
+         v0->ndc.z, v1->ndc.z, v2->ndc.z, z_offset, &span_lower);
++#ifdef SG_HZ_SPAN_COUNTERS
++    int diagnostic_bin = sg_raster_bin ? sg_raster_bin->ix0 / ((c->fb.w + 31) / 32) : 0;
++    sg_hz_span_counts *diagnostic = &sg_hz_span_bins[diagnostic_bin];
++    diagnostic->values[0]++;
++#endif
+ #endif
+     for (int y = iy0; y < iy1; y++) {
+         int first_x = ix0, end_x = ix1;
+@@ -146,17 +151,39 @@
+                 if (candidate < end_x && at_first + step*(candidate-ix0) < 0) end_x = candidate;
+             } else if (at_first < 0) { end_x = first_x; break; }
+         }
++#if SG_MSAA_DEPTH_CAPTURE && defined(SG_HZ_SPAN_COUNTERS)
++        if (end_x > first_x) diagnostic->values[4] += (unsigned)(end_x - first_x);
++#endif
+         int64_t edge[3] = {row[0]+dx[0]*256*(first_x-ix0),
+                           row[1]+dx[1]*256*(first_x-ix0),
+                           row[2]+dx[2]*256*(first_x-ix0)};
+         for (int x = first_x; x < end_x; x++) {
+ #if SG_MSAA_DEPTH_CAPTURE
+             if (span_state && (x == first_x || !(x & 3))) {
++#ifdef SG_HZ_SPAN_COUNTERS
++                diagnostic->values[1]++;
++#endif
+                 const sg_hz_tile *tile = span_state->tiles +
+                     (size_t)(x >> 2) * span_state->rows + (y >> 2);
+                 if (tile->written == UINT64_MAX && span_lower > tile->maximum) {
+                     int skip = 4 - (x & 3);
+                     if (skip > end_x - x) skip = end_x - x;
++#ifdef SG_HZ_SPAN_COUNTERS
++                    diagnostic->values[2]++;
++                    diagnostic->values[3] += (unsigned)skip;
++                    for (int pixel = 0; pixel < skip; pixel++) {
++                        unsigned original_coverage = 0;
++                        for (int sample = 0; sample < SG_MSAA_SAMPLES; sample++) {
++                            int covered = 1;
++                            for (int e = 0; e < 3; e++)
++                                if (edge[e] + dx[e] * 256 * pixel + offsets[sample][e] + bias[e] < 0)
++                                    covered = 0;
++                            original_coverage |= (unsigned)covered << sample;
++                        }
++                        diagnostic->values[5] += !!original_coverage;
++                        diagnostic->values[6] += (unsigned)__builtin_popcount(original_coverage);
++                    }
++#endif
+ #ifdef SG_HZ_SPAN_TEST
+                     sg_hz_span_test_skip(x, y, skip);
+ #endif
