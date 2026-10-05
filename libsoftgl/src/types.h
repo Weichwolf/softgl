@@ -465,7 +465,7 @@ typedef struct {
 
 void sg_tex_tri_prepare(softgl_ctx *c, sg_tex_tri_ctx *t);
 /* Classification: 1 intrinsically empty, 0 covered, -1 unsupported/early HZ.
- * Explicit depth-capture jobs can also return 2: covered but strictly hidden.
+ * Explicit depth-capture jobs can also return 2: proven strictly depth-occluded.
  * Only intrinsic emptiness may permanently compact the geometry cache. */
 int sg_raster_triangle_tile_prepared(softgl_ctx *c,
     const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,

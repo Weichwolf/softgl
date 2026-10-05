@@ -23,6 +23,41 @@ static int check_maximum(softgl_ctx *c) {
     }
     return 0;
 }
+static int check_strict_capture(softgl_ctx *c) {
+    sg_worker_bin bin = {0};
+    sg_tex_tri_ctx texture;
+    sg_vert vertices[3] = {0};
+    vertices[0].ndc = (sg_vec4){2, 2, .8f, 1};
+    vertices[1].ndc = (sg_vec4){26, 3, .8f, 1};
+    vertices[2].ndc = (sg_vec4){3, 26, .8f, 1};
+    for (int i=0;i<3;i++)
+        vertices[i].color = vertices[i].color_back = (sg_vec4){1,1,1,1};
+    sg_tex_tri_prepare(c, &texture);
+    c->depth_mask = 0;
+    sg_raster_bin = &bin;
+    CHECK(sg_raster_triangle_tile_prepared(c, vertices, vertices+1,
+        vertices+2, 0, c->fb.w, &texture)==-1);
+    bin.depth_capture = 1;
+    CHECK(sg_raster_triangle_tile_prepared(c, vertices, vertices+1,
+        vertices+2, 0, c->fb.w, &texture)==2);
+    /* At the clamped near limit LESS rejects ties, but LEQUAL must retain
+     * them. A weak HZ rejection cannot enter the reusable hidden bitmap. */
+    for (int i=0;i<c->fb.w*c->fb.h*4;i++) c->fb.sample_depth[i]=0;
+    for (int x=0;x<c->fb.w;x+=4) for (int y=0;y<c->fb.h;y+=4)
+        sg_hz_at(c,x,y)->maximum=0;
+    for (int i=0;i<3;i++) vertices[i].ndc.z=0;
+    CHECK(sg_raster_triangle_tile_prepared(c, vertices, vertices+1,
+        vertices+2, 0, c->fb.w, &texture)==-1);
+    c->depth_func = GL_LEQUAL;
+    CHECK(sg_raster_triangle_tile_prepared(c, vertices, vertices+1,
+        vertices+2, 0, c->fb.w, &texture)==0);
+    for (int i=0;i<c->fb.w*c->fb.h*4;i++) c->fb.sample_depth[i]=.6f;
+    for (int x=0;x<c->fb.w;x+=4) for (int y=0;y<c->fb.h;y+=4)
+        sg_hz_at(c,x,y)->maximum=.6f;
+    c->depth_mask = 1; c->depth_func = GL_LESS;
+    sg_raster_bin = NULL;
+    return 0;
+}
 static void quad(float z) {
     glBegin(GL_QUADS); glVertex3f(0,0,z);glVertex3f(128,0,z);
     glVertex3f(128,32,z);glVertex3f(0,32,z);glEnd();
@@ -75,6 +110,18 @@ int main(void) {
         float z[4]={.6f,.6f,.6f,.6f};sg_write_multisample(c,x,y,15,z,color);
     }
     CHECK(!check_maximum(c));
+    CHECK(!check_strict_capture(c));
+    CHECK(sg_hz_occlusion_class(c,0,0,128,32,.8f,.9f,1.f,0,1)==2);
+    sg_hz_tile *first = sg_hz_at(c,0,0);
+    float saved = first->maximum;
+    first->maximum = .8f - 2e-6f;
+    CHECK(sg_hz_occlusion_class(c,0,0,4,4,.8f,.9f,1.f,0,1)==1);
+    c->depth_func=GL_LEQUAL;
+    CHECK(!sg_hz_occlusion_class(c,0,0,4,4,.8f,.9f,1.f,0,1));
+    c->depth_func=GL_LESS;
+    first->maximum=nextafterf(first->maximum,-INFINITY);
+    CHECK(sg_hz_occlusion_class(c,0,0,4,4,.8f,.9f,1.f,0,1)==2);
+    first->maximum=saved;
     CHECK(sg_hz_occluded(c,0,0,128,32,.8f,.9f,1.f,0));
     CHECK(!sg_hz_occluded(c,0,0,128,32,.5f,.9f,1.f,0));
     CHECK(!sg_hz_occluded(c,0,0,128,32,.8f,.9f,1.f,NAN));
@@ -113,6 +160,8 @@ int main(void) {
         sg_hz_tile *tile = sg_hz_at(c, 0, 0);
         tile->written = UINT64_MAX;
         tile->maximum = z;
+        c->depth_func = GL_LESS;
+        CHECK(sg_hz_occlusion_class(c,0,0,4,4,z0,z1,z2,offset,1)!=2);
         c->depth_func = GL_LEQUAL;
         CHECK(!sg_hz_occluded(c, 0, 0, 4, 4, z0, z1, z2, offset));
         if (z < 1.f) {

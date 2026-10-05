@@ -1,6 +1,6 @@
-/* Included twice with compile-time sample count and function name. */
+/* Included with compile-time sample count and depth-capture mode. */
 #ifdef __EMSCRIPTEN__
-/* LLVM noinline alone is lost before Binaryen. Retain these two roots so
+/* LLVM noinline alone is lost before Binaryen. Retain these roots so
  * the whole-program optimizer keeps sample-count loops outside the common
  * rasterizer. No additional GL API is declared. */
 __attribute__((used, noinline))
@@ -14,8 +14,14 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
                          int64_t area, int bias0, int bias1, int bias2,
                          float z_offset) {
 #if SG_MSAA_SAMPLES == 4
+#if SG_MSAA_DEPTH_CAPTURE
+    int hz = sg_hz_occlusion_class(c, ix0, iy0, ix1, iy1,
+        v0->ndc.z, v1->ndc.z, v2->ndc.z, z_offset, 1);
+    if (hz) return hz == 2 ? 2 : -1;
+#else
     if (sg_hz_occluded(c, ix0, iy0, ix1, iy1,
         v0->ndc.z, v1->ndc.z, v2->ndc.z, z_offset)) return -1;
+#endif
 #endif
     int32_t vx[3] = {sg_fp_screen_from_float(v0->ndc.x),
                      sg_fp_screen_from_float(v1->ndc.x),

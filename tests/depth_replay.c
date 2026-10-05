@@ -1,9 +1,11 @@
 #include "types.h"
 #include "workers.h"
+#include "raster_hz.h"
 #include <stdio.h>
 extern void glFinish(void);
 #define REQUIRE(x) do { if (!(x)) { fprintf(stderr, "%d: %s\n", __LINE__, #x); return 1; } } while (0)
-enum { W=47, H=31, N=384, COUNT=N*3, PARTS=12, CASES=18 };
+static int w=47, h=31;
+enum { N=384, COUNT=N*3, PARTS=12, CASES=18 };
 
 static void reset_state(void) {
     glDisable(GL_SCISSOR_TEST); glEnable(GL_DEPTH_TEST); glDisable(GL_STENCIL_TEST);
@@ -12,7 +14,7 @@ static void reset_state(void) {
     glDisable(GL_POLYGON_OFFSET_FILL); glEnable(GL_MULTISAMPLE);
     glColorMask(1,1,1,1); glDepthMask(1); glDepthFunc(GL_LESS); glStencilMask(255);
     glMatrixMode(GL_PROJECTION); glLoadIdentity();
-    glMatrixMode(GL_MODELVIEW); glLoadIdentity(); glViewport(0,0,W,H);
+    glMatrixMode(GL_MODELVIEW); glLoadIdentity(); glViewport(0,0,w,h);
     glClearColor(0,0,0,0); glClearDepth(.5); glClearStencil(0);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
     glColor4f(.3f,.7f,.9f,.6f);
@@ -29,7 +31,7 @@ static int references(softgl_ctx *c) {
 }
 
 static int run_configuration(int samples,int workers) {
-    softgl_ctx *c=softgl_create_multisample(W,H,samples); REQUIRE(c); softgl_make_current(c);
+    softgl_ctx *c=softgl_create_multisample(w,h,samples); REQUIRE(c); softgl_make_current(c);
     sg_workers_shutdown(c); sg_workers_init(c,workers);
     float positions[COUNT][3]; GLuint indices[COUNT*PARTS],buffers[2],textures[2],query;
     for (int i=0;i<N;i++) {
@@ -56,13 +58,25 @@ static int run_configuration(int samples,int workers) {
         glEnable(GL_TEXTURE_2D); glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE);
     }
     glGenQueries(1,&query);
-    size_t color_bytes=(size_t)W*H*samples*4,depth_bytes=(size_t)W*H*samples*sizeof(float),stencil_bytes=(size_t)W*H*samples;
-    uint8_t *expected=malloc(W*H*4+color_bytes+depth_bytes+stencil_bytes); REQUIRE(expected);
+    size_t color_bytes=(size_t)w*h*samples*4,depth_bytes=(size_t)w*h*samples*sizeof(float),stencil_bytes=(size_t)w*h*samples;
+    uint8_t *expected=malloc(w*h*4+color_bytes+depth_bytes+stencil_bytes); REQUIRE(expected);
     for (int test=0;test<CASES;test++) {
         GLuint expected_query=0;
         for (int cold=0;cold<2;cold++) {
             glBindBuffer(GL_ARRAY_BUFFER,buffers[0]); glBufferSubData(GL_ARRAY_BUFFER,0,sizeof(positions),positions);
             reset_state();
+            if (w==128) {
+                /* Fully written cells force the strict early-HZ replay path. */
+                glBegin(GL_QUADS);
+                glVertex3f(-1,-1,-.2f); glVertex3f(1,-1,-.2f);
+                glVertex3f(1,1,-.2f); glVertex3f(-1,1,-.2f);
+                glEnd();
+                softgl_read_rgba8(c);
+                if (samples==4) {
+                    REQUIRE(sg_hz_active(c));
+                    REQUIRE(sg_hz_at(c,4,4)->written==UINT64_MAX);
+                }
+            }
             if (test==13) { glEnable(GL_ALPHA_TEST); glAlphaFunc(GL_NEVER,.4f); }
             if (test==14) { glEnable(GL_SAMPLE_COVERAGE); glSampleCoverage(0,0); }
             for (int part=0;part<PARTS;part++)
@@ -83,9 +97,9 @@ static int run_configuration(int samples,int workers) {
                     glDrawElements(GL_TRIANGLES,COUNT,GL_UNSIGNED_INT,NULL);
                     glDepthFunc(GL_LEQUAL); glDepthMask(0); break;
                 case 8: {
-                    float depth[W*H]; for (int i=0;i<W*H;i++) depth[i]=1.f;
+                    float depth[w*h]; for (int i=0;i<w*h;i++) depth[i]=1.f;
                     glDepthFunc(GL_ALWAYS); glDepthMask(1); glRasterPos2f(-1,-1);
-                    glDrawPixels(W,H,GL_DEPTH_COMPONENT,GL_FLOAT,depth);
+                    glDrawPixels(w,h,GL_DEPTH_COMPONENT,GL_FLOAT,depth);
                     glDepthFunc(GL_LEQUAL); glDepthMask(0); break;
                 }
                 case 9:
@@ -110,7 +124,7 @@ static int run_configuration(int samples,int workers) {
             if (test==11) { glEndQuery(GL_SAMPLES_PASSED); glGetQueryObjectuiv(query,GL_QUERY_RESULT,&result); }
             const uint8_t *pixels=softgl_read_rgba8(c);
             const void *planes[]={pixels,c->fb.sample_color,c->fb.sample_depth,c->fb.sample_stencil};
-            const size_t lengths[]={W*H*4,color_bytes,depth_bytes,stencil_bytes}; size_t offset=0;
+            const size_t lengths[]={w*h*4,color_bytes,depth_bytes,stencil_bytes}; size_t offset=0;
             for (int plane=0;plane<4;plane++) {
                 if (cold) REQUIRE(!memcmp(expected+offset,planes[plane],lengths[plane]));
                 else memcpy(expected+offset,planes[plane],lengths[plane]);
@@ -122,12 +136,15 @@ static int run_configuration(int samples,int workers) {
         }
     }
     free(expected); glDeleteQueries(1,&query); glDeleteTextures(2,textures); glDeleteBuffers(2,buffers); softgl_destroy(c);
-    printf("depth replay: samples=%d workers=%d, %d actual queued state/sample-plane cases exact\n",samples,workers,CASES);
+    printf("depth replay: %dx%d samples=%d workers=%d, %d actual queued state/sample-plane cases exact\n",w,h,samples,workers,CASES);
     return 0;
 }
 int main(void) {
     const int workers[]={1,3,8};
-    for (int samples=2;samples<=4;samples+=2)
-        for (int i=0;i<3;i++) REQUIRE(!run_configuration(samples,workers[i]));
+    for (int hz=0;hz<2;hz++) {
+        w=hz?128:47; h=hz?32:31;
+        for (int samples=2;samples<=4;samples+=2)
+            for (int i=0;i<3;i++) REQUIRE(!run_configuration(samples,workers[i]));
+    }
     return 0;
 }

@@ -83,8 +83,11 @@ SG_INLINE void sg_hz_record_sample(const softgl_ctx *c, size_t sample, float z) 
  * offset-add/bound rounding.
  * Invalid vertex depths or nonfinite offsets use the ordinary rasterizer.
  * EQUAL and nonmonotonic tests, or any stencil side effect, never cull here. */
-SG_INLINE int sg_hz_occluded(const softgl_ctx *c, int x0, int y0, int x1, int y1,
-                              float z0, float z1, float z2, float offset) {
+/* Class 2 additionally proves rejection by LEQUAL/EQUAL: the conservative
+ * lower depth is strictly greater than every fully written cell maximum.
+ * The ordinary compile-time mode retains the original LESS tie rejection. */
+SG_INLINE int sg_hz_occlusion_class(const softgl_ctx *c, int x0, int y0, int x1, int y1,
+                              float z0, float z1, float z2, float offset, int classify_strict) {
     const sg_hz_state *state = sg_hz_state_from_ctx(c);
     if (!state || !state->active || !c->depth_test || c->stencil_test ||
         (c->depth_func != GL_LESS && c->depth_func != GL_LEQUAL)) return 0;
@@ -94,14 +97,21 @@ SG_INLINE int sg_hz_occluded(const softgl_ctx *c, int x0, int y0, int x1, int y1
     float near = z0 < z1 ? z0 : z1; if (z2 < near) near = z2;
     float lower = near + offset - 2e-6f * (1.f + fabsf(offset));
     lower = lower < 0.f ? 0.f : lower > 1.f ? 1.f : lower;
+    int strictly_hidden = 1;
     for (int x = x0 >> 2; x <= (x1 - 1) >> 2; x++) {
         const sg_hz_tile *column = state->tiles + (size_t)x * state->rows;
         for (int y = y0 >> 2; y <= (y1 - 1) >> 2; y++) {
             const sg_hz_tile *tile = column + y;
             if (tile->written != UINT64_MAX ||
                 (c->depth_func == GL_LESS ? lower < tile->maximum : lower <= tile->maximum)) return 0;
+            if (classify_strict && lower <= tile->maximum) strictly_hidden = 0;
         }
     }
-    return 1;
+    return classify_strict && strictly_hidden ? 2 : 1;
+}
+
+SG_INLINE int sg_hz_occluded(const softgl_ctx *c, int x0, int y0, int x1, int y1,
+                              float z0, float z1, float z2, float offset) {
+    return sg_hz_occlusion_class(c, x0, y0, x1, y1, z0, z1, z2, offset, 0);
 }
 #endif
