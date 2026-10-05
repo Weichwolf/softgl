@@ -1,0 +1,294 @@
+--- a/libsoftgl/src/raster_store.h
++++ b/libsoftgl/src/raster_store.h
+@@ -1,6 +1,7 @@
+ #ifndef SG_RASTER_STORE_H
+ #define SG_RASTER_STORE_H
+ #include "types.h"
++#include "workers.h"
+ #include "simd.h"
+ #include "raster_hz.h"
+ 
+@@ -40,8 +41,15 @@
+            (!samples || !c->multisample || (!c->sample_alpha_to_coverage &&
+                                           !c->sample_alpha_to_one && !c->sample_coverage));
+ }
+-SG_INLINE int sg_can_store_common_msaa2(const softgl_ctx *c) { return sg_can_store_common(c, 2); }
+-SG_INLINE int sg_can_store_common_msaa4(const softgl_ctx *c) { return sg_can_store_common(c, 4); }
++/* Real bin drains prepare this from their immutable draw state and clear it
++ * after completion. Immediate paths and synthetic bins keep the fresh guard. */
++SG_INLINE int sg_raster_common_store(const softgl_ctx *c, int samples) {
++    if (sg_raster_bin && sg_raster_bin->common_store)
++        return sg_raster_bin->common_store > 0;
++    return sg_can_store_common(c, samples);
++}
++SG_INLINE int sg_can_store_common_msaa2(const softgl_ctx *c) { return sg_raster_common_store(c, 2); }
++SG_INLINE int sg_can_store_common_msaa4(const softgl_ctx *c) { return sg_raster_common_store(c, 4); }
+ 
+ void sg_store_off_post_depth(softgl_ctx *c, int x, int y, float z, const float color[4]);
+ void sg_store_blend_msaa2_post_depth(softgl_ctx *c, int x, int y, unsigned coverage,
+--- a/libsoftgl/src/raster_triangle_impl.h
++++ b/libsoftgl/src/raster_triangle_impl.h
+@@ -133,7 +133,7 @@
+ 
+     int use_simd_quad = !sg_quad_needs_scalar(c, tctx);
+     int use_packet = tctx->combine_kind && sg_packet_supported(c, tctx);
+-    int common_store = use_packet && sg_can_store_common(c, 0);
++    int common_store = use_packet && sg_raster_common_store(c, 0);
+ 
+ #if SG_RASTER_OFF_CAPTURE
+     int coverage_seen = 0, weak_seen = 0;
+--- a/libsoftgl/src/workers.c
++++ b/libsoftgl/src/workers.c
+@@ -1,4 +1,5 @@
+ #include "raster_hz.h"
++#include "raster_store.h"
+ #include "workers.h"
+ #include "raster_types.h"
+ #include "raster_vertex_pack.h"
+@@ -573,6 +574,7 @@
+     sg_tex_tri_ctx tctx;
+     if (prepared_context) tctx = *prepared_context;
+     int prepared = prepared_context != NULL;
++    int common_store = sg_can_store_common(c, c->fb.samples) ? 1 : -1;
+     for (;;) {
+         int index = atomic_fetch_add_explicit(&p->next_bin, 1, memory_order_relaxed);
+         if (index >= p->nbins) break;
+@@ -580,7 +582,9 @@
+         b->query_samples = 0;
+         int n = b->count;
+         b->depth_capture = 0;
++        b->common_store = 0;
+         if (!n) continue;
++        b->common_store = common_store;
+         sg_raster_bin = b;
+         if (sort) sg_bin_sort_z(b);
+         /* GL state is immutable for the entire job. */
+@@ -604,6 +608,7 @@
+             }
+         }
+         b->count = 0;
++        b->common_store = 0;
+     }
+     sg_raster_bin = NULL;
+ }
+@@ -618,6 +623,7 @@
+     sg_packed_vertex_cache cache;
+     memset(&cache, 0, sizeof(cache));
+     int sort = atomic_load_explicit(&p->sort_safe, memory_order_acquire);
++    int common_store = sg_can_store_common(&job->state, job->state.fb.samples) ? 1 : -1;
+     for (;;) {
+         int index = atomic_fetch_add_explicit(&p->next_bin, 1, memory_order_relaxed);
+         if (index >= p->nbins) break;
+@@ -626,7 +632,9 @@
+         int n = b->count;
+         b->coverage_count = n;
+         b->depth_capture = job->depth_epoch != 0;
++        b->common_store = 0;
+         if (!n) continue;
++        b->common_store = common_store;
+         sg_raster_bin = b;
+         if (sort) sg_bin_sort_z(b);
+         for (int j = 0; j < SG_PACKED_VERTEX_CACHE_SIZE; j++) cache.tags[j] = UINT32_MAX;
+@@ -645,6 +653,7 @@
+             }
+         }
+         b->count = 0;
++        b->common_store = 0;
+     }
+     sg_raster_bin = NULL;
+ }
+--- a/libsoftgl/src/workers.h
++++ b/libsoftgl/src/workers.h
+@@ -44,7 +44,8 @@
+     /* Pad to keep bins on separate cachelines. */
+     int            coverage_count; /* completed packed draw's scratch indexing */
+     int            depth_capture; /* immutable bin snapshot */
+-    uint8_t        _pad[56];
++    int            common_store; /* 0=fresh fallback; +/-1 immutable bin eligibility */
++    uint8_t        _pad[52];
+ } sg_worker_bin;
+ 
+ /* Bounded preparation scratch: workers write disjoint records; the caller
+--- a/libsoftgl/src/workers_queue_raw.inc
++++ b/libsoftgl/src/workers_queue_raw.inc
+@@ -112,6 +112,8 @@
+     sg_worker_bin *b = &r->bins[index];
+     int n = b->count;
+     b->query_samples = 0;
++    /* A recycled slot can carry a different alpha/blend/query/sample state. */
++    b->common_store = sg_can_store_common(&r->state, r->state.fb.samples) ? 1 : -1;
+     sg_raster_bin = b;
+     if (slot->sort) sg_bin_sort_z(b);
+     if (slot->packed_mode) sg_queue_render_packed(r, b, slot->sort);
+@@ -127,6 +129,7 @@
+         }
+     }
+     b->count = 0;
++    b->common_store = 0;
+     sg_raster_bin = NULL;
+     pthread_mutex_lock(&p->mtx);
+     uint32_t mask = UINT32_C(1) << index;
+--- a/tests/msaa_store.c
++++ b/tests/msaa_store.c
+@@ -3,9 +3,25 @@
+ #include "raster_store.h"
+ #include <stdio.h>
+ #include <math.h>
++#include <stddef.h>
+ extern void sg_write_fragment(softgl_ctx *, int, int, float, float, float, float, float);
+ 
+ #define CHECK(x) do { if (!(x)) { fprintf(stderr, "%d: %s\n", __LINE__, #x); return 1; } } while (0)
++/* Reuse reserved bytes without changing existing bin members or stride. */
++typedef struct {
++    sg_worker_tri *tris;
++    uint32_t *sort_keys;
++    int count, cap, ix0, ix1;
++    GLuint64 query_samples;
++    int coverage_count, depth_capture;
++    uint8_t pad[56];
++} sg_prior_worker_bin;
++_Static_assert(sizeof(sg_worker_bin) == sizeof(sg_prior_worker_bin), "bin stride unchanged");
++_Static_assert(offsetof(sg_worker_bin, depth_capture) == offsetof(sg_prior_worker_bin, depth_capture),
++               "existing bin fields unchanged");
++_Static_assert(offsetof(sg_worker_bin, common_store) == offsetof(sg_prior_worker_bin, pad),
++               "eligibility occupies reserved bytes");
++
+ static uint32_t rng = 731;
+ static uint32_t bits(void) { rng ^= rng << 13; rng ^= rng >> 17; rng ^= rng << 5; return rng; }
+ static float value(void) { return (bits() >> 8) * (1.f / 16777216.f); }
+@@ -168,6 +184,125 @@
+     printf("%dx: %u exact post-Z stores, 640 DOT3 query-oracle frames and fallback states passed\n", samples, comparisons);
+     return 0;
+ }
++/* Actual queued draws alternate eligible and general state, recycle slots,
++ * and compare every color/depth/stencil plane against a query-forced writer. */
++static int render_bin_states(softgl_ctx *c, int count, int oracle, uint8_t *output) {
++    softgl_make_current(c);
++    glMatrixMode(GL_PROJECTION); glLoadIdentity();
++    glOrtho(0, c->fb.w, 0, c->fb.h, -1, 1);
++    glMatrixMode(GL_MODELVIEW); glLoadIdentity();
++    glDisable(GL_ALPHA_TEST); glDisable(GL_STENCIL_TEST); glDisable(GL_BLEND);
++    glDisable(GL_COLOR_LOGIC_OP); glDisable(GL_SCISSOR_TEST);
++    glDisable(GL_SAMPLE_COVERAGE); glDisable(GL_SAMPLE_ALPHA_TO_ONE);
++    glDisable(GL_SAMPLE_ALPHA_TO_COVERAGE); glEnable(GL_MULTISAMPLE);
++    glColorMask(1, 1, 1, 1); glDepthMask(GL_TRUE);
++    glClearColor(.13f, .27f, .41f, .59f); glClearDepth(1); glClearStencil(3);
++    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
++    glEnable(GL_DEPTH_TEST); glDepthFunc(GL_LEQUAL);
++    glEnableClientState(GL_VERTEX_ARRAY); glVertexPointer(3, GL_FLOAT, 0, NULL);
++    GLuint query = 0;
++    if (oracle) { glGenQueries(1, &query); glBeginQuery(GL_SAMPLES_PASSED, query); }
++    int queued = 0;
++    for (int state = 0; state < 12; state++) {
++        if (state == 1) { glEnable(GL_ALPHA_TEST); glAlphaFunc(GL_GREATER, .8f); }
++        else glDisable(GL_ALPHA_TEST);
++        if (state == 3) {
++            glEnable(GL_STENCIL_TEST); glStencilFunc(GL_ALWAYS, 3, 255);
++            glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
++        } else glDisable(GL_STENCIL_TEST);
++        if (state == 5) { glEnable(GL_COLOR_LOGIC_OP); glLogicOp(GL_COPY_INVERTED); }
++        else glDisable(GL_COLOR_LOGIC_OP);
++        glColorMask(1, state != 7, 1, 1);
++        if (state & 1) {
++            glEnable(GL_BLEND);
++            glBlendFunc(state == 9 ? GL_DST_COLOR : GL_SRC_ALPHA,
++                        state == 11 ? GL_ONE_MINUS_SRC_ALPHA : GL_ONE);
++        } else glDisable(GL_BLEND);
++        glDepthMask(state & 1 ? GL_FALSE : GL_TRUE);
++        glSampleCoverage(.5f, GL_FALSE);
++        if (state == 10) glEnable(GL_SAMPLE_COVERAGE); else glDisable(GL_SAMPLE_COVERAGE);
++        if (state == 6) glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE); else glDisable(GL_SAMPLE_ALPHA_TO_COVERAGE);
++        for (int draw = 0; draw < 6; draw++) {
++            glColor4f(.48f + .05f * (draw % 3), .42f, .67f, .25f + .15f * (draw % 4));
++            glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, NULL);
++            if (!oracle && ((sg_worker_pool *)c->workers)->async_pending == 3) queued++;
++        }
++        softgl_read_rgba8(c);
++        size_t values = (size_t)c->fb.w * c->fb.h * (c->fb.samples ? c->fb.samples : 1);
++        const uint8_t *color = c->fb.samples ? c->fb.sample_color : c->fb.color;
++        const float *depth = c->fb.samples ? c->fb.sample_depth : c->fb.depth;
++        const uint8_t *stencil = c->fb.samples ? c->fb.sample_stencil : c->fb.stencil;
++        memcpy(output, color, values * 4); output += values * 4;
++        memcpy(output, depth, values * sizeof(float)); output += values * sizeof(float);
++        memcpy(output, stencil, values); output += values;
++    }
++    if (oracle) { glEndQuery(GL_SAMPLES_PASSED); glDeleteQueries(1, &query); }
++    softgl_read_rgba8(c);
++    CHECK(!sg_raster_bin);
++    sg_worker_pool *pool = c->workers;
++    for (int bin = 0; bin < pool->nbins; bin++) CHECK(!pool->bins[bin].common_store);
++    CHECK(glGetError() == GL_NO_ERROR);
++    CHECK(oracle || queued > 0);
++    return 0;
++}
++
++static int check_bin_states(int samples, int width, int workers) {
++    enum { HEIGHT = 31, COUNT = 1536 };
++    softgl_ctx *c = softgl_create_multisample(width, HEIGHT, samples); CHECK(c);
++    softgl_make_current(c); sg_workers_shutdown(c); sg_workers_init(c, workers);
++    GLuint textures[4]; glGenTextures(4, textures);
++    const uint8_t white[4] = {255, 255, 255, 255};
++    const float constant[4] = {1, 1, 1, .7f};
++    for (int u = 0; u < 4; u++) {
++        glActiveTexture(GL_TEXTURE0 + u); glEnable(GL_TEXTURE_2D);
++        glBindTexture(GL_TEXTURE_2D, textures[u]);
++        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, white);
++        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
++        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
++        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
++        glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, u ? GL_MODULATE : GL_DOT3_RGB);
++        glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, u ? GL_PREVIOUS : GL_TEXTURE);
++        glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, !u ? GL_PRIMARY_COLOR :
++                  u == 1 ? GL_PREVIOUS : u == 2 ? GL_TEXTURE : GL_CONSTANT);
++        glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_REPLACE);
++        glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, u == 3 ? GL_CONSTANT : GL_PREVIOUS);
++        glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, constant);
++    }
++    glActiveTexture(GL_TEXTURE0);
++    float positions[COUNT][3];
++    for (int i = 0; i < COUNT / 3; i++) {
++        float x = (i % 16) * (width / 16.f), y = (i / 16 % 8) * 3.f;
++        positions[i * 3][0] = x; positions[i * 3][1] = y;
++        positions[i * 3 + 1][0] = x + 4.75f; positions[i * 3 + 1][1] = y + .25f;
++        positions[i * 3 + 2][0] = x + .25f; positions[i * 3 + 2][1] = y + 4.75f;
++        for (int v = 0; v < 3; v++) positions[i * 3 + v][2] = -.25f;
++    }
++    GLuint buffers[2]; glGenBuffers(2, buffers);
++    glBindBuffer(GL_ARRAY_BUFFER, buffers[0]);
++    glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
++    GLuint indices[COUNT];
++    for (int i = 0; i < COUNT; i++) indices[i] = (GLuint)i;
++    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[1]);
++    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
++    size_t values = (size_t)width * HEIGHT * (samples ? samples : 1);
++    size_t stage_bytes = values * (4 + sizeof(float) + 1), bytes = stage_bytes * 12;
++    uint8_t *actual = malloc(bytes), *expected = malloc(bytes); CHECK(actual && expected);
++    CHECK(!render_bin_states(c, COUNT, 0, actual));
++    CHECK(!render_bin_states(c, COUNT, 1, expected));
++    for (int state = 0; state < 12; state++) {
++        if (memcmp(actual + state * stage_bytes, expected + state * stage_bytes, stage_bytes)) {
++            fprintf(stderr, "bin state mismatch: samples=%d width=%d workers=%d state=%d\n",
++                    samples, width, workers, state);
++            free(actual); free(expected); softgl_destroy(c); return 1;
++        }
++    }
++    free(actual); free(expected); glDeleteBuffers(2, buffers);
++    glDeleteTextures(4, textures); softgl_destroy(c);
++    printf("bin state: samples=%d width=%d workers=%d, 72 queued state-transition draws, 12 complete plane snapshots exact to query oracle\n",
++           samples, width, workers);
++    return 0;
++}
++
+ int sg_store_contract(void) {
+     for (int n = 0; n < 262144; n++) {
+         float color[4];
+@@ -187,6 +322,9 @@
+     CHECK(!check_context(2));
+     CHECK(!check_context(4));
+     puts("262144 exact RGBA quantizations passed");
++    const int modes[] = {0, 2, 4}, widths[] = {47, 128}, workers[] = {1, 3, 8};
++    for (int m = 0; m < 3; m++) for (int w = 0; w < 2; w++) for (int n = 0; n < 3; n++)
++        CHECK(!check_bin_states(modes[m], widths[w], workers[n]));
+     return 0;
+ }
+ 

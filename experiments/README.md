@@ -1,11 +1,21 @@
 # Optimization evidence
 
+The [immutable-bin common-store state trial](bin-store-state/README.md) is
+rejected: no BMW mode improves in both repeated audits. BMW frame time changes
+-0.284%/+0.107% off, -1.119%/+0.804% at 2x, and +1.542%/-0.470% at 4x;
+paired observations are mixed. T-80 2x improves -1.762%/-0.411% with five of
+six faster pairs, a secondary signal that does not meet BMW priority. All
+full regressions and eighteen valid paired comparisons pass. The complete
+six-file patch, both corrected fixture versions, failed initial tooling attempt,
+all nineteen guard attempts and portable verifier are public. Production
+remains the accepted `7cc38593` renderer.
+
 [Current 7cc profiles](current-7cc-profiles/README.md) observe all three new
 post-depth roots in actual BMW renders. Raster kernels remain prominent;
-the next unmeasured hypothesis caches common-store eligibility per immutable
-draw/bin. All six first quiet-host guards pass. Raw profiles, exact map and
-independent self-sample recomputation are published; these diagnostics do not
-establish an additional speedup or quantify native hardware costs.
+these profiles motivated the now-evaluated immutable draw/bin state trial.
+All six first quiet-host guards pass. Raw profiles, exact map and independent
+self-sample recomputation are published; these diagnostics do not establish an
+additional speedup or quantify native hardware costs.
 
 The [common post-depth store architecture](post-depth-common-store/README.md)
 is retained as module `7cc38593`: BMW off frame time falls by 5.131%/5.432%,

@@ -1,0 +1,28 @@
+Benchmark round 1/2 complete
+Benchmark round 2/2 complete
+bmw: 25.805 ms median (-1.8% paired change)
+tank: 11.554 ms median (-1.2% paired change)
+Results: /home/cosmo/Git/softgl/build/perf/tigerlake-20261005/bin-store-state-ms0-audit-1-pair-1.attempt-1.pending.json
+node:internal/process/promises:391
+    triggerUncaughtException(err, true /* fromPromise */);
+    ^
+
+AssertionError [ERR_ASSERTION]: rimraf: callback function required
+    at rimraf2 (/usr/share/nodejs/playwright-core/lib/utilsBundleImpl/index.js:12698:14)
+    at /usr/share/nodejs/playwright-core/lib/utils/fileUtils.js:43:31
+    at new Promise (<anonymous>)
+    at /usr/share/nodejs/playwright-core/lib/utils/fileUtils.js:42:12
+    at Array.map (<anonymous>)
+    at removeFolders (/usr/share/nodejs/playwright-core/lib/utils/fileUtils.js:41:33)
+    at cleanup (/usr/share/nodejs/playwright-core/lib/utils/processLauncher.js:114:55)
+    at ChildProcess.<anonymous> (/usr/share/nodejs/playwright-core/lib/utils/processLauncher.js:154:5)
+    at Object.onceWrapper (node:events:639:26)
+    at ChildProcess.emit (node:events:524:28) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 'undefined',
+  expected: 'function',
+  operator: '=='
+}
+
+Node.js v20.19.2

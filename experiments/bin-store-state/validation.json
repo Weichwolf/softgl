@@ -1,0 +1,413 @@
+{
+  "status": "rejected-all-gates-verified-publication-ready",
+  "researchBaselineCommit": "9e27a3fbbb04eef943fd5fab4ca2e7046a5b04a7",
+  "referenceWasmSha256": "7cc38593ef399417a3ab4497dae40a162f9ae9550ad2181140d5d0f3c8df3b77",
+  "hypothesis": "Cache common-store eligibility in four existing reserved bin bytes from each immutable job snapshot. Ordinary/packed drains compute once per worker/job, queued raw/packed draws once per claimed draw/bin; clear on completion and retain fresh fallback for immediate/synthetic bins. No state-key reuse, new allocation, arithmetic or geometry change.",
+  "predeclaredTimings": {
+    "pairs": 18,
+    "auditsEachMode": 2,
+    "samples": [
+      0,
+      2,
+      4
+    ],
+    "scenes": [
+      "bmw",
+      "tank"
+    ],
+    "warmup": 80,
+    "frames": 100,
+    "rounds": 2,
+    "workers": 3,
+    "reference": "build/controls/post-depth-common-store-candidate",
+    "candidate": "build/controls/bin-store-state-candidate"
+  },
+  "candidateWasmSha256": "153c4089590cac89268e85a238cdfc05b9ed4ee805ec35a9dbb25abd01a17b10",
+  "candidateJsSha256": "c1a7d9afda1a934b28d0608f32270e8928d35b67d1b570b52bc0623257770ada",
+  "changedFiles": [
+    "libsoftgl/src/raster_store.h",
+    "libsoftgl/src/raster_triangle_impl.h",
+    "libsoftgl/src/workers.c",
+    "libsoftgl/src/workers.h",
+    "libsoftgl/src/workers_queue_raw.inc",
+    "tests/msaa_store.c"
+  ],
+  "patchSha256": "e9d29bee3ff05d585bcc2b0f6e57e36a65d6163586d5a7a2a2c2bf583a4cde12",
+  "productionSources": {
+    "libsoftgl/src/api.c": "76578a3b458c8943efbd94910bdffb3060dadf40c6942ce65adda97f3f45d5db",
+    "libsoftgl/src/buffers.c": "a0363363f060dc9cbd99a64703496e1e702c2cf82beb42b16a54337b524be2ff",
+    "libsoftgl/src/clip.c": "f5c0b940f54a4aa52a2d55785de31d72c168d381b53012e408179f81381de3cc",
+    "libsoftgl/src/dlist.c": "e7446f33b3972e4384c103c2547869dfffad43c900e1f55bf6f8c38eaf36eae8",
+    "libsoftgl/src/dlist.h": "4bc8e0e5966f5b226c8e086ead9a635fd6158eed18b0c55e4b4c2ed0bdbda033",
+    "libsoftgl/src/evaluators.c": "69281ca9f25e0f7d5cc1f76f31fb17502c83b60ea6168bbbae238e65227344ba",
+    "libsoftgl/src/frag_combine_hot.h": "e801062d6fe0ce8ade5f12730ba4cb1441689ba6bd39a331a308bc99e29f72cc",
+    "libsoftgl/src/frag_hot.h": "e0e1cba7afec1b2c13a53a8198207d868fa0636a84ee98e059f238d131dca52e",
+    "libsoftgl/src/frag_packet.h": "217cd6bfcae38b7c2428077bc4c1e772ca178d82498a21d963c0cc86061c4dc6",
+    "libsoftgl/src/fragment.c": "01d88705e22b03c3cf3d8b16abfca9a70e97f35b5206023376daca9ba2a9881c",
+    "libsoftgl/src/fragment_combine.c": "b7af7972265bf0ac384379fcba6885e93707cdd8a0de956f691ad28ed1dd7153",
+    "libsoftgl/src/fragment_write.c": "6c806d57d87ff4ed31ecdf502be6f77772497696a607633edf71c9971da66f1d",
+    "libsoftgl/src/framebuffer.c": "7c82e1f52d5b2c2e7d9752d155f379109a8791c41b147713cfb14f2788e1a974",
+    "libsoftgl/src/immediate.c": "80b520a3c3c14e675eeca5d3083c5dbe423e9684a69b868446f85e99ef86534c",
+    "libsoftgl/src/lighting.c": "1e6db9b4f59e2a54b1f6b89e6bc129d206dc816aaa08f099d80e6f8f2f42e338",
+    "libsoftgl/src/lines.c": "b08fef911685977a08d6f2b29265aa28721aa0497a1a208c492403bdde0bbe87",
+    "libsoftgl/src/matrix.c": "fd5bff0e263cd87d1032fad4fa75f966f76b2cc605b746d47e3d4eeabde6d793",
+    "libsoftgl/src/msaa_additive.h": "6fab4198defe4db18a83f1562034807e71957ba07db0c0bd51f2e26c90d4778f",
+    "libsoftgl/src/multisample.c": "2ba7fe2df9c8afed9acf1daa5ea48df6fbe8b5c0cceeac11bd61c3804423ea1d",
+    "libsoftgl/src/multisample.h": "cdbe1e0aa51827f13789ce7f46e3acc961e0b87c5d034e1c7ba22fe54c611315",
+    "libsoftgl/src/pipeline.c": "cda2d9d0fb96dd415e433c19e6f3e08909444a8cf0b890f8e3bf69443a92f931",
+    "libsoftgl/src/pixels.c": "8e366864ac1418564d2342bd3c120ad5e8057998af21ff31ccb5663134ddfc92",
+    "libsoftgl/src/raster_hz.h": "1cc4a6fe6f5a425607cb3b8a57d15cb19d5de537794c638b673f0bd4a14b4ed6",
+    "libsoftgl/src/raster_msaa_impl.h": "a9048bd2e89e96d87f407d17471e50c48d35c187aa20719b5e6af3d1d026eeec",
+    "libsoftgl/src/raster_store.h": "8f9a45440a084a3308305f5a0be7c6d30c2abd1afee37fe09ee8584aa065f3f6",
+    "libsoftgl/src/raster_triangle_impl.h": "f8f7dadac420262c4830106b5fe7a7e8936933f24b63330ab477161dde92e669",
+    "libsoftgl/src/raster_types.h": "0b050bdbf31f6c398366112c84a6041390a50398d1e18acafe4c7440a0700f45",
+    "libsoftgl/src/raster_vertex_pack.h": "956a8084b973144a9d8ee28c0d485214e3e8551a7384238f610620e00ad6e528",
+    "libsoftgl/src/rasterizer.c": "c3d77d9b13e06cb5bc35a1639a81146f5ad252aaffc8f3d290b7723d06235700",
+    "libsoftgl/src/simd.h": "44b532f4427f3e76886228dfe96024adf3ba1c1c748c7031d2fff2413db9c608",
+    "libsoftgl/src/state.c": "bffa3243dffdbef27ddc90c7ad6f2394d393f0dc47bf1d3797b2b5b63e8a875c",
+    "libsoftgl/src/texture.c": "9c4d999c73b68a7431bd1f0e88c2d3d2e7e1931670ad166ffee535f8d5764c45",
+    "libsoftgl/src/types.h": "c90361869e5600b1e3164ca31ba87c6af31a659e2f888456d90d6de6bea52fe1",
+    "libsoftgl/src/vertex_inputs.h": "fb774a51f4627b91dd6d58fc2cb918df04ef224d45cd898dfa1ed5dd9a0b0db5",
+    "libsoftgl/src/workers.c": "c5b1cc639f29186a0b164f7a885783a1420002f5b2a1bf3bddf130be4f47a0ad",
+    "libsoftgl/src/workers.h": "548fa43714c182e002dcc21763456704a5754f2390decf912c81198f7934cc31",
+    "libsoftgl/src/workers_queue_raw.inc": "d8df8a6fa66d02d0d4cc375e02a26202f21ad322478c8352ea489a58734c2cc8",
+    "libsoftgl/include/GL/softgl.h": "da4f96a7659b61240745dbe1d92f84715bf44fca46348ff861d40f73f0168376"
+  },
+  "objects": {
+    "build/diagnostics/bin-store-state/objects/api.c.o": "b770bb926db2248c564b1dfdef7600a09275e2b4f729beb67f7a7ae11d9900f5",
+    "build/diagnostics/bin-store-state/objects/buffers.c.o": "198f1f87b6ef7555c45cde2ec5fe17a9285e7386103535e7dc7030e981dd0d28",
+    "build/diagnostics/bin-store-state/objects/clip.c.o": "326abb30c6ab66776550f92ff118bfb31d1e4d2c831bc99a6d303985dcdebd1e",
+    "build/diagnostics/bin-store-state/objects/dlist.c.o": "5eb1d922b3b9e92d66f761acb7006724269a88afe4a9794b6f0533dd4e3da219",
+    "build/diagnostics/bin-store-state/objects/evaluators.c.o": "6b07003029152337999698f57915c575562bce186d1b982fd96c70764f0c8ae3",
+    "build/diagnostics/bin-store-state/objects/fragment.c.o": "73854606d29443d00ba22cab9030917bddacbfaf7f4685e349eeee10e9734864",
+    "build/diagnostics/bin-store-state/objects/fragment_combine.c.o": "1404fd3cfc36063699614be1c94caa6bd2fff1c3a40dc666fa0b7877f6735f46",
+    "build/diagnostics/bin-store-state/objects/fragment_write.c.o": "f4aeb84de17e54e9e181b1455a739116df8ad42adb89c5af5c6d48b0739b26bf",
+    "build/diagnostics/bin-store-state/objects/framebuffer.c.o": "f1f6e46979adf21b249cbee112ef552a4ed116aad16530fe9f444c75b0ad0ea2",
+    "build/diagnostics/bin-store-state/objects/immediate.c.o": "77e0359671cd2ba2232753bef46c926ee26cc6b953ce8b2b46ac69ffcdd8c481",
+    "build/diagnostics/bin-store-state/objects/lighting.c.o": "5b832d3bca16afa792de05642a78bc6f4e79d01e64b09ff3d3ba58bda461d848",
+    "build/diagnostics/bin-store-state/objects/lines.c.o": "3550bdc5b8039e52b060b30101baa521525b93e3c3a40bdb14293095285261ec",
+    "build/diagnostics/bin-store-state/objects/matrix.c.o": "730aacd6a55b22393c5a7b01998f3fca8102cdd7210edd19aca550f72f312b18",
+    "build/diagnostics/bin-store-state/objects/multisample.c.o": "d3c01250bd1c61599325d49da3f062a932c30f73fbd27c75c3ad14788bfe9c42",
+    "build/diagnostics/bin-store-state/objects/pipeline.c.o": "8fdbe3daba602aa5edcf209d51287de2ea6b450394d8dcfc96f3077020908650",
+    "build/diagnostics/bin-store-state/objects/pixels.c.o": "4fe17f0cc61da97c2886fa295645bede5c0aa35edc02dfc2aa52b79c22105b32",
+    "build/diagnostics/bin-store-state/objects/rasterizer.c.o": "d5298b86d78b9836cc1c5da8c2c2a3859b9998bcdfd71b61c8175d50f988e04a",
+    "build/diagnostics/bin-store-state/objects/state.c.o": "ef4e65f2dc929960c2a749cf2728819a9cafc5a4041fa7d3abe44dec4c1983af",
+    "build/diagnostics/bin-store-state/objects/texture.c.o": "ebd621c5ed6626301678267f13d8e849e324917975a253dabeef83b9ea4d20ff",
+    "build/diagnostics/bin-store-state/objects/workers.c.o": "c3142b85b571d08430df1a7e418bfd1c7a7f664622324ee8c8c3b562a698a546"
+  },
+  "observerFixtures": {
+    "tests/msaa_store.c": "1950f3d818b659b15f3200711118e7103186f98ed3f3a924b49091c09963bf8f"
+  },
+  "wasmBuildSession": 71488,
+  "wasmBuildExitCode": 0,
+  "independentSourcePatchVerified": true,
+  "failedFocusedFixture": "focused-array-not-queued/reason.json",
+  "independentFinalReconstruction": "/home/cosmo/Git/softgl/build/diagnostics/bin-store-state/final-patch-reconstruction",
+  "finalFocusedNativeSession": 19208,
+  "finalFocusedNativeExitCode": 0,
+  "finalFocusedWasmSession": 28430,
+  "finalFocusedWasmExitCode": 0,
+  "focusedLogs": {
+    "native-store-run.log": "8dc94b2d8e888b37c2629a0567add67a97e512f478690842954e237dc77ff563",
+    "wasm-store-run.log": "8dc94b2d8e888b37c2629a0567add67a97e512f478690842954e237dc77ff563",
+    "native-capture-build.log": "70f94790f551a078ef8f12315f7c9c1d01a46835ff345e7d07240054f9d0573a",
+    "wasm-store-build.log": "6158350957e588940e95bc1712cc4e0d1618d0d92a3bcabf6518ac7f5ecca570"
+  },
+  "fullGateSession": 4684,
+  "fullGateProcess": {
+    "pid": 2085866,
+    "birthTicks": "22341307",
+    "state": "S",
+    "args": [
+      "python3",
+      "build/diagnostics/bin-store-state/run-gates.py"
+    ]
+  },
+  "codegen": {
+    "byteIdenticalRootBodies": [
+      "sg_queue_render_packed",
+      "sg_write_fragment",
+      "sg_write_multisample",
+      "sg_write_multisample2",
+      "sg_store_off_post_depth",
+      "sg_store_blend_msaa2_post_depth",
+      "sg_store_blend_msaa4_post_depth"
+    ],
+    "note": "Static WASM body bytes and locals only. No native spill/cache/cycle cause inferred."
+  },
+  "predeclaredEvaluation": "BMW priority. Evaluate all six paired observations in each mode and both audit medians, with their magnitude/scatter; require reproducible improvement rather than a favourable isolated pair. Report mixed T-80 controls and weigh repeatable BMW mode regressions. No selective confirmation runs or parameter sweep.",
+  "linkedInputIdentitiesSha256": "a0ff310d7abfb8842b7e7d8f58169d3793482a1066ae6faaf440589ef98f74b0",
+  "fullGateExitCode": 0,
+  "fullGateReceipts": [
+    {
+      "file": "native-full-tests.log",
+      "passed": 743,
+      "sha256": "3b3e53bf89ce57480bf4cfc29699f46c41f93a3e36fb41069c9652e5766bc5c0"
+    },
+    {
+      "file": "native-full-bench.log",
+      "passed": 1,
+      "sha256": "cf0c1fed50ebd6c0d8512e059699b8bc4d90428d98fd2590e9cdeb99f6e69ee5"
+    },
+    {
+      "file": "asan-full-tests.log",
+      "passed": 23,
+      "sha256": "083c9174d3c75f07d9aa13f041f8336970123618f6974a9bc5abf8187097774b"
+    },
+    {
+      "file": "build/controls/bin-store-state-candidate/frame-equivalence-0.json",
+      "sha256": "7b99a51c15c49ae68872bb9d1057d1bb754936ba309364823e7ad3eed4cfc298",
+      "models": 2,
+      "hashes": 100,
+      "rawFrames": 4
+    },
+    {
+      "file": "build/controls/bin-store-state-candidate/frame-equivalence-2.json",
+      "sha256": "98dcbc26e67e27cbd063eeb32e14fdd0104922a571ab4c834c0c75758e62ca0a",
+      "models": 2,
+      "hashes": 100,
+      "rawFrames": 4
+    },
+    {
+      "file": "build/controls/bin-store-state-candidate/frame-equivalence-4.json",
+      "sha256": "698bd771188044455816a164a9eb350c7169a8b47fdfc8d1aab2f0770bf2f673",
+      "models": 2,
+      "hashes": 100,
+      "rawFrames": 4
+    }
+  ],
+  "regressions": {
+    "native": 743,
+    "benchmark": 1,
+    "asanUbsan": 23,
+    "mesaImages": 240,
+    "exactImagesEachMode": 234,
+    "modelHashesEachModeEachModel": 100,
+    "modelRawFramesEachModeEachModel": 4,
+    "wasmContracts": 22,
+    "offCaptureCasesEachEngine": 4608,
+    "msaaCaptureCasesEachEngine": 8192,
+    "queuedApiCasesEachEngine": 348,
+    "postDepthStoresEachModeEachEngine": 98304,
+    "actualDot3QueryScenesEachModeEachEngine": 640,
+    "quantizationsEachEngine": 262144,
+    "binStateConfigsEachEngine": 18,
+    "queuedBinStateDrawsEachConfig": 72,
+    "queuedBinStateDrawsEachEngine": 1296,
+    "binStateSnapshotsEachConfig": 12,
+    "binStateSnapshotsEachEngine": 216
+  },
+  "nativeArchiveSha256": "266ce0e14882cd559118faab8889eea6e6e620f34f9ccadfea0b0d7c54007224",
+  "timingSession": 66453,
+  "timingProcess": {
+    "pid": 2109671,
+    "birthTicks": "22415499",
+    "state": "S",
+    "args": [
+      "python3",
+      "build/diagnostics/bin-store-state/compare-off.py",
+      "--candidate",
+      "build/controls/bin-store-state-candidate",
+      "--reference",
+      "build/controls/post-depth-common-store-candidate",
+      "--output-dir",
+      "build/perf/tigerlake-20261005",
+      "--label",
+      "bin-store-state"
+    ]
+  },
+  "failedTimingSession": 40312,
+  "failedTimingEvidence": "timing-system-playwright-failure/reason.json",
+  "failedTimingExitCode": 1,
+  "verifiedAcceptedPairsAtPlanUpdate": 1,
+  "firstAcceptedPairSha256": "8bd6a79f48a21de26b91beedc19f57a8e2cd95d9539b4b32351f96f19f668132",
+  "timingExitCode": 0,
+  "retentionDecision": "rejected",
+  "decision": "Rejected: no BMW mode improves in both predeclared audits. Off -0.284130/+0.106518% (3 faster/3 slower), 2x -1.118710/+0.804006% (4/2), 4x +1.541592/-0.470265% (3/3). T-80 2x -1.761917/-0.410717% with 5/1 is a secondary improvement signal but not sufficient for BMW priority; T-80 off and4x mixed. Full correctness passed. Keep accepted7cc production unchanged. No selective confirmations, no static-code/native-cost or hardware-ceiling inference.",
+  "allAudits": [
+    {
+      "samples": 0,
+      "audit": 1,
+      "scenes": [
+        {
+          "name": "bmw",
+          "medianMs": 25.802049999982117,
+          "referenceMedianMs": 25.715074999928476,
+          "fps": 38.75661042439237,
+          "pairRatios": [
+            1.0081081206048064,
+            0.9929460961358832,
+            0.9971587008778219
+          ],
+          "changePercent": -0.28412991221781203
+        },
+        {
+          "name": "tank",
+          "medianMs": 11.423825000077485,
+          "referenceMedianMs": 11.383174999952317,
+          "fps": 87.53635494181827,
+          "pairRatios": [
+            1.000437012754141,
+            1.024263590530772,
+            0.9870482215064204
+          ],
+          "changePercent": 0.04370127541410973
+        }
+      ]
+    },
+    {
+      "samples": 0,
+      "audit": 2,
+      "scenes": [
+        {
+          "name": "bmw",
+          "medianMs": 25.869724999964237,
+          "referenceMedianMs": 25.894999999850988,
+          "fps": 38.65522343207678,
+          "pairRatios": [
+            0.9941298038045775,
+            1.0010651760817715,
+            1.0048145331400122
+          ],
+          "changePercent": 0.10651760817714795
+        },
+        {
+          "name": "tank",
+          "medianMs": 11.475550000071525,
+          "referenceMedianMs": 11.497099999934434,
+          "fps": 87.14179276755948,
+          "pairRatios": [
+            0.9986395334370086,
+            0.9709265698912176,
+            1.0121364394158356
+          ],
+          "changePercent": -0.13604665629913804
+        }
+      ]
+    },
+    {
+      "samples": 2,
+      "audit": 1,
+      "scenes": [
+        {
+          "name": "bmw",
+          "medianMs": 29.592399999946355,
+          "referenceMedianMs": 29.881875,
+          "fps": 33.79246022633557,
+          "pairRatios": [
+            0.9938822106026981,
+            0.9888129009494153,
+            0.9849753749691129
+          ],
+          "changePercent": -1.1187099050584681
+        },
+        {
+          "name": "tank",
+          "medianMs": 13.588199999928474,
+          "referenceMedianMs": 13.529124999940397,
+          "fps": 73.59326474479798,
+          "pairRatios": [
+            0.9970223429898124,
+            0.9784681810676068,
+            0.9823808272805593
+          ],
+          "changePercent": -1.761917271944069
+        }
+      ]
+    },
+    {
+      "samples": 2,
+      "audit": 2,
+      "scenes": [
+        {
+          "name": "bmw",
+          "medianMs": 30.177775000035762,
+          "referenceMedianMs": 29.883400000035763,
+          "fps": 33.136969176780426,
+          "pairRatios": [
+            1.0160938439957186,
+            1.0080400592843932,
+            0.9904767136445847
+          ],
+          "changePercent": 0.804005928439322
+        },
+        {
+          "name": "tank",
+          "medianMs": 13.448050000071525,
+          "referenceMedianMs": 13.518824999928475,
+          "fps": 74.36022322899464,
+          "pairRatios": [
+            1.0421669944015581,
+            0.9794935549241894,
+            0.9958928260106379
+          ],
+          "changePercent": -0.4107173989362112
+        }
+      ]
+    },
+    {
+      "samples": 4,
+      "audit": 1,
+      "scenes": [
+        {
+          "name": "bmw",
+          "medianMs": 33.79625,
+          "referenceMedianMs": 33.42407499998808,
+          "fps": 29.589081628878944,
+          "pairRatios": [
+            1.015415916526982,
+            1.047048905842189,
+            0.9987930118829175
+          ],
+          "changePercent": 1.5415916526982043
+        },
+        {
+          "name": "tank",
+          "medianMs": 14.932524999976158,
+          "referenceMedianMs": 14.986400000005961,
+          "fps": 66.96791065152054,
+          "pairRatios": [
+            1.0023524566501023,
+            0.9742469068183146,
+            0.9897087447172681
+          ],
+          "changePercent": -1.0291255282731893
+        }
+      ]
+    },
+    {
+      "samples": 4,
+      "audit": 2,
+      "scenes": [
+        {
+          "name": "bmw",
+          "medianMs": 33.49322500005364,
+          "referenceMedianMs": 33.766625000089405,
+          "fps": 29.856784469050037,
+          "pairRatios": [
+            0.9898713897412363,
+            1.0067776943478297,
+            0.9952973464110711
+          ],
+          "changePercent": -0.4702653588928851
+        },
+        {
+          "name": "tank",
+          "medianMs": 14.932800000011921,
+          "referenceMedianMs": 14.846024999916553,
+          "fps": 66.96667738128158,
+          "pairRatios": [
+            1.0074708923817615,
+            1.0359703387977353,
+            0.9854819219905637
+          ],
+          "changePercent": 0.7470892381761463
+        }
+      ]
+    }
+  ],
+  "timingResultSha256": "dabec3e00e990a06dfda4dc84e7b8c3b3137e24b3159e0e89e91559d07115898",
+  "canonicalJsWasmByteExact": false,
+  "bothBrowserUiRepeated": false,
+  "acceptedProductionUnchanged": true
+}
