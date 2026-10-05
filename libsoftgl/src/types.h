@@ -464,6 +464,10 @@ typedef struct {
 } sg_tex_tri_ctx;
 
 void sg_tex_tri_prepare(softgl_ctx *c, sg_tex_tri_ctx *t);
+/* Intrinsic sample coverage: 1 empty, 0 covered, -1 unsupported/early HZ. */
+int sg_raster_triangle_tile_prepared(softgl_ctx *c,
+    const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
+    int ix0, int ix1, const sg_tex_tri_ctx *tctx);
 void sg_tex_tri_sample_units(const sg_tex_tri_ctx *t,
                              const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
                              float w0, float w1, float w2, float one_over_wsum,

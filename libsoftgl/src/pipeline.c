@@ -743,7 +743,11 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
     softgl_ctx *c = sg_current(); if (!c) return;
     int stream = sg_workers_can_stream(c, mode, count);
     if (!stream) sg_workers_flush(c);
-    if (c->workers) ((sg_worker_pool *)c->workers)->prepared_transformed = 0;
+    if (c->workers) {
+        sg_worker_pool *pool = (sg_worker_pool *)c->workers;
+        pool->prepared_transformed = 0;
+        pool->prepared_coverage_entry = NULL;
+    }
     if (count <= 0) return;
     sg_vcache_clear();
     const uint8_t *index_data = sg_index_base(c, indices);

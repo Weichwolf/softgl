@@ -75,7 +75,7 @@ add_test(NAME async_raster_contract COMMAND async_raster_contract)
 set_tests_properties(async_raster_contract PROPERTIES TIMEOUT 30)
 
 # Exact raster fields, collision-safe decoding, draw state/sample parity and clamps.
-foreach(contract raster_vertex_pack packed_stream simd_clamp ordered_draw_queue msaa_additive triangle_stage msaa_scanline cube_filter)
+foreach(contract raster_vertex_pack packed_stream simd_clamp ordered_draw_queue msaa_additive triangle_stage msaa_scanline cube_filter cache_coverage)
     add_executable(${contract}_contract ${contract}.c)
     if(contract STREQUAL "cube_filter")
         # Match the packet oracle: strict sampler arithmetic, regular renderer image gates.

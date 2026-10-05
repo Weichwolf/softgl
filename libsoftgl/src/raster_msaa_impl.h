@@ -7,7 +7,7 @@ __attribute__((used, noinline))
 #else
 static __attribute__((noinline))
 #endif
-void SG_MSAA_FUNCTION(softgl_ctx *c,
+int SG_MSAA_FUNCTION(softgl_ctx *c,
                          const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
                          const sg_tex_tri_ctx *tctx,
                          int ix0, int iy0, int ix1, int iy1,
@@ -15,7 +15,7 @@ void SG_MSAA_FUNCTION(softgl_ctx *c,
                          float z_offset) {
 #if SG_MSAA_SAMPLES == 4
     if (sg_hz_occluded(c, ix0, iy0, ix1, iy1,
-        v0->ndc.z, v1->ndc.z, v2->ndc.z, z_offset)) return;
+        v0->ndc.z, v1->ndc.z, v2->ndc.z, z_offset)) return -1;
 #endif
     int32_t vx[3] = {sg_fp_screen_from_float(v0->ndc.x),
                      sg_fp_screen_from_float(v1->ndc.x),
@@ -44,6 +44,7 @@ void SG_MSAA_FUNCTION(softgl_ctx *c,
     int bias[3] = {bias0, bias1, bias2};
     float inv_area = 1.f / (float)area;
     unsigned full = (1u << SG_MSAA_SAMPLES) - 1u;
+    int coverage_seen = 0;
     /* A covered sample has raw barycentric edges in [0, area]. Other
      * samples of that pixel differ by at most 256*(abs(dx)+abs(dy)).
      * Only this proven range uses packed signed-32 conversion, after coverage
@@ -159,6 +160,7 @@ void SG_MSAA_FUNCTION(softgl_ctx *c,
                 }
             }
             if (coverage && SG_MSAA_SAMPLES == 4) {
+                coverage_seen = 1;
                 /* SIMD lanes are samples of one pixel. Keep scalar expression
                  * grouping so sample depth and the selected shading point match. */
                 sg_f32x4 b0, b1;
@@ -192,6 +194,7 @@ void SG_MSAA_FUNCTION(softgl_ctx *c,
                         _mm_loadu_ps(&c->fb.sample_depth[idx])));
                 }
             } else if (coverage) {
+                coverage_seen = 1;
                 for (int s = 0; s < SG_MSAA_SAMPLES; s++) {
                     if (!(coverage & (1u << s))) continue;
                     float b0 = (float)(edge[0] + offsets[s][0]) * inv_area;
@@ -244,5 +247,5 @@ void SG_MSAA_FUNCTION(softgl_ctx *c,
                                      packet.depths[l], color);
         }
     }
+    return coverage_seen ? 0 : 1;
 }
-

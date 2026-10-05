@@ -42,7 +42,8 @@ typedef struct {
     int            ix0, ix1; /* owned X-range of the framebuffer [ix0, ix1) */
     GLuint64       query_samples; /* worker-local; merged after the raster job */
     /* Pad to keep bins on separate cachelines. */
-    uint8_t        _pad[64];
+    int            coverage_count; /* completed packed draw's scratch indexing */
+    uint8_t        _pad[60];
 } sg_worker_bin;
 
 /* Bounded preparation scratch: workers write disjoint records; the caller
@@ -152,6 +153,7 @@ typedef struct {
     GLenum triangle_index_type;
     uint32_t triangle_index_min;
     atomic_int triangle_next;
+    struct sg_geometry_entry *prepared_coverage_entry; /* caller-owned current draw */
 } sg_worker_pool;
 
 void sg_workers_init(softgl_ctx *c, int nworkers_hint);

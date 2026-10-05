@@ -4,9 +4,6 @@
 #include "raster_types.h"
 #include <stdio.h>
 
-void sg_raster_triangle_tile_prepared(softgl_ctx *, const sg_vert *,
-    const sg_vert *, const sg_vert *, int, int, const sg_tex_tri_ctx *);
-
 static uint32_t random_state = 93;
 
 static uint32_t next_value(void) {

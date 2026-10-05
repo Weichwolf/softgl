@@ -723,7 +723,7 @@ SG_INLINE void sg_write_pixel_packet2(softgl_ctx *c, const sg_tex_tri_ctx *t,
  * tile_ix0=0, tile_ix1=fb.w reproduces the whole-FB behaviour exactly
  * (caller is the single-thread path). Workers pass their owned X-stripe
  * to parallelise across tiles without touching each other's columns. */
-void sg_raster_triangle_tile_prepared(softgl_ctx *c,
+int sg_raster_triangle_tile_prepared(softgl_ctx *c,
                              const sg_vert *v0,
                              const sg_vert *v1,
                              const sg_vert *v2,
@@ -739,7 +739,7 @@ void sg_raster_triangle_tile_prepared(softgl_ctx *c,
 
     int64_t area2 = (int64_t)(x1 - x0) * (int64_t)(y2 - y0)
                   - (int64_t)(y1 - y0) * (int64_t)(x2 - x0);
-    if (area2 <= 0) return;   /* degenerate or back-face */
+    if (area2 <= 0) return c->scissor_enabled ? -1 : 1;   /* degenerate or back-face */
 
     int bias0 = sg_is_top_left(x1, y1, x2, y2) ? 0 : -1;
     int bias1 = sg_is_top_left(x2, y2, x0, y0) ? 0 : -1;
@@ -769,7 +769,7 @@ void sg_raster_triangle_tile_prepared(softgl_ctx *c,
         if (ix1 > sx1) ix1 = sx1;
         if (iy1 > sy1) iy1 = sy1;
     }
-    if (ix0 >= ix1 || iy0 >= iy1) return;
+    if (ix0 >= ix1 || iy0 >= iy1) return c->scissor_enabled ? -1 : 1;
 
     /* Start sample at pixel center (ix0+0.5, iy0+0.5) in 16.8. */
     const sg_screen_t half = SG_FP_SUBPIXEL_ONE >> 1;
@@ -817,13 +817,14 @@ void sg_raster_triangle_tile_prepared(softgl_ctx *c,
     float invw2 = v2->ndc.w;
 
     if (c->fb.samples) {
+        int result;
         if (c->fb.samples == 4)
-            sg_raster_triangle_msaa4(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
+            result = sg_raster_triangle_msaa4(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
                                     area2, bias0, bias1, bias2, z_offset);
         else
-            sg_raster_triangle_msaa2(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
+            result = sg_raster_triangle_msaa2(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
                                     area2, bias0, bias1, bias2, z_offset);
-        return;
+        return c->scissor_enabled ? -1 : result;
     }
 
     /* SIMD 2x2-quad path. Per-edge min/max-across-quad offsets enable
@@ -970,6 +971,7 @@ void sg_raster_triangle_tile_prepared(softgl_ctx *c,
         E1_row += dE1_dy * 2;
         E2_row += dE2_dy * 2;
     }
+    return -1;
 }
 
 void sg_raster_triangle_tile(softgl_ctx *c,

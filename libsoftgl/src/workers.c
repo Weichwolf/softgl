@@ -18,9 +18,6 @@ _Thread_local sg_worker_bin *sg_raster_bin;
 void sg_raster_triangle_tile(softgl_ctx *c,
                              const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
                              int ix0, int ix1);
-void sg_raster_triangle_tile_prepared(softgl_ctx *c,
-                             const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
-                             int ix0, int ix1, const sg_tex_tri_ctx *tctx);
 
 /* Main-thread state: pipeline's per-vertex transform. Workers use the same
  * entrypoint; matrices and lighting state are ctx-read-only during a
@@ -380,6 +377,16 @@ void sg_workers_geometry_store(softgl_ctx *c, sg_geometry_entry *entry,
     }
     entry->offsets[p->nbins] = offset;
     entry->imin = imin; entry->imax = imax; entry->valid = 1;
+    if (c->fb.samples && !c->scissor_enabled && c->render_mode == GL_RENDER) {
+        int transformed = 1;
+        for (int i = 0; i < offset; i++) {
+            if (!(entry->tris[i].v[0] & SG_BIN_TRANSFORMED_VERTEX)) {
+                transformed = 0;
+                break;
+            }
+        }
+        if (transformed) p->prepared_coverage_entry = entry;
+    }
 }
 
 void sg_workers_geometry_replay(softgl_ctx *c, const sg_geometry_entry *entry) {
@@ -539,6 +546,8 @@ typedef struct sg_async_raster {
     uint8_t *inside_frustum;
     int transformed_cap, vpool_cap;
     sg_packed_raster_vertices packed;
+    sg_geometry_entry *coverage_entry;
+    uint64_t coverage_stamp;
 } sg_async_raster;
 
 static void sg_drain_bins(softgl_ctx *c, sg_worker_pool *p,
@@ -599,6 +608,7 @@ void sg_drain_packed_bins(sg_worker_pool *p, sg_async_raster *job) {
         sg_worker_bin *b = &job->bins[index];
         b->query_samples = 0;
         int n = b->count;
+        b->coverage_count = n;
         if (!n) continue;
         sg_raster_bin = b;
         if (sort) sg_bin_sort_z(b);
@@ -610,8 +620,12 @@ void sg_drain_packed_bins(sg_worker_pool *p, sg_async_raster *job) {
             const sg_vert *v0 = sg_packed_vertex_fetch(&job->packed, &cache, t->v[0], &pinned, 0);
             const sg_vert *v1 = sg_packed_vertex_fetch(&job->packed, &cache, t->v[1] | marker, &pinned, 1);
             const sg_vert *v2 = sg_packed_vertex_fetch(&job->packed, &cache, t->v[2] | marker, &pinned, 2);
-            sg_raster_triangle_tile_prepared(&job->state, v0, v1, v2,
+            int empty = sg_raster_triangle_tile_prepared(&job->state, v0, v1, v2,
                 b->ix0, b->ix1, &job->texture_context);
+            if (job->coverage_entry) {
+                uint32_t original = sort ? b->sort_keys[i] : (uint32_t)i;
+                b->sort_keys[n + original] = empty == 1;
+            }
         }
         b->count = 0;
     }
@@ -623,6 +637,31 @@ static void sg_drain_raster_bins(softgl_ctx *c, sg_worker_pool *p) {
 }
 
 static void sg_queue_finish(sg_worker_pool *p);
+
+/* Workers record only in the joined job's existing sort scratch. Cache
+ * storage can change on the producer; publish only to the unchanged entry. */
+static void sg_publish_coverage(sg_worker_pool *p, sg_async_raster *job) {
+    sg_geometry_entry *entry = job->coverage_entry;
+    if (!entry || !entry->valid || entry->stamp != job->coverage_stamp) return;
+    for (int b = 0; b < p->nbins; b++) {
+        if (entry->offsets[b + 1] - entry->offsets[b] != job->bins[b].coverage_count)
+            return;
+    }
+    int out = 0;
+    for (int b = 0; b < p->nbins; b++) {
+        int first = entry->offsets[b], end = entry->offsets[b + 1];
+        int n = end - first;
+        entry->offsets[b] = out;
+        if (!n) continue;
+        const uint32_t *empty = job->bins[b].sort_keys + n;
+        for (int i = 0; i < n; i++) {
+            if (empty[i]) continue;
+            if (out != first + i) entry->tris[out] = entry->tris[first + i];
+            out++;
+        }
+    }
+    entry->offsets[p->nbins] = out;
+}
 
 static void sg_finish_stream(sg_worker_pool *p) {
     if (!p->async_pending) return;
@@ -639,6 +678,8 @@ static void sg_finish_stream(sg_worker_pool *p) {
         __builtin_ia32_pause();
 #endif
     }
+    if (p->async_pending == 2) sg_publish_coverage(p, job);
+    job->coverage_entry = NULL;
     p->async_pending = 0;
     atomic_store_explicit(&p->job_type, SG_JOB_RASTER, memory_order_release);
 }
@@ -950,7 +991,7 @@ __attribute__((used, noinline))
 #else
 static __attribute__((noinline))
 #endif
-int sg_submit_packed_stream(softgl_ctx *c, sg_worker_pool *p) {
+int sg_submit_packed_stream(softgl_ctx *c, sg_worker_pool *p, sg_geometry_entry *entry) {
     const int packed_mode = 1;
     sg_packed_raster_vertices layout = {0};
     sg_tex_tri_ctx texture_context;
@@ -1010,6 +1051,8 @@ int sg_submit_packed_stream(softgl_ctx *c, sg_worker_pool *p) {
         sg_aligned_free(job->packed.data);
         memset(&job->packed, 0, sizeof(job->packed));
     }
+    job->coverage_entry = entry;
+    job->coverage_stamp = job->coverage_entry ? job->coverage_entry->stamp : 0;
     job->state = *c;
     if (packed_mode) job->texture_context = texture_context;
     else sg_tex_tri_prepare(c, &job->texture_context);
@@ -1049,16 +1092,18 @@ int sg_submit_packed_stream(softgl_ctx *c, sg_worker_pool *p) {
 
 void sg_workers_submit_stream(softgl_ctx *c) {
     sg_worker_pool *p = (sg_worker_pool *)c->workers;
+    sg_geometry_entry *entry = p->prepared_coverage_entry;
+    p->prepared_coverage_entry = NULL;
     int total = 0;
     for (int i = 0; i < p->nbins; i++) total += p->bins[i].count;
     if (!total) return;
     size_t geometry_vertices = (p->prepared_transformed ? (size_t)p->transformed_cap : 0) +
         (p->vpool_count ? (size_t)p->vpool_cap : 0);
     if (geometry_vertices > SG_STREAM_VERTICES) {
-        if (!sg_submit_packed_stream(c, p)) sg_workers_flush(c);
+        if (!sg_submit_packed_stream(c, p, entry)) sg_workers_flush(c);
         return;
     }
-    if (sg_queue_multitexture(c) && sg_queue_submit(c, p)) return;
+    if (sg_queue_multitexture(c) && sg_queue_submit(c, p, entry)) return;
     if (!p->async_raster) {
         p->async_raster = sg_aligned_alloc(sizeof(sg_async_raster), 16);
         if (!p->async_raster) { sg_workers_flush(c); return; }
@@ -1076,6 +1121,7 @@ void sg_workers_submit_stream(softgl_ctx *c) {
         sg_aligned_free(job->packed.data);
         memset(&job->packed, 0, sizeof(job->packed));
     }
+    job->coverage_entry = NULL;
     job->state = *c;
     sg_tex_tri_prepare(c, &job->texture_context);
     /* Sampler object metadata may move/change on the caller. Image storage
@@ -1119,6 +1165,7 @@ const uint8_t *sg_workers_inside_frustum(softgl_ctx *c) {
 void sg_workers_flush(softgl_ctx *c) {
     sg_worker_pool *p = (sg_worker_pool*)c->workers;
     if (!p) return;
+    p->prepared_coverage_entry = NULL;
     sg_finish_stream(p);
 
     /* Short-circuit if no pending work — avoids the condvar round-trip on

@@ -48,8 +48,18 @@ static void sg_queue_free_vertices(sg_async_raster *r) {
 }
 
 /* Caller holds p->mtx, including when waiting workers inspect the queue. */
-static void sg_queue_retire(struct sg_stream_queue *q) {
+static void sg_queue_retire(sg_worker_pool *p) {
+    struct sg_stream_queue *q = p->stream_queue;
     while (q->count && !q->slots[q->head].pending) {
+        sg_async_raster *draw = q->slots[q->head].draw;
+        if (draw->coverage_entry) {
+            /* Only the caller retires slots. Completed-slot storage remains
+             * private while other slots run; never compact under the mutex. */
+            pthread_mutex_unlock(&p->mtx);
+            sg_publish_coverage(p, draw);
+            draw->coverage_entry = NULL;
+            pthread_mutex_lock(&p->mtx);
+        }
         q->head = (q->head + 1) % SG_QUEUE_SLOTS;
         q->count--;
     }
@@ -88,8 +98,12 @@ void sg_queue_render_packed(sg_async_raster *r, sg_worker_bin *b, int sort) {
         const sg_vert *v0 = sg_packed_vertex_fetch(&r->packed, cache, t->v[0], &pinned, 0);
         const sg_vert *v1 = sg_packed_vertex_fetch(&r->packed, cache, t->v[1] | marker, &pinned, 1);
         const sg_vert *v2 = sg_packed_vertex_fetch(&r->packed, cache, t->v[2] | marker, &pinned, 2);
-        sg_raster_triangle_tile_prepared(&r->state, v0, v1, v2,
+        int empty = sg_raster_triangle_tile_prepared(&r->state, v0, v1, v2,
             b->ix0, b->ix1, &r->texture_context);
+        if (r->coverage_entry) {
+            uint32_t original = sort ? b->sort_keys[i] : (uint32_t)i;
+            b->sort_keys[b->count + original] = empty == 1;
+        }
     }
 }
 
@@ -104,9 +118,13 @@ static void sg_queue_render(sg_worker_pool *p, sg_queue_slot *slot, int index) {
     else for (int i = 0; i < n; i++) {
         const sg_worker_tri *t = &b->tris[slot->sort ? b->sort_keys[i] : (uint32_t)i];
         const sg_vert *src = (t->v[0] & SG_BIN_TRANSFORMED_VERTEX) ? r->transformed : r->vpool;
-        sg_raster_triangle_tile_prepared(&r->state,
+        int empty = sg_raster_triangle_tile_prepared(&r->state,
             &src[t->v[0] & ~SG_BIN_TRANSFORMED_VERTEX], &src[t->v[1]], &src[t->v[2]],
             b->ix0, b->ix1, &r->texture_context);
+        if (r->coverage_entry) {
+            uint32_t original = slot->sort ? b->sort_keys[i] : (uint32_t)i;
+            b->sort_keys[n + original] = empty == 1;
+        }
     }
     b->count = 0;
     sg_raster_bin = NULL;
@@ -223,7 +241,7 @@ static void sg_queue_finish(sg_worker_pool *p) {
     for (;;) {
         unsigned before = atomic_load_explicit(&q->change, memory_order_acquire);
         pthread_mutex_lock(&p->mtx);
-        sg_queue_retire(q);
+        sg_queue_retire(p);
         if (!q->count) {
             q->stopping = 1;
             pthread_cond_broadcast(&p->wake);
@@ -250,7 +268,7 @@ static void sg_queue_destroy(sg_worker_pool *p) {
     free(p->stream_queue); p->stream_queue = NULL;
 }
 
-static int sg_queue_submit(softgl_ctx *c, sg_worker_pool *p) {
+static int sg_queue_submit(softgl_ctx *c, sg_worker_pool *p, sg_geometry_entry *entry) {
     sg_tex_tri_ctx texture_context;
     sg_tex_tri_prepare(c, &texture_context);
     size_t count = (p->prepared_transformed > 0 ? (size_t)p->prepared_transformed : 0) +
@@ -305,7 +323,7 @@ static int sg_queue_submit(softgl_ctx *c, sg_worker_pool *p) {
     for (;;) {
         unsigned before = atomic_load_explicit(&q->change, memory_order_acquire);
         pthread_mutex_lock(&p->mtx);
-        sg_queue_retire(q);
+        sg_queue_retire(p);
         slot = &q->slots[(q->head + q->count) % SG_QUEUE_SLOTS];
         size_t bytes = 0;
         for (int i = 0; i < SG_QUEUE_SLOTS; i++) bytes += sg_queue_bytes(q->slots[i].draw);
@@ -357,6 +375,8 @@ static int sg_queue_submit(softgl_ctx *c, sg_worker_pool *p) {
     } else {
         sg_aligned_free(r->packed.data); memset(&r->packed, 0, sizeof(r->packed));
     }
+    r->coverage_entry = entry;
+    r->coverage_stamp = entry ? entry->stamp : 0;
     r->state = *c;
     r->texture_context = texture_context;
     for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
@@ -368,6 +388,7 @@ static int sg_queue_submit(softgl_ctx *c, sg_worker_pool *p) {
     uint32_t pending = 0;
     for (int i = 0; i < p->nbins; i++) {
         sg_worker_bin tmp = p->bins[i]; p->bins[i] = r->bins[i]; r->bins[i] = tmp;
+        r->bins[i].coverage_count = r->bins[i].count;
         if (r->bins[i].count) pending |= UINT32_C(1) << i;
     }
     if (!packed_mode && p->prepared_transformed) {
