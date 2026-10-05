@@ -14,6 +14,8 @@
 | Positions+Bin-Cache / HZ / Draw-Geometrie | ≤4 MiB / 230 KiB / ≤2 MiB |
 | Queue / Dreieck-Scratch / Paket | ≤4 Draws / ≤224 KiB / ≤128 Vertices oder Dreiecke |
 | Raster-/Queue-Vertex / Decode-Cache | 160→64 / 48–96 Byte / 10,72 KiB je Kontext |
+| BMW Cube-Faces / bytegleiche eindeutige Faces | 138 / 48 |
+| BMW Cube-Pixelbytes / Potenzial ohne Duplikate, MiB | 8,625 / 3,000 |
 
 | Render+Resolve/Readback je Frame | BMW F31 | T-80 |
 | --- | --- | --- |
@@ -27,6 +29,8 @@
 | Ohne MSAA Framezeit 1 / 2, ms | 29.70 / 29.38 | 11.41 / 11.33 |
 | Ohne MSAA Δ Zeit 1 / 2, % | -1.82 / -2.08 | +0.61 / -0.75 |
 | Warm-up / Frames / AB/BA-Paare | 80 / 100 / 4×/aus: 2×3; 2×: 3 | 80 / 100 / 4×/aus: 2×3; 2×: 3 |
+| Besuchte / leere Rasterpixel pro Frame, Diagnose | 1.744.066 / 1.102.392 | 442.589 / 226.866 |
+| Pixel nach frühem Z, Diagnose | 301.292 | 137.667 |
 
 | Prüfung | Ergebnis |
 | --- | --- |
