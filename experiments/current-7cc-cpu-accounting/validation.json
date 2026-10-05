@@ -1,0 +1,77 @@
+{
+  "status": "diagnostics-complete-publishing",
+  "wasmSha256": "7cc38593ef399417a3ab4497dae40a162f9ae9550ad2181140d5d0f3c8df3b77",
+  "notAcceptanceTimings": true,
+  "probeSession": 79323,
+  "probeExitCode": 0,
+  "probeSha256": "8f0dbb168d1851b748a2188080ec2588637581112c89dd1e648ab943542ff809",
+  "failedSessions": [
+    {
+      "session": 34608,
+      "exitCode": 1,
+      "evidence": "failed-overescaped-proc-parser/reason.json"
+    },
+    {
+      "session": 3162,
+      "exitCode": 1,
+      "evidence": "failed-command-item-match/reason.json"
+    }
+  ],
+  "protocol": {
+    "audits": 2,
+    "samples": [
+      0,
+      2,
+      4
+    ],
+    "scenes": [
+      "bmw",
+      "tank"
+    ],
+    "rounds": 1,
+    "warmup": 80,
+    "frames": 240,
+    "workers": 3
+  },
+  "session": 94151,
+  "process": {
+    "pid": 2115925,
+    "birthTicks": "22572537",
+    "state": "S",
+    "args": [
+      "python3",
+      "build/diagnostics/current-7cc-cpu-accounting/run-accounting.py"
+    ]
+  },
+  "exitCode": 0,
+  "guards": [
+    {
+      "file": "runs/cpu-ms0-audit-1.attempt-1.monitor.json",
+      "sha256": "ed46b0cb78a90cd1fc013e79e2e13b252b18204505370cc3296617dc5448e8f2"
+    },
+    {
+      "file": "runs/cpu-ms2-audit-1.attempt-1.monitor.json",
+      "sha256": "e359b152f0ae39205aff4bf8558652805bfd0f7020dc3a8d9e7ee96cfcfcd27e"
+    },
+    {
+      "file": "runs/cpu-ms4-audit-1.attempt-1.monitor.json",
+      "sha256": "847dd2b98dcf9f566194d694c63eac979f05ed09c0a849c9267ac1a1e37828d7"
+    },
+    {
+      "file": "runs/cpu-ms4-audit-2.attempt-1.monitor.json",
+      "sha256": "b744f86037b700aef88cbec3460a39a2b04a8835b3e5ac73b914cf1bfb99620c"
+    },
+    {
+      "file": "runs/cpu-ms2-audit-2.attempt-1.monitor.json",
+      "sha256": "327981b3f71a9c4965e4d2916e8108ea9c94a56a0efd4e44c54f8fc1a028b525"
+    },
+    {
+      "file": "runs/cpu-ms0-audit-2.attempt-1.monitor.json",
+      "sha256": "0f618bea76865417f664c13f60039b6e72977e69ee1458fd98cad43cd9f06249"
+    }
+  ],
+  "rawWindows": 12,
+  "unmatchedTasks": 0,
+  "analysisSha256": "7cc6661ca9bbb84256894ca171d91ec8e51db51a775b84acfff92ef039a06a1a",
+  "productionSourcesUnchanged": true
+}

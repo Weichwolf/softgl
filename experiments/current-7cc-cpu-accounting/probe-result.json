@@ -1,0 +1,671 @@
+{
+  "passed": true,
+  "matchedTicks": 72,
+  "before": {
+    "startMs": 225654450.374701,
+    "endMs": 225654458.954139,
+    "renderers": [
+      {
+        "pid": 2115870,
+        "parent": 2115805,
+        "birth": "22565429",
+        "command": [
+          "/usr/lib/chromium/chromium --type=renderer --top-chrome-webui --crashpad-handler-pid=2115799 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/home/cosmo/Git/softgl/build/tmp/playwright_chromiumdev_profile-ZuR4Oo --change-stack-guard-on-fork=enable --no-sandbox --disable-dev-shm-usage --disable-back-forward-cache --disable-background-timer-throttling --disable-breakpad --force-color-profile=srgb --remote-debugging-pipe --allow-pre-commit-input --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=5 --launch-time-ticks=225654290539 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,2321024134676829205,17477022013883983577,262144 --enable-features=CDPScreenshotNewSurface,SingleAxisScrollContainers --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=7,i,10555461599899021847,16199170534701639515,4 --trace-process-track-uuid=3190708990997080739"
+        ]
+      },
+      {
+        "pid": 2115879,
+        "parent": 2115805,
+        "birth": "22565432",
+        "command": [
+          "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=2115799 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/home/cosmo/Git/softgl/build/tmp/playwright_chromiumdev_profile-ZuR4Oo --change-stack-guard-on-fork=enable --no-sandbox --disable-dev-shm-usage --disable-back-forward-cache --disable-background-timer-throttling --disable-breakpad --force-color-profile=srgb --remote-debugging-pipe --allow-pre-commit-input --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=7 --launch-time-ticks=225654324336 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,2321024134676829205,17477022013883983577,262144 --enable-features=CDPScreenshotNewSurface,SingleAxisScrollContainers --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=7,i,10555461599899021847,16199170534701639515,4 --trace-process-track-uuid=3190708992871164437"
+        ]
+      },
+      {
+        "pid": 2115880,
+        "parent": 2115805,
+        "birth": "22565432",
+        "command": [
+          "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=2115799 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/home/cosmo/Git/softgl/build/tmp/playwright_chromiumdev_profile-ZuR4Oo --change-stack-guard-on-fork=enable --no-sandbox --disable-dev-shm-usage --disable-back-forward-cache --disable-background-timer-throttling --disable-breakpad --force-color-profile=srgb --remote-debugging-pipe --allow-pre-commit-input --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=6 --launch-time-ticks=225654326913 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,2321024134676829205,17477022013883983577,262144 --enable-features=CDPScreenshotNewSurface,SingleAxisScrollContainers --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=7,i,10555461599899021847,16199170534701639515,4 --trace-process-track-uuid=3190708991934122588"
+        ]
+      }
+    ],
+    "tasks": [
+      {
+        "pid": 2115870,
+        "processBirth": "22565429",
+        "tid": 2115870,
+        "birth": "22565429",
+        "comm": "chromium",
+        "userTicks": 6,
+        "systemTicks": 1,
+        "stampMs": 225654457.760234
+      },
+      {
+        "pid": 2115870,
+        "processBirth": "22565429",
+        "tid": 2115871,
+        "birth": "22565429",
+        "comm": "HangWatcher",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654457.948535
+      },
+      {
+        "pid": 2115870,
+        "processBirth": "22565429",
+        "tid": 2115872,
+        "birth": "22565429",
+        "comm": "PerfettoTrace",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654457.990135
+      },
+      {
+        "pid": 2115870,
+        "processBirth": "22565429",
+        "tid": 2115873,
+        "birth": "22565429",
+        "comm": "ThreadPoolServi",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654458.024135
+      },
+      {
+        "pid": 2115870,
+        "processBirth": "22565429",
+        "tid": 2115874,
+        "birth": "22565429",
+        "comm": "ThreadPoolForeg",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654458.056235
+      },
+      {
+        "pid": 2115870,
+        "processBirth": "22565429",
+        "tid": 2115875,
+        "birth": "22565429",
+        "comm": "Chrome_ChildIOT",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654458.091735
+      },
+      {
+        "pid": 2115870,
+        "processBirth": "22565429",
+        "tid": 2115876,
+        "birth": "22565429",
+        "comm": "ThreadPoolForeg",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654458.123635
+      },
+      {
+        "pid": 2115870,
+        "processBirth": "22565429",
+        "tid": 2115877,
+        "birth": "22565431",
+        "comm": "Compositor",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654458.164336
+      },
+      {
+        "pid": 2115870,
+        "processBirth": "22565429",
+        "tid": 2115878,
+        "birth": "22565431",
+        "comm": "ThreadPoolSingl",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654458.208236
+      },
+      {
+        "pid": 2115870,
+        "processBirth": "22565429",
+        "tid": 2115898,
+        "birth": "22565437",
+        "comm": "ThreadPoolForeg",
+        "userTicks": 1,
+        "systemTicks": 0,
+        "stampMs": 225654458.245836
+      },
+      {
+        "pid": 2115879,
+        "processBirth": "22565432",
+        "tid": 2115879,
+        "birth": "22565432",
+        "comm": "chromium",
+        "userTicks": 1,
+        "systemTicks": 0,
+        "stampMs": 225654458.310136
+      },
+      {
+        "pid": 2115879,
+        "processBirth": "22565432",
+        "tid": 2115881,
+        "birth": "22565432",
+        "comm": "HangWatcher",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654458.341536
+      },
+      {
+        "pid": 2115879,
+        "processBirth": "22565432",
+        "tid": 2115884,
+        "birth": "22565433",
+        "comm": "PerfettoTrace",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654458.371536
+      },
+      {
+        "pid": 2115879,
+        "processBirth": "22565432",
+        "tid": 2115885,
+        "birth": "22565433",
+        "comm": "ThreadPoolServi",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654458.413837
+      },
+      {
+        "pid": 2115879,
+        "processBirth": "22565432",
+        "tid": 2115886,
+        "birth": "22565433",
+        "comm": "ThreadPoolForeg",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654458.447437
+      },
+      {
+        "pid": 2115879,
+        "processBirth": "22565432",
+        "tid": 2115888,
+        "birth": "22565433",
+        "comm": "Chrome_ChildIOT",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654458.477937
+      },
+      {
+        "pid": 2115879,
+        "processBirth": "22565432",
+        "tid": 2115892,
+        "birth": "22565433",
+        "comm": "ThreadPoolForeg",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654458.508237
+      },
+      {
+        "pid": 2115879,
+        "processBirth": "22565432",
+        "tid": 2115893,
+        "birth": "22565435",
+        "comm": "Compositor",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654458.538337
+      },
+      {
+        "pid": 2115879,
+        "processBirth": "22565432",
+        "tid": 2115894,
+        "birth": "22565435",
+        "comm": "ThreadPoolSingl",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654458.568937
+      },
+      {
+        "pid": 2115880,
+        "processBirth": "22565432",
+        "tid": 2115880,
+        "birth": "22565432",
+        "comm": "chromium",
+        "userTicks": 3,
+        "systemTicks": 1,
+        "stampMs": 225654458.627138
+      },
+      {
+        "pid": 2115880,
+        "processBirth": "22565432",
+        "tid": 2115882,
+        "birth": "22565433",
+        "comm": "HangWatcher",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654458.666338
+      },
+      {
+        "pid": 2115880,
+        "processBirth": "22565432",
+        "tid": 2115883,
+        "birth": "22565433",
+        "comm": "PerfettoTrace",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654458.702738
+      },
+      {
+        "pid": 2115880,
+        "processBirth": "22565432",
+        "tid": 2115887,
+        "birth": "22565433",
+        "comm": "ThreadPoolServi",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654458.733438
+      },
+      {
+        "pid": 2115880,
+        "processBirth": "22565432",
+        "tid": 2115889,
+        "birth": "22565433",
+        "comm": "ThreadPoolForeg",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654458.772238
+      },
+      {
+        "pid": 2115880,
+        "processBirth": "22565432",
+        "tid": 2115890,
+        "birth": "22565433",
+        "comm": "Chrome_ChildIOT",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654458.802738
+      },
+      {
+        "pid": 2115880,
+        "processBirth": "22565432",
+        "tid": 2115891,
+        "birth": "22565433",
+        "comm": "ThreadPoolForeg",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654458.833238
+      },
+      {
+        "pid": 2115880,
+        "processBirth": "22565432",
+        "tid": 2115896,
+        "birth": "22565435",
+        "comm": "Compositor",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654458.863439
+      },
+      {
+        "pid": 2115880,
+        "processBirth": "22565432",
+        "tid": 2115897,
+        "birth": "22565436",
+        "comm": "ThreadPoolSingl",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654458.894539
+      },
+      {
+        "pid": 2115880,
+        "processBirth": "22565432",
+        "tid": 2115899,
+        "birth": "22565444",
+        "comm": "ThreadPoolForeg",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654458.925239
+      }
+    ],
+    "errors": []
+  },
+  "after": {
+    "startMs": 225654774.253025,
+    "endMs": 225654777.53594,
+    "renderers": [
+      {
+        "pid": 2115870,
+        "parent": 2115805,
+        "birth": "22565429",
+        "command": [
+          "/usr/lib/chromium/chromium --type=renderer --top-chrome-webui --crashpad-handler-pid=2115799 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/home/cosmo/Git/softgl/build/tmp/playwright_chromiumdev_profile-ZuR4Oo --change-stack-guard-on-fork=enable --no-sandbox --disable-dev-shm-usage --disable-back-forward-cache --disable-background-timer-throttling --disable-breakpad --force-color-profile=srgb --remote-debugging-pipe --allow-pre-commit-input --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=5 --launch-time-ticks=225654290539 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,2321024134676829205,17477022013883983577,262144 --enable-features=CDPScreenshotNewSurface,SingleAxisScrollContainers --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=7,i,10555461599899021847,16199170534701639515,4 --trace-process-track-uuid=3190708990997080739"
+        ]
+      },
+      {
+        "pid": 2115879,
+        "parent": 2115805,
+        "birth": "22565432",
+        "command": [
+          "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=2115799 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/home/cosmo/Git/softgl/build/tmp/playwright_chromiumdev_profile-ZuR4Oo --change-stack-guard-on-fork=enable --no-sandbox --disable-dev-shm-usage --disable-back-forward-cache --disable-background-timer-throttling --disable-breakpad --force-color-profile=srgb --remote-debugging-pipe --allow-pre-commit-input --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=7 --launch-time-ticks=225654324336 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,2321024134676829205,17477022013883983577,262144 --enable-features=CDPScreenshotNewSurface,SingleAxisScrollContainers --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=7,i,10555461599899021847,16199170534701639515,4 --trace-process-track-uuid=3190708992871164437"
+        ]
+      },
+      {
+        "pid": 2115880,
+        "parent": 2115805,
+        "birth": "22565432",
+        "command": [
+          "/usr/lib/chromium/chromium --type=renderer --crashpad-handler-pid=2115799 --enable-crash-reporter=,built on Debian GNU/Linux 13 (trixie) --noerrdialogs --user-data-dir=/home/cosmo/Git/softgl/build/tmp/playwright_chromiumdev_profile-ZuR4Oo --change-stack-guard-on-fork=enable --no-sandbox --disable-dev-shm-usage --disable-back-forward-cache --disable-background-timer-throttling --disable-breakpad --force-color-profile=srgb --remote-debugging-pipe --allow-pre-commit-input --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --ozone-platform=headless --disable-gpu-compositing --lang=en-US --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=6 --launch-time-ticks=225654326913 --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,2321024134676829205,17477022013883983577,262144 --enable-features=CDPScreenshotNewSurface,SingleAxisScrollContainers --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=7,i,10555461599899021847,16199170534701639515,4 --trace-process-track-uuid=3190708991934122588"
+        ]
+      }
+    ],
+    "tasks": [
+      {
+        "pid": 2115870,
+        "processBirth": "22565429",
+        "tid": 2115870,
+        "birth": "22565429",
+        "comm": "chromium",
+        "userTicks": 26,
+        "systemTicks": 4,
+        "stampMs": 225654776.367035
+      },
+      {
+        "pid": 2115870,
+        "processBirth": "22565429",
+        "tid": 2115871,
+        "birth": "22565429",
+        "comm": "HangWatcher",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654776.401035
+      },
+      {
+        "pid": 2115870,
+        "processBirth": "22565429",
+        "tid": 2115872,
+        "birth": "22565429",
+        "comm": "PerfettoTrace",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654776.432735
+      },
+      {
+        "pid": 2115870,
+        "processBirth": "22565429",
+        "tid": 2115873,
+        "birth": "22565429",
+        "comm": "ThreadPoolServi",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654776.463335
+      },
+      {
+        "pid": 2115870,
+        "processBirth": "22565429",
+        "tid": 2115874,
+        "birth": "22565429",
+        "comm": "ThreadPoolForeg",
+        "userTicks": 8,
+        "systemTicks": 1,
+        "stampMs": 225654776.493635
+      },
+      {
+        "pid": 2115870,
+        "processBirth": "22565429",
+        "tid": 2115875,
+        "birth": "22565429",
+        "comm": "Chrome_ChildIOT",
+        "userTicks": 0,
+        "systemTicks": 1,
+        "stampMs": 225654776.524335
+      },
+      {
+        "pid": 2115870,
+        "processBirth": "22565429",
+        "tid": 2115876,
+        "birth": "22565429",
+        "comm": "ThreadPoolForeg",
+        "userTicks": 4,
+        "systemTicks": 2,
+        "stampMs": 225654776.554636
+      },
+      {
+        "pid": 2115870,
+        "processBirth": "22565429",
+        "tid": 2115877,
+        "birth": "22565431",
+        "comm": "Compositor",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654776.585636
+      },
+      {
+        "pid": 2115870,
+        "processBirth": "22565429",
+        "tid": 2115878,
+        "birth": "22565431",
+        "comm": "ThreadPoolSingl",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654776.646436
+      },
+      {
+        "pid": 2115870,
+        "processBirth": "22565429",
+        "tid": 2115898,
+        "birth": "22565437",
+        "comm": "ThreadPoolForeg",
+        "userTicks": 6,
+        "systemTicks": 0,
+        "stampMs": 225654776.680436
+      },
+      {
+        "pid": 2115870,
+        "processBirth": "22565429",
+        "tid": 2115900,
+        "birth": "22565449",
+        "comm": "ThreadPoolForeg",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654776.722836
+      },
+      {
+        "pid": 2115870,
+        "processBirth": "22565429",
+        "tid": 2115901,
+        "birth": "22565450",
+        "comm": "ThreadPoolForeg",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654776.759436
+      },
+      {
+        "pid": 2115879,
+        "processBirth": "22565432",
+        "tid": 2115879,
+        "birth": "22565432",
+        "comm": "chromium",
+        "userTicks": 1,
+        "systemTicks": 0,
+        "stampMs": 225654776.816237
+      },
+      {
+        "pid": 2115879,
+        "processBirth": "22565432",
+        "tid": 2115881,
+        "birth": "22565432",
+        "comm": "HangWatcher",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654776.847537
+      },
+      {
+        "pid": 2115879,
+        "processBirth": "22565432",
+        "tid": 2115884,
+        "birth": "22565433",
+        "comm": "PerfettoTrace",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654776.878337
+      },
+      {
+        "pid": 2115879,
+        "processBirth": "22565432",
+        "tid": 2115885,
+        "birth": "22565433",
+        "comm": "ThreadPoolServi",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654776.909137
+      },
+      {
+        "pid": 2115879,
+        "processBirth": "22565432",
+        "tid": 2115886,
+        "birth": "22565433",
+        "comm": "ThreadPoolForeg",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654776.939737
+      },
+      {
+        "pid": 2115879,
+        "processBirth": "22565432",
+        "tid": 2115888,
+        "birth": "22565433",
+        "comm": "Chrome_ChildIOT",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654776.970237
+      },
+      {
+        "pid": 2115879,
+        "processBirth": "22565432",
+        "tid": 2115892,
+        "birth": "22565433",
+        "comm": "ThreadPoolForeg",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654777.000738
+      },
+      {
+        "pid": 2115879,
+        "processBirth": "22565432",
+        "tid": 2115893,
+        "birth": "22565435",
+        "comm": "Compositor",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654777.031038
+      },
+      {
+        "pid": 2115879,
+        "processBirth": "22565432",
+        "tid": 2115894,
+        "birth": "22565435",
+        "comm": "ThreadPoolSingl",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654777.060938
+      },
+      {
+        "pid": 2115880,
+        "processBirth": "22565432",
+        "tid": 2115880,
+        "birth": "22565432",
+        "comm": "chromium",
+        "userTicks": 30,
+        "systemTicks": 2,
+        "stampMs": 225654777.213238
+      },
+      {
+        "pid": 2115880,
+        "processBirth": "22565432",
+        "tid": 2115882,
+        "birth": "22565433",
+        "comm": "HangWatcher",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654777.258239
+      },
+      {
+        "pid": 2115880,
+        "processBirth": "22565432",
+        "tid": 2115883,
+        "birth": "22565433",
+        "comm": "PerfettoTrace",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654777.290139
+      },
+      {
+        "pid": 2115880,
+        "processBirth": "22565432",
+        "tid": 2115887,
+        "birth": "22565433",
+        "comm": "ThreadPoolServi",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654777.324139
+      },
+      {
+        "pid": 2115880,
+        "processBirth": "22565432",
+        "tid": 2115889,
+        "birth": "22565433",
+        "comm": "ThreadPoolForeg",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654777.354939
+      },
+      {
+        "pid": 2115880,
+        "processBirth": "22565432",
+        "tid": 2115890,
+        "birth": "22565433",
+        "comm": "Chrome_ChildIOT",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654777.386339
+      },
+      {
+        "pid": 2115880,
+        "processBirth": "22565432",
+        "tid": 2115891,
+        "birth": "22565433",
+        "comm": "ThreadPoolForeg",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654777.417239
+      },
+      {
+        "pid": 2115880,
+        "processBirth": "22565432",
+        "tid": 2115896,
+        "birth": "22565435",
+        "comm": "Compositor",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654777.448239
+      },
+      {
+        "pid": 2115880,
+        "processBirth": "22565432",
+        "tid": 2115897,
+        "birth": "22565436",
+        "comm": "ThreadPoolSingl",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654777.48004
+      },
+      {
+        "pid": 2115880,
+        "processBirth": "22565432",
+        "tid": 2115899,
+        "birth": "22565444",
+        "comm": "ThreadPoolForeg",
+        "userTicks": 0,
+        "systemTicks": 0,
+        "stampMs": 225654777.51264
+      }
+    ],
+    "errors": []
+  },
+  "scope": "Actual Chromium parser/counter probe, no SoftGL benchmark or module"
+}

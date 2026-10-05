@@ -1,5 +1,15 @@
 # Optimization evidence
 
+[Scheduled CPU accounting](current-7cc-cpu-accounting/README.md) observes the
+unchanged `7cc38593` renderer in two guarded windows per scene/mode. BMW uses
+3.119–3.300 scheduled cores, T-80 2.668–2.778. The dominant renderer leader is
+nearly continuously scheduled; three active workers have closely matched CPU
+costs and lower occupancy. This includes stalls and polling, not just useful
+rendering. All twelve raw thread windows reproduce with matched births and no
+missing tasks. Methods, both failed selections and the corrected Chromium
+command matching are public; these diagnostics are not an acceptance speedup
+or a hardware-ceiling estimate. Caller waits need a direct measurement next.
+
 The [immutable-bin common-store state trial](bin-store-state/README.md) is
 rejected: no BMW mode improves in both repeated audits. BMW frame time changes
 -0.284%/+0.107% off, -1.119%/+0.804% at 2x, and +1.542%/-0.470% at 4x;

@@ -28,6 +28,14 @@
 | 4× schnellere / langsamere Paare | 5 / 1 | 2 / 4 |
 | Warm-up / Frames / AB/BA-Paare je Modus | 80 / 100 / 6 | 80 / 100 / 6 |
 
+| CPU-Zeit / Fenster, 80 Warm-up + 240 Render/Resolve | BMW Audit 1 / 2 | T-80 Audit 1 / 2 |
+| --- | --- | --- |
+| 0×, Renderer gesamt, Kerne | 3.148 / 3.119 | 2.686 / 2.668 |
+| 2×, Renderer gesamt, Kerne | 3.245 / 3.258 | 2.768 / 2.778 |
+| 4×, Renderer gesamt, Kerne | 3.255 / 3.300 | 2.737 / 2.767 |
+| Hauptthread, Kerne, Bereich über alle Modi | 0.990–0.996 | 0.995–0.999 |
+| Aktive Worker je Thread, Kerne, Bereich über alle Modi | 0.697–0.764 | 0.552–0.598 |
+
 | Prüfung | Ergebnis |
 | --- | --- |
 | Native + Bench / ASan/UBSan + Leaks / WASM-Verträge | 743 + 1 / 23 / 22 + Koeffizientenvertrag |

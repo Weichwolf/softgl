@@ -1,0 +1,12 @@
+{
+  "installedEmscripten": "3.1.69",
+  "futexWaitSourceSha256": "eab2c6d69316987fbdccaf5ffe18023d6fc8b30c2a4012938157a71ac2ae0f7f",
+  "localSource": "/usr/share/emscripten/system/lib/pthread/emscripten_futex_wait.c",
+  "officialDocumentation": "https://emscripten.org/docs/porting/pthreads.html#blocking-on-the-main-browser-thread",
+  "softwareSource": "https://github.com/emscripten-core/emscripten/blob/3.1.69/system/lib/pthread/emscripten_futex_wait.c",
+  "softglExplicitPolling": [
+    "libsoftgl/src/workers_queue_raw.inc:223",
+    "libsoftgl/src/workers.c:714"
+  ],
+  "interpretation": "Both Emscripten and SoftGL have main/caller waiting paths. Scheduled CPU is not necessarily useful rendering. Moving to a worker without changing explicit poll loops cannot remove those loops; no speedup proven."
+}
