@@ -5,6 +5,7 @@
 #include "frag_combine_hot.h"
 #include "multisample.h"
 #include "raster_store.h"
+#include "workers.h"
 #include <math.h>
 
 /* Under Emscripten (-msimd128), <smmintrin.h> remaps _mm_* onto
@@ -698,11 +699,13 @@ SG_INLINE void sg_write_pixel_packet2(softgl_ctx *c, const sg_tex_tri_ctx *t,
 #define SG_MSAA_OPAQUE_CAN sg_can_store_opaque_msaa2
 #define SG_MSAA_OPAQUE_STORE sg_store_opaque_msaa2
 #define SG_MSAA_PACKET_WRITE sg_write_pixel_packet2
+#define SG_MSAA_DEPTH_CAPTURE 0
 #define SG_MSAA_SAMPLES 2
 #define SG_MSAA_FUNCTION sg_raster_triangle_msaa2
 #include "raster_msaa_impl.h"
 #undef SG_MSAA_SAMPLES
 #undef SG_MSAA_FUNCTION
+#undef SG_MSAA_DEPTH_CAPTURE
 #undef SG_MSAA_OPAQUE_CAN
 #undef SG_MSAA_OPAQUE_STORE
 #undef SG_MSAA_PACKET_WRITE
@@ -710,11 +713,20 @@ SG_INLINE void sg_write_pixel_packet2(softgl_ctx *c, const sg_tex_tri_ctx *t,
 #define SG_MSAA_OPAQUE_CAN sg_can_store_opaque_msaa4
 #define SG_MSAA_OPAQUE_STORE sg_store_opaque_msaa4
 #define SG_MSAA_PACKET_WRITE sg_write_pixel_packet
+#define SG_MSAA_DEPTH_CAPTURE 0
 #define SG_MSAA_SAMPLES 4
 #define SG_MSAA_FUNCTION sg_raster_triangle_msaa4
 #include "raster_msaa_impl.h"
 #undef SG_MSAA_SAMPLES
 #undef SG_MSAA_FUNCTION
+#undef SG_MSAA_DEPTH_CAPTURE
+#define SG_MSAA_DEPTH_CAPTURE 1
+#define SG_MSAA_SAMPLES 4
+#define SG_MSAA_FUNCTION sg_raster_triangle_msaa4_capture
+#include "raster_msaa_impl.h"
+#undef SG_MSAA_SAMPLES
+#undef SG_MSAA_FUNCTION
+#undef SG_MSAA_DEPTH_CAPTURE
 #undef SG_MSAA_OPAQUE_CAN
 #undef SG_MSAA_OPAQUE_STORE
 #undef SG_MSAA_PACKET_WRITE
@@ -818,9 +830,14 @@ int sg_raster_triangle_tile_prepared(softgl_ctx *c,
 
     if (c->fb.samples) {
         int result;
-        if (c->fb.samples == 4)
-            result = sg_raster_triangle_msaa4(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
+        if (c->fb.samples == 4) {
+            if (sg_raster_bin && sg_raster_bin->depth_capture)
+                result = sg_raster_triangle_msaa4_capture(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
                                     area2, bias0, bias1, bias2, z_offset);
+            else
+                result = sg_raster_triangle_msaa4(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
+                                    area2, bias0, bias1, bias2, z_offset);
+        }
         else
             result = sg_raster_triangle_msaa2(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
                                     area2, bias0, bias1, bias2, z_offset);

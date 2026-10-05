@@ -45,6 +45,9 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
     float inv_area = 1.f / (float)area;
     unsigned full = (1u << SG_MSAA_SAMPLES) - 1u;
     int coverage_seen = 0;
+#if SG_MSAA_DEPTH_CAPTURE
+    int weak_seen = 0;
+#endif
     /* A covered sample has raw barycentric edges in [0, area]. Other
      * samples of that pixel differ by at most 256*(abs(dx)+abs(dy)).
      * Only this proven range uses packed signed-32 conversion, after coverage
@@ -190,8 +193,18 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
                 sg_f32x4_store(depths, z);
                 if (c->depth_test && !c->stencil_test) {
                     size_t idx = ((size_t)y * c->fb.w + x) * 4;
+                    #if SG_MSAA_DEPTH_CAPTURE
+                    sg_f32x4 old_depth = _mm_loadu_ps(&c->fb.sample_depth[idx]);
+                    unsigned passed = coverage & sg_mask4_live(sg_depth_test_simd(c->depth_func, z, old_depth));
+                    if (!weak_seen) {
+                        /* LESS failure can include equality. Preserve ties. */
+                        weak_seen = passed || (coverage & sg_mask4_live(sg_f32x4_le(z, old_depth)));
+                    }
+                    coverage = passed;
+#else
                     coverage &= sg_mask4_live(sg_depth_test_simd(c->depth_func, z,
                         _mm_loadu_ps(&c->fb.sample_depth[idx])));
+#endif
                 }
             } else if (coverage) {
                 coverage_seen = 1;
@@ -247,5 +260,9 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
                                      packet.depths[l], color);
         }
     }
+    #if SG_MSAA_DEPTH_CAPTURE
+    return !coverage_seen ? 1 : weak_seen ? 0 : 2;
+#else
     return coverage_seen ? 0 : 1;
+#endif
 }

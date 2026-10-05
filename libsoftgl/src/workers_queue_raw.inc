@@ -102,7 +102,7 @@ void sg_queue_render_packed(sg_async_raster *r, sg_worker_bin *b, int sort) {
             b->ix0, b->ix1, &r->texture_context);
         if (r->coverage_entry) {
             uint32_t original = sort ? b->sort_keys[i] : (uint32_t)i;
-            b->sort_keys[b->count + original] = empty == 1;
+            b->sort_keys[b->count + original] = empty >= 0 ? (uint32_t)empty : 0;
         }
     }
 }
@@ -123,7 +123,7 @@ static void sg_queue_render(sg_worker_pool *p, sg_queue_slot *slot, int index) {
             b->ix0, b->ix1, &r->texture_context);
         if (r->coverage_entry) {
             uint32_t original = slot->sort ? b->sort_keys[i] : (uint32_t)i;
-            b->sort_keys[n + original] = empty == 1;
+            b->sort_keys[n + original] = empty >= 0 ? (uint32_t)empty : 0;
         }
     }
     b->count = 0;
@@ -377,6 +377,9 @@ static int sg_queue_submit(softgl_ctx *c, sg_worker_pool *p, sg_geometry_entry *
     }
     r->coverage_entry = entry;
     r->coverage_stamp = entry ? entry->stamp : 0;
+    r->depth_epoch = entry && c->fb.samples == 4 && c->depth_test && !c->stencil_test &&
+        !c->polygon_offset_fill && (c->depth_func == GL_LESS || c->depth_func == GL_LEQUAL)
+        ? p->depth_epoch : 0;
     r->state = *c;
     r->texture_context = texture_context;
     for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
@@ -389,6 +392,7 @@ static int sg_queue_submit(softgl_ctx *c, sg_worker_pool *p, sg_geometry_entry *
     for (int i = 0; i < p->nbins; i++) {
         sg_worker_bin tmp = p->bins[i]; p->bins[i] = r->bins[i]; r->bins[i] = tmp;
         r->bins[i].coverage_count = r->bins[i].count;
+        r->bins[i].depth_capture = r->depth_epoch != 0;
         if (r->bins[i].count) pending |= UINT32_C(1) << i;
     }
     if (!packed_mode && p->prepared_transformed) {

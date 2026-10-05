@@ -2522,3 +2522,189 @@ frozen candidate controls,
 and build/perf/tigerlake-20261004/{msaa-fixed-reuse,packed-screen-cache}-audit-*.
 Production source, live module 58ecf6ef and its accepted measurements remain
 unchanged.
+
+## 2026-10-05: cooperative stage handoffs, not retained
+
+An isolated queue trial lets an exclusive raster-bin owner return its bin
+between blocks of 128 triangles when the caller publishes a geometry stage.
+The next owner continues from a cursor stored in existing bin padding. The
+pending bit remains set until the complete bin finishes, preserving draw order
+and disjoint framebuffer ownership. All three helpers and the caller can work;
+there is no fifth coordinator. Decode tags reset at each ownership interval.
+
+The accepted module and trial each match 100 model hashes and four raw frames
+per model. Preliminary WASM renderer/queue/triangle gates pass 51/135/54.
+A separate forced-continuation stress test yields after every triangle and
+records 6,776,698 resumptions on each of native, WASM and ASan/UBSan builds.
+All 135 eager/queued state and sample-plane hashes remain exact, covering
+0/2/4 samples and 1/3/8 helpers. All twenty renderer translation units are
+rebuilt for the changed internal layout.
+
+Untimed stage instrumentation confirms the intended scheduling change. The
+BMW averages 31.79 yields and resumptions per frame. Summed vertex-stage wall
+durations fall from 3.145 to 2.388 ms/frame, and triangle-stage durations from
+2.236 to 1.489 ms/frame. Helper joins rise from 22.13 to 25.78 across nine
+vertex stages and from 13.05 to 20.05 across seven triangle stages. Both
+instrumented modules rasterize exactly 146,178.70 triangle-bin references
+per frame in this sequence. These perturbed stage durations include waits
+and preemption and are not CPU busy-time or acceptance FPS.
+
+The initial uninstrumented rendering benchmark is slower in five of six BMW
+pairs. Two independent three-pair audits change BMW frame time by +0.354%
+and +0.315%; T80 changes by +0.836% and -1.146%, outside the changed queue
+path. All quiet guards pass on attempt one: 640x360, 4x MSAA, three helpers
+plus caller, 80 warmup/100 measured frames, two AB/BA crossover rounds and
+resolve/readback each frame. No concurrent builds or profiles run. Shorter
+geometry stages do not establish a whole-frame gain in that measurement. The
+initial decision was rejection; after the user's later report of concurrent
+system load, these six pairs are historical diagnostics, not acceptance data.
+Cache/register effects remain hypotheses, not measured explanations. Other
+MSAA timing modes and full retention gates are not rerun for this rejection.
+
+Evidence: build/diagnostics/{stage-handoffs,queue-preemptible-bins,
+queue-preemptible-handoffs,queue-preemptible-stress}/, frozen
+build/controls/queue-preemptible-bins-candidate/, and guarded
+build/perf/tigerlake-20261004/queue-preemptible-bins-audit-*.
+
+## 2026-10-05: GL_EQUAL hierarchy trial, no target-scene work removed
+
+A private hierarchy extension also rejects GL_EQUAL triangles when the
+conservative incoming-depth lower bound is strictly greater than every
+overlapped cell's stored maximum. It preserves equality and disables rejection
+with stencil side effects. Native/ASan/WASM oracles pass 131,072 tracked depth
+writes, 1,048,576 conservative bounds and 1,536 hierarchy-on/off frame/query
+comparisons. Preliminary WASM gates pass 51/135/54, and both models match
+100 hashes and four raw frames against accepted 58ecf6ef.
+
+A separate draw-state diagnostic finds zero GL_EQUAL raster calls in either
+target model over all 100 frames. The viewer's BMW primary pass uses GL_LESS;
+reflection and transparent passes use GL_LEQUAL, which the accepted hierarchy
+already handles. The earlier read-only depth counts did not identify GL_EQUAL.
+The extension therefore removes no model work and is stopped before timing.
+Passing its correctness tests is not a target-scene performance improvement.
+
+Evidence: build/diagnostics/{hz-equal,hz-equal-counts}/, including the strengthened
+native/sanitizer oracle logs and byte-exact model comparisons.
+
+## 2026-10-05: transient depth visibility across geometry replays
+
+An untimed accepted-source diagnostic distinguishes geometric coverage from
+weak depth visibility (`incoming <= stored`, before alpha/color/sample filters).
+BMW averages 33,906.53 covered triangle-bin references in cache-associated
+draws, of which 12,427.74 are strictly hidden. This measurement excludes the
+early hierarchy rejection. Equality is common: 12,082.04 covered references
+have at least one equal-depth sample across the measured eligible draws.
+Both models retain 100 exact hashes and four byte-identical raw frames.
+
+The first private architecture trial captures weak visibility alongside the
+existing intrinsic-empty classification. It stores one hidden bit per retained
+reference in the reclaimed tail of the entry's triangle allocation, after
+intrinsic compaction completes. Allocation capacity is checked; entries without
+tail space fall back. No geometry-cache budget or bin stride grows. Unlike
+intrinsic emptiness, depth invisibility never permanently deletes a triangle
+from the general geometry cache.
+
+Depth reuse requires matching position/index revisions, transforms, viewport
+and multisample state through the existing geometry key, plus enabled depth
+testing, disabled stencil and polygon offset, and LESS/LEQUAL/EQUAL. Every
+worker flush invalidates the caller-owned depth epoch before joining work;
+streamed draws that can increase depth also invalidate it before preparation.
+Only monotonic LESS/LEQUAL/EQUAL writes can cross that epoch. Immutable jobs
+carry their captured epoch; workers do not read mutable geometry-cache entries.
+Publication checks entry validity/stamp, bin sizes and the current epoch.
+LESS failures that include equality remain available for later LEQUAL/EQUAL.
+Early HZ rejections are not classified as transiently hidden in this trial.
+
+A separate diagnostic of this implementation confirms actual BMW consumption:
+7.99 valid publications/frame, 12,002.01 hidden references captured and skipped
+from 58,522.77 eligible replay references. T80 has 0.19 publications and zero
+replay consumers. Both diagnostic models match accepted 58ecf6ef in 100 hashes
+and four raw frames; these logical counts are not instruction/cache/FPS counts.
+
+The new private oracle compares classification against an actual LEQUAL render
+in 2,048 cases, including adjacent float depths and mixed sample visibility:
+686 strictly hidden cases and 256 full equality ties preserved. Eighteen
+publication/depth-function/stencil/offset/epoch/stale-ticket checks also pass
+on native, WASM and ASan/UBSan. Preliminary WASM gates pass 51/135/54 and
+uninstrumented models match all 100 hashes and four raw frames. Missing fixture
+includes and a private helper-name error are corrected; failed compiler logs
+remain saved.
+
+Two guarded three-pair audits of the first implementation change BMW time by
+-0.358% and -1.089%, with four of six pairs improving. T80 changes by +3.744%
+and +0.946%, with five of six pairs slower. All guards pass on attempt one,
+using the same quiet 640x360/4x/three-helper/80-warm/100-frame/AB-BA/readback
+protocol as above. The first implementation was initially rejected for the
+T80 cost. The user subsequently reports concurrent system load and explicitly
+prioritizes BMW gains over small T80 regressions. These initial six pairs and
+the specialized variant's first nine pairs are therefore excluded from
+acceptance; the local guard did not establish absence of that reported load.
+The next private variant compiles capture into its own 4x root and restricts
+capture to the ordered multitexture queue; it is measured separately.
+
+The specialized variant's initial BMW audits are -2.315% / -2.032% / +1.602%,
+and T80 audits +0.309% / +2.013% / +2.444%. Its first six BMW pairs improve
+and the following three regress. These results remain saved with the reported
+load qualification. A fresh two-audit measurement uses a new
+`depth-replay-specialized-recheck` label after the user's correction.
+
+Its additional API integration oracle compares warm replays with forced VBO
+revision misses in 108 state cases per native/WASM/ASan run. It compares query
+counts and every resolved/color/depth/stencil sample, tests clears, depth pixel
+transfers, nonmonotonic writes, stencil, polygon offset, alpha/sample coverage,
+position/matrix changes and multisample switching. It also verifies that a
+4x warm replay really contains fewer references and that a subsequent flush
+restores the full intrinsic geometry. All 108 cases pass on each platform.
+
+Evidence: build/diagnostics/{depth-replay-counts,depth-replay,
+depth-replay-consumption,depth-replay-specialized}/, frozen candidate controls,
+and build/perf/tigerlake-20261004/depth-replay*-audit-*.
+
+### Specialized depth replay retained after the user's load correction
+
+Fresh 4x audits against byte-identical accepted 58ecf6ef improve paired BMW
+frame time by 1.457% and 3.141%; five of six independent pairs improve.
+Candidate FPS are 28.039 and 27.711. T80 changes by +0.621% / +0.175%, at
+66.231 / 66.975 FPS. The user explicitly prioritizes the reproducible BMW
+gain over a small T80 cost. BMW's 30 FPS target remains unmet.
+
+The retained variant compiles a separate 4x capture root with no capture
+bookkeeping in the ordinary 2x/4x roots. Only the ordered multitexture queue
+captures depth visibility. A fresh separate instrument of this exact variant
+confirms BMW's 12,002.01 skipped references from 58,522.77 eligible references,
+7.99 valid publications/frame, and zero T80 capture/replay consumers. It
+matches 100 model hashes and four raw frames per model against 58ecf6ef.
+These perturbed logical counts do not establish a cache-miss or instruction
+reduction. No extra coordinator, payload allocation or bin-stride growth.
+
+Two fresh 2x audits change BMW by +1.450% / +0.002% and T80 by
++0.726% / +0.832%; BMW pairs are mixed. The off audit changes BMW by
+-0.331% and T80 by -1.353%, also with mixed pairs. All fifteen acceptance
+pairs pass the local guard on attempt one, after the load correction, with
+three helpers plus caller and resolve/readback every frame. Previous guarded
+pairs with user-reported load remain saved and excluded. The paired changes
+are medians of per-pair geometric crossover ratios, not ratios of the pooled
+frame-time medians used for FPS.
+
+Fresh retention gates pass 741 native tests plus the single native benchmark,
+21 ASan/UBSan/leak contracts, 240 WASM/Mesa comparisons and 240/234/234
+byte-exact control images for off/2x/4x. Both models match 100 hashes and
+four raw frames in every mode. WASM renderer/queue/triangle/default-pool gates
+pass 51/135/54/18; strict clamp/sampler/shader/DOT3 and writer/cube oracles
+pass their existing counts. Scanline coverage passes 4,480 frames /
+46,688,256 masks; intrinsic classification passes 8,192 frames / 5,431,296
+masks on native/WASM/ASan. The new depth classification and 108 actual queue
+state cases pass on all three platforms. Both browsers pass 234 viewer tests,
+18 benchmark rows in sequential off/2x/4x passes, cancellation, sample-mode
+switching and the three-helper default on nine reported processors.
+
+Canonical source builds match measured JS/WASM byte-for-byte:
+WASM f58faf1775bf1c59075c9afa7fcf7a0a6cb5fac2dafffa1c9ebffefbcacd0247.
+All geometry, model assets, depth/color/texture arithmetic and image tolerances
+remain unchanged. Initial private fixture includes/helper declarations, an
+ASan target-list error and the wrong Firefox Python environment are corrected;
+their failed logs remain saved. Firefox's known mozprofile destructor message
+occurs after passed checks with exit zero. Evidence and publication bindings:
+build/diagnostics/depth-replay-specialized/validation.json, canonical module
+proof, build/diagnostics/depth-replay-specialized-consumption/, and fresh
+depth-replay-specialized{-recheck,-ms2,-ms0}-audit-* files.

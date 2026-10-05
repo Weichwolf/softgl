@@ -43,7 +43,8 @@ typedef struct {
     GLuint64       query_samples; /* worker-local; merged after the raster job */
     /* Pad to keep bins on separate cachelines. */
     int            coverage_count; /* completed packed draw's scratch indexing */
-    uint8_t        _pad[60];
+    int            depth_capture; /* immutable bin snapshot */
+    uint8_t        _pad[56];
 } sg_worker_bin;
 
 /* Bounded preparation scratch: workers write disjoint records; the caller
@@ -154,6 +155,7 @@ typedef struct {
     uint32_t triangle_index_min;
     atomic_int triangle_next;
     struct sg_geometry_entry *prepared_coverage_entry; /* caller-owned current draw */
+    uint64_t depth_epoch; /* caller only; any flush invalidates depth reuse */
 } sg_worker_pool;
 
 void sg_workers_init(softgl_ctx *c, int nworkers_hint);

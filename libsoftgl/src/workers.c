@@ -269,6 +269,7 @@ struct sg_geometry_entry {
     uint64_t stamp;
     sg_worker_tri *tris;
     size_t capacity;
+    uint64_t depth_epoch;
     int offsets[SG_MAX_BINS + 1];
 };
 
@@ -376,7 +377,7 @@ void sg_workers_geometry_store(softgl_ctx *c, sg_geometry_entry *entry,
         offset += bin->count;
     }
     entry->offsets[p->nbins] = offset;
-    entry->imin = imin; entry->imax = imax; entry->valid = 1;
+    entry->imin = imin; entry->imax = imax; entry->valid = 1; entry->depth_epoch = 0;
     if (c->fb.samples && !c->scissor_enabled && c->render_mode == GL_RENDER) {
         int transformed = 1;
         for (int i = 0; i < offset; i++) {
@@ -396,8 +397,21 @@ void sg_workers_geometry_replay(softgl_ctx *c, const sg_geometry_entry *entry) {
         sg_worker_bin *bin = &p->bins[b];
         if (!count) continue;
         sg_bin_grow(bin, count);
-        memcpy(bin->tris, entry->tris + first, (size_t)count * sizeof(*bin->tris));
-        bin->count = count;
+        if (entry->depth_epoch && entry->depth_epoch == p->depth_epoch &&
+            c->fb.samples == 4 && c->depth_test && !c->stencil_test &&
+            !c->polygon_offset_fill && (c->depth_func == GL_LESS ||
+             c->depth_func == GL_LEQUAL || c->depth_func == GL_EQUAL)) {
+            const uint8_t *hidden = (const uint8_t *)(entry->tris + entry->offsets[p->nbins]);
+            int out = 0;
+            for (int i = first; i < first + count; i++) {
+                if (hidden[i >> 3] & (1u << (i & 7))) continue;
+                bin->tris[out++] = entry->tris[i];
+            }
+            bin->count = out;
+        } else {
+            memcpy(bin->tris, entry->tris + first, (size_t)count * sizeof(*bin->tris));
+            bin->count = count;
+        }
     }
 }
 
@@ -548,6 +562,7 @@ typedef struct sg_async_raster {
     sg_packed_raster_vertices packed;
     sg_geometry_entry *coverage_entry;
     uint64_t coverage_stamp;
+    uint64_t depth_epoch;
 } sg_async_raster;
 
 static void sg_drain_bins(softgl_ctx *c, sg_worker_pool *p,
@@ -564,6 +579,7 @@ static void sg_drain_bins(softgl_ctx *c, sg_worker_pool *p,
         sg_worker_bin *b = &bins[index];
         b->query_samples = 0;
         int n = b->count;
+        b->depth_capture = 0;
         if (!n) continue;
         sg_raster_bin = b;
         if (sort) sg_bin_sort_z(b);
@@ -609,6 +625,7 @@ void sg_drain_packed_bins(sg_worker_pool *p, sg_async_raster *job) {
         b->query_samples = 0;
         int n = b->count;
         b->coverage_count = n;
+        b->depth_capture = job->depth_epoch != 0;
         if (!n) continue;
         sg_raster_bin = b;
         if (sort) sg_bin_sort_z(b);
@@ -624,7 +641,7 @@ void sg_drain_packed_bins(sg_worker_pool *p, sg_async_raster *job) {
                 b->ix0, b->ix1, &job->texture_context);
             if (job->coverage_entry) {
                 uint32_t original = sort ? b->sort_keys[i] : (uint32_t)i;
-                b->sort_keys[n + original] = empty == 1;
+                b->sort_keys[n + original] = empty >= 0 ? (uint32_t)empty : 0;
             }
         }
         b->count = 0;
@@ -655,12 +672,33 @@ static void sg_publish_coverage(sg_worker_pool *p, sg_async_raster *job) {
         if (!n) continue;
         const uint32_t *empty = job->bins[b].sort_keys + n;
         for (int i = 0; i < n; i++) {
-            if (empty[i]) continue;
+            if (empty[i] & 1u) continue;
             if (out != first + i) entry->tris[out] = entry->tris[first + i];
             out++;
         }
     }
     entry->offsets[p->nbins] = out;
+    entry->depth_epoch = 0;
+    size_t bitmap_bytes = ((size_t)out + 7) / 8;
+    if (job->depth_epoch && job->depth_epoch == p->depth_epoch && out &&
+        (size_t)out * sizeof(*entry->tris) + bitmap_bytes <= entry->capacity) {
+        /* The reclaimed triangle tail belongs to this entry, within the
+         * unchanged shared 4 MiB geometry budget. Write only after compaction. */
+        uint8_t *hidden = (uint8_t *)(entry->tris + out);
+        memset(hidden, 0, bitmap_bytes);
+        int reference = 0;
+        for (int b = 0; b < p->nbins; b++) {
+            int n = job->bins[b].coverage_count;
+            if (!n) continue;
+            const uint32_t *flags = job->bins[b].sort_keys + n;
+            for (int i = 0; i < n; i++) {
+                if (flags[i] & 1u) continue;
+                if (flags[i] & 2u) hidden[reference >> 3] |= 1u << (reference & 7);
+                reference++;
+            }
+        }
+        entry->depth_epoch = job->depth_epoch;
+    }
 }
 
 static void sg_finish_stream(sg_worker_pool *p) {
@@ -977,6 +1015,12 @@ const sg_vert *sg_workers_transform_compact(softgl_ctx *c, int first, int count)
 
 int sg_workers_can_stream(softgl_ctx *c, GLenum mode, GLsizei count) {
     sg_worker_pool *p = (sg_worker_pool *)c->workers;
+    /* Nonstreaming primitives flush before accessing the framebuffer. Only
+     * indexed streaming draws can cross an epoch without that barrier. */
+    if (p && c->depth_test && c->depth_mask && c->depth_func != GL_LESS &&
+        c->depth_func != GL_LEQUAL && c->depth_func != GL_EQUAL) {
+        if (++p->depth_epoch == 0) p->depth_epoch = 1;
+    }
     return p && p->nworkers && mode == GL_TRIANGLES && count >= 3 &&
         !c->imm_active && c->render_mode == GL_RENDER &&
         c->polygon_mode_front == GL_FILL && c->polygon_mode_back == GL_FILL &&
@@ -1053,6 +1097,7 @@ int sg_submit_packed_stream(softgl_ctx *c, sg_worker_pool *p, sg_geometry_entry 
     }
     job->coverage_entry = entry;
     job->coverage_stamp = job->coverage_entry ? job->coverage_entry->stamp : 0;
+    job->depth_epoch = 0; /* capture only in the ordered multitexture queue */
     job->state = *c;
     if (packed_mode) job->texture_context = texture_context;
     else sg_tex_tri_prepare(c, &job->texture_context);
@@ -1165,6 +1210,7 @@ const uint8_t *sg_workers_inside_frustum(softgl_ctx *c) {
 void sg_workers_flush(softgl_ctx *c) {
     sg_worker_pool *p = (sg_worker_pool*)c->workers;
     if (!p) return;
+    if (++p->depth_epoch == 0) p->depth_epoch = 1;
     p->prepared_coverage_entry = NULL;
     sg_finish_stream(p);
 
