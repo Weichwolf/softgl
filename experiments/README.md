@@ -6,6 +6,12 @@ for BMW/T-80 in all three MSAA modes are published in
 hash record reproduces byte-for-byte. These diagnostics motivate exact SIMD
 coverage-edge recurrence; they establish no accepted performance gain.
 
+The ensuing [coverage recurrence trial](msaa-coverage-recurrence/README.md)
+passes all regression gates but is rejected: BMW 2x frame time increases by
+3.208%/1.637%, while 4x changes by +0.574%/-0.050% with three faster and three
+slower pairs. All fifteen off/2x/4x comparisons and sixteen quiet-guard attempts
+are published. Reducing broadcasts alone does not establish a renderer gain.
+
 SoftGL's current objective is open, reproducible research into the fastest
 practical OpenGL 1.5 implementation in WebAssembly. BMW F31 has priority;
 T-80 is the second demanding reference. Image quality, prepared geometry and
