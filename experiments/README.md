@@ -1,11 +1,20 @@
 # Optimization evidence
 
-[Two-sample transient depth replay](depth-replay-two/README.md) is retained:
-BMW 2x frame time falls by 5.184%/4.718%, with all six pairs faster. The full
-off/2x/4x comparisons, regression and browser gates, actual replay-consumption
-diagnostic and independent patch are published. T-80 and four-sample controls
-remain mixed; no gain is claimed for those paths. Canonical module `4d73c88f`
-is byte-identical to the timed candidate.
+[Conservative off-mode depth replay](depth-replay-off-bound/README.md) is
+retained with an explicit trade-off: BMW without MSAA takes 9.481%/9.064%
+less frame time, with all six pairs faster; BMW 4x costs 1.640%/0.891%,
+with all six pairs slower. BMW 2x is mixed; T-80 2x costs 0.265%/0.939%
+with four of six pairs slower. Eighteen comparisons, nineteen quiet-guard
+attempts, full regression/browser/canonical gates and a separate five-counter
+consumption diagnostic are published. Canonical module `e7ea52b2` is
+byte-identical to the timed candidate. The portable verifier recomputes
+all paired audits and checks every archived artifact hash.
+
+The preceding [two-sample transient depth replay](depth-replay-two/README.md)
+remains part of the renderer: BMW 2x frame time fell by 5.184%/4.718%
+against its own `58132377` baseline, with all six pairs faster. Its full
+measurements and gates remain available. Those historical gains are not
+additional gains against the current off-trial reference `4d73c88f`.
 
 Fresh profiles of the current renderer and a repeated logical-work census
 for BMW/T-80 in all three MSAA modes are published in

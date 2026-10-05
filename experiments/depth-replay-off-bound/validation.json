@@ -1,0 +1,362 @@
+{
+  "status": "retained-all-gates-verified-publication-ready",
+  "researchBaselineCommit": "a2ec6bb6b767221cc6d50afa588359d189e7c163",
+  "referenceWasmSha256": "4d73c88f345856bf4a0c07ffca7ecffeb2485ff8dac84906405f68795ca22bd2",
+  "hypothesis": "Off-mode capture uses actual packet early-depth loads and conservative minimum-vertex minus 2e-6 bound, independent of later scalar/quad producer choice. Other capture shading paths retain references. Static capture root leaves ordinary off bookkeeping out; enables off intrinsic coverage and ordered strict depth replay within existing epoch/state/storage guards. Added comparisons/code layout/publication may outweigh saved references.",
+  "predeclaredTimings": {
+    "driver": "build/diagnostics/depth-replay-off-bound/compare-off.py",
+    "label": "depth-replay-off-bound",
+    "pairs": 18,
+    "samples": [
+      0,
+      2,
+      4
+    ],
+    "scenes": [
+      "bmw",
+      "tank"
+    ],
+    "reference": "build/controls/depth-replay-two-candidate",
+    "candidate": "build/controls/depth-replay-off-bound-candidate",
+    "auditsEachMode": 2,
+    "offAudits": 2,
+    "reason": "Off is the target mode, so predeclare two independent off audits as well as the existing two audits each for 2x/4x, before any timing starts. No conditional confirmation."
+  },
+  "patchSha256": "bb98fab85c4d46aab647842ead27bf63ca45ca0def43532f5f6db928b2ab67d7",
+  "nativeOffCaptureResult": "off capture: 4608 cases against actual packet/scalar/quad LEQUAL/ALWAYS renders safe; visible/empty/hidden=3376/816/416, 232 LESS ties and 416 conservative hidden references retained",
+  "nativeMsaaCaptureResult": "depth capture: 8192 actual LEQUAL/ALWAYS classification cases exact; 2x visible/empty/hidden=2496/768/832 4x=2496/768/832, 416 LESS ties preserved",
+  "nativeApiCases": 348,
+  "changedSourceFiles": [
+    "libsoftgl/src/rasterizer.c",
+    "libsoftgl/src/raster_triangle_impl.h",
+    "libsoftgl/src/workers.c",
+    "libsoftgl/src/workers_queue_raw.inc",
+    "tests/depth_replay.c"
+  ],
+  "candidateWasmSha256": "e7ea52b2583d0f66c98ad1fd4e1de8566bccd56beffb04443edce6c11a89595e",
+  "candidateJsSha256": "5ae27dff8e55ae3bee24e16b2014075a3dd6aa66ade340b2d3ca67fa2977e4a5",
+  "consumption": {
+    "diagnosticWasmSha256": "9df8187b79c23abff911f43ad69af4a533fb2e9b62f3c203bf472fc4a8e9f2cc",
+    "baseWasmSha256": "e7ea52b2583d0f66c98ad1fd4e1de8566bccd56beffb04443edce6c11a89595e",
+    "objectsReplaced": [
+      "workers.c.o"
+    ],
+    "timed": false,
+    "proof": "100 dual hashes and 4 complete RGBA frames match each model in all three modes; integer nonnegative caller-only counters verified, skipped<=eligible. Intrinsic counts are a separate event type, not unique primitives or saved cycles.",
+    "modes": [
+      {
+        "samples": 0,
+        "file": "build/diagnostics/depth-replay-off-bound-consumption/consumption-0.json",
+        "sha256": "810c488df2647b9a7f9716f6234cc2e9f9c9c040b0e9327d9a62650a86946a0a",
+        "models": {
+          "bmw": {
+            "eligibleReplayReferences": {
+              "mean": 35027.91,
+              "min": 29677,
+              "max": 36961
+            },
+            "skippedReplayReferences": {
+              "mean": 20463.8,
+              "min": 19310,
+              "max": 21097
+            },
+            "validPublications": {
+              "mean": 8,
+              "min": 8,
+              "max": 8
+            },
+            "capturedHiddenReferences": {
+              "mean": 20463.8,
+              "min": 19310,
+              "max": 21097
+            },
+            "intrinsicReferencesRemoved": {
+              "mean": 13745.4,
+              "min": 11352,
+              "max": 15106
+            }
+          },
+          "tank": {
+            "eligibleReplayReferences": {
+              "mean": 0,
+              "min": 0,
+              "max": 0
+            },
+            "skippedReplayReferences": {
+              "mean": 0,
+              "min": 0,
+              "max": 0
+            },
+            "validPublications": {
+              "mean": 0,
+              "min": 0,
+              "max": 0
+            },
+            "capturedHiddenReferences": {
+              "mean": 0,
+              "min": 0,
+              "max": 0
+            },
+            "intrinsicReferencesRemoved": {
+              "mean": 0.5,
+              "min": 0,
+              "max": 15
+            }
+          }
+        }
+      },
+      {
+        "samples": 2,
+        "file": "build/diagnostics/depth-replay-off-bound-consumption/consumption-2.json",
+        "sha256": "1aae944cd7c920654cab9b185592d71fde06b9b29f6ffc1f5f165ac18d3bcd41",
+        "models": {
+          "bmw": {
+            "eligibleReplayReferences": {
+              "mean": 54799.09,
+              "min": 50775,
+              "max": 56273
+            },
+            "skippedReplayReferences": {
+              "mean": 37601.59,
+              "min": 36354,
+              "max": 40415
+            },
+            "validPublications": {
+              "mean": 7.99,
+              "min": 7,
+              "max": 8
+            },
+            "capturedHiddenReferences": {
+              "mean": 37601.59,
+              "min": 36354,
+              "max": 40415
+            },
+            "intrinsicReferencesRemoved": {
+              "mean": 12976.02,
+              "min": 10877,
+              "max": 14881
+            }
+          },
+          "tank": {
+            "eligibleReplayReferences": {
+              "mean": 0,
+              "min": 0,
+              "max": 0
+            },
+            "skippedReplayReferences": {
+              "mean": 0,
+              "min": 0,
+              "max": 0
+            },
+            "validPublications": {
+              "mean": 0,
+              "min": 0,
+              "max": 0
+            },
+            "capturedHiddenReferences": {
+              "mean": 0,
+              "min": 0,
+              "max": 0
+            },
+            "intrinsicReferencesRemoved": {
+              "mean": 381.3,
+              "min": 0,
+              "max": 2491
+            }
+          }
+        }
+      },
+      {
+        "samples": 4,
+        "file": "build/diagnostics/depth-replay-off-bound-consumption/consumption-4.json",
+        "sha256": "667fedabb009c2ed257978928deb4752f904ed56d9e7260334929c27c3299503",
+        "models": {
+          "bmw": {
+            "eligibleReplayReferences": {
+              "mean": 58522.77,
+              "min": 54170,
+              "max": 60275
+            },
+            "skippedReplayReferences": {
+              "mean": 38482.09,
+              "min": 37036,
+              "max": 41422
+            },
+            "validPublications": {
+              "mean": 7.99,
+              "min": 7,
+              "max": 8
+            },
+            "capturedHiddenReferences": {
+              "mean": 38482.09,
+              "min": 37036,
+              "max": 41422
+            },
+            "intrinsicReferencesRemoved": {
+              "mean": 9252.34,
+              "min": 7680,
+              "max": 10528
+            }
+          },
+          "tank": {
+            "eligibleReplayReferences": {
+              "mean": 0,
+              "min": 0,
+              "max": 0
+            },
+            "skippedReplayReferences": {
+              "mean": 0,
+              "min": 0,
+              "max": 0
+            },
+            "validPublications": {
+              "mean": 0,
+              "min": 0,
+              "max": 0
+            },
+            "capturedHiddenReferences": {
+              "mean": 0,
+              "min": 0,
+              "max": 0
+            },
+            "intrinsicReferencesRemoved": {
+              "mean": 244.83,
+              "min": 0,
+              "max": 1635
+            }
+          }
+        }
+      }
+    ]
+  },
+  "offOracleCasesEachEngine": 4608,
+  "oracleDomainFailure": "Initial WASM safety checks passed all 4096 cases, ties=104, classes=2912/768/416, but retained_hidden=0 made domain-observation assertion fail. Native had 208 incidental near-hidden cases. Keep all original cases and add 512 explicit margin/binary-tie cases; no classification/image tolerance changes. Initial logs/source/probe archived; full gates repeated.",
+  "wasmOffCaptureResult": "off capture: 4608 cases against actual packet/scalar/quad LEQUAL/ALWAYS renders safe; visible/empty/hidden=3376/816/416, 232 LESS ties and 208 conservative hidden references retained",
+  "wasmMsaaCaptureResult": "depth capture: 8192 actual LEQUAL/ALWAYS classification cases exact; 2x visible/empty/hidden=2896/768/432 4x=2912/768/416, 416 LESS ties preserved",
+  "offOracleDistributionNote": "Off classes3376/816/416 and232LESS ties match in these native/WASM runs; conservatively retained hidden cases416native/208WASM differ. Both satisfy their own actual packet/scalar/quad render safety oracle. Existing MSAA backend class distributions also differ. No cross-backend pixel/depth identity claim.",
+  "fullGateReceipts": [
+    {
+      "file": "native-full-tests.log",
+      "passed": 743,
+      "sha256": "34e758ff763ecede3baad04ce85601fbb4817e46ce3ed24ccd458bec88cfe105"
+    },
+    {
+      "file": "native-full-bench.log",
+      "passed": 1,
+      "sha256": "13f7bbf77f8bd78780ef21d490c7669cfde606c0dd9976e3fbe3632be883a847"
+    },
+    {
+      "file": "asan-full-tests.log",
+      "passed": 23,
+      "sha256": "95fbaa0c857fd1393fcadd40233899e45d58ad4e2dc11ca52766f1083f619eac"
+    }
+  ],
+  "regressions": {
+    "native": 743,
+    "benchmark": 1,
+    "asanUbsan": 23,
+    "mesaImages": 240,
+    "exactImagesEachMode": 234,
+    "modelHashesEachModeEachModel": 100,
+    "modelRawFramesEachModeEachModel": 4,
+    "wasmContracts": 22,
+    "offCaptureCasesEachEngine": 4608,
+    "msaaCaptureCasesEachEngine": 8192,
+    "queuedApiCasesEachEngine": 348,
+    "offLessTiesEachEngine": 232,
+    "msaaLessTiesEachEngine": 416
+  },
+  "productionSources": {
+    "libsoftgl/src/api.c": "76578a3b458c8943efbd94910bdffb3060dadf40c6942ce65adda97f3f45d5db",
+    "libsoftgl/src/buffers.c": "a0363363f060dc9cbd99a64703496e1e702c2cf82beb42b16a54337b524be2ff",
+    "libsoftgl/src/clip.c": "f5c0b940f54a4aa52a2d55785de31d72c168d381b53012e408179f81381de3cc",
+    "libsoftgl/src/dlist.c": "e7446f33b3972e4384c103c2547869dfffad43c900e1f55bf6f8c38eaf36eae8",
+    "libsoftgl/src/dlist.h": "4bc8e0e5966f5b226c8e086ead9a635fd6158eed18b0c55e4b4c2ed0bdbda033",
+    "libsoftgl/src/evaluators.c": "69281ca9f25e0f7d5cc1f76f31fb17502c83b60ea6168bbbae238e65227344ba",
+    "libsoftgl/src/frag_combine_hot.h": "e801062d6fe0ce8ade5f12730ba4cb1441689ba6bd39a331a308bc99e29f72cc",
+    "libsoftgl/src/frag_hot.h": "e0e1cba7afec1b2c13a53a8198207d868fa0636a84ee98e059f238d131dca52e",
+    "libsoftgl/src/frag_packet.h": "217cd6bfcae38b7c2428077bc4c1e772ca178d82498a21d963c0cc86061c4dc6",
+    "libsoftgl/src/fragment.c": "01d88705e22b03c3cf3d8b16abfca9a70e97f35b5206023376daca9ba2a9881c",
+    "libsoftgl/src/fragment_combine.c": "b7af7972265bf0ac384379fcba6885e93707cdd8a0de956f691ad28ed1dd7153",
+    "libsoftgl/src/fragment_write.c": "858963ba2a239834351e31ab81f2b62c35606ebfd56fd104c7756db4902d84db",
+    "libsoftgl/src/framebuffer.c": "7c82e1f52d5b2c2e7d9752d155f379109a8791c41b147713cfb14f2788e1a974",
+    "libsoftgl/src/immediate.c": "80b520a3c3c14e675eeca5d3083c5dbe423e9684a69b868446f85e99ef86534c",
+    "libsoftgl/src/lighting.c": "1e6db9b4f59e2a54b1f6b89e6bc129d206dc816aaa08f099d80e6f8f2f42e338",
+    "libsoftgl/src/lines.c": "b08fef911685977a08d6f2b29265aa28721aa0497a1a208c492403bdde0bbe87",
+    "libsoftgl/src/matrix.c": "fd5bff0e263cd87d1032fad4fa75f966f76b2cc605b746d47e3d4eeabde6d793",
+    "libsoftgl/src/msaa_additive.h": "6fab4198defe4db18a83f1562034807e71957ba07db0c0bd51f2e26c90d4778f",
+    "libsoftgl/src/multisample.c": "2ba7fe2df9c8afed9acf1daa5ea48df6fbe8b5c0cceeac11bd61c3804423ea1d",
+    "libsoftgl/src/multisample.h": "cdbe1e0aa51827f13789ce7f46e3acc961e0b87c5d034e1c7ba22fe54c611315",
+    "libsoftgl/src/pipeline.c": "cda2d9d0fb96dd415e433c19e6f3e08909444a8cf0b890f8e3bf69443a92f931",
+    "libsoftgl/src/pixels.c": "8e366864ac1418564d2342bd3c120ad5e8057998af21ff31ccb5663134ddfc92",
+    "libsoftgl/src/raster_hz.h": "1cc4a6fe6f5a425607cb3b8a57d15cb19d5de537794c638b673f0bd4a14b4ed6",
+    "libsoftgl/src/raster_msaa_impl.h": "723d523901939d528c3523daa780637b5b9d3ffecb7b2b370a4f8c5500e53c6f",
+    "libsoftgl/src/raster_store.h": "0b73b684bf662882425ecb17b8d381a57adb54022209ce4f2ab7118a6f065f8f",
+    "libsoftgl/src/raster_triangle_impl.h": "726ad0d45c608046254bbe767560d4fa1412ae3747fa25387977531b7ecf692a",
+    "libsoftgl/src/raster_types.h": "0b050bdbf31f6c398366112c84a6041390a50398d1e18acafe4c7440a0700f45",
+    "libsoftgl/src/raster_vertex_pack.h": "956a8084b973144a9d8ee28c0d485214e3e8551a7384238f610620e00ad6e528",
+    "libsoftgl/src/rasterizer.c": "7d79ebd83718a5082be3f95010bf2f184ee024fdfa4cb35afb2dcdd31b392412",
+    "libsoftgl/src/simd.h": "44b532f4427f3e76886228dfe96024adf3ba1c1c748c7031d2fff2413db9c608",
+    "libsoftgl/src/state.c": "bffa3243dffdbef27ddc90c7ad6f2394d393f0dc47bf1d3797b2b5b63e8a875c",
+    "libsoftgl/src/texture.c": "9c4d999c73b68a7431bd1f0e88c2d3d2e7e1931670ad166ffee535f8d5764c45",
+    "libsoftgl/src/types.h": "c90361869e5600b1e3164ca31ba87c6af31a659e2f888456d90d6de6bea52fe1",
+    "libsoftgl/src/vertex_inputs.h": "fb774a51f4627b91dd6d58fc2cb918df04ef224d45cd898dfa1ed5dd9a0b0db5",
+    "libsoftgl/src/workers.c": "958a3bb4425b91c544da8f4fc2116fc46f04ee9a784909d8e69909479c773417",
+    "libsoftgl/src/workers.h": "c8001b8eceae3191ab3e94e962e95eab8f28e7bef86ce4455e97e49541a0313b",
+    "libsoftgl/src/workers_queue_raw.inc": "a8150d0d9498ba164b0606945f7cb216749536c5a0b53dfe1ff03bec0e0bbbfe"
+  },
+  "productionObjects": {
+    "build/diagnostics/depth-replay-off-bound/objects/api.c.o": "b770bb926db2248c564b1dfdef7600a09275e2b4f729beb67f7a7ae11d9900f5",
+    "build/diagnostics/depth-replay-off-bound/objects/buffers.c.o": "198f1f87b6ef7555c45cde2ec5fe17a9285e7386103535e7dc7030e981dd0d28",
+    "build/diagnostics/depth-replay-off-bound/objects/clip.c.o": "326abb30c6ab66776550f92ff118bfb31d1e4d2c831bc99a6d303985dcdebd1e",
+    "build/diagnostics/depth-replay-off-bound/objects/dlist.c.o": "5eb1d922b3b9e92d66f761acb7006724269a88afe4a9794b6f0533dd4e3da219",
+    "build/diagnostics/depth-replay-off-bound/objects/evaluators.c.o": "6b07003029152337999698f57915c575562bce186d1b982fd96c70764f0c8ae3",
+    "build/diagnostics/depth-replay-off-bound/objects/fragment.c.o": "73854606d29443d00ba22cab9030917bddacbfaf7f4685e349eeee10e9734864",
+    "build/diagnostics/depth-replay-off-bound/objects/fragment_combine.c.o": "1404fd3cfc36063699614be1c94caa6bd2fff1c3a40dc666fa0b7877f6735f46",
+    "build/diagnostics/depth-replay-off-bound/objects/fragment_write.c.o": "23b41fcfb0b2ac480bdbf520c71df8864688c73be9cdef7acede017ab6940591",
+    "build/diagnostics/depth-replay-off-bound/objects/framebuffer.c.o": "f1f6e46979adf21b249cbee112ef552a4ed116aad16530fe9f444c75b0ad0ea2",
+    "build/diagnostics/depth-replay-off-bound/objects/immediate.c.o": "77e0359671cd2ba2232753bef46c926ee26cc6b953ce8b2b46ac69ffcdd8c481",
+    "build/diagnostics/depth-replay-off-bound/objects/lighting.c.o": "5b832d3bca16afa792de05642a78bc6f4e79d01e64b09ff3d3ba58bda461d848",
+    "build/diagnostics/depth-replay-off-bound/objects/lines.c.o": "3550bdc5b8039e52b060b30101baa521525b93e3c3a40bdb14293095285261ec",
+    "build/diagnostics/depth-replay-off-bound/objects/matrix.c.o": "730aacd6a55b22393c5a7b01998f3fca8102cdd7210edd19aca550f72f312b18",
+    "build/diagnostics/depth-replay-off-bound/objects/multisample.c.o": "d3c01250bd1c61599325d49da3f062a932c30f73fbd27c75c3ad14788bfe9c42",
+    "build/diagnostics/depth-replay-off-bound/objects/pipeline.c.o": "8fdbe3daba602aa5edcf209d51287de2ea6b450394d8dcfc96f3077020908650",
+    "build/diagnostics/depth-replay-off-bound/objects/pixels.c.o": "4fe17f0cc61da97c2886fa295645bede5c0aa35edc02dfc2aa52b79c22105b32",
+    "build/diagnostics/depth-replay-off-bound/objects/rasterizer.c.o": "600d583dd87e7d2ab376104a4f576f3edde1fa13b04fe49c2e9a995909a018d0",
+    "build/diagnostics/depth-replay-off-bound/objects/state.c.o": "ef4e65f2dc929960c2a749cf2728819a9cafc5a4041fa7d3abe44dec4c1983af",
+    "build/diagnostics/depth-replay-off-bound/objects/texture.c.o": "ebd621c5ed6626301678267f13d8e849e324917975a253dabeef83b9ea4d20ff",
+    "build/diagnostics/depth-replay-off-bound/objects/workers.c.o": "63e33cb6482fa7f652407e8067d30577860bd23e379a97befc0d9a9b9922859d"
+  },
+  "timingSession": 88909,
+  "timingProcess": {
+    "pid": 1960212,
+    "state": "S",
+    "ppid": 1960211,
+    "birthTicks": "21225037",
+    "args": [
+      "python3",
+      "build/diagnostics/depth-replay-off-bound/compare-off.py",
+      "--reference",
+      "build/controls/depth-replay-two-candidate",
+      "--candidate",
+      "build/controls/depth-replay-off-bound-candidate",
+      "--output-dir",
+      "build/perf/tigerlake-20261005",
+      "--label",
+      "depth-replay-off-bound",
+      "--off-audits",
+      "2"
+    ]
+  },
+  "retentionDecision": "retained",
+  "decision": "Retain the reproducible BMW off-mode gain: all six pairs faster, audit frame-time changes -9.4805%/-9.0637%. Accept and explicitly report the BMW 4x cost: all six pairs slower, +1.6397%/+0.8907%. BMW 2x is mixed (+0.5194%/-1.3290%, 3/6 faster), so no 2x improvement is claimed. T-80 is mixed, including 2x +0.2651%/+0.9393% with 4/6 pairs slower. The strong off-mode BMW gain justifies this trade-off under the current open-research objective; next investigate MSAA dispatch/code layout without changing sample arithmetic. No causal native-code/cache claim is established.",
+  "timingProcessTerminal": true,
+  "timingAttempts": 19,
+  "timingAcceptedPairs": 18,
+  "bothBrowserUiRepeated": true,
+  "canonicalJsWasmByteExact": true,
+  "diagnosticPatchByteExact": true,
+  "retentionGateSessionTerminal": true,
+  "timingResultSha256": "a21d23c795b4bbea164464f3d2822f0091f937ec4fc2c5f227aadfea04c3992e",
+  "acceptedProductionUnchanged": false
+}

@@ -1,0 +1,61 @@
+--- a/libsoftgl/src/workers.c
++++ b/libsoftgl/src/workers.c
+@@ -1,5 +1,14 @@
+ #include "raster_hz.h"
+ #include "workers.h"
++
++/* Caller-only diagnostic writes; read only between joined resolves. */
++static uint64_t sg_depth_replay_counts[3][5];
++__attribute__((used, noinline))
++double sg_depth_replay_diag_counter(int samples, int field) {
++    if ((samples != 0 && samples != 2 && samples != 4) || field < 0 || field >= 5)
++        return -1.;
++    return (double)sg_depth_replay_counts[samples / 2][field];
++}
+ #include "raster_types.h"
+ #include "raster_vertex_pack.h"
+ #include <stdlib.h>
+@@ -402,9 +411,13 @@
+             !c->polygon_offset_fill && (c->depth_func == GL_LESS ||
+              c->depth_func == GL_LEQUAL || c->depth_func == GL_EQUAL)) {
+             const uint8_t *hidden = (const uint8_t *)(entry->tris + entry->offsets[p->nbins]);
++            sg_depth_replay_counts[c->fb.samples / 2][0] += count;
+             int out = 0;
+             for (int i = first; i < first + count; i++) {
+-                if (hidden[i >> 3] & (1u << (i & 7))) continue;
++                if (hidden[i >> 3] & (1u << (i & 7))) {
++                    sg_depth_replay_counts[c->fb.samples / 2][1]++;
++                    continue;
++                }
+                 bin->tris[out++] = entry->tris[i];
+             }
+             bin->count = out;
+@@ -672,7 +685,10 @@
+         if (!n) continue;
+         const uint32_t *empty = job->bins[b].sort_keys + n;
+         for (int i = 0; i < n; i++) {
+-            if (empty[i] & 1u) continue;
++            if (empty[i] & 1u) {
++                sg_depth_replay_counts[job->state.fb.samples / 2][4]++;
++                continue;
++            }
+             if (out != first + i) entry->tris[out] = entry->tris[first + i];
+             out++;
+         }
+@@ -693,11 +709,15 @@
+             const uint32_t *flags = job->bins[b].sort_keys + n;
+             for (int i = 0; i < n; i++) {
+                 if (flags[i] & 1u) continue;
+-                if (flags[i] & 2u) hidden[reference >> 3] |= 1u << (reference & 7);
++                if (flags[i] & 2u) {
++                    hidden[reference >> 3] |= 1u << (reference & 7);
++                    sg_depth_replay_counts[job->state.fb.samples / 2][3]++;
++                }
+                 reference++;
+             }
+         }
+         entry->depth_epoch = job->depth_epoch;
++        sg_depth_replay_counts[job->state.fb.samples / 2][2]++;
+     }
+ }
+ 

@@ -1,0 +1,860 @@
+--- a/libsoftgl/src/rasterizer.c
++++ b/libsoftgl/src/rasterizer.c
+@@ -742,264 +742,21 @@
+  * tile_ix0=0, tile_ix1=fb.w reproduces the whole-FB behaviour exactly
+  * (caller is the single-thread path). Workers pass their owned X-stripe
+  * to parallelise across tiles without touching each other's columns. */
+-int sg_raster_triangle_tile_prepared(softgl_ctx *c,
+-                             const sg_vert *v0,
+-                             const sg_vert *v1,
+-                             const sg_vert *v2,
+-                             int tile_ix0, int tile_ix1,
+-                             const sg_tex_tri_ctx *tctx) {
+-    /* 16.8 fixed-point screen coords. */
+-    sg_screen_t x0 = sg_fp_screen_from_float(v0->ndc.x);
+-    sg_screen_t y0 = sg_fp_screen_from_float(v0->ndc.y);
+-    sg_screen_t x1 = sg_fp_screen_from_float(v1->ndc.x);
+-    sg_screen_t y1 = sg_fp_screen_from_float(v1->ndc.y);
+-    sg_screen_t x2 = sg_fp_screen_from_float(v2->ndc.x);
+-    sg_screen_t y2 = sg_fp_screen_from_float(v2->ndc.y);
+-
+-    int64_t area2 = (int64_t)(x1 - x0) * (int64_t)(y2 - y0)
+-                  - (int64_t)(y1 - y0) * (int64_t)(x2 - x0);
+-    if (area2 <= 0) return c->scissor_enabled ? -1 : 1;   /* degenerate or back-face */
+-
+-    int bias0 = sg_is_top_left(x1, y1, x2, y2) ? 0 : -1;
+-    int bias1 = sg_is_top_left(x2, y2, x0, y0) ? 0 : -1;
+-    int bias2 = sg_is_top_left(x0, y0, x1, y1) ? 0 : -1;
+-
+-    sg_screen_t min_x_fp = x0; if (x1 < min_x_fp) min_x_fp = x1; if (x2 < min_x_fp) min_x_fp = x2;
+-    sg_screen_t max_x_fp = x0; if (x1 > max_x_fp) max_x_fp = x1; if (x2 > max_x_fp) max_x_fp = x2;
+-    sg_screen_t min_y_fp = y0; if (y1 < min_y_fp) min_y_fp = y1; if (y2 < min_y_fp) min_y_fp = y2;
+-    sg_screen_t max_y_fp = y0; if (y1 > max_y_fp) max_y_fp = y1; if (y2 > max_y_fp) max_y_fp = y2;
+-
+-    int ix0 = (int)(min_x_fp >> SG_FP_SUBPIXEL_BITS);
+-    int iy0 = (int)(min_y_fp >> SG_FP_SUBPIXEL_BITS);
+-    int ix1 = (int)(max_x_fp >> SG_FP_SUBPIXEL_BITS) + 1;
+-    int iy1 = (int)(max_y_fp >> SG_FP_SUBPIXEL_BITS) + 1;
+-    if (min_x_fp < 0) ix0 = (int)((min_x_fp - (SG_FP_SUBPIXEL_ONE - 1)) >> SG_FP_SUBPIXEL_BITS);
+-    if (min_y_fp < 0) iy0 = (int)((min_y_fp - (SG_FP_SUBPIXEL_ONE - 1)) >> SG_FP_SUBPIXEL_BITS);
+-
+-    if (ix0 < tile_ix0) ix0 = tile_ix0;
+-    if (iy0 < 0) iy0 = 0;
+-    if (ix1 > tile_ix1) ix1 = tile_ix1;
+-    if (iy1 > c->fb.h) iy1 = c->fb.h;
+-    if (c->scissor_enabled) {
+-        int sx0 = c->scissor[0], sy0 = c->scissor[1];
+-        int sx1 = sx0 + c->scissor[2], sy1 = sy0 + c->scissor[3];
+-        if (ix0 < sx0) ix0 = sx0;
+-        if (iy0 < sy0) iy0 = sy0;
+-        if (ix1 > sx1) ix1 = sx1;
+-        if (iy1 > sy1) iy1 = sy1;
+-    }
+-    if (ix0 >= ix1 || iy0 >= iy1) return c->scissor_enabled ? -1 : 1;
+-
+-    /* Start sample at pixel center (ix0+0.5, iy0+0.5) in 16.8. */
+-    const sg_screen_t half = SG_FP_SUBPIXEL_ONE >> 1;
+-    sg_screen_t px_start = (sg_screen_t)ix0 * SG_FP_SUBPIXEL_ONE + half;
+-    sg_screen_t py_start = (sg_screen_t)iy0 * SG_FP_SUBPIXEL_ONE + half;
+-
+-    int64_t E0_row0 = (int64_t)(x2 - x1) * (int64_t)(py_start - y1)
+-                    - (int64_t)(y2 - y1) * (int64_t)(px_start - x1);
+-    int64_t E1_row0 = (int64_t)(x0 - x2) * (int64_t)(py_start - y2)
+-                    - (int64_t)(y0 - y2) * (int64_t)(px_start - x2);
+-    int64_t E2_row0 = (int64_t)(x1 - x0) * (int64_t)(py_start - y0)
+-                    - (int64_t)(y1 - y0) * (int64_t)(px_start - x0);
+-
+-    /* Step deltas pre-scaled by SUBPIXEL_ONE. */
+-    int64_t dE0_dx = -(int64_t)(y2 - y1) * (int64_t)SG_FP_SUBPIXEL_ONE;
+-    int64_t dE0_dy =  (int64_t)(x2 - x1) * (int64_t)SG_FP_SUBPIXEL_ONE;
+-    int64_t dE1_dx = -(int64_t)(y0 - y2) * (int64_t)SG_FP_SUBPIXEL_ONE;
+-    int64_t dE1_dy =  (int64_t)(x0 - x2) * (int64_t)SG_FP_SUBPIXEL_ONE;
+-    int64_t dE2_dx = -(int64_t)(y1 - y0) * (int64_t)SG_FP_SUBPIXEL_ONE;
+-    int64_t dE2_dy =  (int64_t)(x1 - x0) * (int64_t)SG_FP_SUBPIXEL_ONE;
+-
+-    float inv_area_f = 1.0f / (float)area2;
+-
+-    float z_offset = 0.f;
+-    if (c->polygon_offset_fill && (c->polygon_offset_factor != 0.f ||
+-                                    c->polygon_offset_units  != 0.f)) {
+-        float fx0 = v0->ndc.x, fy0 = v0->ndc.y;
+-        float fx1 = v1->ndc.x, fy1 = v1->ndc.y;
+-        float fx2 = v2->ndc.x, fy2 = v2->ndc.y;
+-        float area_f = (fx1 - fx0) * (fy2 - fy0) - (fy1 - fy0) * (fx2 - fx0);
+-        if (area_f != 0.f) {
+-            float z0v = v0->ndc.z, z1v = v1->ndc.z, z2v = v2->ndc.z;
+-            float dzdx = ((z1v - z0v) * (fy2 - fy0) - (z2v - z0v) * (fy1 - fy0)) / area_f;
+-            float dzdy = ((z2v - z0v) * (fx1 - fx0) - (z1v - z0v) * (fx2 - fx0)) / area_f;
+-            float adx = dzdx < 0.f ? -dzdx : dzdx;
+-            float ady = dzdy < 0.f ? -dzdy : dzdy;
+-            float slope = adx > ady ? adx : ady;
+-            z_offset = c->polygon_offset_factor * slope
+-                     + c->polygon_offset_units  * 1e-6f;
+-        }
+-    }
+-
+-    float invw0 = v0->ndc.w;
+-    float invw1 = v1->ndc.w;
+-    float invw2 = v2->ndc.w;
+-
+-    if (c->fb.samples) {
+-        int result;
+-        if (c->fb.samples == 4) {
+-            if (sg_raster_bin && sg_raster_bin->depth_capture)
+-                result = sg_raster_triangle_msaa4_capture(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
+-                                    area2, bias0, bias1, bias2, z_offset);
+-            else
+-                result = sg_raster_triangle_msaa4(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
+-                                    area2, bias0, bias1, bias2, z_offset);
+-        }
+-        else if (sg_raster_bin && sg_raster_bin->depth_capture)
+-            result = sg_raster_triangle_msaa2_capture(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
+-                                    area2, bias0, bias1, bias2, z_offset);
+-        else
+-            result = sg_raster_triangle_msaa2(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
+-                                    area2, bias0, bias1, bias2, z_offset);
+-        return c->scissor_enabled ? -1 : result;
+-    }
+-
+-    /* SIMD 2x2-quad path. Per-edge min/max-across-quad offsets enable
+-     * scalar trivial accept/reject; (E+bias) is computed per lane in
+-     * full i64 then saturated to i32 to avoid wrap when TL is at INT32_MAX. */
+-    int64_t min_off0 = 0, max_off0 = 0;
+-    if (dE0_dx < 0) min_off0 += dE0_dx; else max_off0 += dE0_dx;
+-    if (dE0_dy < 0) min_off0 += dE0_dy; else max_off0 += dE0_dy;
+-    int64_t min_off1 = 0, max_off1 = 0;
+-    if (dE1_dx < 0) min_off1 += dE1_dx; else max_off1 += dE1_dx;
+-    if (dE1_dy < 0) min_off1 += dE1_dy; else max_off1 += dE1_dy;
+-    int64_t min_off2 = 0, max_off2 = 0;
+-    if (dE2_dx < 0) min_off2 += dE2_dx; else max_off2 += dE2_dx;
+-    if (dE2_dy < 0) min_off2 += dE2_dy; else max_off2 += dE2_dy;
+-
+-    int use_simd_quad = !sg_quad_needs_scalar(c, tctx);
+-    int use_packet = tctx->combine_kind && sg_packet_supported(c, tctx);
+-
+-    int64_t E0_row = E0_row0;
+-    int64_t E1_row = E1_row0;
+-    int64_t E2_row = E2_row0;
+-
+-    for (int iy = iy0; iy < iy1; iy += 2) {
+-        int64_t E0 = E0_row;
+-        int64_t E1 = E1_row;
+-        int64_t E2 = E2_row;
+-
+-        /* BL/BR (lanes 2/3) valid only if iy+1 < iy1. */
+-        unsigned row_mask = 0x3u;
+-        if (iy + 1 < iy1) row_mask |= 0xCu;
+-
+-        for (int ix = ix0; ix < ix1; ix += 2) {
+-            /* TR/BR (lanes 1/3) valid only if ix+1 < ix1. */
+-            unsigned col_mask = 0x5u;
+-            if (ix + 1 < ix1) col_mask |= 0xAu;
+-            unsigned bounds_mask = row_mask & col_mask;
+-
+-            int64_t e0_tl = E0 + bias0;
+-            int64_t e1_tl = E1 + bias1;
+-            int64_t e2_tl = E2 + bias2;
+-
+-            if ((e0_tl + max_off0) < 0 ||
+-                (e1_tl + max_off1) < 0 ||
+-                (e2_tl + max_off2) < 0) {
+-                goto step;
+-            }
+-
+-            unsigned cov;
+-            if ((e0_tl + min_off0) >= 0 &&
+-                (e1_tl + min_off1) >= 0 &&
+-                (e2_tl + min_off2) >= 0) {
+-                cov = bounds_mask;
+-            } else {
+-                sg_i32x4 v0v = sg_i32x4_set(
+-                    sg_sat_i64_to_i32(e0_tl),
+-                    sg_sat_i64_to_i32(e0_tl + dE0_dx),
+-                    sg_sat_i64_to_i32(e0_tl + dE0_dy),
+-                    sg_sat_i64_to_i32(e0_tl + dE0_dx + dE0_dy));
+-                sg_i32x4 v1v = sg_i32x4_set(
+-                    sg_sat_i64_to_i32(e1_tl),
+-                    sg_sat_i64_to_i32(e1_tl + dE1_dx),
+-                    sg_sat_i64_to_i32(e1_tl + dE1_dy),
+-                    sg_sat_i64_to_i32(e1_tl + dE1_dx + dE1_dy));
+-                sg_i32x4 v2v = sg_i32x4_set(
+-                    sg_sat_i64_to_i32(e2_tl),
+-                    sg_sat_i64_to_i32(e2_tl + dE2_dx),
+-                    sg_sat_i64_to_i32(e2_tl + dE2_dy),
+-                    sg_sat_i64_to_i32(e2_tl + dE2_dx + dE2_dy));
+-
+-                unsigned m0 = sg_i32x4_mask_nonneg(v0v);
+-                unsigned m1 = sg_i32x4_mask_nonneg(v1v);
+-                unsigned m2 = sg_i32x4_mask_nonneg(v2v);
+-
+-                cov = m0 & m1 & m2 & bounds_mask;
+-            }
+-
+-            if (cov) {
+-                /* Quad loads/stores touch both pixels of each row. Keep
+-                 * them inside this worker's stripe and framebuffer. */
+-                if (use_simd_quad && ix + 1 < tile_ix1) {
+-                    sg_shade_quad(c, tctx, v0, v1, v2, ix, iy, cov,
+-                                  E0, E1,
+-                                  dE0_dx, dE0_dy, dE1_dx, dE1_dy,
+-                                  inv_area_f, invw0, invw1, invw2, z_offset);
+-                } else if (use_packet) {
+-                    int64_t edges0[4] = {E0, E0 + dE0_dx, E0 + dE0_dy, E0 + dE0_dx + dE0_dy};
+-                    int64_t edges1[4] = {E1, E1 + dE1_dx, E1 + dE1_dy, E1 + dE1_dx + dE1_dy};
+-                    float depths[4] = {0}, colors[4][4];
+-                    for (int l = 0; l < 4; l++) {
+-                        if (!(cov & (1u << l))) continue;
+-                        float b0 = (float)edges0[l] * inv_area_f;
+-                        float b1 = (float)edges1[l] * inv_area_f;
+-                        float b2 = 1.f - b0 - b1;
+-                        depths[l] = b0 * v0->ndc.z + b1 * v1->ndc.z + b2 * v2->ndc.z + z_offset;
+-                        int px = ix + (l & 1), py = iy + (l >> 1);
+-                        if (c->depth_test && !c->stencil_test &&
+-                            !sg_sample_depth_pass(c->depth_func, depths[l], c->fb.depth[py * c->fb.w + px]))
+-                            cov &= ~(1u << l);
+-                    }
+-                    if (cov) {
+-                        cov = sg_shade_packet(c, tctx, v0, v1, v2, edges0, edges1,
+-                                              inv_area_f, cov, colors);
+-                        for (int l = 0; l < 4; l++) {
+-                            if (cov & (1u << l))
+-                                sg_write_fragment(c, ix + (l & 1), iy + (l >> 1), depths[l],
+-                                                  colors[l][0], colors[l][1], colors[l][2], colors[l][3]);
+-                        }
+-                    }
+-                } else {
+-                    /* Per-lane scalar fallback (stencil/logic-op/stipple/
+-                     * occlusion); raw i64 edge values for byte-equal
+-                     * barycentrics with scalar reference. */
+-                    if (cov & 0x1u) {
+-                        sg_shade_pixel(c, tctx, v0, v1, v2, ix, iy,
+-                                       E0, E1,
+-                                       inv_area_f, invw0, invw1, invw2, z_offset, NULL);
+-                    }
+-                    if (cov & 0x2u) {
+-                        sg_shade_pixel(c, tctx, v0, v1, v2, ix + 1, iy,
+-                                       E0 + dE0_dx, E1 + dE1_dx,
+-                                       inv_area_f, invw0, invw1, invw2, z_offset, NULL);
+-                    }
+-                    if (cov & 0x4u) {
+-                        sg_shade_pixel(c, tctx, v0, v1, v2, ix, iy + 1,
+-                                       E0 + dE0_dy, E1 + dE1_dy,
+-                                       inv_area_f, invw0, invw1, invw2, z_offset, NULL);
+-                    }
+-                    if (cov & 0x8u) {
+-                        sg_shade_pixel(c, tctx, v0, v1, v2, ix + 1, iy + 1,
+-                                       E0 + dE0_dx + dE0_dy,
+-                                       E1 + dE1_dx + dE1_dy,
+-                                       inv_area_f, invw0, invw1, invw2, z_offset, NULL);
+-                    }
+-                }
+-            }
+-
+-        step:
+-            E0 += dE0_dx * 2;
+-            E1 += dE1_dx * 2;
+-            E2 += dE2_dx * 2;
+-        }
+-
+-        E0_row += dE0_dy * 2;
+-        E1_row += dE1_dy * 2;
+-        E2_row += dE2_dy * 2;
+-    }
+-    return -1;
+-}
++#ifdef __EMSCRIPTEN__
++__attribute__((used, noinline))
++#else
++static __attribute__((noinline))
++#endif
++#define SG_RASTER_OFF_CAPTURE 1
++#define SG_RASTER_TRI_FUNCTION sg_raster_triangle_depth_capture
++#include "raster_triangle_impl.h"
++#undef SG_RASTER_TRI_FUNCTION
++#undef SG_RASTER_OFF_CAPTURE
++#define SG_RASTER_OFF_CAPTURE 0
++#define SG_RASTER_TRI_FUNCTION sg_raster_triangle_tile_prepared
++#include "raster_triangle_impl.h"
++#undef SG_RASTER_TRI_FUNCTION
++#undef SG_RASTER_OFF_CAPTURE
+ 
+ void sg_raster_triangle_tile(softgl_ctx *c,
+                              const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
+--- /dev/null
++++ b/libsoftgl/src/raster_triangle_impl.h
+@@ -0,0 +1,307 @@
++/* Included with a compile-time off-depth capture mode. */
++int SG_RASTER_TRI_FUNCTION(softgl_ctx *c,
++                             const sg_vert *v0,
++                             const sg_vert *v1,
++                             const sg_vert *v2,
++                             int tile_ix0, int tile_ix1,
++                             const sg_tex_tri_ctx *tctx) {
++#if !SG_RASTER_OFF_CAPTURE
++    if (!c->fb.samples && sg_raster_bin && sg_raster_bin->depth_capture)
++        return sg_raster_triangle_depth_capture(c, v0, v1, v2, tile_ix0, tile_ix1, tctx);
++#endif
++    /* 16.8 fixed-point screen coords. */
++    sg_screen_t x0 = sg_fp_screen_from_float(v0->ndc.x);
++    sg_screen_t y0 = sg_fp_screen_from_float(v0->ndc.y);
++    sg_screen_t x1 = sg_fp_screen_from_float(v1->ndc.x);
++    sg_screen_t y1 = sg_fp_screen_from_float(v1->ndc.y);
++    sg_screen_t x2 = sg_fp_screen_from_float(v2->ndc.x);
++    sg_screen_t y2 = sg_fp_screen_from_float(v2->ndc.y);
++
++    int64_t area2 = (int64_t)(x1 - x0) * (int64_t)(y2 - y0)
++                  - (int64_t)(y1 - y0) * (int64_t)(x2 - x0);
++    if (area2 <= 0) return c->scissor_enabled ? -1 : 1;   /* degenerate or back-face */
++
++    int bias0 = sg_is_top_left(x1, y1, x2, y2) ? 0 : -1;
++    int bias1 = sg_is_top_left(x2, y2, x0, y0) ? 0 : -1;
++    int bias2 = sg_is_top_left(x0, y0, x1, y1) ? 0 : -1;
++
++    sg_screen_t min_x_fp = x0; if (x1 < min_x_fp) min_x_fp = x1; if (x2 < min_x_fp) min_x_fp = x2;
++    sg_screen_t max_x_fp = x0; if (x1 > max_x_fp) max_x_fp = x1; if (x2 > max_x_fp) max_x_fp = x2;
++    sg_screen_t min_y_fp = y0; if (y1 < min_y_fp) min_y_fp = y1; if (y2 < min_y_fp) min_y_fp = y2;
++    sg_screen_t max_y_fp = y0; if (y1 > max_y_fp) max_y_fp = y1; if (y2 > max_y_fp) max_y_fp = y2;
++
++    int ix0 = (int)(min_x_fp >> SG_FP_SUBPIXEL_BITS);
++    int iy0 = (int)(min_y_fp >> SG_FP_SUBPIXEL_BITS);
++    int ix1 = (int)(max_x_fp >> SG_FP_SUBPIXEL_BITS) + 1;
++    int iy1 = (int)(max_y_fp >> SG_FP_SUBPIXEL_BITS) + 1;
++    if (min_x_fp < 0) ix0 = (int)((min_x_fp - (SG_FP_SUBPIXEL_ONE - 1)) >> SG_FP_SUBPIXEL_BITS);
++    if (min_y_fp < 0) iy0 = (int)((min_y_fp - (SG_FP_SUBPIXEL_ONE - 1)) >> SG_FP_SUBPIXEL_BITS);
++
++    if (ix0 < tile_ix0) ix0 = tile_ix0;
++    if (iy0 < 0) iy0 = 0;
++    if (ix1 > tile_ix1) ix1 = tile_ix1;
++    if (iy1 > c->fb.h) iy1 = c->fb.h;
++    if (c->scissor_enabled) {
++        int sx0 = c->scissor[0], sy0 = c->scissor[1];
++        int sx1 = sx0 + c->scissor[2], sy1 = sy0 + c->scissor[3];
++        if (ix0 < sx0) ix0 = sx0;
++        if (iy0 < sy0) iy0 = sy0;
++        if (ix1 > sx1) ix1 = sx1;
++        if (iy1 > sy1) iy1 = sy1;
++    }
++    if (ix0 >= ix1 || iy0 >= iy1) return c->scissor_enabled ? -1 : 1;
++
++    /* Start sample at pixel center (ix0+0.5, iy0+0.5) in 16.8. */
++    const sg_screen_t half = SG_FP_SUBPIXEL_ONE >> 1;
++    sg_screen_t px_start = (sg_screen_t)ix0 * SG_FP_SUBPIXEL_ONE + half;
++    sg_screen_t py_start = (sg_screen_t)iy0 * SG_FP_SUBPIXEL_ONE + half;
++
++    int64_t E0_row0 = (int64_t)(x2 - x1) * (int64_t)(py_start - y1)
++                    - (int64_t)(y2 - y1) * (int64_t)(px_start - x1);
++    int64_t E1_row0 = (int64_t)(x0 - x2) * (int64_t)(py_start - y2)
++                    - (int64_t)(y0 - y2) * (int64_t)(px_start - x2);
++    int64_t E2_row0 = (int64_t)(x1 - x0) * (int64_t)(py_start - y0)
++                    - (int64_t)(y1 - y0) * (int64_t)(px_start - x0);
++
++    /* Step deltas pre-scaled by SUBPIXEL_ONE. */
++    int64_t dE0_dx = -(int64_t)(y2 - y1) * (int64_t)SG_FP_SUBPIXEL_ONE;
++    int64_t dE0_dy =  (int64_t)(x2 - x1) * (int64_t)SG_FP_SUBPIXEL_ONE;
++    int64_t dE1_dx = -(int64_t)(y0 - y2) * (int64_t)SG_FP_SUBPIXEL_ONE;
++    int64_t dE1_dy =  (int64_t)(x0 - x2) * (int64_t)SG_FP_SUBPIXEL_ONE;
++    int64_t dE2_dx = -(int64_t)(y1 - y0) * (int64_t)SG_FP_SUBPIXEL_ONE;
++    int64_t dE2_dy =  (int64_t)(x1 - x0) * (int64_t)SG_FP_SUBPIXEL_ONE;
++
++    float inv_area_f = 1.0f / (float)area2;
++
++    float z_offset = 0.f;
++    if (c->polygon_offset_fill && (c->polygon_offset_factor != 0.f ||
++                                    c->polygon_offset_units  != 0.f)) {
++        float fx0 = v0->ndc.x, fy0 = v0->ndc.y;
++        float fx1 = v1->ndc.x, fy1 = v1->ndc.y;
++        float fx2 = v2->ndc.x, fy2 = v2->ndc.y;
++        float area_f = (fx1 - fx0) * (fy2 - fy0) - (fy1 - fy0) * (fx2 - fx0);
++        if (area_f != 0.f) {
++            float z0v = v0->ndc.z, z1v = v1->ndc.z, z2v = v2->ndc.z;
++            float dzdx = ((z1v - z0v) * (fy2 - fy0) - (z2v - z0v) * (fy1 - fy0)) / area_f;
++            float dzdy = ((z2v - z0v) * (fx1 - fx0) - (z1v - z0v) * (fx2 - fx0)) / area_f;
++            float adx = dzdx < 0.f ? -dzdx : dzdx;
++            float ady = dzdy < 0.f ? -dzdy : dzdy;
++            float slope = adx > ady ? adx : ady;
++            z_offset = c->polygon_offset_factor * slope
++                     + c->polygon_offset_units  * 1e-6f;
++        }
++    }
++
++    float invw0 = v0->ndc.w;
++    float invw1 = v1->ndc.w;
++    float invw2 = v2->ndc.w;
++
++#if !SG_RASTER_OFF_CAPTURE
++    if (c->fb.samples) {
++        int result;
++        if (c->fb.samples == 4) {
++            if (sg_raster_bin && sg_raster_bin->depth_capture)
++                result = sg_raster_triangle_msaa4_capture(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
++                                    area2, bias0, bias1, bias2, z_offset);
++            else
++                result = sg_raster_triangle_msaa4(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
++                                    area2, bias0, bias1, bias2, z_offset);
++        }
++        else if (sg_raster_bin && sg_raster_bin->depth_capture)
++            result = sg_raster_triangle_msaa2_capture(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
++                                    area2, bias0, bias1, bias2, z_offset);
++        else
++            result = sg_raster_triangle_msaa2(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
++                                    area2, bias0, bias1, bias2, z_offset);
++        return c->scissor_enabled ? -1 : result;
++    }
++
++#endif
++
++    /* SIMD 2x2-quad path. Per-edge min/max-across-quad offsets enable
++     * scalar trivial accept/reject; (E+bias) is computed per lane in
++     * full i64 then saturated to i32 to avoid wrap when TL is at INT32_MAX. */
++    int64_t min_off0 = 0, max_off0 = 0;
++    if (dE0_dx < 0) min_off0 += dE0_dx; else max_off0 += dE0_dx;
++    if (dE0_dy < 0) min_off0 += dE0_dy; else max_off0 += dE0_dy;
++    int64_t min_off1 = 0, max_off1 = 0;
++    if (dE1_dx < 0) min_off1 += dE1_dx; else max_off1 += dE1_dx;
++    if (dE1_dy < 0) min_off1 += dE1_dy; else max_off1 += dE1_dy;
++    int64_t min_off2 = 0, max_off2 = 0;
++    if (dE2_dx < 0) min_off2 += dE2_dx; else max_off2 += dE2_dx;
++    if (dE2_dy < 0) min_off2 += dE2_dy; else max_off2 += dE2_dy;
++
++    int use_simd_quad = !sg_quad_needs_scalar(c, tctx);
++    int use_packet = tctx->combine_kind && sg_packet_supported(c, tctx);
++
++#if SG_RASTER_OFF_CAPTURE
++    int coverage_seen = 0, weak_seen = 0;
++    float near = v0->ndc.z < v1->ndc.z ? v0->ndc.z : v1->ndc.z;
++    if (v2->ndc.z < near) near = v2->ndc.z;
++    /* Off depth remains unclamped. The same covered-edge rounding bound as
++     * HZ protects later scalar/quad producer changes, including LESS ties. */
++    float lower = near - 2e-6f;
++    if (!c->depth_test || c->stencil_test || c->polygon_offset_fill ||
++        (c->depth_func != GL_LESS && c->depth_func != GL_LEQUAL)) weak_seen = 1;
++    const sg_vert *vertices[] = {v0, v1, v2};
++    for (int i = 0; i < 3; i++) {
++        uint32_t bits;
++        memcpy(&bits, &vertices[i]->ndc.z, sizeof(bits));
++        if ((bits & UINT32_C(0x7f800000)) == UINT32_C(0x7f800000) ||
++            !(vertices[i]->ndc.z >= 0.f && vertices[i]->ndc.z <= 1.f)) weak_seen = 1;
++    }
++#endif
++
++    int64_t E0_row = E0_row0;
++    int64_t E1_row = E1_row0;
++    int64_t E2_row = E2_row0;
++
++    for (int iy = iy0; iy < iy1; iy += 2) {
++        int64_t E0 = E0_row;
++        int64_t E1 = E1_row;
++        int64_t E2 = E2_row;
++
++        /* BL/BR (lanes 2/3) valid only if iy+1 < iy1. */
++        unsigned row_mask = 0x3u;
++        if (iy + 1 < iy1) row_mask |= 0xCu;
++
++        for (int ix = ix0; ix < ix1; ix += 2) {
++            /* TR/BR (lanes 1/3) valid only if ix+1 < ix1. */
++            unsigned col_mask = 0x5u;
++            if (ix + 1 < ix1) col_mask |= 0xAu;
++            unsigned bounds_mask = row_mask & col_mask;
++
++            int64_t e0_tl = E0 + bias0;
++            int64_t e1_tl = E1 + bias1;
++            int64_t e2_tl = E2 + bias2;
++
++            if ((e0_tl + max_off0) < 0 ||
++                (e1_tl + max_off1) < 0 ||
++                (e2_tl + max_off2) < 0) {
++                goto step;
++            }
++
++            unsigned cov;
++            if ((e0_tl + min_off0) >= 0 &&
++                (e1_tl + min_off1) >= 0 &&
++                (e2_tl + min_off2) >= 0) {
++                cov = bounds_mask;
++            } else {
++                sg_i32x4 v0v = sg_i32x4_set(
++                    sg_sat_i64_to_i32(e0_tl),
++                    sg_sat_i64_to_i32(e0_tl + dE0_dx),
++                    sg_sat_i64_to_i32(e0_tl + dE0_dy),
++                    sg_sat_i64_to_i32(e0_tl + dE0_dx + dE0_dy));
++                sg_i32x4 v1v = sg_i32x4_set(
++                    sg_sat_i64_to_i32(e1_tl),
++                    sg_sat_i64_to_i32(e1_tl + dE1_dx),
++                    sg_sat_i64_to_i32(e1_tl + dE1_dy),
++                    sg_sat_i64_to_i32(e1_tl + dE1_dx + dE1_dy));
++                sg_i32x4 v2v = sg_i32x4_set(
++                    sg_sat_i64_to_i32(e2_tl),
++                    sg_sat_i64_to_i32(e2_tl + dE2_dx),
++                    sg_sat_i64_to_i32(e2_tl + dE2_dy),
++                    sg_sat_i64_to_i32(e2_tl + dE2_dx + dE2_dy));
++
++                unsigned m0 = sg_i32x4_mask_nonneg(v0v);
++                unsigned m1 = sg_i32x4_mask_nonneg(v1v);
++                unsigned m2 = sg_i32x4_mask_nonneg(v2v);
++
++                cov = m0 & m1 & m2 & bounds_mask;
++            }
++
++            if (cov) {
++#if SG_RASTER_OFF_CAPTURE
++                coverage_seen = 1;
++#endif
++                /* Quad loads/stores touch both pixels of each row. Keep
++                 * them inside this worker's stripe and framebuffer. */
++                if (use_simd_quad && ix + 1 < tile_ix1) {
++#if SG_RASTER_OFF_CAPTURE
++                    /* This first trial reuses packet depth loads only. */
++                    weak_seen = 1;
++#endif
++                    sg_shade_quad(c, tctx, v0, v1, v2, ix, iy, cov,
++                                  E0, E1,
++                                  dE0_dx, dE0_dy, dE1_dx, dE1_dy,
++                                  inv_area_f, invw0, invw1, invw2, z_offset);
++                } else if (use_packet) {
++                    int64_t edges0[4] = {E0, E0 + dE0_dx, E0 + dE0_dy, E0 + dE0_dx + dE0_dy};
++                    int64_t edges1[4] = {E1, E1 + dE1_dx, E1 + dE1_dy, E1 + dE1_dx + dE1_dy};
++                    float depths[4] = {0}, colors[4][4];
++                    for (int l = 0; l < 4; l++) {
++                        if (!(cov & (1u << l))) continue;
++                        float b0 = (float)edges0[l] * inv_area_f;
++                        float b1 = (float)edges1[l] * inv_area_f;
++                        float b2 = 1.f - b0 - b1;
++                        depths[l] = b0 * v0->ndc.z + b1 * v1->ndc.z + b2 * v2->ndc.z + z_offset;
++                        int px = ix + (l & 1), py = iy + (l >> 1);
++#if SG_RASTER_OFF_CAPTURE
++                        if (c->depth_test && !c->stencil_test) {
++                            float old_depth = c->fb.depth[py * c->fb.w + px];
++                            int passed = sg_sample_depth_pass(c->depth_func, depths[l], old_depth);
++                            if (!weak_seen && (passed || lower <= old_depth)) weak_seen = 1;
++                            if (!passed) cov &= ~(1u << l);
++                        }
++#else
++                        if (c->depth_test && !c->stencil_test &&
++                            !sg_sample_depth_pass(c->depth_func, depths[l], c->fb.depth[py * c->fb.w + px]))
++                            cov &= ~(1u << l);
++#endif
++                    }
++                    if (cov) {
++                        cov = sg_shade_packet(c, tctx, v0, v1, v2, edges0, edges1,
++                                              inv_area_f, cov, colors);
++                        for (int l = 0; l < 4; l++) {
++                            if (cov & (1u << l))
++                                sg_write_fragment(c, ix + (l & 1), iy + (l >> 1), depths[l],
++                                                  colors[l][0], colors[l][1], colors[l][2], colors[l][3]);
++                        }
++                    }
++                } else {
++#if SG_RASTER_OFF_CAPTURE
++                    weak_seen = 1;
++#endif
++                    /* Per-lane scalar fallback (stencil/logic-op/stipple/
++                     * occlusion); raw i64 edge values for byte-equal
++                     * barycentrics with scalar reference. */
++                    if (cov & 0x1u) {
++                        sg_shade_pixel(c, tctx, v0, v1, v2, ix, iy,
++                                       E0, E1,
++                                       inv_area_f, invw0, invw1, invw2, z_offset, NULL);
++                    }
++                    if (cov & 0x2u) {
++                        sg_shade_pixel(c, tctx, v0, v1, v2, ix + 1, iy,
++                                       E0 + dE0_dx, E1 + dE1_dx,
++                                       inv_area_f, invw0, invw1, invw2, z_offset, NULL);
++                    }
++                    if (cov & 0x4u) {
++                        sg_shade_pixel(c, tctx, v0, v1, v2, ix, iy + 1,
++                                       E0 + dE0_dy, E1 + dE1_dy,
++                                       inv_area_f, invw0, invw1, invw2, z_offset, NULL);
++                    }
++                    if (cov & 0x8u) {
++                        sg_shade_pixel(c, tctx, v0, v1, v2, ix + 1, iy + 1,
++                                       E0 + dE0_dx + dE0_dy,
++                                       E1 + dE1_dx + dE1_dy,
++                                       inv_area_f, invw0, invw1, invw2, z_offset, NULL);
++                    }
++                }
++            }
++
++        step:
++            E0 += dE0_dx * 2;
++            E1 += dE1_dx * 2;
++            E2 += dE2_dx * 2;
++        }
++
++        E0_row += dE0_dy * 2;
++        E1_row += dE1_dy * 2;
++        E2_row += dE2_dy * 2;
++    }
++#if SG_RASTER_OFF_CAPTURE
++    return c->scissor_enabled ? -1 : !coverage_seen ? 1 : weak_seen ? 0 : 2;
++#else
++    return -1;
++#endif
++}
+--- a/libsoftgl/src/workers.c
++++ b/libsoftgl/src/workers.c
+@@ -378,7 +378,7 @@
+     }
+     entry->offsets[p->nbins] = offset;
+     entry->imin = imin; entry->imax = imax; entry->valid = 1; entry->depth_epoch = 0;
+-    if (c->fb.samples && !c->scissor_enabled && c->render_mode == GL_RENDER) {
++    if (!c->scissor_enabled && c->render_mode == GL_RENDER) {
+         int transformed = 1;
+         for (int i = 0; i < offset; i++) {
+             if (!(entry->tris[i].v[0] & SG_BIN_TRANSFORMED_VERTEX)) {
+@@ -398,7 +398,7 @@
+         if (!count) continue;
+         sg_bin_grow(bin, count);
+         if (entry->depth_epoch && entry->depth_epoch == p->depth_epoch &&
+-            (c->fb.samples == 2 || c->fb.samples == 4) && c->depth_test && !c->stencil_test &&
++            (c->fb.samples == 0 || c->fb.samples == 2 || c->fb.samples == 4) && c->depth_test && !c->stencil_test &&
+             !c->polygon_offset_fill && (c->depth_func == GL_LESS ||
+              c->depth_func == GL_LEQUAL || c->depth_func == GL_EQUAL)) {
+             const uint8_t *hidden = (const uint8_t *)(entry->tris + entry->offsets[p->nbins]);
+--- a/libsoftgl/src/workers_queue_raw.inc
++++ b/libsoftgl/src/workers_queue_raw.inc
+@@ -377,7 +377,7 @@
+     }
+     r->coverage_entry = entry;
+     r->coverage_stamp = entry ? entry->stamp : 0;
+-    r->depth_epoch = entry && (c->fb.samples == 2 || c->fb.samples == 4) && c->depth_test && !c->stencil_test &&
++    r->depth_epoch = entry && (c->fb.samples == 0 || c->fb.samples == 2 || c->fb.samples == 4) && c->depth_test && !c->stencil_test &&
+         !c->polygon_offset_fill && (c->depth_func == GL_LESS || c->depth_func == GL_LEQUAL)
+         ? p->depth_epoch : 0;
+     r->state = *c;
+--- a/tests/depth_replay.c
++++ b/tests/depth_replay.c
+@@ -30,10 +30,32 @@
+     return count;
+ }
+ 
++/* Actual four-unit DOT3 chain selects the packet raster depth producer. */
++static void configure_packet_chain(void) {
++    const float constant[4] = {1, 1, 1, 1};
++    for (int u = 0; u < 4; u++) {
++        glActiveTexture(GL_TEXTURE0 + u);
++        glEnable(GL_TEXTURE_2D);
++        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
++        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
++        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
++        glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, u ? GL_MODULATE : GL_DOT3_RGB);
++        glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, u ? GL_PREVIOUS : GL_TEXTURE);
++        glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, !u ? GL_PRIMARY_COLOR :
++                  u == 1 ? GL_PREVIOUS : u == 2 ? GL_TEXTURE : GL_CONSTANT);
++        glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_RGB, GL_SRC_COLOR);
++        glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_RGB, GL_SRC_COLOR);
++        glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_REPLACE);
++        glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, u == 3 ? GL_CONSTANT : GL_PREVIOUS);
++        glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA);
++        glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, constant);
++    }
++}
++
+ static int run_configuration(int samples,int workers) {
+     softgl_ctx *c=softgl_create_multisample(w,h,samples); REQUIRE(c); softgl_make_current(c);
+     sg_workers_shutdown(c); sg_workers_init(c,workers);
+-    float positions[COUNT][3]; GLuint indices[COUNT*PARTS],buffers[2],textures[2],query;
++    float positions[COUNT][3]; GLuint indices[COUNT*PARTS],buffers[2],textures[4],query;
+     for (int i=0;i<N;i++) {
+         float x=-.92f+(i%16)*.11f,y=-.92f+((i/16)%16)*.11f;
+         float extent=(i&1)?.002f:.09f;
+@@ -49,8 +71,9 @@
+     glVertexPointer(3,GL_FLOAT,0,NULL); glEnableClientState(GL_VERTEX_ARRAY);
+     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buffers[1]);
+     glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices),indices,GL_STATIC_DRAW);
+-    glGenTextures(2,textures); const uint8_t white[16]={255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255};
+-    for (int u=0;u<2;u++) {
++    int units = samples ? 2 : 4, cases = samples ? CASES : CASES + 4;
++    glGenTextures(units,textures); const uint8_t white[16]={255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255};
++    for (int u=0;u<units;u++) {
+         glActiveTexture(GL_TEXTURE0+u); glBindTexture(GL_TEXTURE_2D,textures[u]);
+         glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,2,2,0,GL_RGBA,GL_UNSIGNED_BYTE,white);
+         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
+@@ -58,14 +81,17 @@
+         glEnable(GL_TEXTURE_2D); glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE);
+     }
+     glGenQueries(1,&query);
+-    size_t color_bytes=(size_t)w*h*samples*4,depth_bytes=(size_t)w*h*samples*sizeof(float),stencil_bytes=(size_t)w*h*samples;
++    size_t planes_samples=samples?samples:1;
++    size_t color_bytes=(size_t)w*h*planes_samples*4,depth_bytes=(size_t)w*h*planes_samples*sizeof(float),stencil_bytes=(size_t)w*h*planes_samples;
+     uint8_t *expected=malloc(w*h*4+color_bytes+depth_bytes+stencil_bytes); REQUIRE(expected);
+-    for (int test=0;test<CASES;test++) {
++    for (int test=0;test<cases;test++) {
+         GLuint expected_query=0;
+         for (int cold=0;cold<2;cold++) {
+             glBindBuffer(GL_ARRAY_BUFFER,buffers[0]); glBufferSubData(GL_ARRAY_BUFFER,0,sizeof(positions),positions);
+             reset_state();
+-            if (w==128) {
++            glDisable(GL_FOG);
++            if (!samples) configure_packet_chain();
++            if (w==128 && samples) {
+                 /* Fully written cells force the strict early-HZ replay path. */
+                 glBegin(GL_QUADS);
+                 glVertex3f(-1,-1,-.2f); glVertex3f(1,-1,-.2f);
+@@ -115,13 +141,25 @@
+                 }
+                 case 16: glTranslatef(.03f,.01f,-.3f); break;
+                 case 17: glDisable(GL_MULTISAMPLE); break;
++                case 18:
++                    for (int u=0;u<4;u++) { glActiveTexture(GL_TEXTURE0+u); glDisable(GL_TEXTURE_2D); }
++                    break;
++                case 19:
++                    for (int u=1;u<4;u++) { glActiveTexture(GL_TEXTURE0+u); glDisable(GL_TEXTURE_2D); }
++                    glActiveTexture(GL_TEXTURE0); glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE);
++                    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); break;
++                case 20:
++                    for (int u=0;u<4;u++) { glActiveTexture(GL_TEXTURE0+u); glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE); }
++                    break;
++                case 21: glEnable(GL_FOG); glFogi(GL_FOG_MODE,GL_EXP); glFogf(GL_FOG_DENSITY,.2f); break;
+             }
+             glColor4f(.8f,.4f,.2f,.7f);
+             glDrawElements(GL_TRIANGLES,COUNT,GL_UNSIGNED_INT,NULL);
+             GLuint result=0;
+             if (test==11) { glEndQuery(GL_SAMPLES_PASSED); glGetQueryObjectuiv(query,GL_QUERY_RESULT,&result); }
+             const uint8_t *pixels=softgl_read_rgba8(c);
+-            const void *planes[]={pixels,c->fb.sample_color,c->fb.sample_depth,c->fb.sample_stencil};
++            const void *planes[]={pixels,samples?c->fb.sample_color:c->fb.color,
++                samples?c->fb.sample_depth:c->fb.depth,samples?c->fb.sample_stencil:c->fb.stencil};
+             const size_t lengths[]={w*h*4,color_bytes,depth_bytes,stencil_bytes}; size_t offset=0;
+             for (int plane=0;plane<4;plane++) {
+                 if (cold) REQUIRE(!memcmp(expected+offset,planes[plane],lengths[plane]));
+@@ -133,8 +171,8 @@
+             REQUIRE(glGetError()==GL_NO_ERROR);
+         }
+     }
+-    free(expected); glDeleteQueries(1,&query); glDeleteTextures(2,textures); glDeleteBuffers(2,buffers); softgl_destroy(c);
+-    printf("depth replay: %dx%d samples=%d workers=%d, %d actual queued state/sample-plane cases exact\n",w,h,samples,workers,CASES);
++    free(expected); glDeleteQueries(1,&query); glDeleteTextures(units,textures); glDeleteBuffers(2,buffers); softgl_destroy(c);
++    printf("depth replay: %dx%d samples=%d workers=%d, %d actual queued state/sample-plane cases exact\n",w,h,samples,workers,cases);
+     return 0;
+ }
+ /* Compare transient classification with actual LEQUAL and ALWAYS rendering.
+@@ -229,12 +267,128 @@
+     return 0;
+ }
+ 
++/* Class 2 is conservative, not an exact count of all invisible references.
++ * Compare with actual ordinary packet, scalar and quad depth producers. */
++static int check_off_capture_bound(void) {
++    softgl_ctx *c = softgl_create(36, 24);
++    REQUIRE(c);
++    softgl_make_current(c);
++    sg_workers_shutdown(c);
++    GLuint textures[4];
++    glGenTextures(4, textures);
++    const uint8_t white[] = {255, 255, 255, 255};
++    for (int u = 0; u < 4; u++) {
++        glActiveTexture(GL_TEXTURE0 + u);
++        glBindTexture(GL_TEXTURE_2D, textures[u]);
++        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA,
++                     GL_UNSIGNED_BYTE, white);
++    }
++    configure_packet_chain();
++    glEnable(GL_DEPTH_TEST);
++    glDepthMask(GL_FALSE);
++    glClearColor(0, 0, 0, 0);
++    sg_tex_tri_ctx producers[3];
++    sg_tex_tri_prepare(c, producers);
++    REQUIRE(producers[0].combine_kind == 2);
++    producers[1] = producers[0];
++    producers[1].combine_kind = 0;
++    memset(producers + 2, 0, sizeof(producers[2]));
++    producers[2].fastpath_kind = 3;
++    uint64_t classes[3] = {0}, ties = 0, retained_hidden = 0, cases = 0;
++    for (int function = 0; function < 2; function++) {
++        for (int test = 0; test < 2304; test++) {
++            sg_vert v[3];
++            memset(v, 0, sizeof(v));
++            float below = nextafterf(.5f, 0.f), above = nextafterf(.5f, 1.f);
++            v[0].ndc = (sg_vec4){3.125f + (test & 7) * .125f, 2.25f, .5f, 1.f};
++            v[1].ndc = (sg_vec4){30.25f, 5.125f, (test & 64) ? below : .5f, 1.f};
++            v[2].ndc = (sg_vec4){8.375f, 21.25f, (test & 128) ? above : .5f, 1.f};
++            if (test & 1024) { v[1].ndc.z = .25f; v[2].ndc.z = .75f; }
++            if ((test & 15) == 0) {
++                for (int i = 0; i < 3; i++) v[i].ndc.x -= 40.f;
++            } else if ((test & 15) == 1) {
++                v[1].ndc.x = v[0].ndc.x;
++                v[1].ndc.y = v[0].ndc.y;
++            } else if ((test & 15) == 2) {
++                v[1].ndc.x = v[0].ndc.x + .0625f;
++                v[1].ndc.y = v[0].ndc.y;
++                v[2].ndc.x = v[0].ndc.x;
++                v[2].ndc.y = v[0].ndc.y + .0625f;
++            }
++            if (test >= 2048) {
++                /* Explicit margin cases preserve the original 4096-case
++                 * domain. Power-of-two edge ratios also make ties exact. */
++                for (int i = 0; i < 3; i++) v[i].ndc.z = .5f;
++                if (test & 16) {
++                    v[0].ndc.x = 4; v[0].ndc.y = 4;
++                    v[1].ndc.x = 20; v[1].ndc.y = 4;
++                    v[2].ndc.x = 4; v[2].ndc.y = 20;
++                }
++            }
++            for (int i = 0; i < 3; i++) v[i].color = (sg_vec4){1, 1, 1, 1};
++            for (int i = 0; i < 36 * 24; i++) {
++                const float stored[] = {.125f, .5f, .875f, below, above};
++                int kind = (test >> 4) & 7;
++                c->fb.depth[i] = test >= 2048
++                    ? (test & 16) ? .5f : .5f - 1e-6f
++                    : stored[kind < 5 ? kind : (i + test) % 5];
++            }
++            float original_depth[36 * 24];
++            memcpy(original_depth, c->fb.depth, sizeof(original_depth));
++            glClear(GL_COLOR_BUFFER_BIT);
++            c->depth_func = function ? GL_LEQUAL : GL_LESS;
++            sg_worker_bin bin = {0};
++            bin.depth_capture = 1;
++            sg_raster_bin = &bin;
++            int captured = sg_raster_triangle_tile_prepared(c, v, v + 1, v + 2,
++                                                           0, 36, producers);
++            sg_raster_bin = NULL;
++            REQUIRE(captured >= 0 && captured <= 2);
++            int less_visible = 0, visible_any = 0, covered_any = 0;
++            for (int i = 0; i < 36 * 24; i++) less_visible |= c->fb.color[i * 4] != 0;
++            for (int producer = 0; producer < 3; producer++) {
++                int visible[2] = {0};
++                for (int pass = 0; pass < 2; pass++) {
++                    glClear(GL_COLOR_BUFFER_BIT);
++                    c->depth_func = pass ? GL_ALWAYS : GL_LEQUAL;
++                    sg_raster_triangle_tile_prepared(c, v, v + 1, v + 2,
++                                                   0, 36, producers + producer);
++                    for (int i = 0; i < 36 * 24; i++) visible[pass] |= c->fb.color[i * 4] != 0;
++                    REQUIRE(!memcmp(original_depth, c->fb.depth, sizeof(original_depth)));
++                }
++                if (captured == 2) REQUIRE(visible[1] && !visible[0]);
++                if (captured == 1) REQUIRE(!visible[1]);
++                visible_any |= visible[0];
++                covered_any |= visible[1];
++                if (!producer) ties += !function && !less_visible && visible[0];
++            }
++            if (!covered_any) REQUIRE(captured == 1);
++            if (visible_any) REQUIRE(captured == 0);
++            retained_hidden += covered_any && !visible_any && captured == 0;
++            classes[captured]++;
++            cases++;
++        }
++    }
++    for (int i = 0; i < 3; i++) REQUIRE(classes[i]);
++    REQUIRE(ties && retained_hidden);
++    printf("off capture: %llu cases against actual packet/scalar/quad LEQUAL/ALWAYS "
++        "renders safe; visible/empty/hidden=%llu/%llu/%llu, %llu LESS ties and "
++        "%llu conservative hidden references retained\n", (unsigned long long)cases,
++        (unsigned long long)classes[0], (unsigned long long)classes[1],
++        (unsigned long long)classes[2], (unsigned long long)ties,
++        (unsigned long long)retained_hidden);
++    glDeleteTextures(4, textures);
++    softgl_destroy(c);
++    return 0;
++}
++
+ int main(void) {
++    REQUIRE(!check_off_capture_bound());
+     REQUIRE(!check_capture_classes());
+     const int workers[]={1,3,8};
+     for (int hz=0;hz<2;hz++) {
+         w=hz?128:47; h=hz?32:31;
+-        for (int samples=2;samples<=4;samples+=2)
++        for (int samples=0;samples<=4;samples+=2)
+             for (int i=0;i<3;i++) REQUIRE(!run_configuration(samples,workers[i]));
+     }
+     return 0;

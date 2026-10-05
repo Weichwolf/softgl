@@ -1,0 +1,42 @@
+Starting full-regressions.py
+depth-replay-off-bound full native and WASM regressions complete
+Full regression results ["depth-replay-off-bound"]
+Starting wasm-edge-gate.py
+MSAA edges: 4480 frames, 62251008 exact sample masks, 12431040 exact coefficient lanes; ordinary/capture reused=331735/323456 packed fallback=649/948 wide fallback=457591/439501 wrapped bases=0 passed
+
+Starting wasm-contracts.py
+worker_pool passed
+multisample passed
+msaa_store passed
+hierarchical_depth passed
+dot3_chain passed
+constant_texture passed
+pixel_packet passed
+cube_packet passed
+geometry_cache passed
+async_raster passed
+raster_vertex_pack passed
+packed_stream passed
+simd_clamp passed
+ordered_draw_queue passed
+msaa_additive passed
+triangle_stage passed
+msaa_scanline passed
+cube_filter passed
+cache_coverage passed
+Traceback (most recent call last):
+  File "/home/cosmo/Git/softgl/build/diagnostics/depth-replay-off-bound/wasm-contracts.py", line 26, in <module>
+    with log.open('w') as f:subprocess.run(['node',str(runner)],env=env,stdout=f,stderr=subprocess.STDOUT,check=True,timeout=120)
+                            ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['node', '/home/cosmo/Git/softgl/build/diagnostics/depth-replay-off-bound/wasm-contracts/run-depth_replay.cjs']' returned non-zero exit status 1.
+Traceback (most recent call last):
+  File "/home/cosmo/Git/softgl/build/diagnostics/depth-replay-off-bound/run-gates.py", line 11, in <module>
+    subprocess.run(['python3', str(root / name)], env=env, check=True)
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['python3', '/home/cosmo/Git/softgl/build/diagnostics/depth-replay-off-bound/wasm-contracts.py']' returned non-zero exit status 1.

@@ -30,10 +30,32 @@ static int references(softgl_ctx *c) {
     return count;
 }
 
+/* Actual four-unit DOT3 chain selects the packet raster depth producer. */
+static void configure_packet_chain(void) {
+    const float constant[4] = {1, 1, 1, 1};
+    for (int u = 0; u < 4; u++) {
+        glActiveTexture(GL_TEXTURE0 + u);
+        glEnable(GL_TEXTURE_2D);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
+        glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, u ? GL_MODULATE : GL_DOT3_RGB);
+        glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, u ? GL_PREVIOUS : GL_TEXTURE);
+        glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, !u ? GL_PRIMARY_COLOR :
+                  u == 1 ? GL_PREVIOUS : u == 2 ? GL_TEXTURE : GL_CONSTANT);
+        glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_RGB, GL_SRC_COLOR);
+        glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND1_RGB, GL_SRC_COLOR);
+        glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_REPLACE);
+        glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, u == 3 ? GL_CONSTANT : GL_PREVIOUS);
+        glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA);
+        glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, constant);
+    }
+}
+
 static int run_configuration(int samples,int workers) {
     softgl_ctx *c=softgl_create_multisample(w,h,samples); REQUIRE(c); softgl_make_current(c);
     sg_workers_shutdown(c); sg_workers_init(c,workers);
-    float positions[COUNT][3]; GLuint indices[COUNT*PARTS],buffers[2],textures[2],query;
+    float positions[COUNT][3]; GLuint indices[COUNT*PARTS],buffers[2],textures[4],query;
     for (int i=0;i<N;i++) {
         float x=-.92f+(i%16)*.11f,y=-.92f+((i/16)%16)*.11f;
         float extent=(i&1)?.002f:.09f;
@@ -49,8 +71,9 @@ static int run_configuration(int samples,int workers) {
     glVertexPointer(3,GL_FLOAT,0,NULL); glEnableClientState(GL_VERTEX_ARRAY);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buffers[1]);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices),indices,GL_STATIC_DRAW);
-    glGenTextures(2,textures); const uint8_t white[16]={255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255};
-    for (int u=0;u<2;u++) {
+    int units = samples ? 2 : 4, cases = samples ? CASES : CASES + 4;
+    glGenTextures(units,textures); const uint8_t white[16]={255,255,255,255,255,255,255,255,255,255,255,255,255,255,255,255};
+    for (int u=0;u<units;u++) {
         glActiveTexture(GL_TEXTURE0+u); glBindTexture(GL_TEXTURE_2D,textures[u]);
         glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,2,2,0,GL_RGBA,GL_UNSIGNED_BYTE,white);
         glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
@@ -58,14 +81,17 @@ static int run_configuration(int samples,int workers) {
         glEnable(GL_TEXTURE_2D); glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE);
     }
     glGenQueries(1,&query);
-    size_t color_bytes=(size_t)w*h*samples*4,depth_bytes=(size_t)w*h*samples*sizeof(float),stencil_bytes=(size_t)w*h*samples;
+    size_t planes_samples=samples?samples:1;
+    size_t color_bytes=(size_t)w*h*planes_samples*4,depth_bytes=(size_t)w*h*planes_samples*sizeof(float),stencil_bytes=(size_t)w*h*planes_samples;
     uint8_t *expected=malloc(w*h*4+color_bytes+depth_bytes+stencil_bytes); REQUIRE(expected);
-    for (int test=0;test<CASES;test++) {
+    for (int test=0;test<cases;test++) {
         GLuint expected_query=0;
         for (int cold=0;cold<2;cold++) {
             glBindBuffer(GL_ARRAY_BUFFER,buffers[0]); glBufferSubData(GL_ARRAY_BUFFER,0,sizeof(positions),positions);
             reset_state();
-            if (w==128) {
+            glDisable(GL_FOG);
+            if (!samples) configure_packet_chain();
+            if (w==128 && samples) {
                 /* Fully written cells force the strict early-HZ replay path. */
                 glBegin(GL_QUADS);
                 glVertex3f(-1,-1,-.2f); glVertex3f(1,-1,-.2f);
@@ -115,13 +141,25 @@ static int run_configuration(int samples,int workers) {
                 }
                 case 16: glTranslatef(.03f,.01f,-.3f); break;
                 case 17: glDisable(GL_MULTISAMPLE); break;
+                case 18:
+                    for (int u=0;u<4;u++) { glActiveTexture(GL_TEXTURE0+u); glDisable(GL_TEXTURE_2D); }
+                    break;
+                case 19:
+                    for (int u=1;u<4;u++) { glActiveTexture(GL_TEXTURE0+u); glDisable(GL_TEXTURE_2D); }
+                    glActiveTexture(GL_TEXTURE0); glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE);
+                    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); break;
+                case 20:
+                    for (int u=0;u<4;u++) { glActiveTexture(GL_TEXTURE0+u); glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE); }
+                    break;
+                case 21: glEnable(GL_FOG); glFogi(GL_FOG_MODE,GL_EXP); glFogf(GL_FOG_DENSITY,.2f); break;
             }
             glColor4f(.8f,.4f,.2f,.7f);
             glDrawElements(GL_TRIANGLES,COUNT,GL_UNSIGNED_INT,NULL);
             GLuint result=0;
             if (test==11) { glEndQuery(GL_SAMPLES_PASSED); glGetQueryObjectuiv(query,GL_QUERY_RESULT,&result); }
             const uint8_t *pixels=softgl_read_rgba8(c);
-            const void *planes[]={pixels,c->fb.sample_color,c->fb.sample_depth,c->fb.sample_stencil};
+            const void *planes[]={pixels,samples?c->fb.sample_color:c->fb.color,
+                samples?c->fb.sample_depth:c->fb.depth,samples?c->fb.sample_stencil:c->fb.stencil};
             const size_t lengths[]={w*h*4,color_bytes,depth_bytes,stencil_bytes}; size_t offset=0;
             for (int plane=0;plane<4;plane++) {
                 if (cold) REQUIRE(!memcmp(expected+offset,planes[plane],lengths[plane]));
@@ -133,8 +171,8 @@ static int run_configuration(int samples,int workers) {
             REQUIRE(glGetError()==GL_NO_ERROR);
         }
     }
-    free(expected); glDeleteQueries(1,&query); glDeleteTextures(2,textures); glDeleteBuffers(2,buffers); softgl_destroy(c);
-    printf("depth replay: %dx%d samples=%d workers=%d, %d actual queued state/sample-plane cases exact\n",w,h,samples,workers,CASES);
+    free(expected); glDeleteQueries(1,&query); glDeleteTextures(units,textures); glDeleteBuffers(2,buffers); softgl_destroy(c);
+    printf("depth replay: %dx%d samples=%d workers=%d, %d actual queued state/sample-plane cases exact\n",w,h,samples,workers,cases);
     return 0;
 }
 /* Compare transient classification with actual LEQUAL and ALWAYS rendering.
@@ -229,12 +267,128 @@ static int check_capture_classes(void) {
     return 0;
 }
 
+/* Class 2 is conservative, not an exact count of all invisible references.
+ * Compare with actual ordinary packet, scalar and quad depth producers. */
+static int check_off_capture_bound(void) {
+    softgl_ctx *c = softgl_create(36, 24);
+    REQUIRE(c);
+    softgl_make_current(c);
+    sg_workers_shutdown(c);
+    GLuint textures[4];
+    glGenTextures(4, textures);
+    const uint8_t white[] = {255, 255, 255, 255};
+    for (int u = 0; u < 4; u++) {
+        glActiveTexture(GL_TEXTURE0 + u);
+        glBindTexture(GL_TEXTURE_2D, textures[u]);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA,
+                     GL_UNSIGNED_BYTE, white);
+    }
+    configure_packet_chain();
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_FALSE);
+    glClearColor(0, 0, 0, 0);
+    sg_tex_tri_ctx producers[3];
+    sg_tex_tri_prepare(c, producers);
+    REQUIRE(producers[0].combine_kind == 2);
+    producers[1] = producers[0];
+    producers[1].combine_kind = 0;
+    memset(producers + 2, 0, sizeof(producers[2]));
+    producers[2].fastpath_kind = 3;
+    uint64_t classes[3] = {0}, ties = 0, retained_hidden = 0, cases = 0;
+    for (int function = 0; function < 2; function++) {
+        for (int test = 0; test < 2304; test++) {
+            sg_vert v[3];
+            memset(v, 0, sizeof(v));
+            float below = nextafterf(.5f, 0.f), above = nextafterf(.5f, 1.f);
+            v[0].ndc = (sg_vec4){3.125f + (test & 7) * .125f, 2.25f, .5f, 1.f};
+            v[1].ndc = (sg_vec4){30.25f, 5.125f, (test & 64) ? below : .5f, 1.f};
+            v[2].ndc = (sg_vec4){8.375f, 21.25f, (test & 128) ? above : .5f, 1.f};
+            if (test & 1024) { v[1].ndc.z = .25f; v[2].ndc.z = .75f; }
+            if ((test & 15) == 0) {
+                for (int i = 0; i < 3; i++) v[i].ndc.x -= 40.f;
+            } else if ((test & 15) == 1) {
+                v[1].ndc.x = v[0].ndc.x;
+                v[1].ndc.y = v[0].ndc.y;
+            } else if ((test & 15) == 2) {
+                v[1].ndc.x = v[0].ndc.x + .0625f;
+                v[1].ndc.y = v[0].ndc.y;
+                v[2].ndc.x = v[0].ndc.x;
+                v[2].ndc.y = v[0].ndc.y + .0625f;
+            }
+            if (test >= 2048) {
+                /* Explicit margin cases preserve the original 4096-case
+                 * domain. Power-of-two edge ratios also make ties exact. */
+                for (int i = 0; i < 3; i++) v[i].ndc.z = .5f;
+                if (test & 16) {
+                    v[0].ndc.x = 4; v[0].ndc.y = 4;
+                    v[1].ndc.x = 20; v[1].ndc.y = 4;
+                    v[2].ndc.x = 4; v[2].ndc.y = 20;
+                }
+            }
+            for (int i = 0; i < 3; i++) v[i].color = (sg_vec4){1, 1, 1, 1};
+            for (int i = 0; i < 36 * 24; i++) {
+                const float stored[] = {.125f, .5f, .875f, below, above};
+                int kind = (test >> 4) & 7;
+                c->fb.depth[i] = test >= 2048
+                    ? (test & 16) ? .5f : .5f - 1e-6f
+                    : stored[kind < 5 ? kind : (i + test) % 5];
+            }
+            float original_depth[36 * 24];
+            memcpy(original_depth, c->fb.depth, sizeof(original_depth));
+            glClear(GL_COLOR_BUFFER_BIT);
+            c->depth_func = function ? GL_LEQUAL : GL_LESS;
+            sg_worker_bin bin = {0};
+            bin.depth_capture = 1;
+            sg_raster_bin = &bin;
+            int captured = sg_raster_triangle_tile_prepared(c, v, v + 1, v + 2,
+                                                           0, 36, producers);
+            sg_raster_bin = NULL;
+            REQUIRE(captured >= 0 && captured <= 2);
+            int less_visible = 0, visible_any = 0, covered_any = 0;
+            for (int i = 0; i < 36 * 24; i++) less_visible |= c->fb.color[i * 4] != 0;
+            for (int producer = 0; producer < 3; producer++) {
+                int visible[2] = {0};
+                for (int pass = 0; pass < 2; pass++) {
+                    glClear(GL_COLOR_BUFFER_BIT);
+                    c->depth_func = pass ? GL_ALWAYS : GL_LEQUAL;
+                    sg_raster_triangle_tile_prepared(c, v, v + 1, v + 2,
+                                                   0, 36, producers + producer);
+                    for (int i = 0; i < 36 * 24; i++) visible[pass] |= c->fb.color[i * 4] != 0;
+                    REQUIRE(!memcmp(original_depth, c->fb.depth, sizeof(original_depth)));
+                }
+                if (captured == 2) REQUIRE(visible[1] && !visible[0]);
+                if (captured == 1) REQUIRE(!visible[1]);
+                visible_any |= visible[0];
+                covered_any |= visible[1];
+                if (!producer) ties += !function && !less_visible && visible[0];
+            }
+            if (!covered_any) REQUIRE(captured == 1);
+            if (visible_any) REQUIRE(captured == 0);
+            retained_hidden += covered_any && !visible_any && captured == 0;
+            classes[captured]++;
+            cases++;
+        }
+    }
+    for (int i = 0; i < 3; i++) REQUIRE(classes[i]);
+    REQUIRE(ties && retained_hidden);
+    printf("off capture: %llu cases against actual packet/scalar/quad LEQUAL/ALWAYS "
+        "renders safe; visible/empty/hidden=%llu/%llu/%llu, %llu LESS ties and "
+        "%llu conservative hidden references retained\n", (unsigned long long)cases,
+        (unsigned long long)classes[0], (unsigned long long)classes[1],
+        (unsigned long long)classes[2], (unsigned long long)ties,
+        (unsigned long long)retained_hidden);
+    glDeleteTextures(4, textures);
+    softgl_destroy(c);
+    return 0;
+}
+
 int main(void) {
+    REQUIRE(!check_off_capture_bound());
     REQUIRE(!check_capture_classes());
     const int workers[]={1,3,8};
     for (int hz=0;hz<2;hz++) {
         w=hz?128:47; h=hz?32:31;
-        for (int samples=2;samples<=4;samples+=2)
+        for (int samples=0;samples<=4;samples+=2)
             for (int i=0;i<3;i++) REQUIRE(!run_configuration(samples,workers[i]));
     }
     return 0;
