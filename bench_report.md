@@ -14,7 +14,7 @@
 
 | Render+Resolve/Readback je Frame | BMW F31 | T-80 |
 | --- | --- | --- |
-| Ziel, 4× MSAA | >30 FPS | >60 FPS |
+| Orientierung, 4× MSAA | >30 FPS | >60 FPS |
 | 4× Audit 1 / 2, FPS | 29.00 / 28.68 | 67.68 / 67.09 |
 | 4× Bildzeit 1 / 2, ms | 34.49 / 34.87 | 14.78 / 14.91 |
 | 4× Δ gepaarte Zeit zu `f58faf17`, % | -1.34 / -2.23 | 1.25 / 1.24 |

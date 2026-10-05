@@ -3,6 +3,20 @@
 GL 1.5 software renderer in C11 — fixed-point SIMD rasterizer, pthread tile pool,
 WASM + native, Mesa-referenced.
 
+## Research objective
+
+SoftGL is an open, reproducible research project exploring how fast an
+OpenGL 1.5 software renderer can run in WebAssembly. Research covers algorithms,
+memory layout, SIMD and cooperation between four CPU cores, preserving image
+quality, prepared geometry and OpenGL semantics. BMW F31 is the primary workload;
+T-80 provides a second demanding reference. Compare changes repeatedly with
+MSAA off, 2x and 4x, and run full regression checks before retaining renderer
+changes. Publish methods, results and unsuccessful experiments alongside code.
+Progress means reproducible performance gains and a better understanding of
+remaining bottlenecks; FPS milestones are reference points, not a finish line.
+See [optimization evidence](experiments/README.md) and the compact
+[current measurements](bench_report.md).
+
 ## Scope
 
 API-level compatibility with real OpenGL 1.5:
@@ -174,8 +188,22 @@ node tools/wasm_perf.cjs --bench-only --samples 4 --scenes bmw,tank \
   --output build/perf/msaa4.json
 ```
 
-`--samples` selects 0, 2 or 4 samples for benchmarks and profiles. Multisample
-timings include resolve on every frame; the Mesa image gate uses single samples.
+`--samples` selects 0, 2 or 4 samples for benchmarks and profiles. Every timed
+frame waits for resolve/readback, including MSAA off; the Mesa image gate uses
+single samples.
+
+For the research protocol, compare two frozen builds with:
+
+```sh
+python3 tools/wasm_research_compare.py --candidate build/controls/candidate \
+  --reference build/controls/reference --output-dir build/perf/research \
+  --label candidate
+```
+
+This runs three fresh off pairs and six pairs each for 2x and 4x, using 80
+warm-up and 100 measured frames per round. It preserves quiet-host monitors,
+discarded attempts, raw crossover samples and module identities. Use
+`--summarize-only` to recheck existing data against the same frozen modules.
 
 Compare prepared model appearance against full source geometry with the same
 renderer (C++11 is required only for the offline simplifier):
@@ -282,6 +310,7 @@ node tools/wasm_perf.cjs --scenes bmw,tank,100_showcase,70_heightfield \
 node tools/wasm_preview_check.cjs http://localhost:8000/
 ```
 
-The preview check exercises a full eight-worker pool, all test controls,
-benchmark completion/cancellation and context recycling. Render threads
-follow the browser's reported processor count, capped at eight.
+The preview check exercises all test controls, benchmark completion/cancellation
+and context recycling. The default pool follows the reported processor count,
+with at most three helpers plus the calling thread. Explicit worker counts
+remain available for contract tests.

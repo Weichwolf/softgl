@@ -289,10 +289,10 @@ async function main() {
                             i => mod._sg_tank_render((i % frames) * 360 / frames, 640, 360) :
                             name === 'bmw' ? i => mod._sg_model_render((i % frames) * 360 / frames, 640, 360) :
                             () => mod._sg_test_run(indices.get(`test_${name}`), 640, 360);
-                        const render = samples ? i => {
+                        const render = i => {
                             draw(i);
                             mod._softgl_read_rgba8(ctx);
-                        } : draw;
+                        };
                         for (let i = 0; i < warmup; i++) render(i);
                         mod._softgl_read_rgba8(ctx);
                         const start = performance.now();
@@ -339,10 +339,10 @@ async function main() {
                             i => mod._sg_tank_render((i % frames) * 360 / frames, 640, 360) :
                             name === 'bmw' ? i => mod._sg_model_render((i % frames) * 360 / frames, 640, 360) :
                             () => mod._sg_test_run(indices.get(`test_${name}`), 640, 360);
-                        profile.render = samples ? i => {
+                        profile.render = i => {
                             draw(i);
                             mod._softgl_read_rgba8(ctx);
-                        } : draw;
+                        };
                         for (let i = 0; i < warmup; i++) profile.render(i);
                         mod._softgl_read_rgba8(ctx);
                         return {warmup, frames, workers:mod._sg_thread_count(ctx)};
@@ -413,7 +413,7 @@ async function main() {
         };
         result.benchmarks = {
             workers: !referencePage || workerCounts.candidate === workerCounts.reference ? workerCounts.candidate : null,
-            workerCounts, samples:options.samples, resolvePerFrame:options.samples > 0,
+            workerCounts, samples:options.samples, resolvePerFrame:true,
             protocol: options.crossover ? 'page crossover AB/BA, two-round geometric pairs' :
             referencePage ? 'interleaved AB/BA, foreground pages' : 'single variant',
             scenes: scenes.map(name => {

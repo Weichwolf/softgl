@@ -1,5 +1,23 @@
 # Optimization evidence
 
+SoftGL's current objective is open, reproducible research into the fastest
+practical OpenGL 1.5 implementation in WebAssembly. BMW F31 has priority;
+T-80 is the second demanding reference. Image quality, prepared geometry and
+OpenGL semantics remain fixed. FPS milestones guide comparisons rather than
+define completion. Historical acceptance decisions below retain the criteria
+that applied when those experiments were measured.
+
+Research references include Intel's
+[Masked Software Occlusion Culling implementation](https://github.com/GameTechDev/MaskedOcclusionCulling),
+which separates coverage from depth and supplies SSE4.1 kernels; its 1/w depth
+and default DirectX conventions require adaptation before any use in SoftGL.
+[Laine and Karras, HPG 2011](https://research.nvidia.com/publication/2011-08_high-performance-software-rasterization-gpus)
+study software rasterization with ordering constraints and MSAA on GPUs.
+[Mesa LLVMpipe](https://docs.mesa3d.org/drivers/llvmpipe.html) uses LLVM-generated
+CPU code. These are sources of hypotheses for conservative depth bounds,
+staged raster work and state specialization. Their published performance
+does not establish a speedup or hardware-limit percentage for this WASM renderer.
+
 The renderer uses normal OpenGL 1.5 geometry. BMW simplification runs only in
 `tools/pack_gltf.py`, targeting approximately 50,000 vertices. The runtime LOD
 cache, Performance mode, preparation thread and their APIs were removed.
@@ -23,7 +41,9 @@ prepared model pack under `build/controls/`. Run warmed fresh-browser AB/BA
 pairs through `tools/wasm_quiet_audit.py` and `tools/wasm_perf.cjs --crossover`.
 Retain raw samples, current module/pack hashes and quiet-host monitors. Test
 BMW, Tank, DOT3/multiple-texture cases and the broader scene set; retain only
-reproducible gains without relevant repeated regressions. Native/Mesa and WASM
+reproducible gains, reporting costs in other modes and scenes. A small T80 cost
+may be accepted for a reproducible BMW gain under the user's current priority.
+Native/Mesa and WASM
 image tolerances must remain unchanged. Validate asset appearance separately
 with `tools/wasm_model_check.cjs`; changing geometry is not renderer speedup.
 
@@ -2768,3 +2788,32 @@ Assets, vertex counts, texture/depth arithmetic and image tolerances are
 unchanged. Evidence: build/diagnostics/depth-replay-hz/{validation.json,
 publication-proof.json}, depth-replay-hz-consumption/, frozen controls, and
 build/perf/tigerlake-20261004/depth-replay-hz{-ms0,-ms2}-audit-*.
+
+### Depth-filtered vertex preparation rejected
+
+The accepted HZ replay leaves many vertices unused in later material passes.
+Two fresh variants skip their transforms and attributes, first zeroing complete
+vertices and then zeroing only compact output. The first instrument observes
+25,668.35 skipped vertices from 42,914.69 eligible inputs/frame, but neither
+variant provides a reproducible BMW gain with 4x MSAA. The first changes paired
+BMW time by +0.067% / -0.546%; the second regresses +1.786% / +0.797%.
+Both 2x audits regress for both variants. The compact-output variant improves
+off by 1.403%, a mode-specific gain that does not justify its other costs.
+
+Each variant passes 741 native tests plus the benchmark, 21 sanitizer contracts,
+240 WASM/Mesa images, 234 exact control images in every sample mode, and both
+models' 100 hashes/four raw frames per mode. One contaminated 2x attempt was
+discarded and repeated; its guard decision is preserved. Source patches,
+complete accepted crossover samples, guard decisions, identities, regression
+scope and reproduction commands are now tracked in
+[the experiment package](depth-visible-vertices/README.md). The public
+`tools/wasm_research_compare.py` runs and verifies this comparison protocol.
+`tools/wasm_perf.cjs` now waits for readback on every off frame too, matching
+the private driver used in these measurements. Short off/2x/4x self-comparisons
+verify the public tool; their loaded timings are not performance evidence.
+
+The logical savings do not establish that preparation is on the frame's
+critical path. The next isolated cube-target trial ports only the previously
+promising packet sampler kernels onto current HZ source, preserving accepted
+RGBA filtering and depth replay. It needs fresh measurements against current
+031038cf; historical cube gains do not demonstrate a current gain.
