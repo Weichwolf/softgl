@@ -98,6 +98,7 @@ Production builds use no diagnostic counters or observer callbacks. Existing
 display-list and pthread/memory-growth warnings remain in the logs. Build
 identities and timings can differ across hosts/toolchains.
 
-The next hypothesis moves the cell decision into an outer span loop so the
-inner pixel loop does not test alignment on each iteration. This remains an
-unmeasured hypothesis; the logical savings alone do not justify adoption.
+The [outer-span-loop successor](../hz4-span-loop/README.md) moves the cell
+decision outside the inner pixel loop. Its fresh comparison against the same
+accepted renderer also regresses all six BMW 4x pairs and is rejected. Logical
+savings alone do not justify adoption.

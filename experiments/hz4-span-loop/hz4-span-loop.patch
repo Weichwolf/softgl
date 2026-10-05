@@ -1,0 +1,246 @@
+--- a/libsoftgl/src/raster_hz.h
++++ b/libsoftgl/src/raster_hz.h
+@@ -241,6 +241,22 @@
+     return sg_hz_occlusion_class4(c,x0,y0,x1,y1,z0,z1,z2,offset,classify_strict);
+ }
+ 
++/* Strict rejection of a partial row span needs the same bound as whole
++ * triangles. A tie cannot become reusable depth visibility. */
++SG_INLINE const sg_hz_state *sg_hz_span_prepare4(const softgl_ctx *c,
++        float z0, float z1, float z2, float offset, float *lower) {
++    const sg_hz_state *state = sg_hz_state_from_ctx4(c);
++    if (!state || !state->active || !c->depth_test || c->stencil_test ||
++        (c->depth_func != GL_LESS && c->depth_func != GL_LEQUAL)) return NULL;
++    if (!(z0 >= 0.f && z0 <= 1.f && z1 >= 0.f && z1 <= 1.f && z2 >= 0.f && z2 <= 1.f)) return NULL;
++    uint32_t bits; memcpy(&bits, &offset, 4);
++    if ((bits & UINT32_C(0x7f800000)) == UINT32_C(0x7f800000)) return NULL;
++    float near = z0 < z1 ? z0 : z1; if (z2 < near) near = z2;
++    float bound = near + offset - 2e-6f * (1.f + fabsf(offset));
++    *lower = bound < 0.f ? 0.f : bound > 1.f ? 1.f : bound;
++    return state;
++}
++
+ SG_INLINE int sg_hz_occluded4(const softgl_ctx *c, int x0, int y0, int x1, int y1,
+                               float z0, float z1, float z2, float offset) {
+     return sg_hz_occlusion_class4(c,x0,y0,x1,y1,z0,z1,z2,offset,0);
+--- a/libsoftgl/src/raster_msaa_impl.h
++++ b/libsoftgl/src/raster_msaa_impl.h
+@@ -4,6 +4,9 @@
+ #else
+ #define SG_MSAA_HZ_CLASS sg_hz_occlusion_class2
+ #define SG_MSAA_HZ_OCCLUDED sg_hz_occluded2
++#endif
++#if defined(SG_HZ_SPAN_TEST) && SG_MSAA_DEPTH_CAPTURE
++extern void sg_hz_span_test_skip(int x, int y, int count);
+ #endif
+ /* Included with compile-time sample count and depth-capture mode. */
+ #ifdef __EMSCRIPTEN__
+@@ -119,6 +122,11 @@
+         intersection_x[e] = -(float)(row[e]+max_offset[e]+bias[e])*inverse_step;
+         intersection_step[e] = (float)(dy[e]*256)*inverse_step;
+     }
++#if SG_MSAA_DEPTH_CAPTURE
++    float span_lower = 0.f;
++    const sg_hz_state *span_state = sg_hz_span_prepare4(c,
++        v0->ndc.z, v1->ndc.z, v2->ndc.z, z_offset, &span_lower);
++#endif
+     for (int y = iy0; y < iy1; y++) {
+         int first_x = ix0, end_x = ix1;
+         if (use_spans) for (int e = 0; e < 3; e++) {
+@@ -141,7 +149,31 @@
+         int64_t edge[3] = {row[0]+dx[0]*256*(first_x-ix0),
+                           row[1]+dx[1]*256*(first_x-ix0),
+                           row[2]+dx[2]*256*(first_x-ix0)};
++#if SG_MSAA_DEPTH_CAPTURE
++        int x = first_x;
++        while (x < end_x) {
++            int span_end = end_x;
++            if (span_state) {
++                span_end = (x + 4) & ~3;
++                if (span_end > end_x) span_end = end_x;
++                const sg_hz_tile *tile = span_state->tiles +
++                    (size_t)(x >> 2) * span_state->rows + (y >> 2);
++                if (tile->written == UINT64_MAX && span_lower > tile->maximum) {
++                    int skip = span_end - x;
++#ifdef SG_HZ_SPAN_TEST
++                    sg_hz_span_test_skip(x, y, skip);
++#endif
++                    for (int e = 0; e < 3; e++) edge[e] += dx[e] * 256 * skip;
++                    /* Depth alone cannot prove intrinsic empty coverage. */
++                    coverage_seen = 1;
++                    x = span_end;
++                    continue;
++                }
++            }
++            for (; x < span_end; x++) {
++#else
+         for (int x = first_x; x < end_x; x++) {
++#endif
+             unsigned coverage = 0;
+             float depths[4];
+             if (coverage32) {
+@@ -257,6 +289,9 @@
+             }
+             for (int e = 0; e < 3; e++) edge[e] += dx[e] * 256;
+         }
++#if SG_MSAA_DEPTH_CAPTURE
++        }
++#endif
+         for (int e = 0; e < 3; e++) row[e] += dy[e] * 256;
+         if (use_spans) for (int e = 0; e < 3; e++) intersection_x[e] -= intersection_step[e];
+     }
+--- a/tests/CMakeLists.txt
++++ b/tests/CMakeLists.txt
+@@ -33,6 +33,21 @@
+ endif()
+ add_test(NAME hierarchical_depth_contract COMMAND hierarchical_depth_contract)
+ set_tests_properties(hierarchical_depth_contract PROPERTIES TIMEOUT 90)
++
++
++# Observe actual strict span skips without adding counters to production.
++add_library(hz_span_instrumented OBJECT ${CMAKE_SOURCE_DIR}/libsoftgl/src/rasterizer.c)
++target_include_directories(hz_span_instrumented PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/include ${CMAKE_SOURCE_DIR}/libsoftgl/src)
++target_compile_definitions(hz_span_instrumented PRIVATE SOFTGL_BUILD SG_HZ_SPAN_TEST)
++add_executable(hz_span_contract hz_span.c $<TARGET_OBJECTS:hz_span_instrumented>)
++target_include_directories(hz_span_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
++target_link_libraries(hz_span_contract PRIVATE softgl)
++if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
++    target_compile_options(hz_span_instrumented PRIVATE -msse4.1)
++    target_compile_options(hz_span_contract PRIVATE -O2 -fno-fast-math -ffp-contract=off -msse4.1)
++endif()
++add_test(NAME hz_span_contract COMMAND hz_span_contract)
++set_tests_properties(hz_span_contract PROPERTIES TIMEOUT 90)
+ 
+ add_executable(dot3_chain_contract dot3_chain.c)
+ target_include_directories(dot3_chain_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+--- /dev/null
++++ b/tests/hz_span.c
+@@ -0,0 +1,128 @@
++#include "types.h"
++#include "workers.h"
++#include "raster_hz.h"
++#include <stdio.h>
++#include <math.h>
++
++#define CHECK(x) do { if (!(x)) { fprintf(stderr, "line %d: %s\n", __LINE__, #x); return 1; } } while (0)
++
++static unsigned calls, pixels, partial_starts, partial_ends, bad_skips;
++
++void sg_hz_span_test_skip(int x, int y, int count) {
++    calls++;
++    pixels += (unsigned)count;
++    partial_starts += !!(x & 3);
++    partial_ends += count < 4 - (x & 3);
++    bad_skips += x < 0 || x + count > 64 || y < 0 || y >= 32 ||
++        count < 1 || count > 4 - (x & 3);
++}
++
++static void prepare(softgl_ctx *c, int enabled, int variant) {
++    softgl_make_current(c);
++    glDisable(GL_SCISSOR_TEST);
++    glDisable(GL_STENCIL_TEST);
++    glDisable(GL_ALPHA_TEST);
++    glDisable(GL_BLEND);
++    glDisable(GL_SAMPLE_ALPHA_TO_COVERAGE);
++    glDisable(GL_SAMPLE_COVERAGE);
++    glDepthMask(GL_TRUE);
++    glEnable(GL_DEPTH_TEST);
++    glDepthFunc(GL_LESS);
++    glClearDepth(1);
++    glClearColor(.1f, .2f, .3f, 1);
++    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
++    sg_hz_state_from_ctx(c)->active = 1;
++    float color[4] = {.25f, .5f, .25f, 1};
++    for (int y = 0; y < c->fb.h; y++) for (int x = 0; x < 64; x++) {
++        float z[4] = {.2f, .2f, .2f, .2f};
++        sg_write_multisample(c, x, y, 15, z, color);
++    }
++    if (variant & 1) {
++        glEnable(GL_BLEND);
++        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
++    }
++    if (variant & 2) {
++        glEnable(GL_ALPHA_TEST);
++        glAlphaFunc(GL_GREATER, .4f);
++    }
++    if (variant & 4) {
++        glEnable(GL_STENCIL_TEST);
++        glStencilFunc(GL_ALWAYS, 3, 255);
++        glStencilOp(GL_INCR, GL_DECR, GL_REPLACE);
++    }
++    if (variant & 8) glDepthMask(GL_FALSE);
++    if (variant & 16) glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE);
++    sg_hz_state_from_ctx(c)->active = enabled;
++}
++
++static int draw(softgl_ctx *c, int shape) {
++    sg_vert v[3] = {0};
++    v[0].ndc = (sg_vec4){5.125f + shape % 7, 1.375f + shape % 3, .8f, 1};
++    v[1].ndc = (sg_vec4){107.625f - shape % 11, 3.125f + shape % 5, .8f, 1};
++    v[2].ndc = (sg_vec4){13.375f + shape % 9, 30.875f - shape % 7, .8f, 1};
++    if (shape & 8) {
++        v[0].ndc.z = .55f;
++        v[1].ndc.z = .95f;
++        v[2].ndc.z = .65f;
++    }
++    if (shape & 16) for (int i = 0; i < 3; i++) v[i].ndc.z = 0;
++    for (int i = 0; i < 3; i++)
++        v[i].color = v[i].color_back = (sg_vec4){.3f + .2f * i, .8f, .2f, .3f + .2f * i};
++    sg_tex_tri_ctx texture;
++    sg_tex_tri_prepare(c, &texture);
++    sg_worker_bin bin = {0};
++    bin.depth_capture = 1;
++    sg_raster_bin = &bin;
++    int result = sg_raster_triangle_tile_prepared(c, v, v + 1, v + 2,
++        0, c->fb.w, &texture);
++    sg_raster_bin = NULL;
++    return result;
++}
++
++int main(void) {
++    softgl_ctx *c = softgl_create_multisample(128, 35, 4);
++    softgl_ctx *reference = softgl_create_multisample(128, 35, 4);
++    CHECK(c && reference);
++    sg_workers_shutdown(c);
++    sg_workers_shutdown(reference);
++    CHECK(sg_hz_active4(c) && sg_hz_active4(reference));
++    unsigned cases = 0, total_calls = 0, total_pixels = 0, starts = 0, ends = 0;
++    for (int variant = 0; variant < 32; variant++) for (int shape = 0; shape < 32; shape++) {
++        prepare(c, 1, variant);
++        calls = pixels = partial_starts = partial_ends = bad_skips = 0;
++        int result = draw(c, shape);
++        CHECK(!bad_skips);
++        if (calls) CHECK(result != 1);
++        if ((variant & 4) || (shape & 16)) CHECK(!calls);
++        total_calls += calls;
++        total_pixels += pixels;
++        starts += partial_starts;
++        ends += partial_ends;
++        prepare(reference, 0, variant);
++        calls = pixels = partial_starts = partial_ends = bad_skips = 0;
++        draw(reference, shape);
++        CHECK(!calls);
++        CHECK(!memcmp(c->fb.sample_color, reference->fb.sample_color, 128 * 35 * 16));
++        CHECK(!memcmp(c->fb.sample_depth, reference->fb.sample_depth, 128 * 35 * 4 * sizeof(float)));
++        CHECK(!memcmp(c->fb.sample_stencil, reference->fb.sample_stencil, 128 * 35 * 4));
++        CHECK(glGetError() == GL_NO_ERROR);
++        cases++;
++    }
++    CHECK(total_calls && total_pixels && starts && ends);
++    prepare(c, 1, 0);
++    float lower;
++    CHECK(sg_hz_span_prepare4(c, .8f, .9f, 1, 0, &lower));
++    CHECK(lower == .8f - 2e-6f);
++    CHECK(!sg_hz_span_prepare4(c, .8f, .9f, 1, NAN, &lower));
++    CHECK(!sg_hz_span_prepare4(c, .8f, .9f, 1, INFINITY, &lower));
++    c->stencil_test = 1;
++    CHECK(!sg_hz_span_prepare4(c, .8f, .9f, 1, 0, &lower));
++    c->stencil_test = 0;
++    c->depth_func = GL_EQUAL;
++    CHECK(!sg_hz_span_prepare4(c, .8f, .9f, 1, 0, &lower));
++    softgl_destroy(reference);
++    softgl_destroy(c);
++    printf("HZ spans: %u exact sample-plane cases, %u observed skips, %u skipped row pixels, %u partial starts, %u partial ends passed\n",
++        cases, total_calls, total_pixels, starts, ends);
++    return 0;
++}

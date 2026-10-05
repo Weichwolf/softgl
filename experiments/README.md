@@ -2894,3 +2894,10 @@ The trial passes 743 native tests plus the benchmark, 23 sanitizer contracts,
 100 hashes/four raw frames per mode and an observed-skip sample-plane contract.
 [The rejected trial package](hz4-span/README.md) publishes source, all fifteen
 guarded pairs, regression bindings and separate logical-counter observations.
+
+The [outer-span-loop successor](hz4-span-loop/README.md) removes the per-pixel
+cell/alignment test but also fails to improve BMW: paired 4x time changes
++3.563% / +3.660%, with all six pairs slower. Its independent source patch,
+fifteen first-attempt guarded pairs and full fresh regression evidence are
+published. These two trials share the accepted reference; separate audits
+do not directly measure their difference. Neither enters production.
