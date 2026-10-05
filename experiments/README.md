@@ -1,5 +1,11 @@
 # Optimization evidence
 
+Fresh profiles of the current renderer and a repeated logical-work census
+for BMW/T-80 in all three MSAA modes are published in
+[raster-work-census](raster-work-census/README.md). Every counter and model
+hash record reproduces byte-for-byte. These diagnostics motivate exact SIMD
+coverage-edge recurrence; they establish no accepted performance gain.
+
 SoftGL's current objective is open, reproducible research into the fastest
 practical OpenGL 1.5 implementation in WebAssembly. BMW F31 has priority;
 T-80 is the second demanding reference. Image quality, prepared geometry and

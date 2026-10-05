@@ -1,0 +1,13 @@
+Census sample mode 0
+Traceback (most recent call last):
+  File "/home/cosmo/Git/softgl/build/diagnostics/raster-work-census/run-census.py", line 12, in <module>
+    subprocess.run(['node', str(root / 'model-census.cjs'), str(root), str(samples),
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    str(repo / 'build/controls/msaa-edge-reuse-candidate')],
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                   env=env, stdout=log, stderr=subprocess.STDOUT, check=True)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['node', '/home/cosmo/Git/softgl/build/diagnostics/raster-work-census/model-census.cjs', '/home/cosmo/Git/softgl/build/diagnostics/raster-work-census', '0', '/home/cosmo/Git/softgl/build/controls/msaa-edge-reuse-candidate']' returned non-zero exit status 1.
