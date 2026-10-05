@@ -5,6 +5,11 @@
 #define SG_MSAA_HZ_CLASS sg_hz_occlusion_class2
 #define SG_MSAA_HZ_OCCLUDED sg_hz_occluded2
 #endif
+#if defined(SG_MSAA_EDGE_TEST) && SG_MSAA_SAMPLES == 4
+extern void sg_msaa_edge_test(int reused, int packed, int capture,
+    int64_t edge0, int64_t edge1, const int64_t *offsets, float inv_area,
+    sg_f32x4 b0, sg_f32x4 b1);
+#endif
 /* Included with compile-time sample count and depth-capture mode. */
 #ifdef __EMSCRIPTEN__
 /* LLVM noinline alone is lost before Binaryen. Retain these roots so
@@ -84,6 +89,10 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
     int coverage32 = ix1 - ix0 <= 65536 && iy1 - iy0 <= 65536;
 #endif
     sg_i32x4 coverage_offsets[3];
+#if SG_MSAA_SAMPLES == 4
+    sg_i32x4 coverage_bias0 = sg_i32x4_splat(bias0);
+    sg_i32x4 coverage_bias1 = sg_i32x4_splat(bias1);
+#endif
     if (coverage32) for (int e = 0; e < 3; e++) {
         /* Reject a large origin before adding spans: the remaining sums
          * then stay far inside i64 even for extreme fixed coordinates. */
@@ -144,10 +153,18 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
         for (int x = first_x; x < end_x; x++) {
             unsigned coverage = 0;
             float depths[4];
+#if SG_MSAA_SAMPLES == 4
+            sg_i32x4 coverage_edge0 = sg_i32x4_splat(0);
+            sg_i32x4 coverage_edge1 = sg_i32x4_splat(0);
+#endif
             if (coverage32) {
                 sg_i32x4 e0 = sg_i32x4_add(sg_i32x4_splat((int32_t)edge[0]), coverage_offsets[0]);
                 sg_i32x4 e1 = sg_i32x4_add(sg_i32x4_splat((int32_t)edge[1]), coverage_offsets[1]);
                 sg_i32x4 e2 = sg_i32x4_add(sg_i32x4_splat((int32_t)edge[2]), coverage_offsets[2]);
+#if SG_MSAA_SAMPLES == 4
+                coverage_edge0 = e0;
+                coverage_edge1 = e1;
+#endif
                 coverage = sg_i32x4_mask_nonneg(_mm_or_si128(_mm_or_si128(e0, e1), e2));
 #if SG_MSAA_SAMPLES == 2
                 coverage &= full;
@@ -178,6 +195,16 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
                 /* SIMD lanes are samples of one pixel. Keep scalar expression
                  * grouping so sample depth and the selected shading point match. */
                 sg_f32x4 b0, b1;
+#if SG_MSAA_SAMPLES == 4
+                if (coverage32) {
+                    /* The rectangle proof includes unbiased sample sums.
+                     * Undo only the top-left bias before float conversion. */
+                    b0 = sg_f32x4_mul(_mm_cvtepi32_ps(_mm_sub_epi32(
+                        coverage_edge0, coverage_bias0)), sg_f32x4_splat(inv_area));
+                    b1 = sg_f32x4_mul(_mm_cvtepi32_ps(_mm_sub_epi32(
+                        coverage_edge1, coverage_bias1)), sg_f32x4_splat(inv_area));
+                } else
+#endif
                 if (small_edges) {
                     b0 = sg_f32x4_mul(_mm_cvtepi32_ps(sg_i32x4_add(
                         sg_i32x4_splat((int32_t)edge[0]), offset0)), sg_f32x4_splat(inv_area));
@@ -193,6 +220,10 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
                         (float)(edge[1] + offsets[2][1]), (float)(edge[1] + offsets[3][1])),
                         sg_f32x4_splat(inv_area));
                 }
+#if defined(SG_MSAA_EDGE_TEST) && SG_MSAA_SAMPLES == 4
+                sg_msaa_edge_test(coverage32, small_edges, SG_MSAA_DEPTH_CAPTURE,
+                    edge[0], edge[1], &offsets[0][0], inv_area, b0, b1);
+#endif
                 sg_f32x4 b2 = sg_f32x4_sub(sg_f32x4_sub(sg_f32x4_splat(1.f), b0), b1);
                 sg_f32x4 z = sg_f32x4_add(sg_f32x4_add(sg_f32x4_add(
                     sg_f32x4_mul(b0, sg_f32x4_splat(v0->ndc.z)),

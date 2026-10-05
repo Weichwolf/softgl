@@ -1,0 +1,81 @@
+             )
+             (i64.const 0)
+            )
+           )
+           (local.set $49
+            (i32.or
+             (local.get $49)
+             (i32.const 8)
+            )
+           )
+           (br $label$66)
+          )
+          (br_if $label$65
+           (i32.eqz
+            (local.get $49)
+           )
+          )
+         )
+         (local.set $14
+          (block $label$73 (result v128)
+           (if
+            (i32.eqz
+             (local.get $79)
+            )
+            (then
+             (local.set $19
+              (f32x4.convert_i32x4_s
+               (i32x4.add
+                (i32x4.splat
+                 (i32.wrap_i64
+                  (local.get $105)
+                 )
+                )
+                (local.get $43)
+               )
+              )
+             )
+             (br $label$73
+              (f32x4.convert_i32x4_s
+               (i32x4.add
+                (i32x4.splat
+                 (i32.wrap_i64
+                  (local.get $106)
+                 )
+                )
+                (local.get $42)
+               )
+              )
+             )
+            )
+           )
+           (local.set $19
+            (f32x4.replace_lane 3
+             (f32x4.replace_lane 2
+              (f32x4.replace_lane 1
+               (f32x4.splat
+                (f32.convert_i64_s
+                 (i64.add
+                  (i64.load offset=208
+                   (local.get $47)
+                  )
+                  (local.get $105)
+                 )
+                )
+               )
+               (f32.convert_i64_s
+                (i64.add
+                 (i64.load offset=232
+                  (local.get $47)
+                 )
+                 (local.get $105)
+                )
+               )
+              )
+              (f32.convert_i64_s
+               (i64.add
+                (i64.load offset=256
+                 (local.get $47)
+                )
+                (local.get $105)
+               )

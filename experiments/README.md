@@ -2901,3 +2901,23 @@ cell/alignment test but also fails to improve BMW: paired 4x time changes
 fifteen first-attempt guarded pairs and full fresh regression evidence are
 published. These two trials share the accepted reference; separate audits
 do not directly measure their difference. Neither enters production.
+
+### Coverage-edge reuse retained
+
+The [four-sample edge-reuse variant](msaa-edge-reuse/README.md) subtracts
+top-left bias from existing coverage vectors before depth interpolation,
+preserving exact coefficients and the packed/wide fallbacks. BMW paired
+4x time improves 1.813% / 1.019% / 0.853% in two initial audits and one
+predeclared confirmation audit; seven of nine pairs improve. T80 is mixed
+(-2.057% / +0.983% / -1.338%), retained under BMW priority. No 2x speedup
+or statistical equivalence claim follows from its mixed measurements.
+
+All eighteen pairs pass the unchanged guard on their first attempt. Full
+fresh checks pass 743 native tests plus the benchmark, 23 sanitizer contracts,
+240 WASM/Mesa images, 234 exact controls per mode, both models' 100 hashes/four
+raw frames per mode and all 22 standalone WASM contracts. The new actual-kernel
+observer verifies 12,431,040 coefficient lanes and 62,251,008 sample masks on
+native/WASM, with matching results and sanitizer coverage. Both browser UIs
+pass; canonical JS/WASM match the measured `58132377` candidate byte-for-byte.
+The package publishes source, all raw comparisons, gate bindings, matching
+symbol maps and scoped static code-generation observations.

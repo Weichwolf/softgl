@@ -1,0 +1,91 @@
+        )
+       )
+       (local.set $106
+        (i64.add
+         (i64.mul
+          (local.get $109)
+          (local.get $129)
+         )
+         (i64x2.extract_lane 0
+          (local.get $34)
+         )
+        )
+       )
+       (local.set $109
+        (i64.add
+         (i64.mul
+          (local.get $109)
+          (local.get $128)
+         )
+         (i64x2.extract_lane 1
+          (local.get $34)
+         )
+        )
+       )
+       (local.set $104
+        (i32.shl
+         (i32.shr_s
+          (local.get $6)
+          (i32.const 2)
+         )
+         (i32.const 4)
+        )
+       )
+       (loop $label$64
+        (block $label$65
+         (block $label$66
+          (block $label$67
+           (if
+            (i32.eqz
+             (local.get $71)
+            )
+            (then
+             (local.set $49
+              (i32.xor
+               (i32x4.bitmask
+                (v128.or
+                 (v128.or
+                  (i32x4.add
+                   (i32x4.splat
+                    (i32.wrap_i64
+                     (local.get $106)
+                    )
+                   )
+                   (local.get $38)
+                  )
+                  (i32x4.add
+                   (i32x4.splat
+                    (i32.wrap_i64
+                     (local.get $105)
+                    )
+                   )
+                   (local.get $37)
+                  )
+                 )
+                 (i32x4.add
+                  (i32x4.splat
+                   (i32.wrap_i64
+                    (local.get $109)
+                   )
+                  )
+                  (local.get $39)
+                 )
+                )
+               )
+               (i32.const 15)
+              )
+             )
+             (br $label$67)
+            )
+           )
+           (br_if $label$65
+            (i64.lt_s
+             (i64.add
+              (local.tee $107
+               (i64.add
+                (local.get $105)
+                (local.get $112)
+               )
+              )
+              (local.get $120)
+             )

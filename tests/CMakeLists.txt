@@ -34,6 +34,21 @@ endif()
 add_test(NAME hierarchical_depth_contract COMMAND hierarchical_depth_contract)
 set_tests_properties(hierarchical_depth_contract PROPERTIES TIMEOUT 90)
 
+# Observe actual sample coefficients with production renderer flags.
+add_library(msaa_edge_instrumented OBJECT ${CMAKE_SOURCE_DIR}/libsoftgl/src/rasterizer.c)
+target_include_directories(msaa_edge_instrumented PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/include ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_compile_definitions(msaa_edge_instrumented PRIVATE SOFTGL_BUILD SG_MSAA_EDGE_TEST)
+add_executable(msaa_edge_contract msaa_edges.c $<TARGET_OBJECTS:msaa_edge_instrumented>)
+target_include_directories(msaa_edge_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_link_libraries(msaa_edge_contract PRIVATE softgl)
+if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(msaa_edge_instrumented PRIVATE -msse4.1)
+    target_compile_options(msaa_edge_contract PRIVATE -O2 -fno-fast-math -ffp-contract=off -msse4.1)
+endif()
+add_test(NAME msaa_edge_contract COMMAND msaa_edge_contract)
+set_tests_properties(msaa_edge_contract PROPERTIES TIMEOUT 90)
+
+
 add_executable(dot3_chain_contract dot3_chain.c)
 target_include_directories(dot3_chain_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
 target_link_libraries(dot3_chain_contract PRIVATE softgl)

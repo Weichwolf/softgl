@@ -1,0 +1,129 @@
+                  (i64.load offset=288
+                   (local.get $49)
+                  )
+                 )
+                 (i64.const 0)
+                )
+               )
+               (br_if $label$69
+                (i64.lt_s
+                 (i64.add
+                  (local.get $116)
+                  (i64.load offset=296
+                   (local.get $49)
+                  )
+                 )
+                 (i64.const 0)
+                )
+               )
+               (local.set $50
+                (i32.or
+                 (local.get $50)
+                 (i32.const 8)
+                )
+               )
+               (br $label$68)
+              )
+             )
+             (br_if $label$66
+              (i32.eq
+               (local.tee $51
+                (i32x4.bitmask
+                 (v128.or
+                  (v128.or
+                   (local.tee $14
+                    (i32x4.add
+                     (i32x4.splat
+                      (i32.wrap_i64
+                       (local.get $107)
+                      )
+                     )
+                     (local.get $39)
+                    )
+                   )
+                   (i32x4.add
+                    (i32x4.splat
+                     (i32.wrap_i64
+                      (local.get $111)
+                     )
+                    )
+                    (local.get $41)
+                   )
+                  )
+                  (local.tee $19
+                   (i32x4.add
+                    (i32x4.splat
+                     (i32.wrap_i64
+                      (local.get $108)
+                     )
+                    )
+                    (local.get $40)
+                   )
+                  )
+                 )
+                )
+               )
+               (i32.const 15)
+              )
+             )
+             (local.set $50
+              (i32.xor
+               (local.get $51)
+               (i32.const 15)
+              )
+             )
+             (local.set $19
+              (f32x4.convert_i32x4_s
+               (i32x4.sub
+                (local.get $19)
+                (local.get $37)
+               )
+              )
+             )
+             (br $label$67
+              (f32x4.convert_i32x4_s
+               (i32x4.sub
+                (local.get $14)
+                (local.get $38)
+               )
+              )
+             )
+            )
+            (br_if $label$66
+             (i32.eqz
+              (local.get $50)
+             )
+            )
+           )
+           (if
+            (i32.eqz
+             (local.get $81)
+            )
+            (then
+             (local.set $19
+              (f32x4.convert_i32x4_s
+               (i32x4.add
+                (i32x4.splat
+                 (i32.wrap_i64
+                  (local.get $108)
+                 )
+                )
+                (local.get $44)
+               )
+              )
+             )
+             (br $label$67
+              (f32x4.convert_i32x4_s
+               (i32x4.add
+                (i32x4.splat
+                 (i32.wrap_i64
+                  (local.get $107)
+                 )
+                )
+                (local.get $45)
+               )
+              )
+             )
+            )
+           )
+           (local.set $19

@@ -1,0 +1,283 @@
+--- a/libsoftgl/src/raster_msaa_impl.h
++++ b/libsoftgl/src/raster_msaa_impl.h
+@@ -4,6 +4,11 @@
+ #else
+ #define SG_MSAA_HZ_CLASS sg_hz_occlusion_class2
+ #define SG_MSAA_HZ_OCCLUDED sg_hz_occluded2
++#endif
++#if defined(SG_MSAA_EDGE_TEST) && SG_MSAA_SAMPLES == 4
++extern void sg_msaa_edge_test(int reused, int packed, int capture,
++    int64_t edge0, int64_t edge1, const int64_t *offsets, float inv_area,
++    sg_f32x4 b0, sg_f32x4 b1);
+ #endif
+ /* Included with compile-time sample count and depth-capture mode. */
+ #ifdef __EMSCRIPTEN__
+@@ -84,6 +89,10 @@
+     int coverage32 = ix1 - ix0 <= 65536 && iy1 - iy0 <= 65536;
+ #endif
+     sg_i32x4 coverage_offsets[3];
++#if SG_MSAA_SAMPLES == 4
++    sg_i32x4 coverage_bias0 = sg_i32x4_splat(bias0);
++    sg_i32x4 coverage_bias1 = sg_i32x4_splat(bias1);
++#endif
+     if (coverage32) for (int e = 0; e < 3; e++) {
+         /* Reject a large origin before adding spans: the remaining sums
+          * then stay far inside i64 even for extreme fixed coordinates. */
+@@ -144,10 +153,18 @@
+         for (int x = first_x; x < end_x; x++) {
+             unsigned coverage = 0;
+             float depths[4];
++#if SG_MSAA_SAMPLES == 4
++            sg_i32x4 coverage_edge0 = sg_i32x4_splat(0);
++            sg_i32x4 coverage_edge1 = sg_i32x4_splat(0);
++#endif
+             if (coverage32) {
+                 sg_i32x4 e0 = sg_i32x4_add(sg_i32x4_splat((int32_t)edge[0]), coverage_offsets[0]);
+                 sg_i32x4 e1 = sg_i32x4_add(sg_i32x4_splat((int32_t)edge[1]), coverage_offsets[1]);
+                 sg_i32x4 e2 = sg_i32x4_add(sg_i32x4_splat((int32_t)edge[2]), coverage_offsets[2]);
++#if SG_MSAA_SAMPLES == 4
++                coverage_edge0 = e0;
++                coverage_edge1 = e1;
++#endif
+                 coverage = sg_i32x4_mask_nonneg(_mm_or_si128(_mm_or_si128(e0, e1), e2));
+ #if SG_MSAA_SAMPLES == 2
+                 coverage &= full;
+@@ -178,6 +195,16 @@
+                 /* SIMD lanes are samples of one pixel. Keep scalar expression
+                  * grouping so sample depth and the selected shading point match. */
+                 sg_f32x4 b0, b1;
++#if SG_MSAA_SAMPLES == 4
++                if (coverage32) {
++                    /* The rectangle proof includes unbiased sample sums.
++                     * Undo only the top-left bias before float conversion. */
++                    b0 = sg_f32x4_mul(_mm_cvtepi32_ps(_mm_sub_epi32(
++                        coverage_edge0, coverage_bias0)), sg_f32x4_splat(inv_area));
++                    b1 = sg_f32x4_mul(_mm_cvtepi32_ps(_mm_sub_epi32(
++                        coverage_edge1, coverage_bias1)), sg_f32x4_splat(inv_area));
++                } else
++#endif
+                 if (small_edges) {
+                     b0 = sg_f32x4_mul(_mm_cvtepi32_ps(sg_i32x4_add(
+                         sg_i32x4_splat((int32_t)edge[0]), offset0)), sg_f32x4_splat(inv_area));
+@@ -193,6 +220,10 @@
+                         (float)(edge[1] + offsets[2][1]), (float)(edge[1] + offsets[3][1])),
+                         sg_f32x4_splat(inv_area));
+                 }
++#if defined(SG_MSAA_EDGE_TEST) && SG_MSAA_SAMPLES == 4
++                sg_msaa_edge_test(coverage32, small_edges, SG_MSAA_DEPTH_CAPTURE,
++                    edge[0], edge[1], &offsets[0][0], inv_area, b0, b1);
++#endif
+                 sg_f32x4 b2 = sg_f32x4_sub(sg_f32x4_sub(sg_f32x4_splat(1.f), b0), b1);
+                 sg_f32x4 z = sg_f32x4_add(sg_f32x4_add(sg_f32x4_add(
+                     sg_f32x4_mul(b0, sg_f32x4_splat(v0->ndc.z)),
+--- a/tests/CMakeLists.txt
++++ b/tests/CMakeLists.txt
+@@ -33,6 +33,21 @@
+ endif()
+ add_test(NAME hierarchical_depth_contract COMMAND hierarchical_depth_contract)
+ set_tests_properties(hierarchical_depth_contract PROPERTIES TIMEOUT 90)
++
++# Observe actual sample coefficients with production renderer flags.
++add_library(msaa_edge_instrumented OBJECT ${CMAKE_SOURCE_DIR}/libsoftgl/src/rasterizer.c)
++target_include_directories(msaa_edge_instrumented PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/include ${CMAKE_SOURCE_DIR}/libsoftgl/src)
++target_compile_definitions(msaa_edge_instrumented PRIVATE SOFTGL_BUILD SG_MSAA_EDGE_TEST)
++add_executable(msaa_edge_contract msaa_edges.c $<TARGET_OBJECTS:msaa_edge_instrumented>)
++target_include_directories(msaa_edge_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
++target_link_libraries(msaa_edge_contract PRIVATE softgl)
++if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
++    target_compile_options(msaa_edge_instrumented PRIVATE -msse4.1)
++    target_compile_options(msaa_edge_contract PRIVATE -O2 -fno-fast-math -ffp-contract=off -msse4.1)
++endif()
++add_test(NAME msaa_edge_contract COMMAND msaa_edge_contract)
++set_tests_properties(msaa_edge_contract PROPERTIES TIMEOUT 90)
++
+ 
+ add_executable(dot3_chain_contract dot3_chain.c)
+ target_include_directories(dot3_chain_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+--- /dev/null
++++ b/tests/msaa_edges.c
+@@ -0,0 +1,184 @@
++#include "types.h"
++#include "workers.h"
++#include "multisample.h"
++#include "raster_types.h"
++#include "simd.h"
++#include <stdio.h>
++
++static uint32_t random_state = 93;
++static uint64_t observed[2][3], lanes, wrapped_bases;
++static unsigned bad_math, biases_seen;
++
++/* Observe coefficients produced by the actual raster kernels. The strict
++ * oracle uses full-width sums and no coverage/intersection approximations. */
++void sg_msaa_edge_test(int reused, int packed, int capture,
++        int64_t edge0, int64_t edge1, const int64_t *offsets, float inv_area,
++        sg_f32x4 b0, sg_f32x4 b1) {
++    float actual[2][4];
++    sg_f32x4_store(actual[0], b0);
++    sg_f32x4_store(actual[1], b1);
++    observed[!!capture][reused ? 0 : packed ? 1 : 2]++;
++    int64_t base[2] = {edge0, edge1};
++    for (int e = 0; e < 2; e++) {
++        if (reused && (base[e] < INT32_MIN || base[e] > INT32_MAX)) wrapped_bases++;
++        for (int sample = 0; sample < 4; sample++) {
++            int64_t sum = base[e] + offsets[sample * 3 + e];
++            if ((reused || packed) && (sum < INT32_MIN || sum > INT32_MAX)) bad_math++;
++            float expected = (float)sum * inv_area;
++            if (memcmp(actual[e] + sample, &expected, sizeof(float))) bad_math++;
++            lanes++;
++        }
++    }
++}
++
++
++static uint32_t next_value(void) {
++    random_state ^= random_state << 13;
++    random_state ^= random_state >> 17;
++    random_state ^= random_state << 5;
++    return random_state;
++}
++
++static int top_left(int32_t ax, int32_t ay, int32_t bx, int32_t by) {
++    return by < ay || (by == ay && bx < ax);
++}
++
++/* Test actual rasterization against a full-frame sample oracle. The oracle
++ * neither computes scanline intersections nor uses the production bounds. */
++int main(void) {
++    const int sizes[3][2] = {{68, 36}, {33, 17}, {68, 360}};
++    const int spans[] = {1, 2, 7, 8, 16, 63, 64, 256, 4096};
++    uint64_t checked = 0;
++    unsigned frames = 0;
++    for (int size = 0; size < 3; size++) {
++        for (int capture = 0; capture < 2; capture++) {
++            int w = sizes[size][0], h = sizes[size][1], samples = 4;
++            softgl_ctx *c = softgl_create_multisample(w, h, 4);
++            if (!c) return 1;
++            softgl_make_current(c);
++            sg_workers_shutdown(c);
++            glDisable(GL_DEPTH_TEST);
++            glDisable(GL_STENCIL_TEST);
++            glDisable(GL_BLEND);
++            glDisable(GL_ALPHA_TEST);
++            glDisable(GL_FOG);
++            glClearColor(0, 0, 0, 0);
++            sg_tex_tri_ctx texture;
++            sg_tex_tri_prepare(c, &texture);
++            for (int enabled = 0; enabled < 2; enabled++) {
++                c->multisample = enabled;
++                int count = size == 2 ? 96 : 512;
++                for (int test = 0; test < count; test++) {
++                    float left = ((int)(next_value() % (w * 512)) - w * 256) * (1.f / 256.f);
++                    float bottom = ((int)(next_value() % (h * 512)) - h * 256) * (1.f / 256.f);
++                    float width = spans[test % 9], height = spans[(test / 9) % 9];
++                    float shear = (int)(next_value() % 8192) - 4096;
++                    float tilt = (int)(next_value() % 256) - 128;
++                    if (test % 7) {
++                        shear *= 1.f / 256.f;
++                        tilt *= 1.f / 256.f;
++                    }
++                    if (test % 23 == 0) {
++                        left = -1000000.f;
++                        width = 2000000.f;
++                        shear = 0;
++                    }
++                    if (test % 29 == 0) {
++                        bottom = -1000000.f;
++                        height = 2000000.f;
++                        tilt = 0;
++                    }
++                    /* Exercise both sides of the packed-edge range bound
++                     * with positive, screen-crossing triangles. */
++                    if (test >= (size == 2 ? 64 : 480)) {
++                        const float limits[] = {180.f, 181.f, 16383.f, 16384.f};
++                        width = limits[test & 3];
++                        height = width < 1000.f ? width : 1.f;
++                        left = -31.f - 1.f / 256.f;
++                        bottom = (test & 4) ? -1.5f : 0.f;
++                        shear = width * .5f;
++                        tilt = 0.f;
++                    }
++                    sg_vert v[3];
++                    memset(v, 0, sizeof(v));
++                    v[0].ndc = (sg_vec4){left, bottom, .5f, 1.f};
++                    v[1].ndc = (sg_vec4){left + width, bottom + tilt, .5f, 1.f};
++                    v[2].ndc = (sg_vec4){left + shear, bottom + height, .5f, 1.f};
++                    int32_t vx[3], vy[3];
++                    for (int i = 0; i < 3; i++) {
++                        v[i].color = (sg_vec4){1.f, 1.f, 1.f, 1.f};
++                        vx[i] = sg_fp_screen_from_float(v[i].ndc.x);
++                        vy[i] = sg_fp_screen_from_float(v[i].ndc.y);
++                    }
++                    int64_t area = (int64_t)(vx[1] - vx[0]) * (vy[2] - vy[0])
++                        - (int64_t)(vy[1] - vy[0]) * (vx[2] - vx[0]);
++                    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
++                    sg_worker_bin bin = {0};
++                    bin.depth_capture = capture;
++                    sg_raster_bin = &bin;
++                    sg_raster_triangle_tile_prepared(c, v, v + 1, v + 2, 0, w, &texture);
++                    sg_raster_bin = NULL;
++                    if (bad_math) {
++                        fprintf(stderr, "coefficient mismatch: size=%d capture=%d enabled=%d test=%d\n",
++                            size, capture, enabled, test);
++                        return 3;
++                    }
++                    for (int e = 0; e < 2; e++) {
++                        int a = (e + 1) % 3, b = (e + 2) % 3;
++                        biases_seen |= 1u << (top_left(vx[a], vy[a], vx[b], vy[b]) ? 0 : 1);
++                    }
++                    for (int y = 0; y < h; y++) {
++                        for (int x = 0; x < w; x++) {
++                            for (int sample = 0; sample < samples; sample++) {
++                                int sx = 128, sy = 128;
++                                if (enabled) sg_sample_position(samples, sample, &sx, &sy);
++                                int64_t px = (int64_t)x * 256 + sx;
++                                int64_t py = (int64_t)y * 256 + sy;
++                                int covered = area > 0;
++                                for (int edge = 0; covered && edge < 3; edge++) {
++                                    int a = (edge + 1) % 3, b = (edge + 2) % 3;
++                                    int64_t value = (int64_t)(vx[b] - vx[a]) * (py - vy[a])
++                                        - (int64_t)(vy[b] - vy[a]) * (px - vx[a]);
++                                    covered = value >= (top_left(vx[a], vy[a], vx[b], vy[b]) ? 0 : 1);
++                                }
++                                size_t index = ((size_t)y * w + x) * samples + sample;
++                                for (int channel = 0; channel < 4; channel++) {
++                                    int actual = c->fb.sample_color[index * 4 + channel];
++                                    if (actual != (covered ? 255 : 0)) {
++                                        fprintf(stderr, "size=%d samples=%d enabled=%d test=%d "
++                                            "x=%d y=%d sample=%d area=%lld expected=%d got=%d\n",
++                                            size, samples, enabled, test, x, y, sample,
++                                            (long long)area, covered ? 255 : 0, actual);
++                                        return 2;
++                                    }
++                                }
++                                checked++;
++                            }
++                        }
++                    }
++                    frames++;
++                }
++            }
++            softgl_destroy(c);
++        }
++    }
++    for (int capture = 0; capture < 2; capture++) {
++        if (!observed[capture][0] || !observed[capture][1] || !observed[capture][2]) {
++            fprintf(stderr, "unobserved path: %d %llu %llu %llu\n", capture,
++                (unsigned long long)observed[capture][0],
++                (unsigned long long)observed[capture][1],
++                (unsigned long long)observed[capture][2]);
++            return 4;
++        }
++    }
++    if (biases_seen != 3 || bad_math) return 5;
++    printf("MSAA edges: %u frames, %llu exact sample masks, %llu exact coefficient lanes; "
++        "ordinary/capture reused=%llu/%llu packed fallback=%llu/%llu "
++        "wide fallback=%llu/%llu wrapped bases=%llu passed\n",
++        frames, (unsigned long long)checked, (unsigned long long)lanes,
++        (unsigned long long)observed[0][0], (unsigned long long)observed[1][0],
++        (unsigned long long)observed[0][1], (unsigned long long)observed[1][1],
++        (unsigned long long)observed[0][2], (unsigned long long)observed[1][2],
++        (unsigned long long)wrapped_bases);
++    return 0;
++}
