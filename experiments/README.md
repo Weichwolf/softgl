@@ -10,6 +10,14 @@ consumption diagnostic are published. Canonical module `e7ea52b2` is
 byte-identical to the timed candidate. The portable verifier recomputes
 all paired audits and checks every archived artifact hash.
 
+The [off-capture dispatch trial](off-capture-dispatch/README.md) is rejected:
+BMW 2x frame time increases by 2.235%/0.371% (all six pairs slower), and 4x
+by 1.007%/1.688% (five of six slower); off results are mixed. The ordinary
+prepared root is 40 static WASM bytes smaller, while caller code grows and
+all MSAA kernel bodies remain byte-identical. This is no renderer gain or
+proof of a native-code cause. All eighteen paired records/guard attempts,
+full gates, independent patch and codegen parser/results are public.
+
 The preceding [two-sample transient depth replay](depth-replay-two/README.md)
 remains part of the renderer: BMW 2x frame time fell by 5.184%/4.718%
 against its own `58132377` baseline, with all six pairs faster. Its full
