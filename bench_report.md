@@ -57,5 +57,7 @@
 | Tiefenebenen-/Dispatch-Versuche / AB/BA-Paare / übernommen | 3 / 18 / 0 |
 | Sample-Leerfilter-Versuche / AB/BA-Paare / übernommen | 2 / 12 / 0 |
 | Coverage-Replay-Versuche / AB/BA-Paare / übernommen | 2 / 15 / 1 |
+| Fixed-XY-Architekturversuche / AB/BA-Paare / übernommen | 2 / 15 / 0 |
 | BMW 4× Replay-Bin-Refs / Frame, vorher → jetzt | 73.949 → 64.697 (-12,51%) |
+| BMW 4× unreferenzierte Replay-Vertices / Frame | 1.982 / 46.103 (4,30%) |
 | Rohdaten / Nachweis | `build/perf/tigerlake-20261004/` / `build/diagnostics/msaa-coverage-reuse-queue/` |
