@@ -1,0 +1,253 @@
+{
+  "wasmSha256": "7cc38593ef399417a3ab4497dae40a162f9ae9550ad2181140d5d0f3c8df3b77",
+  "jsSha256": "c1a7d9afda1a934b28d0608f32270e8928d35b67d1b570b52bc0623257770ada",
+  "symbolMapSha256": "9f26a3ef67eccbfb19658c9d18e87799db22e1c71b62d0a9522efcbfc5265ceb",
+  "runs": [
+    {
+      "scene": "bmw",
+      "samples": 0,
+      "command": [
+        "/usr/bin/python3",
+        "/home/cosmo/Git/softgl/tools/wasm_quiet_audit.py",
+        "/home/cosmo/Git/softgl/build/diagnostics/current-7cc-profiles/runs/bmw0.json",
+        "node",
+        "/home/cosmo/Git/softgl/tools/wasm_perf.cjs",
+        "--bench-only",
+        "--wasm-build",
+        "/home/cosmo/Git/softgl/build/controls/post-depth-common-store-candidate",
+        "--scenes",
+        "bmw",
+        "--samples",
+        "0",
+        "--warmup",
+        "80",
+        "--frames",
+        "240",
+        "--rounds",
+        "1",
+        "--profile-scene",
+        "bmw",
+        "--output",
+        "/home/cosmo/Git/softgl/build/diagnostics/current-7cc-profiles/runs/bmw0.json"
+      ],
+      "result": "bmw0.json",
+      "resultSha256": "110762b73bafac235db70fd844688d4ba2eb84092fd5892800dfa10be0603c4b",
+      "profile": "bmw0.attempt-1.pending.profiles.json",
+      "profileSha256": "bc14b89b53fc42efd0ba849af38a37ab6eb79dd53b5213cf093711ddb7959454",
+      "summary": "bmw0-summary.json",
+      "summarySha256": "8a1b3cb208b7777e4fc5f9fcbf29aab533145148dc1fc59a2852e794a74774aa",
+      "attempts": [
+        {
+          "file": "bmw0.attempt-1.monitor.json",
+          "sha256": "93fab199b419233ec5ca008fff93af45276bb661b882f33298471d23d1cfb7dc",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scene": "tank",
+      "samples": 0,
+      "command": [
+        "/usr/bin/python3",
+        "/home/cosmo/Git/softgl/tools/wasm_quiet_audit.py",
+        "/home/cosmo/Git/softgl/build/diagnostics/current-7cc-profiles/runs/tank0.json",
+        "node",
+        "/home/cosmo/Git/softgl/tools/wasm_perf.cjs",
+        "--bench-only",
+        "--wasm-build",
+        "/home/cosmo/Git/softgl/build/controls/post-depth-common-store-candidate",
+        "--scenes",
+        "tank",
+        "--samples",
+        "0",
+        "--warmup",
+        "80",
+        "--frames",
+        "240",
+        "--rounds",
+        "1",
+        "--profile-scene",
+        "tank",
+        "--output",
+        "/home/cosmo/Git/softgl/build/diagnostics/current-7cc-profiles/runs/tank0.json"
+      ],
+      "result": "tank0.json",
+      "resultSha256": "738f601d71b6a41b90ebdb3d2506054c920ff5d01a8d3269e0185440ea0d947b",
+      "profile": "tank0.attempt-1.pending.profiles.json",
+      "profileSha256": "6c39bde0c57cf01b42ca43c5537c2196d5931060a4382987a86b6781a1632a34",
+      "summary": "tank0-summary.json",
+      "summarySha256": "f6b25d075af3778a38cc54ca725abcb101a571950bdc39c2a7b9cf2ffa1228ae",
+      "attempts": [
+        {
+          "file": "tank0.attempt-1.monitor.json",
+          "sha256": "3392162ef1071b74836cbada33b2128d63bea00f043f4873d47cd3ef0b343a89",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scene": "bmw",
+      "samples": 2,
+      "command": [
+        "/usr/bin/python3",
+        "/home/cosmo/Git/softgl/tools/wasm_quiet_audit.py",
+        "/home/cosmo/Git/softgl/build/diagnostics/current-7cc-profiles/runs/bmw2.json",
+        "node",
+        "/home/cosmo/Git/softgl/tools/wasm_perf.cjs",
+        "--bench-only",
+        "--wasm-build",
+        "/home/cosmo/Git/softgl/build/controls/post-depth-common-store-candidate",
+        "--scenes",
+        "bmw",
+        "--samples",
+        "2",
+        "--warmup",
+        "80",
+        "--frames",
+        "240",
+        "--rounds",
+        "1",
+        "--profile-scene",
+        "bmw",
+        "--output",
+        "/home/cosmo/Git/softgl/build/diagnostics/current-7cc-profiles/runs/bmw2.json"
+      ],
+      "result": "bmw2.json",
+      "resultSha256": "ff87c2b2028595816bed98d95961bc1849059779a7f4c4f38fb023736ea822d6",
+      "profile": "bmw2.attempt-1.pending.profiles.json",
+      "profileSha256": "40ad278835223d67a5bd5e0fb0ff99222a622a4d54306ecdd3516f5ef363682c",
+      "summary": "bmw2-summary.json",
+      "summarySha256": "4065882b1d2357d36812c4e887760af1579b6b912739859ba7d4cb3ed295b738",
+      "attempts": [
+        {
+          "file": "bmw2.attempt-1.monitor.json",
+          "sha256": "7be0e22133647d67989553309c72aa81e7c01a3aba4506072aebc6cc56878b72",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scene": "tank",
+      "samples": 2,
+      "command": [
+        "/usr/bin/python3",
+        "/home/cosmo/Git/softgl/tools/wasm_quiet_audit.py",
+        "/home/cosmo/Git/softgl/build/diagnostics/current-7cc-profiles/runs/tank2.json",
+        "node",
+        "/home/cosmo/Git/softgl/tools/wasm_perf.cjs",
+        "--bench-only",
+        "--wasm-build",
+        "/home/cosmo/Git/softgl/build/controls/post-depth-common-store-candidate",
+        "--scenes",
+        "tank",
+        "--samples",
+        "2",
+        "--warmup",
+        "80",
+        "--frames",
+        "240",
+        "--rounds",
+        "1",
+        "--profile-scene",
+        "tank",
+        "--output",
+        "/home/cosmo/Git/softgl/build/diagnostics/current-7cc-profiles/runs/tank2.json"
+      ],
+      "result": "tank2.json",
+      "resultSha256": "ee5c2351bd5939d54aba3bed8f394bafcfae958cec617d2ff0671979a373c587",
+      "profile": "tank2.attempt-1.pending.profiles.json",
+      "profileSha256": "aa96232b8b94bc46a824f46d8b30b29610a0d35cfdb096ace803120a23484a2e",
+      "summary": "tank2-summary.json",
+      "summarySha256": "c2c9399304fb903e4439a9e74943c0e34c22ec712db339abb8d0f3e3534f104e",
+      "attempts": [
+        {
+          "file": "tank2.attempt-1.monitor.json",
+          "sha256": "794627ba879ebd8a5779ba500a0b14fc8d5ee9fcd87d48b57767937ca7fe739e",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scene": "bmw",
+      "samples": 4,
+      "command": [
+        "/usr/bin/python3",
+        "/home/cosmo/Git/softgl/tools/wasm_quiet_audit.py",
+        "/home/cosmo/Git/softgl/build/diagnostics/current-7cc-profiles/runs/bmw4.json",
+        "node",
+        "/home/cosmo/Git/softgl/tools/wasm_perf.cjs",
+        "--bench-only",
+        "--wasm-build",
+        "/home/cosmo/Git/softgl/build/controls/post-depth-common-store-candidate",
+        "--scenes",
+        "bmw",
+        "--samples",
+        "4",
+        "--warmup",
+        "80",
+        "--frames",
+        "240",
+        "--rounds",
+        "1",
+        "--profile-scene",
+        "bmw",
+        "--output",
+        "/home/cosmo/Git/softgl/build/diagnostics/current-7cc-profiles/runs/bmw4.json"
+      ],
+      "result": "bmw4.json",
+      "resultSha256": "18469fc8df19877d16ffbdca1081c2a512ceb0d73e4bce842b572927d0a3ffec",
+      "profile": "bmw4.attempt-1.pending.profiles.json",
+      "profileSha256": "3435965223f5f3a0bf336113d098ebd301eb3526f38bdf343ea2a6417852ba25",
+      "summary": "bmw4-summary.json",
+      "summarySha256": "5e13be27d26679ae5e0054df50ea5d83e6785d4b0262d00bfee75c7f95f05c05",
+      "attempts": [
+        {
+          "file": "bmw4.attempt-1.monitor.json",
+          "sha256": "697618619e766ce2c6841f3e2508c7e02de507afc3132f331526741c2e855334",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "scene": "tank",
+      "samples": 4,
+      "command": [
+        "/usr/bin/python3",
+        "/home/cosmo/Git/softgl/tools/wasm_quiet_audit.py",
+        "/home/cosmo/Git/softgl/build/diagnostics/current-7cc-profiles/runs/tank4.json",
+        "node",
+        "/home/cosmo/Git/softgl/tools/wasm_perf.cjs",
+        "--bench-only",
+        "--wasm-build",
+        "/home/cosmo/Git/softgl/build/controls/post-depth-common-store-candidate",
+        "--scenes",
+        "tank",
+        "--samples",
+        "4",
+        "--warmup",
+        "80",
+        "--frames",
+        "240",
+        "--rounds",
+        "1",
+        "--profile-scene",
+        "tank",
+        "--output",
+        "/home/cosmo/Git/softgl/build/diagnostics/current-7cc-profiles/runs/tank4.json"
+      ],
+      "result": "tank4.json",
+      "resultSha256": "426eaa8f6cfa5b1977cda52df44edb6f9d5744cb747b86f5dbb396830ea7a476",
+      "profile": "tank4.attempt-1.pending.profiles.json",
+      "profileSha256": "0d97bc268eba4d76e9628f0365b1b7feb56cadfdab872ab2574e3bf8c603e25f",
+      "summary": "tank4-summary.json",
+      "summarySha256": "7f16f4bf446b4afd0735a9f8fcbdb3adc420e21d64bd8893953f0ce4bb110bb4",
+      "attempts": [
+        {
+          "file": "tank4.attempt-1.monitor.json",
+          "sha256": "7c6655c0ebc1e95baad85704665fc86254aa29ce0cecff72f0200169322c29bb",
+          "passed": true
+        }
+      ]
+    }
+  ]
+}

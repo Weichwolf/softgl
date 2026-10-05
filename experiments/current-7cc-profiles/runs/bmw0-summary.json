@@ -1,0 +1,1400 @@
+{
+  "note": "CDP self samples include inlined work, preemption and blocked locations. They are not hardware cycles, CPU busy time, cache misses or acceptance timings. Cross-thread sums are not frame latency. The symbol map must come from this exact module; regenerate it with --emit-symbol-map and verify WASM byte identity.",
+  "sourceResultSha256": "110762b73bafac235db70fd844688d4ba2eb84092fd5892800dfa10be0603c4b",
+  "sourceProfileSha256": "bc14b89b53fc42efd0ba849af38a37ab6eb79dd53b5213cf093711ddb7959454",
+  "wasmSha256": "7cc38593ef399417a3ab4497dae40a162f9ae9550ad2181140d5d0f3c8df3b77",
+  "symbolMapSha256": "9f26a3ef67eccbfb19658c9d18e87799db22e1c71b62d0a9522efcbfc5265ceb",
+  "scene": "bmw",
+  "frames": 240,
+  "samples": 0,
+  "intervalUs": 1000,
+  "workerCapacity": 3,
+  "observedActiveWorkers": 3,
+  "activeWorkerThresholdMs": 10,
+  "metadata": {
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+    "hardwareConcurrency": 4,
+    "crossOriginIsolated": true,
+    "width": 640,
+    "height": 360,
+    "testCount": 234
+  },
+  "profiles": [
+    {
+      "label": "main",
+      "url": null,
+      "selected": true,
+      "rendererSampledSelfMs": 6202.955,
+      "functions": [
+        {
+          "name": "sg_raster_triangle_depth_capture",
+          "selfSamples": 857,
+          "sampledSelfMs": 1140.5319999999997,
+          "sampledSelfMsPerFrame": 4.752216666666666
+        },
+        {
+          "name": "_sg_draw_elements_real",
+          "selfSamples": 752,
+          "sampledSelfMs": 925.5880000000002,
+          "sampledSelfMsPerFrame": 3.8566166666666675
+        },
+        {
+          "name": "sg_raster_triangle_tile_prepared",
+          "selfSamples": 476,
+          "sampledSelfMs": 605.1169999999998,
+          "sampledSelfMsPerFrame": 2.521320833333333
+        },
+        {
+          "name": "sg_process_vertex",
+          "selfSamples": 496,
+          "sampledSelfMs": 589.9890000000004,
+          "sampledSelfMsPerFrame": 2.4582875000000017
+        },
+        {
+          "name": "sg_queue_help",
+          "selfSamples": 454,
+          "sampledSelfMs": 558.8850000000002,
+          "sampledSelfMsPerFrame": 2.328687500000001
+        },
+        {
+          "name": "sg_prepare_triangle_slice",
+          "selfSamples": 373,
+          "sampledSelfMs": 472.789,
+          "sampledSelfMsPerFrame": 1.9699541666666667
+        },
+        {
+          "name": "sg_model_render",
+          "selfSamples": 240,
+          "sampledSelfMs": 282.27399999999994,
+          "sampledSelfMsPerFrame": 1.1761416666666664
+        },
+        {
+          "name": "(idle)",
+          "selfSamples": 231,
+          "sampledSelfMs": 260.8680000000001,
+          "sampledSelfMsPerFrame": 1.0869500000000005
+        },
+        {
+          "name": "sg_packet_sample_cube_coherent",
+          "selfSamples": 187,
+          "sampledSelfMs": 238.2079999999999,
+          "sampledSelfMsPerFrame": 0.9925333333333329
+        },
+        {
+          "name": "sg_transform_slice",
+          "selfSamples": 153,
+          "sampledSelfMs": 179.33100000000007,
+          "sampledSelfMsPerFrame": 0.7472125000000003
+        },
+        {
+          "name": "sg_finish_triangle",
+          "selfSamples": 149,
+          "sampledSelfMs": 174.36699999999988,
+          "sampledSelfMsPerFrame": 0.7265291666666661
+        },
+        {
+          "name": "sg_queue_render_packed",
+          "selfSamples": 109,
+          "sampledSelfMs": 150.282,
+          "sampledSelfMsPerFrame": 0.626175
+        },
+        {
+          "name": "sg_publish_coverage",
+          "selfSamples": 107,
+          "sampledSelfMs": 143.34700000000004,
+          "sampledSelfMsPerFrame": 0.5972791666666668
+        },
+        {
+          "name": "_emscripten_get_now",
+          "selfSamples": 119,
+          "sampledSelfMs": 142.25599999999997,
+          "sampledSelfMsPerFrame": 0.5927333333333332
+        },
+        {
+          "name": "sg_process_triangle_cached",
+          "selfSamples": 114,
+          "sampledSelfMs": 131.374,
+          "sampledSelfMsPerFrame": 0.5473916666666666
+        },
+        {
+          "name": "sg_process_vertex_prepared",
+          "selfSamples": 86,
+          "sampledSelfMs": 101.34399999999998,
+          "sampledSelfMsPerFrame": 0.42226666666666657
+        },
+        {
+          "name": "emscripten_futex_wake",
+          "selfSamples": 73,
+          "sampledSelfMs": 88.304,
+          "sampledSelfMsPerFrame": 0.36793333333333333
+        },
+        {
+          "name": "sg_queue_transform",
+          "selfSamples": 65,
+          "sampledSelfMs": 75.88899999999998,
+          "sampledSelfMsPerFrame": 0.31620416666666656
+        },
+        {
+          "name": "sg_fetch_attrib",
+          "selfSamples": 54,
+          "sampledSelfMs": 70.29300000000003,
+          "sampledSelfMsPerFrame": 0.29288750000000013
+        },
+        {
+          "name": "sg_store_off_post_depth",
+          "selfSamples": 53,
+          "sampledSelfMs": 61.89,
+          "sampledSelfMsPerFrame": 0.257875
+        },
+        {
+          "name": "sg_transform_range",
+          "selfSamples": 43,
+          "sampledSelfMs": 51.79400000000002,
+          "sampledSelfMsPerFrame": 0.2158083333333334
+        },
+        {
+          "name": "sg_buffer_get",
+          "selfSamples": 35,
+          "sampledSelfMs": 42.97299999999999,
+          "sampledSelfMsPerFrame": 0.17905416666666663
+        },
+        {
+          "name": "sg_write_fragment",
+          "selfSamples": 35,
+          "sampledSelfMs": 40.032,
+          "sampledSelfMsPerFrame": 0.16679999999999998
+        },
+        {
+          "name": "sg_finish_stream",
+          "selfSamples": 26,
+          "sampledSelfMs": 31.579000000000004,
+          "sampledSelfMsPerFrame": 0.1315791666666667
+        },
+        {
+          "name": "_sg_clear_real",
+          "selfSamples": 25,
+          "sampledSelfMs": 29.616,
+          "sampledSelfMsPerFrame": 0.1234
+        },
+        {
+          "name": "sg_process_triangle",
+          "selfSamples": 24,
+          "sampledSelfMs": 29.471,
+          "sampledSelfMsPerFrame": 0.12279583333333334
+        },
+        {
+          "name": "sg_bin_sort_z",
+          "selfSamples": 22,
+          "sampledSelfMs": 28.644999999999996,
+          "sampledSelfMsPerFrame": 0.11935416666666665
+        },
+        {
+          "name": "(program)",
+          "selfSamples": 2,
+          "sampledSelfMs": 27.512,
+          "sampledSelfMsPerFrame": 0.11463333333333334
+        },
+        {
+          "name": "__pthread_mutex_unlock",
+          "selfSamples": 22,
+          "sampledSelfMs": 27.142000000000003,
+          "sampledSelfMsPerFrame": 0.11309166666666667
+        },
+        {
+          "name": "now",
+          "selfSamples": 23,
+          "sampledSelfMs": 26.254,
+          "sampledSelfMsPerFrame": 0.10939166666666668
+        },
+        {
+          "name": "__pthread_mutex_lock",
+          "selfSamples": 10,
+          "sampledSelfMs": 17.095,
+          "sampledSelfMsPerFrame": 0.07122916666666666
+        },
+        {
+          "name": "sg_packet_sample_cube_target",
+          "selfSamples": 11,
+          "sampledSelfMs": 12.807,
+          "sampledSelfMsPerFrame": 0.0533625
+        },
+        {
+          "name": "sg_queue_render",
+          "selfSamples": 7,
+          "sampledSelfMs": 7.575,
+          "sampledSelfMsPerFrame": 0.0315625
+        },
+        {
+          "name": "sg_sample_tex_cube",
+          "selfSamples": 6,
+          "sampledSelfMs": 6.474,
+          "sampledSelfMsPerFrame": 0.026975000000000002
+        },
+        {
+          "name": "sg_tex_tri_prepare",
+          "selfSamples": 6,
+          "sampledSelfMs": 6.3919999999999995,
+          "sampledSelfMsPerFrame": 0.026633333333333332
+        },
+        {
+          "name": "draw_part",
+          "selfSamples": 6,
+          "sampledSelfMs": 6.384,
+          "sampledSelfMsPerFrame": 0.026600000000000002
+        },
+        {
+          "name": "glTexEnvi",
+          "selfSamples": 5,
+          "sampledSelfMs": 5.359,
+          "sampledSelfMsPerFrame": 0.022329166666666667
+        },
+        {
+          "name": "wasm-to-js",
+          "selfSamples": 4,
+          "sampledSelfMs": 4.415,
+          "sampledSelfMsPerFrame": 0.018395833333333333
+        },
+        {
+          "name": "a_cas_p_1928",
+          "selfSamples": 3,
+          "sampledSelfMs": 3.424,
+          "sampledSelfMsPerFrame": 0.014266666666666667
+        },
+        {
+          "name": "sg_bin_grow",
+          "selfSamples": 3,
+          "sampledSelfMs": 3.342,
+          "sampledSelfMsPerFrame": 0.013925
+        },
+        {
+          "name": "_sg_bind_texture_real",
+          "selfSamples": 3,
+          "sampledSelfMs": 3.26,
+          "sampledSelfMsPerFrame": 0.013583333333333333
+        },
+        {
+          "name": "_sg_tex_env_i_real",
+          "selfSamples": 3,
+          "sampledSelfMs": 3.248,
+          "sampledSelfMsPerFrame": 0.013533333333333335
+        },
+        {
+          "name": "emscripten_builtin_malloc",
+          "selfSamples": 3,
+          "sampledSelfMs": 3.2350000000000003,
+          "sampledSelfMsPerFrame": 0.013479166666666669
+        },
+        {
+          "name": "glBindBuffer",
+          "selfSamples": 3,
+          "sampledSelfMs": 3.217,
+          "sampledSelfMsPerFrame": 0.013404166666666667
+        },
+        {
+          "name": "",
+          "selfSamples": 2,
+          "sampledSelfMs": 2.393,
+          "sampledSelfMsPerFrame": 0.009970833333333333
+        },
+        {
+          "name": "__timedwait_cp",
+          "selfSamples": 2,
+          "sampledSelfMs": 2.2510000000000003,
+          "sampledSelfMsPerFrame": 0.009379166666666668
+        },
+        {
+          "name": "emscripten_proxy_execute_queue",
+          "selfSamples": 2,
+          "sampledSelfMs": 2.174,
+          "sampledSelfMsPerFrame": 0.009058333333333333
+        },
+        {
+          "name": "memcmp",
+          "selfSamples": 2,
+          "sampledSelfMs": 2.1660000000000004,
+          "sampledSelfMsPerFrame": 0.009025000000000002
+        },
+        {
+          "name": "__private_cond_signal",
+          "selfSamples": 2,
+          "sampledSelfMs": 2.127,
+          "sampledSelfMsPerFrame": 0.008862499999999999
+        },
+        {
+          "name": "sg_geometry_cache_epoch",
+          "selfSamples": 2,
+          "sampledSelfMs": 2.123,
+          "sampledSelfMsPerFrame": 0.008845833333333334
+        },
+        {
+          "name": "glAlphaFunc",
+          "selfSamples": 1,
+          "sampledSelfMs": 1.563,
+          "sampledSelfMsPerFrame": 0.0065125
+        },
+        {
+          "name": "combiner",
+          "selfSamples": 1,
+          "sampledSelfMs": 1.126,
+          "sampledSelfMsPerFrame": 0.004691666666666666
+        },
+        {
+          "name": "emscripten_builtin_free",
+          "selfSamples": 1,
+          "sampledSelfMs": 1.099,
+          "sampledSelfMsPerFrame": 0.004579166666666666
+        },
+        {
+          "name": "glDrawElements",
+          "selfSamples": 1,
+          "sampledSelfMs": 1.095,
+          "sampledSelfMsPerFrame": 0.0045625
+        },
+        {
+          "name": "pthread_cond_broadcast",
+          "selfSamples": 1,
+          "sampledSelfMs": 1.077,
+          "sampledSelfMsPerFrame": 0.0044875
+        },
+        {
+          "name": "profile.render",
+          "selfSamples": 1,
+          "sampledSelfMs": 1.076,
+          "sampledSelfMsPerFrame": 0.004483333333333334
+        },
+        {
+          "name": "glActiveTexture",
+          "selfSamples": 1,
+          "sampledSelfMs": 1.068,
+          "sampledSelfMsPerFrame": 0.00445
+        },
+        {
+          "name": "sg_aligned_free",
+          "selfSamples": 1,
+          "sampledSelfMs": 1.065,
+          "sampledSelfMsPerFrame": 0.0044375
+        },
+        {
+          "name": "sg_aligned_alloc",
+          "selfSamples": 1,
+          "sampledSelfMs": 1.06,
+          "sampledSelfMsPerFrame": 0.004416666666666667
+        },
+        {
+          "name": "glBlendFunc",
+          "selfSamples": 1,
+          "sampledSelfMs": 1.06,
+          "sampledSelfMsPerFrame": 0.004416666666666667
+        },
+        {
+          "name": "glClientActiveTexture",
+          "selfSamples": 1,
+          "sampledSelfMs": 1.053,
+          "sampledSelfMsPerFrame": 0.0043875
+        },
+        {
+          "name": "glDisable",
+          "selfSamples": 1,
+          "sampledSelfMs": 1.052,
+          "sampledSelfMsPerFrame": 0.004383333333333334
+        }
+      ]
+    },
+    {
+      "label": "worker:83C47A497C1812BEAC623282507BDAE4",
+      "url": "http://127.0.0.1:38867/module/softgl.js",
+      "selected": false,
+      "rendererSampledSelfMs": 0,
+      "functions": [
+        {
+          "name": "(idle)",
+          "selfSamples": 5205,
+          "sampledSelfMs": 6816.9060000000045,
+          "sampledSelfMsPerFrame": 28.403775000000017
+        }
+      ]
+    },
+    {
+      "label": "worker:0D1F9802074E82BCF9495D8735181CEA",
+      "url": "http://127.0.0.1:38867/module/softgl.js",
+      "selected": false,
+      "rendererSampledSelfMs": 0,
+      "functions": [
+        {
+          "name": "(idle)",
+          "selfSamples": 5177,
+          "sampledSelfMs": 6791.562999999995,
+          "sampledSelfMsPerFrame": 28.298179166666646
+        }
+      ]
+    },
+    {
+      "label": "worker:3FCF11DAACF3C0A28D159FDE15828A2A",
+      "url": "http://127.0.0.1:38867/module/softgl.js",
+      "selected": false,
+      "rendererSampledSelfMs": 0,
+      "functions": [
+        {
+          "name": "(idle)",
+          "selfSamples": 5061,
+          "sampledSelfMs": 6764.432999999991,
+          "sampledSelfMsPerFrame": 28.18513749999996
+        }
+      ]
+    },
+    {
+      "label": "worker:E04AA305ECECAED709F392F22E183DF7",
+      "url": "http://127.0.0.1:38867/module/softgl.js",
+      "selected": false,
+      "rendererSampledSelfMs": 0,
+      "functions": [
+        {
+          "name": "(idle)",
+          "selfSamples": 5091,
+          "sampledSelfMs": 6739.057999999994,
+          "sampledSelfMsPerFrame": 28.07940833333331
+        }
+      ]
+    },
+    {
+      "label": "worker:451D461322121EEA4A098EA1E9A60D44",
+      "url": "http://127.0.0.1:38867/module/softgl.js",
+      "selected": false,
+      "rendererSampledSelfMs": 0,
+      "functions": [
+        {
+          "name": "(idle)",
+          "selfSamples": 5075,
+          "sampledSelfMs": 6712.086000000016,
+          "sampledSelfMsPerFrame": 27.967025000000067
+        }
+      ]
+    },
+    {
+      "label": "worker:435DAF895F436294403AF842BE3E8E8E",
+      "url": "http://127.0.0.1:38867/module/softgl.js",
+      "selected": true,
+      "rendererSampledSelfMs": 4142.911999999999,
+      "functions": [
+        {
+          "name": "__timedwait_cp",
+          "selfSamples": 1628,
+          "sampledSelfMs": 2086.863999999999,
+          "sampledSelfMsPerFrame": 8.695266666666663
+        },
+        {
+          "name": "sg_raster_triangle_depth_capture",
+          "selfSamples": 1413,
+          "sampledSelfMs": 1841.125999999999,
+          "sampledSelfMsPerFrame": 7.6713583333333295
+        },
+        {
+          "name": "sg_raster_triangle_tile_prepared",
+          "selfSamples": 820,
+          "sampledSelfMs": 1013.1640000000004,
+          "sampledSelfMsPerFrame": 4.221516666666669
+        },
+        {
+          "name": "sg_packet_sample_cube_coherent",
+          "selfSamples": 347,
+          "sampledSelfMs": 473.2960000000001,
+          "sampledSelfMsPerFrame": 1.972066666666667
+        },
+        {
+          "name": "emscripten_futex_wait",
+          "selfSamples": 166,
+          "sampledSelfMs": 229.95600000000013,
+          "sampledSelfMsPerFrame": 0.9581500000000005
+        },
+        {
+          "name": "sg_queue_render_packed",
+          "selfSamples": 170,
+          "sampledSelfMs": 222.757,
+          "sampledSelfMsPerFrame": 0.9281541666666667
+        },
+        {
+          "name": "sg_process_vertex",
+          "selfSamples": 116,
+          "sampledSelfMs": 137.74699999999987,
+          "sampledSelfMsPerFrame": 0.5739458333333328
+        },
+        {
+          "name": "emscripten_futex_wake",
+          "selfSamples": 95,
+          "sampledSelfMs": 128.28600000000003,
+          "sampledSelfMsPerFrame": 0.5345250000000001
+        },
+        {
+          "name": "sg_prepare_triangle_slice",
+          "selfSamples": 89,
+          "sampledSelfMs": 109.293,
+          "sampledSelfMsPerFrame": 0.4553875
+        },
+        {
+          "name": "sg_store_off_post_depth",
+          "selfSamples": 62,
+          "sampledSelfMs": 79.334,
+          "sampledSelfMsPerFrame": 0.33055833333333334
+        },
+        {
+          "name": "sg_write_fragment",
+          "selfSamples": 55,
+          "sampledSelfMs": 69.446,
+          "sampledSelfMsPerFrame": 0.28935833333333333
+        },
+        {
+          "name": "sg_transform_slice",
+          "selfSamples": 52,
+          "sampledSelfMs": 67.16300000000001,
+          "sampledSelfMsPerFrame": 0.2798458333333334
+        },
+        {
+          "name": "_emscripten_get_now",
+          "selfSamples": 36,
+          "sampledSelfMs": 46.902000000000015,
+          "sampledSelfMsPerFrame": 0.19542500000000007
+        },
+        {
+          "name": "sg_bin_sort_z",
+          "selfSamples": 36,
+          "sampledSelfMs": 43.69400000000001,
+          "sampledSelfMsPerFrame": 0.18205833333333338
+        },
+        {
+          "name": "__pthread_mutex_unlock",
+          "selfSamples": 20,
+          "sampledSelfMs": 27.516000000000005,
+          "sampledSelfMsPerFrame": 0.11465000000000002
+        },
+        {
+          "name": "sg_process_vertex_prepared",
+          "selfSamples": 22,
+          "sampledSelfMs": 24.67,
+          "sampledSelfMsPerFrame": 0.10279166666666667
+        },
+        {
+          "name": "sg_packet_sample_cube_target",
+          "selfSamples": 19,
+          "sampledSelfMs": 20.88,
+          "sampledSelfMsPerFrame": 0.087
+        },
+        {
+          "name": "sg_queue_render",
+          "selfSamples": 17,
+          "sampledSelfMs": 19.398999999999997,
+          "sampledSelfMsPerFrame": 0.08082916666666666
+        },
+        {
+          "name": "sg_sample_tex_cube",
+          "selfSamples": 14,
+          "sampledSelfMs": 15.334999999999999,
+          "sampledSelfMsPerFrame": 0.06389583333333333
+        },
+        {
+          "name": "now",
+          "selfSamples": 5,
+          "sampledSelfMs": 9.825999999999999,
+          "sampledSelfMsPerFrame": 0.04094166666666666
+        },
+        {
+          "name": "sg_worker_main",
+          "selfSamples": 5,
+          "sampledSelfMs": 5.6080000000000005,
+          "sampledSelfMsPerFrame": 0.023366666666666668
+        },
+        {
+          "name": "pthread_cond_wait",
+          "selfSamples": 3,
+          "sampledSelfMs": 4.308,
+          "sampledSelfMsPerFrame": 0.01795
+        },
+        {
+          "name": "wasm-to-js",
+          "selfSamples": 3,
+          "sampledSelfMs": 3.31,
+          "sampledSelfMsPerFrame": 0.013791666666666667
+        },
+        {
+          "name": "__pthread_mutex_lock",
+          "selfSamples": 3,
+          "sampledSelfMs": 3.213,
+          "sampledSelfMsPerFrame": 0.0133875
+        },
+        {
+          "name": "lock",
+          "selfSamples": 1,
+          "sampledSelfMs": 1.144,
+          "sampledSelfMsPerFrame": 0.0047666666666666664
+        },
+        {
+          "name": "__pthread_setcancelstate",
+          "selfSamples": 1,
+          "sampledSelfMs": 1.086,
+          "sampledSelfMsPerFrame": 0.004525
+        },
+        {
+          "name": "__private_cond_signal",
+          "selfSamples": 1,
+          "sampledSelfMs": 1.082,
+          "sampledSelfMsPerFrame": 0.004508333333333334
+        }
+      ]
+    },
+    {
+      "label": "worker:B171CFB1A9091C3B3491984D685797B2",
+      "url": "http://127.0.0.1:38867/module/softgl.js",
+      "selected": true,
+      "rendererSampledSelfMs": 4247.067999999997,
+      "functions": [
+        {
+          "name": "__timedwait_cp",
+          "selfSamples": 1548,
+          "sampledSelfMs": 1987.060000000002,
+          "sampledSelfMsPerFrame": 8.279416666666675
+        },
+        {
+          "name": "sg_raster_triangle_depth_capture",
+          "selfSamples": 1449,
+          "sampledSelfMs": 1932.3839999999964,
+          "sampledSelfMsPerFrame": 8.051599999999985
+        },
+        {
+          "name": "sg_raster_triangle_tile_prepared",
+          "selfSamples": 781,
+          "sampledSelfMs": 974.0360000000005,
+          "sampledSelfMsPerFrame": 4.058483333333336
+        },
+        {
+          "name": "sg_packet_sample_cube_coherent",
+          "selfSamples": 365,
+          "sampledSelfMs": 473.12399999999985,
+          "sampledSelfMsPerFrame": 1.9713499999999995
+        },
+        {
+          "name": "sg_queue_render_packed",
+          "selfSamples": 204,
+          "sampledSelfMs": 268.8379999999999,
+          "sampledSelfMsPerFrame": 1.120158333333333
+        },
+        {
+          "name": "emscripten_futex_wait",
+          "selfSamples": 167,
+          "sampledSelfMs": 226.72500000000002,
+          "sampledSelfMsPerFrame": 0.9446875000000001
+        },
+        {
+          "name": "sg_process_vertex",
+          "selfSamples": 140,
+          "sampledSelfMs": 184.1530000000001,
+          "sampledSelfMsPerFrame": 0.7673041666666671
+        },
+        {
+          "name": "emscripten_futex_wake",
+          "selfSamples": 86,
+          "sampledSelfMs": 106.56599999999999,
+          "sampledSelfMsPerFrame": 0.44402499999999995
+        },
+        {
+          "name": "sg_prepare_triangle_slice",
+          "selfSamples": 70,
+          "sampledSelfMs": 78.80799999999999,
+          "sampledSelfMsPerFrame": 0.32836666666666664
+        },
+        {
+          "name": "sg_store_off_post_depth",
+          "selfSamples": 59,
+          "sampledSelfMs": 73.19599999999998,
+          "sampledSelfMsPerFrame": 0.3049833333333333
+        },
+        {
+          "name": "sg_write_fragment",
+          "selfSamples": 48,
+          "sampledSelfMs": 56.864000000000004,
+          "sampledSelfMsPerFrame": 0.23693333333333336
+        },
+        {
+          "name": "sg_transform_slice",
+          "selfSamples": 40,
+          "sampledSelfMs": 52.351,
+          "sampledSelfMsPerFrame": 0.21812916666666665
+        },
+        {
+          "name": "_emscripten_get_now",
+          "selfSamples": 36,
+          "sampledSelfMs": 45.44500000000001,
+          "sampledSelfMsPerFrame": 0.18935416666666668
+        },
+        {
+          "name": "sg_bin_sort_z",
+          "selfSamples": 31,
+          "sampledSelfMs": 36.93099999999999,
+          "sampledSelfMsPerFrame": 0.15387916666666662
+        },
+        {
+          "name": "sg_packet_sample_cube_target",
+          "selfSamples": 24,
+          "sampledSelfMs": 31.081999999999994,
+          "sampledSelfMsPerFrame": 0.1295083333333333
+        },
+        {
+          "name": "sg_process_vertex_prepared",
+          "selfSamples": 21,
+          "sampledSelfMs": 26.262999999999998,
+          "sampledSelfMsPerFrame": 0.10942916666666666
+        },
+        {
+          "name": "sg_queue_render",
+          "selfSamples": 22,
+          "sampledSelfMs": 25.864000000000008,
+          "sampledSelfMsPerFrame": 0.1077666666666667
+        },
+        {
+          "name": "__pthread_mutex_unlock",
+          "selfSamples": 16,
+          "sampledSelfMs": 22.865000000000002,
+          "sampledSelfMsPerFrame": 0.09527083333333335
+        },
+        {
+          "name": "sg_sample_tex_cube",
+          "selfSamples": 15,
+          "sampledSelfMs": 21.938,
+          "sampledSelfMsPerFrame": 0.09140833333333333
+        },
+        {
+          "name": "sg_worker_main",
+          "selfSamples": 10,
+          "sampledSelfMs": 11.236,
+          "sampledSelfMsPerFrame": 0.046816666666666666
+        },
+        {
+          "name": "now",
+          "selfSamples": 5,
+          "sampledSelfMs": 5.461,
+          "sampledSelfMsPerFrame": 0.02275416666666667
+        },
+        {
+          "name": "pthread_cond_wait",
+          "selfSamples": 3,
+          "sampledSelfMs": 4.922,
+          "sampledSelfMsPerFrame": 0.020508333333333333
+        },
+        {
+          "name": "wasm-to-js",
+          "selfSamples": 4,
+          "sampledSelfMs": 4.597,
+          "sampledSelfMsPerFrame": 0.01915416666666667
+        },
+        {
+          "name": "(garbage collector)",
+          "selfSamples": 1,
+          "sampledSelfMs": 2.31,
+          "sampledSelfMsPerFrame": 0.009625
+        },
+        {
+          "name": "__pthread_mutex_lock",
+          "selfSamples": 2,
+          "sampledSelfMs": 2.124,
+          "sampledSelfMsPerFrame": 0.00885
+        },
+        {
+          "name": "lock",
+          "selfSamples": 1,
+          "sampledSelfMs": 1.877,
+          "sampledSelfMsPerFrame": 0.007820833333333334
+        },
+        {
+          "name": "__private_cond_signal",
+          "selfSamples": 1,
+          "sampledSelfMs": 1.052,
+          "sampledSelfMsPerFrame": 0.004383333333333334
+        }
+      ]
+    },
+    {
+      "label": "worker:31153E995531ABD9286804861170B395",
+      "url": "http://127.0.0.1:38867/module/softgl.js",
+      "selected": true,
+      "rendererSampledSelfMs": 4199.826000000003,
+      "functions": [
+        {
+          "name": "__timedwait_cp",
+          "selfSamples": 1563,
+          "sampledSelfMs": 2020.3800000000003,
+          "sampledSelfMsPerFrame": 8.418250000000002
+        },
+        {
+          "name": "sg_raster_triangle_depth_capture",
+          "selfSamples": 1379,
+          "sampledSelfMs": 1799.974000000002,
+          "sampledSelfMsPerFrame": 7.499891666666675
+        },
+        {
+          "name": "sg_raster_triangle_tile_prepared",
+          "selfSamples": 830,
+          "sampledSelfMs": 1055.6500000000008,
+          "sampledSelfMsPerFrame": 4.39854166666667
+        },
+        {
+          "name": "sg_packet_sample_cube_coherent",
+          "selfSamples": 394,
+          "sampledSelfMs": 542.4310000000004,
+          "sampledSelfMsPerFrame": 2.260129166666668
+        },
+        {
+          "name": "sg_queue_render_packed",
+          "selfSamples": 172,
+          "sampledSelfMs": 214.38399999999996,
+          "sampledSelfMsPerFrame": 0.8932666666666665
+        },
+        {
+          "name": "emscripten_futex_wait",
+          "selfSamples": 152,
+          "sampledSelfMs": 203.42700000000005,
+          "sampledSelfMsPerFrame": 0.8476125000000002
+        },
+        {
+          "name": "sg_process_vertex",
+          "selfSamples": 113,
+          "sampledSelfMs": 156.56100000000004,
+          "sampledSelfMsPerFrame": 0.6523375000000001
+        },
+        {
+          "name": "sg_prepare_triangle_slice",
+          "selfSamples": 92,
+          "sampledSelfMs": 112.46500000000003,
+          "sampledSelfMsPerFrame": 0.4686041666666668
+        },
+        {
+          "name": "emscripten_futex_wake",
+          "selfSamples": 91,
+          "sampledSelfMs": 108.34800000000004,
+          "sampledSelfMsPerFrame": 0.4514500000000002
+        },
+        {
+          "name": "sg_write_fragment",
+          "selfSamples": 50,
+          "sampledSelfMs": 59.54399999999999,
+          "sampledSelfMsPerFrame": 0.24809999999999996
+        },
+        {
+          "name": "sg_store_off_post_depth",
+          "selfSamples": 46,
+          "sampledSelfMs": 52.11299999999999,
+          "sampledSelfMsPerFrame": 0.21713749999999996
+        },
+        {
+          "name": "sg_bin_sort_z",
+          "selfSamples": 36,
+          "sampledSelfMs": 48.17000000000001,
+          "sampledSelfMsPerFrame": 0.20070833333333338
+        },
+        {
+          "name": "sg_transform_slice",
+          "selfSamples": 41,
+          "sampledSelfMs": 47.417,
+          "sampledSelfMsPerFrame": 0.19757083333333333
+        },
+        {
+          "name": "_emscripten_get_now",
+          "selfSamples": 35,
+          "sampledSelfMs": 38.988,
+          "sampledSelfMsPerFrame": 0.16245
+        },
+        {
+          "name": "__pthread_mutex_unlock",
+          "selfSamples": 22,
+          "sampledSelfMs": 34.992999999999995,
+          "sampledSelfMsPerFrame": 0.14580416666666665
+        },
+        {
+          "name": "sg_process_vertex_prepared",
+          "selfSamples": 23,
+          "sampledSelfMs": 29.105000000000004,
+          "sampledSelfMsPerFrame": 0.12127083333333336
+        },
+        {
+          "name": "sg_sample_tex_cube",
+          "selfSamples": 16,
+          "sampledSelfMs": 28.483,
+          "sampledSelfMsPerFrame": 0.11867916666666667
+        },
+        {
+          "name": "sg_queue_render",
+          "selfSamples": 19,
+          "sampledSelfMs": 26.009999999999998,
+          "sampledSelfMsPerFrame": 0.10837499999999999
+        },
+        {
+          "name": "sg_packet_sample_cube_target",
+          "selfSamples": 11,
+          "sampledSelfMs": 17.509999999999998,
+          "sampledSelfMsPerFrame": 0.07295833333333332
+        },
+        {
+          "name": "sg_worker_main",
+          "selfSamples": 8,
+          "sampledSelfMs": 10.009,
+          "sampledSelfMsPerFrame": 0.04170416666666667
+        },
+        {
+          "name": "now",
+          "selfSamples": 8,
+          "sampledSelfMs": 8.674000000000001,
+          "sampledSelfMsPerFrame": 0.03614166666666667
+        },
+        {
+          "name": "pthread_cond_wait",
+          "selfSamples": 4,
+          "sampledSelfMs": 4.489000000000001,
+          "sampledSelfMsPerFrame": 0.01870416666666667
+        },
+        {
+          "name": "__pthread_mutex_lock",
+          "selfSamples": 4,
+          "sampledSelfMs": 4.157,
+          "sampledSelfMsPerFrame": 0.017320833333333334
+        },
+        {
+          "name": "wasm-to-js",
+          "selfSamples": 3,
+          "sampledSelfMs": 3.371,
+          "sampledSelfMsPerFrame": 0.014045833333333334
+        },
+        {
+          "name": "lock",
+          "selfSamples": 2,
+          "sampledSelfMs": 2.107,
+          "sampledSelfMsPerFrame": 0.008779166666666668
+        },
+        {
+          "name": "__private_cond_signal",
+          "selfSamples": 1,
+          "sampledSelfMs": 1.068,
+          "sampledSelfMsPerFrame": 0.00445
+        },
+        {
+          "name": "__pthread_mutex_trylock",
+          "selfSamples": 1,
+          "sampledSelfMs": 1.066,
+          "sampledSelfMsPerFrame": 0.004441666666666667
+        }
+      ]
+    }
+  ],
+  "combinedSelectedFunctions": [
+    {
+      "name": "sg_raster_triangle_depth_capture",
+      "selfSamples": 5098,
+      "sampledSelfMs": 6714.015999999997,
+      "sampledSelfMsPerFrame": 27.975066666666653
+    },
+    {
+      "name": "__timedwait_cp",
+      "selfSamples": 4741,
+      "sampledSelfMs": 6096.555000000001,
+      "sampledSelfMsPerFrame": 25.402312500000004
+    },
+    {
+      "name": "sg_raster_triangle_tile_prepared",
+      "selfSamples": 2907,
+      "sampledSelfMs": 3647.9670000000015,
+      "sampledSelfMsPerFrame": 15.199862500000005
+    },
+    {
+      "name": "sg_packet_sample_cube_coherent",
+      "selfSamples": 1293,
+      "sampledSelfMs": 1727.0590000000002,
+      "sampledSelfMsPerFrame": 7.196079166666667
+    },
+    {
+      "name": "sg_process_vertex",
+      "selfSamples": 865,
+      "sampledSelfMs": 1068.4500000000003,
+      "sampledSelfMsPerFrame": 4.451875000000001
+    },
+    {
+      "name": "_sg_draw_elements_real",
+      "selfSamples": 752,
+      "sampledSelfMs": 925.5880000000002,
+      "sampledSelfMsPerFrame": 3.8566166666666675
+    },
+    {
+      "name": "sg_queue_render_packed",
+      "selfSamples": 655,
+      "sampledSelfMs": 856.261,
+      "sampledSelfMsPerFrame": 3.5677541666666666
+    },
+    {
+      "name": "sg_prepare_triangle_slice",
+      "selfSamples": 624,
+      "sampledSelfMs": 773.355,
+      "sampledSelfMsPerFrame": 3.2223125
+    },
+    {
+      "name": "emscripten_futex_wait",
+      "selfSamples": 485,
+      "sampledSelfMs": 660.1080000000002,
+      "sampledSelfMsPerFrame": 2.7504500000000007
+    },
+    {
+      "name": "sg_queue_help",
+      "selfSamples": 454,
+      "sampledSelfMs": 558.8850000000002,
+      "sampledSelfMsPerFrame": 2.328687500000001
+    },
+    {
+      "name": "emscripten_futex_wake",
+      "selfSamples": 345,
+      "sampledSelfMs": 431.504,
+      "sampledSelfMsPerFrame": 1.7979333333333334
+    },
+    {
+      "name": "sg_transform_slice",
+      "selfSamples": 286,
+      "sampledSelfMs": 346.26200000000006,
+      "sampledSelfMsPerFrame": 1.4427583333333336
+    },
+    {
+      "name": "sg_model_render",
+      "selfSamples": 240,
+      "sampledSelfMs": 282.27399999999994,
+      "sampledSelfMsPerFrame": 1.1761416666666664
+    },
+    {
+      "name": "_emscripten_get_now",
+      "selfSamples": 226,
+      "sampledSelfMs": 273.591,
+      "sampledSelfMsPerFrame": 1.1399625
+    },
+    {
+      "name": "sg_store_off_post_depth",
+      "selfSamples": 220,
+      "sampledSelfMs": 266.53299999999996,
+      "sampledSelfMsPerFrame": 1.1105541666666665
+    },
+    {
+      "name": "(idle)",
+      "selfSamples": 231,
+      "sampledSelfMs": 260.8680000000001,
+      "sampledSelfMsPerFrame": 1.0869500000000005
+    },
+    {
+      "name": "sg_write_fragment",
+      "selfSamples": 188,
+      "sampledSelfMs": 225.88599999999997,
+      "sampledSelfMsPerFrame": 0.9411916666666665
+    },
+    {
+      "name": "sg_process_vertex_prepared",
+      "selfSamples": 152,
+      "sampledSelfMs": 181.382,
+      "sampledSelfMsPerFrame": 0.7557583333333333
+    },
+    {
+      "name": "sg_finish_triangle",
+      "selfSamples": 149,
+      "sampledSelfMs": 174.36699999999988,
+      "sampledSelfMsPerFrame": 0.7265291666666661
+    },
+    {
+      "name": "sg_bin_sort_z",
+      "selfSamples": 125,
+      "sampledSelfMs": 157.44,
+      "sampledSelfMsPerFrame": 0.656
+    },
+    {
+      "name": "sg_publish_coverage",
+      "selfSamples": 107,
+      "sampledSelfMs": 143.34700000000004,
+      "sampledSelfMsPerFrame": 0.5972791666666668
+    },
+    {
+      "name": "sg_process_triangle_cached",
+      "selfSamples": 114,
+      "sampledSelfMs": 131.374,
+      "sampledSelfMsPerFrame": 0.5473916666666666
+    },
+    {
+      "name": "__pthread_mutex_unlock",
+      "selfSamples": 80,
+      "sampledSelfMs": 112.516,
+      "sampledSelfMsPerFrame": 0.4688166666666667
+    },
+    {
+      "name": "sg_packet_sample_cube_target",
+      "selfSamples": 65,
+      "sampledSelfMs": 82.279,
+      "sampledSelfMsPerFrame": 0.34282916666666663
+    },
+    {
+      "name": "sg_queue_render",
+      "selfSamples": 65,
+      "sampledSelfMs": 78.84800000000001,
+      "sampledSelfMsPerFrame": 0.3285333333333334
+    },
+    {
+      "name": "sg_queue_transform",
+      "selfSamples": 65,
+      "sampledSelfMs": 75.88899999999998,
+      "sampledSelfMsPerFrame": 0.31620416666666656
+    },
+    {
+      "name": "sg_sample_tex_cube",
+      "selfSamples": 51,
+      "sampledSelfMs": 72.23,
+      "sampledSelfMsPerFrame": 0.3009583333333333
+    },
+    {
+      "name": "sg_fetch_attrib",
+      "selfSamples": 54,
+      "sampledSelfMs": 70.29300000000003,
+      "sampledSelfMsPerFrame": 0.29288750000000013
+    },
+    {
+      "name": "sg_transform_range",
+      "selfSamples": 43,
+      "sampledSelfMs": 51.79400000000002,
+      "sampledSelfMsPerFrame": 0.2158083333333334
+    },
+    {
+      "name": "now",
+      "selfSamples": 41,
+      "sampledSelfMs": 50.214999999999996,
+      "sampledSelfMsPerFrame": 0.20922916666666666
+    },
+    {
+      "name": "sg_buffer_get",
+      "selfSamples": 35,
+      "sampledSelfMs": 42.97299999999999,
+      "sampledSelfMsPerFrame": 0.17905416666666663
+    },
+    {
+      "name": "sg_finish_stream",
+      "selfSamples": 26,
+      "sampledSelfMs": 31.579000000000004,
+      "sampledSelfMsPerFrame": 0.1315791666666667
+    },
+    {
+      "name": "_sg_clear_real",
+      "selfSamples": 25,
+      "sampledSelfMs": 29.616,
+      "sampledSelfMsPerFrame": 0.1234
+    },
+    {
+      "name": "sg_process_triangle",
+      "selfSamples": 24,
+      "sampledSelfMs": 29.471,
+      "sampledSelfMsPerFrame": 0.12279583333333334
+    },
+    {
+      "name": "(program)",
+      "selfSamples": 2,
+      "sampledSelfMs": 27.512,
+      "sampledSelfMsPerFrame": 0.11463333333333334
+    },
+    {
+      "name": "sg_worker_main",
+      "selfSamples": 23,
+      "sampledSelfMs": 26.853,
+      "sampledSelfMsPerFrame": 0.1118875
+    },
+    {
+      "name": "__pthread_mutex_lock",
+      "selfSamples": 19,
+      "sampledSelfMs": 26.589,
+      "sampledSelfMsPerFrame": 0.1107875
+    },
+    {
+      "name": "wasm-to-js",
+      "selfSamples": 14,
+      "sampledSelfMs": 15.693,
+      "sampledSelfMsPerFrame": 0.0653875
+    },
+    {
+      "name": "pthread_cond_wait",
+      "selfSamples": 10,
+      "sampledSelfMs": 13.719000000000001,
+      "sampledSelfMsPerFrame": 0.057162500000000005
+    },
+    {
+      "name": "sg_tex_tri_prepare",
+      "selfSamples": 6,
+      "sampledSelfMs": 6.3919999999999995,
+      "sampledSelfMsPerFrame": 0.026633333333333332
+    },
+    {
+      "name": "draw_part",
+      "selfSamples": 6,
+      "sampledSelfMs": 6.384,
+      "sampledSelfMsPerFrame": 0.026600000000000002
+    },
+    {
+      "name": "glTexEnvi",
+      "selfSamples": 5,
+      "sampledSelfMs": 5.359,
+      "sampledSelfMsPerFrame": 0.022329166666666667
+    },
+    {
+      "name": "__private_cond_signal",
+      "selfSamples": 5,
+      "sampledSelfMs": 5.328999999999999,
+      "sampledSelfMsPerFrame": 0.02220416666666666
+    },
+    {
+      "name": "lock",
+      "selfSamples": 4,
+      "sampledSelfMs": 5.128,
+      "sampledSelfMsPerFrame": 0.021366666666666666
+    },
+    {
+      "name": "a_cas_p_1928",
+      "selfSamples": 3,
+      "sampledSelfMs": 3.424,
+      "sampledSelfMsPerFrame": 0.014266666666666667
+    },
+    {
+      "name": "sg_bin_grow",
+      "selfSamples": 3,
+      "sampledSelfMs": 3.342,
+      "sampledSelfMsPerFrame": 0.013925
+    },
+    {
+      "name": "_sg_bind_texture_real",
+      "selfSamples": 3,
+      "sampledSelfMs": 3.26,
+      "sampledSelfMsPerFrame": 0.013583333333333333
+    },
+    {
+      "name": "_sg_tex_env_i_real",
+      "selfSamples": 3,
+      "sampledSelfMs": 3.248,
+      "sampledSelfMsPerFrame": 0.013533333333333335
+    },
+    {
+      "name": "emscripten_builtin_malloc",
+      "selfSamples": 3,
+      "sampledSelfMs": 3.2350000000000003,
+      "sampledSelfMsPerFrame": 0.013479166666666669
+    },
+    {
+      "name": "glBindBuffer",
+      "selfSamples": 3,
+      "sampledSelfMs": 3.217,
+      "sampledSelfMsPerFrame": 0.013404166666666667
+    },
+    {
+      "name": "",
+      "selfSamples": 2,
+      "sampledSelfMs": 2.393,
+      "sampledSelfMsPerFrame": 0.009970833333333333
+    },
+    {
+      "name": "(garbage collector)",
+      "selfSamples": 1,
+      "sampledSelfMs": 2.31,
+      "sampledSelfMsPerFrame": 0.009625
+    },
+    {
+      "name": "emscripten_proxy_execute_queue",
+      "selfSamples": 2,
+      "sampledSelfMs": 2.174,
+      "sampledSelfMsPerFrame": 0.009058333333333333
+    },
+    {
+      "name": "memcmp",
+      "selfSamples": 2,
+      "sampledSelfMs": 2.1660000000000004,
+      "sampledSelfMsPerFrame": 0.009025000000000002
+    },
+    {
+      "name": "sg_geometry_cache_epoch",
+      "selfSamples": 2,
+      "sampledSelfMs": 2.123,
+      "sampledSelfMsPerFrame": 0.008845833333333334
+    },
+    {
+      "name": "glAlphaFunc",
+      "selfSamples": 1,
+      "sampledSelfMs": 1.563,
+      "sampledSelfMsPerFrame": 0.0065125
+    },
+    {
+      "name": "combiner",
+      "selfSamples": 1,
+      "sampledSelfMs": 1.126,
+      "sampledSelfMsPerFrame": 0.004691666666666666
+    },
+    {
+      "name": "emscripten_builtin_free",
+      "selfSamples": 1,
+      "sampledSelfMs": 1.099,
+      "sampledSelfMsPerFrame": 0.004579166666666666
+    },
+    {
+      "name": "glDrawElements",
+      "selfSamples": 1,
+      "sampledSelfMs": 1.095,
+      "sampledSelfMsPerFrame": 0.0045625
+    },
+    {
+      "name": "__pthread_setcancelstate",
+      "selfSamples": 1,
+      "sampledSelfMs": 1.086,
+      "sampledSelfMsPerFrame": 0.004525
+    },
+    {
+      "name": "pthread_cond_broadcast",
+      "selfSamples": 1,
+      "sampledSelfMs": 1.077,
+      "sampledSelfMsPerFrame": 0.0044875
+    },
+    {
+      "name": "profile.render",
+      "selfSamples": 1,
+      "sampledSelfMs": 1.076,
+      "sampledSelfMsPerFrame": 0.004483333333333334
+    },
+    {
+      "name": "glActiveTexture",
+      "selfSamples": 1,
+      "sampledSelfMs": 1.068,
+      "sampledSelfMsPerFrame": 0.00445
+    },
+    {
+      "name": "__pthread_mutex_trylock",
+      "selfSamples": 1,
+      "sampledSelfMs": 1.066,
+      "sampledSelfMsPerFrame": 0.004441666666666667
+    },
+    {
+      "name": "sg_aligned_free",
+      "selfSamples": 1,
+      "sampledSelfMs": 1.065,
+      "sampledSelfMsPerFrame": 0.0044375
+    },
+    {
+      "name": "sg_aligned_alloc",
+      "selfSamples": 1,
+      "sampledSelfMs": 1.06,
+      "sampledSelfMsPerFrame": 0.004416666666666667
+    },
+    {
+      "name": "glBlendFunc",
+      "selfSamples": 1,
+      "sampledSelfMs": 1.06,
+      "sampledSelfMsPerFrame": 0.004416666666666667
+    },
+    {
+      "name": "glClientActiveTexture",
+      "selfSamples": 1,
+      "sampledSelfMs": 1.053,
+      "sampledSelfMsPerFrame": 0.0043875
+    },
+    {
+      "name": "glDisable",
+      "selfSamples": 1,
+      "sampledSelfMs": 1.052,
+      "sampledSelfMsPerFrame": 0.004383333333333334
+    }
+  ]
+}

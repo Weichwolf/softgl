@@ -1,5 +1,12 @@
 # Optimization evidence
 
+[Current 7cc profiles](current-7cc-profiles/README.md) observe all three new
+post-depth roots in actual BMW renders. Raster kernels remain prominent;
+the next unmeasured hypothesis caches common-store eligibility per immutable
+draw/bin. All six first quiet-host guards pass. Raw profiles, exact map and
+independent self-sample recomputation are published; these diagnostics do not
+establish an additional speedup or quantify native hardware costs.
+
 The [common post-depth store architecture](post-depth-common-store/README.md)
 is retained as module `7cc38593`: BMW off frame time falls by 5.131%/5.432%,
 with all six pairs faster. BMW 2x changes -0.697%/-0.580% and 4x
