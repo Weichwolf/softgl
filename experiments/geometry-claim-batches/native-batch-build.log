@@ -1,0 +1,430 @@
+[  0%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/matrix.c.o
+[  0%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/buffers.c.o
+[  0%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/state.c.o
+[  0%] Building C object tests/CMakeFiles/geometry_batch_instrumented.dir/__/libsoftgl/src/workers.c.o
+[  0%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/texture.c.o
+[  0%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/pipeline.c.o
+[  0%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/clip.c.o
+[ 33%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/fragment_write.c.o
+[ 33%] Built target geometry_batch_instrumented
+[ 33%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/multisample.c.o
+[ 33%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/fragment_combine.c.o
+[ 33%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/rasterizer.c.o
+[ 33%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/lines.c.o
+[ 33%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/fragment.c.o
+[ 33%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/framebuffer.c.o
+[ 33%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/lighting.c.o
+[ 33%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/api.c.o
+[ 33%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/immediate.c.o
+[ 33%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/dlist.c.o
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c: In function ‘sg_replay_stream’:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:271:13: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  271 |             if (p) _sg_load_matrix_real((const float*)p); break; }
+      |             ^~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:271:59: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  271 |             if (p) _sg_load_matrix_real((const float*)p); break; }
+      |                                                           ^~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:273:13: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  273 |             if (p) _sg_mult_matrix_real((const float*)p); break; }
+      |             ^~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:273:59: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  273 |             if (p) _sg_mult_matrix_real((const float*)p); break; }
+      |                                                           ^~~~~
+[ 66%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/pixels.c.o
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:596:13: warning: ‘m’ may be used uninitialized [-Wmaybe-uninitialized]
+  596 |             _sg_index_mask_real(m); break; }
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:594:41: note: ‘m’ was declared here
+  594 |         case SG_OP_INDEX_MASK: { GLuint m;
+      |                                         ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:590:13: warning: ‘e’ may be used uninitialized [-Wmaybe-uninitialized]
+  590 |             _sg_logic_op_real(e); break; }
+      |             ^~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:588:39: note: ‘e’ was declared here
+  588 |         case SG_OP_LOGIC_OP: { GLenum e;
+      |                                       ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:581:13: warning: ‘p’ may be used uninitialized [-Wmaybe-uninitialized]
+  581 |             _sg_clip_plane_real(p, eq); break; }
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:578:41: note: ‘p’ was declared here
+  578 |         case SG_OP_CLIP_PLANE: { GLenum p; double eq[4];
+      |                                         ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:576:44: warning: ‘s’ may be used uninitialized [-Wmaybe-uninitialized]
+  576 |             sg_rd_read(&R, &s, sizeof(s)); _sg_clear_stencil_real(s); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:575:43: note: ‘s’ was declared here
+  575 |         case SG_OP_CLEAR_STENCIL: { GLint s;
+      |                                           ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:574:44: warning: ‘m’ may be used uninitialized [-Wmaybe-uninitialized]
+  574 |             sg_rd_read(&R, &m, sizeof(m)); _sg_stencil_mask_real(m); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:573:43: note: ‘m’ was declared here
+  573 |         case SG_OP_STENCIL_MASK: { GLuint m;
+      |                                           ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:556:58: warning: ‘b’ may be used uninitialized [-Wmaybe-uninitialized]
+  556 |             sg_rd_read(&R, &b, sizeof(b)); c->dlist_base = b; break; }
+      |                                            ~~~~~~~~~~~~~~^~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:555:40: note: ‘b’ was declared here
+  555 |         case SG_OP_LIST_BASE: { GLuint b;
+      |                                        ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:544:46: warning: ‘t’ may be used uninitialized [-Wmaybe-uninitialized]
+  544 |         case SG_OP_CALL_LISTS: { uint32_t n, t;
+      |                                              ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:548:28: warning: ‘n’ may be used uninitialized [-Wmaybe-uninitialized]
+  548 |             size_t bytes = (size_t)n * esz;
+      |                            ^~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:544:43: note: ‘n’ was declared here
+  544 |         case SG_OP_CALL_LISTS: { uint32_t n, t;
+      |                                           ^
+In function ‘sg_dlist_slot’,
+    inlined from ‘sg_dlist_get’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:14:19,
+    inlined from ‘sg_dlist_replay’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:183:19,
+    inlined from ‘sg_replay_stream’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:543:13:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:9:8: warning: ‘id’ may be used uninitialized [-Wmaybe-uninitialized]
+    9 |     if (id == 0 || id > c->lists_cap) return NULL;
+      |        ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c: In function ‘sg_replay_stream’:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:541:40: note: ‘id’ was declared here
+  541 |         case SG_OP_CALL_LIST: { GLuint id;
+      |                                        ^~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:536:44: warning: ‘i’ may be used uninitialized [-Wmaybe-uninitialized]
+  536 |             sg_rd_read(&R, &i, sizeof(i)); _sg_array_element_real(i); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:535:43: note: ‘i’ was declared here
+  535 |         case SG_OP_ARRAY_ELEMENT: { GLint i;
+      |                                           ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:531:44: warning: ‘v’ may be used uninitialized [-Wmaybe-uninitialized]
+  531 |             sg_rd_read(&R, &v, sizeof(v)); _sg_cur_edgeflag_real(v); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:530:40: note: ‘v’ was declared here
+  530 |         case SG_OP_CUR_EDGEFLAG: { int v;
+      |                                        ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:529:13: warning: ‘u’ may be used uninitialized [-Wmaybe-uninitialized]
+  529 |             _sg_cur_texcoord_real(u, v[0],v[1],v[2],v[3]); break; }
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:526:45: note: ‘u’ was declared here
+  526 |         case SG_OP_CUR_TEXCOORD: { uint32_t u; float v[4];
+      |                                             ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:518:44: warning: ‘e’ may be used uninitialized [-Wmaybe-uninitialized]
+  518 |             sg_rd_read(&R, &e, sizeof(e)); _sg_begin_real(e); break; }
+      |                                            ^~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:517:36: note: ‘e’ was declared here
+  517 |         case SG_OP_BEGIN: { GLenum e;
+      |                                    ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:496:44: warning: ‘e’ may be used uninitialized [-Wmaybe-uninitialized]
+  496 |             sg_rd_read(&R, &e, sizeof(e)); _sg_client_active_tex_real(e); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:495:48: note: ‘e’ was declared here
+  495 |         case SG_OP_CLIENT_ACTIVE_TEX: { GLenum e;
+      |                                                ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:474:44: warning: ‘e’ may be used uninitialized [-Wmaybe-uninitialized]
+  474 |             sg_rd_read(&R, &e, sizeof(e)); _sg_disable_client_state_real(e); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:473:45: note: ‘e’ was declared here
+  473 |         case SG_OP_DISABLE_CLIENT: { GLenum e;
+      |                                             ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:472:44: warning: ‘e’ may be used uninitialized [-Wmaybe-uninitialized]
+  472 |             sg_rd_read(&R, &e, sizeof(e)); _sg_enable_client_state_real(e); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:471:44: note: ‘e’ was declared here
+  471 |         case SG_OP_ENABLE_CLIENT: { GLenum e;
+      |                                            ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:454:13: warning: ‘t’ may be used uninitialized [-Wmaybe-uninitialized]
+  454 |             _sg_tex_env_fv_real(t, p, v); break; }
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:450:41: note: ‘t’ was declared here
+  450 |         case SG_OP_TEX_ENV_FV: { GLenum t, p; float v[4];
+      |                                         ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:454:13: warning: ‘p’ may be used uninitialized [-Wmaybe-uninitialized]
+  454 |             _sg_tex_env_fv_real(t, p, v); break; }
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:450:44: note: ‘p’ was declared here
+  450 |         case SG_OP_TEX_ENV_FV: { GLenum t, p; float v[4];
+      |                                            ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:354:44: warning: ‘e’ may be used uninitialized [-Wmaybe-uninitialized]
+  354 |             sg_rd_read(&R, &e, sizeof(e)); _sg_active_texture_real(e); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:353:41: note: ‘e’ was declared here
+  353 |         case SG_OP_ACTIVE_TEX: { GLenum e;
+      |                                         ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:351:13: warning: ‘p’ may be used uninitialized [-Wmaybe-uninitialized]
+  351 |             _sg_light_modelfv_real(p, v); break; }
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:348:44: note: ‘p’ was declared here
+  348 |         case SG_OP_LIGHT_MODELFV: { GLenum p; float v[4];
+      |                                            ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:347:13: warning: ‘fc’ may be used uninitialized [-Wmaybe-uninitialized]
+  347 |             _sg_materialf_real(fc, pn, v); break; }
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:343:40: note: ‘fc’ was declared here
+  343 |         case SG_OP_MATERIALF: { GLenum fc, pn; float v;
+      |                                        ^~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:347:13: warning: ‘pn’ may be used uninitialized [-Wmaybe-uninitialized]
+  347 |             _sg_materialf_real(fc, pn, v); break; }
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:343:44: note: ‘pn’ was declared here
+  343 |         case SG_OP_MATERIALF: { GLenum fc, pn; float v;
+      |                                            ^~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:342:13: warning: ‘fc’ may be used uninitialized [-Wmaybe-uninitialized]
+  342 |             _sg_materialfv_real(fc, pn, v); break; }
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:338:41: note: ‘fc’ was declared here
+  338 |         case SG_OP_MATERIALFV: { GLenum fc, pn; float v[4];
+      |                                         ^~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:342:13: warning: ‘pn’ may be used uninitialized [-Wmaybe-uninitialized]
+  342 |             _sg_materialfv_real(fc, pn, v); break; }
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:338:45: note: ‘pn’ was declared here
+  338 |         case SG_OP_MATERIALFV: { GLenum fc, pn; float v[4];
+      |                                             ^~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:337:13: warning: ‘li’ may be used uninitialized [-Wmaybe-uninitialized]
+  337 |             _sg_lightf_real(li, pn, v); break; }
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:333:37: note: ‘li’ was declared here
+  333 |         case SG_OP_LIGHTF: { GLenum li, pn; float v;
+      |                                     ^~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:337:13: warning: ‘pn’ may be used uninitialized [-Wmaybe-uninitialized]
+  337 |             _sg_lightf_real(li, pn, v); break; }
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:333:41: note: ‘pn’ was declared here
+  333 |         case SG_OP_LIGHTF: { GLenum li, pn; float v;
+      |                                         ^~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:332:13: warning: ‘li’ may be used uninitialized [-Wmaybe-uninitialized]
+  332 |             _sg_lightfv_real(li, pn, v); break; }
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:328:38: note: ‘li’ was declared here
+  328 |         case SG_OP_LIGHTFV: { GLenum li, pn; float v[4];
+      |                                      ^~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:332:13: warning: ‘pn’ may be used uninitialized [-Wmaybe-uninitialized]
+  332 |             _sg_lightfv_real(li, pn, v); break; }
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:328:42: note: ‘pn’ was declared here
+  328 |         case SG_OP_LIGHTFV: { GLenum li, pn; float v[4];
+      |                                          ^~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:327:43: warning: ‘p’ may be used uninitialized [-Wmaybe-uninitialized]
+  327 |             sg_rd_read(&R, v, sizeof(v)); _sg_fogfv_real(p, v); break; }
+      |                                           ^~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:325:36: note: ‘p’ was declared here
+  325 |         case SG_OP_FOGFV: { GLenum p; float v[4];
+      |                                    ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:319:44: warning: ‘e’ may be used uninitialized [-Wmaybe-uninitialized]
+  319 |             sg_rd_read(&R, &e, sizeof(e)); _sg_shade_model_real(e); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:318:42: note: ‘e’ was declared here
+  318 |         case SG_OP_SHADE_MODEL: { GLenum e;
+      |                                          ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:311:44: warning: ‘e’ may be used uninitialized [-Wmaybe-uninitialized]
+  311 |             sg_rd_read(&R, &e, sizeof(e)); _sg_disable_real(e); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:310:38: note: ‘e’ was declared here
+  310 |         case SG_OP_DISABLE: { GLenum e;
+      |                                      ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:309:44: warning: ‘e’ may be used uninitialized [-Wmaybe-uninitialized]
+  309 |             sg_rd_read(&R, &e, sizeof(e)); _sg_enable_real(e); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:308:37: note: ‘e’ was declared here
+  308 |         case SG_OP_ENABLE: { GLenum e;
+      |                                     ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:307:44: warning: ‘e’ may be used uninitialized [-Wmaybe-uninitialized]
+  307 |             sg_rd_read(&R, &e, sizeof(e)); _sg_front_face_real(e); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:306:41: note: ‘e’ was declared here
+  306 |         case SG_OP_FRONT_FACE: { GLenum e;
+      |                                         ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:305:44: warning: ‘e’ may be used uninitialized [-Wmaybe-uninitialized]
+  305 |             sg_rd_read(&R, &e, sizeof(e)); _sg_cull_face_real(e); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:304:40: note: ‘e’ was declared here
+  304 |         case SG_OP_CULL_FACE: { GLenum e;
+      |                                        ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:303:44: warning: ‘v’ may be used uninitialized [-Wmaybe-uninitialized]
+  303 |             sg_rd_read(&R, &v, sizeof(v)); _sg_depth_mask_real(v); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:302:42: note: ‘v’ was declared here
+  302 |         case SG_OP_DEPTH_MASK: { uint8_t v;
+      |                                          ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:301:44: warning: ‘e’ may be used uninitialized [-Wmaybe-uninitialized]
+  301 |             sg_rd_read(&R, &e, sizeof(e)); _sg_depth_func_real(e); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:300:41: note: ‘e’ was declared here
+  300 |         case SG_OP_DEPTH_FUNC: { GLenum e;
+      |                                         ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:290:44: warning: ‘m’ may be used uninitialized [-Wmaybe-uninitialized]
+  290 |             sg_rd_read(&R, &m, sizeof(m)); _sg_clear_real(m); break; }
+      |                                            ^~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:289:40: note: ‘m’ was declared here
+  289 |         case SG_OP_CLEAR: { GLbitfield m;
+      |                                        ^
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:268:44: warning: ‘m’ may be used uninitialized [-Wmaybe-uninitialized]
+  268 |             sg_rd_read(&R, &m, sizeof(m)); _sg_matrix_mode_real(m); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/dlist.c:267:42: note: ‘m’ was declared here
+  267 |         case SG_OP_MATRIX_MODE: { GLenum m;
+      |                                          ^
+[ 66%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/evaluators.c.o
+In function ‘decasteljau1’,
+    inlined from ‘decasteljau2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:189:5,
+    inlined from ‘emit_eval2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:239:9:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:177:20: warning: ‘tmp[0][0]’ may be used uninitialized [-Wmaybe-uninitialized]
+  177 |     out[0] = tmp[0][0]; out[1] = tmp[0][1];
+      |              ~~~~~~^~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c: In function ‘emit_eval2’:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:168:11: note: ‘tmp’ declared here
+  168 |     float tmp[SG_MAX_EVAL_ORDER][4];
+      |           ^~~
+In function ‘decasteljau1’,
+    inlined from ‘decasteljau2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:189:5,
+    inlined from ‘emit_eval2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:239:9:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:177:40: warning: ‘tmp[0][1]’ may be used uninitialized [-Wmaybe-uninitialized]
+  177 |     out[0] = tmp[0][0]; out[1] = tmp[0][1];
+      |                                  ~~~~~~^~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c: In function ‘emit_eval2’:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:168:11: note: ‘tmp’ declared here
+  168 |     float tmp[SG_MAX_EVAL_ORDER][4];
+      |           ^~~
+In function ‘decasteljau1’,
+    inlined from ‘decasteljau2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:189:5,
+    inlined from ‘emit_eval2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:239:9:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:178:20: warning: ‘tmp[0][2]’ may be used uninitialized [-Wmaybe-uninitialized]
+  178 |     out[2] = tmp[0][2]; out[3] = tmp[0][3];
+      |              ~~~~~~^~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c: In function ‘emit_eval2’:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:168:11: note: ‘tmp’ declared here
+  168 |     float tmp[SG_MAX_EVAL_ORDER][4];
+      |           ^~~
+In function ‘decasteljau1’,
+    inlined from ‘decasteljau2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:189:5,
+    inlined from ‘emit_eval2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:239:9:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:177:20: warning: ‘tmp[0][0]’ may be used uninitialized [-Wmaybe-uninitialized]
+  177 |     out[0] = tmp[0][0]; out[1] = tmp[0][1];
+      |              ~~~~~~^~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c: In function ‘emit_eval2’:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:168:11: note: ‘tmp’ declared here
+  168 |     float tmp[SG_MAX_EVAL_ORDER][4];
+      |           ^~~
+In function ‘decasteljau1’,
+    inlined from ‘decasteljau2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:189:5,
+    inlined from ‘emit_eval2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:239:9:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:177:20: warning: ‘tmp[0][0]’ may be used uninitialized [-Wmaybe-uninitialized]
+  177 |     out[0] = tmp[0][0]; out[1] = tmp[0][1];
+      |              ~~~~~~^~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c: In function ‘emit_eval2’:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:168:11: note: ‘tmp’ declared here
+  168 |     float tmp[SG_MAX_EVAL_ORDER][4];
+      |           ^~~
+In function ‘decasteljau1’,
+    inlined from ‘decasteljau2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:189:5,
+    inlined from ‘emit_eval2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:239:9:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:177:40: warning: ‘tmp[0][1]’ may be used uninitialized [-Wmaybe-uninitialized]
+  177 |     out[0] = tmp[0][0]; out[1] = tmp[0][1];
+      |                                  ~~~~~~^~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c: In function ‘emit_eval2’:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:168:11: note: ‘tmp’ declared here
+  168 |     float tmp[SG_MAX_EVAL_ORDER][4];
+      |           ^~~
+In function ‘decasteljau1’,
+    inlined from ‘decasteljau2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:189:5,
+    inlined from ‘emit_eval2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:239:9:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:177:20: warning: ‘tmp[0][0]’ may be used uninitialized [-Wmaybe-uninitialized]
+  177 |     out[0] = tmp[0][0]; out[1] = tmp[0][1];
+      |              ~~~~~~^~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c: In function ‘emit_eval2’:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:168:11: note: ‘tmp’ declared here
+  168 |     float tmp[SG_MAX_EVAL_ORDER][4];
+      |           ^~~
+In function ‘decasteljau1’,
+    inlined from ‘decasteljau2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:189:5,
+    inlined from ‘emit_eval2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:239:9:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:177:40: warning: ‘tmp[0][1]’ may be used uninitialized [-Wmaybe-uninitialized]
+  177 |     out[0] = tmp[0][0]; out[1] = tmp[0][1];
+      |                                  ~~~~~~^~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c: In function ‘emit_eval2’:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:168:11: note: ‘tmp’ declared here
+  168 |     float tmp[SG_MAX_EVAL_ORDER][4];
+      |           ^~~
+In function ‘decasteljau1’,
+    inlined from ‘decasteljau2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:189:5,
+    inlined from ‘emit_eval2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:239:9:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:178:20: warning: ‘tmp[0][2]’ may be used uninitialized [-Wmaybe-uninitialized]
+  178 |     out[2] = tmp[0][2]; out[3] = tmp[0][3];
+      |              ~~~~~~^~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c: In function ‘emit_eval2’:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:168:11: note: ‘tmp’ declared here
+  168 |     float tmp[SG_MAX_EVAL_ORDER][4];
+      |           ^~~
+In function ‘decasteljau1’,
+    inlined from ‘decasteljau2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:189:5,
+    inlined from ‘emit_eval2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:239:9:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:178:40: warning: ‘tmp[0][3]’ may be used uninitialized [-Wmaybe-uninitialized]
+  178 |     out[2] = tmp[0][2]; out[3] = tmp[0][3];
+      |                                  ~~~~~~^~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c: In function ‘emit_eval2’:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:168:11: note: ‘tmp’ declared here
+  168 |     float tmp[SG_MAX_EVAL_ORDER][4];
+      |           ^~~
+In function ‘decasteljau1’,
+    inlined from ‘decasteljau2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:189:5,
+    inlined from ‘emit_eval2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:269:9:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:177:20: warning: ‘tmp’ may be used uninitialized [-Wmaybe-uninitialized]
+  177 |     out[0] = tmp[0][0]; out[1] = tmp[0][1];
+      |              ~~~~~~^~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c: In function ‘emit_eval2’:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:168:11: note: ‘tmp’ declared here
+  168 |     float tmp[SG_MAX_EVAL_ORDER][4];
+      |           ^~~
+In function ‘decasteljau1’,
+    inlined from ‘decasteljau2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:189:5,
+    inlined from ‘emit_eval2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:269:9:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:177:40: warning: ‘tmp’ may be used uninitialized [-Wmaybe-uninitialized]
+  177 |     out[0] = tmp[0][0]; out[1] = tmp[0][1];
+      |                                  ~~~~~~^~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c: In function ‘emit_eval2’:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:168:11: note: ‘tmp’ declared here
+  168 |     float tmp[SG_MAX_EVAL_ORDER][4];
+      |           ^~~
+In function ‘decasteljau1’,
+    inlined from ‘decasteljau2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:189:5,
+    inlined from ‘emit_eval2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:269:9:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:178:20: warning: ‘tmp’ may be used uninitialized [-Wmaybe-uninitialized]
+  178 |     out[2] = tmp[0][2]; out[3] = tmp[0][3];
+      |              ~~~~~~^~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c: In function ‘emit_eval2’:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:168:11: note: ‘tmp’ declared here
+  168 |     float tmp[SG_MAX_EVAL_ORDER][4];
+      |           ^~~
+In function ‘decasteljau1’,
+    inlined from ‘decasteljau2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:189:5,
+    inlined from ‘emit_eval2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:272:9:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:177:20: warning: ‘tmp’ may be used uninitialized [-Wmaybe-uninitialized]
+  177 |     out[0] = tmp[0][0]; out[1] = tmp[0][1];
+      |              ~~~~~~^~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c: In function ‘emit_eval2’:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:168:11: note: ‘tmp’ declared here
+  168 |     float tmp[SG_MAX_EVAL_ORDER][4];
+      |           ^~~
+In function ‘decasteljau1’,
+    inlined from ‘decasteljau2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:189:5,
+    inlined from ‘emit_eval2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:272:9:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:177:40: warning: ‘tmp’ may be used uninitialized [-Wmaybe-uninitialized]
+  177 |     out[0] = tmp[0][0]; out[1] = tmp[0][1];
+      |                                  ~~~~~~^~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c: In function ‘emit_eval2’:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:168:11: note: ‘tmp’ declared here
+  168 |     float tmp[SG_MAX_EVAL_ORDER][4];
+      |           ^~~
+In function ‘decasteljau1’,
+    inlined from ‘decasteljau2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:189:5,
+    inlined from ‘emit_eval2’ at /home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:272:9:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:178:20: warning: ‘tmp’ may be used uninitialized [-Wmaybe-uninitialized]
+  178 |     out[2] = tmp[0][2]; out[3] = tmp[0][3];
+      |              ~~~~~~^~~
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c: In function ‘emit_eval2’:
+/home/cosmo/Git/softgl/build/diagnostics/geometry-claim-batches/source-root/libsoftgl/src/evaluators.c:168:11: note: ‘tmp’ declared here
+  168 |     float tmp[SG_MAX_EVAL_ORDER][4];
+      |           ^~~
+[ 66%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/workers.c.o
+[ 66%] Linking C static library libsoftgl.a
+[ 66%] Built target softgl
+[ 66%] Building C object tests/CMakeFiles/geometry_batch_contract.dir/geometry_batch.c.o
+[100%] Linking C executable geometry_batch_contract
+[100%] Built target geometry_batch_contract

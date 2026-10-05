@@ -1,0 +1,4 @@
+{
+  "old": "'--bench-only', '--crossover', '--wasm-build', str(candidate),",
+  "new": "'--bench-only', '--crossover', '--native-build', str(repo/'build/diagnostics/geometry-claim-batches/native-full'), '--wasm-build', str(candidate),"
+}

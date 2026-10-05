@@ -1,5 +1,17 @@
 # Optimization evidence
 
+The [adaptive geometry reservation trial](geometry-claim-batches/README.md)
+is rejected: no BMW mode improves in both audits. Off changes +0.331%/+0.015%,
+2x +0.237%/-0.462%, and 4x +1.239%/+0.080%. T-80 controls are mixed. Reserving
+1/2/4 existing 128-item slices per mutex leaves layouts, inner computation and
+stage publication/join intact. Both engines pass 558 concurrent reservation
+cases with 4,951,980 exactly-once marked items and 12,822 reservations versus
+38,880 original slices; these are artificial properties, not model lock timings.
+All full regressions and eighteen first quiet-guarded pairs pass. Source patch,
+raw comparisons, unchanged-layout/lifecycle proof and portable verifier are
+public. Production remains accepted `7cc38593`; neither fewer reservations nor
+lower coordination counts establish faster frames.
+
 The [four-tier queue priority trial](queue-cost-priority/README.md) is rejected:
 BMW off improves -0.518%/-0.127% with five of six pairs faster, but BMW 4x
 costs +1.499%/+0.409% with five of six slower. BMW 2x and T-80 controls are

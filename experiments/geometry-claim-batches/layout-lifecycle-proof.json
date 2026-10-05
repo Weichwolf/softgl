@@ -1,0 +1,19 @@
+{
+  "unchangedStructures": true,
+  "unchangedStagePublicationAndJoinApartFromClaimArgument": true,
+  "sections": [
+    {
+      "name": "queue_and_slot_structures",
+      "referenceSha256": "5f7ee8d8a9dafe2d3533d4201eb9abdf6c5f393f07701d38e58aaf64b04a517c",
+      "normalizedCandidateSha256": "5f7ee8d8a9dafe2d3533d4201eb9abdf6c5f393f07701d38e58aaf64b04a517c",
+      "normalization": "none"
+    },
+    {
+      "name": "stage_publication_and_join",
+      "referenceSha256": "7d9c9f37232fec3ce3cdd55f6265728a469e4ba7f715d3cd3da43aba79dbe76a",
+      "normalizedCandidateSha256": "7d9c9f37232fec3ce3cdd55f6265728a469e4ba7f715d3cd3da43aba79dbe76a",
+      "normalization": "only added participant-count argument at existing claim call"
+    }
+  ],
+  "note": "Source comparison supports unchanged structures and the publication/join protocol. It does not prove performance or replace complete renderer/concurrent reservation tests."
+}
