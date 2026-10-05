@@ -27,6 +27,28 @@ SG_INLINE int sg_can_store_opaque_msaa2(const softgl_ctx *c) {
                                 !c->sample_alpha_to_one && !c->sample_coverage));
 }
 
+/* Common state is selected once per triangle. Coverage and depth already
+ * passed; special fragment operations keep the complete ordered writer. */
+SG_INLINE int sg_can_store_common(const softgl_ctx *c, int samples) {
+    return c->fb.samples == samples && !c->alpha_test && !c->stencil_test &&
+           !c->color_logic_op_enabled &&
+           !c->current_query[SG_QUERY_TARGET_SAMPLES_PASSED] &&
+           !c->current_query[SG_QUERY_TARGET_ANY_SAMPLES_PASSED] &&
+           c->color_mask[0] && c->color_mask[1] && c->color_mask[2] && c->color_mask[3] &&
+           (!c->blend || ((c->blend_src == GL_SRC_ALPHA || c->blend_src == GL_ONE) &&
+                         (c->blend_dst == GL_ONE || c->blend_dst == GL_ONE_MINUS_SRC_ALPHA))) &&
+           (!samples || !c->multisample || (!c->sample_alpha_to_coverage &&
+                                          !c->sample_alpha_to_one && !c->sample_coverage));
+}
+SG_INLINE int sg_can_store_common_msaa2(const softgl_ctx *c) { return sg_can_store_common(c, 2); }
+SG_INLINE int sg_can_store_common_msaa4(const softgl_ctx *c) { return sg_can_store_common(c, 4); }
+
+void sg_store_off_post_depth(softgl_ctx *c, int x, int y, float z, const float color[4]);
+void sg_store_blend_msaa2_post_depth(softgl_ctx *c, int x, int y, unsigned coverage,
+                                    const float z[4], const float color[4]);
+void sg_store_blend_msaa4_post_depth(softgl_ctx *c, int x, int y, unsigned coverage,
+                                    const float z[4], const float color[4]);
+
 SG_INLINE uint32_t sg_store_quantize_rgba(const float color[4]) {
     sg_f32x4 value = sg_f32x4_load(color);
     value = sg_f32x4_select(sg_f32x4_lt(value, sg_f32x4_splat(0.f)), sg_f32x4_splat(0.f), value);
@@ -86,5 +108,15 @@ SG_INLINE void sg_store_opaque_msaa2(softgl_ctx *c, int x, int y, unsigned cover
     }
     _mm_storel_epi64((sg_i32x4 *)px, packed);
     if (c->depth_test && c->depth_mask) sg_hz_record_pixel2(c, x, y, coverage, depths);
+}
+SG_INLINE void sg_store_common_msaa2(softgl_ctx *c, int x, int y, unsigned coverage,
+                                      const float z[4], const float color[4]) {
+    if (c->blend) sg_store_blend_msaa2_post_depth(c, x, y, coverage, z, color);
+    else sg_store_opaque_msaa2(c, x, y, coverage, z, color);
+}
+SG_INLINE void sg_store_common_msaa4(softgl_ctx *c, int x, int y, unsigned coverage,
+                                      const float z[4], const float color[4]) {
+    if (c->blend) sg_store_blend_msaa4_post_depth(c, x, y, coverage, z, color);
+    else sg_store_opaque_msaa4(c, x, y, coverage, z, color);
 }
 #endif

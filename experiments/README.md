@@ -1,5 +1,17 @@
 # Optimization evidence
 
+The [common post-depth store architecture](post-depth-common-store/README.md)
+is retained as module `7cc38593`: BMW off frame time falls by 5.131%/5.432%,
+with all six pairs faster. BMW 2x changes -0.697%/-0.580% and 4x
+-0.095%/-0.669%, each with five faster and one slower pair; these smaller
+effects do not establish a strong all-mode gain. T-80 controls are mixed,
+including 4x +0.564%/-0.053% with four of six pairs slower. Eligibility is
+selected once per triangle, while supported blend stores consume already
+tested depth masks. Exact blend arithmetic and general fallbacks are preserved.
+All eighteen pairs pass their first guard attempts; expanded store oracles,
+full regressions, both browser UI gates and canonical byte identity pass.
+Raw measurements, an independent six-file patch and portable verifier are public.
+
 [Fresh accepted-e7 profiles](accepted-e7-profiles/README.md) cover BMW and
 T-80 in all three modes with the unchanged production module. The BMW's
 general fragment writers remain visible in every mode, motivating a guarded
@@ -22,7 +34,7 @@ less frame time, with all six pairs faster; BMW 4x costs 1.640%/0.891%,
 with all six pairs slower. BMW 2x is mixed; T-80 2x costs 0.265%/0.939%
 with four of six pairs slower. Eighteen comparisons, nineteen quiet-guard
 attempts, full regression/browser/canonical gates and a separate five-counter
-consumption diagnostic are published. Canonical module `e7ea52b2` is
+consumption diagnostic are published. That trial's frozen module `e7ea52b2` is
 byte-identical to the timed candidate. The portable verifier recomputes
 all paired audits and checks every archived artifact hash.
 

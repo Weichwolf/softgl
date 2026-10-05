@@ -1,0 +1,23 @@
+{
+  "url": "http://127.0.0.1:8001/",
+  "browser": "154.0.8037.92",
+  "benchmark": "# scenes WASM benchmark @ 640x360 — SIMD=true, reported processors=9\n# userAgent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36\n# 3 runs of 20 frames per scene; warm-up excluded; min reported.\n# Browser yields between frames; each timed frame includes worker completion.\n\n# MSAA=off\nscene=showcase   ms=4.245 fps=235.5\nscene=shadow     ms=1.675 fps=597.2\nscene=particles  ms=2.649 fps=377.5\nscene=city       ms=2.502 fps=399.6\nscene=sphere_lit ms=0.508 fps=1969.5\nscene=bmw        ms=25.268 fps=39.6\n\n# MSAA=2x\nscene=showcase   ms=6.745 fps=148.3\nscene=shadow     ms=3.557 fps=281.1\nscene=particles  ms=2.845 fps=351.4\nscene=city       ms=3.508 fps=285.1\nscene=sphere_lit ms=1.457 fps=686.3\nscene=bmw        ms=28.994 fps=34.5\n\n# MSAA=4x\nscene=showcase   ms=7.897 fps=126.6\nscene=shadow     ms=4.639 fps=215.6\nscene=particles  ms=3.830 fps=261.1\nscene=city       ms=3.823 fps=261.5\nscene=sphere_lit ms=1.970 fps=507.7\nscene=bmw        ms=32.448 fps=30.8\n\n\n# done. click \"Tank\" or \"Tests\" to resume.\n",
+  "heartbeat": 1304,
+  "reportedProcessors": 9,
+  "threads": "3 (tile workers + parallel vertex transform)",
+  "isolated": true,
+  "heartbeatDuringBenchmark": 995,
+  "displayedTests": 234,
+  "renderWorkers": 3,
+  "bmwScene": true,
+  "cancelledBenchmark": true,
+  "offlineGeometry": true,
+  "multisampleModes": [
+    0,
+    2,
+    4
+  ],
+  "wasmSha256": "7cc38593ef399417a3ab4497dae40a162f9ae9550ad2181140d5d0f3c8df3b77",
+  "errors": [],
+  "passed": true
+}

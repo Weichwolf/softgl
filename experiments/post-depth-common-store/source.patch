@@ -1,0 +1,548 @@
+--- a/libsoftgl/src/raster_store.h
++++ b/libsoftgl/src/raster_store.h
+@@ -26,6 +26,28 @@
+            (!c->multisample || (!c->sample_alpha_to_coverage &&
+                                 !c->sample_alpha_to_one && !c->sample_coverage));
+ }
++
++/* Common state is selected once per triangle. Coverage and depth already
++ * passed; special fragment operations keep the complete ordered writer. */
++SG_INLINE int sg_can_store_common(const softgl_ctx *c, int samples) {
++    return c->fb.samples == samples && !c->alpha_test && !c->stencil_test &&
++           !c->color_logic_op_enabled &&
++           !c->current_query[SG_QUERY_TARGET_SAMPLES_PASSED] &&
++           !c->current_query[SG_QUERY_TARGET_ANY_SAMPLES_PASSED] &&
++           c->color_mask[0] && c->color_mask[1] && c->color_mask[2] && c->color_mask[3] &&
++           (!c->blend || ((c->blend_src == GL_SRC_ALPHA || c->blend_src == GL_ONE) &&
++                         (c->blend_dst == GL_ONE || c->blend_dst == GL_ONE_MINUS_SRC_ALPHA))) &&
++           (!samples || !c->multisample || (!c->sample_alpha_to_coverage &&
++                                          !c->sample_alpha_to_one && !c->sample_coverage));
++}
++SG_INLINE int sg_can_store_common_msaa2(const softgl_ctx *c) { return sg_can_store_common(c, 2); }
++SG_INLINE int sg_can_store_common_msaa4(const softgl_ctx *c) { return sg_can_store_common(c, 4); }
++
++void sg_store_off_post_depth(softgl_ctx *c, int x, int y, float z, const float color[4]);
++void sg_store_blend_msaa2_post_depth(softgl_ctx *c, int x, int y, unsigned coverage,
++                                    const float z[4], const float color[4]);
++void sg_store_blend_msaa4_post_depth(softgl_ctx *c, int x, int y, unsigned coverage,
++                                    const float z[4], const float color[4]);
+ 
+ SG_INLINE uint32_t sg_store_quantize_rgba(const float color[4]) {
+     sg_f32x4 value = sg_f32x4_load(color);
+@@ -87,4 +109,14 @@
+     _mm_storel_epi64((sg_i32x4 *)px, packed);
+     if (c->depth_test && c->depth_mask) sg_hz_record_pixel2(c, x, y, coverage, depths);
+ }
++SG_INLINE void sg_store_common_msaa2(softgl_ctx *c, int x, int y, unsigned coverage,
++                                      const float z[4], const float color[4]) {
++    if (c->blend) sg_store_blend_msaa2_post_depth(c, x, y, coverage, z, color);
++    else sg_store_opaque_msaa2(c, x, y, coverage, z, color);
++}
++SG_INLINE void sg_store_common_msaa4(softgl_ctx *c, int x, int y, unsigned coverage,
++                                      const float z[4], const float color[4]) {
++    if (c->blend) sg_store_blend_msaa4_post_depth(c, x, y, coverage, z, color);
++    else sg_store_opaque_msaa4(c, x, y, coverage, z, color);
++}
+ #endif
+--- a/libsoftgl/src/raster_triangle_impl.h
++++ b/libsoftgl/src/raster_triangle_impl.h
+@@ -133,6 +133,7 @@
+ 
+     int use_simd_quad = !sg_quad_needs_scalar(c, tctx);
+     int use_packet = tctx->combine_kind && sg_packet_supported(c, tctx);
++    int common_store = use_packet && sg_can_store_common(c, 0);
+ 
+ #if SG_RASTER_OFF_CAPTURE
+     int coverage_seen = 0, weak_seen = 0;
+@@ -253,9 +254,12 @@
+                         cov = sg_shade_packet(c, tctx, v0, v1, v2, edges0, edges1,
+                                               inv_area_f, cov, colors);
+                         for (int l = 0; l < 4; l++) {
+-                            if (cov & (1u << l))
+-                                sg_write_fragment(c, ix + (l & 1), iy + (l >> 1), depths[l],
+-                                                  colors[l][0], colors[l][1], colors[l][2], colors[l][3]);
++                            if (cov & (1u << l)) {
++                                if (common_store)
++                                    sg_store_off_post_depth(c, ix + (l & 1), iy + (l >> 1), depths[l], colors[l]);
++                                else sg_write_fragment(c, ix + (l & 1), iy + (l >> 1), depths[l],
++                                                       colors[l][0], colors[l][1], colors[l][2], colors[l][3]);
++                            }
+                         }
+                     }
+                 } else {
+--- a/libsoftgl/src/fragment_write.c
++++ b/libsoftgl/src/fragment_write.c
+@@ -259,14 +259,16 @@
+ #endif
+ 
+ SG_INLINE void sg_write_msaa2_fast(softgl_ctx *c, int x, int y, unsigned coverage,
+-                         const float z[4], const float color[4], float alpha, size_t first) {
++                         const float z[4], const float color[4], float alpha, size_t first, int test_depth) {
+     sg_i32x4 mask = sg_mask4_expand(coverage & 3u);
+-    if (c->depth_test) {
++    if (c->depth_test && (test_depth || c->depth_mask)) {
+         sg_f32x4 zv = _mm_castsi128_ps(_mm_loadl_epi64((const sg_i32x4 *)z));
+         sg_f32x4 old_depth = _mm_castsi128_ps(_mm_loadl_epi64((const sg_i32x4 *)&c->fb.sample_depth[first]));
+-        mask = sg_i32x4_and(mask, sg_sample_depth_mask(c->depth_func, zv, old_depth));
+-        coverage = sg_mask4_live(mask);
+-        if (!coverage) return;
++        if (test_depth) {
++            mask = sg_i32x4_and(mask, sg_sample_depth_mask(c->depth_func, zv, old_depth));
++            coverage = sg_mask4_live(mask);
++            if (!coverage) return;
++        }
+         if (c->depth_mask) {
+             _mm_storel_epi64((sg_i32x4 *)&c->fb.sample_depth[first],
+                 _mm_castps_si128(sg_f32x4_select(mask, zv, old_depth)));
+@@ -301,6 +303,52 @@
+     }
+     _mm_storel_epi64((sg_i32x4 *)px, packed);
+     return;
++}
++
++SG_INLINE void sg_write_msaa4_fast(softgl_ctx *c, int x, int y, unsigned coverage,
++                         const float z[4], const float color[4], float alpha,
++                         size_t first, int test_depth) {
++    sg_i32x4 mask = sg_mask4_expand(coverage);
++    if (c->depth_test && (test_depth || c->depth_mask)) {
++        sg_f32x4 zv = _mm_loadu_ps(z);
++        sg_f32x4 old_depth = _mm_loadu_ps(&c->fb.sample_depth[first]);
++        if (test_depth) {
++            mask = sg_i32x4_and(mask, sg_sample_depth_mask(c->depth_func, zv, old_depth));
++            coverage = sg_mask4_live(mask);
++            if (!coverage) return;
++        }
++        if (c->depth_mask) {
++            _mm_storeu_ps(&c->fb.sample_depth[first], sg_f32x4_select(mask, zv, old_depth));
++            sg_hz_record_pixel4(c, x, y, coverage, z);
++        }
++    } else if (!coverage) return;
++    uint8_t *px = &c->fb.sample_color[first * 4];
++    sg_i32x4 packed;
++    if (c->blend) {
++        sg_i32x4 old_color = _mm_loadu_si128((const __m128i*)px);
++        float sf = c->blend_src == GL_SRC_ALPHA ? alpha : 1.f;
++        float df = c->blend_dst == GL_ONE ? 1.f : 1.f - alpha;
++        if (c->blend_dst != GL_ONE ||
++            !sg_blend_additive_msaa4_bytes(color, alpha, sf, old_color, &packed)) {
++            sg_i32x4 r = sg_blend_sample_channel(color[0], old_color, 0, sf, df);
++            sg_i32x4 g = sg_blend_sample_channel(color[1], old_color, 8, sf, df);
++            sg_i32x4 b = sg_blend_sample_channel(color[2], old_color, 16, sf, df);
++            sg_i32x4 a = sg_blend_sample_channel(alpha, old_color, 24, sf, df);
++            packed = _mm_or_si128(_mm_or_si128(r, _mm_slli_epi32(g, 8)),
++                                 _mm_or_si128(_mm_slli_epi32(b, 16), _mm_slli_epi32(a, 24)));
++        }
++    } else {
++        uint32_t rgba = (uint32_t)sg_quantize(color[0]) |
++                        ((uint32_t)sg_quantize(color[1]) << 8) |
++                        ((uint32_t)sg_quantize(color[2]) << 16) |
++                        ((uint32_t)sg_quantize(alpha) << 24);
++        packed = sg_i32x4_splat((int32_t)rgba);
++    }
++    if (coverage != 15) {
++        sg_i32x4 old_color = _mm_loadu_si128((const __m128i*)px);
++        packed = _mm_or_si128(_mm_and_si128(mask, packed), _mm_andnot_si128(mask, old_color));
++    }
++    _mm_storeu_si128((__m128i*)px, packed);
+ }
+ 
+ /* Retain a separate two-sample root; the four-sample writer keeps its
+@@ -331,7 +379,7 @@
+         c->color_mask[0] && c->color_mask[1] && c->color_mask[2] && c->color_mask[3] &&
+         (!c->blend || ((c->blend_src == GL_SRC_ALPHA || c->blend_src == GL_ONE) &&
+                        (c->blend_dst == GL_ONE || c->blend_dst == GL_ONE_MINUS_SRC_ALPHA)))) {
+-        sg_write_msaa2_fast(c, x, y, coverage, z, color, alpha, first);
++        sg_write_msaa2_fast(c, x, y, coverage, z, color, alpha, first, 1);
+         return;
+     }
+     for (int s = 0; s < n; s++) {
+@@ -366,45 +414,7 @@
+         c->color_mask[0] && c->color_mask[1] && c->color_mask[2] && c->color_mask[3] &&
+         (!c->blend || ((c->blend_src == GL_SRC_ALPHA || c->blend_src == GL_ONE) &&
+                        (c->blend_dst == GL_ONE || c->blend_dst == GL_ONE_MINUS_SRC_ALPHA)))) {
+-        sg_i32x4 mask = sg_mask4_expand(coverage);
+-        if (c->depth_test) {
+-            sg_f32x4 zv = _mm_loadu_ps(z);
+-            sg_f32x4 old_depth = _mm_loadu_ps(&c->fb.sample_depth[first]);
+-            mask = sg_i32x4_and(mask, sg_sample_depth_mask(c->depth_func, zv, old_depth));
+-            coverage = sg_mask4_live(mask);
+-            if (!coverage) return;
+-            if (c->depth_mask) {
+-                _mm_storeu_ps(&c->fb.sample_depth[first], sg_f32x4_select(mask, zv, old_depth));
+-                sg_hz_record_pixel4(c, x, y, coverage, z);
+-            }
+-        } else if (!coverage) return;
+-        uint8_t *px = &c->fb.sample_color[first * 4];
+-        sg_i32x4 packed;
+-        if (c->blend) {
+-            sg_i32x4 old_color = _mm_loadu_si128((const __m128i*)px);
+-            float sf = c->blend_src == GL_SRC_ALPHA ? alpha : 1.f;
+-            float df = c->blend_dst == GL_ONE ? 1.f : 1.f - alpha;
+-            if (c->blend_dst != GL_ONE ||
+-                !sg_blend_additive_msaa4_bytes(color, alpha, sf, old_color, &packed)) {
+-                sg_i32x4 r = sg_blend_sample_channel(color[0], old_color, 0, sf, df);
+-                sg_i32x4 g = sg_blend_sample_channel(color[1], old_color, 8, sf, df);
+-                sg_i32x4 b = sg_blend_sample_channel(color[2], old_color, 16, sf, df);
+-                sg_i32x4 a = sg_blend_sample_channel(alpha, old_color, 24, sf, df);
+-                packed = _mm_or_si128(_mm_or_si128(r, _mm_slli_epi32(g, 8)),
+-                                     _mm_or_si128(_mm_slli_epi32(b, 16), _mm_slli_epi32(a, 24)));
+-            }
+-        } else {
+-            uint32_t rgba = (uint32_t)sg_quantize(color[0]) |
+-                            ((uint32_t)sg_quantize(color[1]) << 8) |
+-                            ((uint32_t)sg_quantize(color[2]) << 16) |
+-                            ((uint32_t)sg_quantize(alpha) << 24);
+-            packed = sg_i32x4_splat((int32_t)rgba);
+-        }
+-        if (coverage != 15) {
+-            sg_i32x4 old_color = _mm_loadu_si128((const __m128i*)px);
+-            packed = _mm_or_si128(_mm_and_si128(mask, packed), _mm_andnot_si128(mask, old_color));
+-        }
+-        _mm_storeu_si128((__m128i*)px, packed);
++        sg_write_msaa4_fast(c, x, y, coverage, z, color, alpha, first, 1);
+         return;
+     }
+     for (int s = 0; s < n; s++) {
+@@ -426,3 +436,47 @@
+     sg_write_sample(c, (size_t)y * c->fb.w + x, c->fb.color, c->fb.depth,
+                      c->fb.stencil, z, r, g, b, a, 0);
+ }
++
++/* Triangle state and bounds are checked by raster_store.h; coverage is post-Z.
++ * Separate roots share exactly the ordinary writer's blend arithmetic. */
++#ifdef __EMSCRIPTEN__
++__attribute__((used, noinline))
++#endif
++void sg_store_blend_msaa2_post_depth(softgl_ctx *c, int x, int y, unsigned coverage,
++                                    const float z[4], const float color[4]) {
++    size_t first = ((size_t)y * c->fb.w + x) * 2;
++    sg_write_msaa2_fast(c, x, y, coverage, z, color, color[3], first, 0);
++}
++
++#ifdef __EMSCRIPTEN__
++__attribute__((used, noinline))
++#endif
++void sg_store_blend_msaa4_post_depth(softgl_ctx *c, int x, int y, unsigned coverage,
++                                    const float z[4], const float color[4]) {
++    size_t first = ((size_t)y * c->fb.w + x) * 4;
++    sg_write_msaa4_fast(c, x, y, coverage, z, color, color[3], first, 0);
++}
++
++#ifdef __EMSCRIPTEN__
++__attribute__((used, noinline))
++#endif
++void sg_store_off_post_depth(softgl_ctx *c, int x, int y, float z,
++                             const float color[4]) {
++    size_t pixel = (size_t)y * c->fb.w + x;
++    if (c->depth_test && c->depth_mask) c->fb.depth[pixel] = z;
++    sg_f32x4 source = sg_f32x4_load(color);
++    if (c->blend) {
++        uint32_t old;
++        memcpy(&old, c->fb.color + pixel * 4, sizeof(old));
++        sg_i32x4 bytes = _mm_cvtepu8_epi32(_mm_cvtsi32_si128((int32_t)old));
++        sg_f32x4 destination = sg_f32x4_mul(_mm_cvtepi32_ps(bytes), sg_f32x4_splat(1.f / 255.f));
++        float sf = c->blend_src == GL_SRC_ALPHA ? color[3] : 1.f;
++        float df = c->blend_dst == GL_ONE ? 1.f : 1.f - color[3];
++        source = sg_f32x4_add(sg_f32x4_mul(source, sg_f32x4_splat(sf)),
++                              sg_f32x4_mul(destination, sg_f32x4_splat(df)));
++    }
++    sg_i32x4 quantized = sg_quantize_samples(source);
++    sg_i32x4 words = _mm_packus_epi32(quantized, quantized);
++    uint32_t packed = (uint32_t)_mm_cvtsi128_si32(_mm_packus_epi16(words, words));
++    memcpy(c->fb.color + pixel * 4, &packed, sizeof(packed));
++}
+--- a/libsoftgl/src/raster_msaa_impl.h
++++ b/libsoftgl/src/raster_msaa_impl.h
+@@ -116,7 +116,7 @@
+ #endif
+     }
+     int packet_shader = sg_packet_supported(c, tctx);
+-    int opaque_store = SG_MSAA_OPAQUE_CAN(c);
++    int common_store = SG_MSAA_COMMON_CAN(c);
+     sg_pixel_packet packet;
+     packet.count = 0;
+     /* Approximate intersections propose bounds only. Exact integer edge
+@@ -286,14 +286,14 @@
+                     packet.edge0[l] = e0; packet.edge1[l] = e1;
+                     memcpy(packet.depths[l], depths, SG_MSAA_SAMPLES * sizeof(float));
+                     if (packet.count == 4) {
+-                        SG_MSAA_PACKET_WRITE(c, tctx, v0, v1, v2, &packet, inv_area, opaque_store);
++                        SG_MSAA_PACKET_WRITE(c, tctx, v0, v1, v2, &packet, inv_area, common_store);
+                         packet.count = 0;
+                     }
+                 } else {
+                     float color[4];
+                     if (sg_shade_pixel(c, tctx, v0, v1, v2, x, y, e0, e1,
+                                       inv_area, v0->ndc.w, v1->ndc.w, v2->ndc.w, z_offset, color)) {
+-                        if (opaque_store) SG_MSAA_OPAQUE_STORE(c, x, y, coverage, depths, color);
++                        if (common_store) SG_MSAA_COMMON_STORE(c, x, y, coverage, depths, color);
+                         else sg_write_multisample(c, x, y, coverage, depths, color);
+                     }
+                 }
+@@ -308,8 +308,8 @@
+         if (sg_shade_pixel(c, tctx, v0, v1, v2, packet.x[l], packet.y[l],
+                           packet.edge0[l], packet.edge1[l], inv_area,
+                           v0->ndc.w, v1->ndc.w, v2->ndc.w, z_offset, color)) {
+-            if (opaque_store)
+-                SG_MSAA_OPAQUE_STORE(c, packet.x[l], packet.y[l], packet.coverage[l], packet.depths[l], color);
++            if (common_store)
++                SG_MSAA_COMMON_STORE(c, packet.x[l], packet.y[l], packet.coverage[l], packet.depths[l], color);
+             else sg_write_multisample(c, packet.x[l], packet.y[l], packet.coverage[l],
+                                      packet.depths[l], color);
+         }
+--- a/libsoftgl/src/rasterizer.c
++++ b/libsoftgl/src/rasterizer.c
+@@ -668,14 +668,14 @@
+ 
+ SG_INLINE void sg_write_pixel_packet(softgl_ctx *c, const sg_tex_tri_ctx *t,
+                                       const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
+-                                      const sg_pixel_packet *p, float inv_area, int opaque_store) {
++                                      const sg_pixel_packet *p, float inv_area, int common_store) {
+     float color[4][4];
+     unsigned live = sg_shade_packet(c, t, v0, v1, v2, p->edge0, p->edge1,
+                                     inv_area, 15u, color);
+     for (int l = 0; l < 4; l++) {
+         if (live & (1u << l)) {
+-            if (opaque_store)
+-                sg_store_opaque_msaa4(c, p->x[l], p->y[l], p->coverage[l], p->depths[l], color[l]);
++            if (common_store)
++                sg_store_common_msaa4(c, p->x[l], p->y[l], p->coverage[l], p->depths[l], color[l]);
+             else sg_write_multisample(c, p->x[l], p->y[l], p->coverage[l], p->depths[l], color[l]);
+         }
+     }
+@@ -683,21 +683,21 @@
+ 
+ SG_INLINE void sg_write_pixel_packet2(softgl_ctx *c, const sg_tex_tri_ctx *t,
+                                       const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
+-                                      const sg_pixel_packet *p, float inv_area, int opaque_store) {
++                                      const sg_pixel_packet *p, float inv_area, int common_store) {
+     float color[4][4];
+     unsigned live = sg_shade_packet(c, t, v0, v1, v2, p->edge0, p->edge1,
+                                     inv_area, 15u, color);
+     for (int l = 0; l < 4; l++) {
+         if (live & (1u << l)) {
+-            if (opaque_store)
+-                sg_store_opaque_msaa2(c, p->x[l], p->y[l], p->coverage[l], p->depths[l], color[l]);
++            if (common_store)
++                sg_store_common_msaa2(c, p->x[l], p->y[l], p->coverage[l], p->depths[l], color[l]);
+             else sg_write_multisample(c, p->x[l], p->y[l], p->coverage[l], p->depths[l], color[l]);
+         }
+     }
+ }
+ 
+-#define SG_MSAA_OPAQUE_CAN sg_can_store_opaque_msaa2
+-#define SG_MSAA_OPAQUE_STORE sg_store_opaque_msaa2
++#define SG_MSAA_COMMON_CAN sg_can_store_common_msaa2
++#define SG_MSAA_COMMON_STORE sg_store_common_msaa2
+ #define SG_MSAA_PACKET_WRITE sg_write_pixel_packet2
+ #define SG_MSAA_DEPTH_CAPTURE 0
+ #define SG_MSAA_SAMPLES 2
+@@ -713,12 +713,12 @@
+ #undef SG_MSAA_SAMPLES
+ #undef SG_MSAA_FUNCTION
+ #undef SG_MSAA_DEPTH_CAPTURE
+-#undef SG_MSAA_OPAQUE_CAN
+-#undef SG_MSAA_OPAQUE_STORE
++#undef SG_MSAA_COMMON_CAN
++#undef SG_MSAA_COMMON_STORE
+ #undef SG_MSAA_PACKET_WRITE
+ 
+-#define SG_MSAA_OPAQUE_CAN sg_can_store_opaque_msaa4
+-#define SG_MSAA_OPAQUE_STORE sg_store_opaque_msaa4
++#define SG_MSAA_COMMON_CAN sg_can_store_common_msaa4
++#define SG_MSAA_COMMON_STORE sg_store_common_msaa4
+ #define SG_MSAA_PACKET_WRITE sg_write_pixel_packet
+ #define SG_MSAA_DEPTH_CAPTURE 0
+ #define SG_MSAA_SAMPLES 4
+@@ -734,8 +734,8 @@
+ #undef SG_MSAA_SAMPLES
+ #undef SG_MSAA_FUNCTION
+ #undef SG_MSAA_DEPTH_CAPTURE
+-#undef SG_MSAA_OPAQUE_CAN
+-#undef SG_MSAA_OPAQUE_STORE
++#undef SG_MSAA_COMMON_CAN
++#undef SG_MSAA_COMMON_STORE
+ #undef SG_MSAA_PACKET_WRITE
+ 
+ /* Internal: rasterize v0,v1,v2 restricted to x in [tile_ix0, tile_ix1).
+--- a/tests/msaa_store.c
++++ b/tests/msaa_store.c
+@@ -3,6 +3,7 @@
+ #include "raster_store.h"
+ #include <stdio.h>
+ #include <math.h>
++extern void sg_write_fragment(softgl_ctx *, int, int, float, float, float, float, float);
+ 
+ #define CHECK(x) do { if (!(x)) { fprintf(stderr, "%d: %s\n", __LINE__, #x); return 1; } } while (0)
+ static uint32_t rng = 731;
+@@ -43,30 +44,40 @@
+     if (query) { glEndQuery(GL_SAMPLES_PASSED); glDeleteQueries(1, &id); }
+ }
+ static int can_store(const softgl_ctx *c, int samples) {
+-    return samples == 4 ? sg_can_store_opaque_msaa4(c) : sg_can_store_opaque_msaa2(c);
++    return sg_can_store_common(c, samples);
+ }
+ static void store(softgl_ctx *c, int samples, int x, int y, unsigned coverage,
+                     const float z[4], const float color[4]) {
+-    if (samples == 4) sg_store_opaque_msaa4(c, x, y, coverage, z, color);
+-    else sg_store_opaque_msaa2(c, x, y, coverage, z, color);
++    if (samples == 4) sg_store_common_msaa4(c, x, y, coverage, z, color);
++    else if (samples == 2) sg_store_common_msaa2(c, x, y, coverage, z, color);
++    else sg_store_off_post_depth(c, x, y, z[0], color);
+ }
+ static int check_context(int samples) {
+     softgl_ctx *c = softgl_create_multisample(9, 7, samples);
+     CHECK(c); softgl_make_current(c);
+     CHECK(can_store(c, samples));
+-    size_t pixel_bytes = (size_t)9 * 7 * samples * 4;
+-    size_t stencil_bytes = (size_t)9 * 7 * samples;
++    int count = samples ? samples : 1;
++    uint8_t *color_plane = samples ? c->fb.sample_color : c->fb.color;
++    float *depth_plane = samples ? c->fb.sample_depth : c->fb.depth;
++    uint8_t *stencil_plane = samples ? c->fb.sample_stencil : c->fb.stencil;
++    size_t pixel_bytes = (size_t)9 * 7 * count * 4;
++    size_t stencil_bytes = (size_t)9 * 7 * count;
+     uint8_t *original_color = malloc(pixel_bytes), *expected_color = malloc(pixel_bytes);
+     float *original_depth = malloc(pixel_bytes), *expected_depth = malloc(pixel_bytes);
+     uint8_t *original_stencil = malloc(stencil_bytes), *expected_stencil = malloc(stencil_bytes);
+     CHECK(original_color && expected_color && original_depth && expected_depth && original_stencil && expected_stencil);
+     const GLenum funcs[] = {GL_NEVER, GL_LESS, GL_EQUAL, GL_LEQUAL, GL_GREATER, GL_NOTEQUAL, GL_GEQUAL, GL_ALWAYS};
+     unsigned comparisons = 0;
++    for (int blend = 0; blend < 5; blend++)
+     for (int test = 0; test < 2; test++) for (int write = 0; write < 2; write++) {
++        c->blend = blend != 0;
++        c->blend_src = blend & 1 ? GL_SRC_ALPHA : GL_ONE;
++        c->blend_dst = blend <= 2 ? GL_ONE : GL_ONE_MINUS_SRC_ALPHA;
++        CHECK(can_store(c, samples));
+         c->depth_test = test; c->depth_mask = write;
+         for (int f = 0; f < 8; f++) {
+             c->depth_func = funcs[f];
+-            for (int n = 0; n < 2048; n++) {
++            for (int n = 0; n < (blend ? 256 : 2048); n++) {
+                 int x = n % 9, y = (n / 9) % 7;
+                 for (size_t i = 0; i < pixel_bytes; i++) original_color[i] = (uint8_t)bits();
+                 for (size_t i = 0; i < stencil_bytes; i++) {
+@@ -74,60 +85,87 @@
+                 }
+                 float z[4], color[4];
+                 for (int s = 0; s < 4; s++) {
+-                    z[s] = n & 1 ? value() : original_depth[((size_t)y * 9 + x) * samples + s % samples];
++                    z[s] = n & 1 ? value() : original_depth[((size_t)y * 9 + x) * count + s % count];
+                     color[s] = value() * 4.f - 1.f;
+                 }
+-                unsigned coverage = (unsigned)n & ((1u << samples) - 1u), passed = coverage;
+-                if (test) for (int s = 0; s < samples; s++)
+-                    if (!depth_pass(funcs[f], z[s], original_depth[((size_t)y * 9 + x) * samples + s % samples]))
++                unsigned coverage = (unsigned)n & ((1u << count) - 1u), passed = coverage;
++                if (test) for (int s = 0; s < count; s++)
++                    if (!depth_pass(funcs[f], z[s], original_depth[((size_t)y * 9 + x) * count + s % count]))
+                         passed &= ~(1u << s);
+-                memcpy(c->fb.sample_color, original_color, pixel_bytes);
+-                memcpy(c->fb.sample_depth, original_depth, pixel_bytes);
+-                memcpy(c->fb.sample_stencil, original_stencil, stencil_bytes);
+-                sg_write_multisample(c, x, y, coverage, z, color);
+-                memcpy(expected_color, c->fb.sample_color, pixel_bytes);
+-                memcpy(expected_depth, c->fb.sample_depth, pixel_bytes);
+-                memcpy(expected_stencil, c->fb.sample_stencil, stencil_bytes);
+-                memcpy(c->fb.sample_color, original_color, pixel_bytes);
+-                memcpy(c->fb.sample_depth, original_depth, pixel_bytes);
+-                memcpy(c->fb.sample_stencil, original_stencil, stencil_bytes);
++                memcpy(color_plane, original_color, pixel_bytes);
++                memcpy(depth_plane, original_depth, pixel_bytes);
++                memcpy(stencil_plane, original_stencil, stencil_bytes);
++                if (samples) sg_write_multisample(c, x, y, coverage, z, color);
++                else if (coverage) sg_write_fragment(c, x, y, z[0], color[0], color[1], color[2], color[3]);
++                memcpy(expected_color, color_plane, pixel_bytes);
++                memcpy(expected_depth, depth_plane, pixel_bytes);
++                memcpy(expected_stencil, stencil_plane, stencil_bytes);
++                memcpy(color_plane, original_color, pixel_bytes);
++                memcpy(depth_plane, original_depth, pixel_bytes);
++                memcpy(stencil_plane, original_stencil, stencil_bytes);
+                 if (passed) store(c, samples, x, y, passed, z, color);
+-                CHECK(!memcmp(c->fb.sample_color, expected_color, pixel_bytes));
+-                CHECK(!memcmp(c->fb.sample_depth, expected_depth, pixel_bytes));
+-                CHECK(!memcmp(c->fb.sample_stencil, expected_stencil, stencil_bytes));
++                CHECK(!memcmp(color_plane, expected_color, pixel_bytes));
++                CHECK(!memcmp(depth_plane, expected_depth, pixel_bytes));
++                CHECK(!memcmp(stencil_plane, expected_stencil, stencil_bytes));
+                 comparisons++;
+             }
+         }
+     }
+     c->alpha_test = 1; CHECK(!can_store(c, samples)); c->alpha_test = 0;
+     c->stencil_test = 1; CHECK(!can_store(c, samples)); c->stencil_test = 0;
+-    c->blend = 1; CHECK(!can_store(c, samples)); c->blend = 0;
++    c->blend = 1; c->blend_src = GL_DST_COLOR; CHECK(!can_store(c, samples));
++    c->blend_src = GL_SRC_ALPHA; c->blend_dst = GL_ZERO; CHECK(!can_store(c, samples));
++    c->blend = 0;
+     c->color_logic_op_enabled = 1; CHECK(!can_store(c, samples)); c->color_logic_op_enabled = 0;
+     c->current_query[0] = 1; CHECK(!can_store(c, samples)); c->current_query[0] = 0;
+     c->current_query[1] = 1; CHECK(!can_store(c, samples)); c->current_query[1] = 0;
+     for (int k = 0; k < 4; k++) {
+         c->color_mask[k] = 0; CHECK(!can_store(c, samples)); c->color_mask[k] = 1;
+     }
+-    c->sample_coverage = 1; CHECK(!can_store(c, samples)); c->sample_coverage = 0;
+-    c->sample_alpha_to_coverage = 1; CHECK(!can_store(c, samples)); c->sample_alpha_to_coverage = 0;
+-    c->sample_alpha_to_one = 1; CHECK(!can_store(c, samples)); c->sample_alpha_to_one = 0;
++    c->sample_coverage = 1; CHECK(can_store(c, samples) == !samples); c->sample_coverage = 0;
++    c->sample_alpha_to_coverage = 1; CHECK(can_store(c, samples) == !samples); c->sample_alpha_to_coverage = 0;
++    c->sample_alpha_to_one = 1; CHECK(can_store(c, samples) == !samples); c->sample_alpha_to_one = 0;
+     c->fb.samples = samples == 4 ? 2 : 4; CHECK(!can_store(c, samples)); c->fb.samples = samples;
++    GLuint textures[4];
++    glGenTextures(4, textures);
++    const uint8_t white[4] = {255, 255, 255, 255};
++    const float constant[4] = {1, 1, 1, .7f};
++    for (int u = 0; u < 4; u++) {
++        glActiveTexture(GL_TEXTURE0 + u); glEnable(GL_TEXTURE_2D);
++        glBindTexture(GL_TEXTURE_2D, textures[u]);
++        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, white);
++        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
++        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
++        glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
++        glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, u ? GL_MODULATE : GL_DOT3_RGB);
++        glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_RGB, u ? GL_PREVIOUS : GL_TEXTURE);
++        glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE1_RGB, !u ? GL_PRIMARY_COLOR :
++                  u == 1 ? GL_PREVIOUS : u == 2 ? GL_TEXTURE : GL_CONSTANT);
++        glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_REPLACE);
++        glTexEnvi(GL_TEXTURE_ENV, GL_SOURCE0_ALPHA, GL_CONSTANT);
++        glTexEnvfv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_COLOR, constant);
++    }
++    for (int blend = 0; blend < 5; blend++)
+     for (int f = 0; f < 8; f++) for (int variant = 0; variant < 16; variant++) {
++        glBlendFunc(blend & 1 ? GL_SRC_ALPHA : GL_ONE,
++                    blend <= 2 ? GL_ONE : GL_ONE_MINUS_SRC_ALPHA);
++        if (blend) glEnable(GL_BLEND); else glDisable(GL_BLEND);
+         render_triangles(0, variant, funcs[f]);
+         softgl_read_rgba8(c);
+-        memcpy(expected_color, c->fb.sample_color, pixel_bytes);
+-        memcpy(expected_depth, c->fb.sample_depth, pixel_bytes);
+-        memcpy(expected_stencil, c->fb.sample_stencil, stencil_bytes);
++        memcpy(expected_color, color_plane, pixel_bytes);
++        memcpy(expected_depth, depth_plane, pixel_bytes);
++        memcpy(expected_stencil, stencil_plane, stencil_bytes);
+         render_triangles(1, variant, funcs[f]);
+         softgl_read_rgba8(c);
+-        CHECK(!memcmp(c->fb.sample_color, expected_color, pixel_bytes));
+-        CHECK(!memcmp(c->fb.sample_depth, expected_depth, pixel_bytes));
+-        CHECK(!memcmp(c->fb.sample_stencil, expected_stencil, stencil_bytes));
++        CHECK(!memcmp(color_plane, expected_color, pixel_bytes));
++        CHECK(!memcmp(depth_plane, expected_depth, pixel_bytes));
++        CHECK(!memcmp(stencil_plane, expected_stencil, stencil_bytes));
+         CHECK(glGetError() == GL_NO_ERROR);
+     }
++    glDeleteTextures(4, textures);
+     free(original_color); free(expected_color); free(original_depth); free(expected_depth);
+     free(original_stencil); free(expected_stencil); softgl_destroy(c);
+-    printf("%dx: %u exact post-Z stores, 128 query-oracle frames and fallback states passed\n", samples, comparisons);
++    printf("%dx: %u exact post-Z stores, 640 DOT3 query-oracle frames and fallback states passed\n", samples, comparisons);
+     return 0;
+ }
+ int sg_store_contract(void) {
+@@ -145,6 +183,7 @@
+         }
+         CHECK(sg_store_quantize_rgba(color) == expected);
+     }
++    CHECK(!check_context(0));
+     CHECK(!check_context(2));
+     CHECK(!check_context(4));
+     puts("262144 exact RGBA quantizations passed");

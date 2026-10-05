@@ -1,0 +1,243 @@
+{
+  "status": "retained-all-gates-verified-publication-ready",
+  "researchBaselineCommit": "74a6b6c4d0fa1593d12c08444515a49f38dbbed2",
+  "referenceWasmSha256": "e7ea52b2583d0f66c98ad1fd4e1de8566bccd56beffb04443edce6c11a89595e",
+  "hypothesis": "Select common post-depth packet stores once per triangle in all modes; keep existing blend arithmetic, ordering and state fallbacks. No rendering precision, assets or tolerance changes.",
+  "predeclaredTimings": {
+    "pairs": 18,
+    "auditsEachMode": 2,
+    "samples": [
+      0,
+      2,
+      4
+    ],
+    "scenes": [
+      "bmw",
+      "tank"
+    ],
+    "warmup": 80,
+    "frames": 100,
+    "rounds": 2,
+    "workers": 3,
+    "reference": "build/controls/depth-replay-off-bound-candidate",
+    "candidate": "build/controls/post-depth-common-store-candidate"
+  },
+  "changedFiles": [
+    "libsoftgl/src/raster_store.h",
+    "libsoftgl/src/raster_triangle_impl.h",
+    "libsoftgl/src/fragment_write.c",
+    "libsoftgl/src/raster_msaa_impl.h",
+    "libsoftgl/src/rasterizer.c",
+    "tests/msaa_store.c"
+  ],
+  "profiles": "experiments/accepted-e7-profiles/results.json",
+  "candidateWasmSha256": "7cc38593ef399417a3ab4497dae40a162f9ae9550ad2181140d5d0f3c8df3b77",
+  "candidateJsSha256": "c1a7d9afda1a934b28d0608f32270e8928d35b67d1b570b52bc0623257770ada",
+  "patchSha256": "0f3fde64c22e374f32830fdbc12508e00cdfa0b068909226e78885b675ce56b2",
+  "productionSources": {
+    "libsoftgl/src/api.c": "76578a3b458c8943efbd94910bdffb3060dadf40c6942ce65adda97f3f45d5db",
+    "libsoftgl/src/buffers.c": "a0363363f060dc9cbd99a64703496e1e702c2cf82beb42b16a54337b524be2ff",
+    "libsoftgl/src/clip.c": "f5c0b940f54a4aa52a2d55785de31d72c168d381b53012e408179f81381de3cc",
+    "libsoftgl/src/dlist.c": "e7446f33b3972e4384c103c2547869dfffad43c900e1f55bf6f8c38eaf36eae8",
+    "libsoftgl/src/dlist.h": "4bc8e0e5966f5b226c8e086ead9a635fd6158eed18b0c55e4b4c2ed0bdbda033",
+    "libsoftgl/src/evaluators.c": "69281ca9f25e0f7d5cc1f76f31fb17502c83b60ea6168bbbae238e65227344ba",
+    "libsoftgl/src/frag_combine_hot.h": "e801062d6fe0ce8ade5f12730ba4cb1441689ba6bd39a331a308bc99e29f72cc",
+    "libsoftgl/src/frag_hot.h": "e0e1cba7afec1b2c13a53a8198207d868fa0636a84ee98e059f238d131dca52e",
+    "libsoftgl/src/frag_packet.h": "217cd6bfcae38b7c2428077bc4c1e772ca178d82498a21d963c0cc86061c4dc6",
+    "libsoftgl/src/fragment.c": "01d88705e22b03c3cf3d8b16abfca9a70e97f35b5206023376daca9ba2a9881c",
+    "libsoftgl/src/fragment_combine.c": "b7af7972265bf0ac384379fcba6885e93707cdd8a0de956f691ad28ed1dd7153",
+    "libsoftgl/src/fragment_write.c": "6c806d57d87ff4ed31ecdf502be6f77772497696a607633edf71c9971da66f1d",
+    "libsoftgl/src/framebuffer.c": "7c82e1f52d5b2c2e7d9752d155f379109a8791c41b147713cfb14f2788e1a974",
+    "libsoftgl/src/immediate.c": "80b520a3c3c14e675eeca5d3083c5dbe423e9684a69b868446f85e99ef86534c",
+    "libsoftgl/src/lighting.c": "1e6db9b4f59e2a54b1f6b89e6bc129d206dc816aaa08f099d80e6f8f2f42e338",
+    "libsoftgl/src/lines.c": "b08fef911685977a08d6f2b29265aa28721aa0497a1a208c492403bdde0bbe87",
+    "libsoftgl/src/matrix.c": "fd5bff0e263cd87d1032fad4fa75f966f76b2cc605b746d47e3d4eeabde6d793",
+    "libsoftgl/src/msaa_additive.h": "6fab4198defe4db18a83f1562034807e71957ba07db0c0bd51f2e26c90d4778f",
+    "libsoftgl/src/multisample.c": "2ba7fe2df9c8afed9acf1daa5ea48df6fbe8b5c0cceeac11bd61c3804423ea1d",
+    "libsoftgl/src/multisample.h": "cdbe1e0aa51827f13789ce7f46e3acc961e0b87c5d034e1c7ba22fe54c611315",
+    "libsoftgl/src/pipeline.c": "cda2d9d0fb96dd415e433c19e6f3e08909444a8cf0b890f8e3bf69443a92f931",
+    "libsoftgl/src/pixels.c": "8e366864ac1418564d2342bd3c120ad5e8057998af21ff31ccb5663134ddfc92",
+    "libsoftgl/src/raster_hz.h": "1cc4a6fe6f5a425607cb3b8a57d15cb19d5de537794c638b673f0bd4a14b4ed6",
+    "libsoftgl/src/raster_msaa_impl.h": "a9048bd2e89e96d87f407d17471e50c48d35c187aa20719b5e6af3d1d026eeec",
+    "libsoftgl/src/raster_store.h": "251cbe4d9765edfc26b4428d7d5906ab17722689feae08eac432db59a7b22934",
+    "libsoftgl/src/raster_triangle_impl.h": "2a78075d138dd00d6d95c92adc922de9e11bc316cb5a3b03f3739974492ca24f",
+    "libsoftgl/src/raster_types.h": "0b050bdbf31f6c398366112c84a6041390a50398d1e18acafe4c7440a0700f45",
+    "libsoftgl/src/raster_vertex_pack.h": "956a8084b973144a9d8ee28c0d485214e3e8551a7384238f610620e00ad6e528",
+    "libsoftgl/src/rasterizer.c": "c3d77d9b13e06cb5bc35a1639a81146f5ad252aaffc8f3d290b7723d06235700",
+    "libsoftgl/src/simd.h": "44b532f4427f3e76886228dfe96024adf3ba1c1c748c7031d2fff2413db9c608",
+    "libsoftgl/src/state.c": "bffa3243dffdbef27ddc90c7ad6f2394d393f0dc47bf1d3797b2b5b63e8a875c",
+    "libsoftgl/src/texture.c": "9c4d999c73b68a7431bd1f0e88c2d3d2e7e1931670ad166ffee535f8d5764c45",
+    "libsoftgl/src/types.h": "c90361869e5600b1e3164ca31ba87c6af31a659e2f888456d90d6de6bea52fe1",
+    "libsoftgl/src/vertex_inputs.h": "fb774a51f4627b91dd6d58fc2cb918df04ef224d45cd898dfa1ed5dd9a0b0db5",
+    "libsoftgl/src/workers.c": "958a3bb4425b91c544da8f4fc2116fc46f04ee9a784909d8e69909479c773417",
+    "libsoftgl/src/workers.h": "c8001b8eceae3191ab3e94e962e95eab8f28e7bef86ce4455e97e49541a0313b",
+    "libsoftgl/src/workers_queue_raw.inc": "a8150d0d9498ba164b0606945f7cb216749536c5a0b53dfe1ff03bec0e0bbbfe"
+  },
+  "objects": {
+    "build/diagnostics/post-depth-common-store/objects/api.c.o": "b770bb926db2248c564b1dfdef7600a09275e2b4f729beb67f7a7ae11d9900f5",
+    "build/diagnostics/post-depth-common-store/objects/buffers.c.o": "198f1f87b6ef7555c45cde2ec5fe17a9285e7386103535e7dc7030e981dd0d28",
+    "build/diagnostics/post-depth-common-store/objects/clip.c.o": "326abb30c6ab66776550f92ff118bfb31d1e4d2c831bc99a6d303985dcdebd1e",
+    "build/diagnostics/post-depth-common-store/objects/dlist.c.o": "5eb1d922b3b9e92d66f761acb7006724269a88afe4a9794b6f0533dd4e3da219",
+    "build/diagnostics/post-depth-common-store/objects/evaluators.c.o": "6b07003029152337999698f57915c575562bce186d1b982fd96c70764f0c8ae3",
+    "build/diagnostics/post-depth-common-store/objects/fragment.c.o": "73854606d29443d00ba22cab9030917bddacbfaf7f4685e349eeee10e9734864",
+    "build/diagnostics/post-depth-common-store/objects/fragment_combine.c.o": "1404fd3cfc36063699614be1c94caa6bd2fff1c3a40dc666fa0b7877f6735f46",
+    "build/diagnostics/post-depth-common-store/objects/fragment_write.c.o": "f4aeb84de17e54e9e181b1455a739116df8ad42adb89c5af5c6d48b0739b26bf",
+    "build/diagnostics/post-depth-common-store/objects/framebuffer.c.o": "f1f6e46979adf21b249cbee112ef552a4ed116aad16530fe9f444c75b0ad0ea2",
+    "build/diagnostics/post-depth-common-store/objects/immediate.c.o": "77e0359671cd2ba2232753bef46c926ee26cc6b953ce8b2b46ac69ffcdd8c481",
+    "build/diagnostics/post-depth-common-store/objects/lighting.c.o": "5b832d3bca16afa792de05642a78bc6f4e79d01e64b09ff3d3ba58bda461d848",
+    "build/diagnostics/post-depth-common-store/objects/lines.c.o": "3550bdc5b8039e52b060b30101baa521525b93e3c3a40bdb14293095285261ec",
+    "build/diagnostics/post-depth-common-store/objects/matrix.c.o": "730aacd6a55b22393c5a7b01998f3fca8102cdd7210edd19aca550f72f312b18",
+    "build/diagnostics/post-depth-common-store/objects/multisample.c.o": "d3c01250bd1c61599325d49da3f062a932c30f73fbd27c75c3ad14788bfe9c42",
+    "build/diagnostics/post-depth-common-store/objects/pipeline.c.o": "8fdbe3daba602aa5edcf209d51287de2ea6b450394d8dcfc96f3077020908650",
+    "build/diagnostics/post-depth-common-store/objects/pixels.c.o": "4fe17f0cc61da97c2886fa295645bede5c0aa35edc02dfc2aa52b79c22105b32",
+    "build/diagnostics/post-depth-common-store/objects/rasterizer.c.o": "c605c5ff8067752fc7706c94d1b71cf9a3c0c17bdd048fbdcd6d7cb155201e1e",
+    "build/diagnostics/post-depth-common-store/objects/state.c.o": "ef4e65f2dc929960c2a749cf2728819a9cafc5a4041fa7d3abe44dec4c1983af",
+    "build/diagnostics/post-depth-common-store/objects/texture.c.o": "ebd621c5ed6626301678267f13d8e849e324917975a253dabeef83b9ea4d20ff",
+    "build/diagnostics/post-depth-common-store/objects/workers.c.o": "63e33cb6482fa7f652407e8067d30577860bd23e379a97befc0d9a9b9922859d"
+  },
+  "observerFixtures": {
+    "tests/msaa_store.c": "72385dc6034608defc7d56e2366cd60635851b7e37741328f788299e24ed79f2"
+  },
+  "nativeStoreContract": {
+    "postDepthStoresEachMode": 98304,
+    "actualDot3QueryScenesEachMode": 640,
+    "quantizations": 262144,
+    "logSha256": "d15b99ff3c306e5d68494c35f6b6e63d4fccbd15d14becf0a84f5c01600fcf3c"
+  },
+  "wasmStoreContract": {
+    "postDepthStoresEachMode": 98304,
+    "actualDot3QueryScenesEachMode": 640,
+    "quantizations": 262144,
+    "logSha256": "d15b99ff3c306e5d68494c35f6b6e63d4fccbd15d14becf0a84f5c01600fcf3c"
+  },
+  "independentSourcePatchVerified": true,
+  "focusedBuildSessions": {
+    "wasmBuild": {
+      "session": 76621,
+      "exitCode": 0
+    },
+    "native": {
+      "session": 65165,
+      "exitCode": 0
+    },
+    "wasmStore": {
+      "session": 58726,
+      "exitCode": 0
+    }
+  },
+  "codegen": {
+    "referenceWasmSha256": "e7ea52b2583d0f66c98ad1fd4e1de8566bccd56beffb04443edce6c11a89595e",
+    "candidateWasmSha256": "7cc38593ef399417a3ab4497dae40a162f9ae9550ad2181140d5d0f3c8df3b77",
+    "byteIdenticalRootBodies": [
+      "sg_write_fragment",
+      "sg_write_multisample",
+      "sg_write_multisample2"
+    ],
+    "nativeCostsMeasured": false,
+    "artifacts": {
+      "inspect-codegen.py": "9e6cca6de3aac15abb8279ac12ddef48d0766a9d8a39f5eefc5dec223b01c20c",
+      "reference-codegen.json": "e2a47438bab500256ef1494b76ade537923ee3f0d014724f56fcd18d1731295a",
+      "candidate-codegen.json": "5ddcfd205b4d551855619895d6420de0b747e219520983563b70dab8ca885b87",
+      "softgl.js.symbols": "9f26a3ef67eccbfb19658c9d18e87799db22e1c71b62d0a9522efcbfc5265ceb"
+    }
+  },
+  "fullGateProcess": {
+    "pid": 2040900,
+    "birthTicks": "22012443",
+    "state": "S",
+    "args": [
+      "python3",
+      "build/diagnostics/post-depth-common-store/run-gates.py"
+    ]
+  },
+  "fullGateSession": 28722,
+  "fullGateReceipts": [
+    {
+      "file": "native-full-tests.log",
+      "passed": 743,
+      "sha256": "de192e10a9894d42a38e73e8e568c3c3d9aa5f8b9d81323a3c50addf0fafec26"
+    },
+    {
+      "file": "native-full-bench.log",
+      "passed": 1,
+      "sha256": "a58fa59f1513c55c32c530f7f7d280acc23e9cb15298b8a4b54a768b7f55326c"
+    },
+    {
+      "file": "asan-full-tests.log",
+      "passed": 23,
+      "sha256": "107b7b82c8b58672f8697a4c26d571f7713889bc2305b532a9eeb2c7d718a508"
+    },
+    {
+      "file": "build/controls/post-depth-common-store-candidate/frame-equivalence-0.json",
+      "sha256": "562443e634c1b4a584c83940adafbefa6f2fafc67d100e3d2a77b3add9b9c80f",
+      "models": 2,
+      "hashes": 100,
+      "rawFrames": 4
+    },
+    {
+      "file": "build/controls/post-depth-common-store-candidate/frame-equivalence-2.json",
+      "sha256": "cb8fd283913568f5f5e426a741b0dd0e03d13826d0f10ec9a3e10d03f6ba0b5b",
+      "models": 2,
+      "hashes": 100,
+      "rawFrames": 4
+    },
+    {
+      "file": "build/controls/post-depth-common-store-candidate/frame-equivalence-4.json",
+      "sha256": "19fdd96e3f15007c2d39d510161874f696864adefb47232ac146f5eca86cdbe3",
+      "models": 2,
+      "hashes": 100,
+      "rawFrames": 4
+    }
+  ],
+  "regressions": {
+    "native": 743,
+    "benchmark": 1,
+    "asanUbsan": 23,
+    "mesaImages": 240,
+    "exactImagesEachMode": 234,
+    "modelHashesEachModeEachModel": 100,
+    "modelRawFramesEachModeEachModel": 4,
+    "wasmContracts": 22,
+    "offCaptureCasesEachEngine": 4608,
+    "msaaCaptureCasesEachEngine": 8192,
+    "queuedApiCasesEachEngine": 348,
+    "postDepthStoresEachModeEachEngine": 98304,
+    "actualDot3QueryScenesEachModeEachEngine": 640,
+    "quantizationsEachEngine": 262144
+  },
+  "nativeArchiveSha256": "4d1d839f0bbf2e5e53264a52e04baeb916085e517406c07c34b1846856984521",
+  "fullGateSessionExitCode": 0,
+  "timingProcess": {
+    "pid": 2064004,
+    "birthTicks": "22083348",
+    "state": "S",
+    "args": [
+      "python3",
+      "build/diagnostics/post-depth-common-store/compare-off.py",
+      "--reference",
+      "build/controls/depth-replay-off-bound-candidate",
+      "--candidate",
+      "build/controls/post-depth-common-store-candidate",
+      "--output-dir",
+      "build/perf/tigerlake-20261005",
+      "--label",
+      "post-depth-common-store",
+      "--off-audits",
+      "2"
+    ]
+  },
+  "timingSession": 77066,
+  "timingSessionExitCode": 0,
+  "timingResultSha256": "5cb5638a23516c331507d8c80cd660a220af9df274cdf57cf756871b1ac52e71",
+  "timingPairsVerified": 18,
+  "timingAttempts": 18,
+  "retentionDecision": "retained",
+  "decision": "Retained for the reproducible BMW off-mode frame-time reduction of 5.131%/5.432%, with all six pairs faster. BMW 2x changes -0.697%/-0.580% and 4x -0.095%/-0.669%, each with five faster and one slower pair; these are smaller effects, not a claim of a strong all-mode gain. T-80 controls are mixed: off -0.042%/-0.591% (four faster/two slower), 2x +0.397%/-0.187% (three/three), 4x +0.564%/-0.053% (two faster/four slower). The BMW priority justifies retaining the strong off gain with explicitly reported control-mode costs. Browser UI and canonical source rebuild/byte-identity gates must pass before publication and live deployment.",
+  "browserGateSession": 80821,
+  "browserGateExitCode": 0,
+  "bothBrowserUiRepeated": true,
+  "canonicalGateSession": 37808,
+  "canonicalGateExitCode": 0,
+  "canonicalJsWasmByteExact": true,
+  "acceptedProductionUnchanged": false
+}

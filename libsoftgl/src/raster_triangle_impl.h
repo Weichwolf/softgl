@@ -133,6 +133,7 @@ int SG_RASTER_TRI_FUNCTION(softgl_ctx *c,
 
     int use_simd_quad = !sg_quad_needs_scalar(c, tctx);
     int use_packet = tctx->combine_kind && sg_packet_supported(c, tctx);
+    int common_store = use_packet && sg_can_store_common(c, 0);
 
 #if SG_RASTER_OFF_CAPTURE
     int coverage_seen = 0, weak_seen = 0;
@@ -253,9 +254,12 @@ int SG_RASTER_TRI_FUNCTION(softgl_ctx *c,
                         cov = sg_shade_packet(c, tctx, v0, v1, v2, edges0, edges1,
                                               inv_area_f, cov, colors);
                         for (int l = 0; l < 4; l++) {
-                            if (cov & (1u << l))
-                                sg_write_fragment(c, ix + (l & 1), iy + (l >> 1), depths[l],
-                                                  colors[l][0], colors[l][1], colors[l][2], colors[l][3]);
+                            if (cov & (1u << l)) {
+                                if (common_store)
+                                    sg_store_off_post_depth(c, ix + (l & 1), iy + (l >> 1), depths[l], colors[l]);
+                                else sg_write_fragment(c, ix + (l & 1), iy + (l >> 1), depths[l],
+                                                       colors[l][0], colors[l][1], colors[l][2], colors[l][3]);
+                            }
                         }
                     }
                 } else {
