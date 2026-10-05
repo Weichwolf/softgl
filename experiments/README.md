@@ -1,5 +1,16 @@
 # Optimization evidence
 
+[Caller polling intervals](caller-wait-intervals/README.md) directly measure
+seven polling sites in eight categories, using a private diagnostic module.
+BMW explicit polling takes 2.243/1.979 ms per frame off, 0.968/0.963 ms at 2x,
+and 1.074/1.069 ms at 4x in two audits. Most BMW wait time has no claimable
+queue bin; T-80 mostly waits for async raster completion. All six first quiet
+guards and complete fidelity gates pass. Raw 1200-frame observations, counts,
+source patch, original producer recipes and a portable independent verifier
+are public. These wall intervals include preemption and observer effects;
+they do not establish removable frame cost or predict an FPS gain. Production
+remains accepted `7cc38593`. Investigate useful work and packet readiness next.
+
 [Scheduled CPU accounting](current-7cc-cpu-accounting/README.md) observes the
 unchanged `7cc38593` renderer in two guarded windows per scene/mode. BMW uses
 3.119–3.300 scheduled cores, T-80 2.668–2.778. The dominant renderer leader is
@@ -8,7 +19,7 @@ costs and lower occupancy. This includes stalls and polling, not just useful
 rendering. All twelve raw thread windows reproduce with matched births and no
 missing tasks. Methods, both failed selections and the corrected Chromium
 command matching are public; these diagnostics are not an acceptance speedup
-or a hardware-ceiling estimate. Caller waits need a direct measurement next.
+or a hardware-ceiling estimate. The caller interval diagnostic above now separates its explicit polling sites.
 
 The [immutable-bin common-store state trial](bin-store-state/README.md) is
 rejected: no BMW mode improves in both repeated audits. BMW frame time changes
