@@ -52,4 +52,5 @@
 | Neue SIMD-Scanline-Versuche / AB/BA-Paare / übernommen | 4 / 24 / 0 |
 | Viewer-Cubemap-Sharing / AB/BA-Paare / übernommen | 1 / 6 / 0 |
 | Tiefenebenen-/Dispatch-Versuche / AB/BA-Paare / übernommen | 3 / 18 / 0 |
+| Sample-Leerfilter-Versuche / AB/BA-Paare / übernommen | 2 / 12 / 0 |
 | Rohdaten / Nachweis | `build/perf/tigerlake-20261004/` / `build/diagnostics/msaa-cube-combined/` |
