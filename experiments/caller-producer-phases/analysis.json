@@ -1,0 +1,3968 @@
+{
+  "wasmSha256": "e083ac3642723e6e4468be3a8c3d3d85b49b649946eab3e575afa8fff67f8f6c",
+  "notAcceptanceTimings": true,
+  "observedFrames": 1200,
+  "records": [
+    {
+      "audit": 1,
+      "samples": 0,
+      "scene": "bmw",
+      "frames": 100,
+      "file": "producer-ms0-audit-1.json",
+      "frameElapsedMs": {
+        "mean": 26.88814999908209,
+        "median": 26.844999998807907,
+        "p95": 29.650000005960464,
+        "maximum": 35.53499999642372,
+        "minimum": 22.605000019073486
+      },
+      "producerElapsedMsPerFrame": {
+        "mean": 22.22786376953125,
+        "median": 22.196533203125,
+        "p95": 25.04150390625,
+        "maximum": 30.397216796875,
+        "minimum": 18.074462890625
+      },
+      "aggregateProducerWallFraction": 0.8266788072176802,
+      "phases": [
+        {
+          "name": "lookup",
+          "totalCalls": 4600,
+          "totalElapsedMs": 8.59814453125,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.0859814453125,
+            "median": 0.080810546875,
+            "p95": 0.119384765625,
+            "maximum": 0.140380859375,
+            "minimum": 0.050537109375
+          }
+        },
+        {
+          "name": "index_scan",
+          "totalCalls": 4600,
+          "totalElapsedMs": 106.821533203125,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 1.06821533203125,
+            "median": 1.0556640625,
+            "p95": 1.18603515625,
+            "maximum": 1.2294921875,
+            "minimum": 0.974365234375
+          }
+        },
+        {
+          "name": "normal_cache",
+          "totalCalls": 4600,
+          "totalElapsedMs": 3.134765625,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.03134765625,
+            "median": 0.0302734375,
+            "p95": 0.050048828125,
+            "maximum": 0.055419921875,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "compact_transform",
+          "totalCalls": 4600,
+          "totalElapsedMs": 396.173828125,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 3.96173828125,
+            "median": 3.8994140625,
+            "p95": 4.678466796875,
+            "maximum": 5.16552734375,
+            "minimum": 3.170166015625
+          }
+        },
+        {
+          "name": "triangle_prepare",
+          "totalCalls": 2700,
+          "totalElapsedMs": 240.654052734375,
+          "callsPerFrame": 27.0,
+          "elapsedMsPerFrame": {
+            "mean": 2.40654052734375,
+            "median": 2.400146484375,
+            "p95": 2.800537109375,
+            "maximum": 3.06005859375,
+            "minimum": 1.860107421875
+          }
+        },
+        {
+          "name": "triangle_emit",
+          "totalCalls": 2700,
+          "totalElapsedMs": 148.94384765625,
+          "callsPerFrame": 27.0,
+          "elapsedMsPerFrame": {
+            "mean": 1.4894384765625,
+            "median": 1.514404296875,
+            "p95": 1.75439453125,
+            "maximum": 1.905029296875,
+            "minimum": 1.17041015625
+          }
+        },
+        {
+          "name": "geometry_store",
+          "totalCalls": 2300,
+          "totalElapsedMs": 15.1396484375,
+          "callsPerFrame": 23.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.151396484375,
+            "median": 0.15478515625,
+            "p95": 0.18505859375,
+            "maximum": 0.209716796875,
+            "minimum": 0.11474609375
+          }
+        },
+        {
+          "name": "geometry_replay",
+          "totalCalls": 2300,
+          "totalElapsedMs": 19.148681640625,
+          "callsPerFrame": 23.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.19148681640625,
+            "median": 0.194580078125,
+            "p95": 0.235107421875,
+            "maximum": 0.26416015625,
+            "minimum": 0.125
+          }
+        },
+        {
+          "name": "stream_submit",
+          "totalCalls": 8200,
+          "totalElapsedMs": 1284.171875,
+          "callsPerFrame": 82.0,
+          "elapsedMsPerFrame": {
+            "mean": 12.84171875,
+            "median": 12.945556640625,
+            "p95": 15.769287109375,
+            "maximum": 19.7705078125,
+            "minimum": 8.71142578125
+          }
+        }
+      ],
+      "counters": [
+        {
+          "name": "parallel_draws",
+          "total": 4600,
+          "perFrame": {
+            "mean": 46.0,
+            "median": 46,
+            "p95": 46,
+            "maximum": 46,
+            "minimum": 46
+          }
+        },
+        {
+          "name": "geometry_hits",
+          "total": 2300,
+          "perFrame": {
+            "mean": 23.0,
+            "median": 23,
+            "p95": 23,
+            "maximum": 23,
+            "minimum": 23
+          }
+        },
+        {
+          "name": "geometry_entries",
+          "total": 4600,
+          "perFrame": {
+            "mean": 46.0,
+            "median": 46,
+            "p95": 46,
+            "maximum": 46,
+            "minimum": 46
+          }
+        },
+        {
+          "name": "indices_scanned",
+          "total": 18008100,
+          "perFrame": {
+            "mean": 180081.0,
+            "median": 180081,
+            "p95": 180081,
+            "maximum": 180081,
+            "minimum": 180081
+          }
+        },
+        {
+          "name": "vertices_requested",
+          "total": 9220600,
+          "perFrame": {
+            "mean": 92206.0,
+            "median": 92206,
+            "p95": 92206,
+            "maximum": 92206,
+            "minimum": 92206
+          }
+        },
+        {
+          "name": "prepared_batches",
+          "total": 800,
+          "perFrame": {
+            "mean": 8.0,
+            "median": 8,
+            "p95": 8,
+            "maximum": 8,
+            "minimum": 8
+          }
+        },
+        {
+          "name": "prepared_triangles",
+          "total": 5189400,
+          "perFrame": {
+            "mean": 51894.0,
+            "median": 51894,
+            "p95": 51894,
+            "maximum": 51894,
+            "minimum": 51894
+          }
+        },
+        {
+          "name": "ready_triangles",
+          "total": 4212726,
+          "perFrame": {
+            "mean": 42127.26,
+            "median": 42789,
+            "p95": 43558,
+            "maximum": 43636,
+            "minimum": 37161
+          }
+        },
+        {
+          "name": "rejected_triangles",
+          "total": 976674,
+          "perFrame": {
+            "mean": 9766.74,
+            "median": 9111,
+            "p95": 14366,
+            "maximum": 14733,
+            "minimum": 8258
+          }
+        },
+        {
+          "name": "general_triangles",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "unprepared_triangles",
+          "total": 813300,
+          "perFrame": {
+            "mean": 8133.0,
+            "median": 8133,
+            "p95": 8133,
+            "maximum": 8133,
+            "minimum": 8133
+          }
+        },
+        {
+          "name": "emitted_bin_records",
+          "total": 5160202,
+          "perFrame": {
+            "mean": 51602.02,
+            "median": 52518,
+            "p95": 53870,
+            "maximum": 54197,
+            "minimum": 43875
+          }
+        },
+        {
+          "name": "bin_grow_calls",
+          "total": 5555521,
+          "perFrame": {
+            "mean": 55555.21,
+            "median": 56543,
+            "p95": 58078,
+            "maximum": 58456,
+            "minimum": 47189
+          }
+        },
+        {
+          "name": "bin_grow_allocations",
+          "total": 2,
+          "perFrame": {
+            "mean": 0.02,
+            "median": 0,
+            "p95": 0,
+            "maximum": 2,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "bin_grow_copied_bytes",
+          "total": 131072,
+          "perFrame": {
+            "mean": 1310.72,
+            "median": 0,
+            "p95": 0,
+            "maximum": 131072,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "replay_input_bin_records",
+          "total": 3785662,
+          "perFrame": {
+            "mean": 37856.62,
+            "median": 38401,
+            "p95": 39713,
+            "maximum": 39851,
+            "minimum": 32269
+          }
+        },
+        {
+          "name": "replay_output_bin_records",
+          "total": 1739282,
+          "perFrame": {
+            "mean": 17392.82,
+            "median": 17846,
+            "p95": 19204,
+            "maximum": 19277,
+            "minimum": 12775
+          }
+        }
+      ]
+    },
+    {
+      "audit": 1,
+      "samples": 0,
+      "scene": "tank",
+      "frames": 100,
+      "file": "producer-ms0-audit-1.json",
+      "frameElapsedMs": {
+        "mean": 11.932300000190734,
+        "median": 11.974999994039536,
+        "p95": 13.129999995231628,
+        "maximum": 15.064999997615814,
+        "minimum": 9.919999986886978
+      },
+      "producerElapsedMsPerFrame": {
+        "mean": 11.5443408203125,
+        "median": 11.529296875,
+        "p95": 12.73486328125,
+        "maximum": 14.684814453125,
+        "minimum": 9.54931640625
+      },
+      "aggregateProducerWallFraction": 0.9674866387978819,
+      "phases": [
+        {
+          "name": "lookup",
+          "totalCalls": 600,
+          "totalElapsedMs": 2.51025390625,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.0251025390625,
+            "median": 0.02490234375,
+            "p95": 0.0400390625,
+            "maximum": 0.06005859375,
+            "minimum": 0.010009765625
+          }
+        },
+        {
+          "name": "index_scan",
+          "totalCalls": 600,
+          "totalElapsedMs": 59.531494140625,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.59531494140625,
+            "median": 0.58984375,
+            "p95": 0.64990234375,
+            "maximum": 0.66015625,
+            "minimum": 0.5595703125
+          }
+        },
+        {
+          "name": "normal_cache",
+          "totalCalls": 600,
+          "totalElapsedMs": 0.680419921875,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.00680419921875,
+            "median": 0.005126953125,
+            "p95": 0.01513671875,
+            "maximum": 0.0205078125,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "compact_transform",
+          "totalCalls": 600,
+          "totalElapsedMs": 468.248779296875,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 4.68248779296875,
+            "median": 4.68017578125,
+            "p95": 5.470458984375,
+            "maximum": 7.669921875,
+            "minimum": 3.835205078125
+          }
+        },
+        {
+          "name": "triangle_prepare",
+          "totalCalls": 1000,
+          "totalElapsedMs": 48.369140625,
+          "callsPerFrame": 10.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.48369140625,
+            "median": 0.47021484375,
+            "p95": 0.55029296875,
+            "maximum": 0.77978515625,
+            "minimum": 0.404541015625
+          }
+        },
+        {
+          "name": "triangle_emit",
+          "totalCalls": 1000,
+          "totalElapsedMs": 257.222900390625,
+          "callsPerFrame": 10.0,
+          "elapsedMsPerFrame": {
+            "mean": 2.57222900390625,
+            "median": 2.30517578125,
+            "p95": 3.55078125,
+            "maximum": 3.77978515625,
+            "minimum": 1.764892578125
+          }
+        },
+        {
+          "name": "geometry_store",
+          "totalCalls": 600,
+          "totalElapsedMs": 2.78759765625,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.0278759765625,
+            "median": 0.02490234375,
+            "p95": 0.054931640625,
+            "maximum": 0.065185546875,
+            "minimum": 0.010009765625
+          }
+        },
+        {
+          "name": "geometry_replay",
+          "totalCalls": 0,
+          "totalElapsedMs": 0.0,
+          "callsPerFrame": 0.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "stream_submit",
+          "totalCalls": 600,
+          "totalElapsedMs": 315.08349609375,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 3.1508349609375,
+            "median": 3.27490234375,
+            "p95": 4.379638671875,
+            "maximum": 4.634765625,
+            "minimum": 1.83984375
+          }
+        }
+      ],
+      "counters": [
+        {
+          "name": "parallel_draws",
+          "total": 600,
+          "perFrame": {
+            "mean": 6.0,
+            "median": 6,
+            "p95": 6,
+            "maximum": 6,
+            "minimum": 6
+          }
+        },
+        {
+          "name": "geometry_hits",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "geometry_entries",
+          "total": 600,
+          "perFrame": {
+            "mean": 6.0,
+            "median": 6,
+            "p95": 6,
+            "maximum": 6,
+            "minimum": 6
+          }
+        },
+        {
+          "name": "indices_scanned",
+          "total": 13353900,
+          "perFrame": {
+            "mean": 133539.0,
+            "median": 133539,
+            "p95": 133539,
+            "maximum": 133539,
+            "minimum": 133539
+          }
+        },
+        {
+          "name": "vertices_requested",
+          "total": 5738500,
+          "perFrame": {
+            "mean": 57385.0,
+            "median": 57385,
+            "p95": 57385,
+            "maximum": 57385,
+            "minimum": 57385
+          }
+        },
+        {
+          "name": "prepared_batches",
+          "total": 300,
+          "perFrame": {
+            "mean": 3.0,
+            "median": 3,
+            "p95": 3,
+            "maximum": 3,
+            "minimum": 3
+          }
+        },
+        {
+          "name": "prepared_triangles",
+          "total": 1742400,
+          "perFrame": {
+            "mean": 17424.0,
+            "median": 17424,
+            "p95": 17424,
+            "maximum": 17424,
+            "minimum": 17424
+          }
+        },
+        {
+          "name": "ready_triangles",
+          "total": 703896,
+          "perFrame": {
+            "mean": 7038.96,
+            "median": 7327,
+            "p95": 7917,
+            "maximum": 8012,
+            "minimum": 4826
+          }
+        },
+        {
+          "name": "rejected_triangles",
+          "total": 924174,
+          "perFrame": {
+            "mean": 9241.74,
+            "median": 9548,
+            "p95": 10370,
+            "maximum": 11022,
+            "minimum": 7606
+          }
+        },
+        {
+          "name": "general_triangles",
+          "total": 114330,
+          "perFrame": {
+            "mean": 1143.3,
+            "median": 118,
+            "p95": 4240,
+            "maximum": 4298,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "unprepared_triangles",
+          "total": 2708900,
+          "perFrame": {
+            "mean": 27089.0,
+            "median": 27089,
+            "p95": 27089,
+            "maximum": 27089,
+            "minimum": 27089
+          }
+        },
+        {
+          "name": "emitted_bin_records",
+          "total": 2081931,
+          "perFrame": {
+            "mean": 20819.31,
+            "median": 21267,
+            "p95": 22968,
+            "maximum": 23012,
+            "minimum": 15054
+          }
+        },
+        {
+          "name": "bin_grow_calls",
+          "total": 2081931,
+          "perFrame": {
+            "mean": 20819.31,
+            "median": 21267,
+            "p95": 22968,
+            "maximum": 23012,
+            "minimum": 15054
+          }
+        },
+        {
+          "name": "bin_grow_allocations",
+          "total": 1,
+          "perFrame": {
+            "mean": 0.01,
+            "median": 0,
+            "p95": 0,
+            "maximum": 1,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "bin_grow_copied_bytes",
+          "total": 16384,
+          "perFrame": {
+            "mean": 163.84,
+            "median": 0,
+            "p95": 0,
+            "maximum": 16384,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "replay_input_bin_records",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "replay_output_bin_records",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        }
+      ]
+    },
+    {
+      "audit": 1,
+      "samples": 2,
+      "scene": "bmw",
+      "frames": 100,
+      "file": "producer-ms2-audit-1.json",
+      "frameElapsedMs": {
+        "mean": 31.14550000101328,
+        "median": 31.34500002861023,
+        "p95": 35.60999998450279,
+        "maximum": 40.770000010728836,
+        "minimum": 24.944999992847443
+      },
+      "producerElapsedMsPerFrame": {
+        "mean": 25.0453662109375,
+        "median": 25.2744140625,
+        "p95": 28.751220703125,
+        "maximum": 33.69091796875,
+        "minimum": 18.48046875
+      },
+      "aggregateProducerWallFraction": 0.804140765443569,
+      "phases": [
+        {
+          "name": "lookup",
+          "totalCalls": 4600,
+          "totalElapsedMs": 8.790771484375,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.08790771484375,
+            "median": 0.085205078125,
+            "p95": 0.119140625,
+            "maximum": 0.149658203125,
+            "minimum": 0.050537109375
+          }
+        },
+        {
+          "name": "index_scan",
+          "totalCalls": 4600,
+          "totalElapsedMs": 106.605712890625,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 1.06605712890625,
+            "median": 1.0546875,
+            "p95": 1.164306640625,
+            "maximum": 1.264892578125,
+            "minimum": 0.97509765625
+          }
+        },
+        {
+          "name": "normal_cache",
+          "totalCalls": 4600,
+          "totalElapsedMs": 3.3798828125,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.033798828125,
+            "median": 0.0302734375,
+            "p95": 0.050048828125,
+            "maximum": 0.295166015625,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "compact_transform",
+          "totalCalls": 4600,
+          "totalElapsedMs": 367.148193359375,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 3.67148193359375,
+            "median": 3.56396484375,
+            "p95": 4.474853515625,
+            "maximum": 7.30029296875,
+            "minimum": 2.965087890625
+          }
+        },
+        {
+          "name": "triangle_prepare",
+          "totalCalls": 2700,
+          "totalElapsedMs": 208.540771484375,
+          "callsPerFrame": 27.0,
+          "elapsedMsPerFrame": {
+            "mean": 2.08540771484375,
+            "median": 2.059814453125,
+            "p95": 2.5,
+            "maximum": 2.699462890625,
+            "minimum": 1.480224609375
+          }
+        },
+        {
+          "name": "triangle_emit",
+          "totalCalls": 2700,
+          "totalElapsedMs": 201.05859375,
+          "callsPerFrame": 27.0,
+          "elapsedMsPerFrame": {
+            "mean": 2.0105859375,
+            "median": 2.100830078125,
+            "p95": 2.385009765625,
+            "maximum": 2.579833984375,
+            "minimum": 1.4501953125
+          }
+        },
+        {
+          "name": "geometry_store",
+          "totalCalls": 2300,
+          "totalElapsedMs": 21.373291015625,
+          "callsPerFrame": 23.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.21373291015625,
+            "median": 0.205078125,
+            "p95": 0.249755859375,
+            "maximum": 0.62060546875,
+            "minimum": 0.169921875
+          }
+        },
+        {
+          "name": "geometry_replay",
+          "totalCalls": 2300,
+          "totalElapsedMs": 27.251220703125,
+          "callsPerFrame": 23.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.27251220703125,
+            "median": 0.27490234375,
+            "p95": 0.330078125,
+            "maximum": 0.384765625,
+            "minimum": 0.1904296875
+          }
+        },
+        {
+          "name": "stream_submit",
+          "totalCalls": 8200,
+          "totalElapsedMs": 1560.38818359375,
+          "callsPerFrame": 82.0,
+          "elapsedMsPerFrame": {
+            "mean": 15.6038818359375,
+            "median": 15.845458984375,
+            "p95": 19.14599609375,
+            "maximum": 22.539794921875,
+            "minimum": 9.429931640625
+          }
+        }
+      ],
+      "counters": [
+        {
+          "name": "parallel_draws",
+          "total": 4600,
+          "perFrame": {
+            "mean": 46.0,
+            "median": 46,
+            "p95": 46,
+            "maximum": 46,
+            "minimum": 46
+          }
+        },
+        {
+          "name": "geometry_hits",
+          "total": 2300,
+          "perFrame": {
+            "mean": 23.0,
+            "median": 23,
+            "p95": 23,
+            "maximum": 23,
+            "minimum": 23
+          }
+        },
+        {
+          "name": "geometry_entries",
+          "total": 4600,
+          "perFrame": {
+            "mean": 46.0,
+            "median": 46,
+            "p95": 46,
+            "maximum": 46,
+            "minimum": 46
+          }
+        },
+        {
+          "name": "indices_scanned",
+          "total": 18008100,
+          "perFrame": {
+            "mean": 180081.0,
+            "median": 180081,
+            "p95": 180081,
+            "maximum": 180081,
+            "minimum": 180081
+          }
+        },
+        {
+          "name": "vertices_requested",
+          "total": 9220600,
+          "perFrame": {
+            "mean": 92206.0,
+            "median": 92206,
+            "p95": 92206,
+            "maximum": 92206,
+            "minimum": 92206
+          }
+        },
+        {
+          "name": "prepared_batches",
+          "total": 800,
+          "perFrame": {
+            "mean": 8.0,
+            "median": 8,
+            "p95": 8,
+            "maximum": 8,
+            "minimum": 8
+          }
+        },
+        {
+          "name": "prepared_triangles",
+          "total": 5189400,
+          "perFrame": {
+            "mean": 51894.0,
+            "median": 51894,
+            "p95": 51894,
+            "maximum": 51894,
+            "minimum": 51894
+          }
+        },
+        {
+          "name": "ready_triangles",
+          "total": 5189400,
+          "perFrame": {
+            "mean": 51894.0,
+            "median": 51894,
+            "p95": 51894,
+            "maximum": 51894,
+            "minimum": 51894
+          }
+        },
+        {
+          "name": "rejected_triangles",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "general_triangles",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "unprepared_triangles",
+          "total": 813300,
+          "perFrame": {
+            "mean": 8133.0,
+            "median": 8133,
+            "p95": 8133,
+            "maximum": 8133,
+            "minimum": 8133
+          }
+        },
+        {
+          "name": "emitted_bin_records",
+          "total": 7394902,
+          "perFrame": {
+            "mean": 73949.02,
+            "median": 74893,
+            "p95": 76010,
+            "maximum": 76400,
+            "minimum": 69009
+          }
+        },
+        {
+          "name": "bin_grow_calls",
+          "total": 8163996,
+          "perFrame": {
+            "mean": 81639.96,
+            "median": 82579,
+            "p95": 83759,
+            "maximum": 84124,
+            "minimum": 76285
+          }
+        },
+        {
+          "name": "bin_grow_allocations",
+          "total": 5,
+          "perFrame": {
+            "mean": 0.05,
+            "median": 0,
+            "p95": 0,
+            "maximum": 1,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "bin_grow_copied_bytes",
+          "total": 262144,
+          "perFrame": {
+            "mean": 2621.44,
+            "median": 0,
+            "p95": 0,
+            "maximum": 65536,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "replay_input_bin_records",
+          "total": 6097300,
+          "perFrame": {
+            "mean": 60973.0,
+            "median": 61500,
+            "p95": 62336,
+            "maximum": 62478,
+            "minimum": 56966
+          }
+        },
+        {
+          "name": "replay_output_bin_records",
+          "total": 2337141,
+          "perFrame": {
+            "mean": 23371.41,
+            "median": 24082,
+            "p95": 24929,
+            "maximum": 25216,
+            "minimum": 18823
+          }
+        }
+      ]
+    },
+    {
+      "audit": 1,
+      "samples": 2,
+      "scene": "tank",
+      "frames": 100,
+      "file": "producer-ms2-audit-1.json",
+      "frameElapsedMs": {
+        "mean": 14.18870000064373,
+        "median": 14.075000017881393,
+        "p95": 16.150000005960464,
+        "maximum": 28.82499998807907,
+        "minimum": 10.694999992847443
+      },
+      "producerElapsedMsPerFrame": {
+        "mean": 12.8260498046875,
+        "median": 12.6552734375,
+        "p95": 14.939697265625,
+        "maximum": 24.525146484375,
+        "minimum": 9.929931640625
+      },
+      "aggregateProducerWallFraction": 0.9039622942274903,
+      "phases": [
+        {
+          "name": "lookup",
+          "totalCalls": 600,
+          "totalElapsedMs": 2.46728515625,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.0246728515625,
+            "median": 0.02490234375,
+            "p95": 0.03515625,
+            "maximum": 0.065185546875,
+            "minimum": 0.009765625
+          }
+        },
+        {
+          "name": "index_scan",
+          "totalCalls": 600,
+          "totalElapsedMs": 59.664306640625,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.59664306640625,
+            "median": 0.589599609375,
+            "p95": 0.655029296875,
+            "maximum": 0.669921875,
+            "minimum": 0.55517578125
+          }
+        },
+        {
+          "name": "normal_cache",
+          "totalCalls": 600,
+          "totalElapsedMs": 0.645751953125,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.00645751953125,
+            "median": 0.005126953125,
+            "p95": 0.01513671875,
+            "maximum": 0.02001953125,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "compact_transform",
+          "totalCalls": 600,
+          "totalElapsedMs": 454.842529296875,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 4.54842529296875,
+            "median": 4.545166015625,
+            "p95": 5.46044921875,
+            "maximum": 6.9150390625,
+            "minimum": 3.809814453125
+          }
+        },
+        {
+          "name": "triangle_prepare",
+          "totalCalls": 1000,
+          "totalElapsedMs": 55.966064453125,
+          "callsPerFrame": 10.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.55966064453125,
+            "median": 0.46484375,
+            "p95": 0.56005859375,
+            "maximum": 8.674560546875,
+            "minimum": 0.41455078125
+          }
+        },
+        {
+          "name": "triangle_emit",
+          "totalCalls": 1000,
+          "totalElapsedMs": 256.584716796875,
+          "callsPerFrame": 10.0,
+          "elapsedMsPerFrame": {
+            "mean": 2.56584716796875,
+            "median": 2.289794921875,
+            "p95": 3.754638671875,
+            "maximum": 3.9453125,
+            "minimum": 1.72509765625
+          }
+        },
+        {
+          "name": "geometry_store",
+          "totalCalls": 600,
+          "totalElapsedMs": 3.7783203125,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.037783203125,
+            "median": 0.0302734375,
+            "p95": 0.0703125,
+            "maximum": 0.09033203125,
+            "minimum": 0.01513671875
+          }
+        },
+        {
+          "name": "geometry_replay",
+          "totalCalls": 0,
+          "totalElapsedMs": 0.0,
+          "callsPerFrame": 0.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "stream_submit",
+          "totalCalls": 600,
+          "totalElapsedMs": 448.656005859375,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 4.48656005859375,
+            "median": 4.545166015625,
+            "p95": 6.44482421875,
+            "maximum": 12.765380859375,
+            "minimum": 2.5849609375
+          }
+        }
+      ],
+      "counters": [
+        {
+          "name": "parallel_draws",
+          "total": 600,
+          "perFrame": {
+            "mean": 6.0,
+            "median": 6,
+            "p95": 6,
+            "maximum": 6,
+            "minimum": 6
+          }
+        },
+        {
+          "name": "geometry_hits",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "geometry_entries",
+          "total": 600,
+          "perFrame": {
+            "mean": 6.0,
+            "median": 6,
+            "p95": 6,
+            "maximum": 6,
+            "minimum": 6
+          }
+        },
+        {
+          "name": "indices_scanned",
+          "total": 13353900,
+          "perFrame": {
+            "mean": 133539.0,
+            "median": 133539,
+            "p95": 133539,
+            "maximum": 133539,
+            "minimum": 133539
+          }
+        },
+        {
+          "name": "vertices_requested",
+          "total": 5738500,
+          "perFrame": {
+            "mean": 57385.0,
+            "median": 57385,
+            "p95": 57385,
+            "maximum": 57385,
+            "minimum": 57385
+          }
+        },
+        {
+          "name": "prepared_batches",
+          "total": 300,
+          "perFrame": {
+            "mean": 3.0,
+            "median": 3,
+            "p95": 3,
+            "maximum": 3,
+            "minimum": 3
+          }
+        },
+        {
+          "name": "prepared_triangles",
+          "total": 1742400,
+          "perFrame": {
+            "mean": 17424.0,
+            "median": 17424,
+            "p95": 17424,
+            "maximum": 17424,
+            "minimum": 17424
+          }
+        },
+        {
+          "name": "ready_triangles",
+          "total": 846625,
+          "perFrame": {
+            "mean": 8466.25,
+            "median": 8868,
+            "p95": 9151,
+            "maximum": 9171,
+            "minimum": 6836
+          }
+        },
+        {
+          "name": "rejected_triangles",
+          "total": 781445,
+          "perFrame": {
+            "mean": 7814.45,
+            "median": 8280,
+            "p95": 8487,
+            "maximum": 8535,
+            "minimum": 6226
+          }
+        },
+        {
+          "name": "general_triangles",
+          "total": 114330,
+          "perFrame": {
+            "mean": 1143.3,
+            "median": 118,
+            "p95": 4240,
+            "maximum": 4298,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "unprepared_triangles",
+          "total": 2708900,
+          "perFrame": {
+            "mean": 27089.0,
+            "median": 27089,
+            "p95": 27089,
+            "maximum": 27089,
+            "minimum": 27089
+          }
+        },
+        {
+          "name": "emitted_bin_records",
+          "total": 2810062,
+          "perFrame": {
+            "mean": 28100.62,
+            "median": 28938,
+            "p95": 30245,
+            "maximum": 30357,
+            "minimum": 22301
+          }
+        },
+        {
+          "name": "bin_grow_calls",
+          "total": 2810062,
+          "perFrame": {
+            "mean": 28100.62,
+            "median": 28938,
+            "p95": 30245,
+            "maximum": 30357,
+            "minimum": 22301
+          }
+        },
+        {
+          "name": "bin_grow_allocations",
+          "total": 5,
+          "perFrame": {
+            "mean": 0.05,
+            "median": 0,
+            "p95": 0,
+            "maximum": 1,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "bin_grow_copied_bytes",
+          "total": 40960,
+          "perFrame": {
+            "mean": 409.6,
+            "median": 0,
+            "p95": 0,
+            "maximum": 8192,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "replay_input_bin_records",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "replay_output_bin_records",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        }
+      ]
+    },
+    {
+      "audit": 1,
+      "samples": 4,
+      "scene": "bmw",
+      "frames": 100,
+      "file": "producer-ms4-audit-1.json",
+      "frameElapsedMs": {
+        "mean": 35.00850000292063,
+        "median": 34.91999998688698,
+        "p95": 40.45999997854233,
+        "maximum": 48.28499999642372,
+        "minimum": 27.020000010728836
+      },
+      "producerElapsedMsPerFrame": {
+        "mean": 28.20566162109375,
+        "median": 28.389892578125,
+        "p95": 33.81982421875,
+        "maximum": 39.386962890625,
+        "minimum": 20.439453125
+      },
+      "aggregateProducerWallFraction": 0.8056803810143439,
+      "phases": [
+        {
+          "name": "lookup",
+          "totalCalls": 4600,
+          "totalElapsedMs": 9.014892578125,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.09014892578125,
+            "median": 0.089599609375,
+            "p95": 0.1201171875,
+            "maximum": 0.1796875,
+            "minimum": 0.05517578125
+          }
+        },
+        {
+          "name": "index_scan",
+          "totalCalls": 4600,
+          "totalElapsedMs": 107.49169921875,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 1.0749169921875,
+            "median": 1.06005859375,
+            "p95": 1.20947265625,
+            "maximum": 1.26953125,
+            "minimum": 0.995361328125
+          }
+        },
+        {
+          "name": "normal_cache",
+          "totalCalls": 4600,
+          "totalElapsedMs": 3.11474609375,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.0311474609375,
+            "median": 0.0302734375,
+            "p95": 0.045654296875,
+            "maximum": 0.050048828125,
+            "minimum": 0.0048828125
+          }
+        },
+        {
+          "name": "compact_transform",
+          "totalCalls": 4600,
+          "totalElapsedMs": 397.815673828125,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 3.97815673828125,
+            "median": 3.849609375,
+            "p95": 5.084228515625,
+            "maximum": 9.2255859375,
+            "minimum": 3.1240234375
+          }
+        },
+        {
+          "name": "triangle_prepare",
+          "totalCalls": 2700,
+          "totalElapsedMs": 211.369873046875,
+          "callsPerFrame": 27.0,
+          "elapsedMsPerFrame": {
+            "mean": 2.11369873046875,
+            "median": 2.064453125,
+            "p95": 2.485107421875,
+            "maximum": 3.900634765625,
+            "minimum": 1.665283203125
+          }
+        },
+        {
+          "name": "triangle_emit",
+          "totalCalls": 2700,
+          "totalElapsedMs": 174.37841796875,
+          "callsPerFrame": 27.0,
+          "elapsedMsPerFrame": {
+            "mean": 1.7437841796875,
+            "median": 1.760009765625,
+            "p95": 2.068603515625,
+            "maximum": 2.309326171875,
+            "minimum": 1.25439453125
+          }
+        },
+        {
+          "name": "geometry_store",
+          "totalCalls": 2300,
+          "totalElapsedMs": 21.498046875,
+          "callsPerFrame": 23.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.21498046875,
+            "median": 0.210205078125,
+            "p95": 0.260009765625,
+            "maximum": 0.300537109375,
+            "minimum": 0.15478515625
+          }
+        },
+        {
+          "name": "geometry_replay",
+          "totalCalls": 2300,
+          "totalElapsedMs": 30.37451171875,
+          "callsPerFrame": 23.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.3037451171875,
+            "median": 0.294921875,
+            "p95": 0.415283203125,
+            "maximum": 0.52490234375,
+            "minimum": 0.214599609375
+          }
+        },
+        {
+          "name": "stream_submit",
+          "totalCalls": 8200,
+          "totalElapsedMs": 1865.50830078125,
+          "callsPerFrame": 82.0,
+          "elapsedMsPerFrame": {
+            "mean": 18.6550830078125,
+            "median": 18.721435546875,
+            "p95": 24.349609375,
+            "maximum": 28.075439453125,
+            "minimum": 11.373291015625
+          }
+        }
+      ],
+      "counters": [
+        {
+          "name": "parallel_draws",
+          "total": 4600,
+          "perFrame": {
+            "mean": 46.0,
+            "median": 46,
+            "p95": 46,
+            "maximum": 46,
+            "minimum": 46
+          }
+        },
+        {
+          "name": "geometry_hits",
+          "total": 2300,
+          "perFrame": {
+            "mean": 23.0,
+            "median": 23,
+            "p95": 23,
+            "maximum": 23,
+            "minimum": 23
+          }
+        },
+        {
+          "name": "geometry_entries",
+          "total": 4600,
+          "perFrame": {
+            "mean": 46.0,
+            "median": 46,
+            "p95": 46,
+            "maximum": 46,
+            "minimum": 46
+          }
+        },
+        {
+          "name": "indices_scanned",
+          "total": 18008100,
+          "perFrame": {
+            "mean": 180081.0,
+            "median": 180081,
+            "p95": 180081,
+            "maximum": 180081,
+            "minimum": 180081
+          }
+        },
+        {
+          "name": "vertices_requested",
+          "total": 9220600,
+          "perFrame": {
+            "mean": 92206.0,
+            "median": 92206,
+            "p95": 92206,
+            "maximum": 92206,
+            "minimum": 92206
+          }
+        },
+        {
+          "name": "prepared_batches",
+          "total": 800,
+          "perFrame": {
+            "mean": 8.0,
+            "median": 8,
+            "p95": 8,
+            "maximum": 8,
+            "minimum": 8
+          }
+        },
+        {
+          "name": "prepared_triangles",
+          "total": 5189400,
+          "perFrame": {
+            "mean": 51894.0,
+            "median": 51894,
+            "p95": 51894,
+            "maximum": 51894,
+            "minimum": 51894
+          }
+        },
+        {
+          "name": "ready_triangles",
+          "total": 5189400,
+          "perFrame": {
+            "mean": 51894.0,
+            "median": 51894,
+            "p95": 51894,
+            "maximum": 51894,
+            "minimum": 51894
+          }
+        },
+        {
+          "name": "rejected_triangles",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "general_triangles",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "unprepared_triangles",
+          "total": 813300,
+          "perFrame": {
+            "mean": 8133.0,
+            "median": 8133,
+            "p95": 8133,
+            "maximum": 8133,
+            "minimum": 8133
+          }
+        },
+        {
+          "name": "emitted_bin_records",
+          "total": 7394902,
+          "perFrame": {
+            "mean": 73949.02,
+            "median": 74893,
+            "p95": 76010,
+            "maximum": 76400,
+            "minimum": 69009
+          }
+        },
+        {
+          "name": "bin_grow_calls",
+          "total": 8164016,
+          "perFrame": {
+            "mean": 81640.16,
+            "median": 82579,
+            "p95": 83759,
+            "maximum": 84124,
+            "minimum": 76285
+          }
+        },
+        {
+          "name": "bin_grow_allocations",
+          "total": 4,
+          "perFrame": {
+            "mean": 0.04,
+            "median": 0,
+            "p95": 0,
+            "maximum": 2,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "bin_grow_copied_bytes",
+          "total": 81920,
+          "perFrame": {
+            "mean": 819.2,
+            "median": 0,
+            "p95": 0,
+            "maximum": 65536,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "replay_input_bin_records",
+          "total": 6469668,
+          "perFrame": {
+            "mean": 64696.68,
+            "median": 65252,
+            "p95": 66112,
+            "maximum": 66541,
+            "minimum": 60344
+          }
+        },
+        {
+          "name": "replay_output_bin_records",
+          "total": 2621459,
+          "perFrame": {
+            "mean": 26214.59,
+            "median": 26963,
+            "p95": 27903,
+            "maximum": 28208,
+            "minimum": 21207
+          }
+        }
+      ]
+    },
+    {
+      "audit": 1,
+      "samples": 4,
+      "scene": "tank",
+      "frames": 100,
+      "file": "producer-ms4-audit-1.json",
+      "frameElapsedMs": {
+        "mean": 16.369799999296664,
+        "median": 15.899999976158142,
+        "p95": 19.305000007152557,
+        "maximum": 33.51000002026558,
+        "minimum": 13.055000007152557
+      },
+      "producerElapsedMsPerFrame": {
+        "mean": 14.26459228515625,
+        "median": 13.8193359375,
+        "p95": 17.68994140625,
+        "maximum": 23.750244140625,
+        "minimum": 11.625244140625
+      },
+      "aggregateProducerWallFraction": 0.8713968579804966,
+      "phases": [
+        {
+          "name": "lookup",
+          "totalCalls": 600,
+          "totalElapsedMs": 2.844482421875,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.02844482421875,
+            "median": 0.025390625,
+            "p95": 0.0400390625,
+            "maximum": 0.114990234375,
+            "minimum": 0.014892578125
+          }
+        },
+        {
+          "name": "index_scan",
+          "totalCalls": 600,
+          "totalElapsedMs": 60.575439453125,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.60575439453125,
+            "median": 0.59521484375,
+            "p95": 0.6650390625,
+            "maximum": 0.71484375,
+            "minimum": 0.5595703125
+          }
+        },
+        {
+          "name": "normal_cache",
+          "totalCalls": 600,
+          "totalElapsedMs": 0.693115234375,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.00693115234375,
+            "median": 0.005126953125,
+            "p95": 0.01513671875,
+            "maximum": 0.024658203125,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "compact_transform",
+          "totalCalls": 600,
+          "totalElapsedMs": 489.5361328125,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 4.895361328125,
+            "median": 4.76025390625,
+            "p95": 5.880126953125,
+            "maximum": 7.0146484375,
+            "minimum": 3.934814453125
+          }
+        },
+        {
+          "name": "triangle_prepare",
+          "totalCalls": 1000,
+          "totalElapsedMs": 57.369140625,
+          "callsPerFrame": 10.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.57369140625,
+            "median": 0.47021484375,
+            "p95": 1.274658203125,
+            "maximum": 1.7099609375,
+            "minimum": 0.39990234375
+          }
+        },
+        {
+          "name": "triangle_emit",
+          "totalCalls": 1000,
+          "totalElapsedMs": 263.687255859375,
+          "callsPerFrame": 10.0,
+          "elapsedMsPerFrame": {
+            "mean": 2.63687255859375,
+            "median": 2.345458984375,
+            "p95": 3.7451171875,
+            "maximum": 4.105224609375,
+            "minimum": 1.750244140625
+          }
+        },
+        {
+          "name": "geometry_store",
+          "totalCalls": 600,
+          "totalElapsedMs": 3.662109375,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.03662109375,
+            "median": 0.030029296875,
+            "p95": 0.070068359375,
+            "maximum": 0.10009765625,
+            "minimum": 0.014892578125
+          }
+        },
+        {
+          "name": "geometry_replay",
+          "totalCalls": 0,
+          "totalElapsedMs": 0.0,
+          "callsPerFrame": 0.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "stream_submit",
+          "totalCalls": 600,
+          "totalElapsedMs": 548.091552734375,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 5.48091552734375,
+            "median": 5.3046875,
+            "p95": 7.4453125,
+            "maximum": 15.879638671875,
+            "minimum": 2.670166015625
+          }
+        }
+      ],
+      "counters": [
+        {
+          "name": "parallel_draws",
+          "total": 600,
+          "perFrame": {
+            "mean": 6.0,
+            "median": 6,
+            "p95": 6,
+            "maximum": 6,
+            "minimum": 6
+          }
+        },
+        {
+          "name": "geometry_hits",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "geometry_entries",
+          "total": 600,
+          "perFrame": {
+            "mean": 6.0,
+            "median": 6,
+            "p95": 6,
+            "maximum": 6,
+            "minimum": 6
+          }
+        },
+        {
+          "name": "indices_scanned",
+          "total": 13353900,
+          "perFrame": {
+            "mean": 133539.0,
+            "median": 133539,
+            "p95": 133539,
+            "maximum": 133539,
+            "minimum": 133539
+          }
+        },
+        {
+          "name": "vertices_requested",
+          "total": 5738500,
+          "perFrame": {
+            "mean": 57385.0,
+            "median": 57385,
+            "p95": 57385,
+            "maximum": 57385,
+            "minimum": 57385
+          }
+        },
+        {
+          "name": "prepared_batches",
+          "total": 300,
+          "perFrame": {
+            "mean": 3.0,
+            "median": 3,
+            "p95": 3,
+            "maximum": 3,
+            "minimum": 3
+          }
+        },
+        {
+          "name": "prepared_triangles",
+          "total": 1742400,
+          "perFrame": {
+            "mean": 17424.0,
+            "median": 17424,
+            "p95": 17424,
+            "maximum": 17424,
+            "minimum": 17424
+          }
+        },
+        {
+          "name": "ready_triangles",
+          "total": 846625,
+          "perFrame": {
+            "mean": 8466.25,
+            "median": 8868,
+            "p95": 9151,
+            "maximum": 9171,
+            "minimum": 6836
+          }
+        },
+        {
+          "name": "rejected_triangles",
+          "total": 781445,
+          "perFrame": {
+            "mean": 7814.45,
+            "median": 8280,
+            "p95": 8487,
+            "maximum": 8535,
+            "minimum": 6226
+          }
+        },
+        {
+          "name": "general_triangles",
+          "total": 114330,
+          "perFrame": {
+            "mean": 1143.3,
+            "median": 118,
+            "p95": 4240,
+            "maximum": 4298,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "unprepared_triangles",
+          "total": 2708900,
+          "perFrame": {
+            "mean": 27089.0,
+            "median": 27089,
+            "p95": 27089,
+            "maximum": 27089,
+            "minimum": 27089
+          }
+        },
+        {
+          "name": "emitted_bin_records",
+          "total": 2810062,
+          "perFrame": {
+            "mean": 28100.62,
+            "median": 28938,
+            "p95": 30245,
+            "maximum": 30357,
+            "minimum": 22301
+          }
+        },
+        {
+          "name": "bin_grow_calls",
+          "total": 2810062,
+          "perFrame": {
+            "mean": 28100.62,
+            "median": 28938,
+            "p95": 30245,
+            "maximum": 30357,
+            "minimum": 22301
+          }
+        },
+        {
+          "name": "bin_grow_allocations",
+          "total": 5,
+          "perFrame": {
+            "mean": 0.05,
+            "median": 0,
+            "p95": 0,
+            "maximum": 1,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "bin_grow_copied_bytes",
+          "total": 40960,
+          "perFrame": {
+            "mean": 409.6,
+            "median": 0,
+            "p95": 0,
+            "maximum": 8192,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "replay_input_bin_records",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "replay_output_bin_records",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        }
+      ]
+    },
+    {
+      "audit": 2,
+      "samples": 4,
+      "scene": "bmw",
+      "frames": 100,
+      "file": "producer-ms4-audit-2.json",
+      "frameElapsedMs": {
+        "mean": 35.18570000171661,
+        "median": 35.15999999642372,
+        "p95": 40.764999985694885,
+        "maximum": 44.15999999642372,
+        "minimum": 28.040000021457672
+      },
+      "producerElapsedMsPerFrame": {
+        "mean": 28.4244189453125,
+        "median": 28.856201171875,
+        "p95": 33.23974609375,
+        "maximum": 37.330078125,
+        "minimum": 21.9814453125
+      },
+      "aggregateProducerWallFraction": 0.8078400868513558,
+      "phases": [
+        {
+          "name": "lookup",
+          "totalCalls": 4600,
+          "totalElapsedMs": 8.790283203125,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.08790283203125,
+            "median": 0.084716796875,
+            "p95": 0.1201171875,
+            "maximum": 0.191162109375,
+            "minimum": 0.049072265625
+          }
+        },
+        {
+          "name": "index_scan",
+          "totalCalls": 4600,
+          "totalElapsedMs": 106.384033203125,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 1.06384033203125,
+            "median": 1.044921875,
+            "p95": 1.215087890625,
+            "maximum": 1.25,
+            "minimum": 0.9853515625
+          }
+        },
+        {
+          "name": "normal_cache",
+          "totalCalls": 4600,
+          "totalElapsedMs": 3.402099609375,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.03402099609375,
+            "median": 0.030029296875,
+            "p95": 0.06494140625,
+            "maximum": 0.08544921875,
+            "minimum": 0.009765625
+          }
+        },
+        {
+          "name": "compact_transform",
+          "totalCalls": 4600,
+          "totalElapsedMs": 382.2841796875,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 3.822841796875,
+            "median": 3.699951171875,
+            "p95": 4.84033203125,
+            "maximum": 8.61962890625,
+            "minimum": 2.914794921875
+          }
+        },
+        {
+          "name": "triangle_prepare",
+          "totalCalls": 2700,
+          "totalElapsedMs": 215.23046875,
+          "callsPerFrame": 27.0,
+          "elapsedMsPerFrame": {
+            "mean": 2.1523046875,
+            "median": 2.10546875,
+            "p95": 2.60009765625,
+            "maximum": 3.889892578125,
+            "minimum": 1.67529296875
+          }
+        },
+        {
+          "name": "triangle_emit",
+          "totalCalls": 2700,
+          "totalElapsedMs": 201.882568359375,
+          "callsPerFrame": 27.0,
+          "elapsedMsPerFrame": {
+            "mean": 2.01882568359375,
+            "median": 2.06005859375,
+            "p95": 2.6298828125,
+            "maximum": 3.64013671875,
+            "minimum": 1.419677734375
+          }
+        },
+        {
+          "name": "geometry_store",
+          "totalCalls": 2300,
+          "totalElapsedMs": 21.40771484375,
+          "callsPerFrame": 23.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.2140771484375,
+            "median": 0.209716796875,
+            "p95": 0.25927734375,
+            "maximum": 0.279296875,
+            "minimum": 0.16943359375
+          }
+        },
+        {
+          "name": "geometry_replay",
+          "totalCalls": 2300,
+          "totalElapsedMs": 30.02392578125,
+          "callsPerFrame": 23.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.3002392578125,
+            "median": 0.295654296875,
+            "p95": 0.370361328125,
+            "maximum": 0.3955078125,
+            "minimum": 0.22021484375
+          }
+        },
+        {
+          "name": "stream_submit",
+          "totalCalls": 8200,
+          "totalElapsedMs": 1873.03662109375,
+          "callsPerFrame": 82.0,
+          "elapsedMsPerFrame": {
+            "mean": 18.7303662109375,
+            "median": 18.96435546875,
+            "p95": 22.83984375,
+            "maximum": 25.80517578125,
+            "minimum": 12.265869140625
+          }
+        }
+      ],
+      "counters": [
+        {
+          "name": "parallel_draws",
+          "total": 4600,
+          "perFrame": {
+            "mean": 46.0,
+            "median": 46,
+            "p95": 46,
+            "maximum": 46,
+            "minimum": 46
+          }
+        },
+        {
+          "name": "geometry_hits",
+          "total": 2300,
+          "perFrame": {
+            "mean": 23.0,
+            "median": 23,
+            "p95": 23,
+            "maximum": 23,
+            "minimum": 23
+          }
+        },
+        {
+          "name": "geometry_entries",
+          "total": 4600,
+          "perFrame": {
+            "mean": 46.0,
+            "median": 46,
+            "p95": 46,
+            "maximum": 46,
+            "minimum": 46
+          }
+        },
+        {
+          "name": "indices_scanned",
+          "total": 18008100,
+          "perFrame": {
+            "mean": 180081.0,
+            "median": 180081,
+            "p95": 180081,
+            "maximum": 180081,
+            "minimum": 180081
+          }
+        },
+        {
+          "name": "vertices_requested",
+          "total": 9220600,
+          "perFrame": {
+            "mean": 92206.0,
+            "median": 92206,
+            "p95": 92206,
+            "maximum": 92206,
+            "minimum": 92206
+          }
+        },
+        {
+          "name": "prepared_batches",
+          "total": 800,
+          "perFrame": {
+            "mean": 8.0,
+            "median": 8,
+            "p95": 8,
+            "maximum": 8,
+            "minimum": 8
+          }
+        },
+        {
+          "name": "prepared_triangles",
+          "total": 5189400,
+          "perFrame": {
+            "mean": 51894.0,
+            "median": 51894,
+            "p95": 51894,
+            "maximum": 51894,
+            "minimum": 51894
+          }
+        },
+        {
+          "name": "ready_triangles",
+          "total": 5189400,
+          "perFrame": {
+            "mean": 51894.0,
+            "median": 51894,
+            "p95": 51894,
+            "maximum": 51894,
+            "minimum": 51894
+          }
+        },
+        {
+          "name": "rejected_triangles",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "general_triangles",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "unprepared_triangles",
+          "total": 813300,
+          "perFrame": {
+            "mean": 8133.0,
+            "median": 8133,
+            "p95": 8133,
+            "maximum": 8133,
+            "minimum": 8133
+          }
+        },
+        {
+          "name": "emitted_bin_records",
+          "total": 7394902,
+          "perFrame": {
+            "mean": 73949.02,
+            "median": 74893,
+            "p95": 76010,
+            "maximum": 76400,
+            "minimum": 69009
+          }
+        },
+        {
+          "name": "bin_grow_calls",
+          "total": 8164016,
+          "perFrame": {
+            "mean": 81640.16,
+            "median": 82579,
+            "p95": 83759,
+            "maximum": 84124,
+            "minimum": 76285
+          }
+        },
+        {
+          "name": "bin_grow_allocations",
+          "total": 4,
+          "perFrame": {
+            "mean": 0.04,
+            "median": 0,
+            "p95": 0,
+            "maximum": 2,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "bin_grow_copied_bytes",
+          "total": 81920,
+          "perFrame": {
+            "mean": 819.2,
+            "median": 0,
+            "p95": 0,
+            "maximum": 65536,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "replay_input_bin_records",
+          "total": 6469668,
+          "perFrame": {
+            "mean": 64696.68,
+            "median": 65252,
+            "p95": 66112,
+            "maximum": 66541,
+            "minimum": 60344
+          }
+        },
+        {
+          "name": "replay_output_bin_records",
+          "total": 2621459,
+          "perFrame": {
+            "mean": 26214.59,
+            "median": 26963,
+            "p95": 27903,
+            "maximum": 28208,
+            "minimum": 21207
+          }
+        }
+      ]
+    },
+    {
+      "audit": 2,
+      "samples": 4,
+      "scene": "tank",
+      "frames": 100,
+      "file": "producer-ms4-audit-2.json",
+      "frameElapsedMs": {
+        "mean": 16.124800000190735,
+        "median": 15.569999992847443,
+        "p95": 19.32499998807907,
+        "maximum": 37.360000014305115,
+        "minimum": 12.765000015497208
+      },
+      "producerElapsedMsPerFrame": {
+        "mean": 14.199560546875,
+        "median": 13.489501953125,
+        "p95": 17.28515625,
+        "maximum": 35.600830078125,
+        "minimum": 11.125
+      },
+      "aggregateProducerWallFraction": 0.880603824339343,
+      "phases": [
+        {
+          "name": "lookup",
+          "totalCalls": 600,
+          "totalElapsedMs": 2.551025390625,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.02551025390625,
+            "median": 0.025146484375,
+            "p95": 0.03515625,
+            "maximum": 0.045166015625,
+            "minimum": 0.014892578125
+          }
+        },
+        {
+          "name": "index_scan",
+          "totalCalls": 600,
+          "totalElapsedMs": 60.025634765625,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.60025634765625,
+            "median": 0.58984375,
+            "p95": 0.68994140625,
+            "maximum": 0.78955078125,
+            "minimum": 0.554931640625
+          }
+        },
+        {
+          "name": "normal_cache",
+          "totalCalls": 600,
+          "totalElapsedMs": 0.616943359375,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.00616943359375,
+            "median": 0.005126953125,
+            "p95": 0.01513671875,
+            "maximum": 0.02001953125,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "compact_transform",
+          "totalCalls": 600,
+          "totalElapsedMs": 468.033447265625,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 4.68033447265625,
+            "median": 4.5400390625,
+            "p95": 5.89990234375,
+            "maximum": 8.1953125,
+            "minimum": 3.869873046875
+          }
+        },
+        {
+          "name": "triangle_prepare",
+          "totalCalls": 1000,
+          "totalElapsedMs": 54.103515625,
+          "callsPerFrame": 10.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.54103515625,
+            "median": 0.4697265625,
+            "p95": 0.6201171875,
+            "maximum": 3.26953125,
+            "minimum": 0.40966796875
+          }
+        },
+        {
+          "name": "triangle_emit",
+          "totalCalls": 1000,
+          "totalElapsedMs": 262.286865234375,
+          "callsPerFrame": 10.0,
+          "elapsedMsPerFrame": {
+            "mean": 2.62286865234375,
+            "median": 2.474853515625,
+            "p95": 3.724365234375,
+            "maximum": 4.6748046875,
+            "minimum": 1.6552734375
+          }
+        },
+        {
+          "name": "geometry_store",
+          "totalCalls": 600,
+          "totalElapsedMs": 3.843017578125,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.03843017578125,
+            "median": 0.03466796875,
+            "p95": 0.0751953125,
+            "maximum": 0.084716796875,
+            "minimum": 0.014892578125
+          }
+        },
+        {
+          "name": "geometry_replay",
+          "totalCalls": 0,
+          "totalElapsedMs": 0.0,
+          "callsPerFrame": 0.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "stream_submit",
+          "totalCalls": 600,
+          "totalElapsedMs": 568.49560546875,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 5.6849560546875,
+            "median": 5.205078125,
+            "p95": 7.46044921875,
+            "maximum": 28.55029296875,
+            "minimum": 3.104736328125
+          }
+        }
+      ],
+      "counters": [
+        {
+          "name": "parallel_draws",
+          "total": 600,
+          "perFrame": {
+            "mean": 6.0,
+            "median": 6,
+            "p95": 6,
+            "maximum": 6,
+            "minimum": 6
+          }
+        },
+        {
+          "name": "geometry_hits",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "geometry_entries",
+          "total": 600,
+          "perFrame": {
+            "mean": 6.0,
+            "median": 6,
+            "p95": 6,
+            "maximum": 6,
+            "minimum": 6
+          }
+        },
+        {
+          "name": "indices_scanned",
+          "total": 13353900,
+          "perFrame": {
+            "mean": 133539.0,
+            "median": 133539,
+            "p95": 133539,
+            "maximum": 133539,
+            "minimum": 133539
+          }
+        },
+        {
+          "name": "vertices_requested",
+          "total": 5738500,
+          "perFrame": {
+            "mean": 57385.0,
+            "median": 57385,
+            "p95": 57385,
+            "maximum": 57385,
+            "minimum": 57385
+          }
+        },
+        {
+          "name": "prepared_batches",
+          "total": 300,
+          "perFrame": {
+            "mean": 3.0,
+            "median": 3,
+            "p95": 3,
+            "maximum": 3,
+            "minimum": 3
+          }
+        },
+        {
+          "name": "prepared_triangles",
+          "total": 1742400,
+          "perFrame": {
+            "mean": 17424.0,
+            "median": 17424,
+            "p95": 17424,
+            "maximum": 17424,
+            "minimum": 17424
+          }
+        },
+        {
+          "name": "ready_triangles",
+          "total": 846625,
+          "perFrame": {
+            "mean": 8466.25,
+            "median": 8868,
+            "p95": 9151,
+            "maximum": 9171,
+            "minimum": 6836
+          }
+        },
+        {
+          "name": "rejected_triangles",
+          "total": 781445,
+          "perFrame": {
+            "mean": 7814.45,
+            "median": 8280,
+            "p95": 8487,
+            "maximum": 8535,
+            "minimum": 6226
+          }
+        },
+        {
+          "name": "general_triangles",
+          "total": 114330,
+          "perFrame": {
+            "mean": 1143.3,
+            "median": 118,
+            "p95": 4240,
+            "maximum": 4298,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "unprepared_triangles",
+          "total": 2708900,
+          "perFrame": {
+            "mean": 27089.0,
+            "median": 27089,
+            "p95": 27089,
+            "maximum": 27089,
+            "minimum": 27089
+          }
+        },
+        {
+          "name": "emitted_bin_records",
+          "total": 2810062,
+          "perFrame": {
+            "mean": 28100.62,
+            "median": 28938,
+            "p95": 30245,
+            "maximum": 30357,
+            "minimum": 22301
+          }
+        },
+        {
+          "name": "bin_grow_calls",
+          "total": 2810062,
+          "perFrame": {
+            "mean": 28100.62,
+            "median": 28938,
+            "p95": 30245,
+            "maximum": 30357,
+            "minimum": 22301
+          }
+        },
+        {
+          "name": "bin_grow_allocations",
+          "total": 5,
+          "perFrame": {
+            "mean": 0.05,
+            "median": 0,
+            "p95": 0,
+            "maximum": 1,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "bin_grow_copied_bytes",
+          "total": 40960,
+          "perFrame": {
+            "mean": 409.6,
+            "median": 0,
+            "p95": 0,
+            "maximum": 8192,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "replay_input_bin_records",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "replay_output_bin_records",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        }
+      ]
+    },
+    {
+      "audit": 2,
+      "samples": 2,
+      "scene": "bmw",
+      "frames": 100,
+      "file": "producer-ms2-audit-2.json",
+      "frameElapsedMs": {
+        "mean": 31.075999999046324,
+        "median": 31.030000001192093,
+        "p95": 35.50499999523163,
+        "maximum": 39.78000000119209,
+        "minimum": 24.91499999165535
+      },
+      "producerElapsedMsPerFrame": {
+        "mean": 24.9442626953125,
+        "median": 25.150390625,
+        "p95": 29.259765625,
+        "maximum": 33.439697265625,
+        "minimum": 18.44921875
+      },
+      "aggregateProducerWallFraction": 0.8026857605894582,
+      "phases": [
+        {
+          "name": "lookup",
+          "totalCalls": 4600,
+          "totalElapsedMs": 8.71484375,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.0871484375,
+            "median": 0.0810546875,
+            "p95": 0.11572265625,
+            "maximum": 0.396240234375,
+            "minimum": 0.044677734375
+          }
+        },
+        {
+          "name": "index_scan",
+          "totalCalls": 4600,
+          "totalElapsedMs": 106.45654296875,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 1.0645654296875,
+            "median": 1.04931640625,
+            "p95": 1.208984375,
+            "maximum": 1.400634765625,
+            "minimum": 0.970458984375
+          }
+        },
+        {
+          "name": "normal_cache",
+          "totalCalls": 4600,
+          "totalElapsedMs": 3.031494140625,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.03031494140625,
+            "median": 0.02978515625,
+            "p95": 0.0546875,
+            "maximum": 0.070068359375,
+            "minimum": 0.009765625
+          }
+        },
+        {
+          "name": "compact_transform",
+          "totalCalls": 4600,
+          "totalElapsedMs": 368.963623046875,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 3.68963623046875,
+            "median": 3.570556640625,
+            "p95": 4.970458984375,
+            "maximum": 8.4951171875,
+            "minimum": 2.829833984375
+          }
+        },
+        {
+          "name": "triangle_prepare",
+          "totalCalls": 2700,
+          "totalElapsedMs": 210.442138671875,
+          "callsPerFrame": 27.0,
+          "elapsedMsPerFrame": {
+            "mean": 2.10442138671875,
+            "median": 2.06494140625,
+            "p95": 2.51025390625,
+            "maximum": 3.18017578125,
+            "minimum": 1.595458984375
+          }
+        },
+        {
+          "name": "triangle_emit",
+          "totalCalls": 2700,
+          "totalElapsedMs": 169.61328125,
+          "callsPerFrame": 27.0,
+          "elapsedMsPerFrame": {
+            "mean": 1.6961328125,
+            "median": 1.73486328125,
+            "p95": 1.955810546875,
+            "maximum": 2.244873046875,
+            "minimum": 1.240234375
+          }
+        },
+        {
+          "name": "geometry_store",
+          "totalCalls": 2300,
+          "totalElapsedMs": 21.80908203125,
+          "callsPerFrame": 23.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.2180908203125,
+            "median": 0.215087890625,
+            "p95": 0.264892578125,
+            "maximum": 0.314453125,
+            "minimum": 0.1796875
+          }
+        },
+        {
+          "name": "geometry_replay",
+          "totalCalls": 2300,
+          "totalElapsedMs": 27.79443359375,
+          "callsPerFrame": 23.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.2779443359375,
+            "median": 0.27490234375,
+            "p95": 0.330078125,
+            "maximum": 0.38525390625,
+            "minimum": 0.204345703125
+          }
+        },
+        {
+          "name": "stream_submit",
+          "totalCalls": 8200,
+          "totalElapsedMs": 1577.600830078125,
+          "callsPerFrame": 82.0,
+          "elapsedMsPerFrame": {
+            "mean": 15.77600830078125,
+            "median": 16.060546875,
+            "p95": 19.360107421875,
+            "maximum": 22.99853515625,
+            "minimum": 9.6943359375
+          }
+        }
+      ],
+      "counters": [
+        {
+          "name": "parallel_draws",
+          "total": 4600,
+          "perFrame": {
+            "mean": 46.0,
+            "median": 46,
+            "p95": 46,
+            "maximum": 46,
+            "minimum": 46
+          }
+        },
+        {
+          "name": "geometry_hits",
+          "total": 2300,
+          "perFrame": {
+            "mean": 23.0,
+            "median": 23,
+            "p95": 23,
+            "maximum": 23,
+            "minimum": 23
+          }
+        },
+        {
+          "name": "geometry_entries",
+          "total": 4600,
+          "perFrame": {
+            "mean": 46.0,
+            "median": 46,
+            "p95": 46,
+            "maximum": 46,
+            "minimum": 46
+          }
+        },
+        {
+          "name": "indices_scanned",
+          "total": 18008100,
+          "perFrame": {
+            "mean": 180081.0,
+            "median": 180081,
+            "p95": 180081,
+            "maximum": 180081,
+            "minimum": 180081
+          }
+        },
+        {
+          "name": "vertices_requested",
+          "total": 9220600,
+          "perFrame": {
+            "mean": 92206.0,
+            "median": 92206,
+            "p95": 92206,
+            "maximum": 92206,
+            "minimum": 92206
+          }
+        },
+        {
+          "name": "prepared_batches",
+          "total": 800,
+          "perFrame": {
+            "mean": 8.0,
+            "median": 8,
+            "p95": 8,
+            "maximum": 8,
+            "minimum": 8
+          }
+        },
+        {
+          "name": "prepared_triangles",
+          "total": 5189400,
+          "perFrame": {
+            "mean": 51894.0,
+            "median": 51894,
+            "p95": 51894,
+            "maximum": 51894,
+            "minimum": 51894
+          }
+        },
+        {
+          "name": "ready_triangles",
+          "total": 5189400,
+          "perFrame": {
+            "mean": 51894.0,
+            "median": 51894,
+            "p95": 51894,
+            "maximum": 51894,
+            "minimum": 51894
+          }
+        },
+        {
+          "name": "rejected_triangles",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "general_triangles",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "unprepared_triangles",
+          "total": 813300,
+          "perFrame": {
+            "mean": 8133.0,
+            "median": 8133,
+            "p95": 8133,
+            "maximum": 8133,
+            "minimum": 8133
+          }
+        },
+        {
+          "name": "emitted_bin_records",
+          "total": 7394902,
+          "perFrame": {
+            "mean": 73949.02,
+            "median": 74893,
+            "p95": 76010,
+            "maximum": 76400,
+            "minimum": 69009
+          }
+        },
+        {
+          "name": "bin_grow_calls",
+          "total": 8163996,
+          "perFrame": {
+            "mean": 81639.96,
+            "median": 82579,
+            "p95": 83759,
+            "maximum": 84124,
+            "minimum": 76285
+          }
+        },
+        {
+          "name": "bin_grow_allocations",
+          "total": 5,
+          "perFrame": {
+            "mean": 0.05,
+            "median": 0,
+            "p95": 0,
+            "maximum": 1,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "bin_grow_copied_bytes",
+          "total": 262144,
+          "perFrame": {
+            "mean": 2621.44,
+            "median": 0,
+            "p95": 0,
+            "maximum": 65536,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "replay_input_bin_records",
+          "total": 6097300,
+          "perFrame": {
+            "mean": 60973.0,
+            "median": 61500,
+            "p95": 62336,
+            "maximum": 62478,
+            "minimum": 56966
+          }
+        },
+        {
+          "name": "replay_output_bin_records",
+          "total": 2337141,
+          "perFrame": {
+            "mean": 23371.41,
+            "median": 24082,
+            "p95": 24929,
+            "maximum": 25216,
+            "minimum": 18823
+          }
+        }
+      ]
+    },
+    {
+      "audit": 2,
+      "samples": 2,
+      "scene": "tank",
+      "frames": 100,
+      "file": "producer-ms2-audit-2.json",
+      "frameElapsedMs": {
+        "mean": 14.74690000027418,
+        "median": 14.515000015497208,
+        "p95": 16.83500000834465,
+        "maximum": 38.650000005960464,
+        "minimum": 10.9200000166893
+      },
+      "producerElapsedMsPerFrame": {
+        "mean": 13.2238037109375,
+        "median": 12.870361328125,
+        "p95": 15.2998046875,
+        "maximum": 37.0361328125,
+        "minimum": 10.08984375
+      },
+      "aggregateProducerWallFraction": 0.8967175277984958,
+      "phases": [
+        {
+          "name": "lookup",
+          "totalCalls": 600,
+          "totalElapsedMs": 2.737548828125,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.02737548828125,
+            "median": 0.025146484375,
+            "p95": 0.045654296875,
+            "maximum": 0.050048828125,
+            "minimum": 0.014892578125
+          }
+        },
+        {
+          "name": "index_scan",
+          "totalCalls": 600,
+          "totalElapsedMs": 60.54150390625,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.6054150390625,
+            "median": 0.594970703125,
+            "p95": 0.699951171875,
+            "maximum": 0.72998046875,
+            "minimum": 0.554931640625
+          }
+        },
+        {
+          "name": "normal_cache",
+          "totalCalls": 600,
+          "totalElapsedMs": 0.660888671875,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.00660888671875,
+            "median": 0.005126953125,
+            "p95": 0.01513671875,
+            "maximum": 0.020263671875,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "compact_transform",
+          "totalCalls": 600,
+          "totalElapsedMs": 486.07421875,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 4.8607421875,
+            "median": 4.709716796875,
+            "p95": 6.22998046875,
+            "maximum": 7.185302734375,
+            "minimum": 3.82470703125
+          }
+        },
+        {
+          "name": "triangle_prepare",
+          "totalCalls": 1000,
+          "totalElapsedMs": 61.608154296875,
+          "callsPerFrame": 10.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.61608154296875,
+            "median": 0.455078125,
+            "p95": 0.77978515625,
+            "maximum": 5.340087890625,
+            "minimum": 0.400146484375
+          }
+        },
+        {
+          "name": "triangle_emit",
+          "totalCalls": 1000,
+          "totalElapsedMs": 265.203857421875,
+          "callsPerFrame": 10.0,
+          "elapsedMsPerFrame": {
+            "mean": 2.65203857421875,
+            "median": 2.419677734375,
+            "p95": 3.60498046875,
+            "maximum": 3.810546875,
+            "minimum": 1.705078125
+          }
+        },
+        {
+          "name": "geometry_store",
+          "totalCalls": 600,
+          "totalElapsedMs": 3.873779296875,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.03873779296875,
+            "median": 0.03466796875,
+            "p95": 0.074951171875,
+            "maximum": 0.094970703125,
+            "minimum": 0.014892578125
+          }
+        },
+        {
+          "name": "geometry_replay",
+          "totalCalls": 0,
+          "totalElapsedMs": 0.0,
+          "callsPerFrame": 0.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "stream_submit",
+          "totalCalls": 600,
+          "totalElapsedMs": 441.680419921875,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 4.41680419921875,
+            "median": 4.159912109375,
+            "p95": 6.10546875,
+            "maximum": 22.170654296875,
+            "minimum": 2.115234375
+          }
+        }
+      ],
+      "counters": [
+        {
+          "name": "parallel_draws",
+          "total": 600,
+          "perFrame": {
+            "mean": 6.0,
+            "median": 6,
+            "p95": 6,
+            "maximum": 6,
+            "minimum": 6
+          }
+        },
+        {
+          "name": "geometry_hits",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "geometry_entries",
+          "total": 600,
+          "perFrame": {
+            "mean": 6.0,
+            "median": 6,
+            "p95": 6,
+            "maximum": 6,
+            "minimum": 6
+          }
+        },
+        {
+          "name": "indices_scanned",
+          "total": 13353900,
+          "perFrame": {
+            "mean": 133539.0,
+            "median": 133539,
+            "p95": 133539,
+            "maximum": 133539,
+            "minimum": 133539
+          }
+        },
+        {
+          "name": "vertices_requested",
+          "total": 5738500,
+          "perFrame": {
+            "mean": 57385.0,
+            "median": 57385,
+            "p95": 57385,
+            "maximum": 57385,
+            "minimum": 57385
+          }
+        },
+        {
+          "name": "prepared_batches",
+          "total": 300,
+          "perFrame": {
+            "mean": 3.0,
+            "median": 3,
+            "p95": 3,
+            "maximum": 3,
+            "minimum": 3
+          }
+        },
+        {
+          "name": "prepared_triangles",
+          "total": 1742400,
+          "perFrame": {
+            "mean": 17424.0,
+            "median": 17424,
+            "p95": 17424,
+            "maximum": 17424,
+            "minimum": 17424
+          }
+        },
+        {
+          "name": "ready_triangles",
+          "total": 846625,
+          "perFrame": {
+            "mean": 8466.25,
+            "median": 8868,
+            "p95": 9151,
+            "maximum": 9171,
+            "minimum": 6836
+          }
+        },
+        {
+          "name": "rejected_triangles",
+          "total": 781445,
+          "perFrame": {
+            "mean": 7814.45,
+            "median": 8280,
+            "p95": 8487,
+            "maximum": 8535,
+            "minimum": 6226
+          }
+        },
+        {
+          "name": "general_triangles",
+          "total": 114330,
+          "perFrame": {
+            "mean": 1143.3,
+            "median": 118,
+            "p95": 4240,
+            "maximum": 4298,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "unprepared_triangles",
+          "total": 2708900,
+          "perFrame": {
+            "mean": 27089.0,
+            "median": 27089,
+            "p95": 27089,
+            "maximum": 27089,
+            "minimum": 27089
+          }
+        },
+        {
+          "name": "emitted_bin_records",
+          "total": 2810062,
+          "perFrame": {
+            "mean": 28100.62,
+            "median": 28938,
+            "p95": 30245,
+            "maximum": 30357,
+            "minimum": 22301
+          }
+        },
+        {
+          "name": "bin_grow_calls",
+          "total": 2810062,
+          "perFrame": {
+            "mean": 28100.62,
+            "median": 28938,
+            "p95": 30245,
+            "maximum": 30357,
+            "minimum": 22301
+          }
+        },
+        {
+          "name": "bin_grow_allocations",
+          "total": 5,
+          "perFrame": {
+            "mean": 0.05,
+            "median": 0,
+            "p95": 0,
+            "maximum": 1,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "bin_grow_copied_bytes",
+          "total": 40960,
+          "perFrame": {
+            "mean": 409.6,
+            "median": 0,
+            "p95": 0,
+            "maximum": 8192,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "replay_input_bin_records",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "replay_output_bin_records",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        }
+      ]
+    },
+    {
+      "audit": 2,
+      "samples": 0,
+      "scene": "bmw",
+      "frames": 100,
+      "file": "producer-ms0-audit-2.json",
+      "frameElapsedMs": {
+        "mean": 26.985850001573564,
+        "median": 27.075000017881393,
+        "p95": 30.280000001192093,
+        "maximum": 33.729999989271164,
+        "minimum": 22.09500002861023
+      },
+      "producerElapsedMsPerFrame": {
+        "mean": 22.3095263671875,
+        "median": 22.474609375,
+        "p95": 25.785400390625,
+        "maximum": 28.96435546875,
+        "minimum": 17.5693359375
+      },
+      "aggregateProducerWallFraction": 0.8267120126246391,
+      "phases": [
+        {
+          "name": "lookup",
+          "totalCalls": 4600,
+          "totalElapsedMs": 8.835205078125,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.08835205078125,
+            "median": 0.080078125,
+            "p95": 0.109375,
+            "maximum": 0.8046875,
+            "minimum": 0.02978515625
+          }
+        },
+        {
+          "name": "index_scan",
+          "totalCalls": 4600,
+          "totalElapsedMs": 105.81787109375,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 1.0581787109375,
+            "median": 1.045166015625,
+            "p95": 1.153564453125,
+            "maximum": 1.271240234375,
+            "minimum": 0.9794921875
+          }
+        },
+        {
+          "name": "normal_cache",
+          "totalCalls": 4600,
+          "totalElapsedMs": 3.173828125,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.03173828125,
+            "median": 0.0302734375,
+            "p95": 0.05029296875,
+            "maximum": 0.05078125,
+            "minimum": 0.0048828125
+          }
+        },
+        {
+          "name": "compact_transform",
+          "totalCalls": 4600,
+          "totalElapsedMs": 397.24560546875,
+          "callsPerFrame": 46.0,
+          "elapsedMsPerFrame": {
+            "mean": 3.9724560546875,
+            "median": 3.99609375,
+            "p95": 4.71044921875,
+            "maximum": 5.239990234375,
+            "minimum": 3.06005859375
+          }
+        },
+        {
+          "name": "triangle_prepare",
+          "totalCalls": 2700,
+          "totalElapsedMs": 240.19140625,
+          "callsPerFrame": 27.0,
+          "elapsedMsPerFrame": {
+            "mean": 2.4019140625,
+            "median": 2.404541015625,
+            "p95": 2.889892578125,
+            "maximum": 3.574462890625,
+            "minimum": 1.875
+          }
+        },
+        {
+          "name": "triangle_emit",
+          "totalCalls": 2700,
+          "totalElapsedMs": 168.165283203125,
+          "callsPerFrame": 27.0,
+          "elapsedMsPerFrame": {
+            "mean": 1.68165283203125,
+            "median": 1.780029296875,
+            "p95": 1.948974609375,
+            "maximum": 2.095947265625,
+            "minimum": 1.3603515625
+          }
+        },
+        {
+          "name": "geometry_store",
+          "totalCalls": 2300,
+          "totalElapsedMs": 15.28564453125,
+          "callsPerFrame": 23.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.1528564453125,
+            "median": 0.150146484375,
+            "p95": 0.19970703125,
+            "maximum": 0.219970703125,
+            "minimum": 0.119384765625
+          }
+        },
+        {
+          "name": "geometry_replay",
+          "totalCalls": 2300,
+          "totalElapsedMs": 19.059326171875,
+          "callsPerFrame": 23.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.19059326171875,
+            "median": 0.189453125,
+            "p95": 0.244873046875,
+            "maximum": 0.470458984375,
+            "minimum": 0.12451171875
+          }
+        },
+        {
+          "name": "stream_submit",
+          "totalCalls": 8200,
+          "totalElapsedMs": 1273.178466796875,
+          "callsPerFrame": 82.0,
+          "elapsedMsPerFrame": {
+            "mean": 12.73178466796875,
+            "median": 12.716064453125,
+            "p95": 16.0400390625,
+            "maximum": 18.95458984375,
+            "minimum": 8.220458984375
+          }
+        }
+      ],
+      "counters": [
+        {
+          "name": "parallel_draws",
+          "total": 4600,
+          "perFrame": {
+            "mean": 46.0,
+            "median": 46,
+            "p95": 46,
+            "maximum": 46,
+            "minimum": 46
+          }
+        },
+        {
+          "name": "geometry_hits",
+          "total": 2300,
+          "perFrame": {
+            "mean": 23.0,
+            "median": 23,
+            "p95": 23,
+            "maximum": 23,
+            "minimum": 23
+          }
+        },
+        {
+          "name": "geometry_entries",
+          "total": 4600,
+          "perFrame": {
+            "mean": 46.0,
+            "median": 46,
+            "p95": 46,
+            "maximum": 46,
+            "minimum": 46
+          }
+        },
+        {
+          "name": "indices_scanned",
+          "total": 18008100,
+          "perFrame": {
+            "mean": 180081.0,
+            "median": 180081,
+            "p95": 180081,
+            "maximum": 180081,
+            "minimum": 180081
+          }
+        },
+        {
+          "name": "vertices_requested",
+          "total": 9220600,
+          "perFrame": {
+            "mean": 92206.0,
+            "median": 92206,
+            "p95": 92206,
+            "maximum": 92206,
+            "minimum": 92206
+          }
+        },
+        {
+          "name": "prepared_batches",
+          "total": 800,
+          "perFrame": {
+            "mean": 8.0,
+            "median": 8,
+            "p95": 8,
+            "maximum": 8,
+            "minimum": 8
+          }
+        },
+        {
+          "name": "prepared_triangles",
+          "total": 5189400,
+          "perFrame": {
+            "mean": 51894.0,
+            "median": 51894,
+            "p95": 51894,
+            "maximum": 51894,
+            "minimum": 51894
+          }
+        },
+        {
+          "name": "ready_triangles",
+          "total": 4212726,
+          "perFrame": {
+            "mean": 42127.26,
+            "median": 42789,
+            "p95": 43558,
+            "maximum": 43636,
+            "minimum": 37161
+          }
+        },
+        {
+          "name": "rejected_triangles",
+          "total": 976674,
+          "perFrame": {
+            "mean": 9766.74,
+            "median": 9111,
+            "p95": 14366,
+            "maximum": 14733,
+            "minimum": 8258
+          }
+        },
+        {
+          "name": "general_triangles",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "unprepared_triangles",
+          "total": 813300,
+          "perFrame": {
+            "mean": 8133.0,
+            "median": 8133,
+            "p95": 8133,
+            "maximum": 8133,
+            "minimum": 8133
+          }
+        },
+        {
+          "name": "emitted_bin_records",
+          "total": 5160202,
+          "perFrame": {
+            "mean": 51602.02,
+            "median": 52518,
+            "p95": 53870,
+            "maximum": 54197,
+            "minimum": 43875
+          }
+        },
+        {
+          "name": "bin_grow_calls",
+          "total": 5555521,
+          "perFrame": {
+            "mean": 55555.21,
+            "median": 56543,
+            "p95": 58078,
+            "maximum": 58456,
+            "minimum": 47189
+          }
+        },
+        {
+          "name": "bin_grow_allocations",
+          "total": 2,
+          "perFrame": {
+            "mean": 0.02,
+            "median": 0,
+            "p95": 0,
+            "maximum": 2,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "bin_grow_copied_bytes",
+          "total": 131072,
+          "perFrame": {
+            "mean": 1310.72,
+            "median": 0,
+            "p95": 0,
+            "maximum": 131072,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "replay_input_bin_records",
+          "total": 3785662,
+          "perFrame": {
+            "mean": 37856.62,
+            "median": 38401,
+            "p95": 39713,
+            "maximum": 39851,
+            "minimum": 32269
+          }
+        },
+        {
+          "name": "replay_output_bin_records",
+          "total": 1739282,
+          "perFrame": {
+            "mean": 17392.82,
+            "median": 17846,
+            "p95": 19204,
+            "maximum": 19277,
+            "minimum": 12775
+          }
+        }
+      ]
+    },
+    {
+      "audit": 2,
+      "samples": 0,
+      "scene": "tank",
+      "frames": 100,
+      "file": "producer-ms0-audit-2.json",
+      "frameElapsedMs": {
+        "mean": 11.591799999475478,
+        "median": 11.564999997615814,
+        "p95": 13.16499999165535,
+        "maximum": 15.030000001192093,
+        "minimum": 9.5
+      },
+      "producerElapsedMsPerFrame": {
+        "mean": 11.21685546875,
+        "median": 11.155517578125,
+        "p95": 12.74462890625,
+        "maximum": 14.550537109375,
+        "minimum": 9.189697265625
+      },
+      "aggregateProducerWallFraction": 0.9676543305834775,
+      "phases": [
+        {
+          "name": "lookup",
+          "totalCalls": 600,
+          "totalElapsedMs": 2.381591796875,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.02381591796875,
+            "median": 0.02490234375,
+            "p95": 0.03515625,
+            "maximum": 0.05029296875,
+            "minimum": 0.009765625
+          }
+        },
+        {
+          "name": "index_scan",
+          "totalCalls": 600,
+          "totalElapsedMs": 59.59326171875,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.5959326171875,
+            "median": 0.58984375,
+            "p95": 0.65478515625,
+            "maximum": 0.715087890625,
+            "minimum": 0.5595703125
+          }
+        },
+        {
+          "name": "normal_cache",
+          "totalCalls": 600,
+          "totalElapsedMs": 0.605224609375,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.00605224609375,
+            "median": 0.0048828125,
+            "p95": 0.01513671875,
+            "maximum": 0.05029296875,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "compact_transform",
+          "totalCalls": 600,
+          "totalElapsedMs": 437.16162109375,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 4.3716162109375,
+            "median": 4.205322265625,
+            "p95": 5.295166015625,
+            "maximum": 6.269775390625,
+            "minimum": 3.775634765625
+          }
+        },
+        {
+          "name": "triangle_prepare",
+          "totalCalls": 1000,
+          "totalElapsedMs": 49.862060546875,
+          "callsPerFrame": 10.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.49862060546875,
+            "median": 0.469970703125,
+            "p95": 0.5849609375,
+            "maximum": 1.520263671875,
+            "minimum": 0.4150390625
+          }
+        },
+        {
+          "name": "triangle_emit",
+          "totalCalls": 1000,
+          "totalElapsedMs": 247.18994140625,
+          "callsPerFrame": 10.0,
+          "elapsedMsPerFrame": {
+            "mean": 2.4718994140625,
+            "median": 2.16015625,
+            "p95": 3.4296875,
+            "maximum": 3.7099609375,
+            "minimum": 1.660400390625
+          }
+        },
+        {
+          "name": "geometry_store",
+          "totalCalls": 600,
+          "totalElapsedMs": 2.765869140625,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.02765869140625,
+            "median": 0.02490234375,
+            "p95": 0.05517578125,
+            "maximum": 0.06005859375,
+            "minimum": 0.010009765625
+          }
+        },
+        {
+          "name": "geometry_replay",
+          "totalCalls": 0,
+          "totalElapsedMs": 0.0,
+          "callsPerFrame": 0.0,
+          "elapsedMsPerFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "stream_submit",
+          "totalCalls": 600,
+          "totalElapsedMs": 322.1259765625,
+          "callsPerFrame": 6.0,
+          "elapsedMsPerFrame": {
+            "mean": 3.221259765625,
+            "median": 3.280029296875,
+            "p95": 4.29443359375,
+            "maximum": 7.31005859375,
+            "minimum": 1.730224609375
+          }
+        }
+      ],
+      "counters": [
+        {
+          "name": "parallel_draws",
+          "total": 600,
+          "perFrame": {
+            "mean": 6.0,
+            "median": 6,
+            "p95": 6,
+            "maximum": 6,
+            "minimum": 6
+          }
+        },
+        {
+          "name": "geometry_hits",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "geometry_entries",
+          "total": 600,
+          "perFrame": {
+            "mean": 6.0,
+            "median": 6,
+            "p95": 6,
+            "maximum": 6,
+            "minimum": 6
+          }
+        },
+        {
+          "name": "indices_scanned",
+          "total": 13353900,
+          "perFrame": {
+            "mean": 133539.0,
+            "median": 133539,
+            "p95": 133539,
+            "maximum": 133539,
+            "minimum": 133539
+          }
+        },
+        {
+          "name": "vertices_requested",
+          "total": 5738500,
+          "perFrame": {
+            "mean": 57385.0,
+            "median": 57385,
+            "p95": 57385,
+            "maximum": 57385,
+            "minimum": 57385
+          }
+        },
+        {
+          "name": "prepared_batches",
+          "total": 300,
+          "perFrame": {
+            "mean": 3.0,
+            "median": 3,
+            "p95": 3,
+            "maximum": 3,
+            "minimum": 3
+          }
+        },
+        {
+          "name": "prepared_triangles",
+          "total": 1742400,
+          "perFrame": {
+            "mean": 17424.0,
+            "median": 17424,
+            "p95": 17424,
+            "maximum": 17424,
+            "minimum": 17424
+          }
+        },
+        {
+          "name": "ready_triangles",
+          "total": 703896,
+          "perFrame": {
+            "mean": 7038.96,
+            "median": 7327,
+            "p95": 7917,
+            "maximum": 8012,
+            "minimum": 4826
+          }
+        },
+        {
+          "name": "rejected_triangles",
+          "total": 924174,
+          "perFrame": {
+            "mean": 9241.74,
+            "median": 9548,
+            "p95": 10370,
+            "maximum": 11022,
+            "minimum": 7606
+          }
+        },
+        {
+          "name": "general_triangles",
+          "total": 114330,
+          "perFrame": {
+            "mean": 1143.3,
+            "median": 118,
+            "p95": 4240,
+            "maximum": 4298,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "unprepared_triangles",
+          "total": 2708900,
+          "perFrame": {
+            "mean": 27089.0,
+            "median": 27089,
+            "p95": 27089,
+            "maximum": 27089,
+            "minimum": 27089
+          }
+        },
+        {
+          "name": "emitted_bin_records",
+          "total": 2081931,
+          "perFrame": {
+            "mean": 20819.31,
+            "median": 21267,
+            "p95": 22968,
+            "maximum": 23012,
+            "minimum": 15054
+          }
+        },
+        {
+          "name": "bin_grow_calls",
+          "total": 2081931,
+          "perFrame": {
+            "mean": 20819.31,
+            "median": 21267,
+            "p95": 22968,
+            "maximum": 23012,
+            "minimum": 15054
+          }
+        },
+        {
+          "name": "bin_grow_allocations",
+          "total": 1,
+          "perFrame": {
+            "mean": 0.01,
+            "median": 0,
+            "p95": 0,
+            "maximum": 1,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "bin_grow_copied_bytes",
+          "total": 16384,
+          "perFrame": {
+            "mean": 163.84,
+            "median": 0,
+            "p95": 0,
+            "maximum": 16384,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "replay_input_bin_records",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        },
+        {
+          "name": "replay_output_bin_records",
+          "total": 0,
+          "perFrame": {
+            "mean": 0.0,
+            "median": 0,
+            "p95": 0,
+            "maximum": 0,
+            "minimum": 0
+          }
+        }
+      ]
+    }
+  ],
+  "interpretation": "Caller-local wall durations include joins/mutex waits/preemption and diagnostic costs. Helpers can rasterize concurrently. Triangle emission includes general/clipping fallback; bin-grow counters observe actual calls/allocations/copied bytes, not cache misses/DRAM traffic. Transform counter measures requested ranges, not computed/missed vertices. Store/prepare/scan calls include conditional no-op paths. Outer clocks bracket draw and resolve; metadata reads afterward. No saved-cycle, exclusive CPU-time, uninstrumented FPS or ceiling claim."
+}

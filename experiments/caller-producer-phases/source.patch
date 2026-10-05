@@ -1,0 +1,229 @@
+--- a/libsoftgl/src/workers.c
++++ b/libsoftgl/src/workers.c
+@@ -4,6 +4,27 @@
+ #include "raster_vertex_pack.h"
+ #include <stdlib.h>
+ #include <string.h>
++
++
++#include "producer_diag.h"
++#ifdef SG_CALLER_PRODUCER_DIAG
++_Thread_local double sg_producer_ms[SG_PRODUCER_PHASE_COUNT];
++_Thread_local unsigned sg_producer_calls[SG_PRODUCER_PHASE_COUNT];
++_Thread_local uint64_t sg_producer_counts[SG_PRODUCER_COUNTER_COUNT];
++void sg_caller_producer_reset(void) {
++    memset(sg_producer_ms, 0, sizeof(sg_producer_ms));
++    memset(sg_producer_calls, 0, sizeof(sg_producer_calls));
++    memset(sg_producer_counts, 0, sizeof(sg_producer_counts));
++}
++double sg_caller_producer_read(int index) {
++    if (index >= 0 && index < SG_PRODUCER_PHASE_COUNT) return sg_producer_calls[index];
++    index -= SG_PRODUCER_PHASE_COUNT;
++    if (index >= 0 && index < SG_PRODUCER_PHASE_COUNT) return sg_producer_ms[index];
++    index -= SG_PRODUCER_PHASE_COUNT;
++    if (index >= 0 && index < SG_PRODUCER_COUNTER_COUNT) return (double)sg_producer_counts[index];
++    return 0;
++}
++#endif
+ 
+ _Thread_local sg_worker_bin *sg_raster_bin;
+ 
+@@ -52,8 +73,11 @@
+ }
+ 
+ static void sg_bin_grow(sg_worker_bin *b, int need) {
++    SG_PRODUCER_ADD(BIN_GROW_CALLS, 1);
+     int cap = b->cap;
+     if (cap >= need) return;
++    SG_PRODUCER_ADD(BIN_GROW_ALLOCATIONS, 1);
++    SG_PRODUCER_ADD(BIN_GROW_COPIED_BYTES, (uint64_t)b->count * sizeof(*b->tris));
+     if (cap == 0) cap = 256;
+     while (cap < need) cap *= 2;
+     sg_worker_tri *n = (sg_worker_tri*)sg_aligned_alloc((size_t)cap * sizeof(*n), 16);
+@@ -396,6 +420,7 @@
+         int first = entry->offsets[b], count = entry->offsets[b + 1] - first;
+         sg_worker_bin *bin = &p->bins[b];
+         if (!count) continue;
++        SG_PRODUCER_ADD(REPLAY_INPUT_BIN_RECORDS, count);
+         sg_bin_grow(bin, count);
+         if (entry->depth_epoch && entry->depth_epoch == p->depth_epoch &&
+             (c->fb.samples == 0 || c->fb.samples == 2 || c->fb.samples == 4) && c->depth_test && !c->stencil_test &&
+@@ -412,6 +437,7 @@
+             memcpy(bin->tris, entry->tris + first, (size_t)count * sizeof(*bin->tris));
+             bin->count = count;
+         }
++        SG_PRODUCER_ADD(REPLAY_OUTPUT_BIN_RECORDS, bin->count);
+     }
+ }
+ 
+--- a/libsoftgl/src/pipeline.c
++++ b/libsoftgl/src/pipeline.c
+@@ -6,6 +6,7 @@
+ #include <string.h>
+ #include <stdlib.h>
+ #include <stdio.h>
++#include "producer_diag.h"
+ 
+ /* Pipeline: vertex fetch -> MV -> projection -> clip -> viewport -> raster. */
+ 
+@@ -759,18 +760,33 @@
+              * is actually referenced. Scan once — cheap even at 130k indices. */
+             uint32_t imin = 0xFFFFFFFFu, imax = 0;
+             int geometry_hit;
++            SG_PRODUCER_ADD(PARALLEL_DRAWS, 1);
++            SG_PRODUCER_BEGIN(LOOKUP);
+             sg_geometry_entry *geometry = sg_workers_geometry_lookup(c, count, type, indices,
+                                                                        &imin, &imax, &geometry_hit);
++            SG_PRODUCER_END(LOOKUP);
++            SG_PRODUCER_ADD(GEOMETRY_HITS, geometry_hit);
++            SG_PRODUCER_ADD(GEOMETRY_ENTRIES, geometry != NULL);
++            SG_PRODUCER_BEGIN(INDEX_SCAN);
+             if (!geometry_hit) for (int k = 0; k < count; k++) {
+                 uint32_t ix = sg_fetch_index(type, index_data, k);
+                 if (ix < imin) imin = ix;
+                 if (ix > imax) imax = ix;
+             }
++            SG_PRODUCER_END(INDEX_SCAN);
++            SG_PRODUCER_ADD(INDICES_SCANNED, geometry_hit ? 0 : count);
++            SG_PRODUCER_BEGIN(NORMAL_CACHE);
+             sg_prepare_nm_cache(c);
++            SG_PRODUCER_END(NORMAL_CACHE);
++            SG_PRODUCER_ADD(VERTICES_REQUESTED, imax - imin + 1);
++            SG_PRODUCER_BEGIN(COMPACT_TRANSFORM);
+             const sg_vert *pre = sg_workers_transform_compact(c, (int)imin, (int)(imax - imin + 1));
++            SG_PRODUCER_END(COMPACT_TRANSFORM);
+             if (pre) {
+                 if (geometry_hit) {
++                    SG_PRODUCER_BEGIN(GEOMETRY_REPLAY);
+                     sg_workers_geometry_replay(c, geometry);
++                    SG_PRODUCER_END(GEOMETRY_REPLAY);
+                     goto triangles_done;
+                 }
+                 int all_inside = geometry != NULL;
+@@ -780,9 +796,25 @@
+                 for (int base = 0; base < ntri; ) {
+                     int batch = ntri - base;
+                     if (batch > SG_TRIANGLE_STAGE_MAX) batch = SG_TRIANGLE_STAGE_MAX;
++                    SG_PRODUCER_BEGIN(TRIANGLE_PREPARE);
+                     const sg_prepared_tri *records = reuse_screen && index_data ? sg_workers_prepare_triangles(c,
+                         index_data + (size_t)base * 3 * index_size, type, imin, batch) : NULL;
++                    SG_PRODUCER_END(TRIANGLE_PREPARE);
++                    SG_PRODUCER_ADD(PREPARED_BATCHES, records != NULL);
++                    SG_PRODUCER_ADD(PREPARED_TRIANGLES, records ? batch : 0);
++#ifdef SG_CALLER_PRODUCER_DIAG
++                    uint64_t bin_before = sg_producer_bin_count(c);
++                    unsigned ready_count = 0, reject_count = 0, general_count = 0;
++#endif
++                    SG_PRODUCER_BEGIN(TRIANGLE_EMIT);
+                     for (int j = 0; j < batch; j++) {
++#ifdef SG_CALLER_PRODUCER_DIAG
++                        if (records) {
++                            ready_count += records[j].kind == SG_TRI_READY;
++                            reject_count += records[j].kind == SG_TRI_REJECT;
++                            general_count += records[j].kind == SG_TRI_GENERAL;
++                        }
++#endif
+                         if (records && records[j].kind != SG_TRI_GENERAL) {
+                             if (records[j].kind == SG_TRI_READY) sg_workers_bin_prepared_tri(c, &records[j]);
+                             continue;
+@@ -796,9 +828,17 @@
+                         sg_process_triangle_cached(c, &pre[i0], &pre[i1], &pre[i2],
+                             reuse_screen && triangle_inside);
+                     }
++                    SG_PRODUCER_END(TRIANGLE_EMIT);
++                    SG_PRODUCER_ADD(READY_TRIANGLES, ready_count);
++                    SG_PRODUCER_ADD(REJECTED_TRIANGLES, reject_count);
++                    SG_PRODUCER_ADD(GENERAL_TRIANGLES, general_count);
++                    SG_PRODUCER_ADD(UNPREPARED_TRIANGLES, records ? 0 : batch);
++                    SG_PRODUCER_ADD(EMITTED_BIN_RECORDS, sg_producer_bin_count(c) - bin_before);
+                     base += batch;
+                 }
++                SG_PRODUCER_BEGIN(GEOMETRY_STORE);
+                 if (all_inside) sg_workers_geometry_store(c, geometry, imin, imax);
++                SG_PRODUCER_END(GEOMETRY_STORE);
+                 goto triangles_done;
+             }
+         }
+@@ -873,8 +913,10 @@
+             sg_process_point(c, &v);
+         }
+     }
++    SG_PRODUCER_BEGIN(STREAM_SUBMIT);
+     if (stream) sg_workers_submit_stream(c);
+     else sg_workers_flush(c);
++    SG_PRODUCER_END(STREAM_SUBMIT);
+ }
+ 
+ void glDrawArrays(GLenum mode, GLint first, GLsizei count) {
+--- /dev/null
++++ b/libsoftgl/src/producer_diag.h
+@@ -0,0 +1,69 @@
++/* Private compile-time caller diagnostic. No renderer state changes. */
++#ifdef SG_CALLER_PRODUCER_DIAG
++#ifdef __EMSCRIPTEN__
++#include <emscripten/emscripten.h>
++#else
++#include <time.h>
++#endif
++enum {
++    SG_PRODUCER_LOOKUP,
++    SG_PRODUCER_INDEX_SCAN,
++    SG_PRODUCER_NORMAL_CACHE,
++    SG_PRODUCER_COMPACT_TRANSFORM,
++    SG_PRODUCER_TRIANGLE_PREPARE,
++    SG_PRODUCER_TRIANGLE_EMIT,
++    SG_PRODUCER_GEOMETRY_STORE,
++    SG_PRODUCER_GEOMETRY_REPLAY,
++    SG_PRODUCER_STREAM_SUBMIT,
++    SG_PRODUCER_PHASE_COUNT
++};
++enum {
++    SG_PRODUCER_PARALLEL_DRAWS,
++    SG_PRODUCER_GEOMETRY_HITS,
++    SG_PRODUCER_GEOMETRY_ENTRIES,
++    SG_PRODUCER_INDICES_SCANNED,
++    SG_PRODUCER_VERTICES_REQUESTED,
++    SG_PRODUCER_PREPARED_BATCHES,
++    SG_PRODUCER_PREPARED_TRIANGLES,
++    SG_PRODUCER_READY_TRIANGLES,
++    SG_PRODUCER_REJECTED_TRIANGLES,
++    SG_PRODUCER_GENERAL_TRIANGLES,
++    SG_PRODUCER_UNPREPARED_TRIANGLES,
++    SG_PRODUCER_EMITTED_BIN_RECORDS,
++    SG_PRODUCER_BIN_GROW_CALLS,
++    SG_PRODUCER_BIN_GROW_ALLOCATIONS,
++    SG_PRODUCER_BIN_GROW_COPIED_BYTES,
++    SG_PRODUCER_REPLAY_INPUT_BIN_RECORDS,
++    SG_PRODUCER_REPLAY_OUTPUT_BIN_RECORDS,
++    SG_PRODUCER_COUNTER_COUNT
++};
++extern _Thread_local double sg_producer_ms[SG_PRODUCER_PHASE_COUNT];
++extern _Thread_local unsigned sg_producer_calls[SG_PRODUCER_PHASE_COUNT];
++extern _Thread_local uint64_t sg_producer_counts[SG_PRODUCER_COUNTER_COUNT];
++static inline double sg_producer_clock(void) {
++#ifdef __EMSCRIPTEN__
++    return emscripten_get_now();
++#else
++    struct timespec now;
++    clock_gettime(CLOCK_MONOTONIC, &now);
++    return (double)now.tv_sec * 1000.0 + (double)now.tv_nsec * .000001;
++#endif
++}
++static inline void sg_producer_end(int phase, double start) {
++    sg_producer_ms[phase] += sg_producer_clock() - start;
++    sg_producer_calls[phase]++;
++}
++static inline uint64_t sg_producer_bin_count(const softgl_ctx *c) {
++    const sg_worker_pool *pool = (const sg_worker_pool *)c->workers;
++    uint64_t count = 0;
++    if (pool) for (int b = 0; b < pool->nbins; b++) count += pool->bins[b].count;
++    return count;
++}
++#define SG_PRODUCER_BEGIN(name) double producer_##name##_start = sg_producer_clock()
++#define SG_PRODUCER_END(name) sg_producer_end(SG_PRODUCER_##name, producer_##name##_start)
++#define SG_PRODUCER_ADD(name, count) (sg_producer_counts[SG_PRODUCER_##name] += (uint64_t)(count))
++#else
++#define SG_PRODUCER_BEGIN(name) ((void)0)
++#define SG_PRODUCER_END(name) ((void)0)
++#define SG_PRODUCER_ADD(name, count) ((void)0)
++#endif

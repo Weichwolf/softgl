@@ -1,5 +1,20 @@
 # Optimization evidence
 
+[Caller producer phases](caller-producer-phases/README.md) separate nine scopes
+and seventeen actual counters in two guarded audits per scene/mode. BMW scans
+180,081 indices per frame in 1.0582–1.0749 ms; triangle emission takes
+1.4894–2.0188 ms, with only 0.02–0.05 actual bin-growth allocations per frame
+after warmup. Twenty-three of 46 parallel draws hit the geometry cache.
+Stream submission includes caller raster helping and waiting, so its larger
+wall time is not a removable metadata cost. Full fidelity gates and all six
+first quiet guards pass; 1200 raw frames, reversible observer edits, source
+patch, actual producer and an independent verifier are public. The accepted
+WASM root contains no unsigned SIMD extrema opcodes of the six inspected lane
+kinds; the initial disassembly-label mapping error and correction are retained.
+The next trial will specialize the exact unsigned index scan for SIMD, before
+attempting bulk or parallel bin assembly. These diagnostic times include
+observer effects and do not establish an FPS gain. Production remains `7cc38593`.
+
 The [adaptive geometry reservation trial](geometry-claim-batches/README.md)
 is rejected: no BMW mode improves in both audits. Off changes +0.331%/+0.015%,
 2x +0.237%/-0.462%, and 4x +1.239%/+0.080%. T-80 controls are mixed. Reserving
