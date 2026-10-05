@@ -46,5 +46,6 @@
 | Chromium / Firefox | je 234 Tests + 18 Benchmarkzeilen; Abbruch; MSAA-Wechsel |
 | Geometrie / Bildtoleranzen | unverändert |
 | Neue Layout-/Bin-Architekturversuche / AB/BA-Paare / übernommen | 5 / 30 / 0 |
-| Neue SIMD-Scanline-Versuche / AB/BA-Paare / übernommen | 3 / 18 / 0 |
+| Neue SIMD-Scanline-Versuche / AB/BA-Paare / übernommen | 4 / 24 / 0 |
+| Viewer-Cubemap-Sharing / AB/BA-Paare / übernommen | 1 / 6 / 0 |
 | Rohdaten / Nachweis | `build/perf/tigerlake-20261004/` / `build/diagnostics/msaa-cube-combined/` |
