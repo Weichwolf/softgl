@@ -1,0 +1,16 @@
+{
+  "unitRoundoff": 5.960464477539063e-08,
+  "singleProducerBoundInU": 13.000005245210296,
+  "chosenSingleProducerBoundInU": 32,
+  "doubleProducerAndSubtractionMarginInU": 65,
+  "actualF32Constant": 3.999999989900971e-06,
+  "constantInU": 67.1088638305664,
+  "slack": 1.256980795005802e-07,
+  "formulas": {
+    "gamma4": "4u/(1-4u)",
+    "gamma3": "3u/(1-3u)",
+    "rho": "u+u*(1+gamma4+u)",
+    "singleProducer": "2*gamma4+rho+gamma3*(1+2*gamma4+3*rho)"
+  },
+  "scope": "Exact rational arithmetic checks this error model; assumes round-to-nearest binary32 conversion/division/product/sums, covered nonoverflowing integer edges and finite vertex depths[0,1]. Not a renderer test or native cost measurement."
+}

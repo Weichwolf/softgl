@@ -1,0 +1,109 @@
+{
+  "wasmSha256": "dacc75f633e7fe7f65aa3a85a60f4bfa391e7974956340788c5886401e5741cc",
+  "symbolSha256": "f745ea9f720086f05c80fc1df53cf76836c80142f27fea6a302daeb514347a61",
+  "functionImports": 256,
+  "definedFunctions": 1402,
+  "roots": [
+    {
+      "name": "sg_raster_triangle_tile_prepared",
+      "absoluteFunctionIndex": 424,
+      "definedFunctionIndex": 168,
+      "bodyBytes": 22434,
+      "localDeclarations": {
+        "0x7f": 42,
+        "0x7b": 31,
+        "0x7d": 14,
+        "0x7e": 35
+      },
+      "bodySha256": "b54c3a8dc67b6e46423cc599c8d8054c0306f2778af9c22accb1ce90a2977528"
+    },
+    {
+      "name": "sg_raster_triangle_depth_capture",
+      "absoluteFunctionIndex": 423,
+      "definedFunctionIndex": 167,
+      "bodyBytes": 22603,
+      "localDeclarations": {
+        "0x7f": 43,
+        "0x7b": 31,
+        "0x7d": 14,
+        "0x7e": 35
+      },
+      "bodySha256": "dd432dabc39e47759a35603dfc5c8cb3102c12a4a0ff0d30ca234016992a777b"
+    },
+    {
+      "name": "sg_raster_triangle_msaa2",
+      "absoluteFunctionIndex": 417,
+      "definedFunctionIndex": 161,
+      "bodyBytes": 22401,
+      "localDeclarations": {
+        "0x7b": 27,
+        "0x7f": 56,
+        "0x7d": 17,
+        "0x7e": 36
+      },
+      "bodySha256": "ec861b09dc202884c7ccbb855f75e609751b9ad2a0b568cf7ae0284675e55d45"
+    },
+    {
+      "name": "sg_raster_triangle_msaa2_capture",
+      "absoluteFunctionIndex": 420,
+      "definedFunctionIndex": 164,
+      "bodyBytes": 22745,
+      "localDeclarations": {
+        "0x7b": 27,
+        "0x7f": 57,
+        "0x7d": 17,
+        "0x7e": 36
+      },
+      "bodySha256": "d411161dfeacf6a2d149f14ac4e1be43738335483716136f6e8b06aff7c6598e"
+    },
+    {
+      "name": "sg_raster_triangle_msaa4",
+      "absoluteFunctionIndex": 421,
+      "definedFunctionIndex": 165,
+      "bodyBytes": 25643,
+      "localDeclarations": {
+        "0x7f": 57,
+        "0x7b": 35,
+        "0x7e": 30,
+        "0x7d": 16
+      },
+      "bodySha256": "c0a39f1e5d0e3dcb7449c5d83799c22e2ba39d1b538dd485a651ce99626c5d31"
+    },
+    {
+      "name": "sg_raster_triangle_msaa4_capture",
+      "absoluteFunctionIndex": 422,
+      "definedFunctionIndex": 166,
+      "bodyBytes": 25719,
+      "localDeclarations": {
+        "0x7b": 35,
+        "0x7f": 58,
+        "0x7e": 30,
+        "0x7d": 16
+      },
+      "bodySha256": "2277f66c221f6d442f277a66f968b3dc7b9f404730bf2d4f94711e877b01b5b7"
+    },
+    {
+      "name": "sg_queue_render_packed",
+      "absoluteFunctionIndex": 494,
+      "definedFunctionIndex": 238,
+      "bodyBytes": 1312,
+      "localDeclarations": {
+        "0x7f": 22,
+        "0x7e": 2
+      },
+      "bodySha256": "cfa44ff3795e08e6524def8e3eb78cc8cd3380af77ae4aa2d5a62abd80d280d2"
+    },
+    {
+      "name": "sg_drain_packed_bins",
+      "absoluteFunctionIndex": 492,
+      "definedFunctionIndex": 236,
+      "bodyBytes": 2015,
+      "localDeclarations": {
+        "0x7f": 31,
+        "0x7e": 2
+      },
+      "bodySha256": "d82adf2824f767b4762593687f48534ff99984ff98d22d2a6c187021e688ab7c"
+    }
+  ],
+  "note": "Static WASM body bytes/locals, not native code, register spills, cache traffic or dynamic cycle counts."
+}

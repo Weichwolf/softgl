@@ -1,5 +1,14 @@
 # Optimization evidence
 
+The [per-pixel depth-bound trial](off-pixel-bound/README.md) improves BMW
+without MSAA by 0.970%/1.203%, with all six pairs faster, but is not retained:
+BMW 4x costs 0.535%/0.894% (five of six pairs slower), and T-80 off costs
+1.035%/2.760% (all six slower). It skips 2065.73 additional logical BMW off
+replay visits per frame on average. Eighteen comparisons, full regressions,
+an expanded 7680-case actual-render oracle, a rational rounding budget and
+independent diagnostic/renderer patches are published. The portable verifier
+recomputes paired audits and counter differences; production remains `e7ea52b2`.
+
 [Conservative off-mode depth replay](depth-replay-off-bound/README.md) is
 retained with an explicit trade-off: BMW without MSAA takes 9.481%/9.064%
 less frame time, with all six pairs faster; BMW 4x costs 1.640%/0.891%,
