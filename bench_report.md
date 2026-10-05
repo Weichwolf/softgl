@@ -45,5 +45,5 @@
 | Additive Bytekanäle / Sample-Writes | 266.461.184 / 65.536 exakt |
 | Chromium / Firefox | je 234 Tests + 18 Benchmarkzeilen; Abbruch; MSAA-Wechsel |
 | Geometrie / Bildtoleranzen | unverändert |
-| Neue Layout-/Bin-Architekturversuche / AB/BA-Paare / übernommen | 3 / 18 / 0 |
+| Neue Layout-/Bin-Architekturversuche / AB/BA-Paare / übernommen | 5 / 30 / 0 |
 | Rohdaten / Nachweis | `build/perf/tigerlake-20261004/` / `build/diagnostics/msaa-cube-combined/` |
