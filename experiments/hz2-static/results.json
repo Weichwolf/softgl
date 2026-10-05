@@ -1,0 +1,3010 @@
+{
+  "status": "retained-and-validated",
+  "sourceBaseRendererCommit": "1ae2abb219e1cd9f991c4945233541576d3a082a",
+  "sourceBaseResearchCommit": "7c7076dd1799552aec92a00b9d8714c8d8258fc9",
+  "patchSha256": "f571c239c20d50d12f54d94c7e47c2e5eb757e535fefa2bfbcb7a0b9c642d62e",
+  "sourceFiles": [
+    {
+      "path": "libsoftgl/src/fragment_write.c",
+      "sha256": "858963ba2a239834351e31ab81f2b62c35606ebfd56fd104c7756db4902d84db"
+    },
+    {
+      "path": "libsoftgl/src/raster_hz.h",
+      "sha256": "1cc4a6fe6f5a425607cb3b8a57d15cb19d5de537794c638b673f0bd4a14b4ed6"
+    },
+    {
+      "path": "libsoftgl/src/raster_msaa_impl.h",
+      "sha256": "0e734a2ae6b041630b37e31c57d9c011775b1a9274f2cd9e0283fa978f60ebbd"
+    },
+    {
+      "path": "libsoftgl/src/raster_store.h",
+      "sha256": "0b73b684bf662882425ecb17b8d381a57adb54022209ce4f2ab7118a6f065f8f"
+    },
+    {
+      "path": "libsoftgl/src/state.c",
+      "sha256": "bffa3243dffdbef27ddc90c7ad6f2394d393f0dc47bf1d3797b2b5b63e8a875c"
+    },
+    {
+      "path": "libsoftgl/src/types.h",
+      "sha256": "c90361869e5600b1e3164ca31ba87c6af31a659e2f888456d90d6de6bea52fe1"
+    },
+    {
+      "path": "tests/hierarchical_depth.c",
+      "sha256": "476553fc811fa8d7793c1f1f32b146b75cdada9f2b4f77a0a22950fb8735a373"
+    }
+  ],
+  "decision": "Retain reproducible BMW/T80 2x gain; 4x BMW audits are mixed (-0.153%/+0.227%) and do not demonstrate a speedup or statistical equivalence. Report T80 off +1.478% cost.",
+  "regressions": [
+    {
+      "name": "native-full-tests.log",
+      "passed": 742,
+      "sha256": "89e0844bcd9720a2f3e0913fa776d919c03bd4daee7d656d1f0ae9b37d689502"
+    },
+    {
+      "name": "native-full-bench.log",
+      "passed": 1,
+      "sha256": "2e34d41719d58ce5b574817c22013ca419c90277bc49533d85089213bc9a35e3"
+    },
+    {
+      "name": "asan-full-tests.log",
+      "passed": 22,
+      "sha256": "f1d0ccdc8b0bd24f6fd2df2b50b52968e1f6d88b94969b87c4d48a85dddceeb2"
+    },
+    {
+      "name": "mesa-images.json",
+      "passed": 240,
+      "samples": 0,
+      "sha256": "55aa35abd04a99ea4c8f53b0293eeffe6ea886813cdd6d8ac8cb68967e2139a8"
+    },
+    {
+      "name": "all-tests-ms0-results.json",
+      "samples": 0,
+      "passed": 234,
+      "sha256": "223d0227cfaf746b2f057cb5ecdf5d87b534422cb2606fe8f53066ea3e2f5eda"
+    },
+    {
+      "name": "frame-equivalence-0.json",
+      "samples": 0,
+      "models": 2,
+      "hashesPerModel": 100,
+      "rawFramesPerModel": 4,
+      "sha256": "822359152f785b38f56408cdb39dc0d5da7873d1beca1a3666832279e91bc9ab"
+    },
+    {
+      "name": "all-tests-msaa-results.json",
+      "samples": 2,
+      "passed": 234,
+      "sha256": "39bfab0f91b382ab5e3b982016fd327335b1103f57632f571e20c6cb0d60ec21"
+    },
+    {
+      "name": "frame-equivalence-2.json",
+      "samples": 2,
+      "models": 2,
+      "hashesPerModel": 100,
+      "rawFramesPerModel": 4,
+      "sha256": "47139a2568026cc5ac6038595a326f2db5974bfcfb895ea144ad89b437ce8b59"
+    },
+    {
+      "name": "all-tests-msaa4-results.json",
+      "samples": 4,
+      "passed": 234,
+      "sha256": "e2450db9d1ce67fedb1735eed2f0cc3df9d678b35af82946f79e7f23da57ad4f"
+    },
+    {
+      "name": "frame-equivalence-4.json",
+      "samples": 4,
+      "models": 2,
+      "hashesPerModel": 100,
+      "rawFramesPerModel": 4,
+      "sha256": "f07805f25f208c22280627ab737abe45823326c80153450f6c3e9ad096f97ca6"
+    },
+    {
+      "name": "native/hz2-run.log",
+      "output": "131072 tracked writes, 1048576 numerical bounds, 1536 exact HZ-on/off frames and sample queries, 1/3/8 workers, fallbacks passed\n",
+      "sha256": "13dfb01ad9c4810a54003fed0733c9b57642e5d822e3d682eea8ada9d647fc59"
+    },
+    {
+      "name": "native/hz4-run.log",
+      "output": "131072 tracked writes, 1048576 numerical bounds, 1536 exact HZ-on/off frames and sample queries, 1/3/8 workers, fallbacks passed\n",
+      "sha256": "13dfb01ad9c4810a54003fed0733c9b57642e5d822e3d682eea8ada9d647fc59"
+    },
+    {
+      "name": "asan/hz2-run.log",
+      "output": "131072 tracked writes, 1048576 numerical bounds, 1536 exact HZ-on/off frames and sample queries, 1/3/8 workers, fallbacks passed\n",
+      "sha256": "13dfb01ad9c4810a54003fed0733c9b57642e5d822e3d682eea8ada9d647fc59"
+    },
+    {
+      "name": "asan/hz4-run.log",
+      "output": "131072 tracked writes, 1048576 numerical bounds, 1536 exact HZ-on/off frames and sample queries, 1/3/8 workers, fallbacks passed\n",
+      "sha256": "13dfb01ad9c4810a54003fed0733c9b57642e5d822e3d682eea8ada9d647fc59"
+    },
+    {
+      "name": "hz2-wasm-run.log",
+      "output": "131072 tracked writes, 1048576 numerical bounds, 1536 exact HZ-on/off frames and sample queries, 1/3/8 workers, fallbacks passed\n",
+      "sha256": "13dfb01ad9c4810a54003fed0733c9b57642e5d822e3d682eea8ada9d647fc59"
+    },
+    {
+      "name": "hz4-wasm-run.log",
+      "output": "131072 tracked writes, 1048576 numerical bounds, 1536 exact HZ-on/off frames and sample queries, 1/3/8 workers, fallbacks passed\n",
+      "sha256": "13dfb01ad9c4810a54003fed0733c9b57642e5d822e3d682eea8ada9d647fc59"
+    },
+    {
+      "name": "native/hz-both-run.log",
+      "output": "samples=2: 131072 tracked writes, 1048576 numerical bounds, 1536 exact HZ-on/off frames and sample queries, 1/3/8 workers, fallbacks passed\nsamples=4: 131072 tracked writes, 1048576 numerical bounds, 1536 exact HZ-on/off frames and sample queries, 1/3/8 workers, fallbacks passed\n",
+      "sha256": "0238d98bb32c5f1165f090a6ee32c0da1dc7c6b9269557c9acd844477b2b9b46"
+    },
+    {
+      "name": "asan/hz-both-run.log",
+      "output": "samples=2: 131072 tracked writes, 1048576 numerical bounds, 1536 exact HZ-on/off frames and sample queries, 1/3/8 workers, fallbacks passed\nsamples=4: 131072 tracked writes, 1048576 numerical bounds, 1536 exact HZ-on/off frames and sample queries, 1/3/8 workers, fallbacks passed\n",
+      "sha256": "0238d98bb32c5f1165f090a6ee32c0da1dc7c6b9269557c9acd844477b2b9b46"
+    },
+    {
+      "name": "hz-both-wasm-run.log",
+      "output": "samples=2: 131072 tracked writes, 1048576 numerical bounds, 1536 exact HZ-on/off frames and sample queries, 1/3/8 workers, fallbacks passed\nsamples=4: 131072 tracked writes, 1048576 numerical bounds, 1536 exact HZ-on/off frames and sample queries, 1/3/8 workers, fallbacks passed\n",
+      "sha256": "0238d98bb32c5f1165f090a6ee32c0da1dc7c6b9269557c9acd844477b2b9b46"
+    },
+    {
+      "name": "canonical-native-tests.log",
+      "passed": 742,
+      "sha256": "7b7e6bc8f6eee78736a10146abfde39552ec6b1fd70470927a8c5b9e2af9627f"
+    },
+    {
+      "name": "canonical-native-bench.log",
+      "passed": 1,
+      "sha256": "4eb1044cffe6b8b8bc397d746f8a6f9007f8169547cf7d9bf8d80db50fafdbfb"
+    },
+    {
+      "name": "public-hz-asan-tests.log",
+      "passed": 1,
+      "sha256": "4ecfa71e2a84846d4f3ce9093f9087a902a7ef06e4500d83f39c22b54b754c10"
+    },
+    {
+      "name": "public-hz-wasm-run.log",
+      "output": "samples=2: 131072 tracked writes, 1048576 numerical bounds, 1536 exact HZ-on/off frames and sample queries, 1/3/8 workers, fallbacks passed\nsamples=4: 131072 tracked writes, 1048576 numerical bounds, 1536 exact HZ-on/off frames and sample queries, 1/3/8 workers, fallbacks passed\n",
+      "sha256": "0238d98bb32c5f1165f090a6ee32c0da1dc7c6b9269557c9acd844477b2b9b46"
+    },
+    {
+      "name": "canonical/softgl.js",
+      "sha256": "c98f9c10d467803056f49e42c6f9c138fd0c8581525e247a8ad2078cee529921",
+      "matchesMeasuredCandidate": true
+    },
+    {
+      "name": "canonical/softgl.wasm",
+      "sha256": "902bcf8cdbde85fc1f8b172503c06f00090f8ebc423b2d1b8b186a1aa4d4b9af",
+      "matchesMeasuredCandidate": true
+    },
+    {
+      "name": "preview-chromium.json",
+      "sha256": "9b7d341b9a0acdaa3200a63d5a289fa942d81d5fff45bfa2d05b4c960b98874a",
+      "functionalOnly": true,
+      "passed": true,
+      "viewerTests": 234,
+      "benchmarkRows": 18,
+      "multisampleModes": [
+        0,
+        2,
+        4
+      ],
+      "helpers": 3,
+      "reportedProcessors": 9,
+      "cancelledBenchmark": true,
+      "offlineGeometry": true,
+      "wasmSha256": "902bcf8cdbde85fc1f8b172503c06f00090f8ebc423b2d1b8b186a1aa4d4b9af"
+    },
+    {
+      "name": "preview-firefox/result.json",
+      "sha256": "e4213a70940dad44d7add3e2a6ae00388b2b7ce4a20b8ca1323510f1551ed270",
+      "functionalOnly": true,
+      "passed": true,
+      "viewerTests": 234,
+      "benchmarkRows": 18,
+      "multisampleModes": [
+        0,
+        2,
+        4
+      ],
+      "helpers": 3,
+      "reportedProcessors": 9,
+      "cancelledBenchmark": true,
+      "offlineGeometry": true,
+      "wasmSha256": "902bcf8cdbde85fc1f8b172503c06f00090f8ebc423b2d1b8b186a1aa4d4b9af"
+    }
+  ],
+  "guardLimit": "The unchanged Linux guard cannot establish Windows-host idleness. Original session bookkeeping samples remain in local monitors bound by SHA-256.",
+  "candidateWasmSha256": "902bcf8cdbde85fc1f8b172503c06f00090f8ebc423b2d1b8b186a1aa4d4b9af",
+  "referenceWasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+  "audits": [
+    {
+      "samples": 0,
+      "audit": 1,
+      "scenes": [
+        {
+          "name": "bmw",
+          "medianMs": 29.851424999833107,
+          "referenceMedianMs": 30.10750000014901,
+          "fps": 33.49923831125619,
+          "pairRatios": [
+            1.0046329351662449,
+            0.994113869965286,
+            0.9892100258726534
+          ],
+          "changePercent": -0.5886130034714054
+        },
+        {
+          "name": "tank",
+          "medianMs": 11.644024999886751,
+          "referenceMedianMs": 11.55440000012517,
+          "fps": 85.88095611351967,
+          "pairRatios": [
+            1.0002181616356087,
+            1.0402653922549023,
+            1.0147836957632046
+          ],
+          "changePercent": 1.4783695763204596
+        }
+      ]
+    },
+    {
+      "samples": 2,
+      "audit": 1,
+      "scenes": [
+        {
+          "name": "bmw",
+          "medianMs": 32.28439999997616,
+          "referenceMedianMs": 35.79344999983907,
+          "fps": 30.97471224494612,
+          "pairRatios": [
+            0.9278680693983513,
+            0.8923211024038104,
+            0.9015672543729127
+          ],
+          "changePercent": -9.843274562708725
+        },
+        {
+          "name": "tank",
+          "medianMs": 13.722375000119209,
+          "referenceMedianMs": 14.43282500013709,
+          "fps": 72.87368257982403,
+          "pairRatios": [
+            0.939525387305524,
+            0.9515173009475351,
+            0.9390104994641912
+          ],
+          "changePercent": -6.047461269447596
+        }
+      ]
+    },
+    {
+      "samples": 2,
+      "audit": 2,
+      "scenes": [
+        {
+          "name": "bmw",
+          "medianMs": 31.944924999922513,
+          "referenceMedianMs": 35.48047499999404,
+          "fps": 31.30387690697116,
+          "pairRatios": [
+            0.8835415596212511,
+            0.8921068420426345,
+            0.9145858005017293
+          ],
+          "changePercent": -10.789315795736554
+        },
+        {
+          "name": "tank",
+          "medianMs": 13.64295000001788,
+          "referenceMedianMs": 14.372399999946357,
+          "fps": 73.29793043283817,
+          "pairRatios": [
+            0.9319133093476525,
+            0.9506410911811125,
+            0.9496598858184198
+          ],
+          "changePercent": -5.034011418158024
+        }
+      ]
+    },
+    {
+      "samples": 4,
+      "audit": 1,
+      "scenes": [
+        {
+          "name": "bmw",
+          "medianMs": 33.96862500011921,
+          "referenceMedianMs": 33.90855000004173,
+          "fps": 29.43893077793083,
+          "pairRatios": [
+            0.9867911028393316,
+            1.0098355229248774,
+            0.9984720021578849
+          ],
+          "changePercent": -0.1527997842115103
+        },
+        {
+          "name": "tank",
+          "medianMs": 14.733549999892713,
+          "referenceMedianMs": 14.822099999785424,
+          "fps": 67.87230504578203,
+          "pairRatios": [
+            1.0262627192476328,
+            0.9839112782147496,
+            0.9877582322927749
+          ],
+          "changePercent": -1.224176770722507
+        }
+      ]
+    },
+    {
+      "samples": 4,
+      "audit": 2,
+      "scenes": [
+        {
+          "name": "bmw",
+          "medianMs": 33.72280000001192,
+          "referenceMedianMs": 33.958749999999995,
+          "fps": 29.65352817677199,
+          "pairRatios": [
+            1.0065273685495244,
+            0.9966258224108604,
+            1.0022674728673133
+          ],
+          "changePercent": 0.2267472867313325
+        },
+        {
+          "name": "tank",
+          "medianMs": 15.00779999986291,
+          "referenceMedianMs": 15.106774999946357,
+          "fps": 66.63201801790633,
+          "pairRatios": [
+            0.9913792613623835,
+            1.0107322612677907,
+            0.9997240583836555
+          ],
+          "changePercent": -0.027594161634447723
+        }
+      ]
+    }
+  ],
+  "pairs": [
+    {
+      "file": "hz2-static-ms0-audit-1-pair-1.json",
+      "measurement": {
+        "timestamp": "2026-10-05T12:29:18.929Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "7c7076dd1799552aec92a00b9d8714c8d8258fc9",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "902bcf8cdbde85fc1f8b172503c06f00090f8ebc423b2d1b8b186a1aa4d4b9af",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/hz2-static-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/hz2-static-ms0-audit-1-pair-1.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 0,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 0,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                29.75794999986887,
+                30.326500000059603
+              ],
+              "medianMs": 30.326500000059603,
+              "minMs": 29.75794999986887,
+              "maxMs": 30.326500000059603,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 0
+                },
+                {
+                  "workers": 3,
+                  "samples": 0
+                }
+              ],
+              "reference": {
+                "samples": [
+                  29.60625,
+                  30.201400000154973
+                ],
+                "medianMs": 30.201400000154973,
+                "minMs": 29.60625,
+                "maxMs": 30.201400000154973,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  }
+                ]
+              },
+              "medianRatio": 1.0046329351662449,
+              "changePercent": 0.4632935166244856
+            },
+            {
+              "name": "tank",
+              "samples": [
+                11.424849999845028,
+                11.53869999974966
+              ],
+              "medianMs": 11.53869999974966,
+              "minMs": 11.424849999845028,
+              "maxMs": 11.53869999974966,
+              "heapBytes": [
+                115998720,
+                80543744
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 0
+                },
+                {
+                  "workers": 3,
+                  "samples": 0
+                }
+              ],
+              "reference": {
+                "samples": [
+                  11.268400000035763,
+                  11.693799999952317
+                ],
+                "medianMs": 11.693799999952317,
+                "minMs": 11.268400000035763,
+                "maxMs": 11.693799999952317,
+                "heapBytes": [
+                  115998720,
+                  80543744
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  }
+                ]
+              },
+              "medianRatio": 1.0002181616356087,
+              "changePercent": 0.02181616356087268
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "hz2-static-ms0-audit-1-pair-1.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791203357.4584827,
+            "elapsedSeconds": 34.51642632484436,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 68
+          },
+          "originalSha256": "b9d37620fbecce77cdda3d38f298c12373b984f456db41e254d661c5505972c0"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "hz2-static-ms0-audit-1-pair-1.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "hz2-static-ms0-audit-1-pair-2.json",
+      "measurement": {
+        "timestamp": "2026-10-05T12:29:56.549Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "7c7076dd1799552aec92a00b9d8714c8d8258fc9",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "902bcf8cdbde85fc1f8b172503c06f00090f8ebc423b2d1b8b186a1aa4d4b9af",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/hz2-static-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/hz2-static-ms0-audit-1-pair-2.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 0,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 0,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                29.732150000035762,
+                29.944899999797343
+              ],
+              "medianMs": 29.944899999797343,
+              "minMs": 29.732150000035762,
+              "maxMs": 29.944899999797343,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 0
+                },
+                {
+                  "workers": 3,
+                  "samples": 0
+                }
+              ],
+              "reference": {
+                "samples": [
+                  30.266200000047682,
+                  29.765900000035764
+                ],
+                "medianMs": 30.266200000047682,
+                "minMs": 29.765900000035764,
+                "maxMs": 30.266200000047682,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  }
+                ]
+              },
+              "medianRatio": 0.994113869965286,
+              "changePercent": -0.5886130034714054
+            },
+            {
+              "name": "tank",
+              "samples": [
+                11.46875,
+                12.409449999928475
+              ],
+              "medianMs": 12.409449999928475,
+              "minMs": 11.46875,
+              "maxMs": 12.409449999928475,
+              "heapBytes": [
+                115998720,
+                80543744
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 0
+                },
+                {
+                  "workers": 3,
+                  "samples": 0
+                }
+              ],
+              "reference": {
+                "samples": [
+                  11.453199999928474,
+                  11.482950000166893
+                ],
+                "medianMs": 11.482950000166893,
+                "minMs": 11.453199999928474,
+                "maxMs": 11.482950000166893,
+                "heapBytes": [
+                  115998720,
+                  80543744
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  }
+                ]
+              },
+              "medianRatio": 1.0402653922549023,
+              "changePercent": 4.026539225490233
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "hz2-static-ms0-audit-1-pair-2.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791203395.0431895,
+            "elapsedSeconds": 34.53699779510498,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 68
+          },
+          "originalSha256": "9aa7df7a92c12ba4392adae63a134ba1d9734dd3d44008fbdad46096bbf2973e"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "hz2-static-ms0-audit-1-pair-2.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "hz2-static-ms0-audit-1-pair-3.json",
+      "measurement": {
+        "timestamp": "2026-10-05T12:30:34.106Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "7c7076dd1799552aec92a00b9d8714c8d8258fc9",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "902bcf8cdbde85fc1f8b172503c06f00090f8ebc423b2d1b8b186a1aa4d4b9af",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/hz2-static-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/hz2-static-ms0-audit-1-pair-3.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 0,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 0,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                30.01814999997616,
+                29.593600000143052
+              ],
+              "medianMs": 30.01814999997616,
+              "minMs": 29.593600000143052,
+              "maxMs": 30.01814999997616,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 0
+                },
+                {
+                  "workers": 3,
+                  "samples": 0
+                }
+              ],
+              "reference": {
+                "samples": [
+                  30.01360000014305,
+                  30.24729999989271
+                ],
+                "medianMs": 30.24729999989271,
+                "minMs": 30.01360000014305,
+                "maxMs": 30.24729999989271,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  }
+                ]
+              },
+              "medianRatio": 0.9892100258726534,
+              "changePercent": -1.0789974127346613
+            },
+            {
+              "name": "tank",
+              "samples": [
+                11.749350000023842,
+                11.857300000190735
+              ],
+              "medianMs": 11.857300000190735,
+              "minMs": 11.749350000023842,
+              "maxMs": 11.857300000190735,
+              "heapBytes": [
+                115998720,
+                80543744
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 0
+                },
+                {
+                  "workers": 3,
+                  "samples": 0
+                }
+              ],
+              "reference": {
+                "samples": [
+                  11.625850000083446,
+                  11.636649999916553
+                ],
+                "medianMs": 11.636649999916553,
+                "minMs": 11.625850000083446,
+                "maxMs": 11.636649999916553,
+                "heapBytes": [
+                  115998720,
+                  80543744
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 0
+                  }
+                ]
+              },
+              "medianRatio": 1.0147836957632046,
+              "changePercent": 1.4783695763204596
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "hz2-static-ms0-audit-1-pair-3.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791203432.6487253,
+            "elapsedSeconds": 34.542818546295166,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 68
+          },
+          "originalSha256": "cdb1f9cdbfbcbc0b573c7550a9fb634b672b4ed386900101635dab44f624a9ad"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "hz2-static-ms0-audit-1-pair-3.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "hz2-static-ms2-audit-1-pair-1.json",
+      "measurement": {
+        "timestamp": "2026-10-05T12:31:11.744Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "7c7076dd1799552aec92a00b9d8714c8d8258fc9",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "902bcf8cdbde85fc1f8b172503c06f00090f8ebc423b2d1b8b186a1aa4d4b9af",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/hz2-static-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/hz2-static-ms2-audit-1-pair-1.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 2,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 2,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                31.984950000047682,
+                33.32864999979734
+              ],
+              "medianMs": 33.32864999979734,
+              "minMs": 31.984950000047682,
+              "maxMs": 33.32864999979734,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  34.89530000001192,
+                  35.48329999983311
+                ],
+                "medianMs": 35.48329999983311,
+                "minMs": 34.89530000001192,
+                "maxMs": 35.48329999983311,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 0.9278680693983513,
+              "changePercent": -7.213193060164869
+            },
+            {
+              "name": "tank",
+              "samples": [
+                13.796550000011921,
+                13.538899999856948
+              ],
+              "medianMs": 13.796550000011921,
+              "minMs": 13.538899999856948,
+              "maxMs": 13.796550000011921,
+              "heapBytes": [
+                115998720,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  14.285349999964238,
+                  14.813100000023843
+                ],
+                "medianMs": 14.813100000023843,
+                "minMs": 14.285349999964238,
+                "maxMs": 14.813100000023843,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 0.939525387305524,
+              "changePercent": -6.047461269447596
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "hz2-static-ms2-audit-1-pair-1.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791203470.259266,
+            "elapsedSeconds": 39.11187124252319,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 77
+          },
+          "originalSha256": "a5d6613802ad5bc53c9bedcf36da2e2d44399ae301d0545cf665bc5b460851be"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "hz2-static-ms2-audit-1-pair-1.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "hz2-static-ms2-audit-1-pair-2.json",
+      "measurement": {
+        "timestamp": "2026-10-05T12:31:53.877Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "7c7076dd1799552aec92a00b9d8714c8d8258fc9",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "902bcf8cdbde85fc1f8b172503c06f00090f8ebc423b2d1b8b186a1aa4d4b9af",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/hz2-static-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/hz2-static-ms2-audit-1-pair-2.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 2,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 2,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                31.77625,
+                32.58384999990463
+              ],
+              "medianMs": 32.58384999990463,
+              "minMs": 31.77625,
+              "maxMs": 32.58384999990463,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  36.442950000166896,
+                  35.68199999988079
+                ],
+                "medianMs": 36.442950000166896,
+                "minMs": 35.68199999988079,
+                "maxMs": 36.442950000166896,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 0.8923211024038104,
+              "changePercent": -10.767889759618965
+            },
+            {
+              "name": "tank",
+              "samples": [
+                13.684500000178813,
+                13.760250000059605
+              ],
+              "medianMs": 13.760250000059605,
+              "minMs": 13.684500000178813,
+              "maxMs": 13.760250000059605,
+              "heapBytes": [
+                115998720,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  14.4525,
+                  14.390600000023841
+                ],
+                "medianMs": 14.4525,
+                "minMs": 14.390600000023841,
+                "maxMs": 14.4525,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 0.9515173009475351,
+              "changePercent": -4.848269905246494
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "hz2-static-ms2-audit-1-pair-2.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791203512.4415047,
+            "elapsedSeconds": 39.09425473213196,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 77
+          },
+          "originalSha256": "9cd34f67706a1f9378f6f84ab43c384e210744de5057a21073990a2f87caad70"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "hz2-static-ms2-audit-1-pair-2.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "hz2-static-ms2-audit-1-pair-3.json",
+      "measurement": {
+        "timestamp": "2026-10-05T12:32:36.029Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "7c7076dd1799552aec92a00b9d8714c8d8258fc9",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "902bcf8cdbde85fc1f8b172503c06f00090f8ebc423b2d1b8b186a1aa4d4b9af",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/hz2-static-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/hz2-static-ms2-audit-1-pair-3.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 2,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 2,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                31.928799999952318,
+                32.83919999986887
+              ],
+              "medianMs": 32.83919999986887,
+              "minMs": 31.928799999952318,
+              "maxMs": 32.83919999986887,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  35.92735000014305,
+                  35.904899999797344
+                ],
+                "medianMs": 35.92735000014305,
+                "minMs": 35.904899999797344,
+                "maxMs": 35.92735000014305,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 0.9015672543729127,
+              "changePercent": -9.843274562708725
+            },
+            {
+              "name": "tank",
+              "samples": [
+                13.338850000202656,
+                13.81905000001192
+              ],
+              "medianMs": 13.81905000001192,
+              "minMs": 13.338850000202656,
+              "maxMs": 13.81905000001192,
+              "heapBytes": [
+                115998720,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  14.41315000027418,
+                  14.504299999773503
+                ],
+                "medianMs": 14.504299999773503,
+                "minMs": 14.41315000027418,
+                "maxMs": 14.504299999773503,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 0.9390104994641912,
+              "changePercent": -6.098950053580876
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "hz2-static-ms2-audit-1-pair-3.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791203554.6040053,
+            "elapsedSeconds": 39.63496804237366,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 78
+          },
+          "originalSha256": "f6c0f2f092a4a34f8f27fdaab1cead000ea6bcf87c2e17c66e62d1e32a431153"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "hz2-static-ms2-audit-1-pair-3.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "hz2-static-ms2-audit-2-pair-1.json",
+      "measurement": {
+        "timestamp": "2026-10-05T12:33:18.764Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "7c7076dd1799552aec92a00b9d8714c8d8258fc9",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "902bcf8cdbde85fc1f8b172503c06f00090f8ebc423b2d1b8b186a1aa4d4b9af",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/hz2-static-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/hz2-static-ms2-audit-2-pair-1.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 2,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 2,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                31.231899999976157,
+                31.870600000023842
+              ],
+              "medianMs": 31.870600000023842,
+              "minMs": 31.231899999976157,
+              "maxMs": 31.870600000023842,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  35.501599999964235,
+                  35.91590000003576
+                ],
+                "medianMs": 35.91590000003576,
+                "minMs": 35.501599999964235,
+                "maxMs": 35.91590000003576,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 0.8835415596212511,
+              "changePercent": -11.645844037874886
+            },
+            {
+              "name": "tank",
+              "samples": [
+                13.111150000095368,
+                13.787600000202655
+              ],
+              "medianMs": 13.787600000202655,
+              "minMs": 13.111150000095368,
+              "maxMs": 13.787600000202655,
+              "heapBytes": [
+                115998720,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  14.322150000035762,
+                  14.533499999940396
+                ],
+                "medianMs": 14.533499999940396,
+                "minMs": 14.322150000035762,
+                "maxMs": 14.533499999940396,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 0.9319133093476525,
+              "changePercent": -6.808669065234751
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "hz2-static-ms2-audit-2-pair-1.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791203597.307071,
+            "elapsedSeconds": 39.08715343475342,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 77
+          },
+          "originalSha256": "21e3df9127e6f31002b3d3e8c51f06fef5180a1d25ab19d0bdf78471286c3f76"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "hz2-static-ms2-audit-2-pair-1.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "hz2-static-ms2-audit-2-pair-2.json",
+      "measurement": {
+        "timestamp": "2026-10-05T12:34:00.963Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "7c7076dd1799552aec92a00b9d8714c8d8258fc9",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "902bcf8cdbde85fc1f8b172503c06f00090f8ebc423b2d1b8b186a1aa4d4b9af",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/hz2-static-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/hz2-static-ms2-audit-2-pair-2.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 2,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 2,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                31.947949999868868,
+                31.941899999976158
+              ],
+              "medianMs": 31.947949999868868,
+              "minMs": 31.941899999976158,
+              "maxMs": 31.947949999868868,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  36.16090000003576,
+                  35.45935000002384
+                ],
+                "medianMs": 36.16090000003576,
+                "minMs": 35.45935000002384,
+                "maxMs": 36.16090000003576,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 0.8921068420426345,
+              "changePercent": -10.789315795736554
+            },
+            {
+              "name": "tank",
+              "samples": [
+                13.301100000143052,
+                13.913200000226498
+              ],
+              "medianMs": 13.913200000226498,
+              "minMs": 13.301100000143052,
+              "maxMs": 13.913200000226498,
+              "heapBytes": [
+                115998720,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  14.408949999809264,
+                  14.211800000071525
+                ],
+                "medianMs": 14.408949999809264,
+                "minMs": 14.211800000071525,
+                "maxMs": 14.408949999809264,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 0.9506410911811125,
+              "changePercent": -4.935890881888749
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "hz2-static-ms2-audit-2-pair-2.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791203639.4620807,
+            "elapsedSeconds": 39.08674478530884,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 77
+          },
+          "originalSha256": "b86fa8e4ffdc7946f2ab0815209593d7d615e5c67d42555f44dbcac5ffe1c664"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "hz2-static-ms2-audit-2-pair-2.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "hz2-static-ms2-audit-2-pair-3.json",
+      "measurement": {
+        "timestamp": "2026-10-05T12:34:43.021Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "7c7076dd1799552aec92a00b9d8714c8d8258fc9",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "902bcf8cdbde85fc1f8b172503c06f00090f8ebc423b2d1b8b186a1aa4d4b9af",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/hz2-static-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/hz2-static-ms2-audit-2-pair-3.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 2,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 2,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                32.07465000003576,
+                32.41044999986887
+              ],
+              "medianMs": 32.41044999986887,
+              "minMs": 32.07465000003576,
+              "maxMs": 32.41044999986887,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  35.111800000071526,
+                  35.395250000059605
+                ],
+                "medianMs": 35.395250000059605,
+                "minMs": 35.111800000071526,
+                "maxMs": 35.395250000059605,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 0.9145858005017293,
+              "changePercent": -8.541419949827066
+            },
+            {
+              "name": "tank",
+              "samples": [
+                13.498299999833106,
+                13.887899999916554
+              ],
+              "medianMs": 13.887899999916554,
+              "minMs": 13.498299999833106,
+              "maxMs": 13.887899999916554,
+              "heapBytes": [
+                115998720,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 2
+                },
+                {
+                  "workers": 3,
+                  "samples": 2
+                }
+              ],
+              "reference": {
+                "samples": [
+                  14.499599999785424,
+                  14.335850000083447
+                ],
+                "medianMs": 14.499599999785424,
+                "minMs": 14.335850000083447,
+                "maxMs": 14.499599999785424,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 2
+                  }
+                ]
+              },
+              "medianRatio": 0.9496598858184198,
+              "changePercent": -5.034011418158024
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "hz2-static-ms2-audit-2-pair-3.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791203681.616792,
+            "elapsedSeconds": 39.12792468070984,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 77
+          },
+          "originalSha256": "eb78e384bbfacc6be7faad66a211ecd7b2407d32d433fad3ff686d7f70bfb19c"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "hz2-static-ms2-audit-2-pair-3.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "hz2-static-audit-1-pair-1.json",
+      "measurement": {
+        "timestamp": "2026-10-05T12:35:25.248Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "7c7076dd1799552aec92a00b9d8714c8d8258fc9",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "902bcf8cdbde85fc1f8b172503c06f00090f8ebc423b2d1b8b186a1aa4d4b9af",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/hz2-static-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/hz2-static-audit-1-pair-1.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 4,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 4,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                33.60710000008345,
+                34.33015000015497
+              ],
+              "medianMs": 34.33015000015497,
+              "minMs": 33.60710000008345,
+              "maxMs": 34.33015000015497,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  33.731449999809264,
+                  35.125400000214576
+                ],
+                "medianMs": 35.125400000214576,
+                "minMs": 33.731449999809264,
+                "maxMs": 35.125400000214576,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 0.9867911028393316,
+              "changePercent": -1.320889716066842
+            },
+            {
+              "name": "tank",
+              "samples": [
+                15.155850000083447,
+                15.235400000214577
+              ],
+              "medianMs": 15.235400000214577,
+              "minMs": 15.155850000083447,
+              "maxMs": 15.235400000214577,
+              "heapBytes": [
+                115998720,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  14.77169999986887,
+                  14.841799999773503
+                ],
+                "medianMs": 14.841799999773503,
+                "minMs": 14.77169999986887,
+                "maxMs": 14.841799999773503,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 1.0262627192476328,
+              "changePercent": 2.6262719247632793
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "hz2-static-audit-1-pair-1.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791203723.8125832,
+            "elapsedSeconds": 40.066391944885254,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 79
+          },
+          "originalSha256": "8c72ab43ede97746a3b0454186265bd8f89cb5b9c6c160267fec8e2afe06a9fa"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "hz2-static-audit-1-pair-1.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "hz2-static-audit-1-pair-2.json",
+      "measurement": {
+        "timestamp": "2026-10-05T12:36:08.425Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "7c7076dd1799552aec92a00b9d8714c8d8258fc9",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "902bcf8cdbde85fc1f8b172503c06f00090f8ebc423b2d1b8b186a1aa4d4b9af",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/hz2-static-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/hz2-static-audit-1-pair-2.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 4,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 4,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                33.535550000071524,
+                34.914299999773505
+              ],
+              "medianMs": 34.914299999773505,
+              "minMs": 33.535550000071524,
+              "maxMs": 34.914299999773505,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  33.85040000021458,
+                  33.91905000001192
+                ],
+                "medianMs": 33.91905000001192,
+                "minMs": 33.85040000021458,
+                "maxMs": 33.91905000001192,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 1.0098355229248774,
+              "changePercent": 0.9835522924877438
+            },
+            {
+              "name": "tank",
+              "samples": [
+                14.40949999988079,
+                14.641149999797344
+              ],
+              "medianMs": 14.641149999797344,
+              "minMs": 14.40949999988079,
+              "maxMs": 14.641149999797344,
+              "heapBytes": [
+                115998720,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  14.722450000047683,
+                  14.802399999797345
+                ],
+                "medianMs": 14.802399999797345,
+                "minMs": 14.722450000047683,
+                "maxMs": 14.802399999797345,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 0.9839112782147496,
+              "changePercent": -1.6088721785250448
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "hz2-static-audit-1-pair-2.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791203766.9467192,
+            "elapsedSeconds": 40.08362674713135,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 79
+          },
+          "originalSha256": "f89247b8107fe1b2a40540e03a24f471f8fb4cd9adc9f7653b02da160a6da8e0"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "hz2-static-audit-1-pair-2.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "hz2-static-audit-1-pair-3.json",
+      "measurement": {
+        "timestamp": "2026-10-05T12:36:51.542Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "7c7076dd1799552aec92a00b9d8714c8d8258fc9",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "902bcf8cdbde85fc1f8b172503c06f00090f8ebc423b2d1b8b186a1aa4d4b9af",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/hz2-static-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/hz2-static-audit-1-pair-3.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 4,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 4,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                33.52130000025034,
+                34.618650000095364
+              ],
+              "medianMs": 34.618650000095364,
+              "minMs": 33.52130000025034,
+              "maxMs": 34.618650000095364,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  34.33875,
+                  33.89805000007153
+                ],
+                "medianMs": 34.33875,
+                "minMs": 33.89805000007153,
+                "maxMs": 34.33875,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 0.9984720021578849,
+              "changePercent": -0.1527997842115103
+            },
+            {
+              "name": "tank",
+              "samples": [
+                14.82594999998808,
+                14.626750000119209
+              ],
+              "medianMs": 14.82594999998808,
+              "minMs": 14.626750000119209,
+              "maxMs": 14.82594999998808,
+              "heapBytes": [
+                115998720,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  14.878550000190735,
+                  14.938549999892711
+                ],
+                "medianMs": 14.938549999892711,
+                "minMs": 14.878550000190735,
+                "maxMs": 14.938549999892711,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 0.9877582322927749,
+              "changePercent": -1.224176770722507
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "hz2-static-audit-1-pair-3.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791203810.0989475,
+            "elapsedSeconds": 40.136574268341064,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 79
+          },
+          "originalSha256": "c67d1a0f75270fb6e5d364941fc54f30699f1dc529a7369bb93d0696b2db1041"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "hz2-static-audit-1-pair-3.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "hz2-static-audit-2-pair-1.json",
+      "measurement": {
+        "timestamp": "2026-10-05T12:37:34.724Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "7c7076dd1799552aec92a00b9d8714c8d8258fc9",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "902bcf8cdbde85fc1f8b172503c06f00090f8ebc423b2d1b8b186a1aa4d4b9af",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/hz2-static-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/hz2-static-audit-2-pair-1.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 4,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 4,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                33.14610000014305,
+                35.31879999995232
+              ],
+              "medianMs": 35.31879999995232,
+              "minMs": 33.14610000014305,
+              "maxMs": 35.31879999995232,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  33.94920000016689,
+                  34.0375
+                ],
+                "medianMs": 34.0375,
+                "minMs": 33.94920000016689,
+                "maxMs": 34.0375,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 1.0065273685495244,
+              "changePercent": 0.6527368549524404
+            },
+            {
+              "name": "tank",
+              "samples": [
+                14.995,
+                14.99074999988079
+              ],
+              "medianMs": 14.995,
+              "minMs": 14.99074999988079,
+              "maxMs": 14.995,
+              "heapBytes": [
+                115998720,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  14.91875,
+                  15.330550000071526
+                ],
+                "medianMs": 15.330550000071526,
+                "minMs": 14.91875,
+                "maxMs": 15.330550000071526,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 0.9913792613623835,
+              "changePercent": -0.8620738637616476
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "hz2-static-audit-2-pair-1.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791203853.3031075,
+            "elapsedSeconds": 40.08968114852905,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 79
+          },
+          "originalSha256": "4294e5e76f6b7705b3561480f1f5110300ea1ab44a6d657fb3395caa30caf1ab"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "hz2-static-audit-2-pair-1.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "hz2-static-audit-2-pair-2.json",
+      "measurement": {
+        "timestamp": "2026-10-05T12:38:17.908Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "7c7076dd1799552aec92a00b9d8714c8d8258fc9",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "902bcf8cdbde85fc1f8b172503c06f00090f8ebc423b2d1b8b186a1aa4d4b9af",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/hz2-static-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/hz2-static-audit-2-pair-2.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 4,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 4,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                33.71534999996424,
+                33.730250000059605
+              ],
+              "medianMs": 33.730250000059605,
+              "minMs": 33.71534999996424,
+              "maxMs": 33.730250000059605,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  33.70614999979735,
+                  33.96829999983311
+                ],
+                "medianMs": 33.96829999983311,
+                "minMs": 33.70614999979735,
+                "maxMs": 33.96829999983311,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 0.9966258224108604,
+              "changePercent": -0.3374177589139604
+            },
+            {
+              "name": "tank",
+              "samples": [
+                15.011099999845028,
+                15.159000000059605
+              ],
+              "medianMs": 15.159000000059605,
+              "minMs": 15.011099999845028,
+              "maxMs": 15.159000000059605,
+              "heapBytes": [
+                115998720,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  14.694249999821187,
+                  15.15875
+                ],
+                "medianMs": 15.15875,
+                "minMs": 14.694249999821187,
+                "maxMs": 15.15875,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 1.0107322612677907,
+              "changePercent": 1.07322612677907
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "hz2-static-audit-2-pair-2.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791203896.4604394,
+            "elapsedSeconds": 39.60649514198303,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 78
+          },
+          "originalSha256": "384cc8a94b8127d26c4a5e844cdc1b294d099f5504426c82597d7ee7fad37f5d"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "hz2-static-audit-2-pair-2.attempt-1.monitor.json"
+      ]
+    },
+    {
+      "file": "hz2-static-audit-2-pair-3.json",
+      "measurement": {
+        "timestamp": "2026-10-05T12:39:00.615Z",
+        "browser": "154.0.8037.92",
+        "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+        "hostLogicalCpus": 4,
+        "gitCommit": "7c7076dd1799552aec92a00b9d8714c8d8258fc9",
+        "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+        "wasmSha256": "902bcf8cdbde85fc1f8b172503c06f00090f8ebc423b2d1b8b186a1aa4d4b9af",
+        "options": {
+          "wasm-build": "/home/cosmo/Git/softgl/build/controls/hz2-static-candidate",
+          "native-build": "build/native",
+          "output": "/home/cosmo/Git/softgl/build/perf/tigerlake-20261005/hz2-static-audit-2-pair-3.attempt-1.pending.json",
+          "rounds": 2,
+          "warmup": 80,
+          "frames": 100,
+          "samples": 4,
+          "browser": "/usr/bin/chromium",
+          "reference-build": "/home/cosmo/Git/softgl/build/controls/cube-target-hz-candidate",
+          "candidate-workers": "",
+          "reference-workers": "",
+          "scenes": "bmw,tank",
+          "profile-scene": "",
+          "bench-only": true,
+          "crossover": true
+        },
+        "metadata": {
+          "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+          "hardwareConcurrency": 4,
+          "crossOriginIsolated": true,
+          "width": 640,
+          "height": 360,
+          "testCount": 234
+        },
+        "modelAssets": {
+          "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+          "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+        },
+        "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+        "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "referenceTestCount": 234,
+        "referenceWasmSha256": "f08378ee7640b80c020be43ac50bb816a853eca04c71b2567e4f421695b80898",
+        "benchmarks": {
+          "workers": 3,
+          "workerCounts": {
+            "reference": 3,
+            "candidate": 3
+          },
+          "samples": 4,
+          "resolvePerFrame": true,
+          "protocol": "page crossover AB/BA, two-round geometric pairs",
+          "scenes": [
+            {
+              "name": "bmw",
+              "samples": [
+                33.53594999998808,
+                34.59189999997616
+              ],
+              "medianMs": 34.59189999997616,
+              "minMs": 33.53594999998808,
+              "maxMs": 34.59189999997616,
+              "heapBytes": [
+                115998720,
+                115998720
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  34.3365000000596,
+                  33.63270000010729
+                ],
+                "medianMs": 34.3365000000596,
+                "minMs": 33.63270000010729,
+                "maxMs": 34.3365000000596,
+                "heapBytes": [
+                  115998720,
+                  115998720
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 1.0022674728673133,
+              "changePercent": 0.2267472867313325
+            },
+            {
+              "name": "tank",
+              "samples": [
+                15.201349999904632,
+                15.00449999988079
+              ],
+              "medianMs": 15.201349999904632,
+              "minMs": 15.00449999988079,
+              "maxMs": 15.201349999904632,
+              "heapBytes": [
+                115998720,
+                96665600
+              ],
+              "geometrySamples": [
+                {
+                  "workers": 3,
+                  "samples": 4
+                },
+                {
+                  "workers": 3,
+                  "samples": 4
+                }
+              ],
+              "reference": {
+                "samples": [
+                  15.114799999892712,
+                  15.09875
+                ],
+                "medianMs": 15.114799999892712,
+                "minMs": 15.09875,
+                "maxMs": 15.114799999892712,
+                "heapBytes": [
+                  115998720,
+                  96665600
+                ],
+                "geometrySamples": [
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  },
+                  {
+                    "workers": 3,
+                    "samples": 4
+                  }
+                ]
+              },
+              "medianRatio": 0.9997240583836555,
+              "changePercent": -0.027594161634447723
+            }
+          ]
+        }
+      },
+      "attempts": [
+        {
+          "file": "hz2-static-audit-2-pair-3.attempt-1.monitor.json",
+          "record": {
+            "guardSha256": "ca3ad0742771a878f2717c70dc00cd67f52d786347b895cf7d3b759bbf04379e",
+            "startedUnix": 1791203939.1344187,
+            "elapsedSeconds": 40.06014943122864,
+            "pollSeconds": 0.5,
+            "foreignCPUThresholdCores": 0.1,
+            "settlePolls": 6,
+            "unexpectedActivity": [],
+            "exitCode": 0,
+            "attempt": 1,
+            "excludedSessionBookkeepingSampleCount": 79
+          },
+          "originalSha256": "7fff60b9b8a8bcccdbbce6a7f0fbf9cbbe1ff54b99befe65694ca93f95c11850"
+        }
+      ],
+      "acceptedMonitorFiles": [
+        "hz2-static-audit-2-pair-3.attempt-1.monitor.json"
+      ]
+    }
+  ]
+}

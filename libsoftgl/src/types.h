@@ -46,7 +46,7 @@ typedef struct {
     uint32_t maximum_sample;
 } sg_hz_tile;
 
-/* Prefix of the four-sample color allocation, shared by draw snapshots.
+/* Prefix of the multisample color allocation, shared by draw snapshots.
  * Keep the original framebuffer/context layout and align color to 64 bytes. */
 typedef struct __attribute__((aligned(64))) {
     sg_hz_tile *tiles;

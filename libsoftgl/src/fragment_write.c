@@ -93,7 +93,8 @@ SG_INLINE void sg_write_sample(softgl_ctx *c, size_t idx, uint8_t *color,
 
     if (c->depth_test && c->depth_mask) {
         depth[idx] = z;
-        if (track_hz && sg_hz_active(c)) sg_hz_record_sample(c, idx, z);
+        if (track_hz == 4 && sg_hz_active4(c)) sg_hz_record_sample4(c, idx, z);
+        else if (track_hz == 2 && sg_hz_active2(c)) sg_hz_record_sample2(c, idx, z);
     }
 
     /* Queries count surviving fragments even if color writes are masked
@@ -257,7 +258,7 @@ int sg_blend_additive_msaa4_bytes(const float color[4], float alpha, float facto
 #define sg_blend_additive_msaa4_bytes sg_try_blend_additive_msaa4
 #endif
 
-SG_INLINE void sg_write_msaa2_fast(softgl_ctx *c, unsigned coverage,
+SG_INLINE void sg_write_msaa2_fast(softgl_ctx *c, int x, int y, unsigned coverage,
                          const float z[4], const float color[4], float alpha, size_t first) {
     sg_i32x4 mask = sg_mask4_expand(coverage & 3u);
     if (c->depth_test) {
@@ -269,6 +270,7 @@ SG_INLINE void sg_write_msaa2_fast(softgl_ctx *c, unsigned coverage,
         if (c->depth_mask) {
             _mm_storel_epi64((sg_i32x4 *)&c->fb.sample_depth[first],
                 _mm_castps_si128(sg_f32x4_select(mask, zv, old_depth)));
+            sg_hz_record_pixel2(c, x, y, coverage, z);
         }
     } else if (!coverage) return;
     uint8_t *px = &c->fb.sample_color[first * 4];
@@ -329,13 +331,13 @@ void sg_write_multisample2(softgl_ctx *c, int x, int y, unsigned coverage,
         c->color_mask[0] && c->color_mask[1] && c->color_mask[2] && c->color_mask[3] &&
         (!c->blend || ((c->blend_src == GL_SRC_ALPHA || c->blend_src == GL_ONE) &&
                        (c->blend_dst == GL_ONE || c->blend_dst == GL_ONE_MINUS_SRC_ALPHA)))) {
-        sg_write_msaa2_fast(c, coverage, z, color, alpha, first);
+        sg_write_msaa2_fast(c, x, y, coverage, z, color, alpha, first);
         return;
     }
     for (int s = 0; s < n; s++) {
         if (!(coverage & (1u << s))) continue;
         sg_write_sample(c, first + s, c->fb.sample_color, c->fb.sample_depth,
-                         c->fb.sample_stencil, z[s], color[0], color[1], color[2], alpha, n == 4);
+                         c->fb.sample_stencil, z[s], color[0], color[1], color[2], alpha, 2);
     }
 }
 
@@ -373,7 +375,7 @@ void sg_write_multisample(softgl_ctx *c, int x, int y, unsigned coverage,
             if (!coverage) return;
             if (c->depth_mask) {
                 _mm_storeu_ps(&c->fb.sample_depth[first], sg_f32x4_select(mask, zv, old_depth));
-                sg_hz_record_pixel(c, x, y, coverage, z);
+                sg_hz_record_pixel4(c, x, y, coverage, z);
             }
         } else if (!coverage) return;
         uint8_t *px = &c->fb.sample_color[first * 4];
@@ -408,7 +410,7 @@ void sg_write_multisample(softgl_ctx *c, int x, int y, unsigned coverage,
     for (int s = 0; s < n; s++) {
         if (!(coverage & (1u << s))) continue;
         sg_write_sample(c, first + s, c->fb.sample_color, c->fb.sample_depth,
-                         c->fb.sample_stencil, z[s], color[0], color[1], color[2], alpha, n == 4);
+                         c->fb.sample_stencil, z[s], color[0], color[1], color[2], alpha, 4);
     }
 }
 

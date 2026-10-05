@@ -58,7 +58,7 @@ SG_INLINE void sg_store_opaque_msaa4(softgl_ctx *c, int x, int y, unsigned cover
         packed = _mm_or_si128(_mm_and_si128(mask, packed), _mm_andnot_si128(mask, old));
     }
     _mm_storeu_si128((sg_i32x4 *)px, packed);
-    if (c->depth_test && c->depth_mask) sg_hz_record_pixel(c, x, y, coverage, depths);
+    if (c->depth_test && c->depth_mask) sg_hz_record_pixel4(c, x, y, coverage, depths);
 }
 
 /* The rasterizer already tested these two samples. Bounded eight-byte I/O
@@ -85,5 +85,6 @@ SG_INLINE void sg_store_opaque_msaa2(softgl_ctx *c, int x, int y, unsigned cover
         packed = _mm_or_si128(_mm_and_si128(mask, packed), _mm_andnot_si128(mask, old));
     }
     _mm_storel_epi64((sg_i32x4 *)px, packed);
+    if (c->depth_test && c->depth_mask) sg_hz_record_pixel2(c, x, y, coverage, depths);
 }
 #endif

@@ -1,3 +1,10 @@
+#if SG_MSAA_SAMPLES == 4
+#define SG_MSAA_HZ_CLASS sg_hz_occlusion_class4
+#define SG_MSAA_HZ_OCCLUDED sg_hz_occluded4
+#else
+#define SG_MSAA_HZ_CLASS sg_hz_occlusion_class2
+#define SG_MSAA_HZ_OCCLUDED sg_hz_occluded2
+#endif
 /* Included with compile-time sample count and depth-capture mode. */
 #ifdef __EMSCRIPTEN__
 /* LLVM noinline alone is lost before Binaryen. Retain these roots so
@@ -13,15 +20,13 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
                          int ix0, int iy0, int ix1, int iy1,
                          int64_t area, int bias0, int bias1, int bias2,
                          float z_offset) {
-#if SG_MSAA_SAMPLES == 4
 #if SG_MSAA_DEPTH_CAPTURE
-    int hz = sg_hz_occlusion_class(c, ix0, iy0, ix1, iy1,
+    int hz = SG_MSAA_HZ_CLASS(c, ix0, iy0, ix1, iy1,
         v0->ndc.z, v1->ndc.z, v2->ndc.z, z_offset, 1);
     if (hz) return hz == 2 ? 2 : -1;
 #else
-    if (sg_hz_occluded(c, ix0, iy0, ix1, iy1,
+    if (SG_MSAA_HZ_OCCLUDED(c, ix0, iy0, ix1, iy1,
         v0->ndc.z, v1->ndc.z, v2->ndc.z, z_offset)) return -1;
-#endif
 #endif
     int32_t vx[3] = {sg_fp_screen_from_float(v0->ndc.x),
                      sg_fp_screen_from_float(v1->ndc.x),
@@ -272,3 +277,6 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
     return coverage_seen ? 0 : 1;
 #endif
 }
+
+#undef SG_MSAA_HZ_CLASS
+#undef SG_MSAA_HZ_OCCLUDED
