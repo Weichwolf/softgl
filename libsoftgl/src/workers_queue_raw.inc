@@ -377,7 +377,7 @@ static int sg_queue_submit(softgl_ctx *c, sg_worker_pool *p, sg_geometry_entry *
     }
     r->coverage_entry = entry;
     r->coverage_stamp = entry ? entry->stamp : 0;
-    r->depth_epoch = entry && c->fb.samples == 4 && c->depth_test && !c->stencil_test &&
+    r->depth_epoch = entry && (c->fb.samples == 2 || c->fb.samples == 4) && c->depth_test && !c->stencil_test &&
         !c->polygon_offset_fill && (c->depth_func == GL_LESS || c->depth_func == GL_LEQUAL)
         ? p->depth_epoch : 0;
     r->state = *c;

@@ -1,0 +1,51 @@
+--- a/libsoftgl/src/workers.c
++++ b/libsoftgl/src/workers.c
+@@ -1,5 +1,17 @@
+ #include "raster_hz.h"
+ #include "workers.h"
++
++/* Diagnostic counters are written only by the caller: geometry replay and
++ * retired-job publication never execute on helper threads. Read between
++ * joined resolves; no atomics or hot raster instrumentation are added. */
++static uint64_t sg_depth_replay_counts[3][4];
++__attribute__((used, noinline))
++double sg_depth_replay_diag_counter(int samples, int field) {
++    if ((samples != 0 && samples != 2 && samples != 4) || field < 0 || field >= 4)
++        return -1.;
++    return (double)sg_depth_replay_counts[samples / 2][field];
++}
++
+ #include "raster_types.h"
+ #include "raster_vertex_pack.h"
+ #include <stdlib.h>
+@@ -402,9 +414,13 @@
+             !c->polygon_offset_fill && (c->depth_func == GL_LESS ||
+              c->depth_func == GL_LEQUAL || c->depth_func == GL_EQUAL)) {
+             const uint8_t *hidden = (const uint8_t *)(entry->tris + entry->offsets[p->nbins]);
++            sg_depth_replay_counts[c->fb.samples / 2][0] += count;
+             int out = 0;
+             for (int i = first; i < first + count; i++) {
+-                if (hidden[i >> 3] & (1u << (i & 7))) continue;
++                if (hidden[i >> 3] & (1u << (i & 7))) {
++                    sg_depth_replay_counts[c->fb.samples / 2][1]++;
++                    continue;
++                }
+                 bin->tris[out++] = entry->tris[i];
+             }
+             bin->count = out;
+@@ -693,10 +709,14 @@
+             const uint32_t *flags = job->bins[b].sort_keys + n;
+             for (int i = 0; i < n; i++) {
+                 if (flags[i] & 1u) continue;
+-                if (flags[i] & 2u) hidden[reference >> 3] |= 1u << (reference & 7);
++                if (flags[i] & 2u) {
++                    hidden[reference >> 3] |= 1u << (reference & 7);
++                    sg_depth_replay_counts[job->state.fb.samples / 2][3]++;
++                }
+                 reference++;
+             }
+         }
+         entry->depth_epoch = job->depth_epoch;
++        sg_depth_replay_counts[job->state.fb.samples / 2][2]++;
+     }
+ }

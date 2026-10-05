@@ -1,5 +1,12 @@
 # Optimization evidence
 
+[Two-sample transient depth replay](depth-replay-two/README.md) is retained:
+BMW 2x frame time falls by 5.184%/4.718%, with all six pairs faster. The full
+off/2x/4x comparisons, regression and browser gates, actual replay-consumption
+diagnostic and independent patch are published. T-80 and four-sample controls
+remain mixed; no gain is claimed for those paths. Canonical module `4d73c88f`
+is byte-identical to the timed candidate.
+
 Fresh profiles of the current renderer and a repeated logical-work census
 for BMW/T-80 in all three MSAA modes are published in
 [raster-work-census](raster-work-census/README.md). Every counter and model

@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/cosmo/Git/softgl/build/diagnostics/depth-replay-two/browser-gates.py", line 15, in <module>
+    with (r/'preview-chromium.log').open('w') as log:subprocess.run(['node','tools/wasm_preview_check.cjs','http://127.0.0.1:8001/',str(r/'preview-chromium.json')],env=env,stdout=log,stderr=subprocess.STDOUT,check=True)
+                                                     ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['node', 'tools/wasm_preview_check.cjs', 'http://127.0.0.1:8001/', '/home/cosmo/Git/softgl/build/diagnostics/depth-replay-two/preview-chromium.json']' returned non-zero exit status 1.

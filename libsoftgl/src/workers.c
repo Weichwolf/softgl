@@ -398,7 +398,7 @@ void sg_workers_geometry_replay(softgl_ctx *c, const sg_geometry_entry *entry) {
         if (!count) continue;
         sg_bin_grow(bin, count);
         if (entry->depth_epoch && entry->depth_epoch == p->depth_epoch &&
-            c->fb.samples == 4 && c->depth_test && !c->stencil_test &&
+            (c->fb.samples == 2 || c->fb.samples == 4) && c->depth_test && !c->stencil_test &&
             !c->polygon_offset_fill && (c->depth_func == GL_LESS ||
              c->depth_func == GL_LEQUAL || c->depth_func == GL_EQUAL)) {
             const uint8_t *hidden = (const uint8_t *)(entry->tris + entry->offsets[p->nbins]);

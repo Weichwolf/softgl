@@ -257,10 +257,22 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
                     float b2 = 1.f - b0 - b1;
                     float z = b0 * v0->ndc.z + b1 * v1->ndc.z + b2 * v2->ndc.z + z_offset;
                     depths[s] = z < 0.f ? 0.f : z > 1.f ? 1.f : z;
+#if SG_MSAA_DEPTH_CAPTURE
+                    if (c->depth_test && !c->stencil_test) {
+                        float old_depth = c->fb.sample_depth[
+                            ((size_t)y * c->fb.w + x) * SG_MSAA_SAMPLES + s];
+                        int passed = sg_sample_depth_pass(c->depth_func, depths[s], old_depth);
+                        /* A LESS equality failure must remain available for
+                         * a later LEQUAL/EQUAL material pass. */
+                        if (!weak_seen && (passed || depths[s] <= old_depth)) weak_seen = 1;
+                        if (!passed) coverage &= ~(1u << s);
+                    }
+#else
                     if (c->depth_test && !c->stencil_test &&
                         !sg_sample_depth_pass(c->depth_func, depths[s],
                             c->fb.sample_depth[((size_t)y * c->fb.w + x) * SG_MSAA_SAMPLES + s]))
                         coverage &= ~(1u << s);
+#endif
                 }
             }
             if (coverage) {

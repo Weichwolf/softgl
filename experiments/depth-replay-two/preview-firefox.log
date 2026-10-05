@@ -1,0 +1,38 @@
+mozversion INFO | application_buildid: 20260923073912
+mozversion INFO | application_changeset: ec9c1cc8a5cb6fac9d4d17e4f141fb42a8089b4c
+mozversion INFO | application_display_name: Firefox
+mozversion INFO | application_id: {ec8030f7-c20a-464f-9b0e-13a3a9e97384}
+mozversion INFO | application_name: Firefox
+mozversion INFO | application_remotingname: firefox-esr
+mozversion INFO | application_repository: https://hg.mozilla.org/releases/mozilla-esr153
+mozversion INFO | application_vendor: Mozilla
+mozversion INFO | application_version: 153.4.0
+mozversion INFO | platform_buildid: 20260923073912
+mozversion INFO | platform_changeset: ec9c1cc8a5cb6fac9d4d17e4f141fb42a8089b4c
+mozversion INFO | platform_repository: https://hg.mozilla.org/releases/mozilla-esr153
+mozversion INFO | platform_version: 153.4.0
+Firefox passed: 234 tests, six scenes, cancellation and three workers plus caller
+Exception ignored in: <function Marionette.__del__ at 0x70dd7f510400>
+Traceback (most recent call last):
+  File "/home/cosmo/Git/softgl/build/python/lib/python3.13/site-packages/marionette_driver/marionette.py", line 690, in __del__
+  File "/home/cosmo/Git/softgl/build/python/lib/python3.13/site-packages/marionette_driver/marionette.py", line 680, in cleanup
+  File "/home/cosmo/Git/softgl/build/python/lib/python3.13/site-packages/marionette_driver/geckoinstance.py", line 472, in close
+  File "/home/cosmo/Git/softgl/build/python/lib/python3.13/site-packages/mozrunner/base/runner.py", line 271, in cleanup
+  File "/home/cosmo/Git/softgl/build/python/lib/python3.13/site-packages/mozprofile/profile.py", line 294, in cleanup
+  File "/home/cosmo/Git/softgl/build/python/lib/python3.13/site-packages/mozprofile/profile.py", line 92, in cleanup
+  File "/home/cosmo/Git/softgl/build/python/lib/python3.13/site-packages/mozfile/mozfile.py", line 214, in remove
+ImportError: sys.meta_path is None, Python is likely shutting down
+Exception ignored in: <function BaseProfile.__del__ at 0x70dd7f5fc4a0>
+Traceback (most recent call last):
+  File "/home/cosmo/Git/softgl/build/python/lib/python3.13/site-packages/mozprofile/profile.py", line 84, in __del__
+  File "/home/cosmo/Git/softgl/build/python/lib/python3.13/site-packages/mozprofile/profile.py", line 294, in cleanup
+  File "/home/cosmo/Git/softgl/build/python/lib/python3.13/site-packages/mozprofile/profile.py", line 92, in cleanup
+  File "/home/cosmo/Git/softgl/build/python/lib/python3.13/site-packages/mozfile/mozfile.py", line 214, in remove
+ImportError: sys.meta_path is None, Python is likely shutting down
+Exception ignored in: <function BaseProfile.__del__ at 0x70dd7f5fc4a0>
+Traceback (most recent call last):
+  File "/home/cosmo/Git/softgl/build/python/lib/python3.13/site-packages/mozprofile/profile.py", line 84, in __del__
+  File "/home/cosmo/Git/softgl/build/python/lib/python3.13/site-packages/mozprofile/profile.py", line 294, in cleanup
+  File "/home/cosmo/Git/softgl/build/python/lib/python3.13/site-packages/mozprofile/profile.py", line 92, in cleanup
+  File "/home/cosmo/Git/softgl/build/python/lib/python3.13/site-packages/mozfile/mozfile.py", line 214, in remove
+ImportError: sys.meta_path is None, Python is likely shutting down

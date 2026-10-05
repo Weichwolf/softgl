@@ -1,0 +1,209 @@
+--- a/libsoftgl/src/rasterizer.c
++++ b/libsoftgl/src/rasterizer.c
+@@ -706,6 +706,13 @@
+ #undef SG_MSAA_SAMPLES
+ #undef SG_MSAA_FUNCTION
+ #undef SG_MSAA_DEPTH_CAPTURE
++#define SG_MSAA_DEPTH_CAPTURE 1
++#define SG_MSAA_SAMPLES 2
++#define SG_MSAA_FUNCTION sg_raster_triangle_msaa2_capture
++#include "raster_msaa_impl.h"
++#undef SG_MSAA_SAMPLES
++#undef SG_MSAA_FUNCTION
++#undef SG_MSAA_DEPTH_CAPTURE
+ #undef SG_MSAA_OPAQUE_CAN
+ #undef SG_MSAA_OPAQUE_STORE
+ #undef SG_MSAA_PACKET_WRITE
+@@ -838,6 +845,9 @@
+                 result = sg_raster_triangle_msaa4(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
+                                     area2, bias0, bias1, bias2, z_offset);
+         }
++        else if (sg_raster_bin && sg_raster_bin->depth_capture)
++            result = sg_raster_triangle_msaa2_capture(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
++                                    area2, bias0, bias1, bias2, z_offset);
+         else
+             result = sg_raster_triangle_msaa2(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
+                                     area2, bias0, bias1, bias2, z_offset);
+--- a/libsoftgl/src/raster_msaa_impl.h
++++ b/libsoftgl/src/raster_msaa_impl.h
+@@ -257,10 +257,22 @@
+                     float b2 = 1.f - b0 - b1;
+                     float z = b0 * v0->ndc.z + b1 * v1->ndc.z + b2 * v2->ndc.z + z_offset;
+                     depths[s] = z < 0.f ? 0.f : z > 1.f ? 1.f : z;
++#if SG_MSAA_DEPTH_CAPTURE
++                    if (c->depth_test && !c->stencil_test) {
++                        float old_depth = c->fb.sample_depth[
++                            ((size_t)y * c->fb.w + x) * SG_MSAA_SAMPLES + s];
++                        int passed = sg_sample_depth_pass(c->depth_func, depths[s], old_depth);
++                        /* A LESS equality failure must remain available for
++                         * a later LEQUAL/EQUAL material pass. */
++                        if (!weak_seen && (passed || depths[s] <= old_depth)) weak_seen = 1;
++                        if (!passed) coverage &= ~(1u << s);
++                    }
++#else
+                     if (c->depth_test && !c->stencil_test &&
+                         !sg_sample_depth_pass(c->depth_func, depths[s],
+                             c->fb.sample_depth[((size_t)y * c->fb.w + x) * SG_MSAA_SAMPLES + s]))
+                         coverage &= ~(1u << s);
++#endif
+                 }
+             }
+             if (coverage) {
+--- a/libsoftgl/src/workers.c
++++ b/libsoftgl/src/workers.c
+@@ -398,7 +398,7 @@
+         if (!count) continue;
+         sg_bin_grow(bin, count);
+         if (entry->depth_epoch && entry->depth_epoch == p->depth_epoch &&
+-            c->fb.samples == 4 && c->depth_test && !c->stencil_test &&
++            (c->fb.samples == 2 || c->fb.samples == 4) && c->depth_test && !c->stencil_test &&
+             !c->polygon_offset_fill && (c->depth_func == GL_LESS ||
+              c->depth_func == GL_LEQUAL || c->depth_func == GL_EQUAL)) {
+             const uint8_t *hidden = (const uint8_t *)(entry->tris + entry->offsets[p->nbins]);
+--- a/libsoftgl/src/workers_queue_raw.inc
++++ b/libsoftgl/src/workers_queue_raw.inc
+@@ -377,7 +377,7 @@
+     }
+     r->coverage_entry = entry;
+     r->coverage_stamp = entry ? entry->stamp : 0;
+-    r->depth_epoch = entry && c->fb.samples == 4 && c->depth_test && !c->stencil_test &&
++    r->depth_epoch = entry && (c->fb.samples == 2 || c->fb.samples == 4) && c->depth_test && !c->stencil_test &&
+         !c->polygon_offset_fill && (c->depth_func == GL_LESS || c->depth_func == GL_LEQUAL)
+         ? p->depth_epoch : 0;
+     r->state = *c;
+--- a/tests/depth_replay.c
++++ b/tests/depth_replay.c
+@@ -72,10 +72,8 @@
+                 glVertex3f(1,1,-.2f); glVertex3f(-1,1,-.2f);
+                 glEnd();
+                 softgl_read_rgba8(c);
+-                if (samples==4) {
+-                    REQUIRE(sg_hz_active(c));
+-                    REQUIRE(sg_hz_at(c,4,4)->written==UINT64_MAX);
+-                }
++                REQUIRE(sg_hz_active(c));
++                REQUIRE(sg_hz_at(c,4,4)->written==(samples==2 ? UINT32_MAX : UINT64_MAX));
+             }
+             if (test==13) { glEnable(GL_ALPHA_TEST); glAlphaFunc(GL_NEVER,.4f); }
+             if (test==14) { glEnable(GL_SAMPLE_COVERAGE); glSampleCoverage(0,0); }
+@@ -84,7 +82,7 @@
+             glDisable(GL_ALPHA_TEST); glDisable(GL_SAMPLE_COVERAGE);
+             int filtered=-1;
+             glDepthFunc(GL_LEQUAL); glDepthMask(0);
+-            if (!cold && test==0 && samples==4) { filtered=references(c); REQUIRE(filtered>=0); }
++            if (!cold && test==0) { filtered=references(c); REQUIRE(filtered>=0); }
+             if (cold) glBufferSubData(GL_ARRAY_BUFFER,0,sizeof(positions),positions);
+             switch (test) {
+                 case 1: glDepthFunc(GL_EQUAL); break;
+@@ -139,7 +137,100 @@
+     printf("depth replay: %dx%d samples=%d workers=%d, %d actual queued state/sample-plane cases exact\n",w,h,samples,workers,CASES);
+     return 0;
+ }
++/* Compare transient classification with actual LEQUAL and ALWAYS rendering.
++ * Sample depth is immutable across these draws. Ties may reject LESS color
++ * writes but must never classify a reference as strictly hidden. */
++static int check_capture_classes(void) {
++    uint64_t classes[2][3] = {{0}}, ties = 0, cases = 0;
++    for (int samples = 2; samples <= 4; samples += 2) {
++        softgl_ctx *c = softgl_create_multisample(36, 24, samples);
++        REQUIRE(c);
++        softgl_make_current(c);
++        sg_workers_shutdown(c);
++        sg_hz_state *hz = sg_hz_state_from_ctx(c);
++        if (hz) hz->active = 0;
++        glEnable(GL_DEPTH_TEST);
++        glDepthMask(GL_FALSE);
++        glClearColor(0, 0, 0, 0);
++        sg_tex_tri_ctx texture;
++        sg_tex_tri_prepare(c, &texture);
++        for (int enabled = 0; enabled < 2; enabled++) {
++            c->multisample = enabled;
++            for (int function = 0; function < 2; function++) {
++                for (int test = 0; test < 1024; test++) {
++                    sg_vert v[3];
++                    memset(v, 0, sizeof(v));
++                    float below = nextafterf(.5f, 0.f), above = nextafterf(.5f, 1.f);
++                    v[0].ndc = (sg_vec4){3.125f + (test & 7) * .125f, 2.25f, .5f, 1.f};
++                    v[1].ndc = (sg_vec4){30.25f, 5.125f, (test & 64) ? below : .5f, 1.f};
++                    v[2].ndc = (sg_vec4){8.375f, 21.25f, (test & 128) ? above : .5f, 1.f};
++                    if ((test & 15) == 0) {
++                        for (int i = 0; i < 3; i++) v[i].ndc.x -= 40.f;
++                    } else if ((test & 15) == 1) {
++                        v[1].ndc.x = v[0].ndc.x;
++                        v[1].ndc.y = v[0].ndc.y;
++                    } else if ((test & 15) == 2) {
++                        v[1].ndc.x = v[0].ndc.x + .0625f;
++                        v[1].ndc.y = v[0].ndc.y;
++                        v[2].ndc.x = v[0].ndc.x;
++                        v[2].ndc.y = v[0].ndc.y + .0625f;
++                    }
++                    for (int i = 0; i < 3; i++) v[i].color = (sg_vec4){1, 1, 1, 1};
++                    for (int i = 0; i < 36 * 24 * samples; i++) {
++                        const float stored[] = {.25f, .5f, .75f, below, above};
++                        int kind = (test >> 4) & 7;
++                        c->fb.sample_depth[i] = stored[kind < 5 ? kind : (i + test) % 5];
++                    }
++                    glClear(GL_COLOR_BUFFER_BIT);
++                    c->depth_func = function ? GL_LEQUAL : GL_LESS;
++                    sg_worker_bin bin = {0};
++                    bin.depth_capture = 1;
++                    sg_raster_bin = &bin;
++                    int captured = sg_raster_triangle_tile_prepared(c, v, v + 1, v + 2,
++                                                                   0, 36, &texture);
++                    sg_raster_bin = NULL;
++                    int less_visible = 0;
++                    for (int i = 0; i < 36 * 24 * samples; i++)
++                        less_visible |= c->fb.sample_color[i * 4] != 0;
++                    int visible[2] = {0};
++                    for (int pass = 0; pass < 2; pass++) {
++                        glClear(GL_COLOR_BUFFER_BIT);
++                        c->depth_func = pass ? GL_ALWAYS : GL_LEQUAL;
++                        sg_raster_triangle_tile_prepared(c, v, v + 1, v + 2, 0, 36, &texture);
++                        for (int i = 0; i < 36 * 24 * samples; i++)
++                            visible[pass] |= c->fb.sample_color[i * 4] != 0;
++                    }
++                    int expected = !visible[1] ? 1 : visible[0] ? 0 : 2;
++                    if (captured != expected) {
++                        fprintf(stderr, "capture class: samples=%d enabled=%d function=%d "
++                            "test=%d expected=%d got=%d\n", samples, enabled, function,
++                            test, expected, captured);
++                        softgl_destroy(c);
++                        return 1;
++                    }
++                    classes[samples == 4][captured]++;
++                    ties += !function && !less_visible && visible[0];
++                    cases++;
++                }
++            }
++        }
++        softgl_destroy(c);
++    }
++    for (int mode = 0; mode < 2; mode++)
++        for (int kind = 0; kind < 3; kind++) REQUIRE(classes[mode][kind]);
++    REQUIRE(ties);
++    printf("depth capture: %llu actual LEQUAL/ALWAYS classification cases exact; "
++        "2x visible/empty/hidden=%llu/%llu/%llu 4x=%llu/%llu/%llu, %llu LESS ties preserved\n",
++        (unsigned long long)cases,
++        (unsigned long long)classes[0][0], (unsigned long long)classes[0][1],
++        (unsigned long long)classes[0][2], (unsigned long long)classes[1][0],
++        (unsigned long long)classes[1][1], (unsigned long long)classes[1][2],
++        (unsigned long long)ties);
++    return 0;
++}
++
+ int main(void) {
++    REQUIRE(!check_capture_classes());
+     const int workers[]={1,3,8};
+     for (int hz=0;hz<2;hz++) {
+         w=hz?128:47; h=hz?32:31;
+--- a/tests/hierarchical_depth.c
++++ b/tests/hierarchical_depth.c
+@@ -41,7 +41,7 @@
+         vertices+2, 0, c->fb.w, &texture)==-1);
+     bin.depth_capture = 1;
+     CHECK(sg_raster_triangle_tile_prepared(c, vertices, vertices+1,
+-        vertices+2, 0, c->fb.w, &texture)==(samples==4?2:-1));
++        vertices+2, 0, c->fb.w, &texture)==2);
+     /* At the clamped near limit LESS rejects ties, but LEQUAL must retain
+      * them. A weak HZ rejection cannot enter the reusable hidden bitmap. */
+     for (int i=0;i<c->fb.w*c->fb.h*samples;i++) c->fb.sample_depth[i]=0;

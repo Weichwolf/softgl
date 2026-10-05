@@ -41,7 +41,7 @@ static int check_strict_capture(softgl_ctx *c) {
         vertices+2, 0, c->fb.w, &texture)==-1);
     bin.depth_capture = 1;
     CHECK(sg_raster_triangle_tile_prepared(c, vertices, vertices+1,
-        vertices+2, 0, c->fb.w, &texture)==(samples==4?2:-1));
+        vertices+2, 0, c->fb.w, &texture)==2);
     /* At the clamped near limit LESS rejects ties, but LEQUAL must retain
      * them. A weak HZ rejection cannot enter the reusable hidden bitmap. */
     for (int i=0;i<c->fb.w*c->fb.h*samples;i++) c->fb.sample_depth[i]=0;
