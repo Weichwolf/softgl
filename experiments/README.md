@@ -2096,3 +2096,164 @@ off/2x gates follow the performance rejection. Production remains unchanged.
 Evidence: build/diagnostics/model-cube-object-share/{validation.json,
 experiment.patch,pack-cube-equivalence.json,wasm-body-comparison.json}; all
 quiet raw arms/host monitors under build/perf/tigerlake-20261004/.
+
+## 2026-10-05: bounded sample-depth planes and static dispatch, rejected
+
+Two private numerical/architecture trials replace repeated sample barycentric
+depth evaluation with an anchored triangle plane. Window depth remains linear;
+integer coverage, sample positions, shading-point selection, texture/color
+arithmetic, geometry and image tolerances remain unchanged. Plane eligibility
+depends exclusively on full-triangle geometry, independent of bins, scissor,
+materials and depth/stencil/query/write state. This preserves repeatability
+across fragment states, as required by the [OpenGL 1.5 specification,
+sections 3.5.1/3.5.6 and appendix A.3](https://registry.khronos.org/OpenGL/specs/gl/glspec15.pdf).
+
+Setup uses f64 derivatives and narrows them to f32. Full fixed coordinates
+are bounded to +/-8192 pixels; integer exponent checks reject exceptional
+depths even under native fast-math. A conservative f64 conditioning bound
+limits setup error to 1e-8, and a full-triangle L1 bound limits gradient terms
+to 0.5. The resulting conservative sample-depth error bound is below the
+existing HZ margin of 2e-6*(1+abs(polygon_offset)); clamp is nonexpansive.
+The initial version lacked the explicit conditioning guard and was superseded
+before timing. Complete derivation and initial failure evidence are retained.
+
+This reformulation changes rounding. The user's FMA/rounding permission allows
+investigation, but does not remove the original reference-image gates. The
+legacy byte-equivalence helper fails against production: over 100 rotating
+4x frames, BMW changes 672 pixels in total, with maximum channel delta 59
+and only one exact frame; T80 changes 62 pixels, maximum delta 64, with 69
+exact frames. These sparse differences are measured, not an added acceptance
+tolerance or a claim of color equivalence. They remain in the evidence.
+
+The guarded generic version chooses the depth formula within its raster path.
+It changes only the 2x/4x WASM bodies; the other 1,392 bodies are byte-identical.
+The static version retains dedicated 2x/4x plane roots alongside unchanged
+legacy kernels, selecting once in the common triangle caller. HZ precedes
+f64 setup and is omitted inside plane kernels. WAT confirms all four roots
+and the caller dispatch; no plane-eligibility flag enters the plane pixel loops.
+Static and generic plane versions retain 100 exact hashes plus four raw
+byte-identical frames per model at 4x, relative to each other, not production.
+
+| Against accepted `c4e565e0`, 4x | BMW audit 1 / 2 | T80 audit 1 / 2 |
+| --- | --- | --- |
+| Guarded generic, frame-time change | +4.01% / +3.84% | +1.22% / -1.82% |
+| Guarded generic, FPS | 26.09 / 25.93 | 66.99 / 66.72 |
+| Static kernels, frame-time change | +4.19% / +3.98% | +3.31% / +2.05% |
+| Static kernels, FPS | 26.06 / 25.91 | 65.74 / 66.28 |
+
+Each version runs two independent three-pair quiet AB/BA audits, at 640x360,
+three helpers plus caller, 80 warm-up / 100 measured frames, two rounds and
+per-frame resolve/readback. Every activity guard passes on attempt one. All
+six BMW pairs regress for each version; static also regresses T80 in all six.
+Both are rejected. Full retention and off/2x timing do not follow rejection.
+
+Fresh native/WASM/ASan full-frame tests pass 4,480 frames and 46,688,256 exact
+sample masks for each version. A new actual-raster depth oracle independently
+computes f64 edge interpolation for 4,570,220 covered depths; maximum absolute
+error is 1.34798664e-7 on native, WASM and ASan. Its 72 GL_EQUAL/stencil/alpha/
+query/scissor/write-mask/split-bin cases pass. Geometry classification reports
+2,544 eligible and 1,936 rejected input frames; this is not a count of actual
+fast-kernel executions, since some primitives are rejected before raster entry.
+ASan/UBSan/leaks pass. Each version also passes 51 WASM renderer contracts,
+135 queue/eager sample-plane hashes, and 240 default-sample Mesa images.
+The image helper creates default contexts: those 240 results are not MSAA
+reference-image validation. No image tolerance or production asset changes.
+
+The static 4x plane kernel's actual Chromium TurboFan code is 117,872 bytes
+versus production's 121,512. Initial stack reservation is 1,496 versus 1,480
+bytes; disassembly has 2,436 versus 2,519 stack-reference sites and 551 versus
+577 vector stack-move sites. These static quantities do not establish dynamic
+spill traffic, cache misses or the cause of the performance loss. Forced JIT
+inspection finishes before quiet timing; acceptance uses ordinary compilation.
+
+Evidence: build/diagnostics/msaa-depth-plane{,-guarded,-static}/ including
+validation.json, experiment.patch, plane-proof.md, depth_oracle.c, model pixel
+reports and retained machine-code bytes; raw arms/monitors under
+build/perf/tigerlake-20261004/msaa-depth-plane-{guarded,static}-*.
+
+## 2026-10-05: exact production triangle-size histogram
+
+A separate diagnostic retains production's depth/coverage/shading arithmetic
+and only counts non-HZ-rejected bin invocations by complete fixed-point
+triangle area, area2/131072 in square pixels. It computes plane eligibility
+without using the plane for rendering. Both models retain 100 exact rotating
+hashes and four raw byte-identical frames at 4x against accepted `c4e565e0`.
+No diagnostic frame timings are used for performance claims.
+
+| Mean per 4x frame | BMW | T80 |
+| --- | --- | --- |
+| Bin triangle invocations after HZ | 81,968.56 | 17,446.07 |
+| Eligible for guarded plane | 81,627.93 | 17,401.67 |
+| Invocations with full triangle area <4 pixels | 72.10% | 61.30% |
+| Invocations with full triangle area >=16 pixels | 11.27% | 19.63% |
+| Covered pixels belonging to >=16-pixel triangles | 57.42% | 70.37% |
+| Covered pixels / bin invocation, area <1 | 0.97 | 1.20 |
+| Covered pixels / bin invocation, area 16–64 | 24.36 | 24.89 |
+
+These are logical work counts, not unique triangles, native cycles, cache-miss
+or bandwidth measurements. They justify investigating a single geometry-only
+area crossover that avoids plane preparation for tiny triangles; they do not
+prove its performance. All seven size buckets and per-angle rows are retained
+in build/diagnostics/msaa-depth-area-counts/{validation.json,
+frame-equivalence-4.json,experiment.patch}.
+
+## 2026-10-05: plane arithmetic only for larger triangles, rejected
+
+The size histogram motivates one geometry-only crossover: complete fixed-point
+area2>=2097152, equivalent to 16 square pixels. Smaller triangles bypass f64
+preparation and the added caller HZ check, retaining original legacy depth/HZ
+kernels. Every state/bin/scissor uses the same full-geometry choice. There is
+no sweep of timing thresholds. The two legacy and two plane kernels remain
+byte-identical to the static predecessor: among 1,398 defined WASM functions,
+only common dispatch body 166 changes; the other 1,397 remain byte-identical.
+
+| Area-gated trial against `c4e565e0`, 4x | Audit 1 | Audit 2 |
+| --- | --- | --- |
+| BMW frame-time change | +1.82% | +1.97% |
+| BMW FPS | 26.47 | 26.53 |
+| T80 frame-time change | -0.28% | +0.45% |
+| T80 FPS | 66.15 | 66.91 |
+
+Six quiet AB/BA pairs use the same 640x360/4x, three-helpers-plus-caller,
+80/100-frame, two-round, per-frame-resolve protocol. All guards pass on
+attempt one; BMW regresses in all six pairs. T80 is mixed. Reject the version
+and do not run full retention or off/2x timing after this result.
+
+Fresh native/WASM/ASan oracles each pass 4,480 frames / 46,688,256 exact sample
+masks and 4,570,220 depths, maximum absolute error 1.34798664e-7, plus all 72
+state/scissor/split-bin invariance cases. Geometry classification is now
+2,202 eligible / 2,278 rejected input frames, not actual fast-kernel execution
+counts. ASan/UBSan/leaks, 51 WASM renderer contracts, 135 queue/eager hashes
+and 240 default-sample Mesa image comparisons pass. Reference-MSAA/full
+retention gates are not claimed. Image tolerances and production remain unchanged.
+
+Against production over 100 rotating 4x frames, BMW has 64 exact frames and
+71 changed pixels in total, maximum channel delta 35; T80 has 77 exact frames,
+49 changed pixels, maximum delta 64. Numerical reformulation still breaks
+legacy byte equivalence; no new tolerance is introduced.
+
+After all quiet timing finishes, inspect the actual common caller's Chromium
+TurboFan code. It shrinks from 105,976 to 41,608 bytes; initial stack reservation
+shrinks from 1,296 to 952 bytes, stack-reference sites from 2,946 to 1,530, and
+vector stack-move sites from 283 to 165. Thus an assumed increase in caller
+stack reservation is not supported. These static quantities still do not
+measure dynamic spills/misses or explain the measured regression. Avoid
+another outlining/layout trial solely from static function sizes.
+
+Evidence: build/diagnostics/msaa-depth-plane-large/{validation.json,
+experiment.patch,plane-proof.md,wasm-body-comparison.json,
+common-machine-code-comparison.json,native-common-*.{json,bin,asm}} and
+build/perf/tigerlake-20261004/msaa-depth-plane-large-*.
+
+An additional byte-exact 100-angle shape histogram measures active bin-clamped
+boxes, rather than treating small full triangle area as a small box. BMW has
+2,499.42 one-pixel-box calls per frame (3.05% of post-HZ bin invocations), but
+only 163.28 surviving shaded pixels from these boxes (0.054% of post-Z pixels).
+T80 has 282.40 such calls and 46.71 surviving pixels. A kernel that batches
+only single-pixel-box triangles therefore targets too little work and is
+rejected before implementation/timing. BMW boxes of <=4/<=16 pixels account
+for 25.44%/59.40% of post-HZ calls; these cumulative counts are not claims of
+successful coverage, saved operations or performance. Evidence:
+build/diagnostics/msaa-depth-shape-counts/{validation.json,
+frame-equivalence-4.json,experiment.patch}; both models retain 100 exact hashes
+and four byte-identical frames, with unchanged production arithmetic.

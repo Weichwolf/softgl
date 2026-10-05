@@ -31,6 +31,9 @@
 | Warm-up / Frames / AB/BA-Paare | 80 / 100 / 4×/aus: 2×3; 2×: 3 | 80 / 100 / 4×/aus: 2×3; 2×: 3 |
 | Besuchte / leere Rasterpixel pro Frame, Diagnose | 1.744.066 / 1.102.392 | 442.589 / 226.866 |
 | Pixel nach frühem Z, Diagnose | 301.292 | 137.667 |
+| Bin-Dreiecke nach HZ / Frame, Diagnose | 81.969 | 17.446 |
+| Davon Dreiecksfläche <4 / ≥16 px² | 72,10% / 11,27% | 61,30% / 19,63% |
+| Bedeckte Pixel von ≥16-px²-Dreiecken | 57,42% | 70,37% |
 
 | Prüfung | Ergebnis |
 | --- | --- |
@@ -48,4 +51,5 @@
 | Neue Layout-/Bin-Architekturversuche / AB/BA-Paare / übernommen | 5 / 30 / 0 |
 | Neue SIMD-Scanline-Versuche / AB/BA-Paare / übernommen | 4 / 24 / 0 |
 | Viewer-Cubemap-Sharing / AB/BA-Paare / übernommen | 1 / 6 / 0 |
+| Tiefenebenen-/Dispatch-Versuche / AB/BA-Paare / übernommen | 3 / 18 / 0 |
 | Rohdaten / Nachweis | `build/perf/tigerlake-20261004/` / `build/diagnostics/msaa-cube-combined/` |
