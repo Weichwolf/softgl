@@ -1,0 +1,101 @@
+{
+  "roots": [
+    {
+      "name": "sg_raster_triangle_tile_prepared",
+      "referenceBytes": 22877,
+      "candidateBytes": 22877,
+      "byteExact": true
+    },
+    {
+      "name": "sg_raster_triangle_depth_capture",
+      "referenceBytes": 23285,
+      "candidateBytes": 23285,
+      "byteExact": true
+    },
+    {
+      "name": "sg_raster_triangle_msaa2",
+      "referenceBytes": 22541,
+      "candidateBytes": 22541,
+      "byteExact": true
+    },
+    {
+      "name": "sg_raster_triangle_msaa2_capture",
+      "referenceBytes": 22880,
+      "candidateBytes": 22880,
+      "byteExact": true
+    },
+    {
+      "name": "sg_raster_triangle_msaa4",
+      "referenceBytes": 25751,
+      "candidateBytes": 25751,
+      "byteExact": true
+    },
+    {
+      "name": "sg_raster_triangle_msaa4_capture",
+      "referenceBytes": 25844,
+      "candidateBytes": 25844,
+      "byteExact": true
+    },
+    {
+      "name": "sg_queue_render_packed",
+      "referenceBytes": 1312,
+      "candidateBytes": 1312,
+      "byteExact": true
+    },
+    {
+      "name": "sg_drain_packed_bins",
+      "referenceBytes": 2015,
+      "candidateBytes": 2015,
+      "byteExact": true
+    },
+    {
+      "name": "sg_queue_help",
+      "referenceBytes": 162,
+      "candidateBytes": 190,
+      "byteExact": false
+    },
+    {
+      "name": "sg_worker_main",
+      "referenceBytes": 747,
+      "candidateBytes": 783,
+      "byteExact": false
+    },
+    {
+      "name": "sg_write_fragment",
+      "referenceBytes": 2297,
+      "candidateBytes": 2297,
+      "byteExact": true
+    },
+    {
+      "name": "sg_write_multisample",
+      "referenceBytes": 9040,
+      "candidateBytes": 9040,
+      "byteExact": true
+    },
+    {
+      "name": "sg_write_multisample2",
+      "referenceBytes": 7409,
+      "candidateBytes": 7409,
+      "byteExact": true
+    },
+    {
+      "name": "sg_store_off_post_depth",
+      "referenceBytes": 381,
+      "candidateBytes": 381,
+      "byteExact": true
+    },
+    {
+      "name": "sg_store_blend_msaa2_post_depth",
+      "referenceBytes": 2763,
+      "candidateBytes": 2763,
+      "byteExact": true
+    },
+    {
+      "name": "sg_store_blend_msaa4_post_depth",
+      "referenceBytes": 3565,
+      "candidateBytes": 3565,
+      "byteExact": true
+    }
+  ],
+  "notDynamicPerformanceEvidence": true
+}

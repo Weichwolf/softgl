@@ -1,5 +1,16 @@
 # Optimization evidence
 
+The [four-tier queue priority trial](queue-cost-priority/README.md) is rejected:
+BMW off improves -0.518%/-0.127% with five of six pairs faster, but BMW 4x
+costs +1.499%/+0.409% with five of six slower. BMW 2x and T-80 controls are
+mixed. Choosing high triangle-count bins first preserves per-bin draw order;
+its priority masks and larger queue layout are evaluated together. Both engines
+pass 40960 actual scheduler cases, and full regressions plus all eighteen first
+quiet-guarded pairs pass. Source patch, raw comparisons, original producer,
+codegen inspection failure/correction and portable verifier are public.
+Production remains accepted `7cc38593`; the small off gain does not justify
+this MSAA cost.
+
 [Caller polling intervals](caller-wait-intervals/README.md) directly measure
 seven polling sites in eight categories, using a private diagnostic module.
 BMW explicit polling takes 2.243/1.979 ms per frame off, 0.968/0.963 ms at 2x,
@@ -9,7 +20,7 @@ guards and complete fidelity gates pass. Raw 1200-frame observations, counts,
 source patch, original producer recipes and a portable independent verifier
 are public. These wall intervals include preemption and observer effects;
 they do not establish removable frame cost or predict an FPS gain. Production
-remains accepted `7cc38593`. Investigate useful work and packet readiness next.
+remains accepted `7cc38593`. The cost-priority trial above evaluates one packet-order hypothesis; its MSAA tradeoff is rejected.
 
 [Scheduled CPU accounting](current-7cc-cpu-accounting/README.md) observes the
 unchanged `7cc38593` renderer in two guarded windows per scene/mode. BMW uses

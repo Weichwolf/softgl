@@ -1,0 +1,4 @@
+{
+  "old": "'--bench-only', '--crossover', '--wasm-build', str(candidate),",
+  "new": "'--bench-only', '--crossover', '--native-build', str(repo/'build/diagnostics/queue-cost-priority/native-full'), '--wasm-build', str(candidate),"
+}
