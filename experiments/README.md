@@ -1,5 +1,12 @@
 # Optimization evidence
 
+[Fresh accepted-e7 profiles](accepted-e7-profiles/README.md) cover BMW and
+T-80 in all three modes with the unchanged production module. The BMW's
+general fragment writers remain visible in every mode, motivating a guarded
+post-depth blend-store trial. Raw profiles, exact symbol map, tool sources
+and independently recomputed summaries are public; sampled cross-thread self
+time is diagnostic evidence, not frame latency or a speedup claim.
+
 The [per-pixel depth-bound trial](off-pixel-bound/README.md) improves BMW
 without MSAA by 0.970%/1.203%, with all six pairs faster, but is not retained:
 BMW 4x costs 0.535%/0.894% (five of six pairs slower), and T-80 off costs
