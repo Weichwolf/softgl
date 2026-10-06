@@ -1,5 +1,20 @@
 # Optimization evidence
 
+The [fixed ordered packed-capacity trial](ordered-packed-capacity/README.md)
+is rejected. 64-KiB allocation buckets reduce unused reservation within the
+unchanged shared 2-MiB vertex budget, but BMW gains do not reproduce across
+MSAA modes: off -0.109%/-0.288%, 2x -0.734%/+0.771%, 4x +0.472%/-0.677%.
+T-80 4x improves -1.575%/-2.119%, although its large packed allocation path is
+unchanged; the cause is unproven. All 745 native + Bench 1, 25 sanitizer /
+24 WASM and image/model/edge checks pass. After a test-only signedness fix,
+native/sanitizer suites and the changed WASM fixture are checked again.
+All 18 comparisons have passed quiet guards; the last needed a second attempt
+because Codex CPU activity contaminated its first. Both attempts are retained.
+D4/live and the compact benchmark report stay unchanged. The linked
+[next-research note](ordered-packed-capacity/next-research.md) examines exact
+texture-block storage, pair-gather boundaries and lifetime requirements;
+that texture candidate has not been built or measured.
+
 The [early-packing uptake diagnostic](prepack-uptake/README.md) measures the
 rejected candidate rather than accepted D4. BMW has ten eligible/ordered packed
 draws and 5,076,400 logical output bytes in every observed frame. About 7.00–7.09
@@ -13,9 +28,8 @@ time, physical traffic, saved time or proof of a ceiling. All 1200 frame
 partitions and six first quiet guards pass, with full 745 native + Bench1,
 25 sanitizer / 24 WASM and image/model/edge fidelity gates. Disabled worker,
 JS and WASM match the rejected candidate exactly. D4/live and accepted FPS
-remain unchanged. The next isolated trial can tighten packed-capacity rounding
-in D4's ordered queue without adding an arena or reintroducing early packing;
-the published summaries contain no matching previous capacity-rounding trial.
+remain unchanged. This diagnostic motivated the fixed-capacity-bucket trial
+above, which did not demonstrate a reproducible BMW benefit.
 
 The [geometry-slice vertex packing trial](slice-vertex-packing/README.md) is
 rejected. BMW audit directions disagree in every mode: off +0.628%/-0.580%,
