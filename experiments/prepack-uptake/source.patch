@@ -1,0 +1,728 @@
+--- a/libsoftgl/src/workers.c
++++ b/libsoftgl/src/workers.c
+@@ -4,6 +4,23 @@
+ #include "raster_vertex_pack.h"
+ #include <stdlib.h>
+ #include <string.h>
++
++#include "prepack_diag.h"
++#ifdef SG_PREPACK_DIAG
++void sg_prepack_diag_reset(void) {
++    memset(sg_pp_ms, 0, sizeof(sg_pp_ms));
++    memset(sg_pp_calls, 0, sizeof(sg_pp_calls));
++    memset(sg_pp_counts, 0, sizeof(sg_pp_counts));
++}
++double sg_prepack_diag_read(int index) {
++    if (index >= 0 && index < SG_PP_PHASE_COUNT) return sg_pp_calls[index];
++    index -= SG_PP_PHASE_COUNT;
++    if (index >= 0 && index < SG_PP_PHASE_COUNT) return sg_pp_ms[index];
++    index -= SG_PP_PHASE_COUNT;
++    if (index >= 0 && index < SG_PP_COUNT_COUNT) return (double)sg_pp_counts[index];
++    return 0;
++}
++#endif
+ 
+ _Thread_local sg_worker_bin *sg_raster_bin;
+ 
+@@ -484,7 +501,7 @@
+     p->job_position_count = (int)(last_page - first_page + 1);
+ }
+ 
+-static void sg_transform_slice(softgl_ctx *c, sg_worker_pool *p,
++static void sg_transform_slice_vertices(softgl_ctx *c, sg_worker_pool *p,
+                                 int first, int end, int storage_first) {
+     if (!p->job_position_count) {
+         for (int i = first; i < end; i++)
+@@ -512,6 +529,23 @@
+             }
+         }
+         p->inside_frustum[i - storage_first] = (uint8_t)inside;
++    }
++}
++
++/* Preserve original ownership partitions/join. Chunk larger initial/serial
++ * slices only when their exact packed output can be written while locally hot. */
++static void sg_transform_slice(softgl_ctx *c, sg_worker_pool *p,
++                                int first, int end, int storage_first) {
++    if (!p->prepack_active) {
++        sg_transform_slice_vertices(c, p, first, end, storage_first);
++        return;
++    }
++    for (int begin = first; begin < end; ) {
++        int next = end - begin > 128 ? begin + 128 : end;
++        sg_transform_slice_vertices(c, p, begin, next, storage_first);
++        sg_packed_vertex_write(&p->prepacked, begin - storage_first,
++                              p->transformed + begin - storage_first, next - begin);
++        begin = next;
+     }
+ }
+ 
+@@ -874,6 +908,7 @@
+     }
+     if (p->vpool)       sg_aligned_free(p->vpool);
+     if (p->transformed) sg_aligned_free(p->transformed);
++    sg_aligned_free(p->prepacked.data);
+     free(p->inside_frustum);
+     sg_aligned_free(p->triangle_scratch);
+     free(p->column_bin);
+@@ -905,8 +940,19 @@
+     return 1;
+ }
+ 
++#ifdef SG_PREPACK_DIAG
++static const sg_vert *sg_transform_range_impl(softgl_ctx *c, int first, int count, int compact);
++static const sg_vert *sg_transform_range(softgl_ctx *c, int first, int count, int compact) {
++    SG_PP_BEGIN(TRANSFORM);
++    const sg_vert * result = sg_transform_range_impl(c, first, count, compact);
++    SG_PP_END(TRANSFORM);
++    return result;
++}
++#define sg_transform_range sg_transform_range_impl
++#endif
+ static const sg_vert *sg_transform_range(softgl_ctx *c, int first, int count, int compact) {
+     sg_worker_pool *p = (sg_worker_pool*)c->workers;
++    if (p) p->prepack_active = p->prepack_ready = 0;
+     if (!p || p->nworkers == 0 || count <= 0) return NULL;
+ 
+     int storage_first = compact ? first : 0;
+@@ -935,12 +981,14 @@
+     sg_position_prepare(c, p, first, count);
+     /* Positive: compact source count; negative: original-index storage. */
+     p->prepared_transformed = compact ? count : -count;
++    sg_prepack_prepare(c, p, count, compact);
+     if (p->async_pending) {
+         /* Old raster slots stay immutable. Idle queue workers may prepare
+          * disjoint slices of the next draw in the caller-owned arrays. */
+         if (p->async_pending == 3 && count >= 1024)
+             sg_queue_transform(c, p, first, count, storage_first, 0);
+         else sg_transform_slice(c, p, first, first + count, storage_first);
++        p->prepack_ready = p->prepack_active;
+         return p->transformed;
+     }
+     p->job_storage_first = storage_first;
+@@ -965,9 +1013,26 @@
+     }
+     /* Reset default job type so subsequent flushes do the right thing. */
+     atomic_store_explicit(&p->job_type, SG_JOB_RASTER, memory_order_release);
++    p->prepack_ready = p->prepack_active;
+     return p->transformed;
+ }
+ 
++#ifdef SG_PREPACK_DIAG
++#undef sg_transform_range
++#endif
++
++#ifdef SG_PREPACK_DIAG
++static const sg_prepared_tri *sg_workers_prepare_triangles_impl(softgl_ctx *c,
++    const uint8_t *indices, GLenum type, uint32_t minimum, int count);
++const sg_prepared_tri *sg_workers_prepare_triangles(softgl_ctx *c,
++    const uint8_t *indices, GLenum type, uint32_t minimum, int count) {
++    SG_PP_BEGIN(TRIANGLE_PREPARE);
++    const sg_prepared_tri * result = sg_workers_prepare_triangles_impl(c, indices, type, minimum, count);
++    SG_PP_END(TRIANGLE_PREPARE);
++    return result;
++}
++#define sg_workers_prepare_triangles sg_workers_prepare_triangles_impl
++#endif
+ const sg_prepared_tri *sg_workers_prepare_triangles(softgl_ctx *c,
+     const uint8_t *indices, GLenum type, uint32_t minimum, int count) {
+     sg_worker_pool *p = (sg_worker_pool *)c->workers;
+@@ -1004,6 +1069,10 @@
+     p->triangle_indices = NULL;
+     return p->triangle_scratch;
+ }
++
++#ifdef SG_PREPACK_DIAG
++#undef sg_workers_prepare_triangles
++#endif
+ 
+ const sg_vert *sg_workers_transform_range(softgl_ctx *c, int first, int count) {
+     return sg_transform_range(c, first, count, 0);
+@@ -1087,10 +1156,15 @@
+         }
+         layout.data = job->packed.data; layout.capacity = job->packed.capacity;
+         job->packed = layout;
++        SG_PP_BEGIN(LARGE_PACK);
+         if (layout.transformed_count)
+             sg_packed_vertex_write(&job->packed, 0, p->transformed, layout.transformed_count);
+         if (p->vpool_count)
+             sg_packed_vertex_write(&job->packed, layout.transformed_count, p->vpool, p->vpool_count);
++        SG_PP_END(LARGE_PACK);
++        SG_PP_ADD(LARGE_PACKED, 1);
++        SG_PP_ADD(LARGE_VERTICES, (uint64_t)layout.transformed_count + p->vpool_count);
++        SG_PP_ADD(LARGE_BYTES, ((uint64_t)layout.transformed_count + p->vpool_count) * layout.stride * sizeof(sg_vec4));
+     } else {
+         sg_aligned_free(job->packed.data);
+         memset(&job->packed, 0, sizeof(job->packed));
+@@ -1135,20 +1209,31 @@
+     return 1;
+ }
+ 
++#ifdef SG_PREPACK_DIAG
++static void sg_workers_submit_stream_impl(softgl_ctx *c);
++void sg_workers_submit_stream(softgl_ctx *c) {
++    SG_PP_BEGIN(STREAM_SUBMIT);
++    sg_workers_submit_stream_impl(c);
++    SG_PP_END(STREAM_SUBMIT);
++}
++#define sg_workers_submit_stream sg_workers_submit_stream_impl
++#endif
+ void sg_workers_submit_stream(softgl_ctx *c) {
+     sg_worker_pool *p = (sg_worker_pool *)c->workers;
+     sg_geometry_entry *entry = p->prepared_coverage_entry;
+     p->prepared_coverage_entry = NULL;
+     int total = 0;
+     for (int i = 0; i < p->nbins; i++) total += p->bins[i].count;
+-    if (!total) return;
++    if (!total) { sg_prepack_clear(p); return; }
+     size_t geometry_vertices = (p->prepared_transformed ? (size_t)p->transformed_cap : 0) +
+         (p->vpool_count ? (size_t)p->vpool_cap : 0);
+     if (geometry_vertices > SG_STREAM_VERTICES) {
++        sg_prepack_clear(p);
+         if (!sg_submit_packed_stream(c, p, entry)) sg_workers_flush(c);
+         return;
+     }
+     if (sg_queue_multitexture(c) && sg_queue_submit(c, p, entry)) return;
++    sg_prepack_clear(p);
+     if (!p->async_raster) {
+         p->async_raster = sg_aligned_alloc(sizeof(sg_async_raster), 16);
+         if (!p->async_raster) { sg_workers_flush(c); return; }
+@@ -1206,6 +1291,10 @@
+     sg_worker_pool *p = (sg_worker_pool*)c->workers;
+     return p ? p->inside_frustum : NULL;
+ }
++
++#ifdef SG_PREPACK_DIAG
++#undef sg_workers_submit_stream
++#endif
+ 
+ void sg_workers_flush(softgl_ctx *c) {
+     sg_worker_pool *p = (sg_worker_pool*)c->workers;
+--- a/libsoftgl/src/workers.h
++++ b/libsoftgl/src/workers.h
+@@ -97,6 +97,15 @@
+     sg_position_vertex *vertices;
+     uint8_t *flags; /* bit1 valid, bit0 inside; one producer per vertex */
+ } sg_position_page;
++
++/* Filled triangles need exact NDC, front color, eye.z and active UVs only.
++ * Clipping, lighting and face-color selection have already completed. */
++typedef struct {
++    sg_vec4 *data;
++    size_t capacity;
++    int stride, transformed_count, unit_count;
++    uint8_t units[SG_MAX_TEX_UNITS];
++} sg_packed_raster_vertices;
+ 
+ typedef struct {
+     /* Immutable raster snapshots; the caller owns separate producer arrays.
+@@ -156,6 +165,11 @@
+     atomic_int triangle_next;
+     struct sg_geometry_entry *prepared_coverage_entry; /* caller-owned current draw */
+     uint64_t depth_epoch; /* caller only; any flush invalidates depth reuse */
++    /* Caller-owned packed output; geometry slices write disjoint ranges.
++     * Publication transfers ownership only after the existing stage join.
++     * Capacity shares the ordered queue's existing 2MiB vertex budget. */
++    sg_packed_raster_vertices prepacked;
++    int prepack_active, prepack_ready;
+ } sg_worker_pool;
+ 
+ void sg_workers_init(softgl_ctx *c, int nworkers_hint);
+--- a/libsoftgl/src/workers_queue_raw.inc
++++ b/libsoftgl/src/workers_queue_raw.inc
+@@ -45,6 +45,124 @@
+ static void sg_queue_free_vertices(sg_async_raster *r) {
+     sg_queue_free_raw_vertices(r);
+     sg_aligned_free(r->packed.data); memset(&r->packed, 0, sizeof(r->packed));
++}
++
++/* Only the caller owns this buffer. Workers see it during joined geometry;
++ * no pending raster slot ever aliases it. Reset before nonmatching fallbacks. */
++static void sg_prepack_clear(sg_worker_pool *p) {
++    SG_PP_ADD(DISCARDED, p->prepack_ready ? 1 : 0);
++    SG_PP_ADD(DISCARDED_VERTICES, p->prepack_ready ? p->prepacked.transformed_count : 0);
++    SG_PP_ADD(DISCARDED_BYTES, p->prepack_ready ? (uint64_t)p->prepacked.transformed_count * p->prepacked.stride * sizeof(sg_vec4) : 0);
++    sg_aligned_free(p->prepacked.data);
++    memset(&p->prepacked, 0, sizeof(p->prepacked));
++    p->prepack_active = p->prepack_ready = 0;
++}
++
++static unsigned sg_ordered_uv_mask(const sg_tex_tri_ctx *context) {
++    unsigned mask = 0;
++    for (int u = 0; u < SG_MAX_TEX_UNITS; u++)
++        if ((context->sample_mask & (1u << u)) && !context->unit[u].constant_color_valid)
++            mask |= 1u << u;
++    return mask;
++}
++
++/* Never wait/reserve a slot before geometry. Reuse caller-owned/idle storage
++ * or allocate only from the existing ordered vertex budget. Full queues and
++ * allocation failures retain the original late packing path. */
++#ifdef SG_PREPACK_DIAG
++static void sg_prepack_prepare_impl(softgl_ctx *c, sg_worker_pool *p, int count, int compact);
++static void sg_prepack_prepare(softgl_ctx *c, sg_worker_pool *p, int count, int compact) {
++    SG_PP_BEGIN(EARLY_PREPARE);
++    sg_prepack_prepare_impl(c, p, count, compact);
++    SG_PP_END(EARLY_PREPARE);
++}
++#define sg_prepack_prepare sg_prepack_prepare_impl
++#endif
++static void sg_prepack_prepare(softgl_ctx *c, sg_worker_pool *p, int count, int compact) {
++    SG_PP_ADD(PREPARE_CALLS, 1);
++    p->prepack_active = p->prepack_ready = 0;
++    if (!compact || count < 1024 || p->vpool_count ||
++        (size_t)p->transformed_cap > SG_STREAM_VERTICES ||
++        (p->async_pending && p->async_pending != 3) ||
++        c->imm_active || c->render_mode != GL_RENDER ||
++        c->polygon_mode_front != GL_FILL || c->polygon_mode_back != GL_FILL ||
++        c->current_query[SG_QUERY_TARGET_SAMPLES_PASSED] ||
++        c->current_query[SG_QUERY_TARGET_ANY_SAMPLES_PASSED] || !sg_queue_multitexture(c)) {
++        SG_PP_ADD(SCOPE_REJECT, 1);
++        sg_prepack_clear(p);
++        return;
++    }
++    sg_tex_tri_ctx context;
++    sg_tex_tri_prepare(c, &context);
++    if (!context.combine_kind) { SG_PP_ADD(COMBINE_REJECT, 1); sg_prepack_clear(p); return; }
++    sg_packed_raster_vertices layout = {0};
++    sg_packed_vertex_layout(&layout, sg_ordered_uv_mask(&context), count);
++    size_t stride = (size_t)layout.stride * sizeof(sg_vec4);
++    if ((size_t)count > SG_STREAM_BYTES / stride) { SG_PP_ADD(PAYLOAD_REJECT, 1); sg_prepack_clear(p); return; }
++    size_t capacity = 16384;
++    while (capacity < (size_t)count * stride) capacity *= 2;
++    if (capacity > SG_STREAM_BYTES) capacity = SG_STREAM_BYTES;
++    SG_PP_ADD(ELIGIBLE, 1);
++    SG_PP_ADD(ELIGIBLE_VERTICES, count);
++    SG_PP_ADD(ELIGIBLE_BYTES, (uint64_t)count * stride);
++    struct sg_stream_queue *q = p->stream_queue;
++    pthread_mutex_lock(&p->mtx);
++    if (p->prepacked.capacity != capacity) sg_prepack_clear(p);
++    SG_PP_ADD(EXISTING_BUFFER, p->prepacked.data ? 1 : 0);
++    if (!p->prepacked.data && q) {
++        for (int i = 0; i < SG_QUEUE_SLOTS; i++) {
++            sg_queue_slot *slot = &q->slots[i];
++            if (!slot->pending && slot->draw->packed.capacity == capacity) {
++                SG_PP_ADD(BORROWED_BUFFER, 1);
++                p->prepacked = slot->draw->packed;
++                memset(&slot->draw->packed, 0, sizeof(slot->draw->packed));
++                break;
++            }
++        }
++    }
++    if (!p->prepacked.data) {
++        size_t bytes = 0;
++        if (q) for (int i = 0; i < SG_QUEUE_SLOTS; i++) bytes += sg_queue_bytes(q->slots[i].draw);
++        if (bytes > SG_STREAM_BYTES - capacity && q) {
++            for (int i = 0; i < SG_QUEUE_SLOTS; i++)
++                if (!q->slots[i].pending) {
++                    SG_PP_ADD(IDLE_RECLAIMED_SLOTS, 1);
++                    SG_PP_ADD(IDLE_RECLAIMED_BYTES, sg_queue_bytes(q->slots[i].draw));
++                    sg_queue_free_vertices(q->slots[i].draw);
++                }
++            bytes = 0;
++            for (int i = 0; i < SG_QUEUE_SLOTS; i++) bytes += sg_queue_bytes(q->slots[i].draw);
++        }
++        if (bytes <= SG_STREAM_BYTES - capacity) {
++            SG_PP_ADD(ALLOC_ATTEMPTS, 1);
++            p->prepacked.data = sg_aligned_alloc(capacity, 64);
++            if (p->prepacked.data) p->prepacked.capacity = capacity;
++            SG_PP_ADD(ALLOC_SUCCESS, p->prepacked.data ? 1 : 0);
++            SG_PP_ADD(ALLOC_FAILURE, p->prepacked.data ? 0 : 1);
++        } else { SG_PP_ADD(BUDGET_UNAVAILABLE, 1); }
++    }
++    pthread_mutex_unlock(&p->mtx);
++    if (!p->prepacked.data) return;
++    layout.data = p->prepacked.data; layout.capacity = p->prepacked.capacity;
++    p->prepacked = layout;
++    p->prepack_active = 1;
++    SG_PP_ADD(READY, 1);
++    SG_PP_ADD(READY_VERTICES, count);
++    SG_PP_ADD(READY_BYTES, (uint64_t)count * stride);
++}
++
++#ifdef SG_PREPACK_DIAG
++#undef sg_prepack_prepare
++#endif
++
++static int sg_prepack_matches(const sg_worker_pool *p,
++                              const sg_packed_raster_vertices *layout, size_t capacity) {
++    return p->prepack_ready && p->prepacked.data &&
++        p->prepacked.capacity == capacity &&
++        p->prepacked.transformed_count == layout->transformed_count &&
++        p->prepacked.stride == layout->stride &&
++        p->prepacked.unit_count == layout->unit_count &&
++        !memcmp(p->prepacked.units, layout->units, (size_t)layout->unit_count);
+ }
+ 
+ /* Caller holds p->mtx, including when waiting workers inspect the queue. */
+@@ -280,20 +398,18 @@
+     sg_packed_raster_vertices layout = {0};
+     size_t packed_capacity = 0;
+     if (packed_mode) {
+-        unsigned uv_mask = 0;
+-        for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
+-            if ((texture_context.sample_mask & (1u << u)) &&
+-                !texture_context.unit[u].constant_color_valid)
+-                uv_mask |= 1u << u;
+-        }
++        unsigned uv_mask = sg_ordered_uv_mask(&texture_context);
+         sg_packed_vertex_layout(&layout, uv_mask, p->prepared_transformed);
+         size_t stride = (size_t)layout.stride * sizeof(sg_vec4);
+-        if (count > SG_STREAM_BYTES / stride) return 0;
++        if (count > SG_STREAM_BYTES / stride) { sg_prepack_clear(p); return 0; }
+         size_t need = count * stride;
+         packed_capacity = 16384;
+         while (packed_capacity < need) packed_capacity *= 2;
+         if (packed_capacity > SG_STREAM_BYTES) packed_capacity = SG_STREAM_BYTES;
+     }
++
++    int prepacked = packed_mode && sg_prepack_matches(p, &layout, packed_capacity);
++    if (!prepacked) sg_prepack_clear(p);
+ 
+     if (!p->stream_queue) {
+         struct sg_stream_queue *q = calloc(1, sizeof(*q));
+@@ -319,6 +435,7 @@
+         /* Keep no second idle raw/packed storage budget behind this queue. */
+         sg_stream_destroy(p->async_raster, p->nbins); p->async_raster = NULL;
+     }
++    SG_PP_BEGIN(QUEUE_RESERVE);
+     sg_queue_slot *slot;
+     for (;;) {
+         unsigned before = atomic_load_explicit(&q->change, memory_order_acquire);
+@@ -329,7 +446,8 @@
+         for (int i = 0; i < SG_QUEUE_SLOTS; i++) bytes += sg_queue_bytes(q->slots[i].draw);
+         if (q->count < SG_QUEUE_SLOTS) {
+             sg_async_raster *r = slot->draw;
+-            size_t projected = packed_mode ? bytes - sg_queue_bytes(r) + packed_capacity
++            size_t projected = packed_mode ? bytes - sg_queue_bytes(r) + packed_capacity +
++                (prepacked ? r->packed.capacity : 0)
+                 : bytes - r->packed.capacity;
+             if (!packed_mode && p->prepared_transformed)
+                 projected = projected - (size_t)r->transformed_cap * sizeof(sg_vert) +
+@@ -356,10 +474,26 @@
+         pthread_mutex_unlock(&p->mtx);
+         sg_queue_help(p, before);
+     }
++    SG_PP_END(QUEUE_RESERVE);
+     sg_async_raster *r = slot->draw;
+     if (packed_mode) {
++        SG_PP_ADD(ORDERED_PACKED, 1);
++        SG_PP_ADD(ORDERED_TRANSFORMED_VERTICES, layout.transformed_count);
++        SG_PP_ADD(ORDERED_CLIPPED_VERTICES, p->vpool_count);
++        SG_PP_ADD(ORDERED_BYTES, ((uint64_t)layout.transformed_count + p->vpool_count) * layout.stride * sizeof(sg_vec4));
++        SG_PP_ADD(ADOPTED, prepacked ? 1 : 0);
++        SG_PP_ADD(ADOPTED_VERTICES, prepacked ? layout.transformed_count : 0);
++        SG_PP_ADD(ADOPTED_BYTES, prepacked ? (uint64_t)layout.transformed_count * layout.stride * sizeof(sg_vec4) : 0);
++        SG_PP_ADD(LATE, prepacked ? 0 : 1);
++        SG_PP_ADD(LATE_VERTICES, prepacked ? 0 : layout.transformed_count);
++        SG_PP_ADD(LATE_BYTES, prepacked ? 0 : (uint64_t)layout.transformed_count * layout.stride * sizeof(sg_vec4));
+         sg_queue_free_raw_vertices(r);
+-        if (r->packed.capacity != packed_capacity) {
++        if (prepacked) {
++            sg_packed_raster_vertices idle = r->packed;
++            r->packed = p->prepacked;
++            p->prepacked = idle;
++            p->prepack_active = p->prepack_ready = 0;
++        } else if (r->packed.capacity != packed_capacity) {
+             sg_aligned_free(r->packed.data);
+             r->packed.data = NULL; r->packed.capacity = 0;
+             r->packed.data = sg_aligned_alloc(packed_capacity, 64);
+@@ -368,10 +502,12 @@
+         }
+         layout.data = r->packed.data; layout.capacity = r->packed.capacity;
+         r->packed = layout;
+-        if (layout.transformed_count)
++        SG_PP_BEGIN(LATE_ORDERED_PACK);
++        if (!prepacked && layout.transformed_count)
+             sg_packed_vertex_write(&r->packed, 0, p->transformed, layout.transformed_count);
+         if (p->vpool_count)
+             sg_packed_vertex_write(&r->packed, layout.transformed_count, p->vpool, p->vpool_count);
++        SG_PP_END(LATE_ORDERED_PACK);
+     } else {
+         sg_aligned_free(r->packed.data); memset(&r->packed, 0, sizeof(r->packed));
+     }
+--- a/libsoftgl/src/raster_vertex_pack.h
++++ b/libsoftgl/src/raster_vertex_pack.h
+@@ -2,15 +2,6 @@
+ #define SOFTGL_RASTER_VERTEX_PACK_H
+ 
+ #include "workers.h"
+-
+-/* Filled triangles need exact NDC, front color, eye.z and active UVs only.
+- * Clipping, lighting and face-color selection have already completed. */
+-typedef struct {
+-    sg_vec4 *data;
+-    size_t capacity;
+-    int stride, transformed_count, unit_count;
+-    uint8_t units[SG_MAX_TEX_UNITS];
+-} sg_packed_raster_vertices;
+ 
+ #define SG_PACKED_VERTEX_CACHE_SIZE 64
+ typedef struct {
+--- /dev/null
++++ b/tests/slice_prepack.c
+@@ -0,0 +1,167 @@
++/* Test-only translation unit: the actual candidate worker source, with an
++ * allocator failure injector. Production objects contain no test hooks. */
++#include "raster_hz.h"
++#include "workers.h"
++#include "raster_types.h"
++#include "raster_vertex_pack.h"
++#include <stdlib.h>
++#include <string.h>
++static int reject_allocation, attempted_allocations;
++static void *test_aligned_alloc(size_t bytes, size_t alignment) {
++    attempted_allocations++;
++    return reject_allocation ? NULL : sg_aligned_alloc(bytes, alignment);
++}
++#define sg_aligned_alloc test_aligned_alloc
++#include "../libsoftgl/src/workers.c"
++#undef sg_aligned_alloc
++#pragma push_macro("main")
++#undef main
++#define main existing_queue_main
++#include "ordered_draw_queue.c"
++#undef main
++#pragma pop_macro("main")
++
++static size_t owned_bytes(const sg_worker_pool *p) {
++    size_t total = p->prepacked.capacity;
++    if (p->stream_queue) for (int i = 0; i < SG_QUEUE_SLOTS; i++)
++        total += sg_queue_bytes(p->stream_queue->slots[i].draw);
++    return total;
++}
++static int fake_queue(sg_worker_pool *p) {
++    p->stream_queue = calloc(1, sizeof(*p->stream_queue)); CHECK(p->stream_queue);
++    atomic_init(&p->stream_queue->change, 0);
++    atomic_init(&p->stream_queue->vertex_done, 0);
++    for (int i = 0; i < SG_QUEUE_SLOTS; i++) {
++        p->stream_queue->slots[i].draw = sg_aligned_alloc(sizeof(sg_async_raster), 64);
++        CHECK(p->stream_queue->slots[i].draw);
++        memset(p->stream_queue->slots[i].draw, 0, sizeof(sg_async_raster));
++    }
++    return 0;
++}
++static int slot_buffer(sg_worker_pool *p, int slot, size_t bytes, int pending) {
++    sg_queue_slot *s = &p->stream_queue->slots[slot];
++    s->draw->packed.data = sg_aligned_alloc(bytes, 64); CHECK(s->draw->packed.data);
++    s->draw->packed.capacity = bytes; memset(s->draw->packed.data, 0x41 + slot, bytes);
++    s->pending = pending;
++    return 0;
++}
++static int exact_payload(const sg_packed_raster_vertices *packed,
++                          int first, const sg_vert *vertices, int count) {
++    for (int i = 0; i < count; i++) {
++        const sg_vec4 *actual = packed->data + (size_t)(first + i) * packed->stride;
++        CHECK(!memcmp(actual, &vertices[i].ndc, sizeof(sg_vec4)));
++        CHECK(!memcmp(actual + 1, &vertices[i].color, sizeof(sg_vec4)));
++        sg_vec4 eye = {vertices[i].eye.z, 0.f, 0.f, 0.f};
++        CHECK(!memcmp(actual + 2, &eye, sizeof(eye)));
++        for (int u = 0; u < packed->unit_count; u++)
++            CHECK(!memcmp(actual + 3 + u, &vertices[i].uv[packed->units[u]], sizeof(sg_vec4)));
++    }
++    return 0;
++}
++static int private_contract(int samples) {
++    enum { FIRST_VERTEX = 17, VERTICES = 1101 };
++    softgl_ctx *c = softgl_create_multisample(65, 35, samples); CHECK(c);
++    softgl_make_current(c); sg_workers_shutdown(c);
++    GLuint textures[4]; glGenTextures(4, textures);
++    const uint8_t texels[8] = {90,130,190,255,240,160,50,180};
++    for (int u = 0; u < 4; u++) {
++        glActiveTexture(GL_TEXTURE0 + u); glBindTexture(GL_TEXTURE_2D, textures[u]);
++        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 2, 1, 0, GL_RGBA, GL_UNSIGNED_BYTE, texels);
++        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
++        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
++        glEnable(GL_TEXTURE_2D);
++    }
++    dot3_chain(1);
++    sg_tex_tri_ctx context; sg_tex_tri_prepare(c, &context); CHECK(context.combine_kind);
++    sg_worker_pool p = {0}; pthread_mutex_init(&p.mtx, NULL); pthread_cond_init(&p.wake, NULL);
++    p.transformed_cap = 2048;
++    /* The early allocator is fallible and must leave a complete late fallback. */
++    reject_allocation = 1; attempted_allocations = 0;
++    sg_prepack_prepare(c, &p, VERTICES, 1);
++    CHECK(attempted_allocations == 1 && !p.prepack_active && !p.prepacked.data);
++    reject_allocation = 0;
++    /* A completely occupied budget cannot allocate or alter pending payloads. */
++    CHECK(!fake_queue(&p));
++    for (int i = 0; i < 4; i++) CHECK(!slot_buffer(&p, i, SG_STREAM_BYTES / 4, 1));
++    attempted_allocations = 0; sg_prepack_prepare(c, &p, VERTICES, 1);
++    CHECK(!p.prepack_active && !p.prepacked.data && !attempted_allocations);
++    CHECK(owned_bytes(&p) == SG_STREAM_BYTES);
++    for (int i = 0; i < 4; i++) {
++        const unsigned char *bytes = (const unsigned char *)p.stream_queue->slots[i].draw->packed.data;
++        for (size_t j = 0; j < SG_STREAM_BYTES / 4; j++) CHECK(bytes[j] == 0x41 + i);
++    }
++    sg_queue_destroy(&p);
++    /* Only idle slots may be reclaimed to make room. */
++    CHECK(!fake_queue(&p)); CHECK(!slot_buffer(&p, 0, SG_STREAM_BYTES / 2, 1));
++    CHECK(!slot_buffer(&p, 1, SG_STREAM_BYTES / 2, 0));
++    sg_vec4 *pending = p.stream_queue->slots[0].draw->packed.data;
++    sg_prepack_prepare(c, &p, VERTICES, 1); CHECK(p.prepack_active);
++    CHECK(p.stream_queue->slots[0].draw->packed.data == pending);
++    CHECK(!p.stream_queue->slots[1].draw->packed.data && owned_bytes(&p) <= SG_STREAM_BYTES);
++    sg_prepack_clear(&p); sg_queue_destroy(&p);
++    /* Reuse transfers an idle buffer without allocation or aliasing. */
++    sg_prepack_prepare(c, &p, VERTICES, 1); CHECK(p.prepack_active);
++    size_t capacity = p.prepacked.capacity; sg_prepack_clear(&p);
++    CHECK(!fake_queue(&p)); CHECK(!slot_buffer(&p, 2, capacity, 0));
++    sg_vec4 *idle = p.stream_queue->slots[2].draw->packed.data;
++    attempted_allocations = 0; sg_prepack_prepare(c, &p, VERTICES, 1);
++    CHECK(p.prepacked.data == idle && !p.stream_queue->slots[2].draw->packed.data);
++    CHECK(!attempted_allocations && owned_bytes(&p) <= SG_STREAM_BYTES);
++    sg_prepack_clear(&p); sg_queue_destroy(&p);
++    /* All original ownership partitions, partial tails and nonzero origins
++     * produce the same full fields and exact packed payload. */
++    float positions[FIRST_VERTEX + VERTICES][3];
++    for (int i = 0; i < FIRST_VERTEX + VERTICES; i++) {
++        positions[i][0] = (i % 31 - 15) / 16.f;
++        positions[i][1] = (i % 17 - 8) / 9.f;
++        positions[i][2] = (i % 13 - 6) / 7.f;
++    }
++    glVertexPointer(3, GL_FLOAT, 0, positions); glEnableClientState(GL_VERTEX_ARRAY);
++    sg_prepare_vertex_inputs(c, &p.vertex_inputs);
++    p.transformed = sg_aligned_alloc(2048 * sizeof(sg_vert), 64); CHECK(p.transformed);
++    p.inside_frustum = calloc(2048, 1); CHECK(p.inside_frustum);
++    sg_vert *expected = sg_aligned_alloc(VERTICES * sizeof(sg_vert), 64); CHECK(expected);
++    for (int i = 0; i < VERTICES; i++)
++        sg_process_vertex_prepared(c, FIRST_VERTEX + i, &expected[i], &p.vertex_inputs);
++    sg_prepack_prepare(c, &p, VERTICES, 1); CHECK(p.prepack_active);
++    for (int lane = 0; lane < 4; lane++) {
++        int first = FIRST_VERTEX + VERTICES * lane / 4;
++        int end = FIRST_VERTEX + VERTICES * (lane + 1) / 4;
++        sg_transform_slice(c, &p, first, end, FIRST_VERTEX);
++    }
++    CHECK(!exact_payload(&p.prepacked, 0, expected, VERTICES));
++    for (int i = 0; i < VERTICES; i++) {
++        CHECK(!memcmp(&p.transformed[i].clip, &expected[i].clip, sizeof(sg_vec4)));
++        CHECK(!memcmp(&p.transformed[i].ndc, &expected[i].ndc, sizeof(sg_vec4)));
++    }
++    /* Actual submission must adopt the prepacked buffer, keep disjoint idle
++     * ownership, and append clipping output using the late path. */
++    p.prepack_ready = 1; p.prepared_transformed = VERTICES;
++    p.vpool_count = 3; p.vpool_cap = 3;
++    p.vpool = sg_aligned_alloc(3 * sizeof(sg_vert), 64); CHECK(p.vpool);
++    memcpy(p.vpool, expected, 3 * sizeof(sg_vert));
++    sg_vec4 *produced = p.prepacked.data;
++    memset(p.transformed, 0, VERTICES * sizeof(sg_vert));
++    CHECK(!fake_queue(&p)); CHECK(!slot_buffer(&p, 0, 16384, 0));
++    sg_vec4 *retained = p.stream_queue->slots[0].draw->packed.data;
++    CHECK(sg_queue_submit(c, &p, NULL));
++    sg_async_raster *draw = p.stream_queue->slots[0].draw;
++    CHECK(draw->packed.data == produced && p.prepacked.data == retained);
++    CHECK(!p.prepack_ready && !p.prepack_active && owned_bytes(&p) <= SG_STREAM_BYTES);
++    CHECK(!exact_payload(&draw->packed, 0, expected, VERTICES));
++    CHECK(!exact_payload(&draw->packed, VERTICES, expected, 3));
++    p.async_pending = 0; sg_queue_destroy(&p);
++    /* No visible triangles frees the unsubmitted packed output. */
++    c->workers = &p; sg_workers_submit_stream(c);
++    CHECK(!p.prepacked.data && !p.prepack_ready && !p.prepack_active); c->workers = NULL;
++    sg_aligned_free(p.transformed); free(p.inside_frustum); sg_aligned_free(p.vpool);
++    sg_aligned_free(expected); pthread_cond_destroy(&p.wake); pthread_mutex_destroy(&p.mtx);
++    softgl_destroy(c);
++    return 0;
++}
++int main(void) {
++    for (int samples = 0; samples <= 4; samples += 2) CHECK(!private_contract(samples));
++    CHECK(!existing_queue_main());
++    puts("slice prepack: actual allocation failure, pending/idle budget ownership, transform tails, adoption, clipped append and zero-triangle cleanup passed in 0/2/4; real queue/eager contracts passed with 1/3/8 workers");
++    return 0;
++}
+--- a/tests/CMakeLists.txt
++++ b/tests/CMakeLists.txt
+@@ -829,3 +829,13 @@
+ endif()
+ add_test(NAME index_range_contract COMMAND index_range_contract)
+ set_tests_properties(index_range_contract PROPERTIES TIMEOUT 90)
++
++# Research candidate: actual worker source plus test-only allocator failure.
++add_executable(slice_prepack_contract slice_prepack.c)
++target_include_directories(slice_prepack_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
++target_link_libraries(slice_prepack_contract PRIVATE softgl)
++if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
++    target_compile_options(slice_prepack_contract PRIVATE -O2 -fno-strict-aliasing -ffast-math -msse4.1)
++endif()
++add_test(NAME slice_prepack_contract COMMAND slice_prepack_contract)
++set_tests_properties(slice_prepack_contract PROPERTIES TIMEOUT 120)
+--- /dev/null
++++ b/libsoftgl/src/prepack_diag.h
+@@ -0,0 +1,78 @@
++#ifndef SG_PREPACK_DIAG_H
++#define SG_PREPACK_DIAG_H
++#ifdef SG_PREPACK_DIAG
++#ifdef __EMSCRIPTEN__
++#include <emscripten/emscripten.h>
++#else
++#include <time.h>
++#endif
++enum {
++    SG_PP_TRANSFORM,
++    SG_PP_TRIANGLE_PREPARE,
++    SG_PP_STREAM_SUBMIT,
++    SG_PP_EARLY_PREPARE,
++    SG_PP_QUEUE_RESERVE,
++    SG_PP_LATE_ORDERED_PACK,
++    SG_PP_LARGE_PACK,
++    SG_PP_PHASE_COUNT
++};
++enum {
++    SG_PP_PREPARE_CALLS,
++    SG_PP_SCOPE_REJECT,
++    SG_PP_COMBINE_REJECT,
++    SG_PP_PAYLOAD_REJECT,
++    SG_PP_ELIGIBLE,
++    SG_PP_ELIGIBLE_VERTICES,
++    SG_PP_ELIGIBLE_BYTES,
++    SG_PP_EXISTING_BUFFER,
++    SG_PP_BORROWED_BUFFER,
++    SG_PP_ALLOC_ATTEMPTS,
++    SG_PP_ALLOC_SUCCESS,
++    SG_PP_ALLOC_FAILURE,
++    SG_PP_BUDGET_UNAVAILABLE,
++    SG_PP_IDLE_RECLAIMED_SLOTS,
++    SG_PP_IDLE_RECLAIMED_BYTES,
++    SG_PP_READY,
++    SG_PP_READY_VERTICES,
++    SG_PP_READY_BYTES,
++    SG_PP_ORDERED_PACKED,
++    SG_PP_ORDERED_TRANSFORMED_VERTICES,
++    SG_PP_ORDERED_CLIPPED_VERTICES,
++    SG_PP_ORDERED_BYTES,
++    SG_PP_ADOPTED,
++    SG_PP_ADOPTED_VERTICES,
++    SG_PP_ADOPTED_BYTES,
++    SG_PP_LATE,
++    SG_PP_LATE_VERTICES,
++    SG_PP_LATE_BYTES,
++    SG_PP_DISCARDED,
++    SG_PP_DISCARDED_VERTICES,
++    SG_PP_DISCARDED_BYTES,
++    SG_PP_LARGE_PACKED,
++    SG_PP_LARGE_VERTICES,
++    SG_PP_LARGE_BYTES,
++    SG_PP_COUNT_COUNT
++};
++static _Thread_local double sg_pp_ms[SG_PP_PHASE_COUNT];
++static _Thread_local unsigned sg_pp_calls[SG_PP_PHASE_COUNT];
++static _Thread_local uint64_t sg_pp_counts[SG_PP_COUNT_COUNT];
++static inline double sg_pp_now(void) {
++#ifdef __EMSCRIPTEN__
++    return emscripten_get_now();
++#else
++    struct timespec now; clock_gettime(CLOCK_MONOTONIC, &now);
++    return (double)now.tv_sec * 1000.0 + (double)now.tv_nsec * .000001;
++#endif
++}
++static inline void sg_pp_end(int phase, double start) {
++    sg_pp_ms[phase] += sg_pp_now() - start; sg_pp_calls[phase]++;
++}
++#define SG_PP_BEGIN(n) double sg_pp_##n##_start = sg_pp_now()
++#define SG_PP_END(n) sg_pp_end(SG_PP_##n, sg_pp_##n##_start)
++#define SG_PP_ADD(n,x) (sg_pp_counts[SG_PP_##n] += (uint64_t)(x))
++#else
++#define SG_PP_BEGIN(n) ((void)0)
++#define SG_PP_END(n) ((void)0)
++#define SG_PP_ADD(n,x) ((void)0)
++#endif
++#endif

@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/home/cosmo/Git/softgl/build/diagnostics/prepack-uptake/create-diagnostic.py", line 106, in <module>
+    s=replace(s,'    struct sg_stream_queue *q = p->stream_queue;\n    pthread_mutex_lock(&p->mtx);','''    SG_PP_ADD(ELIGIBLE, 1);
+        SG_PP_ADD(ELIGIBLE_VERTICES, count);
+        SG_PP_ADD(ELIGIBLE_BYTES, (uint64_t)count * stride);
+        struct sg_stream_queue *q = p->stream_queue;
+        pthread_mutex_lock(&p->mtx);''')
+  File "/home/cosmo/Git/softgl/build/diagnostics/prepack-uptake/create-diagnostic.py", line 48, in replace
+    def replace(s,a,b):assert s.count(a)==1,(s.count(a),a[:90]);return s.replace(a,b)
+                              ^^^^^^^^^^^^^
+AssertionError: (3, '    struct sg_stream_queue *q = p->stream_queue;\n    pthread_mutex_lock(&p->mtx);')

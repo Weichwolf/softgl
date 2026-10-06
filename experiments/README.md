@@ -1,5 +1,22 @@
 # Optimization evidence
 
+The [early-packing uptake diagnostic](prepack-uptake/README.md) measures the
+rejected candidate rather than accepted D4. BMW has ten eligible/ordered packed
+draws and 5,076,400 logical output bytes in every observed frame. About 7.00–7.09
+draws adopt early storage, 2.91–3.00 refuse the occupied 2MiB budget, and
+61.086–62.328% of logical output bytes move into the geometry stage. There are
+no completed-ready discards or allocation failures. Reuse is rare: 7.00–7.08
+new allocation calls, zero retained caller buffers and 0.00–0.02 idle borrows
+per frame. Early preparation costs 0.086–0.098 caller wall ms/frame; late packing
+remains 0.302–0.350 ms. These are instrumented scopes, not allocator-only CPU
+time, physical traffic, saved time or proof of a ceiling. All 1200 frame
+partitions and six first quiet guards pass, with full 745 native + Bench1,
+25 sanitizer / 24 WASM and image/model/edge fidelity gates. Disabled worker,
+JS and WASM match the rejected candidate exactly. D4/live and accepted FPS
+remain unchanged. The next isolated trial can tighten packed-capacity rounding
+in D4's ordered queue without adding an arena or reintroducing early packing;
+the published summaries contain no matching previous capacity-rounding trial.
+
 The [geometry-slice vertex packing trial](slice-vertex-packing/README.md) is
 rejected. BMW audit directions disagree in every mode: off +0.628%/-0.580%,
 2x +0.234%/-0.038%, 4x -0.980%/+0.708%. There is no reproducible BMW benefit;
