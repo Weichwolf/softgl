@@ -1,0 +1,116 @@
+[
+  {
+    "command": [
+      "cmake",
+      "--build",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/native-full",
+      "-j4",
+      "--target",
+      "index_range_contract"
+    ],
+    "log": "native-full-build.log"
+  },
+  {
+    "command": [
+      "ctest",
+      "--test-dir",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/native-full",
+      "-R",
+      "^index_range_contract$",
+      "--output-on-failure",
+      "-V"
+    ],
+    "log": "native-full-run.log"
+  },
+  {
+    "command": [
+      "cmake",
+      "--build",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/asan-full",
+      "-j4",
+      "--target",
+      "index_range_contract"
+    ],
+    "log": "asan-full-build.log"
+  },
+  {
+    "command": [
+      "ctest",
+      "--test-dir",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/asan-full",
+      "-R",
+      "^index_range_contract$",
+      "--output-on-failure",
+      "-V"
+    ],
+    "log": "asan-full-run.log"
+  },
+  {
+    "command": [
+      "emcc",
+      "-std=gnu11",
+      "-O2",
+      "-fno-fast-math",
+      "-ffp-contract=off",
+      "-msimd128",
+      "-msse4.1",
+      "-pthread",
+      "-I/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/source-root/libsoftgl/include",
+      "-I/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/source-root/libsoftgl/src",
+      "-Dmain=sg_contract_main",
+      "-c",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/source-root/tests/index_range.c",
+      "-o",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/fixture-correction/index_range-test.o"
+    ],
+    "log": "wasm-fixture-build.log"
+  },
+  {
+    "command": [
+      "emcc",
+      "-O2",
+      "-msimd128",
+      "-msse4.1",
+      "-pthread",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/fixture-correction/index_range-test.o",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/objects/api.c.o",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/objects/buffers.c.o",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/objects/clip.c.o",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/objects/dlist.c.o",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/objects/evaluators.c.o",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/objects/fragment.c.o",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/objects/fragment_combine.c.o",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/objects/fragment_write.c.o",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/objects/framebuffer.c.o",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/objects/immediate.c.o",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/objects/lighting.c.o",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/objects/lines.c.o",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/objects/matrix.c.o",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/objects/multisample.c.o",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/objects/pipeline.c.o",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/objects/pixels.c.o",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/objects/rasterizer.c.o",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/objects/state.c.o",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/objects/texture.c.o",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/objects/workers.c.o",
+      "-sMODULARIZE=1",
+      "-sEXPORT_NAME=createContract",
+      "-sPTHREAD_POOL_SIZE=8",
+      "-sALLOW_MEMORY_GROWTH=1",
+      "-sINITIAL_MEMORY=67108864",
+      "-sSTACK_SIZE=8388608",
+      "-sINVOKE_RUN=0",
+      "-sEXPORTED_FUNCTIONS=[\"_sg_contract_main\"]",
+      "-o",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/fixture-correction/index_range.js"
+    ],
+    "log": "wasm-link.log"
+  },
+  {
+    "command": [
+      "node",
+      "/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/fixture-correction/run-index_range.cjs"
+    ],
+    "log": "wasm-range-run.log"
+  }
+]

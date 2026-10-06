@@ -1,0 +1,297 @@
+{
+  "referenceWasmSha256": "7cc38593ef399417a3ab4497dae40a162f9ae9550ad2181140d5d0f3c8df3b77",
+  "candidateWasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+  "rows": [
+    {
+      "name": "_sg_draw_elements_real",
+      "beforeBytes": 14686,
+      "afterBytes": 17454,
+      "bodyByteExact": false,
+      "beforeLocalDeclarations": {
+        "0x7f": 22,
+        "0x7b": 1,
+        "0x7e": 1
+      },
+      "afterLocalDeclarations": {
+        "0x7f": 22,
+        "0x7b": 9,
+        "0x7e": 1
+      }
+    },
+    {
+      "name": "sg_raster_triangle_tile_prepared",
+      "beforeBytes": 22877,
+      "afterBytes": 22877,
+      "bodyByteExact": true,
+      "beforeLocalDeclarations": {
+        "0x7f": 44,
+        "0x7b": 31,
+        "0x7d": 14,
+        "0x7e": 35
+      },
+      "afterLocalDeclarations": {
+        "0x7f": 44,
+        "0x7b": 31,
+        "0x7d": 14,
+        "0x7e": 35
+      }
+    },
+    {
+      "name": "sg_raster_triangle_depth_capture",
+      "beforeBytes": 23285,
+      "afterBytes": 23285,
+      "bodyByteExact": true,
+      "beforeLocalDeclarations": {
+        "0x7f": 45,
+        "0x7b": 31,
+        "0x7d": 15,
+        "0x7e": 35
+      },
+      "afterLocalDeclarations": {
+        "0x7f": 45,
+        "0x7b": 31,
+        "0x7d": 15,
+        "0x7e": 35
+      }
+    },
+    {
+      "name": "sg_raster_triangle_msaa2",
+      "beforeBytes": 22541,
+      "afterBytes": 22541,
+      "bodyByteExact": true,
+      "beforeLocalDeclarations": {
+        "0x7f": 56,
+        "0x7b": 27,
+        "0x7d": 17,
+        "0x7e": 36
+      },
+      "afterLocalDeclarations": {
+        "0x7f": 56,
+        "0x7b": 27,
+        "0x7d": 17,
+        "0x7e": 36
+      }
+    },
+    {
+      "name": "sg_raster_triangle_msaa2_capture",
+      "beforeBytes": 22880,
+      "afterBytes": 22880,
+      "bodyByteExact": true,
+      "beforeLocalDeclarations": {
+        "0x7f": 57,
+        "0x7b": 27,
+        "0x7d": 17,
+        "0x7e": 36
+      },
+      "afterLocalDeclarations": {
+        "0x7f": 57,
+        "0x7b": 27,
+        "0x7d": 17,
+        "0x7e": 36
+      }
+    },
+    {
+      "name": "sg_raster_triangle_msaa4",
+      "beforeBytes": 25751,
+      "afterBytes": 25751,
+      "bodyByteExact": true,
+      "beforeLocalDeclarations": {
+        "0x7f": 57,
+        "0x7b": 35,
+        "0x7e": 30,
+        "0x7d": 16
+      },
+      "afterLocalDeclarations": {
+        "0x7f": 57,
+        "0x7b": 35,
+        "0x7e": 30,
+        "0x7d": 16
+      }
+    },
+    {
+      "name": "sg_raster_triangle_msaa4_capture",
+      "beforeBytes": 25844,
+      "afterBytes": 25844,
+      "bodyByteExact": true,
+      "beforeLocalDeclarations": {
+        "0x7f": 58,
+        "0x7b": 35,
+        "0x7e": 30,
+        "0x7d": 16
+      },
+      "afterLocalDeclarations": {
+        "0x7f": 58,
+        "0x7b": 35,
+        "0x7e": 30,
+        "0x7d": 16
+      }
+    },
+    {
+      "name": "sg_queue_render_packed",
+      "beforeBytes": 1312,
+      "afterBytes": 1312,
+      "bodyByteExact": true,
+      "beforeLocalDeclarations": {
+        "0x7f": 22,
+        "0x7e": 2
+      },
+      "afterLocalDeclarations": {
+        "0x7f": 22,
+        "0x7e": 2
+      }
+    },
+    {
+      "name": "sg_drain_packed_bins",
+      "beforeBytes": 2015,
+      "afterBytes": 2015,
+      "bodyByteExact": true,
+      "beforeLocalDeclarations": {
+        "0x7f": 31,
+        "0x7e": 2
+      },
+      "afterLocalDeclarations": {
+        "0x7f": 31,
+        "0x7e": 2
+      }
+    },
+    {
+      "name": "sg_queue_help",
+      "beforeBytes": 162,
+      "afterBytes": 162,
+      "bodyByteExact": true,
+      "beforeLocalDeclarations": {
+        "0x7f": 10
+      },
+      "afterLocalDeclarations": {
+        "0x7f": 10
+      }
+    },
+    {
+      "name": "sg_worker_main",
+      "beforeBytes": 747,
+      "afterBytes": 747,
+      "bodyByteExact": true,
+      "beforeLocalDeclarations": {
+        "0x7f": 15,
+        "0x7e": 2
+      },
+      "afterLocalDeclarations": {
+        "0x7f": 15,
+        "0x7e": 2
+      }
+    },
+    {
+      "name": "sg_queue_transform",
+      "beforeBytes": 283,
+      "afterBytes": 283,
+      "bodyByteExact": true,
+      "beforeLocalDeclarations": {
+        "0x7f": 2
+      },
+      "afterLocalDeclarations": {
+        "0x7f": 2
+      }
+    },
+    {
+      "name": "sg_write_fragment",
+      "beforeBytes": 2297,
+      "afterBytes": 2297,
+      "bodyByteExact": true,
+      "beforeLocalDeclarations": {
+        "0x7b": 2,
+        "0x7f": 9,
+        "0x7d": 1
+      },
+      "afterLocalDeclarations": {
+        "0x7b": 2,
+        "0x7f": 9,
+        "0x7d": 1
+      }
+    },
+    {
+      "name": "sg_write_multisample",
+      "beforeBytes": 9040,
+      "afterBytes": 9040,
+      "bodyByteExact": true,
+      "beforeLocalDeclarations": {
+        "0x7b": 20,
+        "0x7f": 13,
+        "0x7d": 5,
+        "0x7e": 2
+      },
+      "afterLocalDeclarations": {
+        "0x7b": 20,
+        "0x7f": 13,
+        "0x7d": 5,
+        "0x7e": 2
+      }
+    },
+    {
+      "name": "sg_write_multisample2",
+      "beforeBytes": 7409,
+      "afterBytes": 7409,
+      "bodyByteExact": true,
+      "beforeLocalDeclarations": {
+        "0x7b": 14,
+        "0x7d": 5,
+        "0x7f": 16,
+        "0x7e": 2
+      },
+      "afterLocalDeclarations": {
+        "0x7b": 14,
+        "0x7d": 5,
+        "0x7f": 16,
+        "0x7e": 2
+      }
+    },
+    {
+      "name": "sg_store_off_post_depth",
+      "beforeBytes": 381,
+      "afterBytes": 381,
+      "bodyByteExact": true,
+      "beforeLocalDeclarations": {
+        "0x7b": 1
+      },
+      "afterLocalDeclarations": {
+        "0x7b": 1
+      }
+    },
+    {
+      "name": "sg_store_blend_msaa2_post_depth",
+      "beforeBytes": 2763,
+      "afterBytes": 2763,
+      "bodyByteExact": true,
+      "beforeLocalDeclarations": {
+        "0x7b": 14,
+        "0x7f": 5,
+        "0x7d": 2,
+        "0x7e": 2
+      },
+      "afterLocalDeclarations": {
+        "0x7b": 14,
+        "0x7f": 5,
+        "0x7d": 2,
+        "0x7e": 2
+      }
+    },
+    {
+      "name": "sg_store_blend_msaa4_post_depth",
+      "beforeBytes": 3565,
+      "afterBytes": 3565,
+      "bodyByteExact": true,
+      "beforeLocalDeclarations": {
+        "0x7b": 18,
+        "0x7f": 5,
+        "0x7d": 2,
+        "0x7e": 2
+      },
+      "afterLocalDeclarations": {
+        "0x7b": 18,
+        "0x7f": 5,
+        "0x7d": 2,
+        "0x7e": 2
+      }
+    }
+  ],
+  "note": "Static body sizes/local declarations. Byte hashes can differ because of shifted function indices; no native JIT instruction/register/cache/machine-cycle claim."
+}

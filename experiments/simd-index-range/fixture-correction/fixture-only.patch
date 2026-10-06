@@ -1,0 +1,10 @@
+--- a/tests/index_range.c
++++ b/tests/index_range.c
+@@ -52,6 +52,7 @@
+     size_t bytes = (size_t)count * size;
+     uint8_t *allocation = malloc((size_t)offset + bytes + (bytes ? 0 : 1));
+     if (!allocation) return 0;
++    memset(allocation, 0xa5, (size_t)offset + bytes + (bytes ? 0 : 1));
+     uint8_t *data = allocation + offset;
+     for (int i = 0; i < offset; i++) allocation[i] = UINT8_C(0xa5);
+     for (int i = 0; i < count; i++) {

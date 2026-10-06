@@ -1,0 +1,25 @@
+Internal ctest changing into directory: /home/cosmo/Git/softgl/build/diagnostics/simd-index-range/native-full
+UpdateCTestConfiguration  from :/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/native-full/DartConfiguration.tcl
+UpdateCTestConfiguration  from :/home/cosmo/Git/softgl/build/diagnostics/simd-index-range/native-full/DartConfiguration.tcl
+Test project /home/cosmo/Git/softgl/build/diagnostics/simd-index-range/native-full
+Constructing a list of tests
+Done constructing a list of tests
+Updating test list for fixtures
+Added 0 tests to meet fixture requirements
+Checking test dependency graph...
+Checking test dependency graph end
+test 744
+    Start 744: index_range_contract
+
+744: Test command: /home/cosmo/Git/softgl/build/diagnostics/simd-index-range/native-full/tests/index_range_contract
+744: Working Directory: /home/cosmo/Git/softgl/build/diagnostics/simd-index-range/native-full/tests
+744: Test timeout computed to be: 90
+744: Index range: 1007307 exact unsigned cases, 182312387 independently decoded items; all alignments, allocation ends, vector/unroll/tails, every lane, high bits and fallbacks passed
+1/1 Test #744: index_range_contract .............   Passed    0.63 sec
+
+The following tests passed:
+	index_range_contract
+
+100% tests passed, 0 tests failed out of 1
+
+Total Test time (real) =   0.66 sec

@@ -1,0 +1,5 @@
+{
+  "status": "deferred-until-current-gates-terminal",
+  "warning": "GCC -Wmaybe-uninitialized on test data passed for the zero-length span; neither helper nor oracle reads it, but every test allocation will be explicitly initialized to remove the new warning.",
+  "scope": "Fixture only; preserve frozen runtime/production helper and current gate source until the confirmed process completes. Retain original fixture/patch/logs; afterward repeat the changed contract native/ASan/WASM and bind its final source and receipts. Full existing rendering regressions are unchanged."
+}

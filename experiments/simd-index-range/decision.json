@@ -1,0 +1,13 @@
+{
+  "status": "accepted",
+  "reason": "Both BMW audits improve in every sample mode, with six/six faster off pairs and five/six faster in each MSAA mode. All T-80 aggregate audits also improve, six/six off and five/six per MSAA mode. Full gates preserve images/API semantics; source/canonical/UI adoption gates remain required.",
+  "summary": "Accepted: BMW frame time improves -1.071724%/-0.636837% off (six/six faster pairs), -0.931088%/-1.241151% at2x (five/six), and -0.599668%/-0.921633% at4x (five/six). T-80 improves -4.301819%/-3.514801% off, -2.003674%/-5.618840% at2x and -5.527473%/-1.841814% at4x; its pair signs are likewise six/six off and five/six in each MSAA mode. These are modest repeatable BMW gains, with mixed individual MSAA pairs rather than a universal per-pair speedup. All eighteen predeclared paired comparisons completed; nineteen guard attempts include one discarded Codex foreign-CPU window (off,audit1,pair2). No selective performance confirmation or parameter sweep was used. Canonical byte identity, complete final native tests and both browser UI gates must pass before live adoption.",
+  "candidateWasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+  "referenceWasmSha256": "7cc38593ef399417a3ab4497dae40a162f9ae9550ad2181140d5d0f3c8df3b77",
+  "noSelectiveConfirmation": true,
+  "noParameterSweep": true,
+  "allPredeclaredPairsComplete": true,
+  "adoptionGatesPending": false,
+  "canonicalAndBrowserGatesPassed": true,
+  "productionWasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0"
+}

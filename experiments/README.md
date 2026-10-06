@@ -1,5 +1,22 @@
 # Optimization evidence
 
+The [exact unsigned SIMD index scan](simd-index-range/README.md) is retained as
+module `d4dd244c`. BMW frame time improves -1.072%/-0.637% off, -0.931%/-1.241%
+at 2x and -0.600%/-0.922% at 4x; all six off pairs and five of six pairs in
+each MSAA mode are faster. T-80 improves in both audits of every mode, with
+larger but variable gains. One Codex CPU-load window is discarded by the
+unchanged guard; all nineteen attempts and eighteen valid comparisons are
+retained. The scan dispatches once on BYTE/SHORT/INT and uses four exact
+unsigned SIMD reduction chains, bounded loads and scalar tails. Both engines
+pass 1,007,307 range cases, alongside the full fidelity gates; the fixture's
+empty-span compiler warning and its isolated correction are documented.
+Seventeen of eighteen inspected WASM roots remain byte-identical. Canonical
+JS/WASM match the measured candidate, final native tests and both browser UI
+gates pass, and the live preview serves the new version. Benchmark 4x audit
+medians are BMW 30.33/30.49 FPS and T-80 70.21/68.54 FPS; these are milestones
+within the open research goal. Code, raw data, recipes and portable verification
+are public.
+
 [Caller producer phases](caller-producer-phases/README.md) separate nine scopes
 and seventeen actual counters in two guarded audits per scene/mode. BMW scans
 180,081 indices per frame in 1.0582–1.0749 ms; triangle emission takes

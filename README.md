@@ -38,7 +38,7 @@ API-level compatibility with real OpenGL 1.5:
 
 323 entry points, 234 test cases plus three Tank and three BMW camera views. Each runs
 against softgl and Mesa llvmpipe, followed by a pixel comparison
-(720 image correctness checks plus twenty-two renderer contracts when the
+(720 image correctness checks plus 24 contracts when the
 BMW asset is prepared; `ctest -C Bench` also includes the native benchmark).
 
 ## Model preparation
@@ -77,6 +77,7 @@ materials and original texture dimensions remain available. Use
 - **Position and ordered-bin cache** shares a 4MiB payload budget; VBO storage revisions and matrix/viewport keys preserve fresh attributes and lighting across draws
 - **Transient depth visibility** skips strictly hidden geometry references in later material passes within a monotonic depth epoch. Equality remains available for LEQUAL/EQUAL, and clears or nonmonotonic writes invalidate reuse. Strict hierarchical depth bounds also feed this transient visibility; triangles tied at the LESS rejection bound remain available for later LEQUAL/EQUAL passes. A separate 4x capture kernel keeps the ordinary raster kernels free of visibility bookkeeping; bitmaps use reclaimed geometry-cache payload space.
 - **Prepared vertex inputs** resolve array/VBO addresses once per joined vertex job; bounded SIMD loads serve float arrays, with the original conversions for other types; identical enabled UV arrays share one fetch within the job
+- **Exact unsigned index ranges** dispatch BYTE/SHORT/INT once per cache-miss scan; four SIMD reduction chains use bounded loads and scalar tails, preserving the geometry-cache hit path
 - **Parallel triangle preparation** shares the same workers and caller for 128-triangle slices; exact culling, bounds and bin descriptors use at most 224KiB retained scratch (448KiB during growth), then the caller appends in primitive order; clipping and small/ineligible jobs retain the original path
 - **Automatic WASM pool** uses at most three workers plus the calling thread, capped at the reported logical CPU count; explicit worker counts remain available, and a one-CPU browser renders without raster workers
 - **Single rasterizer** (`rasterizer.c::sg_raster_triangle`); per-lane scalar fallback only for stencil / polygon stipple / color logic op / occlusion queries (pixel-serial state)

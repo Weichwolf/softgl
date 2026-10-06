@@ -1,0 +1,230 @@
+--- a/libsoftgl/src/pipeline.c
++++ b/libsoftgl/src/pipeline.c
+@@ -1,6 +1,7 @@
+ #include "types.h"
+ #include "dlist.h"
+ #include "workers.h"
++#include "index_range.h"
+ #include <smmintrin.h>
+ #include <math.h>
+ #include <string.h>
+@@ -755,17 +756,13 @@
+     if (mode == GL_TRIANGLES) {
+         int ntri = count / 3;
+         if (ntri >= SG_PARALLEL_VTX_MIN_TRIS) {
+-            /* Find the index range so workers transform only the slice that
+-             * is actually referenced. Scan once — cheap even at 130k indices. */
++            /* Cache misses scan exact unsigned extrema in SIMD batches;
++             * cache hits retain their existing referenced vertex range. */
+             uint32_t imin = 0xFFFFFFFFu, imax = 0;
+             int geometry_hit;
+             sg_geometry_entry *geometry = sg_workers_geometry_lookup(c, count, type, indices,
+                                                                        &imin, &imax, &geometry_hit);
+-            if (!geometry_hit) for (int k = 0; k < count; k++) {
+-                uint32_t ix = sg_fetch_index(type, index_data, k);
+-                if (ix < imin) imin = ix;
+-                if (ix > imax) imax = ix;
+-            }
++            if (!geometry_hit) sg_index_range(type, index_data, count, &imin, &imax);
+             sg_prepare_nm_cache(c);
+             const sg_vert *pre = sg_workers_transform_compact(c, (int)imin, (int)(imax - imin + 1));
+             if (pre) {
+--- /dev/null
++++ b/libsoftgl/src/index_range.h
+@@ -0,0 +1,69 @@
++#ifndef SOFTGL_INDEX_RANGE_H
++#define SOFTGL_INDEX_RANGE_H
++
++#include "types.h"
++#include <smmintrin.h>
++#include <string.h>
++
++/* Four independent unsigned reductions consume 64 bytes per iteration.
++ * Every load fits inside the supplied index span, including unaligned spans.
++ * Dispatch by index type once, instead of fetching its type for each index. */
++#define SG_INDEX_RANGE_TYPED(name, scalar, lanes, min_op, max_op) \
++static inline void name(const uint8_t *data, int count, uint32_t *imin, uint32_t *imax) { \
++    __m128i lo0 = _mm_set1_epi32(-1), lo1 = lo0, lo2 = lo0, lo3 = lo0; \
++    __m128i hi0 = _mm_setzero_si128(), hi1 = hi0, hi2 = hi0, hi3 = hi0; \
++    int k = 0; \
++    for (; count - k >= (lanes) * 4; k += (lanes) * 4) { \
++        const uint8_t *p = data + (size_t)k * sizeof(scalar); \
++        __m128i x0 = _mm_loadu_si128((const __m128i *)(const void *)(p)); \
++        __m128i x1 = _mm_loadu_si128((const __m128i *)(const void *)(p + 16)); \
++        __m128i x2 = _mm_loadu_si128((const __m128i *)(const void *)(p + 32)); \
++        __m128i x3 = _mm_loadu_si128((const __m128i *)(const void *)(p + 48)); \
++        lo0 = min_op(lo0, x0); hi0 = max_op(hi0, x0); \
++        lo1 = min_op(lo1, x1); hi1 = max_op(hi1, x1); \
++        lo2 = min_op(lo2, x2); hi2 = max_op(hi2, x2); \
++        lo3 = min_op(lo3, x3); hi3 = max_op(hi3, x3); \
++    } \
++    lo0 = min_op(min_op(lo0, lo1), min_op(lo2, lo3)); \
++    hi0 = max_op(max_op(hi0, hi1), max_op(hi2, hi3)); \
++    for (; count - k >= (lanes); k += (lanes)) { \
++        __m128i x = _mm_loadu_si128((const __m128i *)(const void *)(data + (size_t)k * sizeof(scalar))); \
++        lo0 = min_op(lo0, x); hi0 = max_op(hi0, x); \
++    } \
++    scalar low[lanes], high[lanes]; \
++    _mm_storeu_si128((__m128i *)(void *)low, lo0); \
++    _mm_storeu_si128((__m128i *)(void *)high, hi0); \
++    uint32_t minimum = UINT32_MAX, maximum = 0; \
++    for (int lane = 0; lane < (lanes); lane++) { \
++        if ((uint32_t)low[lane] < minimum) minimum = low[lane]; \
++        if ((uint32_t)high[lane] > maximum) maximum = high[lane]; \
++    } \
++    for (; k < count; k++) { \
++        scalar value; \
++        memcpy(&value, data + (size_t)k * sizeof(scalar), sizeof(value)); \
++        if ((uint32_t)value < minimum) minimum = value; \
++        if ((uint32_t)value > maximum) maximum = value; \
++    } \
++    *imin = minimum; *imax = maximum; \
++}
++
++SG_INDEX_RANGE_TYPED(sg_index_range_u8, uint8_t, 16, _mm_min_epu8, _mm_max_epu8)
++SG_INDEX_RANGE_TYPED(sg_index_range_u16, uint16_t, 8, _mm_min_epu16, _mm_max_epu16)
++SG_INDEX_RANGE_TYPED(sg_index_range_u32, uint32_t, 4, _mm_min_epu32, _mm_max_epu32)
++#undef SG_INDEX_RANGE_TYPED
++
++static inline void sg_index_range(GLenum type, const uint8_t *data, GLsizei count,
++                                  uint32_t *imin, uint32_t *imax) {
++    *imin = UINT32_MAX; *imax = 0;
++    if (count <= 0) return;
++    /* Same zero-index fallback as sg_fetch_index for missing/invalid inputs. */
++    if (!data) { *imin = 0; return; }
++    switch (type) {
++        case GL_UNSIGNED_BYTE: sg_index_range_u8(data, count, imin, imax); break;
++        case GL_UNSIGNED_SHORT: sg_index_range_u16(data, count, imin, imax); break;
++        case GL_UNSIGNED_INT: sg_index_range_u32(data, count, imin, imax); break;
++        default: *imin = 0; break;
++    }
++}
++
++#endif
+--- a/tests/CMakeLists.txt
++++ b/tests/CMakeLists.txt
+@@ -819,3 +819,13 @@
+ 
+ # Create out directory
+ file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/out)
++
++# Exact unsigned index bounds, including unaligned spans and allocation ends.
++add_executable(index_range_contract index_range.c)
++target_include_directories(index_range_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
++target_link_libraries(index_range_contract PRIVATE softgl)
++if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
++    target_compile_options(index_range_contract PRIVATE -O2 -fno-fast-math -ffp-contract=off -msse4.1)
++endif()
++add_test(NAME index_range_contract COMMAND index_range_contract)
++set_tests_properties(index_range_contract PROPERTIES TIMEOUT 90)
+--- /dev/null
++++ b/tests/index_range.c
+@@ -0,0 +1,108 @@
++/* Unsigned extrema oracle: independent byte decoding, exact allocation ends,
++ * every alignment, vector/reduction/tail boundaries and extrema in each lane. */
++#include "index_range.h"
++#include <stdio.h>
++#include <stdlib.h>
++
++static uint64_t cases, items;
++static uint32_t random_state = UINT32_C(0x938bac27);
++
++static uint32_t next_value(void) {
++    random_state ^= random_state << 13;
++    random_state ^= random_state >> 17;
++    random_state ^= random_state << 5;
++    return random_state;
++}
++
++static void oracle(GLenum type, const uint8_t *data, int count,
++                   uint32_t *minimum, uint32_t *maximum) {
++    *minimum = UINT32_MAX; *maximum = 0;
++    int size = type == GL_UNSIGNED_BYTE ? 1 : type == GL_UNSIGNED_SHORT ? 2 :
++               type == GL_UNSIGNED_INT ? 4 : 0;
++    for (int i = 0; i < count; i++) {
++        uint32_t value = 0;
++        if (data && size) for (int b = 0; b < size; b++)
++            value |= (uint32_t)data[(size_t)i * size + b] << (8 * b);
++        if (value < *minimum) *minimum = value;
++        if (value > *maximum) *maximum = value;
++    }
++}
++
++static int check(GLenum type, const uint8_t *data, int count) {
++    uint32_t expected_min, expected_max, actual_min = 17, actual_max = 29;
++    oracle(type, data, count, &expected_min, &expected_max);
++    sg_index_range(type, data, count, &actual_min, &actual_max);
++    if (actual_min != expected_min || actual_max != expected_max) {
++        fprintf(stderr, "type=%u count=%d: expected %u/%u got %u/%u\n",
++                type, count, expected_min, expected_max, actual_min, actual_max);
++        return 0;
++    }
++    cases++; if (count > 0) items += (unsigned)count;
++    return 1;
++}
++
++static void put_value(uint8_t *data, int size, int i, uint32_t value) {
++    for (int b = 0; b < size; b++) data[(size_t)i * size + b] = (uint8_t)(value >> (8 * b));
++}
++
++static int span(GLenum type, int count, int offset, int pattern) {
++    int size = type == GL_UNSIGNED_BYTE ? 1 : type == GL_UNSIGNED_SHORT ? 2 : 4;
++    uint32_t limit = size == 1 ? UINT8_MAX : size == 2 ? UINT16_MAX : UINT32_MAX;
++    /* End exactly at the allocation's ASan redzone: no padded SIMD tail. */
++    size_t bytes = (size_t)count * size;
++    uint8_t *allocation = malloc((size_t)offset + bytes + (bytes ? 0 : 1));
++    if (!allocation) return 0;
++    memset(allocation, 0xa5, (size_t)offset + bytes + (bytes ? 0 : 1));
++    uint8_t *data = allocation + offset;
++    for (int i = 0; i < offset; i++) allocation[i] = UINT8_C(0xa5);
++    for (int i = 0; i < count; i++) {
++        uint32_t value = pattern == 0 ? next_value() & limit :
++                         pattern == 1 ? 0 : pattern == 2 ? limit :
++                         pattern == 3 ? limit / 2 : (limit / 2) + 1;
++        put_value(data, size, i, value);
++    }
++    int passed = check(type, data, count);
++    /* Every lane and four-vector group position must affect the reduction;
++     * repeat at the last group/tail, including the high unsigned bit. */
++    if (pattern == 3 && count > 0) {
++        int probes = count < 65 ? count : count <= 129 ? 65 : 4;
++        for (int lane = 0; lane < probes && passed; lane++) {
++            int positions[2] = {lane, count - 1 - lane};
++            for (int p = 0; p < 2 && passed; p++) {
++                int i = positions[p];
++                put_value(data, size, i, 0);
++                passed = check(type, data, count);
++                put_value(data, size, i, limit);
++                if (passed) passed = check(type, data, count);
++                put_value(data, size, i, limit / 2);
++            }
++        }
++    }
++    for (int i = 0; i < offset; i++) if (allocation[i] != UINT8_C(0xa5)) passed = 0;
++    free(allocation);
++    return passed;
++}
++
++int main(void) {
++    const GLenum types[] = {GL_UNSIGNED_BYTE, GL_UNSIGNED_SHORT, GL_UNSIGNED_INT};
++    const int lengths[] = {127,128,129,255,256,257,1023,1024,1025,4095,4096,4097,16383,16384,16385};
++    for (int t = 0; t < 3; t++) {
++        for (int offset = 0; offset < 32; offset++) {
++            for (int count = 0; count <= 67; count++)
++                for (int pattern = 0; pattern < 5; pattern++)
++                    if (!span(types[t],count,offset,pattern)) return 1;
++            for (size_t n = 0; n < sizeof(lengths)/sizeof(lengths[0]); n++)
++                for (int pattern = 0; pattern < 5; pattern++)
++                    if (!span(types[t],lengths[n],offset,pattern)) return 1;
++        }
++        if (!span(types[t],180081,31,0)) return 1;
++        for (int count = -1; count <= 67; count++) if (!check(types[t],NULL,count)) return 1;
++    }
++    uint8_t data[16] = {0xff,0x80,0x7f};
++    const GLenum unsupported[] = {0,GL_BYTE,GL_SHORT,GL_INT,GL_FLOAT};
++    for (size_t t = 0; t < sizeof(unsupported)/sizeof(unsupported[0]); t++)
++        for (int count = -1; count <= 67; count++) if (!check(unsupported[t],data,count)) return 1;
++    printf("Index range: %llu exact unsigned cases, %llu independently decoded items; all alignments, allocation ends, vector/unroll/tails, every lane, high bits and fallbacks passed\n",
++           (unsigned long long)cases,(unsigned long long)items);
++    return 0;
++}

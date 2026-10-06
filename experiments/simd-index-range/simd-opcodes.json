@@ -1,0 +1,53 @@
+{
+  "records": [
+    {
+      "label": "reference",
+      "wasmSha256": "7cc38593ef399417a3ab4497dae40a162f9ae9550ad2181140d5d0f3c8df3b77",
+      "symbolMapSha256": "9f26a3ef67eccbfb19658c9d18e87799db22e1c71b62d0a9522efcbfc5265ceb",
+      "function": "_sg_draw_elements_real",
+      "absoluteFunctionIndex": 407,
+      "definedFunctionLabel": 151,
+      "importFunctionCount": 256,
+      "mappingExport": {
+        "name": "softgl_create",
+        "absoluteFunctionIndex": 434,
+        "definedFunctionLabel": 178
+      },
+      "rootFile": "reference-draw-elements.wat",
+      "rootSha256": "25598246f9d99d3f3742a7fc3771750419f132af045935cbf0d1e6c087c92dbe",
+      "unsignedSimdExtremaOpcodes": {
+        "i8x16.min_u": 0,
+        "i8x16.max_u": 0,
+        "i16x8.min_u": 0,
+        "i16x8.max_u": 0,
+        "i32x4.min_u": 0,
+        "i32x4.max_u": 0
+      }
+    },
+    {
+      "label": "candidate",
+      "wasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+      "symbolMapSha256": "14f486d251d521be75cd216ed2ab3b6eb4e33cc5cb85f14e5cf6fdeea3c3ab7b",
+      "function": "_sg_draw_elements_real",
+      "absoluteFunctionIndex": 407,
+      "definedFunctionLabel": 151,
+      "importFunctionCount": 256,
+      "mappingExport": {
+        "name": "softgl_create",
+        "absoluteFunctionIndex": 434,
+        "definedFunctionLabel": 178
+      },
+      "rootFile": "candidate-draw-elements.wat",
+      "rootSha256": "3a2bd690dd923b3ea4e02a14528681ece4e2aabf2e8f1bb6fd570971ffdd8b92",
+      "unsignedSimdExtremaOpcodes": {
+        "i8x16.min_u": 8,
+        "i8x16.max_u": 8,
+        "i16x8.min_u": 8,
+        "i16x8.max_u": 8,
+        "i32x4.min_u": 17,
+        "i32x4.max_u": 17
+      }
+    }
+  ],
+  "scope": "Actual WASM opcodes in the bound draw_elements root; no native JIT instruction/register/machine-cycle/cache-miss or performance claim."
+}
