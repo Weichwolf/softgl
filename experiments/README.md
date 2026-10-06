@@ -1,5 +1,17 @@
 # Optimization evidence
 
+The [within-triangle off pixel-packing trial](off-pixel-packing/README.md)
+improves BMW off by -1.781%/-2.378% and 2x by -1.286%/-0.581% in two audits,
+but BMW 4x changes +1.510%/+0.488%, with four of six pairs slower. The joint
+module is rejected. All eighteen comparisons pass their quiet guards on the
+first attempt; complete native/sanitizer/WASM/image/model/edge gates pass.
+A new original-route oracle checks 12288 exact raster pairs, all three tails,
+color/depth/stencil/query/capture outputs and lower packet counts. Native/WASM
+packet partitions differ and are reported separately. Initial fixture-link
+and archive-closure failures, source, recipes and all raw data are retained;
+D4/live/report stay active. [Next](off-pixel-packing/next-research.md): measure
+separate outer raster entry points for off/2x/4x before combining optimizations.
+
 The [logical packet-lane diagnostic](packet-lane-occupancy/README.md) measures
 48.672125% live SIMD pixel lanes for BMW off. Its two audits repeat all 600
 paired-angle aggregate histograms and frame hashes exactly. MSAA full packets
