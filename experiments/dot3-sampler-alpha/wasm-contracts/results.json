@@ -1,0 +1,190 @@
+{
+  "completed": 23,
+  "planned": 23,
+  "results": [
+    {
+      "name": "index_range",
+      "fixtureSha256": "407e93ead6493d50c4f348eb7581079c82ae10df6e88de784ec05c2bc57abd3f",
+      "wasmSha256": "ffbf54bafe195425fda1bf0243daec1d7b05f0d4b63d244e6d8fa8442c638278",
+      "log": "wasm-contracts/index_range-run.log",
+      "logSha256": "196eb7f0b1d58f7652c6cfcd3056e34c92c0f0b509824525f7e2058708291a0c",
+      "passed": true
+    },
+    {
+      "name": "worker_pool",
+      "fixtureSha256": "ef4cbdd036bf58a5bec2a09614ae4e4eaa33d08f09b70f48b638893caa182a3d",
+      "wasmSha256": "e8bc320107dc5f23cc1f2651110e5977df86fb1ffde369d41742e959e00aa078",
+      "log": "wasm-contracts/worker_pool-run.log",
+      "logSha256": "cff2ce452d843f99966b9764da492150bbf6f371002c77aa12dd4cbb813d407d",
+      "passed": true
+    },
+    {
+      "name": "multisample",
+      "fixtureSha256": "d1d3fd58514655604c9da26b47426d49832daadaf3f7d3d633f3cb322f6ec60c",
+      "wasmSha256": "16d4d99014f481ce0334975ef2876b861939fe59a37a59549a0372f62e16a19f",
+      "log": "wasm-contracts/multisample-run.log",
+      "logSha256": "018a389beb54f8cb4dfee7e8d660ccdd4e369b32d3f7b89a1b06faf6e28bf52c",
+      "passed": true
+    },
+    {
+      "name": "msaa_store",
+      "fixtureSha256": "72385dc6034608defc7d56e2366cd60635851b7e37741328f788299e24ed79f2",
+      "wasmSha256": "8e3f8dc1ceff3473e5241eeed1f7da59805b8c38efeec7dfa40bc6218aba536c",
+      "log": "wasm-contracts/msaa_store-run.log",
+      "logSha256": "d15b99ff3c306e5d68494c35f6b6e63d4fccbd15d14becf0a84f5c01600fcf3c",
+      "passed": true
+    },
+    {
+      "name": "hierarchical_depth",
+      "fixtureSha256": "ee5d6bca2b00944d3b71b58239422f52c753b712594ff44a8fd711638c7e5762",
+      "wasmSha256": "94baeea9534ad4a822779324a1493c7aa0517685f3ab4d76aba76805a3203343",
+      "log": "wasm-contracts/hierarchical_depth-run.log",
+      "logSha256": "0238d98bb32c5f1165f090a6ee32c0da1dc7c6b9269557c9acd844477b2b9b46",
+      "passed": true
+    },
+    {
+      "name": "dot3_chain",
+      "fixtureSha256": "eb1c8dc3ee2ac66863218db14e2282a41b240a9b86d02686e579af63c2f7c50e",
+      "wasmSha256": "0ec1d461a6cf7a6f6202aebbbe9c599c638676f5a125595522b1c0a912f24bfd",
+      "log": "wasm-contracts/dot3_chain-run.log",
+      "logSha256": "dc7864644fb84ea0d203328b7177058ad49a8eb3714ef90fb5d159c69013b1a8",
+      "passed": true
+    },
+    {
+      "name": "constant_texture",
+      "fixtureSha256": "324029b8a2255b7eb7ed9e515b6f291ea6716ddc756f6f6cb98dea1261496559",
+      "wasmSha256": "799d3088029e9eb77b7480b304c3f341133edae862fa5387284e81e3f0eec0e1",
+      "log": "wasm-contracts/constant_texture-run.log",
+      "logSha256": "39bbfaaf81c28d3710b067106d5c832e16e29a09c2305bec8a8eecd97b23e707",
+      "passed": true
+    },
+    {
+      "name": "pixel_packet",
+      "fixtureSha256": "dd59f19e73085bf2d9733622c6be08df9c8fa11112b0dd3b85e8854d0920518b",
+      "wasmSha256": "820429fdc9aa1d535f02bb1f242469e0efcf913c6023baebe8335d88dc820bff",
+      "log": "wasm-contracts/pixel_packet-run.log",
+      "logSha256": "4e1c514be5a85d775aeb318d3a3ed0d25cd10ee9e182e767d9118539ca304676",
+      "passed": true
+    },
+    {
+      "name": "cube_packet",
+      "fixtureSha256": "4676151a39af0f3832fe9455893f0c838b6733dfd1887ec7054b2e69353902b1",
+      "wasmSha256": "a44fcee29e31cb1261c6d64343c851cf7d8208f1065ae69cca98e1fba9f819b3",
+      "log": "wasm-contracts/cube_packet-run.log",
+      "logSha256": "30bfe7e575614d45becfd7a46565c37a740023bba8f20a1ed6290297f800a83f",
+      "passed": true
+    },
+    {
+      "name": "geometry_cache",
+      "fixtureSha256": "12c15d3317d5a24ce19cb957309e60f72efb69c6cd017e2b43ed717715447dcc",
+      "wasmSha256": "5bbbf18da15b68899a9f458879873f864cec0e71ab0a55b50a3107135efd41af",
+      "log": "wasm-contracts/geometry_cache-run.log",
+      "logSha256": "d5bc014a2f7945db268a8e8fce4f163dd0f144b9291074a9e5da20bcfd2feadd",
+      "passed": true
+    },
+    {
+      "name": "async_raster",
+      "fixtureSha256": "33ff5c048ea448231bf6ec82ce2dc90537c011d05464519bca32a11da39c6669",
+      "wasmSha256": "c15ed44ef8cc451df744c15bd2217eabec1d5d8956ad37faccacbe8d22b00bc6",
+      "log": "wasm-contracts/async_raster-run.log",
+      "logSha256": "793f951d55dec8d52da9b4505706eaab116f58e947d1b48a12cc78a8c36fff87",
+      "passed": true
+    },
+    {
+      "name": "raster_vertex_pack",
+      "fixtureSha256": "195098eb1edfdde8ccd1c7b4e4e2a163c096c4869545599617b428215eadc6e3",
+      "wasmSha256": "ee3c4d289e962066956b0af811069d3a6c2791c96cf5b2e521bb73952b4dff23",
+      "log": "wasm-contracts/raster_vertex_pack-run.log",
+      "logSha256": "3a4f18d4c6fff4562c2600af74ab5bc0bda20d0161705e0d52c0ae7a31fabbef",
+      "passed": true
+    },
+    {
+      "name": "packed_stream",
+      "fixtureSha256": "a81c00f7013654227071ecec9bc4d84a79b10991cfcdefc7e72d3e087b7df67e",
+      "wasmSha256": "a82b346ba37512797c434d5c882b2da47b44140bd6ff98a05ed7a3cb5ead280a",
+      "log": "wasm-contracts/packed_stream-run.log",
+      "logSha256": "6b64bbde707a90b7fc22f9563758f6f3e3d851bbf48abee90edfe9c30bac6949",
+      "passed": true
+    },
+    {
+      "name": "simd_clamp",
+      "fixtureSha256": "45d5eb41c5284b4cff6adc512951a13e515f89b92c8f2fafe57f542b6376d938",
+      "wasmSha256": "ae2a048b8bd21dbb7ac486ed467165dea88c2515747c0483677951290ac8d88b",
+      "log": "wasm-contracts/simd_clamp-run.log",
+      "logSha256": "c9d9c46518480daa98a7c03a443aac91afd99032a0e0f2f7f9dd06b662b3e85c",
+      "passed": true
+    },
+    {
+      "name": "ordered_draw_queue",
+      "fixtureSha256": "b98c04969f29a39b84245113c16cea54219aedca1c54e90c4167aaa19ad08500",
+      "wasmSha256": "894ba478188acee00dcbbdeeb7baf272b1c1a91029920a2404ed441af838daad",
+      "log": "wasm-contracts/ordered_draw_queue-run.log",
+      "logSha256": "3482a588d96eea240f1b78ca1bca067042835a94b8adffaa846df0861456ab0e",
+      "passed": true
+    },
+    {
+      "name": "msaa_additive",
+      "fixtureSha256": "27e860f8d15cf90bf186b8965d940f50407505f2916d640bc6509e2418605fdd",
+      "wasmSha256": "12e6812a68ff596a0942d00990a4c560ab58f69027acef254d020e2b596c6778",
+      "log": "wasm-contracts/msaa_additive-run.log",
+      "logSha256": "449ee0738d94ae85dcee5569874a0ec0de00c8407667987dd35d702230a56d5f",
+      "passed": true
+    },
+    {
+      "name": "triangle_stage",
+      "fixtureSha256": "9289a01eadaab78d19a58eab4410b196827cd0930a50805492855ff1edf27685",
+      "wasmSha256": "784201896746307730daa988b1a2f84ccd69a5bb044c5e226a3fe64f127ff857",
+      "log": "wasm-contracts/triangle_stage-run.log",
+      "logSha256": "60d472da11d84684e69dcb9cc374fbeb0a0feaf7d5d5d48978d80c3fd459c617",
+      "passed": true
+    },
+    {
+      "name": "msaa_scanline",
+      "fixtureSha256": "b0f36e4e4a38079c3142ed6507598d3c4afa19e3ad195f30f96e62d7b1a72d49",
+      "wasmSha256": "72364957a568d4883fce00d9e293a2628e4a8ead9b74c2ee6c14932e4d0a55c6",
+      "log": "wasm-contracts/msaa_scanline-run.log",
+      "logSha256": "2dce83506ea5f639b6b708a1c82066254865c1db5e7a7931d4d589a752ffd226",
+      "passed": true
+    },
+    {
+      "name": "cube_filter",
+      "fixtureSha256": "faa8ad1d3bc433f7c6cfbe973dab31ccdd579505725335751b8c89c9fe63c90e",
+      "wasmSha256": "4dd8137d35667275af5bb092d4adc6a22f0b38438015c9114e4666c525aac8e3",
+      "log": "wasm-contracts/cube_filter-run.log",
+      "logSha256": "a545792285df3c4f98c7dffae00196dd80d8b836b4d5859277c24eb4302ade59",
+      "passed": true
+    },
+    {
+      "name": "cache_coverage",
+      "fixtureSha256": "fffa5471e7cabcab47eb9969b00e4c8daff92e4c6c8ab01a2210aacaab3dca52",
+      "wasmSha256": "93b67fb482b0c8d9daf04943b4e9b0659335c6f7791e41b5b2237c65f842e702",
+      "log": "wasm-contracts/cache_coverage-run.log",
+      "logSha256": "a8b8963d3855dbd6e2ebdec93d4717f13f431e779ede496a09e4257deac193f6",
+      "passed": true
+    },
+    {
+      "name": "depth_replay",
+      "fixtureSha256": "1946ea1c6bf61bffb2798d7f0a7796a486621654d3b6d885262ec61b04a8925b",
+      "wasmSha256": "7ab9b7307748656bd10fe014f7b8c0741d0f90a91faf5079d5aa466962536068",
+      "log": "wasm-contracts/depth_replay-run.log",
+      "logSha256": "38ccea68fed3e6dc3540372abc6484a6e54f41ba7eb494c2b75d7eba8dede089",
+      "passed": true
+    },
+    {
+      "name": "position_cache",
+      "fixtureSha256": "85f903a6823e9184848e1881df0773c909c3f3d288429d3ab0b110d931d65139",
+      "wasmSha256": "7d8d2c8cc7c27a31bb6c59081d00cb563eab71e6670ee9fccb64407e894373ac",
+      "log": "wasm-contracts/position_cache-run.log",
+      "logSha256": "cfd54323dddf13acabac214094c67f09b9f4da9d8f41181f2028a663af503cdb",
+      "passed": true
+    },
+    {
+      "name": "vertex_inputs",
+      "fixtureSha256": "3ed61ed5678a84ebc7d19705a12de432179cd4a6f90df912f13ca967ef1f1519",
+      "wasmSha256": "fba710d003180413a0e7cce11454ea06baae81e840f348e512a913a1891aafee",
+      "log": "wasm-contracts/vertex_inputs-run.log",
+      "logSha256": "e6870f4294cec2e75c9400df61363897a76074f9bce5d2cd009e33cdd2635f0b",
+      "passed": true
+    }
+  ]
+}

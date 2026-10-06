@@ -1,0 +1,37 @@
+{
+  "records": [
+    {
+      "label": "reference",
+      "rootFile": "reference-sg_raster_triangle_msaa2.wat",
+      "rootSha256": "4ec0793a190013a92be9dcbaf717a3bdc59728008743267d403facc7c1b018ba",
+      "startByte": 197524,
+      "storeByte": 198055,
+      "endByte": 307802,
+      "excerptFile": "reference-alpha-store-0.wat",
+      "excerptSha256": "7fcecd8665b894c14589c2b1125dd1513e995b7a635ce484ae5755b02d83d065",
+      "storeStaticOpcodeSites": {
+        "f32x4.mul": 37,
+        "f32x4.add": 16,
+        "f32x4.convert_i32x4_u": 20,
+        "i32x4.shr_u": 15
+      }
+    },
+    {
+      "label": "candidate",
+      "rootFile": "candidate-sg_raster_triangle_msaa2.wat",
+      "rootSha256": "ccc984544724a37adbde491ccd9c2f1f1ab03124865244fc098f8ea0b7446dea",
+      "startByte": 304529,
+      "storeByte": 305053,
+      "endByte": 305534,
+      "excerptFile": "candidate-alpha-store-1.wat",
+      "excerptSha256": "6d42fd43c17140cf21c117caf0cae3cff730d40c41919f3f7fb6092c2d976b5f",
+      "storeStaticOpcodeSites": {
+        "f32x4.mul": 1,
+        "f32x4.add": 0,
+        "f32x4.convert_i32x4_u": 1,
+        "i32x4.shr_u": 1
+      }
+    }
+  ],
+  "scope": "Actual bound MSAA2 raster-root store subexpressions with preceding control flow. Excerpts are byte ranges, not a complete dominator/liveness proof or dynamic operation/cycle counts."
+}

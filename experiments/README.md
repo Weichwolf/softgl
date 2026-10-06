@@ -1,5 +1,16 @@
 # Optimization evidence
 
+The [unused-alpha DOT3 sampler trial](dot3-sampler-alpha/README.md) is rejected.
+Full native/sanitizer/WASM/image/model/edge gates pass and all eighteen planned
+comparisons pass the quiet guard on their first attempt. BMW off is slower in
+all six pairs (+1.505%/+1.411% audit geometric means); 2x is mixed
+(+0.775%/-0.398%) and 4x regresses (+0.397%/+0.959%). T-80 2x/4x audit means
+improve but do not justify the BMW costs. Source, the initial generator failure,
+full receipts, raw comparisons, bound raster WAT and reconstruction recipes are
+published. D4/live/report stay unchanged. The
+[next hypothesis](dot3-sampler-alpha/next-research.md) examines consuming each
+classified texture stage immediately; no such candidate has been built yet.
+
 The [constant packet-channel shuffle trial](packet-channel-shuffle/README.md)
 is rejected. Complete native/sanitizer/WASM/image/model/edge gates pass, but
 BMW gains do not replicate across modes: off -0.412%/+0.259%, 2x
