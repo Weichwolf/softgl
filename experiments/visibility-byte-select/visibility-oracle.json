@@ -1,0 +1,8 @@
+{
+  "cases": 227688,
+  "inputs": 115445691,
+  "outputs": 69442243,
+  "stdout": "Visibility copy: 227688 cases, 115445691 input records, 69442243 exact surviving16-byte payloads; all256 masks, first/end bits, byte/stage boundaries, aligned/unaligned records, source ends, poison tails and float bits passed\n",
+  "fixtureSha256": "79408faefaa00afa85631b3d77b80b78eb658edc8dffb2552e77b43b3410ce7b",
+  "scope": "Sequenced portable fixture: independent per-record oracle; final native preflight. Full native/ASan/WASM/API/frame gates still required before timings."
+}

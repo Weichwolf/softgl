@@ -1,5 +1,23 @@
 # Optimization evidence
 
+The [byte-group visibility selection trial](visibility-byte-select/README.md)
+is rejected. BMW off is slower in both audits (+1.096%/+1.367%) and all six
+pairs. BMW 2x aggregates cost +2.220%/+1.531%, with four faster/two slower
+pairs and two large slower observations; no uniform 2x regression is claimed.
+BMW 4x small benefits (-0.217%/-0.357%) have three faster/three slower pairs
+and do not justify the repeatable off cost. T-80 controls are mixed. Aligned
+eight-record bitmap groups skip hidden groups, copy visible groups and select
+mixed records with ascending ctz, preserving exact order and payload bits.
+Full 745 native + Bench1, 25 sanitizer / 24 WASM contracts and all-mode
+image/model/edge gates pass. All eighteen quiet guards pass on their first
+attempt. Native/WASM initially passed different random fixture inputs because
+C argument order is unspecified; explicit sequencing and repeated full gates
+produce identical counts. Original receipts, the correction, complete source,
+raw comparisons, actual opcode observations and portable verification are
+published. The accepted D4 renderer and live preview remain unchanged.
+Next, measure current D4 caller phase costs before selecting a larger change;
+logical replay counts alone do not rank those costs.
+
 The [current D4 cache-replay census](replay-path-census/README.md) observes two
 quiet guarded audits per scene/mode. Only 7.472% of BMW replay input off, 10.126%
 at 2x and 9.543% at 4x uses complete-bin copies; the rest enters the captured
@@ -11,9 +29,8 @@ against coverage compaction and entry replacement. The disabled diagnostic
 worker object and JS/WASM match accepted D4 exactly. Full fidelity gates and
 all six first quiet guards pass. Source, raw 1200 scene frames, the producer
 routing correction and portable verification are public. These logical counts
-and observer-affected outer times establish no FPS gain or ceiling. The next
-candidate will evaluate stable selection through aligned eight-record bitmap
-groups before adding cache-borrowing lifetimes.
+and observer-affected outer times establish no FPS gain or ceiling. The byte-group trial above evaluates stable selection through aligned
+eight-record bitmap groups without adding cache-borrowing lifetimes.
 
 The [stable bulk prepared-bin trial](bulk-prepared-bins/README.md) is rejected.
 BMW paired frame time is slower in both audits of every mode: +1.197%/+0.731%

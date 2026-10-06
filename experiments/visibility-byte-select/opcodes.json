@@ -1,0 +1,51 @@
+{
+  "records": [
+    {
+      "label": "reference",
+      "wasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+      "symbolMapSha256": "14f486d251d521be75cd216ed2ab3b6eb4e33cc5cb85f14e5cf6fdeea3c3ab7b",
+      "function": "_sg_draw_elements_real",
+      "absoluteFunctionIndex": 407,
+      "definedFunctionLabel": 151,
+      "importFunctionCount": 256,
+      "mappingExport": {
+        "name": "softgl_create",
+        "absoluteFunctionIndex": 434,
+        "definedFunctionLabel": 178
+      },
+      "rootFile": "reference-draw-elements.wat",
+      "rootSha256": "3a2bd690dd923b3ea4e02a14528681ece4e2aabf2e8f1bb6fd570971ffdd8b92",
+      "opcodes": {
+        "i32.ctz": 0,
+        "v128.load": 26,
+        "v128.store": 18,
+        "memory.copy": 39,
+        "i32.load8_u": 31
+      }
+    },
+    {
+      "label": "candidate",
+      "wasmSha256": "725419f71f047e72c6fc5bd673f473a0d99223b090f2de89e70b6efeda691a2c",
+      "symbolMapSha256": "14f486d251d521be75cd216ed2ab3b6eb4e33cc5cb85f14e5cf6fdeea3c3ab7b",
+      "function": "_sg_draw_elements_real",
+      "absoluteFunctionIndex": 407,
+      "definedFunctionLabel": 151,
+      "importFunctionCount": 256,
+      "mappingExport": {
+        "name": "softgl_create",
+        "absoluteFunctionIndex": 434,
+        "definedFunctionLabel": 178
+      },
+      "rootFile": "candidate-draw-elements.wat",
+      "rootSha256": "4ab78d74d1757c4d2a2b61475213a6c2bd3c0cdba266d6ced585575a50af4af9",
+      "opcodes": {
+        "i32.ctz": 1,
+        "v128.load": 26,
+        "v128.store": 18,
+        "memory.copy": 41,
+        "i32.load8_u": 31
+      }
+    }
+  ],
+  "scope": "Static actual WASM draw-root opcode counts, including other existing code in that root; not dynamic operation counts, native/JIT instructions, register pressure, hardware events or a performance ceiling."
+}

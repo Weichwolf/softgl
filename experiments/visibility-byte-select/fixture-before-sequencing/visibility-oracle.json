@@ -1,0 +1,8 @@
+{
+  "cases": 227688,
+  "inputs": 115498940,
+  "outputs": 69469182,
+  "stdout": "Visibility copy: 227688 cases, 115498940 input records, 69469182 exact surviving16-byte payloads; all256 masks, first/end bits, byte/stage boundaries, aligned/unaligned records, source ends, poison tails and float bits passed\n",
+  "fixtureSha256": "560e182c378e6c8a1eb043db67167effa23438bab8274e2ca0c564dee0dd7056",
+  "scope": "Independent per-record bit oracle of the actual internal helper; exhaustive masks, prefixes/tails, long spans and exact16B payloads including float bit patterns. Native preflight only; full native/ASan/WASM/API/frame gates required before timings."
+}

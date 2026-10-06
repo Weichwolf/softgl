@@ -1,0 +1,115 @@
+{
+  "referenceWasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+  "candidateWasmSha256": "725419f71f047e72c6fc5bd673f473a0d99223b090f2de89e70b6efeda691a2c",
+  "roots": [
+    {
+      "name": "_sg_draw_elements_real",
+      "referenceBytes": 17454,
+      "candidateBytes": 17598,
+      "bodyBytesExact": false
+    },
+    {
+      "name": "sg_raster_triangle_tile_prepared",
+      "referenceBytes": 22877,
+      "candidateBytes": 22877,
+      "bodyBytesExact": true
+    },
+    {
+      "name": "sg_raster_triangle_depth_capture",
+      "referenceBytes": 23285,
+      "candidateBytes": 23285,
+      "bodyBytesExact": true
+    },
+    {
+      "name": "sg_raster_triangle_msaa2",
+      "referenceBytes": 22541,
+      "candidateBytes": 22541,
+      "bodyBytesExact": true
+    },
+    {
+      "name": "sg_raster_triangle_msaa2_capture",
+      "referenceBytes": 22880,
+      "candidateBytes": 22880,
+      "bodyBytesExact": true
+    },
+    {
+      "name": "sg_raster_triangle_msaa4",
+      "referenceBytes": 25751,
+      "candidateBytes": 25751,
+      "bodyBytesExact": true
+    },
+    {
+      "name": "sg_raster_triangle_msaa4_capture",
+      "referenceBytes": 25844,
+      "candidateBytes": 25844,
+      "bodyBytesExact": true
+    },
+    {
+      "name": "sg_queue_render_packed",
+      "referenceBytes": 1312,
+      "candidateBytes": 1312,
+      "bodyBytesExact": true
+    },
+    {
+      "name": "sg_drain_packed_bins",
+      "referenceBytes": 2015,
+      "candidateBytes": 2015,
+      "bodyBytesExact": true
+    },
+    {
+      "name": "sg_queue_help",
+      "referenceBytes": 162,
+      "candidateBytes": 162,
+      "bodyBytesExact": true
+    },
+    {
+      "name": "sg_worker_main",
+      "referenceBytes": 747,
+      "candidateBytes": 747,
+      "bodyBytesExact": true
+    },
+    {
+      "name": "sg_queue_transform",
+      "referenceBytes": 283,
+      "candidateBytes": 283,
+      "bodyBytesExact": true
+    },
+    {
+      "name": "sg_write_fragment",
+      "referenceBytes": 2297,
+      "candidateBytes": 2297,
+      "bodyBytesExact": true
+    },
+    {
+      "name": "sg_write_multisample",
+      "referenceBytes": 9040,
+      "candidateBytes": 9040,
+      "bodyBytesExact": true
+    },
+    {
+      "name": "sg_write_multisample2",
+      "referenceBytes": 7409,
+      "candidateBytes": 7409,
+      "bodyBytesExact": true
+    },
+    {
+      "name": "sg_store_off_post_depth",
+      "referenceBytes": 381,
+      "candidateBytes": 381,
+      "bodyBytesExact": true
+    },
+    {
+      "name": "sg_store_blend_msaa2_post_depth",
+      "referenceBytes": 2763,
+      "candidateBytes": 2763,
+      "bodyBytesExact": true
+    },
+    {
+      "name": "sg_store_blend_msaa4_post_depth",
+      "referenceBytes": 3565,
+      "candidateBytes": 3565,
+      "bodyBytesExact": true
+    }
+  ],
+  "scope": "Actual static WASM body bytes/locals; hashes include function indices. Not native/JIT instructions, register pressure, dynamic counts, cache events or a ceiling."
+}

@@ -1,0 +1,15 @@
+{
+  "status": "rejected",
+  "summary": "Rejected. BMW off is slower in both audits (+1.096349%/+1.366927%) and all six pairs. BMW2x aggregate frame time is slower (+2.220060%/+1.530656%), despite four of six faster pairs; two large slower pairs (+8.748678%/+5.853174%) dominate those aggregates. BMW4x small aggregate benefits (-0.216653%/-0.357094%) have three faster/three slower pairs and do not justify the repeatable off regression. T-80 controls are mixed. Full correctness gates pass; all eighteen comparisons pass the unchanged quiet guard on their first attempt. Keep accepted D4 and the live preview unchanged.",
+  "referenceWasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+  "candidateWasmSha256": "725419f71f047e72c6fc5bd673f473a0d99223b090f2de89e70b6efeda691a2c",
+  "fullCorrectnessGatesPassed": true,
+  "all18ComparisonsCompleted": true,
+  "quietGuardAttempts": 18,
+  "quietGuardFirstAttemptsPassed": 18,
+  "sourceAndLiveUnchanged": true,
+  "decisionRule": "Require clear reproducible BMW benefit in both audits; inspect all modes/T-80 and reject small benefits accompanied by clearer BMW/MSAA regressions. Complete all18 predeclared comparisons without selective confirmation or parameter sweeps.",
+  "pairDispersion": "Do not describe2x as uniformly slower or infer statistical certainty/hardware causation. All raw pairs are retained; no selective exclusion/confirmation or parameter sweep.",
+  "limitations": "Logical input/filter counts do not measure cost shares. Static opcode/body observations do not isolate branch/copy dispatch costs, JIT behavior, cache events or a ceiling.",
+  "nextResearchDirection": "Measure current D4 caller costs of cache replay versus transformed-vertex packing and triangle preparation before choosing a larger architecture change. Existing census counts are current D4, but older7cc phase times are not current D4 phase timings. Direct packed-vertex production is a possible future design, not implemented or validated by this trial."
+}
