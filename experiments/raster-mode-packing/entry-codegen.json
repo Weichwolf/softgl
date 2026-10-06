@@ -1,0 +1,379 @@
+{
+  "candidateWasmSha256": "8c5e52bc233a92e0ac772c7e2895a65afcc88362c49ec06bbf10cce7f54d1ae3",
+  "referenceWasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+  "actualModeDispatchVerified": true,
+  "roots": [
+    {
+      "label": "reference",
+      "name": "sg_raster_triangle_tile_prepared",
+      "bodyBytes": 22877,
+      "localDeclarations": {
+        "0x7f": 44,
+        "0x7b": 31,
+        "0x7d": 14,
+        "0x7e": 35
+      },
+      "rawBodySha256": "4fd7da49f80089e354d0b2fdd9df7724e0016599f2fa806d15baed72ab022813",
+      "normalizedDirectCallLabelBodySha256": "c80eefe036a4c43dd68126adb1ad08a2254b8f8afee612fcafd6877f9328af0a",
+      "directCalls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_raster_triangle_depth_capture",
+        "sg_raster_triangle_msaa2",
+        "sg_raster_triangle_msaa2_capture",
+        "sg_raster_triangle_msaa4",
+        "sg_raster_triangle_msaa4_capture",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_off_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_fragment"
+      ]
+    },
+    {
+      "label": "reference",
+      "name": "sg_raster_triangle_depth_capture",
+      "bodyBytes": 23285,
+      "localDeclarations": {
+        "0x7f": 45,
+        "0x7b": 31,
+        "0x7d": 15,
+        "0x7e": 35
+      },
+      "rawBodySha256": "beeca9fe3ada31d70c1003178aa49e8359990649b33ceab2aa806a70676ea3b5",
+      "normalizedDirectCallLabelBodySha256": "6721f7a8906c9fcf7c02877b85e00b9b16fd58217611ffdaee33d4b17e536214",
+      "directCalls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_off_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_fragment"
+      ]
+    },
+    {
+      "label": "reference",
+      "name": "sg_raster_triangle_msaa2",
+      "bodyBytes": 22541,
+      "localDeclarations": {
+        "0x7f": 56,
+        "0x7b": 27,
+        "0x7d": 17,
+        "0x7e": 36
+      },
+      "rawBodySha256": "02fb52855acfa50966daeca7428b873c5c56fe25d6da8a3551fb56501d17af2e",
+      "normalizedDirectCallLabelBodySha256": "58f0bf17e6a0314ce2013b3a8e963491229a7bf71eea7553878291c4f1726cec",
+      "directCalls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_blend_msaa2_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_multisample"
+      ]
+    },
+    {
+      "label": "reference",
+      "name": "sg_raster_triangle_msaa2_capture",
+      "bodyBytes": 22880,
+      "localDeclarations": {
+        "0x7f": 57,
+        "0x7b": 27,
+        "0x7d": 17,
+        "0x7e": 36
+      },
+      "rawBodySha256": "f8e43e57e304481f56ab1c509728e7be563166cf3ac4dfbe23a85305902ae244",
+      "normalizedDirectCallLabelBodySha256": "3e3ec65413bfb66b2b6e58f10f46be0a20af06e349c7eef520f102a1ad2f1373",
+      "directCalls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_blend_msaa2_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_multisample"
+      ]
+    },
+    {
+      "label": "reference",
+      "name": "sg_raster_triangle_msaa4",
+      "bodyBytes": 25751,
+      "localDeclarations": {
+        "0x7f": 57,
+        "0x7b": 35,
+        "0x7e": 30,
+        "0x7d": 16
+      },
+      "rawBodySha256": "4b574de1a286ddb25eea96609f4d41e4bea919aeb1622ad9ab51e2b34513dcf4",
+      "normalizedDirectCallLabelBodySha256": "a19a7369615f3d2498147035205d944a2369aab851d5f4a51895d1b64ce00d31",
+      "directCalls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_blend_msaa4_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_multisample"
+      ]
+    },
+    {
+      "label": "reference",
+      "name": "sg_raster_triangle_msaa4_capture",
+      "bodyBytes": 25844,
+      "localDeclarations": {
+        "0x7f": 58,
+        "0x7b": 35,
+        "0x7e": 30,
+        "0x7d": 16
+      },
+      "rawBodySha256": "283e2fe820e309c4286fff7554ea8ad4e8bc38e42efca639694ca375bfff07d8",
+      "normalizedDirectCallLabelBodySha256": "270d336da4171fb7521983ce1f93f91c8f01a45c39253ce90f173dd24176b30b",
+      "directCalls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_blend_msaa4_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_multisample"
+      ]
+    },
+    {
+      "label": "candidate",
+      "name": "sg_raster_triangle_tile_prepared",
+      "bodyBytes": 77,
+      "localDeclarations": {},
+      "rawBodySha256": "f6ca1ecc025affd985a95af317c712c58cd654df38bba566302ea928a75f35b3",
+      "normalizedDirectCallLabelBodySha256": "8835f671b90d65abf1d21bf9a55fddb6180c11f829ac46daa0e291e2111d0fdb",
+      "directCalls": [
+        "sg_raster_triangle_off_prepared",
+        "sg_raster_triangle_samples2_prepared",
+        "sg_raster_triangle_samples4_prepared"
+      ]
+    },
+    {
+      "label": "candidate",
+      "name": "sg_raster_triangle_depth_capture",
+      "bodyBytes": 42422,
+      "localDeclarations": {
+        "0x7f": 51,
+        "0x7b": 31,
+        "0x7d": 15,
+        "0x7e": 35
+      },
+      "rawBodySha256": "24d6dea5db6dbcb6f7f80b49f86c495ca4a3bffd54a5c3b736b94d57c5aa7424",
+      "normalizedDirectCallLabelBodySha256": "7e7313e2f96a068072f422ae6490731e7ff00b2b341d08af5a3cb67e39a14232",
+      "directCalls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_off_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_fragment"
+      ]
+    },
+    {
+      "label": "candidate",
+      "name": "sg_raster_triangle_msaa2",
+      "bodyBytes": 22541,
+      "localDeclarations": {
+        "0x7f": 56,
+        "0x7b": 27,
+        "0x7d": 17,
+        "0x7e": 36
+      },
+      "rawBodySha256": "ea704f2f61e743f679041d357223ede66f0d23df6ee4a23d6454bd3e9a235436",
+      "normalizedDirectCallLabelBodySha256": "58f0bf17e6a0314ce2013b3a8e963491229a7bf71eea7553878291c4f1726cec",
+      "directCalls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_blend_msaa2_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_multisample"
+      ]
+    },
+    {
+      "label": "candidate",
+      "name": "sg_raster_triangle_msaa2_capture",
+      "bodyBytes": 22880,
+      "localDeclarations": {
+        "0x7f": 57,
+        "0x7b": 27,
+        "0x7d": 17,
+        "0x7e": 36
+      },
+      "rawBodySha256": "f8a5892ae3abf7d792c8603c49971dc3d560e43929ea49f3d2d434ad7ec03a7a",
+      "normalizedDirectCallLabelBodySha256": "3e3ec65413bfb66b2b6e58f10f46be0a20af06e349c7eef520f102a1ad2f1373",
+      "directCalls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_blend_msaa2_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_multisample"
+      ]
+    },
+    {
+      "label": "candidate",
+      "name": "sg_raster_triangle_msaa4",
+      "bodyBytes": 25751,
+      "localDeclarations": {
+        "0x7f": 57,
+        "0x7b": 35,
+        "0x7e": 30,
+        "0x7d": 16
+      },
+      "rawBodySha256": "637c1e5ceff27f3dbdccfc8e8713dae0fbaf112f0da898ca42925e5c4ad0c521",
+      "normalizedDirectCallLabelBodySha256": "a19a7369615f3d2498147035205d944a2369aab851d5f4a51895d1b64ce00d31",
+      "directCalls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_blend_msaa4_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_multisample"
+      ]
+    },
+    {
+      "label": "candidate",
+      "name": "sg_raster_triangle_msaa4_capture",
+      "bodyBytes": 25844,
+      "localDeclarations": {
+        "0x7f": 58,
+        "0x7b": 35,
+        "0x7e": 30,
+        "0x7d": 16
+      },
+      "rawBodySha256": "78b10225c6118a4600e7cfa10021fb590390cd0dbf9a1b8eff786fd146ac7e2c",
+      "normalizedDirectCallLabelBodySha256": "270d336da4171fb7521983ce1f93f91c8f01a45c39253ce90f173dd24176b30b",
+      "directCalls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_blend_msaa4_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_multisample"
+      ]
+    },
+    {
+      "label": "candidate",
+      "name": "sg_raster_triangle_off_prepared",
+      "bodyBytes": 41856,
+      "localDeclarations": {
+        "0x7f": 50,
+        "0x7b": 31,
+        "0x7d": 14,
+        "0x7e": 35
+      },
+      "rawBodySha256": "c0786843bbca70d4c3ffd9fa89ba4c1bf7ec10cf8ec6a83b4aa640c4cdaa859d",
+      "normalizedDirectCallLabelBodySha256": "bb09f4114b397e513fb75bbc107f8d3df553d60bd993732cabf2fc48e78aa23a",
+      "directCalls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_raster_triangle_depth_capture",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_off_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_fragment"
+      ]
+    },
+    {
+      "label": "candidate",
+      "name": "sg_raster_triangle_samples2_prepared",
+      "bodyBytes": 822,
+      "localDeclarations": {
+        "0x7d": 7,
+        "0x7b": 9,
+        "0x7f": 5,
+        "0x7e": 1
+      },
+      "rawBodySha256": "4957da34962b3e8363e5a26469edce111164eeaf20e051b8ab0cc5eba7fec229",
+      "normalizedDirectCallLabelBodySha256": "52e81ad4ffb9c048c70072bb068e7f1306a7067fb085856b5bff4539b3679147",
+      "directCalls": [
+        "sg_raster_triangle_msaa2",
+        "sg_raster_triangle_msaa2_capture"
+      ]
+    },
+    {
+      "label": "candidate",
+      "name": "sg_raster_triangle_samples4_prepared",
+      "bodyBytes": 822,
+      "localDeclarations": {
+        "0x7d": 7,
+        "0x7b": 9,
+        "0x7f": 5,
+        "0x7e": 1
+      },
+      "rawBodySha256": "fee0bbb72d700baad287f9c918995c7facc19baac5f2ffc2f63af10593b00157",
+      "normalizedDirectCallLabelBodySha256": "bafda61304ae85305da7a23e63d07cd0c97dc94ecba00b061f72402c323083f6",
+      "directCalls": [
+        "sg_raster_triangle_msaa4",
+        "sg_raster_triangle_msaa4_capture"
+      ]
+    }
+  ],
+  "unchangedInnerBodies": [
+    {
+      "name": "sg_raster_triangle_msaa2",
+      "normalizedDirectCallLabelBodyEqual": true
+    },
+    {
+      "name": "sg_raster_triangle_msaa2_capture",
+      "normalizedDirectCallLabelBodyEqual": true
+    },
+    {
+      "name": "sg_raster_triangle_msaa4",
+      "normalizedDirectCallLabelBodyEqual": true
+    },
+    {
+      "name": "sg_raster_triangle_msaa4_capture",
+      "normalizedDirectCallLabelBodyEqual": true
+    }
+  ],
+  "scope": "Static WASM function bodies, declared locals, opcode sites and direct calls. Normalization replaces function declaration/direct call/ref.func numeric labels with symbol-map names; all other WAT text must match. This is not V8 machine-code, spill, cache, CPU cost or a performance ceiling evidence."
+}

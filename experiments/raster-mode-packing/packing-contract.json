@@ -1,0 +1,15 @@
+{
+  "engines": [
+    {
+      "file": "native-off_pixel_packing-run.log",
+      "sha256": "f9d2425931ce8cebcfb864958c891b07da658a7cba7c87d403ea70a49d51e55f",
+      "stdout": "12288 exact off raster pairs: color/depth/stencil/query/capture; all three tails; 4608 reduced cases; 158713/187691 packets, 621146 live pixels"
+    },
+    {
+      "file": "wasm-contracts/off_pixel_packing-run.log",
+      "sha256": "b91edbb522ffa060c7b215aac33c05bae82ea1ef1553819c10d2d31113fb5f05",
+      "stdout": "12288 exact off raster pairs: color/depth/stencil/query/capture; all three tails; 4752 reduced cases; 158965/189023 packets, 621146 live pixels"
+    }
+  ],
+  "scope": "Actual candidate versus test-only uncompacted route per engine. Cross-engine packet partitions are not asserted equal."
+}

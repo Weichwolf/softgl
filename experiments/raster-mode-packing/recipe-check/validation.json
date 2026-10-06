@@ -1,0 +1,39 @@
+{
+  "researchBaselineCommit": "dcf7de14aa233621e6739db1d8175fc08bc51a5a",
+  "referenceWasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+  "changedFiles": [
+    "libsoftgl/src/rasterizer.c",
+    "libsoftgl/src/raster_triangle_impl.h",
+    "tests/off_pixel_packing.c",
+    "tests/CMakeLists.txt"
+  ],
+  "finalSourceFiles": {
+    "libsoftgl/src/rasterizer.c": "0df928d4608ba37ea8a2ee2052b4ea046a883b83a5966bedca20b50e9d651391",
+    "libsoftgl/src/raster_triangle_impl.h": "10eeea90d917bc6d2ca8be7f78b3d00f44ceee601c519ef1de59e64b26ebddd7",
+    "tests/off_pixel_packing.c": "c75b05d4dc196750319c33e7835aa1aee389d974a226484941a16cbef1252bb5",
+    "tests/CMakeLists.txt": "6eb9f5992e19d96200f5dcc819c9ab822c58d20e6c7370a2a796d9ed7392c982"
+  },
+  "patchSha256": "b0eaf21bf4682122b25224791a35b9e8d1853c06afd6647e7e0d920b18c494d7",
+  "hypothesis": "Separate off/2x/4x outer triangle entries, choose before setup, and retain the existing specialized MSAA inner loops/capture selection. Reduce shared per-function state and mixed-mode bodies while preserving all arithmetic, stores, coverage, geometry and job ownership. Extra dispatch/call/setup duplication/code size may outweigh the benefit. Combine the separately recorded mode split with exact within-triangle off pixel compaction. Keep packing state inside the off entries; 2x/4x setup and inner loops retain their split-candidate sources. Bookkeeping and code layout costs may outweigh the benefit.",
+  "predeclaredComparisons": {
+    "samples": [
+      0,
+      2,
+      4
+    ],
+    "auditsEachMode": 2,
+    "pairsEachAudit": 3,
+    "roundsEachPair": 2,
+    "warmup": 80,
+    "frames": 100,
+    "models": [
+      "bmw",
+      "tank"
+    ],
+    "workers": 3,
+    "resolvePerFrame": true
+  },
+  "decisionRule": "Complete all eighteen fixed comparisons after full gates. Require reproducible BMW benefit in both audits; inspect all modes and T-80. No parameter sweep or selective confirmation.",
+  "status": "fresh-candidate-source-reconstructed",
+  "productionUntouched": true
+}

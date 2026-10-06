@@ -1,0 +1,152 @@
+{
+  "timestamp": "2026-10-06T09:06:37.066Z",
+  "browser": "154.0.8037.92",
+  "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+  "hostLogicalCpus": 4,
+  "gitCommit": "dcf7de14aa233621e6739db1d8175fc08bc51a5a",
+  "driverSha256": "2594900595a015cd1f9db2ff3776f585549a2e21bb3fa3a30965c1860b5e5cd9",
+  "wasmSha256": "8c5e52bc233a92e0ac772c7e2895a65afcc88362c49ec06bbf10cce7f54d1ae3",
+  "options": {
+    "wasm-build": "/home/cosmo/Git/softgl/build/controls/raster-mode-packing-candidate",
+    "native-build": "/home/cosmo/Git/softgl/build/diagnostics/raster-mode-packing/native-full",
+    "output": "/home/cosmo/Git/softgl/build/diagnostics/raster-mode-packing/timings/raster-mode-packing-audit-2-pair-3.attempt-1.pending.json",
+    "rounds": 2,
+    "warmup": 80,
+    "frames": 100,
+    "samples": 4,
+    "browser": "/usr/bin/chromium",
+    "reference-build": "/home/cosmo/Git/softgl/build/controls/simd-index-range-candidate",
+    "candidate-workers": "",
+    "reference-workers": "",
+    "scenes": "bmw,tank",
+    "profile-scene": "",
+    "bench-only": true,
+    "crossover": true
+  },
+  "metadata": {
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+    "hardwareConcurrency": 4,
+    "crossOriginIsolated": true,
+    "width": 640,
+    "height": 360,
+    "testCount": 234
+  },
+  "modelAssets": {
+    "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+    "referencePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+  },
+  "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+  "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "referenceTestCount": 234,
+  "referenceWasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+  "benchmarks": {
+    "workers": 3,
+    "workerCounts": {
+      "reference": 3,
+      "candidate": 3
+    },
+    "samples": 4,
+    "resolvePerFrame": true,
+    "protocol": "page crossover AB/BA, two-round geometric pairs",
+    "scenes": [
+      {
+        "name": "bmw",
+        "samples": [
+          34.38115000009537,
+          34.639099999666215
+        ],
+        "medianMs": 34.639099999666215,
+        "minMs": 34.38115000009537,
+        "maxMs": 34.639099999666215,
+        "heapBytes": [
+          115998720,
+          115998720
+        ],
+        "geometrySamples": [
+          {
+            "workers": 3,
+            "samples": 4
+          },
+          {
+            "workers": 3,
+            "samples": 4
+          }
+        ],
+        "reference": {
+          "samples": [
+            34.30824999988079,
+            34.57179999947548
+          ],
+          "medianMs": 34.57179999947548,
+          "minMs": 34.30824999988079,
+          "maxMs": 34.57179999947548,
+          "heapBytes": [
+            115998720,
+            115998720
+          ],
+          "geometrySamples": [
+            {
+              "workers": 3,
+              "samples": 4
+            },
+            {
+              "workers": 3,
+              "samples": 4
+            }
+          ]
+        },
+        "medianRatio": 1.0020357593713518,
+        "changePercent": 0.20357593713518085
+      },
+      {
+        "name": "tank",
+        "samples": [
+          14.932750000357627,
+          15.43425000011921
+        ],
+        "medianMs": 15.43425000011921,
+        "minMs": 14.932750000357627,
+        "maxMs": 15.43425000011921,
+        "heapBytes": [
+          115998720,
+          96665600
+        ],
+        "geometrySamples": [
+          {
+            "workers": 3,
+            "samples": 4
+          },
+          {
+            "workers": 3,
+            "samples": 4
+          }
+        ],
+        "reference": {
+          "samples": [
+            14.685550000071526,
+            15.352599999904633
+          ],
+          "medianMs": 15.352599999904633,
+          "minMs": 14.685550000071526,
+          "maxMs": 15.352599999904633,
+          "heapBytes": [
+            115998720,
+            96665600
+          ],
+          "geometrySamples": [
+            {
+              "workers": 3,
+              "samples": 4
+            },
+            {
+              "workers": 3,
+              "samples": 4
+            }
+          ]
+        },
+        "medianRatio": 1.0110592035806114,
+        "changePercent": 1.105920358061141
+      }
+    ]
+  }
+}

@@ -1,5 +1,17 @@
 # Optimization evidence
 
+The [combined static raster modes/off pixel packing trial](raster-mode-packing/README.md)
+improves BMW off in both audits (-2.550%/-1.816%, all six pairs), but regresses
+BMW 4x in both (+0.662%/+0.333%, all six pairs). BMW 2x is mixed; T-80 off
+also regresses in all six pairs (+2.116%/+0.956%). The joint module is rejected.
+All eighteen quiet comparisons pass on their first attempt, and all full
+regression gates pass, including 12288 exact original-route packing pairs per
+engine. Actual normalized MSAA outer/inner bodies match the previous split;
+this does not prove JIT/spill/cache costs or frame performance equivalence.
+Source, selected WAT, recipes and raw data are published. D4/live/report remain
+active. [Next](raster-mode-packing/next-research.md): inspect actual native JIT
+instruction/access costs before another specialization.
+
 The [outer raster-mode entry trial](raster-mode-entry/README.md) is rejected
 as a standalone change. BMW audit time changes do not repeat: off
 +0.174%/-0.182%,2x +0.134%/-0.192%,4x +0.098%/-0.034%. T-80 off regresses
