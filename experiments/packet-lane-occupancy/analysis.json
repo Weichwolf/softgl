@@ -1,0 +1,1690 @@
+{
+  "diagnosticWasmSha256": "44d2e8fb7d29aa50a81f6aa6ff7d027a3da7d1969c8fc178ae305c212f0d235b",
+  "referenceWasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+  "notAcceptanceTimings": true,
+  "checkedFrames": 1200,
+  "modelAssets": {
+    "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+    "referencePackSha256": null
+  },
+  "summary": [
+    {
+      "scene": "bmw",
+      "samples": 0,
+      "audit": 1,
+      "frames": 100,
+      "totalPackets": 8992560,
+      "totalLivePixels": 17507480,
+      "packetsPerFrame": 89925.6,
+      "livePixelsPerFrame": 175074.8,
+      "usefulLaneFraction": 0.4867212451181866,
+      "populations": [
+        4012289,
+        2878423,
+        669047,
+        1432801
+      ],
+      "packetPopulationFractions": [
+        0.4461787299723327,
+        0.32008938500271333,
+        0.07440005960482889,
+        0.15933182542012508
+      ],
+      "byKind": [
+        {
+          "kind": "untextured",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "modulate",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "replace",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-1",
+          "populations": [
+            2417395,
+            1689220,
+            383042,
+            815584
+          ],
+          "packets": 5305241,
+          "livePixels": 10207297,
+          "usefulLaneFraction": 0.4810006274927001
+        },
+        {
+          "kind": "dot3-2",
+          "populations": [
+            44165,
+            19152,
+            4666,
+            14420
+          ],
+          "packets": 82403,
+          "livePixels": 154147,
+          "usefulLaneFraction": 0.46766197832603185
+        },
+        {
+          "kind": "dot3-3",
+          "populations": [
+            1550729,
+            1170051,
+            281339,
+            602797
+          ],
+          "packets": 3604916,
+          "livePixels": 7146036,
+          "usefulLaneFraction": 0.4955757637625953
+        },
+        {
+          "kind": "other",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        }
+      ],
+      "packetDistribution": {
+        "mean": 89925.6,
+        "median": 96417.5,
+        "min": 59939,
+        "max": 100331
+      },
+      "activeProducerFrameHistogram": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 100
+      },
+      "lifetimeSlots": {
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "frameUsefulLaneRange": {
+        "mean": 0.4864425312694876,
+        "median": 0.48479058590760893,
+        "min": 0.4725776436697016,
+        "max": 0.5062582345191041
+      }
+    },
+    {
+      "scene": "tank",
+      "samples": 0,
+      "audit": 1,
+      "frames": 100,
+      "totalPackets": 0,
+      "totalLivePixels": 0,
+      "packetsPerFrame": 0.0,
+      "livePixelsPerFrame": 0.0,
+      "usefulLaneFraction": null,
+      "populations": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "packetPopulationFractions": null,
+      "byKind": [
+        {
+          "kind": "untextured",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "modulate",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "replace",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-1",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-2",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-3",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "other",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        }
+      ],
+      "packetDistribution": {
+        "mean": 0,
+        "median": 0.0,
+        "min": 0,
+        "max": 0
+      },
+      "activeProducerFrameHistogram": {
+        "0": 100,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      },
+      "lifetimeSlots": {
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "frameUsefulLaneRange": null
+    },
+    {
+      "scene": "bmw",
+      "samples": 2,
+      "audit": 1,
+      "frames": 100,
+      "totalPackets": 4867841,
+      "totalLivePixels": 19471364,
+      "packetsPerFrame": 48678.41,
+      "livePixelsPerFrame": 194713.64,
+      "usefulLaneFraction": 1.0,
+      "populations": [
+        0,
+        0,
+        0,
+        4867841
+      ],
+      "packetPopulationFractions": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "byKind": [
+        {
+          "kind": "untextured",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "modulate",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "replace",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-1",
+          "populations": [
+            0,
+            0,
+            0,
+            2828138
+          ],
+          "packets": 2828138,
+          "livePixels": 11312552,
+          "usefulLaneFraction": 1.0
+        },
+        {
+          "kind": "dot3-2",
+          "populations": [
+            0,
+            0,
+            0,
+            36288
+          ],
+          "packets": 36288,
+          "livePixels": 145152,
+          "usefulLaneFraction": 1.0
+        },
+        {
+          "kind": "dot3-3",
+          "populations": [
+            0,
+            0,
+            0,
+            2003415
+          ],
+          "packets": 2003415,
+          "livePixels": 8013660,
+          "usefulLaneFraction": 1.0
+        },
+        {
+          "kind": "other",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        }
+      ],
+      "packetDistribution": {
+        "mean": 48678.41,
+        "median": 51448.0,
+        "min": 32504,
+        "max": 56542
+      },
+      "activeProducerFrameHistogram": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 100
+      },
+      "lifetimeSlots": {
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "frameUsefulLaneRange": {
+        "mean": 1.0,
+        "median": 1.0,
+        "min": 1.0,
+        "max": 1.0
+      }
+    },
+    {
+      "scene": "tank",
+      "samples": 2,
+      "audit": 1,
+      "frames": 100,
+      "totalPackets": 2528903,
+      "totalLivePixels": 10115612,
+      "packetsPerFrame": 25289.03,
+      "livePixelsPerFrame": 101156.12,
+      "usefulLaneFraction": 1.0,
+      "populations": [
+        0,
+        0,
+        0,
+        2528903
+      ],
+      "packetPopulationFractions": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "byKind": [
+        {
+          "kind": "untextured",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "modulate",
+          "populations": [
+            0,
+            0,
+            0,
+            2528903
+          ],
+          "packets": 2528903,
+          "livePixels": 10115612,
+          "usefulLaneFraction": 1.0
+        },
+        {
+          "kind": "replace",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-1",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-2",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-3",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "other",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        }
+      ],
+      "packetDistribution": {
+        "mean": 25289.03,
+        "median": 26105.5,
+        "min": 16834,
+        "max": 30505
+      },
+      "activeProducerFrameHistogram": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 100
+      },
+      "lifetimeSlots": {
+        "mean": 7,
+        "median": 7.0,
+        "min": 7,
+        "max": 7
+      },
+      "frameUsefulLaneRange": {
+        "mean": 1.0,
+        "median": 1.0,
+        "min": 1.0,
+        "max": 1.0
+      }
+    },
+    {
+      "scene": "bmw",
+      "samples": 4,
+      "audit": 1,
+      "frames": 100,
+      "totalPackets": 6171016,
+      "totalLivePixels": 24684064,
+      "packetsPerFrame": 61710.16,
+      "livePixelsPerFrame": 246840.64,
+      "usefulLaneFraction": 1.0,
+      "populations": [
+        0,
+        0,
+        0,
+        6171016
+      ],
+      "packetPopulationFractions": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "byKind": [
+        {
+          "kind": "untextured",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "modulate",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "replace",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-1",
+          "populations": [
+            0,
+            0,
+            0,
+            3610439
+          ],
+          "packets": 3610439,
+          "livePixels": 14441756,
+          "usefulLaneFraction": 1.0
+        },
+        {
+          "kind": "dot3-2",
+          "populations": [
+            0,
+            0,
+            0,
+            45756
+          ],
+          "packets": 45756,
+          "livePixels": 183024,
+          "usefulLaneFraction": 1.0
+        },
+        {
+          "kind": "dot3-3",
+          "populations": [
+            0,
+            0,
+            0,
+            2514821
+          ],
+          "packets": 2514821,
+          "livePixels": 10059284,
+          "usefulLaneFraction": 1.0
+        },
+        {
+          "kind": "other",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        }
+      ],
+      "packetDistribution": {
+        "mean": 61710.16,
+        "median": 64694.0,
+        "min": 41452,
+        "max": 71156
+      },
+      "activeProducerFrameHistogram": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 100
+      },
+      "lifetimeSlots": {
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "frameUsefulLaneRange": {
+        "mean": 1.0,
+        "median": 1.0,
+        "min": 1.0,
+        "max": 1.0
+      }
+    },
+    {
+      "scene": "tank",
+      "samples": 4,
+      "audit": 1,
+      "frames": 100,
+      "totalPackets": 3001483,
+      "totalLivePixels": 12005932,
+      "packetsPerFrame": 30014.83,
+      "livePixelsPerFrame": 120059.32,
+      "usefulLaneFraction": 1.0,
+      "populations": [
+        0,
+        0,
+        0,
+        3001483
+      ],
+      "packetPopulationFractions": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "byKind": [
+        {
+          "kind": "untextured",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "modulate",
+          "populations": [
+            0,
+            0,
+            0,
+            3001483
+          ],
+          "packets": 3001483,
+          "livePixels": 12005932,
+          "usefulLaneFraction": 1.0
+        },
+        {
+          "kind": "replace",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-1",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-2",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-3",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "other",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        }
+      ],
+      "packetDistribution": {
+        "mean": 30014.83,
+        "median": 30723.0,
+        "min": 20110,
+        "max": 36222
+      },
+      "activeProducerFrameHistogram": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 100
+      },
+      "lifetimeSlots": {
+        "mean": 7,
+        "median": 7.0,
+        "min": 7,
+        "max": 7
+      },
+      "frameUsefulLaneRange": {
+        "mean": 1.0,
+        "median": 1.0,
+        "min": 1.0,
+        "max": 1.0
+      }
+    },
+    {
+      "scene": "tank",
+      "samples": 4,
+      "audit": 2,
+      "frames": 100,
+      "totalPackets": 3001483,
+      "totalLivePixels": 12005932,
+      "packetsPerFrame": 30014.83,
+      "livePixelsPerFrame": 120059.32,
+      "usefulLaneFraction": 1.0,
+      "populations": [
+        0,
+        0,
+        0,
+        3001483
+      ],
+      "packetPopulationFractions": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "byKind": [
+        {
+          "kind": "untextured",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "modulate",
+          "populations": [
+            0,
+            0,
+            0,
+            3001483
+          ],
+          "packets": 3001483,
+          "livePixels": 12005932,
+          "usefulLaneFraction": 1.0
+        },
+        {
+          "kind": "replace",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-1",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-2",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-3",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "other",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        }
+      ],
+      "packetDistribution": {
+        "mean": 30014.83,
+        "median": 30723.0,
+        "min": 20110,
+        "max": 36222
+      },
+      "activeProducerFrameHistogram": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 100
+      },
+      "lifetimeSlots": {
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "frameUsefulLaneRange": {
+        "mean": 1.0,
+        "median": 1.0,
+        "min": 1.0,
+        "max": 1.0
+      }
+    },
+    {
+      "scene": "bmw",
+      "samples": 4,
+      "audit": 2,
+      "frames": 100,
+      "totalPackets": 6171016,
+      "totalLivePixels": 24684064,
+      "packetsPerFrame": 61710.16,
+      "livePixelsPerFrame": 246840.64,
+      "usefulLaneFraction": 1.0,
+      "populations": [
+        0,
+        0,
+        0,
+        6171016
+      ],
+      "packetPopulationFractions": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "byKind": [
+        {
+          "kind": "untextured",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "modulate",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "replace",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-1",
+          "populations": [
+            0,
+            0,
+            0,
+            3610439
+          ],
+          "packets": 3610439,
+          "livePixels": 14441756,
+          "usefulLaneFraction": 1.0
+        },
+        {
+          "kind": "dot3-2",
+          "populations": [
+            0,
+            0,
+            0,
+            45756
+          ],
+          "packets": 45756,
+          "livePixels": 183024,
+          "usefulLaneFraction": 1.0
+        },
+        {
+          "kind": "dot3-3",
+          "populations": [
+            0,
+            0,
+            0,
+            2514821
+          ],
+          "packets": 2514821,
+          "livePixels": 10059284,
+          "usefulLaneFraction": 1.0
+        },
+        {
+          "kind": "other",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        }
+      ],
+      "packetDistribution": {
+        "mean": 61710.16,
+        "median": 64694.0,
+        "min": 41452,
+        "max": 71156
+      },
+      "activeProducerFrameHistogram": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 100
+      },
+      "lifetimeSlots": {
+        "mean": 7,
+        "median": 7.0,
+        "min": 7,
+        "max": 7
+      },
+      "frameUsefulLaneRange": {
+        "mean": 1.0,
+        "median": 1.0,
+        "min": 1.0,
+        "max": 1.0
+      }
+    },
+    {
+      "scene": "tank",
+      "samples": 2,
+      "audit": 2,
+      "frames": 100,
+      "totalPackets": 2528903,
+      "totalLivePixels": 10115612,
+      "packetsPerFrame": 25289.03,
+      "livePixelsPerFrame": 101156.12,
+      "usefulLaneFraction": 1.0,
+      "populations": [
+        0,
+        0,
+        0,
+        2528903
+      ],
+      "packetPopulationFractions": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "byKind": [
+        {
+          "kind": "untextured",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "modulate",
+          "populations": [
+            0,
+            0,
+            0,
+            2528903
+          ],
+          "packets": 2528903,
+          "livePixels": 10115612,
+          "usefulLaneFraction": 1.0
+        },
+        {
+          "kind": "replace",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-1",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-2",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-3",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "other",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        }
+      ],
+      "packetDistribution": {
+        "mean": 25289.03,
+        "median": 26105.5,
+        "min": 16834,
+        "max": 30505
+      },
+      "activeProducerFrameHistogram": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 100
+      },
+      "lifetimeSlots": {
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "frameUsefulLaneRange": {
+        "mean": 1.0,
+        "median": 1.0,
+        "min": 1.0,
+        "max": 1.0
+      }
+    },
+    {
+      "scene": "bmw",
+      "samples": 2,
+      "audit": 2,
+      "frames": 100,
+      "totalPackets": 4867841,
+      "totalLivePixels": 19471364,
+      "packetsPerFrame": 48678.41,
+      "livePixelsPerFrame": 194713.64,
+      "usefulLaneFraction": 1.0,
+      "populations": [
+        0,
+        0,
+        0,
+        4867841
+      ],
+      "packetPopulationFractions": [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "byKind": [
+        {
+          "kind": "untextured",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "modulate",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "replace",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-1",
+          "populations": [
+            0,
+            0,
+            0,
+            2828138
+          ],
+          "packets": 2828138,
+          "livePixels": 11312552,
+          "usefulLaneFraction": 1.0
+        },
+        {
+          "kind": "dot3-2",
+          "populations": [
+            0,
+            0,
+            0,
+            36288
+          ],
+          "packets": 36288,
+          "livePixels": 145152,
+          "usefulLaneFraction": 1.0
+        },
+        {
+          "kind": "dot3-3",
+          "populations": [
+            0,
+            0,
+            0,
+            2003415
+          ],
+          "packets": 2003415,
+          "livePixels": 8013660,
+          "usefulLaneFraction": 1.0
+        },
+        {
+          "kind": "other",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        }
+      ],
+      "packetDistribution": {
+        "mean": 48678.41,
+        "median": 51448.0,
+        "min": 32504,
+        "max": 56542
+      },
+      "activeProducerFrameHistogram": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 100
+      },
+      "lifetimeSlots": {
+        "mean": 7,
+        "median": 7.0,
+        "min": 7,
+        "max": 7
+      },
+      "frameUsefulLaneRange": {
+        "mean": 1.0,
+        "median": 1.0,
+        "min": 1.0,
+        "max": 1.0
+      }
+    },
+    {
+      "scene": "tank",
+      "samples": 0,
+      "audit": 2,
+      "frames": 100,
+      "totalPackets": 0,
+      "totalLivePixels": 0,
+      "packetsPerFrame": 0.0,
+      "livePixelsPerFrame": 0.0,
+      "usefulLaneFraction": null,
+      "populations": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "packetPopulationFractions": null,
+      "byKind": [
+        {
+          "kind": "untextured",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "modulate",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "replace",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-1",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-2",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-3",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "other",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        }
+      ],
+      "packetDistribution": {
+        "mean": 0,
+        "median": 0.0,
+        "min": 0,
+        "max": 0
+      },
+      "activeProducerFrameHistogram": {
+        "0": 100,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      },
+      "lifetimeSlots": {
+        "mean": 0,
+        "median": 0.0,
+        "min": 0,
+        "max": 0
+      },
+      "frameUsefulLaneRange": null
+    },
+    {
+      "scene": "bmw",
+      "samples": 0,
+      "audit": 2,
+      "frames": 100,
+      "totalPackets": 8992560,
+      "totalLivePixels": 17507480,
+      "packetsPerFrame": 89925.6,
+      "livePixelsPerFrame": 175074.8,
+      "usefulLaneFraction": 0.4867212451181866,
+      "populations": [
+        4012289,
+        2878423,
+        669047,
+        1432801
+      ],
+      "packetPopulationFractions": [
+        0.4461787299723327,
+        0.32008938500271333,
+        0.07440005960482889,
+        0.15933182542012508
+      ],
+      "byKind": [
+        {
+          "kind": "untextured",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "modulate",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "replace",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        },
+        {
+          "kind": "dot3-1",
+          "populations": [
+            2417395,
+            1689220,
+            383042,
+            815584
+          ],
+          "packets": 5305241,
+          "livePixels": 10207297,
+          "usefulLaneFraction": 0.4810006274927001
+        },
+        {
+          "kind": "dot3-2",
+          "populations": [
+            44165,
+            19152,
+            4666,
+            14420
+          ],
+          "packets": 82403,
+          "livePixels": 154147,
+          "usefulLaneFraction": 0.46766197832603185
+        },
+        {
+          "kind": "dot3-3",
+          "populations": [
+            1550729,
+            1170051,
+            281339,
+            602797
+          ],
+          "packets": 3604916,
+          "livePixels": 7146036,
+          "usefulLaneFraction": 0.4955757637625953
+        },
+        {
+          "kind": "other",
+          "populations": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "packets": 0,
+          "livePixels": 0,
+          "usefulLaneFraction": null
+        }
+      ],
+      "packetDistribution": {
+        "mean": 89925.6,
+        "median": 96417.5,
+        "min": 59939,
+        "max": 100331
+      },
+      "activeProducerFrameHistogram": {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 100
+      },
+      "lifetimeSlots": {
+        "mean": 4,
+        "median": 4.0,
+        "min": 4,
+        "max": 4
+      },
+      "frameUsefulLaneRange": {
+        "mean": 0.4864425312694876,
+        "median": 0.48479058590760893,
+        "min": 0.4725776436697016,
+        "max": 0.5062582345191041
+      }
+    }
+  ],
+  "repeatability": [
+    {
+      "scene": "bmw",
+      "samples": 0,
+      "equalAggregateHistogramFrames": 100,
+      "equalFrameHashes": 100,
+      "threadPartitionsRequiredEqual": false,
+      "note": "TLS slot ownership/allocation order may change; aggregate populations and frame hashes are identical."
+    },
+    {
+      "scene": "bmw",
+      "samples": 2,
+      "equalAggregateHistogramFrames": 100,
+      "equalFrameHashes": 100,
+      "threadPartitionsRequiredEqual": false,
+      "note": "TLS slot ownership/allocation order may change; aggregate populations and frame hashes are identical."
+    },
+    {
+      "scene": "bmw",
+      "samples": 4,
+      "equalAggregateHistogramFrames": 100,
+      "equalFrameHashes": 100,
+      "threadPartitionsRequiredEqual": false,
+      "note": "TLS slot ownership/allocation order may change; aggregate populations and frame hashes are identical."
+    },
+    {
+      "scene": "tank",
+      "samples": 0,
+      "equalAggregateHistogramFrames": 100,
+      "equalFrameHashes": 100,
+      "threadPartitionsRequiredEqual": false,
+      "note": "TLS slot ownership/allocation order may change; aggregate populations and frame hashes are identical."
+    },
+    {
+      "scene": "tank",
+      "samples": 2,
+      "equalAggregateHistogramFrames": 100,
+      "equalFrameHashes": 100,
+      "threadPartitionsRequiredEqual": false,
+      "note": "TLS slot ownership/allocation order may change; aggregate populations and frame hashes are identical."
+    },
+    {
+      "scene": "tank",
+      "samples": 4,
+      "equalAggregateHistogramFrames": 100,
+      "equalFrameHashes": 100,
+      "threadPartitionsRequiredEqual": false,
+      "note": "TLS slot ownership/allocation order may change; aggregate populations and frame hashes are identical."
+    }
+  ],
+  "guards": [
+    {
+      "file": "lanes-ms0-audit-1.attempt-1.monitor.json",
+      "sha256": "2015508db097745fb82d91d08b2986f55912c1b09e2fa0ba0526d160efbddb78",
+      "exitCode": 0,
+      "unexpectedActivity": []
+    },
+    {
+      "file": "lanes-ms2-audit-1.attempt-1.monitor.json",
+      "sha256": "db6e403f2db489e818d78dad87edc94ff7ebb40dfb395ec395512b785d3ceeae",
+      "exitCode": 0,
+      "unexpectedActivity": []
+    },
+    {
+      "file": "lanes-ms4-audit-1.attempt-1.monitor.json",
+      "sha256": "be35e572a91d4f05a4fc6c03915336d241669884d38a4359ea46bab68eadc950",
+      "exitCode": 0,
+      "unexpectedActivity": []
+    },
+    {
+      "file": "lanes-ms4-audit-2.attempt-1.monitor.json",
+      "sha256": "3ba486406373a47e9526a8611bf237acfc262e84b21c208e9ffecf745a71470b",
+      "exitCode": 0,
+      "unexpectedActivity": []
+    },
+    {
+      "file": "lanes-ms2-audit-2.attempt-1.monitor.json",
+      "sha256": "28c153d7d4d93ff07d69fde53790a6e2efd6dca5d47d0d129515d29d66cf157d",
+      "exitCode": 0,
+      "unexpectedActivity": []
+    },
+    {
+      "file": "lanes-ms0-audit-2.attempt-1.monitor.json",
+      "sha256": "732ae29ad8c1262b0852f5b793f0b1babbc5e845d86f9384af56d3442c0e9e32",
+      "exitCode": 0,
+      "unexpectedActivity": []
+    }
+  ],
+  "scope": "Only sg_shade_packet invocations after invalid perspective lanes are removed. Other scalar/legacy-quad shaders, geometry and wait work are not counted.",
+  "interpretation": "Live lanes in sg_shade_packet only. MSAA submits full packets and shades triangle tails through sg_shade_pixel outside this scope. T-80 off uses the legacy quad path, so its counted population is zero and its utilization is null. No CPU utilization or saved-time claim."
+}

@@ -1,5 +1,17 @@
 # Optimization evidence
 
+The [logical packet-lane diagnostic](packet-lane-occupancy/README.md) measures
+48.672125% live SIMD pixel lanes for BMW off. Its two audits repeat all 600
+paired-angle aggregate histograms and frame hashes exactly. MSAA full packets
+have 100% live lanes, while their scalar triangle tails are outside this scope;
+T-80 off uses the legacy quad shader and is unobserved. All six fixed commands
+pass their quiet guards on the first attempt. Full native/sanitizer/WASM/image/
+model/edge gates and the new four-producer counter contract pass. Two checker
+assumption failures, all original captures, source and reproduction recipes
+are retained. The diagnostic never replaces D4 or accepted FPS numbers.
+[The next experiment](packet-lane-occupancy/next-research.md) tests packing
+BMW off pixels within each triangle before considering cross-triangle gathers.
+
 The [streamed DOT3 stage trial](dot3-stage-stream/README.md) is rejected as a
 common all-mode implementation. BMW off improves -0.904%/-0.260% and 2x
 -0.619%/-0.513%, but all six BMW 4x pairs are slower (+0.852%/+1.358% audit
@@ -9,9 +21,9 @@ pass. Only the packet-shader header changes; original samplers remain exact.
 The source result table shrinks, while actual raster bodies and SIMD local
 counts grow; those static observations do not prove the cause. Code, recipes,
 raw observations and gate receipts are published; D4/live/report stay active.
-The [next diagnostic](dot3-stage-stream/next-research.md) measures useful SIMD
-lanes before considering exact work packing across triangle boundaries. It is
-informed by primary SIGGRAPH/OpenGL sources and has not been implemented yet.
+Its [proposed diagnostic](dot3-stage-stream/next-research.md) is now measured in
+the lane package above. The proposal reviewed primary SIGGRAPH/OpenGL sources;
+no cross-triangle work-packing candidate has been built.
 
 The [unused-alpha DOT3 sampler trial](dot3-sampler-alpha/README.md) is rejected.
 Full native/sanitizer/WASM/image/model/edge gates pass and all eighteen planned

@@ -1,0 +1,23 @@
+audit 1 samples 0 bmw useful lanes percent 48.672 packets/frame 89925.6
+audit 1 samples 0 tank useful lanes percent None packets/frame 0.0
+Quiet-host audit passed: /home/cosmo/Git/softgl/build/diagnostics/packet-lane-occupancy/runs/lanes-ms2-audit-1.json attempt 1
+audit 1 samples 2 bmw useful lanes percent 100.0 packets/frame 48678.41
+audit 1 samples 2 tank useful lanes percent 100.0 packets/frame 25289.03
+Quiet-host audit passed: /home/cosmo/Git/softgl/build/diagnostics/packet-lane-occupancy/runs/lanes-ms4-audit-1.json attempt 1
+audit 1 samples 4 bmw useful lanes percent 100.0 packets/frame 61710.16
+audit 1 samples 4 tank useful lanes percent 100.0 packets/frame 30014.83
+Quiet-host audit passed: /home/cosmo/Git/softgl/build/diagnostics/packet-lane-occupancy/runs/lanes-ms4-audit-2.json attempt 1
+audit 2 samples 4 tank useful lanes percent 100.0 packets/frame 30014.83
+audit 2 samples 4 bmw useful lanes percent 100.0 packets/frame 61710.16
+Quiet-host audit passed: /home/cosmo/Git/softgl/build/diagnostics/packet-lane-occupancy/runs/lanes-ms2-audit-2.json attempt 1
+audit 2 samples 2 tank useful lanes percent 100.0 packets/frame 25289.03
+audit 2 samples 2 bmw useful lanes percent 100.0 packets/frame 48678.41
+Quiet-host audit passed: /home/cosmo/Git/softgl/build/diagnostics/packet-lane-occupancy/runs/lanes-ms0-audit-2.json attempt 1
+Traceback (most recent call last):
+  File "/home/cosmo/Git/softgl/build/diagnostics/packet-lane-occupancy/run-observations.py", line 33, in <module>
+    checked.append(checker.check_row(row,samples,expected[name]['rows'][i]['hash']))
+                   ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cosmo/Git/softgl/build/diagnostics/packet-lane-occupancy/check-row.py", line 17, in check_row
+    assert isinstance(row['meta'][0],int) and 1<=row['meta'][0]<=256
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
