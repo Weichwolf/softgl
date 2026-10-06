@@ -1,0 +1,12 @@
+from pathlib import Path
+import json,shutil
+r=Path(__file__).resolve().parent;before=r/'attempt-before-route-fix';before.mkdir(exist_ok=False)
+for name in ['full-regressions.py','full-gates-driver.log','process-completion.json','gate-process.json','ms0-images.log','model-0.log','all-tests-ms0-results.json']:shutil.copy2(r/name,before/name)
+p=r/'full-regressions.py';s=p.read_text();old="for name,digest in json.loads((r/'resume-receipts.json').read_text())['retainedFinalFixtureNativeSanitizerReceipts'].items():\n            assert hashlib.sha256((r/name).read_bytes()).hexdigest()==digest,name"
+assert s.count(old)==1;s=s.replace(old,"for artifact_name,digest in json.loads((r/'resume-receipts.json').read_text())['retainedFinalFixtureNativeSanitizerReceipts'].items():\n            assert hashlib.sha256((r/artifact_name).read_bytes()).hexdigest()==digest,artifact_name")
+needle="    for mode in (0,2,4):";assert s.count(needle)==1
+s=s.replace(needle,"    frozen=base/'build/controls'/(name+'-candidate')\n    assert frozen.is_dir() and hashlib.sha256((frozen/'softgl.wasm').read_bytes()).hexdigest()==json.loads((r/'validation.json').read_text())['candidateWasmSha256']\n"+needle);p.write_text(s)
+p=r/'prepare-publication.py';s=p.read_text().replace("'attempt-before-model-harness-restore']","'attempt-before-model-harness-restore','attempt-before-route-fix']")
+s=s.replace('The second had already completed the off image comparison before discovering the missing model runner; the entire script closure is now checked before resuming.', 'The second had already completed the off image comparison before discovering the missing model runner. An initial resume receipt loop then shadowed the experiment name and sent the model runner to a nonexistent build path; that actual failure and driver are retained under attempt-before-route-fix/. The iterator was renamed, the entire script closure and actual candidate module path/hash are checked before resuming.');p.write_text(s)
+p=r/'verify_artifacts.py';s=p.read_text();needle="resume=json.loads((r/'resume-receipts.json').read_text())";assert s.count(needle)==1
+s=s.replace(needle,"prior=r/'attempt-before-route-fix'\nassert json.loads((prior/'process-completion.json').read_text())['gateExitCode']==1\nassert 'createSoftGL is not defined' in (prior/'model-0.log').read_text()\nassert 'slice_prepack.c.o-candidate' in (prior/'full-gates-driver.log').read_text()\n"+needle);p.write_text(s)

@@ -1,0 +1,1496 @@
+Internal ctest changing into directory: /home/cosmo/Git/softgl/build/diagnostics/slice-vertex-packing/native-full
+Test project /home/cosmo/Git/softgl/build/diagnostics/slice-vertex-packing/native-full
+        Start   1: worker_pool_contract
+  1/745 Test   #1: worker_pool_contract .........................   Passed    0.22 sec
+        Start   2: multisample_contract
+  2/745 Test   #2: multisample_contract .........................   Passed    0.04 sec
+        Start   3: msaa_store_contract
+  3/745 Test   #3: msaa_store_contract ..........................   Passed    9.62 sec
+        Start   4: hierarchical_depth_contract
+  4/745 Test   #4: hierarchical_depth_contract ..................   Passed   18.72 sec
+        Start   5: msaa_edge_contract
+  5/745 Test   #5: msaa_edge_contract ...........................   Passed    0.70 sec
+        Start   6: dot3_chain_contract
+  6/745 Test   #6: dot3_chain_contract ..........................   Passed    0.07 sec
+        Start   7: constant_texture_contract
+  7/745 Test   #7: constant_texture_contract ....................   Passed    0.01 sec
+        Start   8: pixel_packet_contract
+  8/745 Test   #8: pixel_packet_contract ........................   Passed    0.08 sec
+        Start   9: cube_packet_contract
+  9/745 Test   #9: cube_packet_contract .........................   Passed    0.09 sec
+        Start  10: geometry_cache_contract
+ 10/745 Test  #10: geometry_cache_contract ......................   Passed    0.25 sec
+        Start  11: async_raster_contract
+ 11/745 Test  #11: async_raster_contract ........................   Passed    0.51 sec
+        Start  12: raster_vertex_pack_contract
+ 12/745 Test  #12: raster_vertex_pack_contract ..................   Passed    0.07 sec
+        Start  13: packed_stream_contract
+ 13/745 Test  #13: packed_stream_contract .......................   Passed    1.10 sec
+        Start  14: simd_clamp_contract
+ 14/745 Test  #14: simd_clamp_contract ..........................   Passed    0.04 sec
+        Start  15: ordered_draw_queue_contract
+ 15/745 Test  #15: ordered_draw_queue_contract ..................   Passed    3.41 sec
+        Start  16: msaa_additive_contract
+ 16/745 Test  #16: msaa_additive_contract .......................   Passed    2.29 sec
+        Start  17: triangle_stage_contract
+ 17/745 Test  #17: triangle_stage_contract ......................   Passed    0.53 sec
+        Start  18: msaa_scanline_contract
+ 18/745 Test  #18: msaa_scanline_contract .......................   Passed    0.51 sec
+        Start  19: cube_filter_contract
+ 19/745 Test  #19: cube_filter_contract .........................   Passed    0.07 sec
+        Start  20: cache_coverage_contract
+ 20/745 Test  #20: cache_coverage_contract ......................   Passed    0.11 sec
+        Start  21: depth_replay_contract
+ 21/745 Test  #21: depth_replay_contract ........................   Passed    1.92 sec
+        Start  22: position_cache_contract
+ 22/745 Test  #22: position_cache_contract ......................   Passed    0.40 sec
+        Start  23: vertex_inputs_contract
+ 23/745 Test  #23: vertex_inputs_contract .......................   Passed    0.02 sec
+        Start  24: 01_clear_black_run_ref
+ 24/745 Test  #24: 01_clear_black_run_ref .......................   Passed    0.04 sec
+        Start  25: 01_clear_black_run_sgl
+ 25/745 Test  #25: 01_clear_black_run_sgl .......................   Passed    0.01 sec
+        Start  26: 01_clear_black_compare
+ 26/745 Test  #26: 01_clear_black_compare .......................   Passed    0.01 sec
+        Start  27: 02_clear_red_run_ref
+ 27/745 Test  #27: 02_clear_red_run_ref .........................   Passed    0.04 sec
+        Start  28: 02_clear_red_run_sgl
+ 28/745 Test  #28: 02_clear_red_run_sgl .........................   Passed    0.01 sec
+        Start  29: 02_clear_red_compare
+ 29/745 Test  #29: 02_clear_red_compare .........................   Passed    0.01 sec
+        Start  30: 03_scissor_clear_run_ref
+ 30/745 Test  #30: 03_scissor_clear_run_ref .....................   Passed    0.04 sec
+        Start  31: 03_scissor_clear_run_sgl
+ 31/745 Test  #31: 03_scissor_clear_run_sgl .....................   Passed    0.01 sec
+        Start  32: 03_scissor_clear_compare
+ 32/745 Test  #32: 03_scissor_clear_compare .....................   Passed    0.01 sec
+        Start  33: 04_partial_viewport_clear_run_ref
+ 33/745 Test  #33: 04_partial_viewport_clear_run_ref ............   Passed    0.04 sec
+        Start  34: 04_partial_viewport_clear_run_sgl
+ 34/745 Test  #34: 04_partial_viewport_clear_run_sgl ............   Passed    0.01 sec
+        Start  35: 04_partial_viewport_clear_compare
+ 35/745 Test  #35: 04_partial_viewport_clear_compare ............   Passed    0.01 sec
+        Start  36: 05_multi_clear_stripes_run_ref
+ 36/745 Test  #36: 05_multi_clear_stripes_run_ref ...............   Passed    0.04 sec
+        Start  37: 05_multi_clear_stripes_run_sgl
+ 37/745 Test  #37: 05_multi_clear_stripes_run_sgl ...............   Passed    0.01 sec
+        Start  38: 05_multi_clear_stripes_compare
+ 38/745 Test  #38: 05_multi_clear_stripes_compare ...............   Passed    0.01 sec
+        Start  39: 06_get_viewport_run_ref
+ 39/745 Test  #39: 06_get_viewport_run_ref ......................   Passed    0.03 sec
+        Start  40: 06_get_viewport_run_sgl
+ 40/745 Test  #40: 06_get_viewport_run_sgl ......................   Passed    0.01 sec
+        Start  41: 06_get_viewport_compare
+ 41/745 Test  #41: 06_get_viewport_compare ......................   Passed    0.01 sec
+        Start  42: 07_matrix_identity_run_ref
+ 42/745 Test  #42: 07_matrix_identity_run_ref ...................   Passed    0.03 sec
+        Start  43: 07_matrix_identity_run_sgl
+ 43/745 Test  #43: 07_matrix_identity_run_sgl ...................   Passed    0.00 sec
+        Start  44: 07_matrix_identity_compare
+ 44/745 Test  #44: 07_matrix_identity_compare ...................   Passed    0.01 sec
+        Start  45: 08_matrix_translate_run_ref
+ 45/745 Test  #45: 08_matrix_translate_run_ref ..................   Passed    0.03 sec
+        Start  46: 08_matrix_translate_run_sgl
+ 46/745 Test  #46: 08_matrix_translate_run_sgl ..................   Passed    0.00 sec
+        Start  47: 08_matrix_translate_compare
+ 47/745 Test  #47: 08_matrix_translate_compare ..................   Passed    0.01 sec
+        Start  48: 09_matrix_stack_run_ref
+ 48/745 Test  #48: 09_matrix_stack_run_ref ......................   Passed    0.03 sec
+        Start  49: 09_matrix_stack_run_sgl
+ 49/745 Test  #49: 09_matrix_stack_run_sgl ......................   Passed    0.01 sec
+        Start  50: 09_matrix_stack_compare
+ 50/745 Test  #50: 09_matrix_stack_compare ......................   Passed    0.01 sec
+        Start  51: 10_ortho_projection_run_ref
+ 51/745 Test  #51: 10_ortho_projection_run_ref ..................   Passed    0.03 sec
+        Start  52: 10_ortho_projection_run_sgl
+ 52/745 Test  #52: 10_ortho_projection_run_sgl ..................   Passed    0.01 sec
+        Start  53: 10_ortho_projection_compare
+ 53/745 Test  #53: 10_ortho_projection_compare ..................   Passed    0.01 sec
+        Start  54: 11_triangle_ccw_run_ref
+ 54/745 Test  #54: 11_triangle_ccw_run_ref ......................   Passed    0.04 sec
+        Start  55: 11_triangle_ccw_run_sgl
+ 55/745 Test  #55: 11_triangle_ccw_run_sgl ......................   Passed    0.01 sec
+        Start  56: 11_triangle_ccw_compare
+ 56/745 Test  #56: 11_triangle_ccw_compare ......................   Passed    0.01 sec
+        Start  57: 12_triangle_cw_culled_run_ref
+ 57/745 Test  #57: 12_triangle_cw_culled_run_ref ................   Passed    0.04 sec
+        Start  58: 12_triangle_cw_culled_run_sgl
+ 58/745 Test  #58: 12_triangle_cw_culled_run_sgl ................   Passed    0.01 sec
+        Start  59: 12_triangle_cw_culled_compare
+ 59/745 Test  #59: 12_triangle_cw_culled_compare ................   Passed    0.01 sec
+        Start  60: 13_triangle_depth_run_ref
+ 60/745 Test  #60: 13_triangle_depth_run_ref ....................   Passed    0.04 sec
+        Start  61: 13_triangle_depth_run_sgl
+ 61/745 Test  #61: 13_triangle_depth_run_sgl ....................   Passed    0.01 sec
+        Start  62: 13_triangle_depth_compare
+ 62/745 Test  #62: 13_triangle_depth_compare ....................   Passed    0.01 sec
+        Start  63: 14_triangle_frustum_run_ref
+ 63/745 Test  #63: 14_triangle_frustum_run_ref ..................   Passed    0.04 sec
+        Start  64: 14_triangle_frustum_run_sgl
+ 64/745 Test  #64: 14_triangle_frustum_run_sgl ..................   Passed    0.01 sec
+        Start  65: 14_triangle_frustum_compare
+ 65/745 Test  #65: 14_triangle_frustum_compare ..................   Passed    0.01 sec
+        Start  66: 15_two_tris_depth_run_ref
+ 66/745 Test  #66: 15_two_tris_depth_run_ref ....................   Passed    0.04 sec
+        Start  67: 15_two_tris_depth_run_sgl
+ 67/745 Test  #67: 15_two_tris_depth_run_sgl ....................   Passed    0.01 sec
+        Start  68: 15_two_tris_depth_compare
+ 68/745 Test  #68: 15_two_tris_depth_compare ....................   Passed    0.01 sec
+        Start  69: 16_flat_shaded_run_ref
+ 69/745 Test  #69: 16_flat_shaded_run_ref .......................   Passed    0.04 sec
+        Start  70: 16_flat_shaded_run_sgl
+ 70/745 Test  #70: 16_flat_shaded_run_sgl .......................   Passed    0.01 sec
+        Start  71: 16_flat_shaded_compare
+ 71/745 Test  #71: 16_flat_shaded_compare .......................   Passed    0.01 sec
+        Start  72: 17_gouraud_rgb_run_ref
+ 72/745 Test  #72: 17_gouraud_rgb_run_ref .......................   Passed    0.04 sec
+        Start  73: 17_gouraud_rgb_run_sgl
+ 73/745 Test  #73: 17_gouraud_rgb_run_sgl .......................   Passed    0.01 sec
+        Start  74: 17_gouraud_rgb_compare
+ 74/745 Test  #74: 17_gouraud_rgb_compare .......................   Passed    0.01 sec
+        Start  75: 18_fullscreen_quad_run_ref
+ 75/745 Test  #75: 18_fullscreen_quad_run_ref ...................   Passed    0.04 sec
+        Start  76: 18_fullscreen_quad_run_sgl
+ 76/745 Test  #76: 18_fullscreen_quad_run_sgl ...................   Passed    0.01 sec
+        Start  77: 18_fullscreen_quad_compare
+ 77/745 Test  #77: 18_fullscreen_quad_compare ...................   Passed    0.01 sec
+        Start  78: 19_degenerate_triangle_run_ref
+ 78/745 Test  #78: 19_degenerate_triangle_run_ref ...............   Passed    0.04 sec
+        Start  79: 19_degenerate_triangle_run_sgl
+ 79/745 Test  #79: 19_degenerate_triangle_run_sgl ...............   Passed    0.01 sec
+        Start  80: 19_degenerate_triangle_compare
+ 80/745 Test  #80: 19_degenerate_triangle_compare ...............   Passed    0.01 sec
+        Start  81: 20_triangle_at_edges_run_ref
+ 81/745 Test  #81: 20_triangle_at_edges_run_ref .................   Passed    0.04 sec
+        Start  82: 20_triangle_at_edges_run_sgl
+ 82/745 Test  #82: 20_triangle_at_edges_run_sgl .................   Passed    0.01 sec
+        Start  83: 20_triangle_at_edges_compare
+ 83/745 Test  #83: 20_triangle_at_edges_compare .................   Passed    0.01 sec
+        Start  84: 21_clip_left_run_ref
+ 84/745 Test  #84: 21_clip_left_run_ref .........................   Passed    0.04 sec
+        Start  85: 21_clip_left_run_sgl
+ 85/745 Test  #85: 21_clip_left_run_sgl .........................   Passed    0.01 sec
+        Start  86: 21_clip_left_compare
+ 86/745 Test  #86: 21_clip_left_compare .........................   Passed    0.01 sec
+        Start  87: 22_clip_right_run_ref
+ 87/745 Test  #87: 22_clip_right_run_ref ........................   Passed    0.04 sec
+        Start  88: 22_clip_right_run_sgl
+ 88/745 Test  #88: 22_clip_right_run_sgl ........................   Passed    0.01 sec
+        Start  89: 22_clip_right_compare
+ 89/745 Test  #89: 22_clip_right_compare ........................   Passed    0.01 sec
+        Start  90: 23_clip_top_run_ref
+ 90/745 Test  #90: 23_clip_top_run_ref ..........................   Passed    0.04 sec
+        Start  91: 23_clip_top_run_sgl
+ 91/745 Test  #91: 23_clip_top_run_sgl ..........................   Passed    0.01 sec
+        Start  92: 23_clip_top_compare
+ 92/745 Test  #92: 23_clip_top_compare ..........................   Passed    0.01 sec
+        Start  93: 24_clip_bottom_run_ref
+ 93/745 Test  #93: 24_clip_bottom_run_ref .......................   Passed    0.04 sec
+        Start  94: 24_clip_bottom_run_sgl
+ 94/745 Test  #94: 24_clip_bottom_run_sgl .......................   Passed    0.01 sec
+        Start  95: 24_clip_bottom_compare
+ 95/745 Test  #95: 24_clip_bottom_compare .......................   Passed    0.01 sec
+        Start  96: 25_clip_near_run_ref
+ 96/745 Test  #96: 25_clip_near_run_ref .........................   Passed    0.04 sec
+        Start  97: 25_clip_near_run_sgl
+ 97/745 Test  #97: 25_clip_near_run_sgl .........................   Passed    0.01 sec
+        Start  98: 25_clip_near_compare
+ 98/745 Test  #98: 25_clip_near_compare .........................   Passed    0.01 sec
+        Start  99: 26_clip_far_run_ref
+ 99/745 Test  #99: 26_clip_far_run_ref ..........................   Passed    0.04 sec
+        Start 100: 26_clip_far_run_sgl
+100/745 Test #100: 26_clip_far_run_sgl ..........................   Passed    0.01 sec
+        Start 101: 26_clip_far_compare
+101/745 Test #101: 26_clip_far_compare ..........................   Passed    0.01 sec
+        Start 102: 27_clip_all_planes_run_ref
+102/745 Test #102: 27_clip_all_planes_run_ref ...................   Passed    0.04 sec
+        Start 103: 27_clip_all_planes_run_sgl
+103/745 Test #103: 27_clip_all_planes_run_sgl ...................   Passed    0.01 sec
+        Start 104: 27_clip_all_planes_compare
+104/745 Test #104: 27_clip_all_planes_compare ...................   Passed    0.01 sec
+        Start 105: 28_clip_offscreen_but_visible_run_ref
+105/745 Test #105: 28_clip_offscreen_but_visible_run_ref ........   Passed    0.04 sec
+        Start 106: 28_clip_offscreen_but_visible_run_sgl
+106/745 Test #106: 28_clip_offscreen_but_visible_run_sgl ........   Passed    0.01 sec
+        Start 107: 28_clip_offscreen_but_visible_compare
+107/745 Test #107: 28_clip_offscreen_but_visible_compare ........   Passed    0.01 sec
+        Start 108: 29_clip_quad_seam_run_ref
+108/745 Test #108: 29_clip_quad_seam_run_ref ....................   Passed    0.04 sec
+        Start 109: 29_clip_quad_seam_run_sgl
+109/745 Test #109: 29_clip_quad_seam_run_sgl ....................   Passed    0.01 sec
+        Start 110: 29_clip_quad_seam_compare
+110/745 Test #110: 29_clip_quad_seam_compare ....................   Passed    0.01 sec
+        Start 111: 30_clip_many_triangles_run_ref
+111/745 Test #111: 30_clip_many_triangles_run_ref ...............   Passed    0.04 sec
+        Start 112: 30_clip_many_triangles_run_sgl
+112/745 Test #112: 30_clip_many_triangles_run_sgl ...............   Passed    0.01 sec
+        Start 113: 30_clip_many_triangles_compare
+113/745 Test #113: 30_clip_many_triangles_compare ...............   Passed    0.01 sec
+        Start 114: 31_translate_run_ref
+114/745 Test #114: 31_translate_run_ref .........................   Passed    0.04 sec
+        Start 115: 31_translate_run_sgl
+115/745 Test #115: 31_translate_run_sgl .........................   Passed    0.01 sec
+        Start 116: 31_translate_compare
+116/745 Test #116: 31_translate_compare .........................   Passed    0.01 sec
+        Start 117: 32_rotate_x_run_ref
+117/745 Test #117: 32_rotate_x_run_ref ..........................   Passed    0.04 sec
+        Start 118: 32_rotate_x_run_sgl
+118/745 Test #118: 32_rotate_x_run_sgl ..........................   Passed    0.01 sec
+        Start 119: 32_rotate_x_compare
+119/745 Test #119: 32_rotate_x_compare ..........................   Passed    0.01 sec
+        Start 120: 33_rotate_y_run_ref
+120/745 Test #120: 33_rotate_y_run_ref ..........................   Passed    0.04 sec
+        Start 121: 33_rotate_y_run_sgl
+121/745 Test #121: 33_rotate_y_run_sgl ..........................   Passed    0.01 sec
+        Start 122: 33_rotate_y_compare
+122/745 Test #122: 33_rotate_y_compare ..........................   Passed    0.01 sec
+        Start 123: 34_rotate_z_run_ref
+123/745 Test #123: 34_rotate_z_run_ref ..........................   Passed    0.04 sec
+        Start 124: 34_rotate_z_run_sgl
+124/745 Test #124: 34_rotate_z_run_sgl ..........................   Passed    0.01 sec
+        Start 125: 34_rotate_z_compare
+125/745 Test #125: 34_rotate_z_compare ..........................   Passed    0.01 sec
+        Start 126: 35_scale_nonuniform_run_ref
+126/745 Test #126: 35_scale_nonuniform_run_ref ..................   Passed    0.04 sec
+        Start 127: 35_scale_nonuniform_run_sgl
+127/745 Test #127: 35_scale_nonuniform_run_sgl ..................   Passed    0.01 sec
+        Start 128: 35_scale_nonuniform_compare
+128/745 Test #128: 35_scale_nonuniform_compare ..................   Passed    0.01 sec
+        Start 129: 36_rotate_translate_run_ref
+129/745 Test #129: 36_rotate_translate_run_ref ..................   Passed    0.04 sec
+        Start 130: 36_rotate_translate_run_sgl
+130/745 Test #130: 36_rotate_translate_run_sgl ..................   Passed    0.01 sec
+        Start 131: 36_rotate_translate_compare
+131/745 Test #131: 36_rotate_translate_compare ..................   Passed    0.01 sec
+        Start 132: 37_orbit_run_ref
+132/745 Test #132: 37_orbit_run_ref .............................   Passed    0.04 sec
+        Start 133: 37_orbit_run_sgl
+133/745 Test #133: 37_orbit_run_sgl .............................   Passed    0.01 sec
+        Start 134: 37_orbit_compare
+134/745 Test #134: 37_orbit_compare .............................   Passed    0.01 sec
+        Start 135: 38_perspective_60fov_run_ref
+135/745 Test #135: 38_perspective_60fov_run_ref .................   Passed    0.04 sec
+        Start 136: 38_perspective_60fov_run_sgl
+136/745 Test #136: 38_perspective_60fov_run_sgl .................   Passed    0.01 sec
+        Start 137: 38_perspective_60fov_compare
+137/745 Test #137: 38_perspective_60fov_compare .................   Passed    0.01 sec
+        Start 138: 39_aspect_correction_run_ref
+138/745 Test #138: 39_aspect_correction_run_ref .................   Passed    0.04 sec
+        Start 139: 39_aspect_correction_run_sgl
+139/745 Test #139: 39_aspect_correction_run_sgl .................   Passed    0.01 sec
+        Start 140: 39_aspect_correction_compare
+140/745 Test #140: 39_aspect_correction_compare .................   Passed    0.01 sec
+        Start 141: 40_hierarchical_transform_run_ref
+141/745 Test #141: 40_hierarchical_transform_run_ref ............   Passed    0.04 sec
+        Start 142: 40_hierarchical_transform_run_sgl
+142/745 Test #142: 40_hierarchical_transform_run_sgl ............   Passed    0.01 sec
+        Start 143: 40_hierarchical_transform_compare
+143/745 Test #143: 40_hierarchical_transform_compare ............   Passed    0.01 sec
+        Start 144: 41_tex_checkerboard_run_ref
+144/745 Test #144: 41_tex_checkerboard_run_ref ..................   Passed    0.04 sec
+        Start 145: 41_tex_checkerboard_run_sgl
+145/745 Test #145: 41_tex_checkerboard_run_sgl ..................   Passed    0.01 sec
+        Start 146: 41_tex_checkerboard_compare
+146/745 Test #146: 41_tex_checkerboard_compare ..................   Passed    0.01 sec
+        Start 147: 42_tex_gradient_bilinear_run_ref
+147/745 Test #147: 42_tex_gradient_bilinear_run_ref .............   Passed    0.04 sec
+        Start 148: 42_tex_gradient_bilinear_run_sgl
+148/745 Test #148: 42_tex_gradient_bilinear_run_sgl .............   Passed    0.01 sec
+        Start 149: 42_tex_gradient_bilinear_compare
+149/745 Test #149: 42_tex_gradient_bilinear_compare .............   Passed    0.01 sec
+        Start 150: 43_tex_repeat_run_ref
+150/745 Test #150: 43_tex_repeat_run_ref ........................   Passed    0.04 sec
+        Start 151: 43_tex_repeat_run_sgl
+151/745 Test #151: 43_tex_repeat_run_sgl ........................   Passed    0.01 sec
+        Start 152: 43_tex_repeat_compare
+152/745 Test #152: 43_tex_repeat_compare ........................   Passed    0.01 sec
+        Start 153: 44_tex_clamp_run_ref
+153/745 Test #153: 44_tex_clamp_run_ref .........................   Passed    0.04 sec
+        Start 154: 44_tex_clamp_run_sgl
+154/745 Test #154: 44_tex_clamp_run_sgl .........................   Passed    0.01 sec
+        Start 155: 44_tex_clamp_compare
+155/745 Test #155: 44_tex_clamp_compare .........................   Passed    0.01 sec
+        Start 156: 45_tex_many_repeats_run_ref
+156/745 Test #156: 45_tex_many_repeats_run_ref ..................   Passed    0.04 sec
+        Start 157: 45_tex_many_repeats_run_sgl
+157/745 Test #157: 45_tex_many_repeats_run_sgl ..................   Passed    0.01 sec
+        Start 158: 45_tex_many_repeats_compare
+158/745 Test #158: 45_tex_many_repeats_compare ..................   Passed    0.01 sec
+        Start 159: 46_tex_alpha_cutout_run_ref
+159/745 Test #159: 46_tex_alpha_cutout_run_ref ..................   Passed    0.04 sec
+        Start 160: 46_tex_alpha_cutout_run_sgl
+160/745 Test #160: 46_tex_alpha_cutout_run_sgl ..................   Passed    0.01 sec
+        Start 161: 46_tex_alpha_cutout_compare
+161/745 Test #161: 46_tex_alpha_cutout_compare ..................   Passed    0.01 sec
+        Start 162: 47_tex_modulate_run_ref
+162/745 Test #162: 47_tex_modulate_run_ref ......................   Passed    0.04 sec
+        Start 163: 47_tex_modulate_run_sgl
+163/745 Test #163: 47_tex_modulate_run_sgl ......................   Passed    0.01 sec
+        Start 164: 47_tex_modulate_compare
+164/745 Test #164: 47_tex_modulate_compare ......................   Passed    0.01 sec
+        Start 165: 48_tex_replace_run_ref
+165/745 Test #165: 48_tex_replace_run_ref .......................   Passed    0.04 sec
+        Start 166: 48_tex_replace_run_sgl
+166/745 Test #166: 48_tex_replace_run_sgl .......................   Passed    0.01 sec
+        Start 167: 48_tex_replace_compare
+167/745 Test #167: 48_tex_replace_compare .......................   Passed    0.01 sec
+        Start 168: 49_tex_decal_run_ref
+168/745 Test #168: 49_tex_decal_run_ref .........................   Passed    0.04 sec
+        Start 169: 49_tex_decal_run_sgl
+169/745 Test #169: 49_tex_decal_run_sgl .........................   Passed    0.01 sec
+        Start 170: 49_tex_decal_compare
+170/745 Test #170: 49_tex_decal_compare .........................   Passed    0.01 sec
+        Start 171: 50_multitexture_run_ref
+171/745 Test #171: 50_multitexture_run_ref ......................   Passed    0.04 sec
+        Start 172: 50_multitexture_run_sgl
+172/745 Test #172: 50_multitexture_run_sgl ......................   Passed    0.01 sec
+        Start 173: 50_multitexture_compare
+173/745 Test #173: 50_multitexture_compare ......................   Passed    0.01 sec
+        Start 174: 51_directional_light_run_ref
+174/745 Test #174: 51_directional_light_run_ref .................   Passed    0.04 sec
+        Start 175: 51_directional_light_run_sgl
+175/745 Test #175: 51_directional_light_run_sgl .................   Passed    0.01 sec
+        Start 176: 51_directional_light_compare
+176/745 Test #176: 51_directional_light_compare .................   Passed    0.01 sec
+        Start 177: 52_ambient_only_run_ref
+177/745 Test #177: 52_ambient_only_run_ref ......................   Passed    0.04 sec
+        Start 178: 52_ambient_only_run_sgl
+178/745 Test #178: 52_ambient_only_run_sgl ......................   Passed    0.01 sec
+        Start 179: 52_ambient_only_compare
+179/745 Test #179: 52_ambient_only_compare ......................   Passed    0.01 sec
+        Start 180: 53_diffuse_lambert_run_ref
+180/745 Test #180: 53_diffuse_lambert_run_ref ...................   Passed    0.04 sec
+        Start 181: 53_diffuse_lambert_run_sgl
+181/745 Test #181: 53_diffuse_lambert_run_sgl ...................   Passed    0.01 sec
+        Start 182: 53_diffuse_lambert_compare
+182/745 Test #182: 53_diffuse_lambert_compare ...................   Passed    0.01 sec
+        Start 183: 54_specular_blinn_run_ref
+183/745 Test #183: 54_specular_blinn_run_ref ....................   Passed    0.04 sec
+        Start 184: 54_specular_blinn_run_sgl
+184/745 Test #184: 54_specular_blinn_run_sgl ....................   Passed    0.01 sec
+        Start 185: 54_specular_blinn_compare
+185/745 Test #185: 54_specular_blinn_compare ....................   Passed    0.01 sec
+        Start 186: 55_point_light_attenuation_run_ref
+186/745 Test #186: 55_point_light_attenuation_run_ref ...........   Passed    0.04 sec
+        Start 187: 55_point_light_attenuation_run_sgl
+187/745 Test #187: 55_point_light_attenuation_run_sgl ...........   Passed    0.01 sec
+        Start 188: 55_point_light_attenuation_compare
+188/745 Test #188: 55_point_light_attenuation_compare ...........   Passed    0.01 sec
+        Start 189: 56_multi_lights_run_ref
+189/745 Test #189: 56_multi_lights_run_ref ......................   Passed    0.04 sec
+        Start 190: 56_multi_lights_run_sgl
+190/745 Test #190: 56_multi_lights_run_sgl ......................   Passed    0.01 sec
+        Start 191: 56_multi_lights_compare
+191/745 Test #191: 56_multi_lights_compare ......................   Passed    0.01 sec
+        Start 192: 57_icosphere_lit_run_ref
+192/745 Test #192: 57_icosphere_lit_run_ref .....................   Passed    0.04 sec
+        Start 193: 57_icosphere_lit_run_sgl
+193/745 Test #193: 57_icosphere_lit_run_sgl .....................   Passed    0.01 sec
+        Start 194: 57_icosphere_lit_compare
+194/745 Test #194: 57_icosphere_lit_compare .....................   Passed    0.01 sec
+        Start 195: 58_colored_material_run_ref
+195/745 Test #195: 58_colored_material_run_ref ..................   Passed    0.04 sec
+        Start 196: 58_colored_material_run_sgl
+196/745 Test #196: 58_colored_material_run_sgl ..................   Passed    0.01 sec
+        Start 197: 58_colored_material_compare
+197/745 Test #197: 58_colored_material_compare ..................   Passed    0.01 sec
+        Start 198: 59_emission_run_ref
+198/745 Test #198: 59_emission_run_ref ..........................   Passed    0.04 sec
+        Start 199: 59_emission_run_sgl
+199/745 Test #199: 59_emission_run_sgl ..........................   Passed    0.01 sec
+        Start 200: 59_emission_compare
+200/745 Test #200: 59_emission_compare ..........................   Passed    0.01 sec
+        Start 201: 60_normalize_run_ref
+201/745 Test #201: 60_normalize_run_ref .........................   Passed    0.04 sec
+        Start 202: 60_normalize_run_sgl
+202/745 Test #202: 60_normalize_run_sgl .........................   Passed    0.01 sec
+        Start 203: 60_normalize_compare
+203/745 Test #203: 60_normalize_compare .........................   Passed    0.01 sec
+        Start 204: 61_tessellated_grid_run_ref
+204/745 Test #204: 61_tessellated_grid_run_ref ..................   Passed    0.04 sec
+        Start 205: 61_tessellated_grid_run_sgl
+205/745 Test #205: 61_tessellated_grid_run_sgl ..................   Passed    0.01 sec
+        Start 206: 61_tessellated_grid_compare
+206/745 Test #206: 61_tessellated_grid_compare ..................   Passed    0.01 sec
+        Start 207: 62_icosphere_subdiv_run_ref
+207/745 Test #207: 62_icosphere_subdiv_run_ref ..................   Passed    0.04 sec
+        Start 208: 62_icosphere_subdiv_run_sgl
+208/745 Test #208: 62_icosphere_subdiv_run_sgl ..................   Passed    0.01 sec
+        Start 209: 62_icosphere_subdiv_compare
+209/745 Test #209: 62_icosphere_subdiv_compare ..................   Passed    0.01 sec
+        Start 210: 63_uv_sphere_run_ref
+210/745 Test #210: 63_uv_sphere_run_ref .........................   Passed    0.04 sec
+        Start 211: 63_uv_sphere_run_sgl
+211/745 Test #211: 63_uv_sphere_run_sgl .........................   Passed    0.01 sec
+        Start 212: 63_uv_sphere_compare
+212/745 Test #212: 63_uv_sphere_compare .........................   Passed    0.01 sec
+        Start 213: 64_cylinder_run_ref
+213/745 Test #213: 64_cylinder_run_ref ..........................   Passed    0.04 sec
+        Start 214: 64_cylinder_run_sgl
+214/745 Test #214: 64_cylinder_run_sgl ..........................   Passed    0.01 sec
+        Start 215: 64_cylinder_compare
+215/745 Test #215: 64_cylinder_compare ..........................   Passed    0.01 sec
+        Start 216: 65_torus_run_ref
+216/745 Test #216: 65_torus_run_ref .............................   Passed    0.04 sec
+        Start 217: 65_torus_run_sgl
+217/745 Test #217: 65_torus_run_sgl .............................   Passed    0.01 sec
+        Start 218: 65_torus_compare
+218/745 Test #218: 65_torus_compare .............................   Passed    0.01 sec
+        Start 219: 66_bezier_patch_run_ref
+219/745 Test #219: 66_bezier_patch_run_ref ......................   Passed    0.04 sec
+        Start 220: 66_bezier_patch_run_sgl
+220/745 Test #220: 66_bezier_patch_run_sgl ......................   Passed    0.01 sec
+        Start 221: 66_bezier_patch_compare
+221/745 Test #221: 66_bezier_patch_compare ......................   Passed    0.01 sec
+        Start 222: 67_extrusion_run_ref
+222/745 Test #222: 67_extrusion_run_ref .........................   Passed    0.04 sec
+        Start 223: 67_extrusion_run_sgl
+223/745 Test #223: 67_extrusion_run_sgl .........................   Passed    0.01 sec
+        Start 224: 67_extrusion_compare
+224/745 Test #224: 67_extrusion_compare .........................   Passed    0.01 sec
+        Start 225: 68_loft_run_ref
+225/745 Test #225: 68_loft_run_ref ..............................   Passed    0.04 sec
+        Start 226: 68_loft_run_sgl
+226/745 Test #226: 68_loft_run_sgl ..............................   Passed    0.01 sec
+        Start 227: 68_loft_compare
+227/745 Test #227: 68_loft_compare ..............................   Passed    0.01 sec
+        Start 228: 69_superquadric_run_ref
+228/745 Test #228: 69_superquadric_run_ref ......................   Passed    0.04 sec
+        Start 229: 69_superquadric_run_sgl
+229/745 Test #229: 69_superquadric_run_sgl ......................   Passed    0.01 sec
+        Start 230: 69_superquadric_compare
+230/745 Test #230: 69_superquadric_compare ......................   Passed    0.01 sec
+        Start 231: 70_heightfield_run_ref
+231/745 Test #231: 70_heightfield_run_ref .......................   Passed    0.05 sec
+        Start 232: 70_heightfield_run_sgl
+232/745 Test #232: 70_heightfield_run_sgl .......................   Passed    0.01 sec
+        Start 233: 70_heightfield_compare
+233/745 Test #233: 70_heightfield_compare .......................   Passed    0.01 sec
+        Start 234: 71_fog_exp2_run_ref
+234/745 Test #234: 71_fog_exp2_run_ref ..........................   Passed    0.04 sec
+        Start 235: 71_fog_exp2_run_sgl
+235/745 Test #235: 71_fog_exp2_run_sgl ..........................   Passed    0.01 sec
+        Start 236: 71_fog_exp2_compare
+236/745 Test #236: 71_fog_exp2_compare ..........................   Passed    0.01 sec
+        Start 237: 72_fog_linear_run_ref
+237/745 Test #237: 72_fog_linear_run_ref ........................   Passed    0.04 sec
+        Start 238: 72_fog_linear_run_sgl
+238/745 Test #238: 72_fog_linear_run_sgl ........................   Passed    0.01 sec
+        Start 239: 72_fog_linear_compare
+239/745 Test #239: 72_fog_linear_compare ........................   Passed    0.01 sec
+        Start 240: 73_fog_exp_run_ref
+240/745 Test #240: 73_fog_exp_run_ref ...........................   Passed    0.05 sec
+        Start 241: 73_fog_exp_run_sgl
+241/745 Test #241: 73_fog_exp_run_sgl ...........................   Passed    0.01 sec
+        Start 242: 73_fog_exp_compare
+242/745 Test #242: 73_fog_exp_compare ...........................   Passed    0.01 sec
+        Start 243: 74_fog_colored_run_ref
+243/745 Test #243: 74_fog_colored_run_ref .......................   Passed    0.04 sec
+        Start 244: 74_fog_colored_run_sgl
+244/745 Test #244: 74_fog_colored_run_sgl .......................   Passed    0.01 sec
+        Start 245: 74_fog_colored_compare
+245/745 Test #245: 74_fog_colored_compare .......................   Passed    0.01 sec
+        Start 246: 75_alpha_blend_run_ref
+246/745 Test #246: 75_alpha_blend_run_ref .......................   Passed    0.04 sec
+        Start 247: 75_alpha_blend_run_sgl
+247/745 Test #247: 75_alpha_blend_run_sgl .......................   Passed    0.01 sec
+        Start 248: 75_alpha_blend_compare
+248/745 Test #248: 75_alpha_blend_compare .......................   Passed    0.01 sec
+        Start 249: 76_additive_blend_run_ref
+249/745 Test #249: 76_additive_blend_run_ref ....................   Passed    0.04 sec
+        Start 250: 76_additive_blend_run_sgl
+250/745 Test #250: 76_additive_blend_run_sgl ....................   Passed    0.01 sec
+        Start 251: 76_additive_blend_compare
+251/745 Test #251: 76_additive_blend_compare ....................   Passed    0.01 sec
+        Start 252: 77_alpha_test_edge_run_ref
+252/745 Test #252: 77_alpha_test_edge_run_ref ...................   Passed    0.05 sec
+        Start 253: 77_alpha_test_edge_run_sgl
+253/745 Test #253: 77_alpha_test_edge_run_sgl ...................   Passed    0.01 sec
+        Start 254: 77_alpha_test_edge_compare
+254/745 Test #254: 77_alpha_test_edge_compare ...................   Passed    0.01 sec
+        Start 255: 78_transparent_stack_run_ref
+255/745 Test #255: 78_transparent_stack_run_ref .................   Passed    0.04 sec
+        Start 256: 78_transparent_stack_run_sgl
+256/745 Test #256: 78_transparent_stack_run_sgl .................   Passed    0.01 sec
+        Start 257: 78_transparent_stack_compare
+257/745 Test #257: 78_transparent_stack_compare .................   Passed    0.01 sec
+        Start 258: 79_premult_alpha_run_ref
+258/745 Test #258: 79_premult_alpha_run_ref .....................   Passed    0.04 sec
+        Start 259: 79_premult_alpha_run_sgl
+259/745 Test #259: 79_premult_alpha_run_sgl .....................   Passed    0.01 sec
+        Start 260: 79_premult_alpha_compare
+260/745 Test #260: 79_premult_alpha_compare .....................   Passed    0.01 sec
+        Start 261: 80_blend_depth_run_ref
+261/745 Test #261: 80_blend_depth_run_ref .......................   Passed    0.04 sec
+        Start 262: 80_blend_depth_run_sgl
+262/745 Test #262: 80_blend_depth_run_sgl .......................   Passed    0.01 sec
+        Start 263: 80_blend_depth_compare
+263/745 Test #263: 80_blend_depth_compare .......................   Passed    0.01 sec
+        Start 264: 81_vbo_simple_run_ref
+264/745 Test #264: 81_vbo_simple_run_ref ........................   Passed    0.04 sec
+        Start 265: 81_vbo_simple_run_sgl
+265/745 Test #265: 81_vbo_simple_run_sgl ........................   Passed    0.01 sec
+        Start 266: 81_vbo_simple_compare
+266/745 Test #266: 81_vbo_simple_compare ........................   Passed    0.01 sec
+        Start 267: 82_vbo_interleaved_pc_run_ref
+267/745 Test #267: 82_vbo_interleaved_pc_run_ref ................   Passed    0.04 sec
+        Start 268: 82_vbo_interleaved_pc_run_sgl
+268/745 Test #268: 82_vbo_interleaved_pc_run_sgl ................   Passed    0.01 sec
+        Start 269: 82_vbo_interleaved_pc_compare
+269/745 Test #269: 82_vbo_interleaved_pc_compare ................   Passed    0.01 sec
+        Start 270: 83_vbo_interleaved_pnct_run_ref
+270/745 Test #270: 83_vbo_interleaved_pnct_run_ref ..............   Passed    0.04 sec
+        Start 271: 83_vbo_interleaved_pnct_run_sgl
+271/745 Test #271: 83_vbo_interleaved_pnct_run_sgl ..............   Passed    0.01 sec
+        Start 272: 83_vbo_interleaved_pnct_compare
+272/745 Test #272: 83_vbo_interleaved_pnct_compare ..............   Passed    0.01 sec
+        Start 273: 84_indexed_draw_run_ref
+273/745 Test #273: 84_indexed_draw_run_ref ......................   Passed    0.04 sec
+        Start 274: 84_indexed_draw_run_sgl
+274/745 Test #274: 84_indexed_draw_run_sgl ......................   Passed    0.01 sec
+        Start 275: 84_indexed_draw_compare
+275/745 Test #275: 84_indexed_draw_compare ......................   Passed    0.01 sec
+        Start 276: 85_multi_vbos_run_ref
+276/745 Test #276: 85_multi_vbos_run_ref ........................   Passed    0.04 sec
+        Start 277: 85_multi_vbos_run_sgl
+277/745 Test #277: 85_multi_vbos_run_sgl ........................   Passed    0.01 sec
+        Start 278: 85_multi_vbos_compare
+278/745 Test #278: 85_multi_vbos_compare ........................   Passed    0.01 sec
+        Start 279: 86_buffer_subdata_run_ref
+279/745 Test #279: 86_buffer_subdata_run_ref ....................   Passed    0.04 sec
+        Start 280: 86_buffer_subdata_run_sgl
+280/745 Test #280: 86_buffer_subdata_run_sgl ....................   Passed    0.01 sec
+        Start 281: 86_buffer_subdata_compare
+281/745 Test #281: 86_buffer_subdata_compare ....................   Passed    0.01 sec
+        Start 282: 87_large_mesh_run_ref
+282/745 Test #282: 87_large_mesh_run_ref ........................   Passed    0.05 sec
+        Start 283: 87_large_mesh_run_sgl
+283/745 Test #283: 87_large_mesh_run_sgl ........................   Passed    0.01 sec
+        Start 284: 87_large_mesh_compare
+284/745 Test #284: 87_large_mesh_compare ........................   Passed    0.01 sec
+        Start 285: 88_instanced_manual_run_ref
+285/745 Test #285: 88_instanced_manual_run_ref ..................   Passed    0.04 sec
+        Start 286: 88_instanced_manual_run_sgl
+286/745 Test #286: 88_instanced_manual_run_sgl ..................   Passed    0.01 sec
+        Start 287: 88_instanced_manual_compare
+287/745 Test #287: 88_instanced_manual_compare ..................   Passed    0.01 sec
+        Start 288: 89_dynamic_vbo_run_ref
+288/745 Test #288: 89_dynamic_vbo_run_ref .......................   Passed    0.04 sec
+        Start 289: 89_dynamic_vbo_run_sgl
+289/745 Test #289: 89_dynamic_vbo_run_sgl .......................   Passed    0.01 sec
+        Start 290: 89_dynamic_vbo_compare
+290/745 Test #290: 89_dynamic_vbo_compare .......................   Passed    0.01 sec
+        Start 291: 90_multi_drawarrays_run_ref
+291/745 Test #291: 90_multi_drawarrays_run_ref ..................   Passed    0.04 sec
+        Start 292: 90_multi_drawarrays_run_sgl
+292/745 Test #292: 90_multi_drawarrays_run_sgl ..................   Passed    0.01 sec
+        Start 293: 90_multi_drawarrays_compare
+293/745 Test #293: 90_multi_drawarrays_compare ..................   Passed    0.01 sec
+        Start 294: 91_dot3_baseline_run_ref
+294/745 Test #294: 91_dot3_baseline_run_ref .....................   Passed    0.04 sec
+        Start 295: 91_dot3_baseline_run_sgl
+295/745 Test #295: 91_dot3_baseline_run_sgl .....................   Passed    0.01 sec
+        Start 296: 91_dot3_baseline_compare
+296/745 Test #296: 91_dot3_baseline_compare .....................   Passed    0.01 sec
+        Start 297: 92_normalmap_pattern_run_ref
+297/745 Test #297: 92_normalmap_pattern_run_ref .................   Passed    0.04 sec
+        Start 298: 92_normalmap_pattern_run_sgl
+298/745 Test #298: 92_normalmap_pattern_run_sgl .................   Passed    0.01 sec
+        Start 299: 92_normalmap_pattern_compare
+299/745 Test #299: 92_normalmap_pattern_compare .................   Passed    0.01 sec
+        Start 300: 93_normalmap_depth_run_ref
+300/745 Test #300: 93_normalmap_depth_run_ref ...................   Passed    0.04 sec
+        Start 301: 93_normalmap_depth_run_sgl
+301/745 Test #301: 93_normalmap_depth_run_sgl ...................   Passed    0.01 sec
+        Start 302: 93_normalmap_depth_compare
+302/745 Test #302: 93_normalmap_depth_compare ...................   Passed    0.01 sec
+        Start 303: 94_lit_textured_sphere_run_ref
+303/745 Test #303: 94_lit_textured_sphere_run_ref ...............   Passed    0.04 sec
+        Start 304: 94_lit_textured_sphere_run_sgl
+304/745 Test #304: 94_lit_textured_sphere_run_sgl ...............   Passed    0.01 sec
+        Start 305: 94_lit_textured_sphere_compare
+305/745 Test #305: 94_lit_textured_sphere_compare ...............   Passed    0.01 sec
+        Start 306: 95_scene_sphere_ground_run_ref
+306/745 Test #306: 95_scene_sphere_ground_run_ref ...............   Passed    0.05 sec
+        Start 307: 95_scene_sphere_ground_run_sgl
+307/745 Test #307: 95_scene_sphere_ground_run_sgl ...............   Passed    0.01 sec
+        Start 308: 95_scene_sphere_ground_compare
+308/745 Test #308: 95_scene_sphere_ground_compare ...............   Passed    0.01 sec
+        Start 309: 96_building_cube_run_ref
+309/745 Test #309: 96_building_cube_run_ref .....................   Passed    0.04 sec
+        Start 310: 96_building_cube_run_sgl
+310/745 Test #310: 96_building_cube_run_sgl .....................   Passed    0.01 sec
+        Start 311: 96_building_cube_compare
+311/745 Test #311: 96_building_cube_compare .....................   Passed    0.01 sec
+        Start 312: 97_multiple_buildings_run_ref
+312/745 Test #312: 97_multiple_buildings_run_ref ................   Passed    0.04 sec
+        Start 313: 97_multiple_buildings_run_sgl
+313/745 Test #313: 97_multiple_buildings_run_sgl ................   Passed    0.01 sec
+        Start 314: 97_multiple_buildings_compare
+314/745 Test #314: 97_multiple_buildings_compare ................   Passed    0.01 sec
+        Start 315: 98_city_block_run_ref
+315/745 Test #315: 98_city_block_run_ref ........................   Passed    0.04 sec
+        Start 316: 98_city_block_run_sgl
+316/745 Test #316: 98_city_block_run_sgl ........................   Passed    0.01 sec
+        Start 317: 98_city_block_compare
+317/745 Test #317: 98_city_block_compare ........................   Passed    0.01 sec
+        Start 318: 99_moving_camera_run_ref
+318/745 Test #318: 99_moving_camera_run_ref .....................   Passed    0.04 sec
+        Start 319: 99_moving_camera_run_sgl
+319/745 Test #319: 99_moving_camera_run_sgl .....................   Passed    0.01 sec
+        Start 320: 99_moving_camera_compare
+320/745 Test #320: 99_moving_camera_compare .....................   Passed    0.01 sec
+        Start 321: 100_showcase_run_ref
+321/745 Test #321: 100_showcase_run_ref .........................   Passed    0.05 sec
+        Start 322: 100_showcase_run_sgl
+322/745 Test #322: 100_showcase_run_sgl .........................   Passed    0.01 sec
+        Start 323: 100_showcase_compare
+323/745 Test #323: 100_showcase_compare .........................   Passed    0.01 sec
+        Start 324: 101_begin_triangles_run_ref
+324/745 Test #324: 101_begin_triangles_run_ref ..................   Passed    0.04 sec
+        Start 325: 101_begin_triangles_run_sgl
+325/745 Test #325: 101_begin_triangles_run_sgl ..................   Passed    0.01 sec
+        Start 326: 101_begin_triangles_compare
+326/745 Test #326: 101_begin_triangles_compare ..................   Passed    0.01 sec
+        Start 327: 102_vertex_variants_run_ref
+327/745 Test #327: 102_vertex_variants_run_ref ..................   Passed    0.04 sec
+        Start 328: 102_vertex_variants_run_sgl
+328/745 Test #328: 102_vertex_variants_run_sgl ..................   Passed    0.01 sec
+        Start 329: 102_vertex_variants_compare
+329/745 Test #329: 102_vertex_variants_compare ..................   Passed    0.01 sec
+        Start 330: 103_triangle_strip_run_ref
+330/745 Test #330: 103_triangle_strip_run_ref ...................   Passed    0.04 sec
+        Start 331: 103_triangle_strip_run_sgl
+331/745 Test #331: 103_triangle_strip_run_sgl ...................   Passed    0.01 sec
+        Start 332: 103_triangle_strip_compare
+332/745 Test #332: 103_triangle_strip_compare ...................   Passed    0.01 sec
+        Start 333: 104_triangle_fan_run_ref
+333/745 Test #333: 104_triangle_fan_run_ref .....................   Passed    0.04 sec
+        Start 334: 104_triangle_fan_run_sgl
+334/745 Test #334: 104_triangle_fan_run_sgl .....................   Passed    0.01 sec
+        Start 335: 104_triangle_fan_compare
+335/745 Test #335: 104_triangle_fan_compare .....................   Passed    0.01 sec
+        Start 336: 105_quads_one_run_ref
+336/745 Test #336: 105_quads_one_run_ref ........................   Passed    0.04 sec
+        Start 337: 105_quads_one_run_sgl
+337/745 Test #337: 105_quads_one_run_sgl ........................   Passed    0.01 sec
+        Start 338: 105_quads_one_compare
+338/745 Test #338: 105_quads_one_compare ........................   Passed    0.01 sec
+        Start 339: 106_quads_two_run_ref
+339/745 Test #339: 106_quads_two_run_ref ........................   Passed    0.04 sec
+        Start 340: 106_quads_two_run_sgl
+340/745 Test #340: 106_quads_two_run_sgl ........................   Passed    0.01 sec
+        Start 341: 106_quads_two_compare
+341/745 Test #341: 106_quads_two_compare ........................   Passed    0.01 sec
+        Start 342: 107_quad_strip_run_ref
+342/745 Test #342: 107_quad_strip_run_ref .......................   Passed    0.04 sec
+        Start 343: 107_quad_strip_run_sgl
+343/745 Test #343: 107_quad_strip_run_sgl .......................   Passed    0.01 sec
+        Start 344: 107_quad_strip_compare
+344/745 Test #344: 107_quad_strip_compare .......................   Passed    0.01 sec
+        Start 345: 108_polygon_hexagon_run_ref
+345/745 Test #345: 108_polygon_hexagon_run_ref ..................   Passed    0.04 sec
+        Start 346: 108_polygon_hexagon_run_sgl
+346/745 Test #346: 108_polygon_hexagon_run_sgl ..................   Passed    0.01 sec
+        Start 347: 108_polygon_hexagon_compare
+347/745 Test #347: 108_polygon_hexagon_compare ..................   Passed    0.01 sec
+        Start 348: 109_lit_triangle_run_ref
+348/745 Test #348: 109_lit_triangle_run_ref .....................   Passed    0.04 sec
+        Start 349: 109_lit_triangle_run_sgl
+349/745 Test #349: 109_lit_triangle_run_sgl .....................   Passed    0.01 sec
+        Start 350: 109_lit_triangle_compare
+350/745 Test #350: 109_lit_triangle_compare .....................   Passed    0.01 sec
+        Start 351: 110_textured_quad_run_ref
+351/745 Test #351: 110_textured_quad_run_ref ....................   Passed    0.04 sec
+        Start 352: 110_textured_quad_run_sgl
+352/745 Test #352: 110_textured_quad_run_sgl ....................   Passed    0.01 sec
+        Start 353: 110_textured_quad_compare
+353/745 Test #353: 110_textured_quad_compare ....................   Passed    0.01 sec
+        Start 354: 111_multitexture_imm_run_ref
+354/745 Test #354: 111_multitexture_imm_run_ref .................   Passed    0.04 sec
+        Start 355: 111_multitexture_imm_run_sgl
+355/745 Test #355: 111_multitexture_imm_run_sgl .................   Passed    0.01 sec
+        Start 356: 111_multitexture_imm_compare
+356/745 Test #356: 111_multitexture_imm_compare .................   Passed    0.01 sec
+        Start 357: 112_rectf_run_ref
+357/745 Test #357: 112_rectf_run_ref ............................   Passed    0.04 sec
+        Start 358: 112_rectf_run_sgl
+358/745 Test #358: 112_rectf_run_sgl ............................   Passed    0.01 sec
+        Start 359: 112_rectf_compare
+359/745 Test #359: 112_rectf_compare ............................   Passed    0.01 sec
+        Start 360: 113_type_conversion_run_ref
+360/745 Test #360: 113_type_conversion_run_ref ..................   Passed    0.04 sec
+        Start 361: 113_type_conversion_run_sgl
+361/745 Test #361: 113_type_conversion_run_sgl ..................   Passed    0.01 sec
+        Start 362: 113_type_conversion_compare
+362/745 Test #362: 113_type_conversion_compare ..................   Passed    0.01 sec
+        Start 363: 114_array_element_run_ref
+363/745 Test #363: 114_array_element_run_ref ....................   Passed    0.04 sec
+        Start 364: 114_array_element_run_sgl
+364/745 Test #364: 114_array_element_run_sgl ....................   Passed    0.01 sec
+        Start 365: 114_array_element_compare
+365/745 Test #365: 114_array_element_compare ....................   Passed    0.01 sec
+        Start 366: 115_lit_polygon_run_ref
+366/745 Test #366: 115_lit_polygon_run_ref ......................   Passed    0.04 sec
+        Start 367: 115_lit_polygon_run_sgl
+367/745 Test #367: 115_lit_polygon_run_sgl ......................   Passed    0.01 sec
+        Start 368: 115_lit_polygon_compare
+368/745 Test #368: 115_lit_polygon_compare ......................   Passed    0.01 sec
+        Start 369: 116_dlist_empty_run_ref
+369/745 Test #369: 116_dlist_empty_run_ref ......................   Passed    0.04 sec
+        Start 370: 116_dlist_empty_run_sgl
+370/745 Test #370: 116_dlist_empty_run_sgl ......................   Passed    0.00 sec
+        Start 371: 116_dlist_empty_compare
+371/745 Test #371: 116_dlist_empty_compare ......................   Passed    0.00 sec
+        Start 372: 117_dlist_triangle_run_ref
+372/745 Test #372: 117_dlist_triangle_run_ref ...................   Passed    0.04 sec
+        Start 373: 117_dlist_triangle_run_sgl
+373/745 Test #373: 117_dlist_triangle_run_sgl ...................   Passed    0.01 sec
+        Start 374: 117_dlist_triangle_compare
+374/745 Test #374: 117_dlist_triangle_compare ...................   Passed    0.01 sec
+        Start 375: 118_dlist_transform_run_ref
+375/745 Test #375: 118_dlist_transform_run_ref ..................   Passed    0.04 sec
+        Start 376: 118_dlist_transform_run_sgl
+376/745 Test #376: 118_dlist_transform_run_sgl ..................   Passed    0.01 sec
+        Start 377: 118_dlist_transform_compare
+377/745 Test #377: 118_dlist_transform_compare ..................   Passed    0.01 sec
+        Start 378: 119_dlist_compile_and_execute_run_ref
+378/745 Test #378: 119_dlist_compile_and_execute_run_ref ........   Passed    0.04 sec
+        Start 379: 119_dlist_compile_and_execute_run_sgl
+379/745 Test #379: 119_dlist_compile_and_execute_run_sgl ........   Passed    0.01 sec
+        Start 380: 119_dlist_compile_and_execute_compare
+380/745 Test #380: 119_dlist_compile_and_execute_compare ........   Passed    0.01 sec
+        Start 381: 120_call_lists_byte_run_ref
+381/745 Test #381: 120_call_lists_byte_run_ref ..................   Passed    0.04 sec
+        Start 382: 120_call_lists_byte_run_sgl
+382/745 Test #382: 120_call_lists_byte_run_sgl ..................   Passed    0.01 sec
+        Start 383: 120_call_lists_byte_compare
+383/745 Test #383: 120_call_lists_byte_compare ..................   Passed    0.01 sec
+        Start 384: 121_nested_lists_run_ref
+384/745 Test #384: 121_nested_lists_run_ref .....................   Passed    0.04 sec
+        Start 385: 121_nested_lists_run_sgl
+385/745 Test #385: 121_nested_lists_run_sgl .....................   Passed    0.01 sec
+        Start 386: 121_nested_lists_compare
+386/745 Test #386: 121_nested_lists_compare .....................   Passed    0.01 sec
+        Start 387: 122_dlist_lit_run_ref
+387/745 Test #387: 122_dlist_lit_run_ref ........................   Passed    0.04 sec
+        Start 388: 122_dlist_lit_run_sgl
+388/745 Test #388: 122_dlist_lit_run_sgl ........................   Passed    0.01 sec
+        Start 389: 122_dlist_lit_compare
+389/745 Test #389: 122_dlist_lit_compare ........................   Passed    0.01 sec
+        Start 390: 123_dlist_texture_run_ref
+390/745 Test #390: 123_dlist_texture_run_ref ....................   Passed    0.04 sec
+        Start 391: 123_dlist_texture_run_sgl
+391/745 Test #391: 123_dlist_texture_run_sgl ....................   Passed    0.01 sec
+        Start 392: 123_dlist_texture_compare
+392/745 Test #392: 123_dlist_texture_compare ....................   Passed    0.01 sec
+        Start 393: 124_dlist_vbo_draw_run_ref
+393/745 Test #393: 124_dlist_vbo_draw_run_ref ...................   Passed    0.05 sec
+        Start 394: 124_dlist_vbo_draw_run_sgl
+394/745 Test #394: 124_dlist_vbo_draw_run_sgl ...................   Passed    0.01 sec
+        Start 395: 124_dlist_vbo_draw_compare
+395/745 Test #395: 124_dlist_vbo_draw_compare ...................   Passed    0.01 sec
+        Start 396: 125_dlist_vbo_alloc_run_ref
+396/745 Test #396: 125_dlist_vbo_alloc_run_ref ..................   Passed    0.04 sec
+        Start 397: 125_dlist_vbo_alloc_run_sgl
+397/745 Test #397: 125_dlist_vbo_alloc_run_sgl ..................   Passed    0.01 sec
+        Start 398: 125_dlist_vbo_alloc_compare
+398/745 Test #398: 125_dlist_vbo_alloc_compare ..................   Passed    0.01 sec
+        Start 399: 126_dlist_color_order_run_ref
+399/745 Test #399: 126_dlist_color_order_run_ref ................   Passed    0.05 sec
+        Start 400: 126_dlist_color_order_run_sgl
+400/745 Test #400: 126_dlist_color_order_run_sgl ................   Passed    0.01 sec
+        Start 401: 126_dlist_color_order_compare
+401/745 Test #401: 126_dlist_color_order_compare ................   Passed    0.01 sec
+        Start 402: 127_dlist_matrix_stack_run_ref
+402/745 Test #402: 127_dlist_matrix_stack_run_ref ...............   Passed    0.04 sec
+        Start 403: 127_dlist_matrix_stack_run_sgl
+403/745 Test #403: 127_dlist_matrix_stack_run_sgl ...............   Passed    0.01 sec
+        Start 404: 127_dlist_matrix_stack_compare
+404/745 Test #404: 127_dlist_matrix_stack_compare ...............   Passed    0.01 sec
+        Start 405: 128_dlist_repeat_outer_mv_run_ref
+405/745 Test #405: 128_dlist_repeat_outer_mv_run_ref ............   Passed    0.04 sec
+        Start 406: 128_dlist_repeat_outer_mv_run_sgl
+406/745 Test #406: 128_dlist_repeat_outer_mv_run_sgl ............   Passed    0.01 sec
+        Start 407: 128_dlist_repeat_outer_mv_compare
+407/745 Test #407: 128_dlist_repeat_outer_mv_compare ............   Passed    0.01 sec
+        Start 408: 129_dlist_id_recycle_run_ref
+408/745 Test #408: 129_dlist_id_recycle_run_ref .................   Passed    0.04 sec
+        Start 409: 129_dlist_id_recycle_run_sgl
+409/745 Test #409: 129_dlist_id_recycle_run_sgl .................   Passed    0.01 sec
+        Start 410: 129_dlist_id_recycle_compare
+410/745 Test #410: 129_dlist_id_recycle_compare .................   Passed    0.01 sec
+        Start 411: 130_call_lists_2bytes_run_ref
+411/745 Test #411: 130_call_lists_2bytes_run_ref ................   Passed    0.04 sec
+        Start 412: 130_call_lists_2bytes_run_sgl
+412/745 Test #412: 130_call_lists_2bytes_run_sgl ................   Passed    0.01 sec
+        Start 413: 130_call_lists_2bytes_compare
+413/745 Test #413: 130_call_lists_2bytes_compare ................   Passed    0.01 sec
+        Start 414: 131_lines_basic_run_ref
+414/745 Test #414: 131_lines_basic_run_ref ......................   Passed    0.04 sec
+        Start 415: 131_lines_basic_run_sgl
+415/745 Test #415: 131_lines_basic_run_sgl ......................   Passed    0.01 sec
+        Start 416: 131_lines_basic_compare
+416/745 Test #416: 131_lines_basic_compare ......................   Passed    0.01 sec
+        Start 417: 132_line_strip_run_ref
+417/745 Test #417: 132_line_strip_run_ref .......................   Passed    0.04 sec
+        Start 418: 132_line_strip_run_sgl
+418/745 Test #418: 132_line_strip_run_sgl .......................   Passed    0.01 sec
+        Start 419: 132_line_strip_compare
+419/745 Test #419: 132_line_strip_compare .......................   Passed    0.01 sec
+        Start 420: 133_line_loop_run_ref
+420/745 Test #420: 133_line_loop_run_ref ........................   Passed    0.04 sec
+        Start 421: 133_line_loop_run_sgl
+421/745 Test #421: 133_line_loop_run_sgl ........................   Passed    0.01 sec
+        Start 422: 133_line_loop_compare
+422/745 Test #422: 133_line_loop_compare ........................   Passed    0.01 sec
+        Start 423: 134_line_width_run_ref
+423/745 Test #423: 134_line_width_run_ref .......................   Passed    0.04 sec
+        Start 424: 134_line_width_run_sgl
+424/745 Test #424: 134_line_width_run_sgl .......................   Passed    0.01 sec
+        Start 425: 134_line_width_compare
+425/745 Test #425: 134_line_width_compare .......................   Passed    0.01 sec
+        Start 426: 135_points_grid_run_ref
+426/745 Test #426: 135_points_grid_run_ref ......................   Passed    0.04 sec
+        Start 427: 135_points_grid_run_sgl
+427/745 Test #427: 135_points_grid_run_sgl ......................   Passed    0.01 sec
+        Start 428: 135_points_grid_compare
+428/745 Test #428: 135_points_grid_compare ......................   Passed    0.01 sec
+        Start 429: 136_point_size_run_ref
+429/745 Test #429: 136_point_size_run_ref .......................   Passed    0.04 sec
+        Start 430: 136_point_size_run_sgl
+430/745 Test #430: 136_point_size_run_sgl .......................   Passed    0.01 sec
+        Start 431: 136_point_size_compare
+431/745 Test #431: 136_point_size_compare .......................   Passed    0.01 sec
+        Start 432: 137_polygon_mode_line_run_ref
+432/745 Test #432: 137_polygon_mode_line_run_ref ................   Passed    0.04 sec
+        Start 433: 137_polygon_mode_line_run_sgl
+433/745 Test #433: 137_polygon_mode_line_run_sgl ................   Passed    0.01 sec
+        Start 434: 137_polygon_mode_line_compare
+434/745 Test #434: 137_polygon_mode_line_compare ................   Passed    0.01 sec
+        Start 435: 138_polygon_mode_point_run_ref
+435/745 Test #435: 138_polygon_mode_point_run_ref ...............   Passed    0.04 sec
+        Start 436: 138_polygon_mode_point_run_sgl
+436/745 Test #436: 138_polygon_mode_point_run_sgl ...............   Passed    0.01 sec
+        Start 437: 138_polygon_mode_point_compare
+437/745 Test #437: 138_polygon_mode_point_compare ...............   Passed    0.01 sec
+        Start 438: 139_polygon_mode_two_faces_run_ref
+438/745 Test #438: 139_polygon_mode_two_faces_run_ref ...........   Passed    0.05 sec
+        Start 439: 139_polygon_mode_two_faces_run_sgl
+439/745 Test #439: 139_polygon_mode_two_faces_run_sgl ...........   Passed    0.01 sec
+        Start 440: 139_polygon_mode_two_faces_compare
+440/745 Test #440: 139_polygon_mode_two_faces_compare ...........   Passed    0.01 sec
+        Start 441: 140_polygon_offset_run_ref
+441/745 Test #441: 140_polygon_offset_run_ref ...................   Passed    0.04 sec
+        Start 442: 140_polygon_offset_run_sgl
+442/745 Test #442: 140_polygon_offset_run_sgl ...................   Passed    0.01 sec
+        Start 443: 140_polygon_offset_compare
+443/745 Test #443: 140_polygon_offset_compare ...................   Passed    0.01 sec
+        Start 444: 141_line_color_gradient_run_ref
+444/745 Test #444: 141_line_color_gradient_run_ref ..............   Passed    0.04 sec
+        Start 445: 141_line_color_gradient_run_sgl
+445/745 Test #445: 141_line_color_gradient_run_sgl ..............   Passed    0.01 sec
+        Start 446: 141_line_color_gradient_compare
+446/745 Test #446: 141_line_color_gradient_compare ..............   Passed    0.01 sec
+        Start 447: 142_line_perspective_depth_run_ref
+447/745 Test #447: 142_line_perspective_depth_run_ref ...........   Passed    0.04 sec
+        Start 448: 142_line_perspective_depth_run_sgl
+448/745 Test #448: 142_line_perspective_depth_run_sgl ...........   Passed    0.01 sec
+        Start 449: 142_line_perspective_depth_compare
+449/745 Test #449: 142_line_perspective_depth_compare ...........   Passed    0.01 sec
+        Start 450: 143_line_clip_run_ref
+450/745 Test #450: 143_line_clip_run_ref ........................   Passed    0.04 sec
+        Start 451: 143_line_clip_run_sgl
+451/745 Test #451: 143_line_clip_run_sgl ........................   Passed    0.01 sec
+        Start 452: 143_line_clip_compare
+452/745 Test #452: 143_line_clip_compare ........................   Passed    0.01 sec
+        Start 453: 144_edge_flag_polygon_run_ref
+453/745 Test #453: 144_edge_flag_polygon_run_ref ................   Passed    0.04 sec
+        Start 454: 144_edge_flag_polygon_run_sgl
+454/745 Test #454: 144_edge_flag_polygon_run_sgl ................   Passed    0.01 sec
+        Start 455: 144_edge_flag_polygon_compare
+455/745 Test #455: 144_edge_flag_polygon_compare ................   Passed    0.01 sec
+        Start 456: 145_mixed_primitives_run_ref
+456/745 Test #456: 145_mixed_primitives_run_ref .................   Passed    0.05 sec
+        Start 457: 145_mixed_primitives_run_sgl
+457/745 Test #457: 145_mixed_primitives_run_sgl .................   Passed    0.01 sec
+        Start 458: 145_mixed_primitives_compare
+458/745 Test #458: 145_mixed_primitives_compare .................   Passed    0.01 sec
+        Start 459: 146_stencil_clear_run_ref
+459/745 Test #459: 146_stencil_clear_run_ref ....................   Passed    0.05 sec
+        Start 460: 146_stencil_clear_run_sgl
+460/745 Test #460: 146_stencil_clear_run_sgl ....................   Passed    0.01 sec
+        Start 461: 146_stencil_clear_compare
+461/745 Test #461: 146_stencil_clear_compare ....................   Passed    0.01 sec
+        Start 462: 147_stencil_mask_basic_run_ref
+462/745 Test #462: 147_stencil_mask_basic_run_ref ...............   Passed    0.04 sec
+        Start 463: 147_stencil_mask_basic_run_sgl
+463/745 Test #463: 147_stencil_mask_basic_run_sgl ...............   Passed    0.01 sec
+        Start 464: 147_stencil_mask_basic_compare
+464/745 Test #464: 147_stencil_mask_basic_compare ...............   Passed    0.01 sec
+        Start 465: 148_stencil_incr_overlap_run_ref
+465/745 Test #465: 148_stencil_incr_overlap_run_ref .............   Passed    0.04 sec
+        Start 466: 148_stencil_incr_overlap_run_sgl
+466/745 Test #466: 148_stencil_incr_overlap_run_sgl .............   Passed    0.01 sec
+        Start 467: 148_stencil_incr_overlap_compare
+467/745 Test #467: 148_stencil_incr_overlap_compare .............   Passed    0.01 sec
+        Start 468: 149_stencil_invert_xor_run_ref
+468/745 Test #468: 149_stencil_invert_xor_run_ref ...............   Passed    0.04 sec
+        Start 469: 149_stencil_invert_xor_run_sgl
+469/745 Test #469: 149_stencil_invert_xor_run_sgl ...............   Passed    0.01 sec
+        Start 470: 149_stencil_invert_xor_compare
+470/745 Test #470: 149_stencil_invert_xor_compare ...............   Passed    0.01 sec
+        Start 471: 150_stencil_zfail_shadow_run_ref
+471/745 Test #471: 150_stencil_zfail_shadow_run_ref .............   Passed    0.04 sec
+        Start 472: 150_stencil_zfail_shadow_run_sgl
+472/745 Test #472: 150_stencil_zfail_shadow_run_sgl .............   Passed    0.01 sec
+        Start 473: 150_stencil_zfail_shadow_compare
+473/745 Test #473: 150_stencil_zfail_shadow_compare .............   Passed    0.01 sec
+        Start 474: 151_stencil_write_mask_run_ref
+474/745 Test #474: 151_stencil_write_mask_run_ref ...............   Passed    0.04 sec
+        Start 475: 151_stencil_write_mask_run_sgl
+475/745 Test #475: 151_stencil_write_mask_run_sgl ...............   Passed    0.01 sec
+        Start 476: 151_stencil_write_mask_compare
+476/745 Test #476: 151_stencil_write_mask_compare ...............   Passed    0.01 sec
+        Start 477: 152_stencil_value_mask_run_ref
+477/745 Test #477: 152_stencil_value_mask_run_ref ...............   Passed    0.05 sec
+        Start 478: 152_stencil_value_mask_run_sgl
+478/745 Test #478: 152_stencil_value_mask_run_sgl ...............   Passed    0.01 sec
+        Start 479: 152_stencil_value_mask_compare
+479/745 Test #479: 152_stencil_value_mask_compare ...............   Passed    0.01 sec
+        Start 480: 153_stencil_dpfail_incr_run_ref
+480/745 Test #480: 153_stencil_dpfail_incr_run_ref ..............   Passed    0.04 sec
+        Start 481: 153_stencil_dpfail_incr_run_sgl
+481/745 Test #481: 153_stencil_dpfail_incr_run_sgl ..............   Passed    0.01 sec
+        Start 482: 153_stencil_dpfail_incr_compare
+482/745 Test #482: 153_stencil_dpfail_incr_compare ..............   Passed    0.01 sec
+        Start 483: 154_stencil_portal_run_ref
+483/745 Test #483: 154_stencil_portal_run_ref ...................   Passed    0.05 sec
+        Start 484: 154_stencil_portal_run_sgl
+484/745 Test #484: 154_stencil_portal_run_sgl ...................   Passed    0.01 sec
+        Start 485: 154_stencil_portal_compare
+485/745 Test #485: 154_stencil_portal_compare ...................   Passed    0.01 sec
+        Start 486: 155_stencil_mirror_run_ref
+486/745 Test #486: 155_stencil_mirror_run_ref ...................   Passed    0.04 sec
+        Start 487: 155_stencil_mirror_run_sgl
+487/745 Test #487: 155_stencil_mirror_run_sgl ...................   Passed    0.01 sec
+        Start 488: 155_stencil_mirror_compare
+488/745 Test #488: 155_stencil_mirror_compare ...................   Passed    0.01 sec
+        Start 489: 156_tex1d_gradient_run_ref
+489/745 Test #489: 156_tex1d_gradient_run_ref ...................   Passed    0.04 sec
+        Start 490: 156_tex1d_gradient_run_sgl
+490/745 Test #490: 156_tex1d_gradient_run_sgl ...................   Passed    0.01 sec
+        Start 491: 156_tex1d_gradient_compare
+491/745 Test #491: 156_tex1d_gradient_compare ...................   Passed    0.01 sec
+        Start 492: 157_tex1d_lookup_run_ref
+492/745 Test #492: 157_tex1d_lookup_run_ref .....................   Passed    0.04 sec
+        Start 493: 157_tex1d_lookup_run_sgl
+493/745 Test #493: 157_tex1d_lookup_run_sgl .....................   Passed    0.01 sec
+        Start 494: 157_tex1d_lookup_compare
+494/745 Test #494: 157_tex1d_lookup_compare .....................   Passed    0.01 sec
+        Start 495: 158_tex3d_corners_run_ref
+495/745 Test #495: 158_tex3d_corners_run_ref ....................   Passed    0.05 sec
+        Start 496: 158_tex3d_corners_run_sgl
+496/745 Test #496: 158_tex3d_corners_run_sgl ....................   Passed    0.01 sec
+        Start 497: 158_tex3d_corners_compare
+497/745 Test #497: 158_tex3d_corners_compare ....................   Passed    0.01 sec
+        Start 498: 159_tex3d_slices_run_ref
+498/745 Test #498: 159_tex3d_slices_run_ref .....................   Passed    0.04 sec
+        Start 499: 159_tex3d_slices_run_sgl
+499/745 Test #499: 159_tex3d_slices_run_sgl .....................   Passed    0.01 sec
+        Start 500: 159_tex3d_slices_compare
+500/745 Test #500: 159_tex3d_slices_compare .....................   Passed    0.01 sec
+        Start 501: 160_cubemap_skybox_run_ref
+501/745 Test #501: 160_cubemap_skybox_run_ref ...................   Passed    0.04 sec
+        Start 502: 160_cubemap_skybox_run_sgl
+502/745 Test #502: 160_cubemap_skybox_run_sgl ...................   Passed    0.01 sec
+        Start 503: 160_cubemap_skybox_compare
+503/745 Test #503: 160_cubemap_skybox_compare ...................   Passed    0.01 sec
+        Start 504: 161_cubemap_reflect_run_ref
+504/745 Test #504: 161_cubemap_reflect_run_ref ..................   Passed    0.04 sec
+        Start 505: 161_cubemap_reflect_run_sgl
+505/745 Test #505: 161_cubemap_reflect_run_sgl ..................   Passed    0.01 sec
+        Start 506: 161_cubemap_reflect_compare
+506/745 Test #506: 161_cubemap_reflect_compare ..................   Passed    0.01 sec
+        Start 507: 162_cubemap_faces_run_ref
+507/745 Test #507: 162_cubemap_faces_run_ref ....................   Passed    0.04 sec
+        Start 508: 162_cubemap_faces_run_sgl
+508/745 Test #508: 162_cubemap_faces_run_sgl ....................   Passed    0.01 sec
+        Start 509: 162_cubemap_faces_compare
+509/745 Test #509: 162_cubemap_faces_compare ....................   Passed    0.01 sec
+        Start 510: 163_copy_tex_image_2d_run_ref
+510/745 Test #510: 163_copy_tex_image_2d_run_ref ................   Passed    0.07 sec
+        Start 511: 163_copy_tex_image_2d_run_sgl
+511/745 Test #511: 163_copy_tex_image_2d_run_sgl ................   Passed    0.01 sec
+        Start 512: 163_copy_tex_image_2d_compare
+512/745 Test #512: 163_copy_tex_image_2d_compare ................   Passed    0.01 sec
+        Start 513: 164_copy_tex_sub_image_2d_run_ref
+513/745 Test #513: 164_copy_tex_sub_image_2d_run_ref ............   Passed    0.07 sec
+        Start 514: 164_copy_tex_sub_image_2d_run_sgl
+514/745 Test #514: 164_copy_tex_sub_image_2d_run_sgl ............   Passed    0.01 sec
+        Start 515: 164_copy_tex_sub_image_2d_compare
+515/745 Test #515: 164_copy_tex_sub_image_2d_compare ............   Passed    0.01 sec
+        Start 516: 165_tex_sub_image_2d_run_ref
+516/745 Test #516: 165_tex_sub_image_2d_run_ref .................   Passed    0.04 sec
+        Start 517: 165_tex_sub_image_2d_run_sgl
+517/745 Test #517: 165_tex_sub_image_2d_run_sgl .................   Passed    0.01 sec
+        Start 518: 165_tex_sub_image_2d_compare
+518/745 Test #518: 165_tex_sub_image_2d_compare .................   Passed    0.01 sec
+        Start 519: 166_tex_sub_image_3d_run_ref
+519/745 Test #519: 166_tex_sub_image_3d_run_ref .................   Passed    0.04 sec
+        Start 520: 166_tex_sub_image_3d_run_sgl
+520/745 Test #520: 166_tex_sub_image_3d_run_sgl .................   Passed    0.01 sec
+        Start 521: 166_tex_sub_image_3d_compare
+521/745 Test #521: 166_tex_sub_image_3d_compare .................   Passed    0.01 sec
+        Start 522: 167_cubemap_lit_run_ref
+522/745 Test #522: 167_cubemap_lit_run_ref ......................   Passed    0.05 sec
+        Start 523: 167_cubemap_lit_run_sgl
+523/745 Test #523: 167_cubemap_lit_run_sgl ......................   Passed    0.01 sec
+        Start 524: 167_cubemap_lit_compare
+524/745 Test #524: 167_cubemap_lit_compare ......................   Passed    0.01 sec
+        Start 525: 168_tex3d_trilinear_run_ref
+525/745 Test #525: 168_tex3d_trilinear_run_ref ..................   Passed    0.04 sec
+        Start 526: 168_tex3d_trilinear_run_sgl
+526/745 Test #526: 168_tex3d_trilinear_run_sgl ..................   Passed    0.01 sec
+        Start 527: 168_tex3d_trilinear_compare
+527/745 Test #527: 168_tex3d_trilinear_compare ..................   Passed    0.01 sec
+        Start 528: 169_cube_and_2d_run_ref
+528/745 Test #528: 169_cube_and_2d_run_ref ......................   Passed    0.05 sec
+        Start 529: 169_cube_and_2d_run_sgl
+529/745 Test #529: 169_cube_and_2d_run_sgl ......................   Passed    0.01 sec
+        Start 530: 169_cube_and_2d_compare
+530/745 Test #530: 169_cube_and_2d_compare ......................   Passed    0.01 sec
+        Start 531: 170_all_targets_run_ref
+531/745 Test #531: 170_all_targets_run_ref ......................   Passed    0.06 sec
+        Start 532: 170_all_targets_run_sgl
+532/745 Test #532: 170_all_targets_run_sgl ......................   Passed    0.01 sec
+        Start 533: 170_all_targets_compare
+533/745 Test #533: 170_all_targets_compare ......................   Passed    0.01 sec
+        Start 534: 171_clip_plane_y_run_ref
+534/745 Test #534: 171_clip_plane_y_run_ref .....................   Passed    0.05 sec
+        Start 535: 171_clip_plane_y_run_sgl
+535/745 Test #535: 171_clip_plane_y_run_sgl .....................   Passed    0.01 sec
+        Start 536: 171_clip_plane_y_compare
+536/745 Test #536: 171_clip_plane_y_compare .....................   Passed    0.01 sec
+        Start 537: 172_clip_plane_diagonal_run_ref
+537/745 Test #537: 172_clip_plane_diagonal_run_ref ..............   Passed    0.04 sec
+        Start 538: 172_clip_plane_diagonal_run_sgl
+538/745 Test #538: 172_clip_plane_diagonal_run_sgl ..............   Passed    0.01 sec
+        Start 539: 172_clip_plane_diagonal_compare
+539/745 Test #539: 172_clip_plane_diagonal_compare ..............   Passed    0.01 sec
+        Start 540: 173_clip_plane_two_run_ref
+540/745 Test #540: 173_clip_plane_two_run_ref ...................   Passed    0.04 sec
+        Start 541: 173_clip_plane_two_run_sgl
+541/745 Test #541: 173_clip_plane_two_run_sgl ...................   Passed    0.01 sec
+        Start 542: 173_clip_plane_two_compare
+542/745 Test #542: 173_clip_plane_two_compare ...................   Passed    0.01 sec
+        Start 543: 174_color_material_diffuse_run_ref
+543/745 Test #543: 174_color_material_diffuse_run_ref ...........   Passed    0.05 sec
+        Start 544: 174_color_material_diffuse_run_sgl
+544/745 Test #544: 174_color_material_diffuse_run_sgl ...........   Passed    0.01 sec
+        Start 545: 174_color_material_diffuse_compare
+545/745 Test #545: 174_color_material_diffuse_compare ...........   Passed    0.01 sec
+        Start 546: 175_light_model_local_viewer_run_ref
+546/745 Test #546: 175_light_model_local_viewer_run_ref .........   Passed    0.04 sec
+        Start 547: 175_light_model_local_viewer_run_sgl
+547/745 Test #547: 175_light_model_local_viewer_run_sgl .........   Passed    0.01 sec
+        Start 548: 175_light_model_local_viewer_compare
+548/745 Test #548: 175_light_model_local_viewer_compare .........   Passed    0.01 sec
+        Start 549: 176_light_model_two_side_run_ref
+549/745 Test #549: 176_light_model_two_side_run_ref .............   Passed    0.04 sec
+        Start 550: 176_light_model_two_side_run_sgl
+550/745 Test #550: 176_light_model_two_side_run_sgl .............   Passed    0.01 sec
+        Start 551: 176_light_model_two_side_compare
+551/745 Test #551: 176_light_model_two_side_compare .............   Passed    0.01 sec
+        Start 552: 177_color_mask_run_ref
+552/745 Test #552: 177_color_mask_run_ref .......................   Passed    0.04 sec
+        Start 553: 177_color_mask_run_sgl
+553/745 Test #553: 177_color_mask_run_sgl .......................   Passed    0.01 sec
+        Start 554: 177_color_mask_compare
+554/745 Test #554: 177_color_mask_compare .......................   Passed    0.01 sec
+        Start 555: 178_logic_op_xor_run_ref
+555/745 Test #555: 178_logic_op_xor_run_ref .....................   Passed    0.05 sec
+        Start 556: 178_logic_op_xor_run_sgl
+556/745 Test #556: 178_logic_op_xor_run_sgl .....................   Passed    0.01 sec
+        Start 557: 178_logic_op_xor_compare
+557/745 Test #557: 178_logic_op_xor_compare .....................   Passed    0.01 sec
+        Start 558: 179_logic_op_invert_run_ref
+558/745 Test #558: 179_logic_op_invert_run_ref ..................   Passed    0.04 sec
+        Start 559: 179_logic_op_invert_run_sgl
+559/745 Test #559: 179_logic_op_invert_run_sgl ..................   Passed    0.01 sec
+        Start 560: 179_logic_op_invert_compare
+560/745 Test #560: 179_logic_op_invert_compare ..................   Passed    0.01 sec
+        Start 561: 180_hint_and_index_mask_run_ref
+561/745 Test #561: 180_hint_and_index_mask_run_ref ..............   Passed    0.03 sec
+        Start 562: 180_hint_and_index_mask_run_sgl
+562/745 Test #562: 180_hint_and_index_mask_run_sgl ..............   Passed    0.01 sec
+        Start 563: 180_hint_and_index_mask_compare
+563/745 Test #563: 180_hint_and_index_mask_compare ..............   Passed    0.01 sec
+        Start 564: 181_drawpixels_rgba_run_ref
+564/745 Test #564: 181_drawpixels_rgba_run_ref ..................   Passed    0.04 sec
+        Start 565: 181_drawpixels_rgba_run_sgl
+565/745 Test #565: 181_drawpixels_rgba_run_sgl ..................   Passed    0.01 sec
+        Start 566: 181_drawpixels_rgba_compare
+566/745 Test #566: 181_drawpixels_rgba_compare ..................   Passed    0.01 sec
+        Start 567: 182_drawpixels_luminance_run_ref
+567/745 Test #567: 182_drawpixels_luminance_run_ref .............   Passed    0.04 sec
+        Start 568: 182_drawpixels_luminance_run_sgl
+568/745 Test #568: 182_drawpixels_luminance_run_sgl .............   Passed    0.01 sec
+        Start 569: 182_drawpixels_luminance_compare
+569/745 Test #569: 182_drawpixels_luminance_compare .............   Passed    0.01 sec
+        Start 570: 183_drawpixels_rgb_float_run_ref
+570/745 Test #570: 183_drawpixels_rgb_float_run_ref .............   Passed    0.04 sec
+        Start 571: 183_drawpixels_rgb_float_run_sgl
+571/745 Test #571: 183_drawpixels_rgb_float_run_sgl .............   Passed    0.01 sec
+        Start 572: 183_drawpixels_rgb_float_compare
+572/745 Test #572: 183_drawpixels_rgb_float_compare .............   Passed    0.01 sec
+        Start 573: 184_readpixels_echo_run_ref
+573/745 Test #573: 184_readpixels_echo_run_ref ..................   Passed    0.05 sec
+        Start 574: 184_readpixels_echo_run_sgl
+574/745 Test #574: 184_readpixels_echo_run_sgl ..................   Passed    0.01 sec
+        Start 575: 184_readpixels_echo_compare
+575/745 Test #575: 184_readpixels_echo_compare ..................   Passed    0.01 sec
+        Start 576: 185_copypixels_run_ref
+576/745 Test #576: 185_copypixels_run_ref .......................   Passed    0.04 sec
+        Start 577: 185_copypixels_run_sgl
+577/745 Test #577: 185_copypixels_run_sgl .......................   Passed    0.01 sec
+        Start 578: 185_copypixels_compare
+578/745 Test #578: 185_copypixels_compare .......................   Passed    0.01 sec
+        Start 579: 186_pixelzoom_2x_run_ref
+579/745 Test #579: 186_pixelzoom_2x_run_ref .....................   Passed    0.04 sec
+        Start 580: 186_pixelzoom_2x_run_sgl
+580/745 Test #580: 186_pixelzoom_2x_run_sgl .....................   Passed    0.00 sec
+        Start 581: 186_pixelzoom_2x_compare
+581/745 Test #581: 186_pixelzoom_2x_compare .....................   Passed    0.01 sec
+        Start 582: 187_pixelzoom_flip_run_ref
+582/745 Test #582: 187_pixelzoom_flip_run_ref ...................   Passed    0.04 sec
+        Start 583: 187_pixelzoom_flip_run_sgl
+583/745 Test #583: 187_pixelzoom_flip_run_sgl ...................   Passed    0.01 sec
+        Start 584: 187_pixelzoom_flip_compare
+584/745 Test #584: 187_pixelzoom_flip_compare ...................   Passed    0.01 sec
+        Start 585: 188_unpack_alignment_run_ref
+585/745 Test #585: 188_unpack_alignment_run_ref .................   Passed    0.04 sec
+        Start 586: 188_unpack_alignment_run_sgl
+586/745 Test #586: 188_unpack_alignment_run_sgl .................   Passed    0.01 sec
+        Start 587: 188_unpack_alignment_compare
+587/745 Test #587: 188_unpack_alignment_compare .................   Passed    0.01 sec
+        Start 588: 189_unpack_rowlength_skip_run_ref
+588/745 Test #588: 189_unpack_rowlength_skip_run_ref ............   Passed    0.04 sec
+        Start 589: 189_unpack_rowlength_skip_run_sgl
+589/745 Test #589: 189_unpack_rowlength_skip_run_sgl ............   Passed    0.01 sec
+        Start 590: 189_unpack_rowlength_skip_compare
+590/745 Test #590: 189_unpack_rowlength_skip_compare ............   Passed    0.01 sec
+        Start 591: 190_rasterpos_clipped_run_ref
+591/745 Test #591: 190_rasterpos_clipped_run_ref ................   Passed    0.04 sec
+        Start 592: 190_rasterpos_clipped_run_sgl
+592/745 Test #592: 190_rasterpos_clipped_run_sgl ................   Passed    0.01 sec
+        Start 593: 190_rasterpos_clipped_compare
+593/745 Test #593: 190_rasterpos_clipped_compare ................   Passed    0.01 sec
+        Start 594: 191_combine_interpolate_run_ref
+594/745 Test #594: 191_combine_interpolate_run_ref ..............   Passed    0.04 sec
+        Start 595: 191_combine_interpolate_run_sgl
+595/745 Test #595: 191_combine_interpolate_run_sgl ..............   Passed    0.01 sec
+        Start 596: 191_combine_interpolate_compare
+596/745 Test #596: 191_combine_interpolate_compare ..............   Passed    0.01 sec
+        Start 597: 192_combine_subtract_run_ref
+597/745 Test #597: 192_combine_subtract_run_ref .................   Passed    0.04 sec
+        Start 598: 192_combine_subtract_run_sgl
+598/745 Test #598: 192_combine_subtract_run_sgl .................   Passed    0.01 sec
+        Start 599: 192_combine_subtract_compare
+599/745 Test #599: 192_combine_subtract_compare .................   Passed    0.01 sec
+        Start 600: 193_combine_add_signed_scale_run_ref
+600/745 Test #600: 193_combine_add_signed_scale_run_ref .........   Passed    0.04 sec
+        Start 601: 193_combine_add_signed_scale_run_sgl
+601/745 Test #601: 193_combine_add_signed_scale_run_sgl .........   Passed    0.01 sec
+        Start 602: 193_combine_add_signed_scale_compare
+602/745 Test #602: 193_combine_add_signed_scale_compare .........   Passed    0.01 sec
+        Start 603: 194_combine_split_alpha_run_ref
+603/745 Test #603: 194_combine_split_alpha_run_ref ..............   Passed    0.05 sec
+        Start 604: 194_combine_split_alpha_run_sgl
+604/745 Test #604: 194_combine_split_alpha_run_sgl ..............   Passed    0.01 sec
+        Start 605: 194_combine_split_alpha_compare
+605/745 Test #605: 194_combine_split_alpha_compare ..............   Passed    0.01 sec
+        Start 606: 195_combine_dot3_rgba_run_ref
+606/745 Test #606: 195_combine_dot3_rgba_run_ref ................   Passed    0.04 sec
+        Start 607: 195_combine_dot3_rgba_run_sgl
+607/745 Test #607: 195_combine_dot3_rgba_run_sgl ................   Passed    0.01 sec
+        Start 608: 195_combine_dot3_rgba_compare
+608/745 Test #608: 195_combine_dot3_rgba_compare ................   Passed    0.01 sec
+        Start 609: 196_occlusion_samples_run_ref
+609/745 Test #609: 196_occlusion_samples_run_ref ................   Passed    0.04 sec
+        Start 610: 196_occlusion_samples_run_sgl
+610/745 Test #610: 196_occlusion_samples_run_sgl ................   Passed    0.01 sec
+        Start 611: 196_occlusion_samples_compare
+611/745 Test #611: 196_occlusion_samples_compare ................   Passed    0.01 sec
+        Start 612: 197_occlusion_any_run_ref
+612/745 Test #612: 197_occlusion_any_run_ref ....................   Passed    0.04 sec
+        Start 613: 197_occlusion_any_run_sgl
+613/745 Test #613: 197_occlusion_any_run_sgl ....................   Passed    0.01 sec
+        Start 614: 197_occlusion_any_compare
+614/745 Test #614: 197_occlusion_any_compare ....................   Passed    0.01 sec
+        Start 615: 198_map_buffer_run_ref
+615/745 Test #615: 198_map_buffer_run_ref .......................   Passed    0.04 sec
+        Start 616: 198_map_buffer_run_sgl
+616/745 Test #616: 198_map_buffer_run_sgl .......................   Passed    0.01 sec
+        Start 617: 198_map_buffer_compare
+617/745 Test #617: 198_map_buffer_compare .......................   Passed    0.01 sec
+        Start 618: 199_evaluators_patch_run_ref
+618/745 Test #618: 199_evaluators_patch_run_ref .................   Passed    0.04 sec
+        Start 619: 199_evaluators_patch_run_sgl
+619/745 Test #619: 199_evaluators_patch_run_sgl .................   Passed    0.01 sec
+        Start 620: 199_evaluators_patch_compare
+620/745 Test #620: 199_evaluators_patch_compare .................   Passed    0.01 sec
+        Start 621: 200_accum_jitter_run_ref
+621/745 Test #621: 200_accum_jitter_run_ref .....................   Passed    0.05 sec
+        Start 622: 200_accum_jitter_run_sgl
+622/745 Test #622: 200_accum_jitter_run_sgl .....................   Passed    0.01 sec
+        Start 623: 200_accum_jitter_compare
+623/745 Test #623: 200_accum_jitter_compare .....................   Passed    0.01 sec
+        Start 624: 201_stipple_run_ref
+624/745 Test #624: 201_stipple_run_ref ..........................   Passed    0.05 sec
+        Start 625: 201_stipple_run_sgl
+625/745 Test #625: 201_stipple_run_sgl ..........................   Passed    0.01 sec
+        Start 626: 201_stipple_compare
+626/745 Test #626: 201_stipple_compare ..........................   Passed    0.01 sec
+        Start 627: 202_shadow_volume_run_ref
+627/745 Test #627: 202_shadow_volume_run_ref ....................   Passed    0.05 sec
+        Start 628: 202_shadow_volume_run_sgl
+628/745 Test #628: 202_shadow_volume_run_sgl ....................   Passed    0.01 sec
+        Start 629: 202_shadow_volume_compare
+629/745 Test #629: 202_shadow_volume_compare ....................   Passed    0.01 sec
+        Start 630: 203_bump_brick_run_ref
+630/745 Test #630: 203_bump_brick_run_ref .......................   Passed    0.04 sec
+        Start 631: 203_bump_brick_run_sgl
+631/745 Test #631: 203_bump_brick_run_sgl .......................   Passed    0.01 sec
+        Start 632: 203_bump_brick_compare
+632/745 Test #632: 203_bump_brick_compare .......................   Passed    0.01 sec
+        Start 633: 204_lightmap_corridor_run_ref
+633/745 Test #633: 204_lightmap_corridor_run_ref ................   Passed    0.04 sec
+        Start 634: 204_lightmap_corridor_run_sgl
+634/745 Test #634: 204_lightmap_corridor_run_sgl ................   Passed    0.01 sec
+        Start 635: 204_lightmap_corridor_compare
+635/745 Test #635: 204_lightmap_corridor_compare ................   Passed    0.01 sec
+        Start 636: 205_chrome_sphere_run_ref
+636/745 Test #636: 205_chrome_sphere_run_ref ....................   Passed    0.04 sec
+        Start 637: 205_chrome_sphere_run_sgl
+637/745 Test #637: 205_chrome_sphere_run_sgl ....................   Passed    0.01 sec
+        Start 638: 205_chrome_sphere_compare
+638/745 Test #638: 205_chrome_sphere_compare ....................   Passed    0.01 sec
+        Start 639: 206_spot_projector_run_ref
+639/745 Test #639: 206_spot_projector_run_ref ...................   Passed    0.04 sec
+        Start 640: 206_spot_projector_run_sgl
+640/745 Test #640: 206_spot_projector_run_sgl ...................   Passed    0.01 sec
+        Start 641: 206_spot_projector_compare
+641/745 Test #641: 206_spot_projector_compare ...................   Passed    0.01 sec
+        Start 642: 207_glass_window_run_ref
+642/745 Test #642: 207_glass_window_run_ref .....................   Passed    0.05 sec
+        Start 643: 207_glass_window_run_sgl
+643/745 Test #643: 207_glass_window_run_sgl .....................   Passed    0.01 sec
+        Start 644: 207_glass_window_compare
+644/745 Test #644: 207_glass_window_compare .....................   Passed    0.01 sec
+        Start 645: 208_terrain_blend_run_ref
+645/745 Test #645: 208_terrain_blend_run_ref ....................   Passed    0.04 sec
+        Start 646: 208_terrain_blend_run_sgl
+646/745 Test #646: 208_terrain_blend_run_sgl ....................   Passed    0.01 sec
+        Start 647: 208_terrain_blend_compare
+647/745 Test #647: 208_terrain_blend_compare ....................   Passed    0.01 sec
+        Start 648: 209_particles_additive_run_ref
+648/745 Test #648: 209_particles_additive_run_ref ...............   Passed    0.04 sec
+        Start 649: 209_particles_additive_run_sgl
+649/745 Test #649: 209_particles_additive_run_sgl ...............   Passed    0.01 sec
+        Start 650: 209_particles_additive_compare
+650/745 Test #650: 209_particles_additive_compare ...............   Passed    0.01 sec
+        Start 651: 210_portal_rooms_run_ref
+651/745 Test #651: 210_portal_rooms_run_ref .....................   Passed    0.05 sec
+        Start 652: 210_portal_rooms_run_sgl
+652/745 Test #652: 210_portal_rooms_run_sgl .....................   Passed    0.01 sec
+        Start 653: 210_portal_rooms_compare
+653/745 Test #653: 210_portal_rooms_compare .....................   Passed    0.01 sec
+        Start 654: 211_billboard_trees_run_ref
+654/745 Test #654: 211_billboard_trees_run_ref ..................   Passed    0.05 sec
+        Start 655: 211_billboard_trees_run_sgl
+655/745 Test #655: 211_billboard_trees_run_sgl ..................   Passed    0.01 sec
+        Start 656: 211_billboard_trees_compare
+656/745 Test #656: 211_billboard_trees_compare ..................   Passed    0.01 sec
+        Start 657: 212_skybox_sun_run_ref
+657/745 Test #657: 212_skybox_sun_run_ref .......................   Passed    0.05 sec
+        Start 658: 212_skybox_sun_run_sgl
+658/745 Test #658: 212_skybox_sun_run_sgl .......................   Passed    0.01 sec
+        Start 659: 212_skybox_sun_compare
+659/745 Test #659: 212_skybox_sun_compare .......................   Passed    0.01 sec
+        Start 660: 213_lens_flare_run_ref
+660/745 Test #660: 213_lens_flare_run_ref .......................   Passed    0.05 sec
+        Start 661: 213_lens_flare_run_sgl
+661/745 Test #661: 213_lens_flare_run_sgl .......................   Passed    0.01 sec
+        Start 662: 213_lens_flare_compare
+662/745 Test #662: 213_lens_flare_compare .......................   Passed    0.01 sec
+        Start 663: 214_decal_stencil_run_ref
+663/745 Test #663: 214_decal_stencil_run_ref ....................   Passed    0.05 sec
+        Start 664: 214_decal_stencil_run_sgl
+664/745 Test #664: 214_decal_stencil_run_sgl ....................   Passed    0.01 sec
+        Start 665: 214_decal_stencil_compare
+665/745 Test #665: 214_decal_stencil_compare ....................   Passed    0.01 sec
+        Start 666: 215_crt_emissive_run_ref
+666/745 Test #666: 215_crt_emissive_run_ref .....................   Passed    0.05 sec
+        Start 667: 215_crt_emissive_run_sgl
+667/745 Test #667: 215_crt_emissive_run_sgl .....................   Passed    0.01 sec
+        Start 668: 215_crt_emissive_compare
+668/745 Test #668: 215_crt_emissive_compare .....................   Passed    0.01 sec
+        Start 669: 216_water_surface_run_ref
+669/745 Test #669: 216_water_surface_run_ref ....................   Passed    0.05 sec
+        Start 670: 216_water_surface_run_sgl
+670/745 Test #670: 216_water_surface_run_sgl ....................   Passed    0.01 sec
+        Start 671: 216_water_surface_compare
+671/745 Test #671: 216_water_surface_compare ....................   Passed    0.01 sec
+        Start 672: 217_dot3_multipass_fog_run_ref
+672/745 Test #672: 217_dot3_multipass_fog_run_ref ...............   Passed    0.05 sec
+        Start 673: 217_dot3_multipass_fog_run_sgl
+673/745 Test #673: 217_dot3_multipass_fog_run_sgl ...............   Passed    0.01 sec
+        Start 674: 217_dot3_multipass_fog_compare
+674/745 Test #674: 217_dot3_multipass_fog_compare ...............   Passed    0.01 sec
+        Start 675: 218_worker_single_triangle_run_ref
+675/745 Test #675: 218_worker_single_triangle_run_ref ...........   Passed    0.04 sec
+        Start 676: 218_worker_single_triangle_run_sgl
+676/745 Test #676: 218_worker_single_triangle_run_sgl ...........   Passed    0.01 sec
+        Start 677: 218_worker_single_triangle_compare
+677/745 Test #677: 218_worker_single_triangle_compare ...........   Passed    0.01 sec
+        Start 678: 219_normal_matrix_batches_run_ref
+678/745 Test #678: 219_normal_matrix_batches_run_ref ............   Passed    0.04 sec
+        Start 679: 219_normal_matrix_batches_run_sgl
+679/745 Test #679: 219_normal_matrix_batches_run_sgl ............   Passed    0.01 sec
+        Start 680: 219_normal_matrix_batches_compare
+680/745 Test #680: 219_normal_matrix_batches_compare ............   Passed    0.01 sec
+        Start 681: 220_texture_linear_fog_run_ref
+681/745 Test #681: 220_texture_linear_fog_run_ref ...............   Passed    0.05 sec
+        Start 682: 220_texture_linear_fog_run_sgl
+682/745 Test #682: 220_texture_linear_fog_run_sgl ...............   Passed    0.01 sec
+        Start 683: 220_texture_linear_fog_compare
+683/745 Test #683: 220_texture_linear_fog_compare ...............   Passed    0.01 sec
+        Start 684: 221_texture_state_batches_run_ref
+684/745 Test #684: 221_texture_state_batches_run_ref ............   Passed    0.05 sec
+        Start 685: 221_texture_state_batches_run_sgl
+685/745 Test #685: 221_texture_state_batches_run_sgl ............   Passed    0.01 sec
+        Start 686: 221_texture_state_batches_compare
+686/745 Test #686: 221_texture_state_batches_compare ............   Passed    0.01 sec
+        Start 687: 222_worker_quad_boundaries_run_ref
+687/745 Test #687: 222_worker_quad_boundaries_run_ref ...........   Passed    0.05 sec
+        Start 688: 222_worker_quad_boundaries_run_sgl
+688/745 Test #688: 222_worker_quad_boundaries_run_sgl ...........   Passed    0.08 sec
+        Start 689: 222_worker_quad_boundaries_compare
+689/745 Test #689: 222_worker_quad_boundaries_compare ...........   Passed    0.01 sec
+        Start 690: 223_parallel_vertex_projection_run_ref
+690/745 Test #690: 223_parallel_vertex_projection_run_ref .......   Passed    0.05 sec
+        Start 691: 223_parallel_vertex_projection_run_sgl
+691/745 Test #691: 223_parallel_vertex_projection_run_sgl .......   Passed    0.01 sec
+        Start 692: 223_parallel_vertex_projection_compare
+692/745 Test #692: 223_parallel_vertex_projection_compare .......   Passed    0.01 sec
+        Start 693: 224_parallel_occlusion_queries_run_ref
+693/745 Test #693: 224_parallel_occlusion_queries_run_ref .......   Passed    0.05 sec
+        Start 694: 224_parallel_occlusion_queries_run_sgl
+694/745 Test #694: 224_parallel_occlusion_queries_run_sgl .......   Passed    0.04 sec
+        Start 695: 224_parallel_occlusion_queries_compare
+695/745 Test #695: 224_parallel_occlusion_queries_compare .......   Passed    0.01 sec
+        Start 696: 225_transformed_bin_lifetime_run_ref
+696/745 Test #696: 225_transformed_bin_lifetime_run_ref .........   Passed    0.04 sec
+        Start 697: 225_transformed_bin_lifetime_run_sgl
+697/745 Test #697: 225_transformed_bin_lifetime_run_sgl .........   Passed    0.01 sec
+        Start 698: 225_transformed_bin_lifetime_compare
+698/745 Test #698: 225_transformed_bin_lifetime_compare .........   Passed    0.01 sec
+        Start 699: 226_parallel_pool_queries_run_ref
+699/745 Test #699: 226_parallel_pool_queries_run_ref ............   Passed    0.05 sec
+        Start 700: 226_parallel_pool_queries_run_sgl
+700/745 Test #700: 226_parallel_pool_queries_run_sgl ............   Passed    0.03 sec
+        Start 701: 226_parallel_pool_queries_compare
+701/745 Test #701: 226_parallel_pool_queries_compare ............   Passed    0.01 sec
+        Start 702: 227_simd_color_rounding_run_ref
+702/745 Test #702: 227_simd_color_rounding_run_ref ..............   Passed    0.05 sec
+        Start 703: 227_simd_color_rounding_run_sgl
+703/745 Test #703: 227_simd_color_rounding_run_sgl ..............   Passed    0.04 sec
+        Start 704: 227_simd_color_rounding_compare
+704/745 Test #704: 227_simd_color_rounding_compare ..............   Passed    0.01 sec
+        Start 705: 228_texture_repeat_coordinates_run_ref
+705/745 Test #705: 228_texture_repeat_coordinates_run_ref .......   Passed    0.05 sec
+        Start 706: 228_texture_repeat_coordinates_run_sgl
+706/745 Test #706: 228_texture_repeat_coordinates_run_sgl .......   Passed    0.03 sec
+        Start 707: 228_texture_repeat_coordinates_compare
+707/745 Test #707: 228_texture_repeat_coordinates_compare .......   Passed    0.01 sec
+        Start 708: 229_scalar_early_depth_run_ref
+708/745 Test #708: 229_scalar_early_depth_run_ref ...............   Passed    0.07 sec
+        Start 709: 229_scalar_early_depth_run_sgl
+709/745 Test #709: 229_scalar_early_depth_run_sgl ...............   Passed    0.03 sec
+        Start 710: 229_scalar_early_depth_compare
+710/745 Test #710: 229_scalar_early_depth_compare ...............   Passed    0.01 sec
+        Start 711: 230_combiner_sampling_dependencies_run_ref
+711/745 Test #711: 230_combiner_sampling_dependencies_run_ref ...   Passed    0.06 sec
+        Start 712: 230_combiner_sampling_dependencies_run_sgl
+712/745 Test #712: 230_combiner_sampling_dependencies_run_sgl ...   Passed    0.02 sec
+        Start 713: 230_combiner_sampling_dependencies_compare
+713/745 Test #713: 230_combiner_sampling_dependencies_compare ...   Passed    0.01 sec
+        Start 714: 231_order_sensitive_sorting_run_ref
+714/745 Test #714: 231_order_sensitive_sorting_run_ref ..........   Passed    0.05 sec
+        Start 715: 231_order_sensitive_sorting_run_sgl
+715/745 Test #715: 231_order_sensitive_sorting_run_sgl ..........   Passed    0.01 sec
+        Start 716: 231_order_sensitive_sorting_compare
+716/745 Test #716: 231_order_sensitive_sorting_compare ..........   Passed    0.01 sec
+        Start 717: 232_combiner_operand_channels_run_ref
+717/745 Test #717: 232_combiner_operand_channels_run_ref ........   Passed    0.07 sec
+        Start 718: 232_combiner_operand_channels_run_sgl
+718/745 Test #718: 232_combiner_operand_channels_run_sgl ........   Passed    0.02 sec
+        Start 719: 232_combiner_operand_channels_compare
+719/745 Test #719: 232_combiner_operand_channels_compare ........   Passed    0.01 sec
+        Start 720: 233_large_query_handoffs_run_ref
+720/745 Test #720: 233_large_query_handoffs_run_ref .............   Passed    0.06 sec
+        Start 721: 233_large_query_handoffs_run_sgl
+721/745 Test #721: 233_large_query_handoffs_run_sgl .............   Passed    0.07 sec
+        Start 722: 233_large_query_handoffs_compare
+722/745 Test #722: 233_large_query_handoffs_compare .............   Passed    0.01 sec
+        Start 723: 234_multisample_state_run_ref
+723/745 Test #723: 234_multisample_state_run_ref ................   Passed    0.03 sec
+        Start 724: 234_multisample_state_run_sgl
+724/745 Test #724: 234_multisample_state_run_sgl ................   Passed    0.01 sec
+        Start 725: 234_multisample_state_compare
+725/745 Test #725: 234_multisample_state_compare ................   Passed    0.01 sec
+        Start 726: tank_view_0_run_ref
+726/745 Test #726: tank_view_0_run_ref ..........................   Passed    0.06 sec
+        Start 727: tank_view_0_run_sgl
+727/745 Test #727: tank_view_0_run_sgl ..........................   Passed    0.03 sec
+        Start 728: tank_view_0_compare
+728/745 Test #728: tank_view_0_compare ..........................   Passed    0.01 sec
+        Start 729: tank_view_120_run_ref
+729/745 Test #729: tank_view_120_run_ref ........................   Passed    0.06 sec
+        Start 730: tank_view_120_run_sgl
+730/745 Test #730: tank_view_120_run_sgl ........................   Passed    0.03 sec
+        Start 731: tank_view_120_compare
+731/745 Test #731: tank_view_120_compare ........................   Passed    0.01 sec
+        Start 732: tank_view_240_run_ref
+732/745 Test #732: tank_view_240_run_ref ........................   Passed    0.07 sec
+        Start 733: tank_view_240_run_sgl
+733/745 Test #733: tank_view_240_run_sgl ........................   Passed    0.03 sec
+        Start 734: tank_view_240_compare
+734/745 Test #734: tank_view_240_compare ........................   Passed    0.01 sec
+        Start 735: bmw_view_0_run_ref
+735/745 Test #735: bmw_view_0_run_ref ...........................   Passed    0.15 sec
+        Start 736: bmw_view_0_run_sgl
+736/745 Test #736: bmw_view_0_run_sgl ...........................   Passed    0.07 sec
+        Start 737: bmw_view_0_compare
+737/745 Test #737: bmw_view_0_compare ...........................   Passed    0.01 sec
+        Start 738: bmw_view_120_run_ref
+738/745 Test #738: bmw_view_120_run_ref .........................   Passed    0.15 sec
+        Start 739: bmw_view_120_run_sgl
+739/745 Test #739: bmw_view_120_run_sgl .........................   Passed    0.08 sec
+        Start 740: bmw_view_120_compare
+740/745 Test #740: bmw_view_120_compare .........................   Passed    0.01 sec
+        Start 741: bmw_view_240_run_ref
+741/745 Test #741: bmw_view_240_run_ref .........................   Passed    0.15 sec
+        Start 742: bmw_view_240_run_sgl
+742/745 Test #742: bmw_view_240_run_sgl .........................   Passed    0.08 sec
+        Start 743: bmw_view_240_compare
+743/745 Test #743: bmw_view_240_compare .........................   Passed    0.01 sec
+        Start 744: index_range_contract
+744/745 Test #744: index_range_contract .........................   Passed    0.63 sec
+        Start 745: slice_prepack_contract
+745/745 Test #745: slice_prepack_contract .......................   Passed    3.48 sec
+
+100% tests passed, 0 tests failed out of 745
+
+Total Test time (real) =  59.51 sec

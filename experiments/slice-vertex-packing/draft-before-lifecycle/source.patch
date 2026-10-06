@@ -1,0 +1,265 @@
+--- a/libsoftgl/src/workers.c
++++ b/libsoftgl/src/workers.c
+@@ -484,7 +484,7 @@
+     p->job_position_count = (int)(last_page - first_page + 1);
+ }
+ 
+-static void sg_transform_slice(softgl_ctx *c, sg_worker_pool *p,
++static void sg_transform_slice_vertices(softgl_ctx *c, sg_worker_pool *p,
+                                 int first, int end, int storage_first) {
+     if (!p->job_position_count) {
+         for (int i = first; i < end; i++)
+@@ -512,6 +512,23 @@
+             }
+         }
+         p->inside_frustum[i - storage_first] = (uint8_t)inside;
++    }
++}
++
++/* Preserve original ownership partitions/join. Chunk larger initial/serial
++ * slices only when their exact packed output can be written while locally hot. */
++static void sg_transform_slice(softgl_ctx *c, sg_worker_pool *p,
++                                int first, int end, int storage_first) {
++    if (!p->prepack_active) {
++        sg_transform_slice_vertices(c, p, first, end, storage_first);
++        return;
++    }
++    for (int begin = first; begin < end; ) {
++        int next = end - begin > 128 ? begin + 128 : end;
++        sg_transform_slice_vertices(c, p, begin, next, storage_first);
++        sg_packed_vertex_write(&p->prepacked, begin - storage_first,
++                              p->transformed + begin - storage_first, next - begin);
++        begin = next;
+     }
+ }
+ 
+@@ -874,6 +891,7 @@
+     }
+     if (p->vpool)       sg_aligned_free(p->vpool);
+     if (p->transformed) sg_aligned_free(p->transformed);
++    sg_aligned_free(p->prepacked.data);
+     free(p->inside_frustum);
+     sg_aligned_free(p->triangle_scratch);
+     free(p->column_bin);
+@@ -935,12 +953,14 @@
+     sg_position_prepare(c, p, first, count);
+     /* Positive: compact source count; negative: original-index storage. */
+     p->prepared_transformed = compact ? count : -count;
++    sg_prepack_prepare(c, p, count, compact);
+     if (p->async_pending) {
+         /* Old raster slots stay immutable. Idle queue workers may prepare
+          * disjoint slices of the next draw in the caller-owned arrays. */
+         if (p->async_pending == 3 && count >= 1024)
+             sg_queue_transform(c, p, first, count, storage_first, 0);
+         else sg_transform_slice(c, p, first, first + count, storage_first);
++        p->prepack_ready = p->prepack_active;
+         return p->transformed;
+     }
+     p->job_storage_first = storage_first;
+@@ -965,6 +985,7 @@
+     }
+     /* Reset default job type so subsequent flushes do the right thing. */
+     atomic_store_explicit(&p->job_type, SG_JOB_RASTER, memory_order_release);
++    p->prepack_ready = p->prepack_active;
+     return p->transformed;
+ }
+ 
+--- a/libsoftgl/src/workers.h
++++ b/libsoftgl/src/workers.h
+@@ -97,6 +97,15 @@
+     sg_position_vertex *vertices;
+     uint8_t *flags; /* bit1 valid, bit0 inside; one producer per vertex */
+ } sg_position_page;
++
++/* Filled triangles need exact NDC, front color, eye.z and active UVs only.
++ * Clipping, lighting and face-color selection have already completed. */
++typedef struct {
++    sg_vec4 *data;
++    size_t capacity;
++    int stride, transformed_count, unit_count;
++    uint8_t units[SG_MAX_TEX_UNITS];
++} sg_packed_raster_vertices;
+ 
+ typedef struct {
+     /* Immutable raster snapshots; the caller owns separate producer arrays.
+@@ -156,6 +165,11 @@
+     atomic_int triangle_next;
+     struct sg_geometry_entry *prepared_coverage_entry; /* caller-owned current draw */
+     uint64_t depth_epoch; /* caller only; any flush invalidates depth reuse */
++    /* Caller-owned packed output; geometry slices write disjoint ranges.
++     * Publication transfers ownership only after the existing stage join.
++     * Capacity shares the ordered queue's existing 2MiB vertex budget. */
++    sg_packed_raster_vertices prepacked;
++    int prepack_active, prepack_ready;
+ } sg_worker_pool;
+ 
+ void sg_workers_init(softgl_ctx *c, int nworkers_hint);
+--- a/libsoftgl/src/workers_queue_raw.inc
++++ b/libsoftgl/src/workers_queue_raw.inc
+@@ -45,6 +45,91 @@
+ static void sg_queue_free_vertices(sg_async_raster *r) {
+     sg_queue_free_raw_vertices(r);
+     sg_aligned_free(r->packed.data); memset(&r->packed, 0, sizeof(r->packed));
++}
++
++/* Only the caller owns this buffer. Workers see it during joined geometry;
++ * no pending raster slot ever aliases it. Reset before nonmatching fallbacks. */
++static void sg_prepack_clear(sg_worker_pool *p) {
++    sg_aligned_free(p->prepacked.data);
++    memset(&p->prepacked, 0, sizeof(p->prepacked));
++    p->prepack_active = p->prepack_ready = 0;
++}
++
++static unsigned sg_ordered_uv_mask(const sg_tex_tri_ctx *context) {
++    unsigned mask = 0;
++    for (int u = 0; u < SG_MAX_TEX_UNITS; u++)
++        if ((context->sample_mask & (1u << u)) && !context->unit[u].constant_color_valid)
++            mask |= 1u << u;
++    return mask;
++}
++
++/* Never wait/reserve a slot before geometry. Reuse caller-owned/idle storage
++ * or allocate only from the existing ordered vertex budget. Full queues and
++ * allocation failures retain the original late packing path. */
++static void sg_prepack_prepare(softgl_ctx *c, sg_worker_pool *p, int count, int compact) {
++    p->prepack_active = p->prepack_ready = 0;
++    if (!compact || count < 1024 || p->vpool_count ||
++        (size_t)p->transformed_cap > SG_STREAM_VERTICES ||
++        (p->async_pending && p->async_pending != 3) ||
++        c->imm_active || c->render_mode != GL_RENDER ||
++        c->polygon_mode_front != GL_FILL || c->polygon_mode_back != GL_FILL ||
++        c->current_query[SG_QUERY_TARGET_SAMPLES_PASSED] ||
++        c->current_query[SG_QUERY_TARGET_ANY_SAMPLES_PASSED] || !sg_queue_multitexture(c)) {
++        sg_prepack_clear(p);
++        return;
++    }
++    sg_tex_tri_ctx context;
++    sg_tex_tri_prepare(c, &context);
++    if (!context.combine_kind) { sg_prepack_clear(p); return; }
++    sg_packed_raster_vertices layout = {0};
++    sg_packed_vertex_layout(&layout, sg_ordered_uv_mask(&context), count);
++    size_t stride = (size_t)layout.stride * sizeof(sg_vec4);
++    if ((size_t)count > SG_STREAM_BYTES / stride) { sg_prepack_clear(p); return; }
++    size_t capacity = 16384;
++    while (capacity < (size_t)count * stride) capacity *= 2;
++    if (capacity > SG_STREAM_BYTES) capacity = SG_STREAM_BYTES;
++    struct sg_stream_queue *q = p->stream_queue;
++    pthread_mutex_lock(&p->mtx);
++    if (p->prepacked.capacity != capacity) sg_prepack_clear(p);
++    if (!p->prepacked.data && q) {
++        for (int i = 0; i < SG_QUEUE_SLOTS; i++) {
++            sg_queue_slot *slot = &q->slots[i];
++            if (!slot->pending && slot->draw->packed.capacity == capacity) {
++                p->prepacked = slot->draw->packed;
++                memset(&slot->draw->packed, 0, sizeof(slot->draw->packed));
++                break;
++            }
++        }
++    }
++    if (!p->prepacked.data) {
++        size_t bytes = 0;
++        if (q) for (int i = 0; i < SG_QUEUE_SLOTS; i++) bytes += sg_queue_bytes(q->slots[i].draw);
++        if (bytes > SG_STREAM_BYTES - capacity && q) {
++            for (int i = 0; i < SG_QUEUE_SLOTS; i++)
++                if (!q->slots[i].pending) sg_queue_free_vertices(q->slots[i].draw);
++            bytes = 0;
++            for (int i = 0; i < SG_QUEUE_SLOTS; i++) bytes += sg_queue_bytes(q->slots[i].draw);
++        }
++        if (bytes <= SG_STREAM_BYTES - capacity) {
++            p->prepacked.data = sg_aligned_alloc(capacity, 64);
++            if (p->prepacked.data) p->prepacked.capacity = capacity;
++        }
++    }
++    pthread_mutex_unlock(&p->mtx);
++    if (!p->prepacked.data) return;
++    layout.data = p->prepacked.data; layout.capacity = p->prepacked.capacity;
++    p->prepacked = layout;
++    p->prepack_active = 1;
++}
++
++static int sg_prepack_matches(const sg_worker_pool *p,
++                              const sg_packed_raster_vertices *layout, size_t capacity) {
++    return p->prepack_ready && p->prepacked.data &&
++        p->prepacked.capacity == capacity &&
++        p->prepacked.transformed_count == layout->transformed_count &&
++        p->prepacked.stride == layout->stride &&
++        p->prepacked.unit_count == layout->unit_count &&
++        !memcmp(p->prepacked.units, layout->units, (size_t)layout->unit_count);
+ }
+ 
+ /* Caller holds p->mtx, including when waiting workers inspect the queue. */
+@@ -280,12 +365,7 @@
+     sg_packed_raster_vertices layout = {0};
+     size_t packed_capacity = 0;
+     if (packed_mode) {
+-        unsigned uv_mask = 0;
+-        for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
+-            if ((texture_context.sample_mask & (1u << u)) &&
+-                !texture_context.unit[u].constant_color_valid)
+-                uv_mask |= 1u << u;
+-        }
++        unsigned uv_mask = sg_ordered_uv_mask(&texture_context);
+         sg_packed_vertex_layout(&layout, uv_mask, p->prepared_transformed);
+         size_t stride = (size_t)layout.stride * sizeof(sg_vec4);
+         if (count > SG_STREAM_BYTES / stride) return 0;
+@@ -294,6 +374,9 @@
+         while (packed_capacity < need) packed_capacity *= 2;
+         if (packed_capacity > SG_STREAM_BYTES) packed_capacity = SG_STREAM_BYTES;
+     }
++
++    int prepacked = packed_mode && sg_prepack_matches(p, &layout, packed_capacity);
++    if (!prepacked) sg_prepack_clear(p);
+ 
+     if (!p->stream_queue) {
+         struct sg_stream_queue *q = calloc(1, sizeof(*q));
+@@ -329,7 +412,8 @@
+         for (int i = 0; i < SG_QUEUE_SLOTS; i++) bytes += sg_queue_bytes(q->slots[i].draw);
+         if (q->count < SG_QUEUE_SLOTS) {
+             sg_async_raster *r = slot->draw;
+-            size_t projected = packed_mode ? bytes - sg_queue_bytes(r) + packed_capacity
++            size_t projected = packed_mode ? bytes - sg_queue_bytes(r) + packed_capacity +
++                (prepacked ? r->packed.capacity : 0)
+                 : bytes - r->packed.capacity;
+             if (!packed_mode && p->prepared_transformed)
+                 projected = projected - (size_t)r->transformed_cap * sizeof(sg_vert) +
+@@ -359,7 +443,12 @@
+     sg_async_raster *r = slot->draw;
+     if (packed_mode) {
+         sg_queue_free_raw_vertices(r);
+-        if (r->packed.capacity != packed_capacity) {
++        if (prepacked) {
++            sg_packed_raster_vertices idle = r->packed;
++            r->packed = p->prepacked;
++            p->prepacked = idle;
++            p->prepack_active = p->prepack_ready = 0;
++        } else if (r->packed.capacity != packed_capacity) {
+             sg_aligned_free(r->packed.data);
+             r->packed.data = NULL; r->packed.capacity = 0;
+             r->packed.data = sg_aligned_alloc(packed_capacity, 64);
+@@ -368,7 +457,7 @@
+         }
+         layout.data = r->packed.data; layout.capacity = r->packed.capacity;
+         r->packed = layout;
+-        if (layout.transformed_count)
++        if (!prepacked && layout.transformed_count)
+             sg_packed_vertex_write(&r->packed, 0, p->transformed, layout.transformed_count);
+         if (p->vpool_count)
+             sg_packed_vertex_write(&r->packed, layout.transformed_count, p->vpool, p->vpool_count);
+--- a/libsoftgl/src/raster_vertex_pack.h
++++ b/libsoftgl/src/raster_vertex_pack.h
+@@ -2,15 +2,6 @@
+ #define SOFTGL_RASTER_VERTEX_PACK_H
+ 
+ #include "workers.h"
+-
+-/* Filled triangles need exact NDC, front color, eye.z and active UVs only.
+- * Clipping, lighting and face-color selection have already completed. */
+-typedef struct {
+-    sg_vec4 *data;
+-    size_t capacity;
+-    int stride, transformed_count, unit_count;
+-    uint8_t units[SG_MAX_TEX_UNITS];
+-} sg_packed_raster_vertices;
+ 
+ #define SG_PACKED_VERTEX_CACHE_SIZE 64
+ typedef struct {

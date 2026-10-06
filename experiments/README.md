@@ -1,5 +1,23 @@
 # Optimization evidence
 
+The [geometry-slice vertex packing trial](slice-vertex-packing/README.md) is
+rejected. BMW audit directions disagree in every mode: off +0.628%/-0.580%,
+2x +0.234%/-0.038%, 4x -0.980%/+0.708%. There is no reproducible BMW benefit;
+T-80 controls are mixed. The candidate packs eligible vertices inside existing
+geometry partitions in 128-item chunks, preserves full vertices and late
+clipping, and transfers packed buffer ownership after the original join and
+reservation. Early allocation never waits and shares the existing ordered
+2MiB vertex budget; pending payloads remain immutable. All twenty library
+objects are rebuilt, nineteen match D4 exactly. Final 745 native + Bench1,
+25 sanitizer / 24 WASM contracts and all-mode image/model/edge gates pass;
+all eighteen comparisons pass the unchanged quiet guard on their first attempt.
+Fixture export and archival/resume script failures are retained with their
+corrections. Complete source, producer identities, raw timings and independent
+verification are published. D4/live and the accepted FPS report stay unchanged.
+Before a direct packed-vertex architecture trial, measure actual early-packing
+uptake and stage costs: these timings do not isolate budget misses, extra early
+work or displacement of raster work.
+
 The [current D4 caller/packing diagnostic](current-producer-phases/README.md)
 separates nine outer scopes and four disjoint submit subscopes across two quiet
 all-mode audits. BMW replay is only 0.187–0.302 wall ms/frame; packing is
@@ -12,10 +30,9 @@ removable metadata time. Full fidelity gates and all six first quiet guards pass
 source, producer identities, 1200 raw frames and independent parent/nested time
 checks are published. The disabled caller objects and JS/WASM match accepted D4
 exactly. Numeric current phase rows replace older CPU observations in the compact
-report; accepted FPS and the live renderer are unchanged. The next architecture
-trial will move recognized ordered-draw packing into existing geometry slices,
-retaining full vertices, clipping/failure fallbacks, immutable slot ownership
-and the existing storage budget. This proposal is not implemented by the diagnostic.
+report; accepted FPS and the live renderer are unchanged. The geometry-slice
+packing proposal is tested in the trial above and does not show a reproducible
+BMW benefit. The diagnostic itself does not implement that proposal.
 
 The [byte-group visibility selection trial](visibility-byte-select/README.md)
 is rejected. BMW off is slower in both audits (+1.096%/+1.367%) and all six

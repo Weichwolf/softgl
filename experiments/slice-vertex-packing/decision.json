@@ -1,0 +1,15 @@
+{
+  "status": "rejected",
+  "summary": "Rejected. BMW off (+0.628277%/-0.580383%),2x (+0.233556%/-0.037711%) and4x (-0.979528%/+0.708239%) show opposite audit directions; faster/slower pairs are4/2,2/4 and3/3. There is no reproducible primary-scene benefit. T-80 controls are also mixed; its2x second-audit benefit (-1.763500%) does not repeat in the first (+0.126377%). All correctness gates pass and all eighteen quiet comparisons pass on their first attempt. Keep the accepted D4 renderer/live preview unchanged. This is a failure to demonstrate benefit, not proof that packing locality or architecture cannot improve further.",
+  "referenceWasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+  "candidateWasmSha256": "d285f7701b4a9e9c5f89f4e115748da669f60743c4afd510eadec62c35b738bb",
+  "fullCorrectnessGatesPassed": true,
+  "all18ComparisonsCompleted": true,
+  "quietGuardAttempts": 18,
+  "quietGuardFirstAttemptsPassed": 18,
+  "sourceAndLiveUnchanged": true,
+  "decisionRule": "Complete all18 predeclared comparisons. Require clear reproducible BMW benefit in both audits and inspect all modes/T-80; reject small benefits accompanied by clearer BMW/MSAA regressions. No selective confirmation or parameter sweep.",
+  "pairDispersion": "Retain every pair. No uniform regression, statistical certainty, hardware/cache cause or ceiling inferred; no selective exclusion/reconfirmation or parameter sweep.",
+  "limitations": "This trial combines early sampler/layout work, allocation/idle reclamation,128-item local chunks, worker packing and ownership swaps. Timings do not isolate these or measure how many BMW draws actually acquired early storage. D4 packing counters are not candidate uptake.",
+  "nextResearchDirection": "Measure candidate early-packing uptake and caller/worker stage costs before selecting a direct packed-vertex producer design. Identify budget misses and raster displacement; keep those observations separate from noninstrumented timing claims."
+}

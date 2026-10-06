@@ -1,0 +1,42 @@
+{
+  "status": "draft-prepack-implemented-tests-pending",
+  "researchBaselineCommit": "74b9923fdaa79f6bc0d8f9c62741fe19d60dff3f",
+  "referenceWasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+  "changedFiles": [
+    "libsoftgl/src/workers.c",
+    "libsoftgl/src/workers.h",
+    "libsoftgl/src/workers_queue_raw.inc",
+    "libsoftgl/src/raster_vertex_pack.h"
+  ],
+  "finalSourceFiles": {
+    "libsoftgl/src/workers.c": "9ec5c957cadae3b28a16cecb906c62ac8d3ec0e87994f5b195d7e3630b303d24",
+    "libsoftgl/src/workers.h": "02f38dffc3d4bb8320b46b4ad6a75bae4e3d01039ce043d24529052ed2e6c730",
+    "libsoftgl/src/workers_queue_raw.inc": "24f650a733547e652acadf4873184c77856b3d26fa9368149393274384a51a6f",
+    "libsoftgl/src/raster_vertex_pack.h": "ba97041244e9cda2268c739514a82d96d3047fcb93fcfc60f6dc41944cf37261"
+  },
+  "patchSha256": "3b422059ec8d1fa63ca620e02fe7f94d9f39a2f1a4c5cfebd251512c39e187c2",
+  "hypothesis": "Move recognized ordered vertex packing into bounded128-item geometry chunks and transfer caller-owned output after the existing stage join/reservation. Full vertices and late clipped/fallback paths remain. No early slot wait; producer packed capacity shares existing ordered2MiB budget. Extra sampler/layout checks, allocations and storage pressure can offset locality/parallelism.",
+  "predeclaredComparisons": {
+    "samples": [
+      0,
+      2,
+      4
+    ],
+    "auditsEachMode": 2,
+    "pairsEachAudit": 3,
+    "roundsEachPair": 2,
+    "warmup": 80,
+    "frames": 100,
+    "models": [
+      "bmw",
+      "tank"
+    ],
+    "workers": 3,
+    "resolvePerFrame": true
+  },
+  "decisionRule": "Complete all18 predeclared comparisons. Require clear reproducible BMW benefit in both audits and inspect all modes/T-80; reject small benefits accompanied by clearer BMW/MSAA regressions. No selective confirmation or parameter sweep.",
+  "productionUntouched": true,
+  "allGeometryAndArithmeticUnchanged": true,
+  "noNewThreadsOrAtomics": true,
+  "wholeLibraryRebuildRequired": true
+}
