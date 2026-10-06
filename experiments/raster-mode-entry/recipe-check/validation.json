@@ -1,0 +1,35 @@
+{
+  "researchBaselineCommit": "24dbde1b4697f04e3ad119e798ebea408d79ce8a",
+  "referenceWasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+  "changedFiles": [
+    "libsoftgl/src/rasterizer.c",
+    "libsoftgl/src/raster_triangle_impl.h"
+  ],
+  "finalSourceFiles": {
+    "libsoftgl/src/rasterizer.c": "d20a75350a6171d3fcdf8d043efd804750af210a3e39ea6abe44753ce26ca1cc",
+    "libsoftgl/src/raster_triangle_impl.h": "0d05e45cbabf3979bc4b47c5f419fb270e3f0e8ee8fa559b8e4f4ddee160a6fd"
+  },
+  "patchSha256": "8910fa5885234f4753f936ba22a603a1d88677a072fd57d1336328aa957d4e25",
+  "hypothesis": "Separate off/2x/4x outer triangle entries, choose before setup, and retain the existing specialized MSAA inner loops/capture selection. Reduce shared per-function state and mixed-mode bodies while preserving all arithmetic, stores, coverage, geometry and job ownership. Extra dispatch/call/setup duplication/code size may outweigh the benefit. No off pixel compaction is included.",
+  "predeclaredComparisons": {
+    "samples": [
+      0,
+      2,
+      4
+    ],
+    "auditsEachMode": 2,
+    "pairsEachAudit": 3,
+    "roundsEachPair": 2,
+    "warmup": 80,
+    "frames": 100,
+    "models": [
+      "bmw",
+      "tank"
+    ],
+    "workers": 3,
+    "resolvePerFrame": true
+  },
+  "decisionRule": "Complete all eighteen fixed comparisons after full gates. Require reproducible BMW benefit in both audits; inspect all modes and T-80. No parameter sweep or selective confirmation.",
+  "status": "fresh-candidate-source-reconstructed",
+  "productionUntouched": true
+}

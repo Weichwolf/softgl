@@ -1,0 +1,10 @@
+{
+  "status": "rejected",
+  "candidateAdopted": false,
+  "analysisSha256": "327e68b123374bbec13eab3fa7c7ca325bac24980c6b20999bf6dff297a227fa",
+  "reason": "BMW changes do not reproduce across audits: off +0.174358%/-0.181628%,2x +0.134421%/-0.192380%,4x +0.097916%/-0.034401%. T-80 off audit means regress +2.232163%/+0.456785%. Reject standalone entry separation; this is not a statistical equivalence claim. D4/live/report remain active. Static mode separation and unchanged normalized inner bodies are verified, but no hardware/JIT cause is proven.",
+  "completedPairs": 18,
+  "allComparisonsFirstGuardAttempt": true,
+  "fullGatesPassed": true,
+  "goalRemainsActive": true
+}

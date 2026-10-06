@@ -1,5 +1,17 @@
 # Optimization evidence
 
+The [outer raster-mode entry trial](raster-mode-entry/README.md) is rejected
+as a standalone change. BMW audit time changes do not repeat: off
++0.174%/-0.182%,2x +0.134%/-0.192%,4x +0.098%/-0.034%. T-80 off regresses
++2.232%/+0.457%. This is not a statistical equivalence claim. All eighteen
+pairs pass their quiet guards on the first attempt and full regression gates
+pass. Actual retained function/call graphs confirm the split: a77-byte
+dispatcher,22710-byte off body and822-byte2x/4x setup entries. Inner MSAA/off-
+capture bodies match after numeric function-label normalization; this does not
+prove native JIT/spill/cache costs. Source, selected WAT, recipes and raw data
+are published; D4/live/report stay active. [Next](raster-mode-entry/next-research.md)
+tests a separate combined split-plus-off-packing module against D4.
+
 The [within-triangle off pixel-packing trial](off-pixel-packing/README.md)
 improves BMW off by -1.781%/-2.378% and 2x by -1.286%/-0.581% in two audits,
 but BMW 4x changes +1.510%/+0.488%, with four of six pairs slower. The joint
