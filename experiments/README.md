@@ -1,5 +1,18 @@
 # Optimization evidence
 
+The [current D4 native-code/profile diagnostic](current-v8-raster-code/README.md)
+completes six first-attempt quiet captures with Chromium 154/V8 15.4.80.19,
+actual complete native code-load records, owned PID/TID births and all nine
+warmed profiles per capture. Three workers show observable renderer work in
+every capture. Native region sizes repeat; they include data/padding and do
+not establish an instruction-cache or hardware ceiling. The cube-target prefix
+repeats seven 16-byte linear-memory stores before its coherent call: 112 logical
+source bytes, not physical traffic or saved cycles. Partial file suffixes and
+two generator/analyzer failures are retained. Selected records/disassembly,
+source, guards, profiles and reproduction recipes are published; renderer and
+accepted FPS stay D4. [Next](current-v8-raster-code/next-research.md): pass cube
+coordinates as vectors and defer scalar fallback scratch to rejection.
+
 The [combined static raster modes/off pixel packing trial](raster-mode-packing/README.md)
 improves BMW off in both audits (-2.550%/-1.816%, all six pairs), but regresses
 BMW 4x in both (+0.662%/+0.333%, all six pairs). BMW 2x is mixed; T-80 off

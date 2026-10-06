@@ -1,0 +1,98 @@
+{
+  "timestamp": "2026-10-06T09:19:44.667Z",
+  "browser": "154.0.8037.92",
+  "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+  "hostLogicalCpus": 4,
+  "gitCommit": "f9e14482bd0135d41a673715ccd52e3cb2d60381",
+  "driverSha256": "099ba3889eed3a8e2a81959f196dec10285256fc1129f354695c7aba9133e8df",
+  "wasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+  "options": {
+    "wasm-build": "build/controls/simd-index-range-candidate",
+    "native-build": "build/diagnostics/simd-index-range/native-full",
+    "output": "/home/cosmo/Git/softgl/build/diagnostics/current-v8-raster-code/runs/guarded-audit2-ms2/result.attempt-1.pending.json",
+    "rounds": 1,
+    "warmup": 80,
+    "frames": 240,
+    "samples": 2,
+    "browser": "/usr/bin/chromium",
+    "reference-build": "",
+    "candidate-workers": "",
+    "reference-workers": "",
+    "scenes": "bmw,tank",
+    "profile-scene": "bmw",
+    "bench-only": true
+  },
+  "metadata": {
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+    "hardwareConcurrency": 4,
+    "crossOriginIsolated": true,
+    "width": 640,
+    "height": 360,
+    "testCount": 234
+  },
+  "modelAssets": {
+    "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+    "referencePackSha256": null
+  },
+  "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+  "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "benchmarks": {
+    "workers": 3,
+    "workerCounts": {
+      "candidate": 3
+    },
+    "samples": 2,
+    "resolvePerFrame": true,
+    "protocol": "single variant",
+    "scenes": [
+      {
+        "name": "bmw",
+        "samples": [
+          31.432562499990066
+        ],
+        "medianMs": 31.432562499990066,
+        "minMs": 31.432562499990066,
+        "maxMs": 31.432562499990066,
+        "heapBytes": [
+          115998720
+        ],
+        "geometrySamples": [
+          {
+            "workers": 3,
+            "samples": 2
+          }
+        ]
+      },
+      {
+        "name": "tank",
+        "samples": [
+          13.97285416647792
+        ],
+        "medianMs": 13.97285416647792,
+        "minMs": 13.97285416647792,
+        "maxMs": 13.97285416647792,
+        "heapBytes": [
+          115998720
+        ],
+        "geometrySamples": [
+          {
+            "workers": 3,
+            "samples": 2
+          }
+        ]
+      }
+    ]
+  },
+  "profile": {
+    "scene": "bmw",
+    "path": "/home/cosmo/Git/softgl/build/diagnostics/current-v8-raster-code/runs/guarded-audit2-ms2/result.attempt-1.pending.profiles.json",
+    "targets": 9,
+    "intervalUs": 1000,
+    "preparation": {
+      "warmup": 80,
+      "frames": 240,
+      "workers": 3
+    },
+    "note": "Separate warmed diagnostic run; context/model loading, hierarchy preparation and warm-up excluded. Not benchmark acceptance evidence."
+  }
+}

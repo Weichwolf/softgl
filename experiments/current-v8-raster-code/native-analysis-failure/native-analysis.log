@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/home/cosmo/Git/softgl/build/diagnostics/current-v8-raster-code/analyze-native.py", line 34, in <module>
+    assert addr in instructions, (label,root['function'],hex(addr))
+           ^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('guarded-audit1-ms0', 'sg_raster_triangle_depth_capture', '0x1d2b7c4b111d')

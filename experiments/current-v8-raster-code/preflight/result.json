@@ -1,0 +1,105 @@
+{
+  "commandFlags": "--print-wasm-code --print-wasm-code-function-index=0 --redirect-code-traces --perf-prof --perf-prof-path=/home/cosmo/Git/softgl/build/diagnostics/current-v8-raster-code/preflight",
+  "command": [
+    "/usr/bin/chromium",
+    "--disable-field-trial-config",
+    "--disable-background-networking",
+    "--disable-background-timer-throttling",
+    "--disable-backgrounding-occluded-windows",
+    "--disable-back-forward-cache",
+    "--disable-breakpad",
+    "--disable-client-side-phishing-detection",
+    "--disable-component-extensions-with-background-pages",
+    "--disable-component-update",
+    "--no-default-browser-check",
+    "--disable-default-apps",
+    "--disable-dev-shm-usage",
+    "--disable-edgeupdater",
+    "--disable-extensions",
+    "--disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion",
+    "--enable-features=CDPScreenshotNewSurface",
+    "--allow-pre-commit-input",
+    "--disable-hang-monitor",
+    "--disable-ipc-flooding-protection",
+    "--disable-popup-blocking",
+    "--disable-prompt-on-repost",
+    "--disable-renderer-backgrounding",
+    "--disable-updater-scheduler",
+    "--force-color-profile=srgb",
+    "--metrics-recording-only",
+    "--no-first-run",
+    "--password-store=basic",
+    "--use-mock-keychain",
+    "--no-service-autorun",
+    "--export-tagged-pdf",
+    "--disable-search-engine-choice-screen",
+    "--unsafely-disable-devtools-self-xss-warnings",
+    "--edge-skip-compat-layer-relaunch",
+    "--disable-infobars",
+    "--disable-search-engine-choice-screen",
+    "--disable-sync",
+    "--enable-unsafe-swiftshader",
+    "--headless",
+    "--hide-scrollbars",
+    "--mute-audio",
+    "--blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4",
+    "--no-sandbox",
+    "--no-sandbox",
+    "--disable-dev-shm-usage",
+    "--js-flags=--print-wasm-code --print-wasm-code-function-index=0 --redirect-code-traces --perf-prof --perf-prof-path=/home/cosmo/Git/softgl/build/diagnostics/current-v8-raster-code/preflight",
+    "--user-data-dir=/home/cosmo/Git/softgl/build/tmp/playwright_chromiumdev_profile-pXSkhj",
+    "--remote-debugging-pipe",
+    "--no-startup-window"
+  ],
+  "pid": 2730402,
+  "birthTicks": "26942250",
+  "browserVersion": "154.0.8037.92",
+  "chromiumBinarySha256": "9cdd0829d2986f5163458879053e53bba0192cd0fdc588253bfa1ace55a9f34a",
+  "fixtureSha256": "f61fd62f57c41269c3c23f360eeaf1090b1db9c38651106674d48bc65dba88ba",
+  "result": 1000000,
+  "expected": 1000000,
+  "processes": [
+    {
+      "type": "browser",
+      "id": 2730402,
+      "cpuTime": 0.41
+    },
+    {
+      "type": "renderer",
+      "id": 2730498,
+      "cpuTime": 0.03
+    },
+    {
+      "type": "renderer",
+      "id": 2730500,
+      "cpuTime": 0.08
+    },
+    {
+      "type": "renderer",
+      "id": 2730489,
+      "cpuTime": 0.2
+    },
+    {
+      "type": "GPU",
+      "id": 2730443,
+      "cpuTime": 0.03
+    },
+    {
+      "type": "network.mojom.NetworkService",
+      "id": 2730446,
+      "cpuTime": 0.07
+    },
+    {
+      "type": "storage.mojom.StorageService",
+      "id": 2730458,
+      "cpuTime": 0.01
+    }
+  ],
+  "terminal": {
+    "exitCode": 0,
+    "signal": null
+  },
+  "stdoutBytes": 0,
+  "stderrBytes": 0,
+  "diagnosticOnly": true
+}
