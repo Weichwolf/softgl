@@ -1,5 +1,22 @@
 # Optimization evidence
 
+The [current D4 caller/packing diagnostic](current-producer-phases/README.md)
+separates nine outer scopes and four disjoint submit subscopes across two quiet
+all-mode audits. BMW replay is only 0.187–0.302 wall ms/frame; packing is
+0.848–0.918 ms and index scanning 0.095–0.113 ms. Ten ordered draws pack
+83,746 transformed vertices into 5,076,400 logical bytes in every observed BMW
+frame; these packed draws have no clipped output. All eighteen counters match
+at all 600 paired scene/mode/angle rows. Queue reservation costs 11.291–17.516
+BMW wall ms/frame but includes caller raster helping and waiting. It is not
+removable metadata time. Full fidelity gates and all six first quiet guards pass;
+source, producer identities, 1200 raw frames and independent parent/nested time
+checks are published. The disabled caller objects and JS/WASM match accepted D4
+exactly. Numeric current phase rows replace older CPU observations in the compact
+report; accepted FPS and the live renderer are unchanged. The next architecture
+trial will move recognized ordered-draw packing into existing geometry slices,
+retaining full vertices, clipping/failure fallbacks, immutable slot ownership
+and the existing storage budget. This proposal is not implemented by the diagnostic.
+
 The [byte-group visibility selection trial](visibility-byte-select/README.md)
 is rejected. BMW off is slower in both audits (+1.096%/+1.367%) and all six
 pairs. BMW 2x aggregates cost +2.220%/+1.531%, with four faster/two slower
@@ -15,7 +32,7 @@ C argument order is unspecified; explicit sequencing and repeated full gates
 produce identical counts. Original receipts, the correction, complete source,
 raw comparisons, actual opcode observations and portable verification are
 published. The accepted D4 renderer and live preview remain unchanged.
-Next, measure current D4 caller phase costs before selecting a larger change;
+The current D4 phase diagnostic above now separates replay and packing costs;
 logical replay counts alone do not rank those costs.
 
 The [current D4 cache-replay census](replay-path-census/README.md) observes two

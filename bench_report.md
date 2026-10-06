@@ -35,13 +35,13 @@
 | 4× | 58.522,77 / 20.040,68 | 6.173,91 | 9,54 |
 | T-80, alle Modi | 0 / 0 | 0 | — |
 
-| CPU-Zeit `7cc38593` / Fenster, 80 Warm-up + 240 Render/Resolve | BMW Audit 1 / 2 | T-80 Audit 1 / 2 |
-| --- | --- | --- |
-| 0×, Renderer gesamt, Kerne | 3.148 / 3.119 | 2.686 / 2.668 |
-| 2×, Renderer gesamt, Kerne | 3.245 / 3.258 | 2.768 / 2.778 |
-| 4×, Renderer gesamt, Kerne | 3.255 / 3.300 | 2.737 / 2.767 |
-| Hauptthread, Kerne, Bereich über alle Modi | 0.990–0.996 | 0.995–0.999 |
-| Aktive Worker je Thread, Kerne, Bereich über alle Modi | 0.697–0.764 | 0.552–0.598 |
+| BMW Caller-Diagnose `d4dd244c`, Wandzeit ms/Frame; Audit 1 / 2 | Transform inkl. Join | Dreiecke vorbereiten | Replay | Vertex-Packing¹ | Queue: Rasterhilfe/Warten¹ |
+| --- | --- | --- | --- | --- | --- |
+| Ohne MSAA | 3.5681 / 3.5186 | 2.4119 / 2.4147 | 0.1880 / 0.1866 | 0.8481 / 0.8693 | 11.2910 / 11.4640 |
+| 2× | 3.2815 / 3.4375 | 2.0652 / 2.0550 | 0.2741 / 0.2765 | 0.8752 / 0.8661 | 14.5360 / 14.5226 |
+| 4× | 3.5357 / 3.5572 | 2.2359 / 2.1477 | 0.2904 / 0.3022 | 0.9175 / 0.8902 | 17.5161 / 17.0395 |
+| ¹ Submit-Teilzeiten; inkl. Diagnose/Warten; nicht als reine CPU-Zeit addieren | — | — | — | — | — |
+| Rohdaten Caller-Diagnose | `experiments/current-producer-phases/results.json` | — | — | — | — |
 
 | Prüfung | Ergebnis |
 | --- | --- |
