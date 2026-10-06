@@ -1,0 +1,79 @@
+{
+  "status": "group-attach-reset-enable-read-and-id-mapping-passed",
+  "records": [
+    {
+      "type": "ready",
+      "events": [
+        {
+          "name": "cycles-user",
+          "type": 0,
+          "config": 0
+        },
+        {
+          "name": "instructions-user",
+          "type": 0,
+          "config": 1
+        },
+        {
+          "name": "branch-misses-user",
+          "type": 0,
+          "config": 5
+        },
+        {
+          "name": "l1d-read-misses-user",
+          "type": 3,
+          "config": 65536
+        },
+        {
+          "name": "cache-misses-user",
+          "type": 0,
+          "config": 3
+        }
+      ],
+      "threads": [
+        {
+          "pid": 2522788,
+          "tid": 2522788,
+          "ids": [
+            227,
+            228,
+            229,
+            230,
+            231
+          ],
+          "taskClockId": 232
+        }
+      ]
+    },
+    {
+      "type": "started",
+      "beginNs": 252672544745600,
+      "endNs": 252672544869300
+    },
+    {
+      "type": "stopped",
+      "beginNs": 252672830248200,
+      "endNs": 252672830414400,
+      "rows": [
+        {
+          "pid": 2522788,
+          "tid": 2522788,
+          "timeEnabledNs": 285315500,
+          "timeRunningNs": 285315500,
+          "values": [
+            672751837,
+            2386650345,
+            2450529,
+            2143650,
+            523846
+          ],
+          "taskClockNs": 285315500,
+          "taskClockEnabledNs": 285315500,
+          "taskClockRunningNs": 285315500
+        }
+      ]
+    }
+  ],
+  "checksum": 0,
+  "scope": "Python process itself:32MiB buffer allocated before enable,4 passes at64-byte stride. Availability/coexistence sanity check, not a rendering benchmark or quantitative cache oracle."
+}

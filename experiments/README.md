@@ -1,5 +1,14 @@
 # Optimization evidence
 
+The [current D4 hardware-counter diagnostic](current-texture-access/README.md)
+completes twelve quiet observations: two audits, both models, off/2x/4x.
+BMW retires 409–411 / 498–499 / 566–567 million native instructions per frame;
+all active hardware groups run without multiplexing. Raw thread identities,
+event IDs, counts and task-clock boundaries are retained. Aggregate misses do
+not isolate texture traffic or a hardware ceiling. The external collector,
+fresh observation recipe and verifier are published; the renderer and accepted
+benchmark timings stay unchanged.
+
 The [fixed ordered packed-capacity trial](ordered-packed-capacity/README.md)
 is rejected. 64-KiB allocation buckets reduce unused reservation within the
 unchanged shared 2-MiB vertex budget, but BMW gains do not reproduce across

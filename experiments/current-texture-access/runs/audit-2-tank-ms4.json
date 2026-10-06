@@ -1,0 +1,2574 @@
+{
+  "timestamp": "2026-10-06T04:39:36.772Z",
+  "browser": "154.0.8037.92",
+  "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+  "hostLogicalCpus": 4,
+  "gitCommit": "073a042c8160a46b5f47bc364b9c139950fcf989",
+  "driverSha256": "5d2579d9d9d3d463622729df0b3abc9ec17f6b420bc1995b3021294b25403713",
+  "wasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+  "options": {
+    "wasm-build": "/home/cosmo/Git/softgl/build/controls/simd-index-range-candidate",
+    "native-build": "/home/cosmo/Git/softgl/build/native",
+    "output": "/home/cosmo/Git/softgl/build/diagnostics/current-texture-access/runs/audit-2-tank-ms4.attempt-1.pending.json",
+    "rounds": 1,
+    "warmup": 80,
+    "frames": 240,
+    "samples": 4,
+    "browser": "/usr/bin/chromium",
+    "reference-build": "",
+    "candidate-workers": "",
+    "reference-workers": "",
+    "scenes": "tank",
+    "profile-scene": "tank",
+    "bench-only": true
+  },
+  "metadata": {
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+    "hardwareConcurrency": 4,
+    "crossOriginIsolated": true,
+    "width": 640,
+    "height": 360,
+    "testCount": 234
+  },
+  "modelAssets": {
+    "candidatePackSha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8",
+    "referencePackSha256": null
+  },
+  "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+  "sourceDiffSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "benchmarks": {
+    "workers": 3,
+    "workerCounts": {
+      "candidate": 3
+    },
+    "samples": 4,
+    "resolvePerFrame": true,
+    "protocol": "single variant",
+    "scenes": [
+      {
+        "name": "tank",
+        "samples": [
+          14.502729166671633
+        ],
+        "medianMs": 14.502729166671633,
+        "minMs": 14.502729166671633,
+        "maxMs": 14.502729166671633,
+        "heapBytes": [
+          96665600
+        ],
+        "geometrySamples": [
+          {
+            "workers": 3,
+            "samples": 4
+          }
+        ]
+      }
+    ]
+  },
+  "hardwareProfile": {
+    "events": [
+      {
+        "name": "cycles-user",
+        "type": 0,
+        "config": 0
+      },
+      {
+        "name": "instructions-user",
+        "type": 0,
+        "config": 1
+      },
+      {
+        "name": "branch-misses-user",
+        "type": 0,
+        "config": 5
+      },
+      {
+        "name": "l1d-read-misses-user",
+        "type": 3,
+        "config": 65536
+      },
+      {
+        "name": "cache-misses-user",
+        "type": 0,
+        "config": 3
+      }
+    ],
+    "rows": [
+      {
+        "pid": 2524214,
+        "tid": 2524214,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "chromium",
+        "ppid": 2524120,
+        "birthTicks": "25308646"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524215,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "HangWatcher",
+        "ppid": 2524120,
+        "birthTicks": "25308646"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524216,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "PerfettoTrace",
+        "ppid": 2524120,
+        "birthTicks": "25308646"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524217,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "ThreadPoolServi",
+        "ppid": 2524120,
+        "birthTicks": "25308646"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524218,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308646"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524219,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "Chrome_ChildIOT",
+        "ppid": 2524120,
+        "birthTicks": "25308646"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524220,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308646"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524221,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "Compositor",
+        "ppid": 2524120,
+        "birthTicks": "25308648"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524222,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "ThreadPoolSingl",
+        "ppid": 2524120,
+        "birthTicks": "25308648"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524194,
+        "timeEnabledNs": 3524603800,
+        "timeRunningNs": 3524603800,
+        "values": [
+          8083494583,
+          19674305638,
+          29683088,
+          184007496,
+          60911087
+        ],
+        "taskClockNs": 3524603800,
+        "taskClockEnabledNs": 3524603800,
+        "taskClockRunningNs": 3524603800,
+        "name": "chromium",
+        "ppid": 2524120,
+        "birthTicks": "25308634"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524196,
+        "timeEnabledNs": 71500,
+        "timeRunningNs": 71500,
+        "values": [
+          105643,
+          35329,
+          449,
+          520,
+          1777
+        ],
+        "taskClockNs": 71500,
+        "taskClockEnabledNs": 71500,
+        "taskClockRunningNs": 71500,
+        "name": "HangWatcher",
+        "ppid": 2524120,
+        "birthTicks": "25308634"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524198,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "PerfettoTrace",
+        "ppid": 2524120,
+        "birthTicks": "25308634"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524199,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "ThreadPoolServi",
+        "ppid": 2524120,
+        "birthTicks": "25308634"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524200,
+        "timeEnabledNs": 2572600,
+        "timeRunningNs": 2572600,
+        "values": [
+          5912693,
+          6243207,
+          82206,
+          47738,
+          64658
+        ],
+        "taskClockNs": 2572600,
+        "taskClockEnabledNs": 2572600,
+        "taskClockRunningNs": 2572600,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308634"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524201,
+        "timeEnabledNs": 247800,
+        "timeRunningNs": 247800,
+        "values": [
+          209708,
+          37983,
+          1027,
+          2564,
+          3749
+        ],
+        "taskClockNs": 247800,
+        "taskClockEnabledNs": 247800,
+        "taskClockRunningNs": 247800,
+        "name": "Chrome_ChildIOT",
+        "ppid": 2524120,
+        "birthTicks": "25308634"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524207,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308635"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524208,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "Compositor",
+        "ppid": 2524120,
+        "birthTicks": "25308635"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524209,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "ThreadPoolSingl",
+        "ppid": 2524120,
+        "birthTicks": "25308635"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524224,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308651"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524225,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308657"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524226,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308657"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524227,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308657"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524228,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308659"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524229,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308661"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524230,
+        "timeEnabledNs": 2045124700,
+        "timeRunningNs": 2045124700,
+        "values": [
+          4582844780,
+          10258828141,
+          27385553,
+          32737335,
+          10233262
+        ],
+        "taskClockNs": 2045124700,
+        "taskClockEnabledNs": 2045124700,
+        "taskClockRunningNs": 2045124700,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308663"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524231,
+        "timeEnabledNs": 2010529700,
+        "timeRunningNs": 2010529700,
+        "values": [
+          4505190863,
+          10142634379,
+          27076922,
+          32293859,
+          10118538
+        ],
+        "taskClockNs": 2010529700,
+        "taskClockEnabledNs": 2010529700,
+        "taskClockRunningNs": 2010529700,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308663"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524232,
+        "timeEnabledNs": 2048686900,
+        "timeRunningNs": 2048686900,
+        "values": [
+          4592044694,
+          10279930422,
+          27610391,
+          32598069,
+          10341304
+        ],
+        "taskClockNs": 2048686900,
+        "taskClockEnabledNs": 2048686900,
+        "taskClockRunningNs": 2048686900,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308664"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524185,
+        "timeEnabledNs": 2091300,
+        "timeRunningNs": 2091300,
+        "values": [
+          2960138,
+          1299699,
+          10148,
+          30507,
+          50543
+        ],
+        "taskClockNs": 2091300,
+        "taskClockEnabledNs": 2091300,
+        "taskClockRunningNs": 2091300,
+        "name": "chromium",
+        "ppid": 2524120,
+        "birthTicks": "25308630"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524186,
+        "timeEnabledNs": 71700,
+        "timeRunningNs": 71700,
+        "values": [
+          104691,
+          35268,
+          441,
+          557,
+          2370
+        ],
+        "taskClockNs": 71700,
+        "taskClockEnabledNs": 71700,
+        "taskClockRunningNs": 71700,
+        "name": "HangWatcher",
+        "ppid": 2524120,
+        "birthTicks": "25308630"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524187,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "PerfettoTrace",
+        "ppid": 2524120,
+        "birthTicks": "25308630"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524188,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "ThreadPoolServi",
+        "ppid": 2524120,
+        "birthTicks": "25308630"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524189,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308630"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524190,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "Chrome_ChildIOT",
+        "ppid": 2524120,
+        "birthTicks": "25308630"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524191,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308631"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524192,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "Compositor",
+        "ppid": 2524120,
+        "birthTicks": "25308632"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524193,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "ThreadPoolSingl",
+        "ppid": 2524120,
+        "birthTicks": "25308632"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524213,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308640"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524223,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308648"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524234,
+        "timeEnabledNs": 0,
+        "timeRunningNs": 0,
+        "values": [
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "taskClockNs": 0,
+        "taskClockEnabledNs": 0,
+        "taskClockRunningNs": 0,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308680"
+      }
+    ],
+    "processes": [
+      {
+        "pid": 2524214,
+        "tid": 2524214,
+        "name": "chromium",
+        "ppid": 2524120,
+        "birthTicks": "25308646"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524194,
+        "name": "chromium",
+        "ppid": 2524120,
+        "birthTicks": "25308634"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524185,
+        "name": "chromium",
+        "ppid": 2524120,
+        "birthTicks": "25308630"
+      }
+    ],
+    "browserPid": 2524098,
+    "before": [
+      {
+        "pid": 2524214,
+        "tid": 2524214,
+        "name": "chromium",
+        "ppid": 2524120,
+        "birthTicks": "25308646"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524215,
+        "name": "HangWatcher",
+        "ppid": 2524120,
+        "birthTicks": "25308646"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524216,
+        "name": "PerfettoTrace",
+        "ppid": 2524120,
+        "birthTicks": "25308646"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524217,
+        "name": "ThreadPoolServi",
+        "ppid": 2524120,
+        "birthTicks": "25308646"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524218,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308646"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524219,
+        "name": "Chrome_ChildIOT",
+        "ppid": 2524120,
+        "birthTicks": "25308646"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524220,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308646"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524221,
+        "name": "Compositor",
+        "ppid": 2524120,
+        "birthTicks": "25308648"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524222,
+        "name": "ThreadPoolSingl",
+        "ppid": 2524120,
+        "birthTicks": "25308648"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524194,
+        "name": "chromium",
+        "ppid": 2524120,
+        "birthTicks": "25308634"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524196,
+        "name": "HangWatcher",
+        "ppid": 2524120,
+        "birthTicks": "25308634"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524198,
+        "name": "PerfettoTrace",
+        "ppid": 2524120,
+        "birthTicks": "25308634"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524199,
+        "name": "ThreadPoolServi",
+        "ppid": 2524120,
+        "birthTicks": "25308634"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524200,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308634"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524201,
+        "name": "Chrome_ChildIOT",
+        "ppid": 2524120,
+        "birthTicks": "25308634"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524207,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308635"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524208,
+        "name": "Compositor",
+        "ppid": 2524120,
+        "birthTicks": "25308635"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524209,
+        "name": "ThreadPoolSingl",
+        "ppid": 2524120,
+        "birthTicks": "25308635"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524224,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308651"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524225,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308657"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524226,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308657"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524227,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308657"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524228,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308659"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524229,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308661"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524230,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308663"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524231,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308663"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524232,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308664"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524185,
+        "name": "chromium",
+        "ppid": 2524120,
+        "birthTicks": "25308630"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524186,
+        "name": "HangWatcher",
+        "ppid": 2524120,
+        "birthTicks": "25308630"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524187,
+        "name": "PerfettoTrace",
+        "ppid": 2524120,
+        "birthTicks": "25308630"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524188,
+        "name": "ThreadPoolServi",
+        "ppid": 2524120,
+        "birthTicks": "25308630"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524189,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308630"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524190,
+        "name": "Chrome_ChildIOT",
+        "ppid": 2524120,
+        "birthTicks": "25308630"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524191,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308631"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524192,
+        "name": "Compositor",
+        "ppid": 2524120,
+        "birthTicks": "25308632"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524193,
+        "name": "ThreadPoolSingl",
+        "ppid": 2524120,
+        "birthTicks": "25308632"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524213,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308640"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524223,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308648"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524234,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308680"
+      }
+    ],
+    "after": [
+      {
+        "pid": 2524214,
+        "tid": 2524214,
+        "name": "chromium",
+        "ppid": 2524120,
+        "birthTicks": "25308646"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524215,
+        "name": "HangWatcher",
+        "ppid": 2524120,
+        "birthTicks": "25308646"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524216,
+        "name": "PerfettoTrace",
+        "ppid": 2524120,
+        "birthTicks": "25308646"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524217,
+        "name": "ThreadPoolServi",
+        "ppid": 2524120,
+        "birthTicks": "25308646"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524218,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308646"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524219,
+        "name": "Chrome_ChildIOT",
+        "ppid": 2524120,
+        "birthTicks": "25308646"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524220,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308646"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524221,
+        "name": "Compositor",
+        "ppid": 2524120,
+        "birthTicks": "25308648"
+      },
+      {
+        "pid": 2524214,
+        "tid": 2524222,
+        "name": "ThreadPoolSingl",
+        "ppid": 2524120,
+        "birthTicks": "25308648"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524194,
+        "name": "chromium",
+        "ppid": 2524120,
+        "birthTicks": "25308634"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524196,
+        "name": "HangWatcher",
+        "ppid": 2524120,
+        "birthTicks": "25308634"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524198,
+        "name": "PerfettoTrace",
+        "ppid": 2524120,
+        "birthTicks": "25308634"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524199,
+        "name": "ThreadPoolServi",
+        "ppid": 2524120,
+        "birthTicks": "25308634"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524200,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308634"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524201,
+        "name": "Chrome_ChildIOT",
+        "ppid": 2524120,
+        "birthTicks": "25308634"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524207,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308635"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524208,
+        "name": "Compositor",
+        "ppid": 2524120,
+        "birthTicks": "25308635"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524209,
+        "name": "ThreadPoolSingl",
+        "ppid": 2524120,
+        "birthTicks": "25308635"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524224,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308651"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524225,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308657"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524226,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308657"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524227,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308657"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524228,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308659"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524229,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308661"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524230,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308663"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524231,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308663"
+      },
+      {
+        "pid": 2524194,
+        "tid": 2524232,
+        "name": "DedicatedWorker",
+        "ppid": 2524120,
+        "birthTicks": "25308664"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524185,
+        "name": "chromium",
+        "ppid": 2524120,
+        "birthTicks": "25308630"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524186,
+        "name": "HangWatcher",
+        "ppid": 2524120,
+        "birthTicks": "25308630"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524187,
+        "name": "PerfettoTrace",
+        "ppid": 2524120,
+        "birthTicks": "25308630"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524188,
+        "name": "ThreadPoolServi",
+        "ppid": 2524120,
+        "birthTicks": "25308630"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524189,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308630"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524190,
+        "name": "Chrome_ChildIOT",
+        "ppid": 2524120,
+        "birthTicks": "25308630"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524191,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308631"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524192,
+        "name": "Compositor",
+        "ppid": 2524120,
+        "birthTicks": "25308632"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524193,
+        "name": "ThreadPoolSingl",
+        "ppid": 2524120,
+        "birthTicks": "25308632"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524213,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308640"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524223,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308648"
+      },
+      {
+        "pid": 2524185,
+        "tid": 2524234,
+        "name": "ThreadPoolForeg",
+        "ppid": 2524120,
+        "birthTicks": "25308680"
+      }
+    ],
+    "sameThreadSet": true,
+    "collector": {
+      "ready": {
+        "type": "ready",
+        "events": [
+          {
+            "name": "cycles-user",
+            "type": 0,
+            "config": 0
+          },
+          {
+            "name": "instructions-user",
+            "type": 0,
+            "config": 1
+          },
+          {
+            "name": "branch-misses-user",
+            "type": 0,
+            "config": 5
+          },
+          {
+            "name": "l1d-read-misses-user",
+            "type": 3,
+            "config": 65536
+          },
+          {
+            "name": "cache-misses-user",
+            "type": 0,
+            "config": 3
+          }
+        ],
+        "threads": [
+          {
+            "pid": 2524214,
+            "tid": 2524214,
+            "ids": [
+              1907,
+              1908,
+              1909,
+              1910,
+              1911
+            ],
+            "taskClockId": 1912
+          },
+          {
+            "pid": 2524214,
+            "tid": 2524215,
+            "ids": [
+              1913,
+              1914,
+              1915,
+              1916,
+              1917
+            ],
+            "taskClockId": 1918
+          },
+          {
+            "pid": 2524214,
+            "tid": 2524216,
+            "ids": [
+              1919,
+              1920,
+              1921,
+              1922,
+              1923
+            ],
+            "taskClockId": 1924
+          },
+          {
+            "pid": 2524214,
+            "tid": 2524217,
+            "ids": [
+              1925,
+              1926,
+              1927,
+              1928,
+              1929
+            ],
+            "taskClockId": 1930
+          },
+          {
+            "pid": 2524214,
+            "tid": 2524218,
+            "ids": [
+              1931,
+              1932,
+              1933,
+              1934,
+              1935
+            ],
+            "taskClockId": 1936
+          },
+          {
+            "pid": 2524214,
+            "tid": 2524219,
+            "ids": [
+              1937,
+              1938,
+              1939,
+              1940,
+              1941
+            ],
+            "taskClockId": 1942
+          },
+          {
+            "pid": 2524214,
+            "tid": 2524220,
+            "ids": [
+              1943,
+              1944,
+              1945,
+              1946,
+              1947
+            ],
+            "taskClockId": 1948
+          },
+          {
+            "pid": 2524214,
+            "tid": 2524221,
+            "ids": [
+              1949,
+              1950,
+              1951,
+              1952,
+              1953
+            ],
+            "taskClockId": 1954
+          },
+          {
+            "pid": 2524214,
+            "tid": 2524222,
+            "ids": [
+              1955,
+              1956,
+              1957,
+              1958,
+              1959
+            ],
+            "taskClockId": 1960
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524194,
+            "ids": [
+              1961,
+              1962,
+              1963,
+              1964,
+              1965
+            ],
+            "taskClockId": 1966
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524196,
+            "ids": [
+              1967,
+              1968,
+              1969,
+              1970,
+              1971
+            ],
+            "taskClockId": 1972
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524198,
+            "ids": [
+              1973,
+              1974,
+              1975,
+              1976,
+              1977
+            ],
+            "taskClockId": 1978
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524199,
+            "ids": [
+              1979,
+              1980,
+              1981,
+              1982,
+              1983
+            ],
+            "taskClockId": 1984
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524200,
+            "ids": [
+              1985,
+              1986,
+              1987,
+              1988,
+              1989
+            ],
+            "taskClockId": 1990
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524201,
+            "ids": [
+              1991,
+              1992,
+              1993,
+              1994,
+              1995
+            ],
+            "taskClockId": 1996
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524207,
+            "ids": [
+              1997,
+              1998,
+              1999,
+              2000,
+              2001
+            ],
+            "taskClockId": 2002
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524208,
+            "ids": [
+              2003,
+              2004,
+              2005,
+              2006,
+              2007
+            ],
+            "taskClockId": 2008
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524209,
+            "ids": [
+              2009,
+              2010,
+              2011,
+              2012,
+              2013
+            ],
+            "taskClockId": 2014
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524224,
+            "ids": [
+              2015,
+              2016,
+              2017,
+              2018,
+              2019
+            ],
+            "taskClockId": 2020
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524225,
+            "ids": [
+              2021,
+              2022,
+              2023,
+              2024,
+              2025
+            ],
+            "taskClockId": 2026
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524226,
+            "ids": [
+              2027,
+              2028,
+              2029,
+              2030,
+              2031
+            ],
+            "taskClockId": 2032
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524227,
+            "ids": [
+              2033,
+              2034,
+              2035,
+              2036,
+              2037
+            ],
+            "taskClockId": 2038
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524228,
+            "ids": [
+              2039,
+              2040,
+              2041,
+              2042,
+              2043
+            ],
+            "taskClockId": 2044
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524229,
+            "ids": [
+              2045,
+              2046,
+              2047,
+              2048,
+              2049
+            ],
+            "taskClockId": 2050
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524230,
+            "ids": [
+              2051,
+              2052,
+              2053,
+              2054,
+              2055
+            ],
+            "taskClockId": 2056
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524231,
+            "ids": [
+              2057,
+              2058,
+              2059,
+              2060,
+              2061
+            ],
+            "taskClockId": 2062
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524232,
+            "ids": [
+              2063,
+              2064,
+              2065,
+              2066,
+              2067
+            ],
+            "taskClockId": 2068
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524185,
+            "ids": [
+              2069,
+              2070,
+              2071,
+              2072,
+              2073
+            ],
+            "taskClockId": 2074
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524186,
+            "ids": [
+              2075,
+              2076,
+              2077,
+              2078,
+              2079
+            ],
+            "taskClockId": 2080
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524187,
+            "ids": [
+              2081,
+              2082,
+              2083,
+              2084,
+              2085
+            ],
+            "taskClockId": 2086
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524188,
+            "ids": [
+              2087,
+              2088,
+              2089,
+              2090,
+              2091
+            ],
+            "taskClockId": 2092
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524189,
+            "ids": [
+              2093,
+              2094,
+              2095,
+              2096,
+              2097
+            ],
+            "taskClockId": 2098
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524190,
+            "ids": [
+              2099,
+              2100,
+              2101,
+              2102,
+              2103
+            ],
+            "taskClockId": 2104
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524191,
+            "ids": [
+              2105,
+              2106,
+              2107,
+              2108,
+              2109
+            ],
+            "taskClockId": 2110
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524192,
+            "ids": [
+              2111,
+              2112,
+              2113,
+              2114,
+              2115
+            ],
+            "taskClockId": 2116
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524193,
+            "ids": [
+              2117,
+              2118,
+              2119,
+              2120,
+              2121
+            ],
+            "taskClockId": 2122
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524213,
+            "ids": [
+              2123,
+              2124,
+              2125,
+              2126,
+              2127
+            ],
+            "taskClockId": 2128
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524223,
+            "ids": [
+              2129,
+              2130,
+              2131,
+              2132,
+              2133
+            ],
+            "taskClockId": 2134
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524234,
+            "ids": [
+              2135,
+              2136,
+              2137,
+              2138,
+              2139
+            ],
+            "taskClockId": 2140
+          }
+        ]
+      },
+      "started": {
+        "type": "started",
+        "beginNs": 253092036547800,
+        "endNs": 253092039542300
+      },
+      "stopped": {
+        "type": "stopped",
+        "beginNs": 253095586201200,
+        "endNs": 253095591093000,
+        "rows": [
+          {
+            "pid": 2524214,
+            "tid": 2524214,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524214,
+            "tid": 2524215,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524214,
+            "tid": 2524216,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524214,
+            "tid": 2524217,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524214,
+            "tid": 2524218,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524214,
+            "tid": 2524219,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524214,
+            "tid": 2524220,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524214,
+            "tid": 2524221,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524214,
+            "tid": 2524222,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524194,
+            "timeEnabledNs": 3524603800,
+            "timeRunningNs": 3524603800,
+            "values": [
+              8083494583,
+              19674305638,
+              29683088,
+              184007496,
+              60911087
+            ],
+            "taskClockNs": 3524603800,
+            "taskClockEnabledNs": 3524603800,
+            "taskClockRunningNs": 3524603800
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524196,
+            "timeEnabledNs": 71500,
+            "timeRunningNs": 71500,
+            "values": [
+              105643,
+              35329,
+              449,
+              520,
+              1777
+            ],
+            "taskClockNs": 71500,
+            "taskClockEnabledNs": 71500,
+            "taskClockRunningNs": 71500
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524198,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524199,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524200,
+            "timeEnabledNs": 2572600,
+            "timeRunningNs": 2572600,
+            "values": [
+              5912693,
+              6243207,
+              82206,
+              47738,
+              64658
+            ],
+            "taskClockNs": 2572600,
+            "taskClockEnabledNs": 2572600,
+            "taskClockRunningNs": 2572600
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524201,
+            "timeEnabledNs": 247800,
+            "timeRunningNs": 247800,
+            "values": [
+              209708,
+              37983,
+              1027,
+              2564,
+              3749
+            ],
+            "taskClockNs": 247800,
+            "taskClockEnabledNs": 247800,
+            "taskClockRunningNs": 247800
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524207,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524208,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524209,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524224,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524225,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524226,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524227,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524228,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524229,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524230,
+            "timeEnabledNs": 2045124700,
+            "timeRunningNs": 2045124700,
+            "values": [
+              4582844780,
+              10258828141,
+              27385553,
+              32737335,
+              10233262
+            ],
+            "taskClockNs": 2045124700,
+            "taskClockEnabledNs": 2045124700,
+            "taskClockRunningNs": 2045124700
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524231,
+            "timeEnabledNs": 2010529700,
+            "timeRunningNs": 2010529700,
+            "values": [
+              4505190863,
+              10142634379,
+              27076922,
+              32293859,
+              10118538
+            ],
+            "taskClockNs": 2010529700,
+            "taskClockEnabledNs": 2010529700,
+            "taskClockRunningNs": 2010529700
+          },
+          {
+            "pid": 2524194,
+            "tid": 2524232,
+            "timeEnabledNs": 2048686900,
+            "timeRunningNs": 2048686900,
+            "values": [
+              4592044694,
+              10279930422,
+              27610391,
+              32598069,
+              10341304
+            ],
+            "taskClockNs": 2048686900,
+            "taskClockEnabledNs": 2048686900,
+            "taskClockRunningNs": 2048686900
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524185,
+            "timeEnabledNs": 2091300,
+            "timeRunningNs": 2091300,
+            "values": [
+              2960138,
+              1299699,
+              10148,
+              30507,
+              50543
+            ],
+            "taskClockNs": 2091300,
+            "taskClockEnabledNs": 2091300,
+            "taskClockRunningNs": 2091300
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524186,
+            "timeEnabledNs": 71700,
+            "timeRunningNs": 71700,
+            "values": [
+              104691,
+              35268,
+              441,
+              557,
+              2370
+            ],
+            "taskClockNs": 71700,
+            "taskClockEnabledNs": 71700,
+            "taskClockRunningNs": 71700
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524187,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524188,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524189,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524190,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524191,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524192,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524193,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524213,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524223,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          },
+          {
+            "pid": 2524185,
+            "tid": 2524234,
+            "timeEnabledNs": 0,
+            "timeRunningNs": 0,
+            "values": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "taskClockNs": 0,
+            "taskClockEnabledNs": 0,
+            "taskClockRunningNs": 0
+          }
+        ]
+      },
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "stderr": ""
+    },
+    "render": {
+      "start": 6463.895000010729,
+      "end": 10005.830000013113,
+      "elapsedMs": 3541.935000002384
+    },
+    "browserStart": 6457.675000011921,
+    "collectorSha256": "522ce414425c4a587f231c786329766385611ff922a2dfcd96dec1c4832d7162",
+    "protocol": "Warmed unchanged WASM; userspace PMU groups on pre-existing owned Chromium renderer thread snapshot; external start/stop",
+    "limits": "Includes renderer JavaScript/V8/CDP boundary work; excludes other browser processes and kernel/hypervisor. No per-function or texture-only attribution. Snapshot comparison cannot rule out transient threads born and gone inside the interval. Raw counts and enabled/running times retained; counters may multiplex.",
+    "preparation": {
+      "warmup": 80,
+      "frames": 240,
+      "workers": 3
+    },
+    "scene": "tank"
+  },
+  "notAcceptanceTimings": true
+}

@@ -1,0 +1,33 @@
+{
+  "status": "all12-quiet-hardware-observations-complete-no-renderer-change",
+  "researchBaselineCommit": "073a042c8160a46b5f47bc364b9c139950fcf989",
+  "referenceWasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+  "productionUnchanged": true,
+  "predeclaredObservations": {
+    "audits": 2,
+    "samples": [
+      0,
+      2,
+      4
+    ],
+    "models": [
+      "bmw",
+      "tank"
+    ],
+    "frames": 240,
+    "warmup": 80,
+    "workers": 3,
+    "resolvePerFrame": true,
+    "sceneRuns": 12
+  },
+  "scope": "Unmodified accepted D4 browser module. All pre-existing owned renderer threads sampled with user-only PMU groups. Diagnostic observations, not optimization acceptance timings or per-sampler costs.",
+  "limitations": "Thread snapshot cannot rule out transient threads born/died inside interval. V8/JS/CDP boundary work included. Counter scaling and mapping must be checked. No hardware ceiling or isolated texture/cache claim from these aggregate counters.",
+  "hardwareCollectorSha256": "522ce414425c4a587f231c786329766385611ff922a2dfcd96dec1c4832d7162",
+  "softwareTaskClock": true,
+  "eventSemantics": "Five grouped hardware events exclude kernel/hypervisor. Separate software TASK_CLOCK requests those exclusions for access, but counts scheduled task-context time; it is not guaranteed exclusive user time. General hardware cache-miss event, not unsupported LL-read-miss. No useful-work or texture-only attribution.",
+  "preflight": "Final user-excluded task-clock collector selfcheck and12-frame BMW0 observer pass; earlier LL event, unbuilt generator assertion, and default kernel task-clock permission failure retained. No failed attempt reached an enabled renderer counter interval.",
+  "observationCount": 12,
+  "guardAttempts": 12,
+  "allFirstQuietGuardsPass": true,
+  "taskClockInterpretation": "Software scheduled task-context time, not guaranteed exclusive user time or useful work; hardware events exclude kernel/hypervisor. Raw observer generic exclusion note is qualified in README."
+}

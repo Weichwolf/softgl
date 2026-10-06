@@ -1,0 +1,75 @@
+{
+  "status": "group-attach-reset-enable-read-and-id-mapping-passed",
+  "records": [
+    {
+      "type": "ready",
+      "events": [
+        {
+          "name": "cycles-user",
+          "type": 0,
+          "config": 0
+        },
+        {
+          "name": "instructions-user",
+          "type": 0,
+          "config": 1
+        },
+        {
+          "name": "branch-misses-user",
+          "type": 0,
+          "config": 5
+        },
+        {
+          "name": "l1d-read-misses-user",
+          "type": 3,
+          "config": 65536
+        },
+        {
+          "name": "cache-misses-user",
+          "type": 0,
+          "config": 3
+        }
+      ],
+      "threads": [
+        {
+          "pid": 2522369,
+          "tid": 2522369,
+          "ids": [
+            12,
+            13,
+            14,
+            15,
+            16
+          ]
+        }
+      ]
+    },
+    {
+      "type": "started",
+      "beginNs": 252406345425200,
+      "endNs": 252406345532500
+    },
+    {
+      "type": "stopped",
+      "beginNs": 252406606505300,
+      "endNs": 252406606645000,
+      "rows": [
+        {
+          "pid": 2522369,
+          "tid": 2522369,
+          "timeEnabledNs": 260941600,
+          "timeRunningNs": 260941600,
+          "values": [
+            615369184,
+            2323735651,
+            566251,
+            2127083,
+            515930
+          ]
+        }
+      ]
+    }
+  ],
+  "checksum": 0,
+  "scope": "Python process itself:32MiB buffer allocated before enable,4 passes at64-byte stride. Availability/coexistence sanity check, not a rendering benchmark or quantitative cache oracle."
+}

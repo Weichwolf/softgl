@@ -1,0 +1,158 @@
+{
+  "status": "unmodified-accepted-D4-full-gates-and-live-bound",
+  "productionSources": {
+    "libsoftgl/src/vertex_inputs.h": "fb774a51f4627b91dd6d58fc2cb918df04ef224d45cd898dfa1ed5dd9a0b0db5",
+    "libsoftgl/src/framebuffer.c": "7c82e1f52d5b2c2e7d9752d155f379109a8791c41b147713cfb14f2788e1a974",
+    "libsoftgl/src/raster_store.h": "251cbe4d9765edfc26b4428d7d5906ab17722689feae08eac432db59a7b22934",
+    "libsoftgl/src/fragment.c": "01d88705e22b03c3cf3d8b16abfca9a70e97f35b5206023376daca9ba2a9881c",
+    "libsoftgl/src/lines.c": "b08fef911685977a08d6f2b29265aa28721aa0497a1a208c492403bdde0bbe87",
+    "libsoftgl/src/clip.c": "f5c0b940f54a4aa52a2d55785de31d72c168d381b53012e408179f81381de3cc",
+    "libsoftgl/src/raster_triangle_impl.h": "2a78075d138dd00d6d95c92adc922de9e11bc316cb5a3b03f3739974492ca24f",
+    "libsoftgl/src/dlist.h": "4bc8e0e5966f5b226c8e086ead9a635fd6158eed18b0c55e4b4c2ed0bdbda033",
+    "libsoftgl/src/simd.h": "44b532f4427f3e76886228dfe96024adf3ba1c1c748c7031d2fff2413db9c608",
+    "libsoftgl/src/lighting.c": "1e6db9b4f59e2a54b1f6b89e6bc129d206dc816aaa08f099d80e6f8f2f42e338",
+    "libsoftgl/src/msaa_additive.h": "6fab4198defe4db18a83f1562034807e71957ba07db0c0bd51f2e26c90d4778f",
+    "libsoftgl/src/frag_combine_hot.h": "e801062d6fe0ce8ade5f12730ba4cb1441689ba6bd39a331a308bc99e29f72cc",
+    "libsoftgl/src/workers.h": "c8001b8eceae3191ab3e94e962e95eab8f28e7bef86ce4455e97e49541a0313b",
+    "libsoftgl/src/fragment_combine.c": "b7af7972265bf0ac384379fcba6885e93707cdd8a0de956f691ad28ed1dd7153",
+    "libsoftgl/src/types.h": "c90361869e5600b1e3164ca31ba87c6af31a659e2f888456d90d6de6bea52fe1",
+    "libsoftgl/src/buffers.c": "a0363363f060dc9cbd99a64703496e1e702c2cf82beb42b16a54337b524be2ff",
+    "libsoftgl/src/multisample.c": "2ba7fe2df9c8afed9acf1daa5ea48df6fbe8b5c0cceeac11bd61c3804423ea1d",
+    "libsoftgl/src/raster_hz.h": "1cc4a6fe6f5a425607cb3b8a57d15cb19d5de537794c638b673f0bd4a14b4ed6",
+    "libsoftgl/src/dlist.c": "e7446f33b3972e4384c103c2547869dfffad43c900e1f55bf6f8c38eaf36eae8",
+    "libsoftgl/src/pixels.c": "8e366864ac1418564d2342bd3c120ad5e8057998af21ff31ccb5663134ddfc92",
+    "libsoftgl/src/index_range.h": "4d0456bd563031b7b4ff1184bfb6fa513908ae4047bd5f6f83dc8a7f57d8bb03",
+    "libsoftgl/src/workers.c": "958a3bb4425b91c544da8f4fc2116fc46f04ee9a784909d8e69909479c773417",
+    "libsoftgl/src/texture.c": "9c4d999c73b68a7431bd1f0e88c2d3d2e7e1931670ad166ffee535f8d5764c45",
+    "libsoftgl/src/workers_queue_raw.inc": "a8150d0d9498ba164b0606945f7cb216749536c5a0b53dfe1ff03bec0e0bbbfe",
+    "libsoftgl/src/fragment_write.c": "6c806d57d87ff4ed31ecdf502be6f77772497696a607633edf71c9971da66f1d",
+    "libsoftgl/src/multisample.h": "cdbe1e0aa51827f13789ce7f46e3acc961e0b87c5d034e1c7ba22fe54c611315",
+    "libsoftgl/src/frag_packet.h": "217cd6bfcae38b7c2428077bc4c1e772ca178d82498a21d963c0cc86061c4dc6",
+    "libsoftgl/src/pipeline.c": "f8c7d253586b14d4d2aaabff7703ea1df44ce6ff937d9c2c22b1a3e573290228",
+    "libsoftgl/src/matrix.c": "fd5bff0e263cd87d1032fad4fa75f966f76b2cc605b746d47e3d4eeabde6d793",
+    "libsoftgl/src/raster_vertex_pack.h": "956a8084b973144a9d8ee28c0d485214e3e8551a7384238f610620e00ad6e528",
+    "libsoftgl/src/api.c": "76578a3b458c8943efbd94910bdffb3060dadf40c6942ce65adda97f3f45d5db",
+    "libsoftgl/src/raster_msaa_impl.h": "a9048bd2e89e96d87f407d17471e50c48d35c187aa20719b5e6af3d1d026eeec",
+    "libsoftgl/src/immediate.c": "80b520a3c3c14e675eeca5d3083c5dbe423e9684a69b868446f85e99ef86534c",
+    "libsoftgl/src/rasterizer.c": "c3d77d9b13e06cb5bc35a1639a81146f5ad252aaffc8f3d290b7723d06235700",
+    "libsoftgl/src/frag_hot.h": "e0e1cba7afec1b2c13a53a8198207d868fa0636a84ee98e059f238d131dca52e",
+    "libsoftgl/src/evaluators.c": "69281ca9f25e0f7d5cc1f76f31fb17502c83b60ea6168bbbae238e65227344ba",
+    "libsoftgl/src/state.c": "bffa3243dffdbef27ddc90c7ad6f2394d393f0dc47bf1d3797b2b5b63e8a875c",
+    "libsoftgl/src/raster_types.h": "0b050bdbf31f6c398366112c84a6041390a50398d1e18acafe4c7440a0700f45",
+    "libsoftgl/include/GL/softgl.h": "da4f96a7659b61240745dbe1d92f84715bf44fca46348ff861d40f73f0168376",
+    "libsoftgl/third_party/meshoptimizer/clusterlod.h": "71f95c1f97ef567235540c038b41906091fcef1ef68046f2933cd5989f94ea93",
+    "libsoftgl/third_party/meshoptimizer/meshoptimizer.h": "e3688ef553f603391747895a5c221ef1528574cc7f8173782417a96cb531f61b"
+  },
+  "finalSourceFiles": {
+    "libsoftgl/src/pipeline.c": "f8c7d253586b14d4d2aaabff7703ea1df44ce6ff937d9c2c22b1a3e573290228",
+    "libsoftgl/src/index_range.h": "4d0456bd563031b7b4ff1184bfb6fa513908ae4047bd5f6f83dc8a7f57d8bb03",
+    "tests/CMakeLists.txt": "da818250662476e6b36fdd167d0abc3d75cfc0b9ce97b976e9911907c5232810",
+    "tests/index_range.c": "407e93ead6493d50c4f348eb7581079c82ae10df6e88de784ec05c2bc57abd3f"
+  },
+  "referenceWasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+  "fullGateReceipts": [
+    {
+      "file": "native-full-tests.log",
+      "passed": 744,
+      "sha256": "7878115abce5b84fc284679ce2656af69037474317c8d2379d3509f63717e05b"
+    },
+    {
+      "file": "native-full-bench.log",
+      "passed": 1,
+      "sha256": "a48144e29aff68c8bff45c35a2f2f0003f6885e39cf6b51dbd48ab6fc173d58a"
+    },
+    {
+      "file": "asan-full-tests.log",
+      "passed": 24,
+      "sha256": "b19858ca3bb0184c5b66c0b0c9e36ed18bc5531d43b009820da2e31a28bf4fce"
+    },
+    {
+      "file": "mesa-images.json",
+      "passed": 240,
+      "sha256": "6a53713de285bf7b939080bbd0c5649403d2a3b8a21abfd1098e71e69ae69b87"
+    },
+    {
+      "file": "all-tests-ms0-results.json",
+      "passed": 234,
+      "sha256": "223d0227cfaf746b2f057cb5ecdf5d87b534422cb2606fe8f53066ea3e2f5eda"
+    },
+    {
+      "file": "frame-equivalence-0.json",
+      "sha256": "58b6f0e36c314f6e68de27a452c33008772987c820a41149baaaeef050dfab75",
+      "models": 2,
+      "hashes": 100,
+      "rawFrames": 4
+    },
+    {
+      "file": "all-tests-msaa-results.json",
+      "passed": 234,
+      "sha256": "39bfab0f91b382ab5e3b982016fd327335b1103f57632f571e20c6cb0d60ec21"
+    },
+    {
+      "file": "frame-equivalence-2.json",
+      "sha256": "f4e6b3e2045d0609e0811180c67352418cf121932c047ccd7f5421e08e76f53c",
+      "models": 2,
+      "hashes": 100,
+      "rawFrames": 4
+    },
+    {
+      "file": "all-tests-msaa4-results.json",
+      "passed": 234,
+      "sha256": "e2450db9d1ce67fedb1735eed2f0cc3df9d678b35af82946f79e7f23da57ad4f"
+    },
+    {
+      "file": "frame-equivalence-4.json",
+      "sha256": "95e5e1314fd4eb20cee9507633b627797d101cbaf8cb6eb3765ca644d8375511",
+      "models": 2,
+      "hashes": 100,
+      "rawFrames": 4
+    }
+  ],
+  "regressions": {
+    "native": 744,
+    "benchmark": 1,
+    "asanUbsan": 24,
+    "mesaImages": 240,
+    "exactImagesEachMode": 234,
+    "modelHashesEachModeEachModel": 100,
+    "modelRawFramesEachModeEachModel": 4,
+    "wasmContracts": 23,
+    "offCaptureCasesEachEngine": 4608,
+    "msaaCaptureCasesEachEngine": 8192,
+    "queuedApiCasesEachEngine": 348,
+    "postDepthStoresEachModeEachEngine": 98304,
+    "actualDot3QueryScenesEachModeEachEngine": 640,
+    "quantizationsEachEngine": 262144,
+    "indexRangeCasesEachEngine": 1007307,
+    "indexRangeItemsEachEngine": 182312387
+  },
+  "liveAssets": {
+    "softgl.js": {
+      "bytes": 226392,
+      "sha256": "c1a7d9afda1a934b28d0608f32270e8928d35b67d1b570b52bc0623257770ada"
+    },
+    "softgl.wasm": {
+      "bytes": 1260649,
+      "sha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0"
+    },
+    "main.js": {
+      "bytes": 20360,
+      "sha256": "2afd67dd0bb4a8678b7f3200dedea5bafcfb43d75e1939520bc3fdf115d805b6"
+    },
+    "index.html": {
+      "bytes": 5229,
+      "sha256": "0e9b4abd187786bc9aa848bdbff4ef8808e86e21c366df3253c807fac8b16080"
+    },
+    "bmw.pack": {
+      "bytes": 20648696,
+      "sha256": "fae69ce423ca29ab099bde21664056456b44a2eb4250d51df3980564819e4fc8"
+    },
+    "tank.pack": {
+      "bytes": 6371588,
+      "sha256": "d1c27204f91788e5e80aa42eaf4a5e95ce8dd713485ec00ae513323bc8e9ca99"
+    }
+  },
+  "baselineValidationSha256": "74ed47129fdb370263e81b62e090d04c2f3bb3f9f9c29eb326914f455e7e352a",
+  "linuxKernel": "6.18.40.1-microsoft-standard-WSL2",
+  "perfEventParanoid": "2"
+}
