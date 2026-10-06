@@ -1,0 +1,8 @@
+{
+  "cases": 6600,
+  "runCalls": 89676,
+  "checkedRecords": 2610483347,
+  "stdout": "Prepared bins: 6600 interval/order/capacity cases, 89676 actual run calls, 2610483347 exact 16-byte records checked; mapped/fallback, empty/odd widths, rejects, GENERAL barriers, stage boundaries and depth bits passed\n",
+  "fixtureSha256": "ccdf56c1030e887f50ee0300dac6d7ad709131e52c3737e6fadbc136a2707d82",
+  "scope": "Independent interval oracle compared against actual production bulk-run function. Every observed prefix, capacity and 16-byte record checked including GENERAL synthetic serial insertion boundaries. Actual GL clipping and rendering state regressions remain required."
+}

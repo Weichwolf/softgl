@@ -1,0 +1,16 @@
+{
+  "status": "rejected",
+  "summary": "Rejected: BMW paired frame time is slower in both audits for every mode: +1.197138%/+0.731041% off, +1.346931%/+1.143603% at2x and +0.271020%/+0.813130% at4x. Six/six off pairs and five/six pairs in each MSAA mode are slower (16/18 BMW pairs overall). T-80 is slower +4.380321%/+1.252922% off and +1.781150%/+0.319379% at4x; its2x changes -0.285627%/-0.637293% have mixed three/three pair signs. All eighteen predeclared pairs pass the unchanged quiet guard on their first attempt. Correctness gates pass completely, but there is no reproducible BMW benefit. The production source, canonical build and live D4 preview remain unchanged.",
+  "referenceWasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+  "candidateWasmSha256": "f417990ebec2a5f67c61de430d25088f8c23d806d3dac8d7f37d9425f048ea25",
+  "completePairs": 18,
+  "guardAttempts": 18,
+  "discardedGuardAttempts": 0,
+  "BmwPriority": true,
+  "native745": true,
+  "asan25": true,
+  "wasm24": true,
+  "allModeImagesExact": true,
+  "interpretation": "This combined difference-histogram reservation/stable emission/mapped overlap-removal implementation adds work without an observed whole-frame BMW gain. Timings do not isolate counting, code size, branch prediction, cache traffic or scheduling; no general batching impossibility or hardware ceiling is established.",
+  "nextResearchDirection": "Inspect immutable draw-record ownership and copying in geometry-cache replay/stream publication. Determine whether prepared geometry can reach queue slots with fewer copies, preserving ordering, depth-filtered replay and lifetimes. This is a future investigation, not implemented or validated by this trial."
+}

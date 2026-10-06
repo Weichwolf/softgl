@@ -1,5 +1,20 @@
 # Optimization evidence
 
+The [stable bulk prepared-bin trial](bulk-prepared-bins/README.md) is rejected.
+BMW paired frame time is slower in both audits of every mode: +1.197%/+0.731%
+off, +1.347%/+1.144% at 2x and +0.271%/+0.813% at 4x; sixteen of eighteen
+BMW pairs are slower. T-80 is slower off/4x and mixed at 2x. The candidate
+counts bin-range endpoints, reserves each affected bin once and emits stable
+records, stopping at GENERAL clipping barriers and retaining the missing-map
+fallback. Native and WASM pass 6,600 independent interval/order/capacity cases
+and 89,676 actual run calls, alongside full 745 native + Bench1, 25 sanitizer
+and 24 WASM contracts, all-mode image/model comparisons and the edge oracle.
+All eighteen paired comparisons pass the unchanged quiet guard on their first
+attempt. Code, raw data, original recipes, the receipt-finalizer correction and
+portable verification are public. The accepted D4 renderer and live preview
+remain unchanged. This measures one combined implementation; it does not
+isolate scan overhead or establish a hardware limit.
+
 The [exact unsigned SIMD index scan](simd-index-range/README.md) is retained as
 module `d4dd244c`. BMW frame time improves -1.072%/-0.637% off, -0.931%/-1.241%
 at 2x and -0.600%/-0.922% at 4x; all six off pairs and five of six pairs in

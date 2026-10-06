@@ -1,0 +1,226 @@
+{
+  "wasmSha256": "f417990ebec2a5f67c61de430d25088f8c23d806d3dac8d7f37d9425f048ea25",
+  "symbolSha256": "14f486d251d521be75cd216ed2ab3b6eb4e33cc5cb85f14e5cf6fdeea3c3ab7b",
+  "functionImports": 256,
+  "definedFunctions": 1405,
+  "roots": [
+    {
+      "name": "_sg_draw_elements_real",
+      "absoluteFunctionIndex": 407,
+      "definedFunctionIndex": 151,
+      "bodyBytes": 17874,
+      "localDeclarations": {
+        "0x7f": 23,
+        "0x7b": 9,
+        "0x7e": 1
+      },
+      "bodySha256": "5ed6d2614f86cfce5d535e5e4cbb86ec46873d920bc82d7045a3d779ec7a6ef3"
+    },
+    {
+      "name": "sg_raster_triangle_tile_prepared",
+      "absoluteFunctionIndex": 427,
+      "definedFunctionIndex": 171,
+      "bodyBytes": 22877,
+      "localDeclarations": {
+        "0x7f": 44,
+        "0x7b": 31,
+        "0x7d": 14,
+        "0x7e": 35
+      },
+      "bodySha256": "4fd7da49f80089e354d0b2fdd9df7724e0016599f2fa806d15baed72ab022813"
+    },
+    {
+      "name": "sg_raster_triangle_depth_capture",
+      "absoluteFunctionIndex": 426,
+      "definedFunctionIndex": 170,
+      "bodyBytes": 23285,
+      "localDeclarations": {
+        "0x7f": 45,
+        "0x7b": 31,
+        "0x7d": 15,
+        "0x7e": 35
+      },
+      "bodySha256": "beeca9fe3ada31d70c1003178aa49e8359990649b33ceab2aa806a70676ea3b5"
+    },
+    {
+      "name": "sg_raster_triangle_msaa2",
+      "absoluteFunctionIndex": 420,
+      "definedFunctionIndex": 164,
+      "bodyBytes": 22541,
+      "localDeclarations": {
+        "0x7f": 56,
+        "0x7b": 27,
+        "0x7d": 17,
+        "0x7e": 36
+      },
+      "bodySha256": "02fb52855acfa50966daeca7428b873c5c56fe25d6da8a3551fb56501d17af2e"
+    },
+    {
+      "name": "sg_raster_triangle_msaa2_capture",
+      "absoluteFunctionIndex": 423,
+      "definedFunctionIndex": 167,
+      "bodyBytes": 22880,
+      "localDeclarations": {
+        "0x7f": 57,
+        "0x7b": 27,
+        "0x7d": 17,
+        "0x7e": 36
+      },
+      "bodySha256": "f8e43e57e304481f56ab1c509728e7be563166cf3ac4dfbe23a85305902ae244"
+    },
+    {
+      "name": "sg_raster_triangle_msaa4",
+      "absoluteFunctionIndex": 424,
+      "definedFunctionIndex": 168,
+      "bodyBytes": 25751,
+      "localDeclarations": {
+        "0x7f": 57,
+        "0x7b": 35,
+        "0x7e": 30,
+        "0x7d": 16
+      },
+      "bodySha256": "4b574de1a286ddb25eea96609f4d41e4bea919aeb1622ad9ab51e2b34513dcf4"
+    },
+    {
+      "name": "sg_raster_triangle_msaa4_capture",
+      "absoluteFunctionIndex": 425,
+      "definedFunctionIndex": 169,
+      "bodyBytes": 25844,
+      "localDeclarations": {
+        "0x7f": 58,
+        "0x7b": 35,
+        "0x7e": 30,
+        "0x7d": 16
+      },
+      "bodySha256": "283e2fe820e309c4286fff7554ea8ad4e8bc38e42efca639694ca375bfff07d8"
+    },
+    {
+      "name": "sg_queue_render_packed",
+      "absoluteFunctionIndex": 497,
+      "definedFunctionIndex": 241,
+      "bodyBytes": 1312,
+      "localDeclarations": {
+        "0x7f": 22,
+        "0x7e": 2
+      },
+      "bodySha256": "c71f18bcd2cd026c129c0e1007179c00dee1869a79b0d74d18f12141bf003618"
+    },
+    {
+      "name": "sg_drain_packed_bins",
+      "absoluteFunctionIndex": 495,
+      "definedFunctionIndex": 239,
+      "bodyBytes": 2015,
+      "localDeclarations": {
+        "0x7f": 31,
+        "0x7e": 2
+      },
+      "bodySha256": "d8ba2c18b8f74e5493bef37dd3e753c607bb2b7ee2bc7ce75cb91c26d64833df"
+    },
+    {
+      "name": "sg_queue_help",
+      "absoluteFunctionIndex": 511,
+      "definedFunctionIndex": 255,
+      "bodyBytes": 162,
+      "localDeclarations": {
+        "0x7f": 10
+      },
+      "bodySha256": "05d4675a3b9a5355dfe5a105279dc3b3aee9fc7ad2fb6a79df65d1598c1ed565"
+    },
+    {
+      "name": "sg_worker_main",
+      "absoluteFunctionIndex": 498,
+      "definedFunctionIndex": 242,
+      "bodyBytes": 747,
+      "localDeclarations": {
+        "0x7f": 15,
+        "0x7e": 2
+      },
+      "bodySha256": "e334c032debba892b6913d467c7b86baa629d45913c8ebace05d77153355aa42"
+    },
+    {
+      "name": "sg_queue_transform",
+      "absoluteFunctionIndex": 507,
+      "definedFunctionIndex": 251,
+      "bodyBytes": 283,
+      "localDeclarations": {
+        "0x7f": 2
+      },
+      "bodySha256": "26aeb3868069610bfef62a4587e08dde7d7038c6e0d46e5803ff73f65b8b60c9"
+    },
+    {
+      "name": "sg_write_fragment",
+      "absoluteFunctionIndex": 332,
+      "definedFunctionIndex": 76,
+      "bodyBytes": 2297,
+      "localDeclarations": {
+        "0x7b": 2,
+        "0x7f": 9,
+        "0x7d": 1
+      },
+      "bodySha256": "c573d32369540b153b3964e2b212c03037a169fc274b70cd4f4b5f93ed85f50e"
+    },
+    {
+      "name": "sg_write_multisample",
+      "absoluteFunctionIndex": 331,
+      "definedFunctionIndex": 75,
+      "bodyBytes": 9040,
+      "localDeclarations": {
+        "0x7b": 20,
+        "0x7f": 13,
+        "0x7d": 5,
+        "0x7e": 2
+      },
+      "bodySha256": "d48af08f5b2310408f3730a40addf64fe40fd1286738bc6399872d70aa049e76"
+    },
+    {
+      "name": "sg_write_multisample2",
+      "absoluteFunctionIndex": 330,
+      "definedFunctionIndex": 74,
+      "bodyBytes": 7409,
+      "localDeclarations": {
+        "0x7b": 14,
+        "0x7d": 5,
+        "0x7f": 16,
+        "0x7e": 2
+      },
+      "bodySha256": "33b06e863fba877b81842fce0bab241997daa7aa0416fdeb89878a6c17a93d02"
+    },
+    {
+      "name": "sg_store_off_post_depth",
+      "absoluteFunctionIndex": 335,
+      "definedFunctionIndex": 79,
+      "bodyBytes": 381,
+      "localDeclarations": {
+        "0x7b": 1
+      },
+      "bodySha256": "13e18c5787cf3eecf52551763d3de1dd027041b4119f3fa2ba79f0982193e3b7"
+    },
+    {
+      "name": "sg_store_blend_msaa2_post_depth",
+      "absoluteFunctionIndex": 333,
+      "definedFunctionIndex": 77,
+      "bodyBytes": 2763,
+      "localDeclarations": {
+        "0x7b": 14,
+        "0x7f": 5,
+        "0x7d": 2,
+        "0x7e": 2
+      },
+      "bodySha256": "1ea004ea293d4d61c6400df8ca6d44964cc0b18202064f4769c8774251dd46fe"
+    },
+    {
+      "name": "sg_store_blend_msaa4_post_depth",
+      "absoluteFunctionIndex": 334,
+      "definedFunctionIndex": 78,
+      "bodyBytes": 3565,
+      "localDeclarations": {
+        "0x7b": 18,
+        "0x7f": 5,
+        "0x7d": 2,
+        "0x7e": 2
+      },
+      "bodySha256": "f86f04cba5406bf78043d4b42c73277b0c9008e7989b27744b005accee6b4cb2"
+    }
+  ],
+  "note": "Static WASM body bytes/locals, not native code, register spills, cache traffic or dynamic cycle counts."
+}
