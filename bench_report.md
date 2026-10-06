@@ -28,6 +28,13 @@
 | 4× schnellere / langsamere Paare | 5 / 1 | 5 / 1 |
 | Warm-up / Frames / AB/BA-Paare je Modus | 80 / 100 / 6 | 80 / 100 / 6 |
 
+| BMW Replay `d4dd244c`, 2 Audits identisch; Mittel/Frame | Filter: ein / aus | Vollkopie | Vollkopie/Input, % |
+| --- | --- | --- | --- |
+| Ohne MSAA | 35.027,91 / 14.564,11 | 2.828,71 | 7,47 |
+| 2× | 54.799,09 / 17.197,50 | 6.173,91 | 10,13 |
+| 4× | 58.522,77 / 20.040,68 | 6.173,91 | 9,54 |
+| T-80, alle Modi | 0 / 0 | 0 | — |
+
 | CPU-Zeit `7cc38593` / Fenster, 80 Warm-up + 240 Render/Resolve | BMW Audit 1 / 2 | T-80 Audit 1 / 2 |
 | --- | --- | --- |
 | 0×, Renderer gesamt, Kerne | 3.148 / 3.119 | 2.686 / 2.668 |

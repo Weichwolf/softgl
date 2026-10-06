@@ -1,5 +1,20 @@
 # Optimization evidence
 
+The [current D4 cache-replay census](replay-path-census/README.md) observes two
+quiet guarded audits per scene/mode. Only 7.472% of BMW replay input off, 10.126%
+at 2x and 9.543% at 4x uses complete-bin copies; the rest enters the captured
+visibility filter. All matching-angle counter rows agree across both audits;
+T-80 has no cache replays in its 600 observed frames. Source inspection confirms
+that ordered/raw/packed publication already swaps bin ownership, so a second
+publication copy does not exist. Borrowing cached data would need protection
+against coverage compaction and entry replacement. The disabled diagnostic
+worker object and JS/WASM match accepted D4 exactly. Full fidelity gates and
+all six first quiet guards pass. Source, raw 1200 scene frames, the producer
+routing correction and portable verification are public. These logical counts
+and observer-affected outer times establish no FPS gain or ceiling. The next
+candidate will evaluate stable selection through aligned eight-record bitmap
+groups before adding cache-borrowing lifetimes.
+
 The [stable bulk prepared-bin trial](bulk-prepared-bins/README.md) is rejected.
 BMW paired frame time is slower in both audits of every mode: +1.197%/+0.731%
 off, +1.347%/+1.144% at 2x and +0.271%/+0.813% at 4x; sixteen of eighteen

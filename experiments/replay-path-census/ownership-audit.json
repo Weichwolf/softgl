@@ -1,0 +1,30 @@
+{
+  "sourceCommit": "d1e7a8e2656b7236c8bd689da7cf85841ab8d552",
+  "queuePublication": {
+    "file": "libsoftgl/src/workers_queue_raw.inc",
+    "sourceSha256": "a8150d0d9498ba164b0606945f7cb216749536c5a0b53dfe1ff03bec0e0bbbfe",
+    "line": 393,
+    "operation": "Swap each sg_worker_bin between producer and immutable queue slot; no memcpy of triangle records."
+  },
+  "asyncPublication": {
+    "file": "libsoftgl/src/workers.c",
+    "sourceSha256": "958a3bb4425b91c544da8f4fc2116fc46f04ee9a784909d8e69909479c773417",
+    "lines": [
+      1114,
+      1182
+    ],
+    "operation": "Both packed/raw async publication likewise swap bins; packing vertices is separate."
+  },
+  "cacheReplay": {
+    "file": "libsoftgl/src/workers.c",
+    "line": 393,
+    "operation": "Filtered replay copies selected16B records; unfiltered replay memcpy copies each full nonempty bin."
+  },
+  "lifetimeConstraint": {
+    "file": "libsoftgl/src/workers.c",
+    "line": 660,
+    "operation": "Coverage retirement may compact entry tris/offsets and write a hidden-bit tail. Epoch/key invalidation and replacement can reuse entry storage. Borrowing needs entry lifetime/immutability control and filtered traversal or scatter compaction. Existing job storage is independently owned."
+  },
+  "notMeasuredBandwidth": true,
+  "notHardwareCeiling": true
+}
