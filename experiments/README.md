@@ -1,5 +1,18 @@
 # Optimization evidence
 
+The [streamed DOT3 stage trial](dot3-stage-stream/README.md) is rejected as a
+common all-mode implementation. BMW off improves -0.904%/-0.260% and 2x
+-0.619%/-0.513%, but all six BMW 4x pairs are slower (+0.852%/+1.358% audit
+geometric means). T-80 4x changes +0.614%/+1.446%. Complete native/sanitizer/
+WASM/image/model/edge gates and all eighteen first-attempt quiet comparisons
+pass. Only the packet-shader header changes; original samplers remain exact.
+The source result table shrinks, while actual raster bodies and SIMD local
+counts grow; those static observations do not prove the cause. Code, recipes,
+raw observations and gate receipts are published; D4/live/report stay active.
+The [next diagnostic](dot3-stage-stream/next-research.md) measures useful SIMD
+lanes before considering exact work packing across triangle boundaries. It is
+informed by primary SIGGRAPH/OpenGL sources and has not been implemented yet.
+
 The [unused-alpha DOT3 sampler trial](dot3-sampler-alpha/README.md) is rejected.
 Full native/sanitizer/WASM/image/model/edge gates pass and all eighteen planned
 comparisons pass the quiet guard on their first attempt. BMW off is slower in

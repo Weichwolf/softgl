@@ -1,0 +1,4 @@
+1ae2abb Cube sampling: share coherent pixel projection and SIMD filtering
+d16829a Texture packets: gather adjacent bilinear taps with bounded 64-bit loads
+4294d05 Texture sampling: vectorize packet addresses and power-of-two wrap
+ea98c91 Raster: specialize MSAA and shade four pixels with SIMD
