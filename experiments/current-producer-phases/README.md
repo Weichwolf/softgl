@@ -39,8 +39,9 @@ This proposed design still needs concrete buffer ownership, immutable queued
 draw lifetimes, allocation failure handling, exact active-unit/layout validation
 and the existing byte-budget enforcement. Moving writes into shared geometry
 work can delay raster workers or increase live storage; eliminating the final
-pass does not guarantee faster frames. Worker and queued geometry claims use 128 items; the initial caller tail
-and serial fallback can be larger. Bound local packing chunks where needed,
+pass does not guarantee faster frames. Queued geometry claims use 128 items; ordinary vertex workers use even
+partitions, and those partitions, the initial caller tail and serial fallback
+can be larger. Bound local packing chunks where needed,
 preserving existing stage boundaries. Measure resulting cache locality and total
 all-mode frame times rather than
 claiming cache hits or a saved 0.9ms. No prepacking, ownership swap, new layout,
