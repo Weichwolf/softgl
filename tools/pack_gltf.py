@@ -197,7 +197,7 @@ def simplify_batches(vertices, indices, parts, target_vertices):
     directory = root/'build/tools'
     directory.mkdir(parents=True, exist_ok=True)
     executable = directory/('mesh_simplify.exe' if os.name == 'nt' else 'mesh_simplify')
-    vendor = root/'libsoftgl/third_party/meshoptimizer'
+    vendor = root/'tools/third_party/meshoptimizer'
     sources = [root/'tools/mesh_simplify.cpp', vendor/'simplifier.cpp', vendor/'allocator.cpp']
     dependencies = sources+[vendor/'meshoptimizer.h']
     if not executable.exists() or any(p.stat().st_mtime > executable.stat().st_mtime for p in dependencies):

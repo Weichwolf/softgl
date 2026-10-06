@@ -5,15 +5,16 @@ WASM + native, Mesa-referenced.
 
 ## Research objective
 
-SoftGL is an open, reproducible research project exploring how fast an
-OpenGL 1.5 software renderer can run in WebAssembly. Research covers algorithms,
-memory layout, SIMD and cooperation between four CPU cores, preserving image
+SoftGL is an open, reproducible research project aiming to make an
+OpenGL 1.5 software renderer run as fast as practically possible in WebAssembly.
+Research covers algorithms, memory layout, SIMD and cooperation between four
+CPU cores, preserving image
 quality, prepared geometry and OpenGL semantics. BMW F31 is the primary workload;
 T-80 provides a second demanding reference. Compare changes repeatedly with
 MSAA off, 2x and 4x, and run full regression checks before retaining renderer
 changes. Publish methods, results and unsuccessful experiments alongside code.
 Progress means reproducible performance gains and a better understanding of
-remaining bottlenecks; FPS milestones are reference points, not a finish line.
+remaining technical limits, without fixed FPS targets.
 See [optimization evidence](experiments/README.md) and the compact
 [current measurements](bench_report.md).
 
@@ -53,6 +54,12 @@ retains small parts such as badges and number plates, and includes normals and
 UVs in its error metric. Tangents are rebuilt for the prepared geometry; all
 materials and original texture dimensions remain available. Use
 `--target-vertices 0` to prepare full detail for appearance comparisons.
+
+The offline helper uses pinned meshoptimizer 1.3 sources in
+[`tools/third_party/meshoptimizer`](tools/third_party/meshoptimizer/README.md).
+It requires a C++11 compiler and builds under `build/tools/`; meshoptimizer is
+not linked into the renderer. The system package is not required: version 0.22
+lacks the simplification APIs used by the helper.
 
 ## Architecture
 

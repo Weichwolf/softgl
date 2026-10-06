@@ -22,6 +22,8 @@ remain unchanged for sorting. No simplifier or LOD cache runs in SoftGL.
 Use `--target-vertices 0` to preserve all source geometry for comparisons;
 `--preserve-parts --target-vertices 0` also retains the original draw layout.
 The pinned C++11 helper builds under `build/tools/` on the first preparation run.
+Its meshoptimizer 1.3 sources live in `tools/third_party/meshoptimizer/`;
+no system meshoptimizer package is required.
 The generated JSON records per-part budgets, resulting counts and error metrics.
 
 The renderer uses OpenGL 1.5 VBOs, DOT3 texture combiners, two lighting passes,
