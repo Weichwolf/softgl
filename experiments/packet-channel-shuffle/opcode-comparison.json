@@ -1,0 +1,77 @@
+{
+  "rows": [
+    {
+      "function": "sg_raster_triangle_depth_capture",
+      "staticOpcodeSiteDelta": {
+        "i8x16.shuffle": 16,
+        "i32x4.shr_u": -12,
+        "v128.and": -12,
+        "f32x4.convert_i32x4_s": 16,
+        "f32x4.convert_i32x4_u": -16,
+        "f32x4.mul": 0,
+        "f32x4.add": 0
+      }
+    },
+    {
+      "function": "sg_raster_triangle_msaa2",
+      "staticOpcodeSiteDelta": {
+        "i8x16.shuffle": 16,
+        "i32x4.shr_u": -12,
+        "v128.and": -12,
+        "f32x4.convert_i32x4_s": 16,
+        "f32x4.convert_i32x4_u": -16,
+        "f32x4.mul": 0,
+        "f32x4.add": 0
+      }
+    },
+    {
+      "function": "sg_raster_triangle_msaa2_capture",
+      "staticOpcodeSiteDelta": {
+        "i8x16.shuffle": 16,
+        "i32x4.shr_u": -12,
+        "v128.and": -12,
+        "f32x4.convert_i32x4_s": 16,
+        "f32x4.convert_i32x4_u": -16,
+        "f32x4.mul": 0,
+        "f32x4.add": 0
+      }
+    },
+    {
+      "function": "sg_raster_triangle_msaa4",
+      "staticOpcodeSiteDelta": {
+        "i8x16.shuffle": 16,
+        "i32x4.shr_u": -12,
+        "v128.and": -12,
+        "f32x4.convert_i32x4_s": 16,
+        "f32x4.convert_i32x4_u": -16,
+        "f32x4.mul": 0,
+        "f32x4.add": 0
+      }
+    },
+    {
+      "function": "sg_raster_triangle_msaa4_capture",
+      "staticOpcodeSiteDelta": {
+        "i8x16.shuffle": 16,
+        "i32x4.shr_u": -12,
+        "v128.and": -12,
+        "f32x4.convert_i32x4_s": 16,
+        "f32x4.convert_i32x4_u": -16,
+        "f32x4.mul": 0,
+        "f32x4.add": 0
+      }
+    },
+    {
+      "function": "sg_raster_triangle_tile_prepared",
+      "staticOpcodeSiteDelta": {
+        "i8x16.shuffle": 16,
+        "i32x4.shr_u": -12,
+        "v128.and": -12,
+        "f32x4.convert_i32x4_s": 16,
+        "f32x4.convert_i32x4_u": -16,
+        "f32x4.mul": 0,
+        "f32x4.add": 0
+      }
+    }
+  ],
+  "scope": "Static sites per whole linked root, not dynamic instructions or performance; signed/unsigned conversion change observed before timing."
+}

@@ -1,0 +1,37 @@
+{
+  "researchBaselineCommit": "19c836bc433267286b592e6de046bb592a2db5ad",
+  "referenceWasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+  "changedFiles": [
+    "libsoftgl/src/packet_channels.h",
+    "libsoftgl/src/frag_packet.h",
+    "tests/pixel_packet.c"
+  ],
+  "finalSourceFiles": {
+    "libsoftgl/src/packet_channels.h": "a7e65d0ba1170d7ca950ed3abf142afa71401ba370fcc34da7fa1e1df929d6dd",
+    "libsoftgl/src/frag_packet.h": "aa0a68dd5c272b1999a0ba6010f7dcd5f20130e16f68d3067250d365de949ff7",
+    "tests/pixel_packet.c": "486433cdbfce221a90afc25178aaeee21b7a8026e4644bf8e4cbe379677d2b75"
+  },
+  "patchSha256": "afd4eb161369e7afa58584032f9d1df03464a9164858f7ab1f3749712ac1fc10",
+  "hypothesis": "Float 2D packet filtering extracts channels directly with constant byte shuffles and explicit four-channel expansion, replacing mask/shift chains. Integer filtering, gathers, addressing, formula grouping and DOT3 operations retain their arithmetic. Additional shuffle throughput, code size and register pressure may outweigh fewer extraction operations. Codegen and all-mode paired measurements must establish benefit.",
+  "predeclaredComparisons": {
+    "samples": [
+      0,
+      2,
+      4
+    ],
+    "auditsEachMode": 2,
+    "pairsEachAudit": 3,
+    "roundsEachPair": 2,
+    "warmup": 80,
+    "frames": 100,
+    "models": [
+      "bmw",
+      "tank"
+    ],
+    "workers": 3,
+    "resolvePerFrame": true
+  },
+  "decisionRule": "Complete all18 fixed comparisons after full gates. Require reproducible BMW benefit in both audits; inspect all modes and T-80. No parameter sweep or selective confirmation.",
+  "status": "fresh-candidate-source-reconstructed",
+  "productionUntouched": true
+}

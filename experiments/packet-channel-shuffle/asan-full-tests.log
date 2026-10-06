@@ -1,0 +1,54 @@
+Internal ctest changing into directory: /home/cosmo/Git/softgl/build/diagnostics/packet-channel-shuffle/asan-full
+Test project /home/cosmo/Git/softgl/build/diagnostics/packet-channel-shuffle/asan-full
+      Start   1: worker_pool_contract
+ 1/24 Test   #1: worker_pool_contract .............   Passed    0.62 sec
+      Start   2: multisample_contract
+ 2/24 Test   #2: multisample_contract .............   Passed    0.22 sec
+      Start   3: msaa_store_contract
+ 3/24 Test   #3: msaa_store_contract ..............   Passed   10.25 sec
+      Start   4: hierarchical_depth_contract
+ 4/24 Test   #4: hierarchical_depth_contract ......   Passed   27.68 sec
+      Start   5: msaa_edge_contract
+ 5/24 Test   #5: msaa_edge_contract ...............   Passed    3.10 sec
+      Start   6: dot3_chain_contract
+ 6/24 Test   #6: dot3_chain_contract ..............   Passed    0.37 sec
+      Start   7: constant_texture_contract
+ 7/24 Test   #7: constant_texture_contract ........   Passed    0.03 sec
+      Start   8: pixel_packet_contract
+ 8/24 Test   #8: pixel_packet_contract ............   Passed    0.20 sec
+      Start   9: cube_packet_contract
+ 9/24 Test   #9: cube_packet_contract .............   Passed    0.26 sec
+      Start  10: geometry_cache_contract
+10/24 Test  #10: geometry_cache_contract ..........   Passed    0.73 sec
+      Start  11: async_raster_contract
+11/24 Test  #11: async_raster_contract ............   Passed    1.99 sec
+      Start  12: raster_vertex_pack_contract
+12/24 Test  #12: raster_vertex_pack_contract ......   Passed    0.25 sec
+      Start  13: packed_stream_contract
+13/24 Test  #13: packed_stream_contract ...........   Passed    6.06 sec
+      Start  14: simd_clamp_contract
+14/24 Test  #14: simd_clamp_contract ..............   Passed    0.23 sec
+      Start  15: ordered_draw_queue_contract
+15/24 Test  #15: ordered_draw_queue_contract ......   Passed   18.48 sec
+      Start  16: msaa_additive_contract
+16/24 Test  #16: msaa_additive_contract ...........   Passed    4.39 sec
+      Start  17: triangle_stage_contract
+17/24 Test  #17: triangle_stage_contract ..........   Passed    2.58 sec
+      Start  18: msaa_scanline_contract
+18/24 Test  #18: msaa_scanline_contract ...........   Passed    2.26 sec
+      Start  19: cube_filter_contract
+19/24 Test  #19: cube_filter_contract .............   Passed    0.16 sec
+      Start  20: cache_coverage_contract
+20/24 Test  #20: cache_coverage_contract ..........   Passed    0.33 sec
+      Start  21: depth_replay_contract
+21/24 Test  #21: depth_replay_contract ............   Passed    8.05 sec
+      Start  22: position_cache_contract
+22/24 Test  #22: position_cache_contract ..........   Passed    1.97 sec
+      Start  23: vertex_inputs_contract
+23/24 Test  #23: vertex_inputs_contract ...........   Passed    0.13 sec
+      Start 744: index_range_contract
+24/24 Test #744: index_range_contract .............   Passed    1.50 sec
+
+100% tests passed, 0 tests failed out of 24
+
+Total Test time (real) =  91.88 sec

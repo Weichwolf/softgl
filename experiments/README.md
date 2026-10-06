@@ -1,5 +1,16 @@
 # Optimization evidence
 
+The [constant packet-channel shuffle trial](packet-channel-shuffle/README.md)
+is rejected. Complete native/sanitizer/WASM/image/model/edge gates pass, but
+BMW gains do not replicate across modes: off -0.412%/+0.259%, 2x
+-0.295%/-0.339%, 4x about 0.000%/-1.213%. T-80 off is slower in all six pairs
+(+0.601%/+0.735%). All eighteen comparisons finish; one Codex-load rejection
+and its successful repeat are retained. The actual raster roots replace
+24 mask/shift sites with 16 byte shuffles and change 16 conversions from unsigned
+to signed, without proving native JIT costs. Source, recipes and all evidence
+are published; D4/live/report remain unchanged. The next unbuilt hypothesis
+examines consumed sampler channels rather than another shuffle/layout change.
+
 The [current D4 hardware-counter diagnostic](current-texture-access/README.md)
 completes twelve quiet observations: two audits, both models, off/2x/4x.
 BMW retires 409–411 / 498–499 / 566–567 million native instructions per frame;
