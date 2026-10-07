@@ -1,9 +1,9 @@
 # GLimpSW / Mesa / libsoftgl with four common scenes
 
-Status: current accepted 4b58896 beats Mesa in all four scenes at 640x360/off,
+Status: current accepted 94aa984 beats Mesa in all four scenes at 640x360/off,
 with 33–59% less complete-frame time. GLimpSW remains faster with its different
-rendering pipeline. [Current summary](current-4b/summary.json),
-[current receipt](current-4b/receipt.json).
+rendering pipeline. [Current summary](current-94/summary.json),
+[current receipt](current-94/receipt.json).
 
 Historical native 640x360 baseline (47e517d): 72 accepted measurements, no rejected
 blocks. Six timings per renderer/scene with three rotated forward/reverse pairs.
@@ -84,7 +84,7 @@ python3 experiments/glimpsw-mesa-comparison/current_compare.py \
   --output tmp/current-three-renderers/93e2356
 ```
 
-## Current accepted renderer: 4b58896
+## Accepted renderer before scene visibility: 4b58896
 
 After [material pass fusion](../fused-material-pass/README.md), a fresh comparison
 has 72 quiet accepted timings, none rejected, six per renderer/scene.
@@ -102,3 +102,26 @@ python3 experiments/glimpsw-mesa-comparison/current_compare.py \
   --softgl build/fused-material-pass/native/candidate \
   --output tmp/current-three-renderers/4b58896
 ```
+
+## Current accepted renderer: 94aa984
+
+Scene-wide opaque visibility resolves full material packets without changing the
+accepted fusion output. A fresh independent comparison uses 640x360/MSAA off,
+one caller plus three helpers, 15 warmup and 30 measured full frames, identical
+prepared geometry/base assets/cameras. Three rotated forward/reverse blocks per
+scene yield 72 accepted runs and zero rejected runs. Stock Mesa/GLimpSW executables
+and exports are unchanged. GLimpSW retains its different PBR, quantized attribute
+and cutout pipeline; its color output is not a Mesa correctness oracle.
+
+| Scene | GLimpSW ms | Mesa ms | libsoftgl ms | libsoftgl frame time vs Mesa | SG / GLimpSW |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| bmw | 2.137 | 36.261 | 16.089 | -55.63% | 7.53x |
+| t80 | 1.807 | 30.499 | 10.660 | -65.05% | 5.90x |
+| sponza | 3.803 | 65.295 | 35.370 | -45.83% | 9.30x |
+| bistro | 6.212 | 171.736 | 89.496 | -47.89% | 14.41x |
+
+The new renderer is significantly faster than Mesa in all four scenes, but
+GLimpSW remains about 6–15 times faster. The open optimization objective is not
+complete. [Summary](current-94/summary.json), [receipt](current-94/receipt.json).
+The receipt head 06613da adds only the reproduction patch after the 94aa984
+implementation; the library/wrapper source and module are the same.

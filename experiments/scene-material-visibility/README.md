@@ -138,3 +138,8 @@ does not approach or establish a limit at GLimpSW's frame times.
 The live 640x360 browser checks complete without errors for all four models and
 three MSAA modes. Maximum observed shared WASM heap is 2,722,496,512 bytes, below
 4 GiB. The existing pthread/memory-growth compiler advisory is unchanged.
+
+[Fresh three-renderer comparison](../glimpsw-mesa-comparison/current-94/summary.json)
+confirms 46–65% less native frame time than Mesa across the four models at
+640x360/off. GLimpSW still wins by approximately 6–15x; further frontend and
+visibility improvements remain necessary.
