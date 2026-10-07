@@ -1,0 +1,539 @@
+diff --git a/libsoftgl/src/fragment_stream_codec.h b/libsoftgl/src/fragment_stream_codec.h
+new file mode 100644
+index 0000000..6eda195
+--- /dev/null
++++ b/libsoftgl/src/fragment_stream_codec.h
+@@ -0,0 +1,173 @@
++#ifndef SG_FRAGMENT_STREAM_CODEC_H
++#define SG_FRAGMENT_STREAM_CODEC_H
++
++/* Diagnostic wire codec only: no renderer calls this without the private observer.
++ * Runs preserve quad/pixel traversal order and all geometric sample masks.
++ * Each nonempty triangle has a 48-byte geometry header; each row run has an
++ * 8-byte (y, first-x, cell-count, reserved) header followed by packed nibbles.
++ * Original raw integer interpolation edges are recovered from geometry.
++ */
++#include <stdint.h>
++#include <stddef.h>
++#include <string.h>
++#include <limits.h>
++
++#define SG_FS_COLUMNS 4096
++enum {
++    SG_FS_REFERENCES, SG_FS_EMPTY_REFERENCES, SG_FS_BBOX_CELLS,
++    SG_FS_COVERED_CELLS, SG_FS_COVERED_PIXELS, SG_FS_COVERED_SAMPLES,
++    SG_FS_FULL_CELLS, SG_FS_PARTIAL_CELLS, SG_FS_RUNS, SG_FS_NIBBLE_BYTES,
++    SG_FS_CODEC_BYTES, SG_FS_EXPLICIT_BYTES, SG_FS_DECODED_CELLS,
++    SG_FS_EDGE_LANES, SG_FS_WIDE_EDGE_VALUES, SG_FS_COUNT
++};
++typedef struct {
++    int32_t xy[6];
++    int ix0, iy0, ix1, iy1;
++    int samples, multisample;
++} sg_fs_geometry;
++typedef int (*sg_fs_row_callback)(void *, int, int, const uint8_t *, int);
++
++static void sg_fs_put16(uint8_t *p, unsigned value) {
++    p[0] = (uint8_t)value;
++    p[1] = (uint8_t)(value >> 8);
++}
++static unsigned sg_fs_get16(const uint8_t *p) {
++    return (unsigned)p[0] | ((unsigned)p[1] << 8);
++}
++static int64_t sg_fs_edge(const sg_fs_geometry *g, int e, int64_t px, int64_t py) {
++    int a = (e + 1) % 3, b = (e + 2) % 3;
++    return ((int64_t)g->xy[b * 2] - g->xy[a * 2]) * (py - g->xy[a * 2 + 1])
++         - ((int64_t)g->xy[b * 2 + 1] - g->xy[a * 2 + 1]) * (px - g->xy[a * 2]);
++}
++static void sg_fs_offset(const sg_fs_geometry *g, int lane, int *sx, int *sy) {
++    if (!g->samples) {
++        *sx = 128 + (lane & 1) * 256;
++        *sy = 128 + (lane >> 1) * 256;
++    } else if (!g->multisample) {
++        *sx = *sy = 128;
++    } else if (g->samples == 2) {
++        *sx = *sy = lane ? 192 : 64;
++    } else {
++        static const int offsets[4][2] = {{96,32},{224,96},{32,160},{160,224}};
++        *sx = offsets[lane][0]; *sy = offsets[lane][1];
++    }
++}
++static unsigned sg_fs_mask(const sg_fs_geometry *g, int x, int y) {
++    unsigned mask = 0;
++    int lanes = g->samples ? g->samples : 4;
++    for (int lane = 0; lane < lanes; lane++) {
++        if (!g->samples && (x + (lane & 1) >= g->ix1 || y + (lane >> 1) >= g->iy1)) continue;
++        int sx, sy; sg_fs_offset(g, lane, &sx, &sy);
++        int inside = 1;
++        for (int e = 0; e < 3; e++) {
++            int a = (e + 1) % 3, b = (e + 2) % 3;
++            int64_t dx = (int64_t)g->xy[b * 2] - g->xy[a * 2];
++            int64_t dy = (int64_t)g->xy[b * 2 + 1] - g->xy[a * 2 + 1];
++            int bias = dy < 0 || (dy == 0 && dx < 0) ? 0 : -1;
++            if (sg_fs_edge(g, e, (int64_t)x * 256 + sx, (int64_t)y * 256 + sy) + bias < 0) inside = 0;
++        }
++        if (inside) mask |= 1u << lane;
++    }
++    return mask;
++}
++
++/* callback sees the actual encoded run bytes; omitted cells decode as zero.
++ * Native/WASM fixture supplies a full-frame oracle independent of this scanner.
++ */
++static int sg_fs_measure(const sg_fs_geometry *g, uint64_t counts[SG_FS_COUNT],
++                         sg_fs_row_callback callback, void *opaque) {
++    if ((g->samples != 0 && g->samples != 2 && g->samples != 4) ||
++        g->ix0 < 0 || g->iy0 < 0 || g->ix1 > 65535 || g->iy1 > 65535) return 0;
++    int step = g->samples ? 1 : 2;
++    int columns = g->ix0 < g->ix1 ? (g->ix1 - g->ix0 + step - 1) / step : 0;
++    if (columns > SG_FS_COLUMNS) return 0;
++    int64_t area = ((int64_t)g->xy[2] - g->xy[0]) * ((int64_t)g->xy[5] - g->xy[1])
++                 - ((int64_t)g->xy[3] - g->xy[1]) * ((int64_t)g->xy[4] - g->xy[0]);
++    counts[SG_FS_REFERENCES]++;
++    counts[SG_FS_CODEC_BYTES] += 4; /* original-reference offset table entry */
++    counts[SG_FS_EXPLICIT_BYTES] += 4;
++    if (!columns || g->iy0 >= g->iy1 || area <= 0) {
++        counts[SG_FS_EMPTY_REFERENCES]++;
++        return 1;
++    }
++    uint8_t masks[SG_FS_COLUMNS], decoded[SG_FS_COLUMNS];
++    uint8_t wire[SG_FS_COLUMNS * 9];
++    uint64_t initial = counts[SG_FS_COVERED_CELLS];
++    unsigned full = (1u << (g->samples ? g->samples : 4)) - 1;
++    for (int y = g->iy0; y < g->iy1; y += step) {
++        int length = 0;
++        memset(decoded, 0, (size_t)columns);
++        for (int i = 0; i < columns; i++) {
++            unsigned mask = sg_fs_mask(g, g->ix0 + i * step, y);
++            masks[i] = (uint8_t)mask;
++            counts[SG_FS_BBOX_CELLS]++;
++            if (!mask) continue;
++            counts[SG_FS_COVERED_CELLS]++;
++            unsigned live = (unsigned)__builtin_popcount(mask);
++            counts[SG_FS_COVERED_SAMPLES] += live;
++            counts[SG_FS_COVERED_PIXELS] += g->samples ? 1 : live;
++            counts[mask == full ? SG_FS_FULL_CELLS : SG_FS_PARTIAL_CELLS]++;
++        }
++        for (int i = 0; i < columns; ) {
++            if (!masks[i]) { i++; continue; }
++            int first = i;
++            while (i < columns && masks[i]) i++;
++            int n = i - first, bytes = (n + 1) / 2;
++            if (length + 8 + bytes > (int)sizeof(wire)) return 0;
++            sg_fs_put16(wire + length, (unsigned)y);
++            sg_fs_put16(wire + length + 2, (unsigned)(g->ix0 + first * step));
++            sg_fs_put16(wire + length + 4, (unsigned)n);
++            sg_fs_put16(wire + length + 6, 0);
++            memset(wire + length + 8, 0, (size_t)bytes);
++            for (int j = 0; j < n; j++)
++                wire[length + 8 + j / 2] |= masks[first + j] << ((j & 1) * 4);
++            length += 8 + bytes;
++            counts[SG_FS_RUNS]++;
++            counts[SG_FS_NIBBLE_BYTES] += (unsigned)bytes;
++        }
++        counts[SG_FS_CODEC_BYTES] += (unsigned)length;
++        if (callback && !callback(opaque, y, step, wire, length)) return 0;
++        int at = 0, previous_end = g->ix0;
++        while (at < length) {
++            unsigned ry = sg_fs_get16(wire + at), rx = sg_fs_get16(wire + at + 2);
++            unsigned n = sg_fs_get16(wire + at + 4);
++            if (ry != (unsigned)y || (int)rx < previous_end || !n ||
++                (rx - (unsigned)g->ix0) % (unsigned)step ||
++                rx + (n - 1) * (unsigned)step >= (unsigned)g->ix1) return 0;
++            int first = ((int)rx - g->ix0) / step;
++            for (unsigned j = 0; j < n; j++) {
++                unsigned mask = (wire[at + 8 + j / 2] >> ((j & 1) * 4)) & 15u;
++                if (!mask || (mask & ~full)) return 0;
++                decoded[first + (int)j] = (uint8_t)mask;
++                counts[SG_FS_DECODED_CELLS]++;
++                int x = (int)rx + (int)j * step;
++                for (int lane = 0; lane < (g->samples ? g->samples : 4); lane++) {
++                    int sx, sy; sg_fs_offset(g, lane, &sx, &sy);
++                    for (int e = 0; e < 2; e++) {
++                        int a = (e + 1) % 3, b = (e + 2) % 3;
++                        int64_t dx = -((int64_t)g->xy[b * 2 + 1] - g->xy[a * 2 + 1]);
++                        int64_t dy = (int64_t)g->xy[b * 2] - g->xy[a * 2];
++                        int64_t raw = sg_fs_edge(g, e, (int64_t)x * 256 + sx, (int64_t)y * 256 + sy);
++                        int64_t base = sg_fs_edge(g, e, (int64_t)g->ix0 * 256, (int64_t)g->iy0 * 256);
++                        int64_t recovered = base + dx * ((int64_t)(x - g->ix0) * 256 + sx)
++                                              + dy * ((int64_t)(y - g->iy0) * 256 + sy);
++                        if (raw != recovered) return 0;
++                        counts[SG_FS_EDGE_LANES]++;
++                        if (raw < INT32_MIN || raw > INT32_MAX) counts[SG_FS_WIDE_EDGE_VALUES]++;
++                    }
++                }
++            }
++            previous_end = (int)rx + (int)n * step;
++            at += 8 + ((int)n + 1) / 2;
++        }
++        if (at != length || memcmp(masks, decoded, (size_t)columns)) return 0;
++    }
++    uint64_t cells = counts[SG_FS_COVERED_CELLS] - initial;
++    if (!cells) counts[SG_FS_EMPTY_REFERENCES]++;
++    else {
++        counts[SG_FS_CODEC_BYTES] += 48;
++        counts[SG_FS_EXPLICIT_BYTES] += 48 + cells * 24;
++    }
++    return 1;
++}
++#endif
+diff --git a/libsoftgl/src/fragment_stream_diag.h b/libsoftgl/src/fragment_stream_diag.h
+new file mode 100644
+index 0000000..d2d4ff8
+--- /dev/null
++++ b/libsoftgl/src/fragment_stream_diag.h
+@@ -0,0 +1,137 @@
++#if defined(SG_FRAGMENT_STREAM_DIAG) && SG_FRAGMENT_STREAM_DIAG
++#include "fragment_stream_codec.h"
++
++/* Caller-only collection; no observer allocation occurs unless reset enables it.
++ * All reads happen after joined transforms, before bin ownership transfers.
++ * A frame must finish/resolve before data is analyzed or read.
++ */
++#define SG_FS_MAX_DRAWS 128
++#define SG_FS_MAX_RECORDS 131072
++enum { SG_FS_DRAW_WORDS = 24, SG_FS_RECORD_WORDS = 14 };
++static _Thread_local uint32_t *sg_fs_draws, *sg_fs_records;
++static _Thread_local unsigned sg_fs_draw_count, sg_fs_record_count;
++static _Thread_local int sg_fs_enabled, sg_fs_error, sg_fs_analyzed;
++static _Thread_local uint64_t sg_fs_totals[2][SG_FS_COUNT];
++static int sg_pool_sort_safe(const softgl_ctx *c);
++
++void sg_fstream_diag_release(void) {
++    free(sg_fs_draws); free(sg_fs_records);
++    sg_fs_draws = sg_fs_records = NULL;
++    sg_fs_enabled = sg_fs_error = sg_fs_analyzed = 0;
++    sg_fs_draw_count = sg_fs_record_count = 0;
++}
++void sg_fstream_diag_reset(void) {
++    if (!sg_fs_draws) sg_fs_draws = calloc(SG_FS_MAX_DRAWS * SG_FS_DRAW_WORDS, sizeof(uint32_t));
++    if (!sg_fs_records) sg_fs_records = malloc((size_t)SG_FS_MAX_RECORDS * SG_FS_RECORD_WORDS * sizeof(uint32_t));
++    sg_fs_draw_count = sg_fs_record_count = 0;
++    sg_fs_enabled = 1; sg_fs_error = !sg_fs_draws || !sg_fs_records; sg_fs_analyzed = 0;
++    memset(sg_fs_totals, 0, sizeof(sg_fs_totals));
++}
++double sg_fstream_diag_meta(int index) {
++    switch (index) {
++        case 0: return sg_fs_draw_count;
++        case 1: return sg_fs_record_count;
++        case 2: return sg_fs_error;
++        case 3: return SG_FS_DRAW_WORDS;
++        case 4: return SG_FS_RECORD_WORDS;
++        case 5: return SG_FS_COUNT;
++        case 6: return sg_fs_analyzed;
++        default: return -1;
++    }
++}
++uintptr_t sg_fstream_diag_data(int which) {
++    return (uintptr_t)(which == 0 ? sg_fs_draws : which == 1 ? sg_fs_records : NULL);
++}
++
++static void sg_fs_capture(softgl_ctx *c, sg_worker_pool *p,
++                           const sg_geometry_entry *entry, int hit) {
++    if (!sg_fs_enabled || sg_fs_error) return;
++    if (sg_fs_analyzed || !entry || !entry->valid || !p->geometry_cache ||
++        sg_fs_draw_count == SG_FS_MAX_DRAWS) { sg_fs_error = 2; return; }
++    unsigned count = 0;
++    for (int b = 0; b < p->nbins; b++) count += (unsigned)p->bins[b].count;
++    if (count > SG_FS_MAX_RECORDS - sg_fs_record_count) { sg_fs_error = 3; return; }
++    unsigned draw = sg_fs_draw_count++;
++    uint32_t *d = sg_fs_draws + draw * SG_FS_DRAW_WORDS;
++    memset(d, 0, SG_FS_DRAW_WORDS * sizeof(uint32_t));
++    d[0] = (uint32_t)(entry - p->geometry_cache->entries); d[1] = (uint32_t)hit;
++    d[2] = sg_fs_record_count; d[3] = count;
++    d[4] = (uint32_t)entry->offsets[p->nbins];
++    d[5] = (uint32_t)c->fb.w; d[6] = (uint32_t)c->fb.h;
++    d[7] = (uint32_t)c->fb.samples; d[8] = (uint32_t)c->multisample;
++    d[9] = (uint32_t)c->scissor_enabled;
++    for (int k = 0; k < 4; k++) d[10 + k] = (uint32_t)c->scissor[k];
++    d[14] = (uint32_t)sg_pool_sort_safe(c);
++    d[15] = (uint32_t)c->depth_test; d[16] = (uint32_t)c->depth_func;
++    d[17] = (uint32_t)c->depth_mask; d[18] = (uint32_t)c->blend;
++    d[19] = (uint32_t)c->alpha_test; d[20] = (uint32_t)c->stencil_test;
++    d[21] = (uint32_t)c->polygon_offset_fill; d[22] = (uint32_t)p->nbins;
++    d[23] = entry->depth_epoch && entry->depth_epoch == p->depth_epoch &&
++        (c->fb.samples == 0 || c->fb.samples == 2 || c->fb.samples == 4) &&
++        c->depth_test && !c->stencil_test && !c->polygon_offset_fill &&
++        (c->depth_func == GL_LESS || c->depth_func == GL_LEQUAL || c->depth_func == GL_EQUAL);
++    for (int b = 0; b < p->nbins; b++) {
++        const sg_worker_bin *bin = &p->bins[b];
++        for (int i = 0; i < bin->count; i++) {
++            const sg_worker_tri *t = &bin->tris[i];
++            uint32_t *r = sg_fs_records + sg_fs_record_count++ * SG_FS_RECORD_WORDS;
++            r[0] = draw; r[1] = (uint32_t)b; r[2] = (uint32_t)i;
++            for (int k = 0; k < 3; k++) {
++                unsigned marker = t->v[0] & SG_BIN_TRANSFORMED_VERTEX;
++                unsigned index = t->v[k] & ~SG_BIN_TRANSFORMED_VERTEX;
++                r[3 + k] = index | marker;
++                if ((marker && (p->prepared_transformed <= 0 || index >= (unsigned)p->prepared_transformed)) ||
++                    (!marker && index >= (unsigned)p->vpool_count)) { sg_fs_error = 4; return; }
++                const sg_vert *v = marker ? &p->transformed[index] : &p->vpool[index];
++                r[6 + k * 2] = (uint32_t)sg_fp_screen_from_float(v->ndc.x);
++                r[7 + k * 2] = (uint32_t)sg_fp_screen_from_float(v->ndc.y);
++            }
++            r[12] = (uint32_t)bin->ix0; r[13] = (uint32_t)bin->ix1;
++        }
++    }
++}
++
++int sg_fstream_diag_analyze(void) {
++    if (!sg_fs_enabled || sg_fs_error || sg_fs_analyzed) return 0;
++    for (unsigned j = 0; j < sg_fs_record_count; j++) {
++        const uint32_t *r = sg_fs_records + j * SG_FS_RECORD_WORDS;
++        const uint32_t *d = sg_fs_draws + r[0] * SG_FS_DRAW_WORDS;
++        sg_fs_geometry g;
++        memcpy(g.xy, r + 6, sizeof(g.xy));
++        int32_t minx = g.xy[0], maxx = minx, miny = g.xy[1], maxy = miny;
++        for (int k = 1; k < 3; k++) {
++            if (g.xy[k * 2] < minx) minx = g.xy[k * 2];
++            if (g.xy[k * 2] > maxx) maxx = g.xy[k * 2];
++            if (g.xy[k * 2 + 1] < miny) miny = g.xy[k * 2 + 1];
++            if (g.xy[k * 2 + 1] > maxy) maxy = g.xy[k * 2 + 1];
++        }
++        g.ix0 = (int)(minx >> 8); g.iy0 = (int)(miny >> 8);
++        g.ix1 = (int)(maxx >> 8) + 1; g.iy1 = (int)(maxy >> 8) + 1;
++        if (minx < 0) g.ix0 = (int)(((int64_t)minx - 255) >> 8);
++        if (miny < 0) g.iy0 = (int)(((int64_t)miny - 255) >> 8);
++        if (g.ix0 < (int)r[12]) g.ix0 = (int)r[12];
++        if (g.ix1 > (int)r[13]) g.ix1 = (int)r[13];
++        if (g.iy0 < 0) g.iy0 = 0;
++        if (g.iy1 > (int)d[6]) g.iy1 = (int)d[6];
++        if (d[9]) {
++            int64_t sx0 = (int32_t)d[10], sy0 = (int32_t)d[11];
++            int64_t sx1 = sx0 + (int32_t)d[12], sy1 = sy0 + (int32_t)d[13];
++            if (g.ix0 < sx0) g.ix0 = (int)sx0;
++            if (g.ix1 > sx1) g.ix1 = (int)sx1;
++            if (g.iy0 < sy0) g.iy0 = (int)sy0;
++            if (g.iy1 > sy1) g.iy1 = (int)sy1;
++        }
++        g.samples = (int)d[7]; g.multisample = (int)d[8];
++        if (!sg_fs_measure(&g, sg_fs_totals[d[1] ? 1 : 0], NULL, NULL)) { sg_fs_error = 5; return 0; }
++    }
++    sg_fs_analyzed = 1;
++    return 1;
++}
++double sg_fstream_diag_read(int replay, int index) {
++    if (!sg_fs_analyzed || replay < 0 || replay > 1 || index < 0 || index >= SG_FS_COUNT) return -1;
++    return (double)sg_fs_totals[replay][index];
++}
++#define SG_FS_CAPTURE(c, p, entry, hit) sg_fs_capture(c, p, entry, hit)
++#else
++#define SG_FS_CAPTURE(c, p, entry, hit) ((void)0)
++#endif
+diff --git a/libsoftgl/src/workers.c b/libsoftgl/src/workers.c
+index 2c21d3b..5f3cba2 100644
+--- a/libsoftgl/src/workers.c
++++ b/libsoftgl/src/workers.c
+@@ -282,6 +282,8 @@ typedef struct sg_geometry_cache {
+     sg_position_page position_pages[SG_POSITION_MAX_PAGES];
+ } sg_geometry_cache;
+ 
++#include "fragment_stream_diag.h"
++
+ static void sg_geometry_cache_destroy(sg_geometry_cache *cache) {
+     if (!cache) return;
+     for (int i = 0; i < SG_GEOMETRY_CACHE_ENTRIES; i++)
+@@ -388,6 +390,7 @@ void sg_workers_geometry_store(softgl_ctx *c, sg_geometry_entry *entry,
+         }
+         if (transformed) p->prepared_coverage_entry = entry;
+     }
++    SG_FS_CAPTURE(c, p, entry, 0);
+ }
+ 
+ void sg_workers_geometry_replay(softgl_ctx *c, const sg_geometry_entry *entry) {
+@@ -413,6 +416,7 @@ void sg_workers_geometry_replay(softgl_ctx *c, const sg_geometry_entry *entry) {
+             bin->count = count;
+         }
+     }
++    SG_FS_CAPTURE(c, p, entry, 1);
+ }
+ 
+ /* Canonicalize a VBO position address to its record field and global index.
+diff --git a/tests/CMakeLists.txt b/tests/CMakeLists.txt
+index 67a4280..7cfde4d 100644
+--- a/tests/CMakeLists.txt
++++ b/tests/CMakeLists.txt
+@@ -829,3 +829,9 @@ if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+ endif()
+ add_test(NAME index_range_contract COMMAND index_range_contract)
+ set_tests_properties(index_range_contract PROPERTIES TIMEOUT 90)
++
++add_executable(fragment_stream_contract fragment_stream.c)
++target_include_directories(fragment_stream_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
++target_link_libraries(fragment_stream_contract PRIVATE softgl)
++add_test(NAME fragment_stream_contract COMMAND fragment_stream_contract)
++set_tests_properties(fragment_stream_contract PROPERTIES TIMEOUT 90)
+diff --git a/tests/fragment_stream.c b/tests/fragment_stream.c
+new file mode 100644
+index 0000000..7bf5c56
+--- /dev/null
++++ b/tests/fragment_stream.c
+@@ -0,0 +1,168 @@
++#include "types.h"
++#include "workers.h"
++#include "fragment_stream_codec.h"
++#include <stdio.h>
++
++#define REQUIRE(x) do { if (!(x)) { fprintf(stderr, "%d: %s\n", __LINE__, #x); return 1; } } while (0)
++enum { W = 65, H = 35, N = 384, V = N * 3 };
++extern void sg_fstream_diag_reset(void), sg_fstream_diag_release(void);
++extern double sg_fstream_diag_meta(int), sg_fstream_diag_read(int, int);
++extern uintptr_t sg_fstream_diag_data(int);
++extern int sg_fstream_diag_analyze(void);
++
++typedef struct { uint8_t cells[W * H]; int last_y; } decoded_frame;
++static int decode_row(void *opaque, int y, int step, const uint8_t *wire, int bytes) {
++    decoded_frame *out = opaque;
++    if (y <= out->last_y) return 0;
++    out->last_y = y;
++    int at = 0, previous = -1;
++    while (at < bytes) {
++        if (at + 8 > bytes) return 0;
++        int ry = wire[at] + 256 * wire[at + 1];
++        int x = wire[at + 2] + 256 * wire[at + 3];
++        int n = wire[at + 4] + 256 * wire[at + 5];
++        if (ry != y || x <= previous || !n || at + 8 + (n + 1) / 2 > bytes) return 0;
++        for (int i = 0; i < n; i++) {
++            int px = x + i * step;
++            if (px < 0 || px >= W || y < 0 || y >= H) return 0;
++            unsigned mask = (wire[at + 8 + i / 2] >> (4 * (i % 2))) & 15u;
++            if (!mask || out->cells[y * W + px]) return 0;
++            out->cells[y * W + px] = (uint8_t)mask;
++        }
++        previous = x + (n - 1) * step;
++        at += 8 + (n + 1) / 2;
++    }
++    return at == bytes;
++}
++
++/* Full framebuffer oracle, with no scanner, run boundaries, nibble helpers,
++ * SIMD masks, extrema, recurrence or production sample-position helper. */
++static void oracle(const sg_fs_geometry *g, uint8_t *expected) {
++    uint8_t pixel[W * H]; memset(pixel, 0, sizeof(pixel));
++    int64_t signed_area = ((int64_t)g->xy[2] - g->xy[0]) * ((int64_t)g->xy[5] - g->xy[1])
++                        - ((int64_t)g->xy[3] - g->xy[1]) * ((int64_t)g->xy[4] - g->xy[0]);
++    if (signed_area <= 0) return;
++    static const int sx4[4] = {96,224,32,160}, sy4[4] = {32,96,160,224};
++    for (int y = 0; y < H; y++) for (int x = 0; x < W; x++) {
++        if (x < g->ix0 || x >= g->ix1 || y < g->iy0 || y >= g->iy1) continue;
++        int ns = g->samples ? g->samples : 1;
++        for (int s = 0; s < ns; s++) {
++            int sx = 128, sy = 128;
++            if (g->samples && g->multisample) {
++                if (g->samples == 2) sx = sy = 64 + s * 128;
++                else { sx = sx4[s]; sy = sy4[s]; }
++            }
++            int inside = 1;
++            for (int a = 0; a < 3; a++) {
++                int b = (a + 1) % 3;
++                int64_t ax = g->xy[2 * a], ay = g->xy[2 * a + 1];
++                int64_t bx = g->xy[2 * b], by = g->xy[2 * b + 1];
++                int64_t edge = (bx - ax) * ((int64_t)y * 256 + sy - ay)
++                             - (by - ay) * ((int64_t)x * 256 + sx - ax);
++                int include_zero = by < ay || (by == ay && bx < ax);
++                if (edge < 0 || (edge == 0 && !include_zero)) inside = 0;
++            }
++            if (inside) pixel[y * W + x] |= (uint8_t)(1u << s);
++        }
++    }
++    if (g->samples) memcpy(expected, pixel, sizeof(pixel));
++    else for (int y = g->iy0; y < g->iy1; y += 2) for (int x = g->ix0; x < g->ix1; x += 2) {
++        for (int k = 0; k < 4; k++) {
++            int px = x + k % 2, py = y + k / 2;
++            if (px < g->ix1 && py < g->iy1 && pixel[py * W + px]) expected[y * W + x] |= (uint8_t)(1u << k);
++        }
++    }
++}
++static int codec_contract(void) {
++    unsigned cases = 0; uint64_t totals[SG_FS_COUNT] = {0};
++    for (int mode = 0; mode < 3; mode++) for (int enabled = 0; enabled < 2; enabled++)
++        for (int k = 0; k < 384; k++) {
++            sg_fs_geometry g = {.samples = mode == 0 ? 0 : mode == 1 ? 2 : 4, .multisample = enabled};
++            int32_t xy[6] = {512 + (k % 13) * 32, 256 + (k % 7) * 64,
++                            60 * 256, 3 * 256 + (k % 5) * 16, 5 * 256, 32 * 256};
++            if (k % 8 == 0) { xy[0] = -1000000 * 256; xy[1] = -1000000 * 256; xy[2] = 1000000 * 256; xy[3] = -1000000 * 256; xy[4] = 0; xy[5] = 1000000 * 256; }
++            if (k % 8 == 1) { xy[2] = xy[0]; xy[3] = xy[1]; }
++            if (k % 8 == 2) { int32_t x = xy[2], y = xy[3]; xy[2] = xy[4]; xy[3] = xy[5]; xy[4] = x; xy[5] = y; }
++            if (k % 8 == 3) { xy[0] = 128; xy[1] = 128; xy[2] = 64 * 256 + 128; xy[3] = 128; xy[4] = 128; xy[5] = 34 * 256 + 128; }
++            if (k % 8 == 4) { xy[2] = xy[0] + 17; xy[3] = xy[1] + 3; xy[4] = xy[0] + 2; xy[5] = xy[1] + 28; }
++            memcpy(g.xy, xy, sizeof(xy));
++            g.ix0 = k % 4 ? 7 : 0; g.ix1 = k % 4 ? 39 : W;
++            g.iy0 = k % 3 ? 3 : 0; g.iy1 = k % 3 ? 24 : H;
++            decoded_frame decoded = {.last_y = -1};
++            uint8_t expected[W * H] = {0}; oracle(&g, expected);
++            REQUIRE(sg_fs_measure(&g, totals, decode_row, &decoded));
++            REQUIRE(!memcmp(expected, decoded.cells, sizeof(expected)));
++            cases++;
++        }
++    REQUIRE(totals[SG_FS_DECODED_CELLS] == totals[SG_FS_COVERED_CELLS]);
++    REQUIRE(totals[SG_FS_WIDE_EDGE_VALUES] > 0);
++    sg_fs_geometry bad = {.ix1 = SG_FS_COLUMNS + 1, .iy1 = 1, .samples = 4};
++    REQUIRE(!sg_fs_measure(&bad, totals, NULL, NULL));
++    bad.ix1 = 1; bad.samples = 8; REQUIRE(!sg_fs_measure(&bad, totals, NULL, NULL));
++    printf("Codec: %u full-frame oracle cases; %llu exact decoded cells; %llu exact raw edge lanes, including %llu wide values\n", cases,
++        (unsigned long long)totals[SG_FS_DECODED_CELLS], (unsigned long long)totals[SG_FS_EDGE_LANES],
++        (unsigned long long)totals[SG_FS_WIDE_EDGE_VALUES]);
++    return 0;
++}
++
++static int actual_collector(int samples) {
++    float positions[V][3]; unsigned indices[V];
++    for (int i = 0; i < N; i++) for (int k = 0; k < 3; k++) {
++        const float offsets[3][2] = {{0,0},{.15f,0},{0,.15f}};
++        positions[i * 3 + k][0] = -.9f + (i % 16) * .105f + offsets[k][0];
++        positions[i * 3 + k][1] = -.9f + ((i / 16) % 16) * .105f + offsets[k][1];
++        positions[i * 3 + k][2] = .1f * (i % 3);
++        indices[i * 3 + k] = (unsigned)(i * 3 + k);
++    }
++    size_t pixels = W * H, size = pixels * 4;
++    uint8_t *saved_color = malloc(size), *saved_stencil = malloc(pixels * (samples ? (size_t)samples : 1));
++    float *saved_depth = malloc(pixels * (samples ? (size_t)samples : 1) * sizeof(float));
++    REQUIRE(saved_color && saved_stencil && saved_depth);
++    uint64_t count_records = 0;
++    for (int observe = 0; observe < 2; observe++) {
++        softgl_ctx *c = samples ? softgl_create_multisample(W,H,samples) : softgl_create(W,H);
++        REQUIRE(c); softgl_make_current(c); sg_workers_shutdown(c); sg_workers_init(c,3);
++        GLuint buffers[2]; glGenBuffers(2,buffers);
++        glBindBuffer(GL_ARRAY_BUFFER,buffers[0]); glBufferData(GL_ARRAY_BUFFER,sizeof(positions),positions,GL_STATIC_DRAW);
++        glVertexPointer(3,GL_FLOAT,0,NULL); glEnableClientState(GL_VERTEX_ARRAY);
++        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buffers[1]); glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices),indices,GL_STATIC_DRAW);
++        glViewport(0,0,W,H); glClearDepth(1); glClearColor(0,0,0,0); glClearStencil(0);
++        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
++        if (observe) sg_fstream_diag_reset(); else sg_fstream_diag_release();
++        glEnable(GL_DEPTH_TEST); glDepthFunc(GL_LESS); glDepthMask(GL_TRUE); glColor4f(.2f,.4f,.6f,1);
++        glDrawElements(GL_TRIANGLES,V,GL_UNSIGNED_INT,NULL);
++        glDepthFunc(GL_LEQUAL); glDepthMask(GL_FALSE); glEnable(GL_BLEND); glBlendFunc(GL_SRC_ALPHA,GL_ONE);
++        glColor4f(.1f,.2f,.3f,.5f); glDrawElements(GL_TRIANGLES,V,GL_UNSIGNED_INT,NULL);
++        glEnable(GL_SCISSOR_TEST); glScissor(7,3,32,21); glDrawElements(GL_TRIANGLES,V,GL_UNSIGNED_INT,NULL);
++        const uint8_t *color = softgl_read_rgba8(c);
++        size_t planes = pixels * (samples ? (size_t)samples : 1);
++        const float *depth = samples ? c->fb.sample_depth : c->fb.depth;
++        const uint8_t *stencil = samples ? c->fb.sample_stencil : c->fb.stencil;
++        if (!observe) { memcpy(saved_color,color,size); memcpy(saved_depth,depth,planes*sizeof(float)); memcpy(saved_stencil,stencil,planes); }
++        else {
++            REQUIRE(!memcmp(saved_color,color,size) && !memcmp(saved_depth,depth,planes*sizeof(float)) && !memcmp(saved_stencil,stencil,planes));
++            REQUIRE(sg_fstream_diag_meta(0) == 3 && sg_fstream_diag_meta(2) == 0);
++            const uint32_t *draws = (const uint32_t *)sg_fstream_diag_data(0);
++            REQUIRE(draws[1] == 0 && draws[24 + 1] == 1 && draws[48 + 1] == 1);
++            REQUIRE(draws[14] == 1 && draws[24 + 14] == 0);
++            REQUIRE(sg_fstream_diag_analyze() && sg_fstream_diag_meta(6) == 1);
++            REQUIRE(!sg_fstream_diag_analyze());
++            for (int replay = 0; replay < 2; replay++) {
++                REQUIRE(sg_fstream_diag_read(replay,SG_FS_REFERENCES) > 0);
++                REQUIRE(sg_fstream_diag_read(replay,SG_FS_COVERED_CELLS) == sg_fstream_diag_read(replay,SG_FS_DECODED_CELLS));
++            }
++            count_records = (uint64_t)sg_fstream_diag_meta(1);
++            REQUIRE(sg_fstream_diag_read(-1,0) == -1 && sg_fstream_diag_read(0,SG_FS_COUNT) == -1);
++            sg_fstream_diag_release(); REQUIRE(sg_fstream_diag_meta(0) == 0 && !sg_fstream_diag_data(0));
++        }
++        REQUIRE(glGetError() == GL_NO_ERROR); softgl_destroy(c);
++    }
++    free(saved_color); free(saved_depth); free(saved_stencil);
++    printf("Collector: %dx mode, %llu bin references; actual miss/replay/scissor, sorted base/ordered blend, color/depth/stencil exact\n",samples,(unsigned long long)count_records);
++    return 0;
++}
++int main(void) {
++    REQUIRE(!codec_contract());
++    for (int mode = 0; mode < 3; mode++) REQUIRE(!actual_collector(mode == 0 ? 0 : mode == 1 ? 2 : 4));
++    return 0;
++}

@@ -32,7 +32,8 @@
 | [draw-state-specialization](draw-state-specialization/README.md) | Held proposal | Eligibility-only caching was already rejected; a new specialization needs a distinct measured mechanism. |
 | [empty-sample-filter](empty-sample-filter/README.md) | Rejected variants / diagnostics | Exact empty-reference removal reduced logical work but did not justify adoption. |
 | [four-context-architecture](four-context-architecture/README.md) | Rejected variants | Packing, tickets, texture interning and coarse coverage trials lacked reproducible BMW gains. |
-| [fragment-geometry-replay](fragment-geometry-replay/README.md) | Proposed / priority | F-buffer-inspired geometric event replay could skip repeated rasterization; exact ordered semantics and memory cost remain untested. |
+| [fragment-geometry-replay](fragment-geometry-replay/README.md) | Proposed / priority | F-buffer-inspired replay has an exact codec census; integrated rendering, budget/fallback and speed remain untested. |
+| [fragment-stream-census](fragment-stream-census/README.md) | Diagnostic | 1200 D4-exact frames and repeated geometry counts; BMW replay wire averages 1.18/1.63/1.96 MB, full 4x storage exceeds 4 MiB, T-80 has no hits; no speed claim. |
 | [geometry-bin-cache](geometry-bin-cache/README.md) | Accepted | Reuses qualified ordered triangle bins while refreshing attributes. |
 | [geometry-claim-batches](geometry-claim-batches/README.md) | Rejected | Fewer geometry reservations did not improve BMW in both audits of any mode. |
 | [hierarchical-coverage](hierarchical-coverage/README.md) | Proposed | Coarse exact coverage traversal needs eligible-box diagnostics; no implementation or timing. |
