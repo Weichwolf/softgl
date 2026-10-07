@@ -1,6 +1,6 @@
 # Exact tiled texture storage
 
-Research brief, 2026-10-07. **Proposed; not implemented or measured.** This
+Research brief, 2026-10-07. **Storage candidate proposed; footprint diagnostic completed, no performance result.** This
 expands the existing [texture-block hypothesis](../ordered-packed-capacity/next-research.md)
 with an inspected implementation and a diagnostic-first plan.
 
@@ -55,6 +55,15 @@ per-thread rows, read/reset only after joined rendering, explicit overflow
 checks, and exact frame/hash comparisons against the accepted module. Counter
 overhead and logical block counts are diagnostic observations, not acceptance
 timings or measured cache savings.
+
+The [completed sampler diagnostic](../sampler-footprints/README.md) covers
+all actual 2D fetch routes including T-80 off, repeats 600 angle/key tables
+exactly and preserves all 1200 model hashes. Row-major 4x4 tiles touch fewer
+logical groups than row order and Y8, but lose many original horizontal pairs.
+The fixed first candidate is a derived 4x4 copy for RGBA8 direct 2D POT levels
+at least 4x4; cube faces and unsupported states retain row order. BMW direct
+2D is a minority of its sampling work and T-80 MSAA pair loss is a specific
+risk. These are addressing observations, not cache misses or measured speed.
 
 Select one fixed layout with a documented rationale before acceptance timing;
 do not choose a layout by retaining only favourable benchmark runs. Start with

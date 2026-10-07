@@ -86,6 +86,7 @@
 | [sample-depth-locality](sample-depth-locality/README.md) | Rejected | Depth alignment, layout and finer-bin variants did not justify adoption. |
 | [sample-depth-planes](sample-depth-planes/README.md) | Rejected | Anchored depth-plane variants were slower and changed some production pixels. |
 | [sample-plane-layout](sample-plane-layout/README.md) | Rejected | Tiled sample planes and bin-alignment variants did not improve the target renderer. |
+| [sampler-footprints](sampler-footprints/README.md) | Diagnostic | 1200 exact frames, 600 repeated tables; 4x4 lowers logical groups but loses pair loads; no FPS claim. |
 | [screen-coordinate-reuse](screen-coordinate-reuse/README.md) | Not retained | Exact fixed-coordinate reuse across stages did not demonstrate an acceptable gain. |
 | [shader-texture-trials](shader-texture-trials/README.md) | Mixed historical results | Records outlined shader diagnostics, held sampler variants and a retained exact sampler revision. |
 | [shared-packet-uv](shared-packet-uv/README.md) | Rejected | Sharing packet UV interpolation across units did not justify adoption. |
@@ -94,7 +95,7 @@
 | [simd-scanline-phases](simd-scanline-phases/README.md) | Held / rejected variants | Exact row recurrences did not confirm a BMW gain; SIMD proposal variants were slower. |
 | [simd-triangle-setup](simd-triangle-setup/README.md) | Proposed | Four independent descriptor lanes need uncached-work and gather-cost diagnostics. |
 | [slice-vertex-packing](slice-vertex-packing/README.md) | Rejected | Packing during geometry slices gives opposite BMW audit directions in every mode. |
-| [texture-tiled-storage](texture-tiled-storage/README.md) | Proposed | Sampler diagnostics must cover legacy quad/scalar paths; no tiled implementation or timing. |
+| [texture-tiled-storage](texture-tiled-storage/README.md) | Proposed | Complete sampler census selects a fixed direct-2D 4x4 candidate; pair-load risk, no implementation or timing. |
 | [transient-depth-visibility](transient-depth-visibility/README.md) | Diagnostic / superseded trials | Identifies strictly hidden replay references and preserves the initial timing limitations. |
 | [triangle-size-histogram](triangle-size-histogram/README.md) | Diagnostic | Separates full triangle area from actual visited work; no timing gain is claimed. |
 | [validation-protocol](validation-protocol/README.md) | Protocol | Documents unchanged correctness gates and the 18-pair quiet-host comparison plan. |
