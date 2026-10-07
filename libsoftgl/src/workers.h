@@ -135,10 +135,10 @@ typedef struct {
     uint64_t       job_position_first;
     int            job_position_count;
 
-    /* Wake protocol: main bumps gen + broadcasts; each worker compares its
-     * local_gen to the shared gen under the mutex to decide whether there
-     * is new work. Workers atomic-increment done_count after an ordinary job
-     * or an explicitly stopped queue epoch; main joins via that counter. */
+    /* Main publishes each generation with release semantics. Workers briefly
+     * poll with acquire, then recheck under the mutex before condition wait.
+     * Workers increment done_count after an ordinary job or explicitly stopped
+     * queue epoch; the caller joins via that acquire/release counter. */
     pthread_mutex_t mtx;
     pthread_cond_t  wake;
     atomic_int      gen;

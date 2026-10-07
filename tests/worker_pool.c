@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #define CHECK(condition) do { if (!(condition)) { \
     fprintf(stderr, "line %d: %s\n", __LINE__, #condition); exit(1); } } while (0)
@@ -12,6 +13,37 @@ static void quad(int w, int h) {
     glVertex2f(0.f, 0.f); glVertex2f((float)w, 0.f);
     glVertex2f((float)w, (float)h); glVertex2f(0.f, (float)h);
     glEnd();
+}
+
+/* A producer can leave helpers idle between jobs or before destruction.
+ * Exercise both near-term generation handoff and the parked-worker fallback. */
+static void idle_briefly(void) {
+    struct timespec start, now;
+    timespec_get(&start, TIME_UTC);
+    do {
+        timespec_get(&now, TIME_UTC);
+    } while ((now.tv_sec-start.tv_sec)*1000000000LL+now.tv_nsec-start.tv_nsec < 2000000LL);
+}
+
+static void check_idle_resume(int workers) {
+    const int w = 640, h = 360;
+    softgl_ctx *c = softgl_create(w,h); CHECK(c);
+    softgl_make_current(c); sg_workers_shutdown(c); sg_workers_init(c,workers);
+    glViewport(0,0,w,h);
+    glMatrixMode(GL_PROJECTION); glLoadIdentity(); glOrtho(0,w,0,h,-1,1);
+    glMatrixMode(GL_MODELVIEW); glLoadIdentity();
+    for (int frame = 0; frame < 12; frame++) {
+        if (frame%2 == 0) idle_briefly();
+        uint8_t red = (uint8_t)(32+frame*8);
+        glClearColor(0,0,0,1); glClear(GL_COLOR_BUFFER_BIT);
+        glColor4ub(red,128,220,255); quad(w,h);
+        const uint8_t *rgba = softgl_read_rgba8(c);
+        for (int i = 0; i < w*h; i++)
+            CHECK(rgba[i*4] == red && rgba[i*4+1] == 128 && rgba[i*4+2] == 220 && rgba[i*4+3] == 255);
+    }
+    CHECK(glGetError() == GL_NO_ERROR);
+    idle_briefly();
+    softgl_destroy(c);
 }
 
 static void depth_quad(int w, int h, float z) {
@@ -201,6 +233,7 @@ int main(void) {
     const int widths[] = {1, 2, 3, 15, 31, 32, 33, 65, 641};
     const int workers[] = {1, 3, SG_MAX_TILES};
     for (unsigned i = 0; i < sizeof(workers)/sizeof(workers[0]); i++) {
+        check_idle_resume(workers[i]);
         check_transforms(workers[i]);
         check_subpixel_bins(workers[i]);
         for (unsigned j = 0; j < sizeof(widths)/sizeof(widths[0]); j++)

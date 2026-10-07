@@ -51,7 +51,7 @@
 | [intrinsic-coverage-retirement](intrinsic-coverage-retirement/README.md) | Accepted | Prunes sample-empty cached references using coverage already computed by rasterization. |
 | [large-triangle-depth-planes](large-triangle-depth-planes/README.md) | Rejected | Restricting depth planes to larger triangles still regressed BMW. |
 | [main-raster-participation](main-raster-participation/README.md) | Accepted | Caller shares the raster-bin queue; historical BMW audits improved 7.90%/7.10%; original patch is preserved. |
-| [native-cpu-profiles](native-cpu-profiles/README.md) | Diagnostic | Current 640x360 profiles complete for all four scenes; vertex/clipping and queue wakeups motivate cluster culling; no speedup claimed. |
+| [native-cpu-profiles](native-cpu-profiles/README.md) | Diagnostic | Fresh 1ff3c2c Bistro profile: broadcast 12.6%, lock wake 7.3% CPU samples; older four-scene profiles preserved, no timing gain claimed. |
 | [msaa-additive-bytes](msaa-additive-bytes/README.md) | Accepted variant | Exact guarded saturated-byte blending uses a separate WASM writer root. |
 | [msaa-coverage-recurrence](msaa-coverage-recurrence/README.md) | Rejected | Exact vector edge recurrence regresses BMW 2x and gives mixed 4x results. |
 | [msaa-edge-reuse](msaa-edge-reuse/README.md) ([historical note](msaa-edge-reuse/historical-notes/README.md)) | Accepted | Reuses four-sample coverage coefficients; three audits support a BMW 4x gain. |
@@ -118,3 +118,5 @@
 | [whole-pipeline-static-kernels](whole-pipeline-static-kernels/README.md) | Proposed | Bounded C11 kernels specialize complete hot draw pipelines beyond rejected eligibility/DOT3 helpers; no measured gain. |
 | [glimpsw-mesa-comparison](glimpsw-mesa-comparison/README.md) | Native baseline | 640x360: SoftGL beats Mesa on BMW/T-80, trails on Sponza/Bistro; GLimpSW faster with different rendering; 72 quiet accepted timings. |
 | [visible-vertex-attributes](visible-vertex-attributes/README.md) | Accepted | Worker attributes after culling: Bistro -11–12%, other scenes -3–8%, all twelve images identical. |
+| [bounded-queue-wakeup](bounded-queue-wakeup/README.md) | Accepted | Bounded generation/queue polling: BMW/Bistro -5–7%, T-80 -3–4%, Sponza -1.5%; all images identical. |
+| [packed-queue-admission](packed-queue-admission/README.md) | Prepared / untested | Admit oversized producer draws by actual packed payload within the existing queue budget; cross-draw cooperation is the hypothesis. |

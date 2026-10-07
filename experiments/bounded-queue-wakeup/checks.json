@@ -1,0 +1,104 @@
+{
+  "baselineGitHead": "1ff3c2c2c12113d0d37fe53116b823b60cba52cf",
+  "nativeCompiler": "Clang 22.1.8",
+  "fullNativeCTest": {
+    "passed": 746,
+    "failed": 0,
+    "seconds": 41.08,
+    "logSha256": "d18ae165038d83657d15c94c73725af0923b92e4bb4c77495fad1fa670b667b4"
+  },
+  "nativeImages": {
+    "angle": 160,
+    "scenes": 4,
+    "samples": [
+      0,
+      2,
+      4
+    ],
+    "all12RgbByteIdentical": true
+  },
+  "sanitizers": {
+    "compiler": "Clang 19, diagnostics only",
+    "asanUbsanPassed": true,
+    "contracts": {
+      "worker_pool": {
+        "binarySha256": "c393d892b6500143ec5f7dcfa88ecc51adcb67ffca1331043886bb6f13b9e78e",
+        "sourceSha256": "1c922968527a876615e8b05ab9fe73da2fd4f7e3dfd8b39f4a460b07b3c72195",
+        "passed": true
+      },
+      "ordered_draw_queue": {
+        "binarySha256": "bbacdde118afc3ac96f60ae2d28cf9dc288bc19ef5f9378e9f254aff0d75f5eb",
+        "sourceSha256": "b98c04969f29a39b84245113c16cea54219aedca1c54e90c4167aaa19ad08500",
+        "passed": true
+      },
+      "vertex_attributes": {
+        "binarySha256": "2b35ce8aa75ef44e791f9bfdfe8ac5471567743e338e5e92b48174071704d74d",
+        "sourceSha256": "7d6017e9c9f1d4ac287bf08555cf3ccc16081f7d4915a6d69f21a647b9ea7d6c",
+        "passed": true
+      }
+    },
+    "buildLogSha256": "49d1179197b086d7232b7fb287cd212299caee46aa7732c1eea0fc300e71a780"
+  },
+  "productionSourcesSha256": {
+    "CMakeLists.txt": "03de392d67f33b5183e43bdc2a5b26e04bec31823e36a4def7ec2b4c9de8afbd",
+    "include/GL/softgl.h": "6d8f8caa299428bdc62a75563045ac793319430870db21793338e72894a7cc77",
+    "src/api.c": "f35d73d173d29dd047e6f8df53e1b77c02d40a12ff272e8f6868beac64e21a3e",
+    "src/buffers.c": "a0363363f060dc9cbd99a64703496e1e702c2cf82beb42b16a54337b524be2ff",
+    "src/clip.c": "f5c0b940f54a4aa52a2d55785de31d72c168d381b53012e408179f81381de3cc",
+    "src/cluster_cull.h": "b639ef7e507d28512549feda7e272e0bef855acf6fd1c8e8cad96cae6ad228d9",
+    "src/dlist.c": "e7446f33b3972e4384c103c2547869dfffad43c900e1f55bf6f8c38eaf36eae8",
+    "src/dlist.h": "4bc8e0e5966f5b226c8e086ead9a635fd6158eed18b0c55e4b4c2ed0bdbda033",
+    "src/evaluators.c": "69281ca9f25e0f7d5cc1f76f31fb17502c83b60ea6168bbbae238e65227344ba",
+    "src/frag_combine_hot.h": "e801062d6fe0ce8ade5f12730ba4cb1441689ba6bd39a331a308bc99e29f72cc",
+    "src/frag_hot.h": "e0e1cba7afec1b2c13a53a8198207d868fa0636a84ee98e059f238d131dca52e",
+    "src/frag_packet.h": "217cd6bfcae38b7c2428077bc4c1e772ca178d82498a21d963c0cc86061c4dc6",
+    "src/fragment.c": "01d88705e22b03c3cf3d8b16abfca9a70e97f35b5206023376daca9ba2a9881c",
+    "src/fragment_combine.c": "b7af7972265bf0ac384379fcba6885e93707cdd8a0de956f691ad28ed1dd7153",
+    "src/fragment_write.c": "6c806d57d87ff4ed31ecdf502be6f77772497696a607633edf71c9971da66f1d",
+    "src/framebuffer.c": "7c82e1f52d5b2c2e7d9752d155f379109a8791c41b147713cfb14f2788e1a974",
+    "src/immediate.c": "80b520a3c3c14e675eeca5d3083c5dbe423e9684a69b868446f85e99ef86534c",
+    "src/index_range.h": "4d0456bd563031b7b4ff1184bfb6fa513908ae4047bd5f6f83dc8a7f57d8bb03",
+    "src/lighting.c": "1e6db9b4f59e2a54b1f6b89e6bc129d206dc816aaa08f099d80e6f8f2f42e338",
+    "src/lines.c": "b08fef911685977a08d6f2b29265aa28721aa0497a1a208c492403bdde0bbe87",
+    "src/matrix.c": "fd5bff0e263cd87d1032fad4fa75f966f76b2cc605b746d47e3d4eeabde6d793",
+    "src/msaa_additive.h": "6fab4198defe4db18a83f1562034807e71957ba07db0c0bd51f2e26c90d4778f",
+    "src/multisample.c": "2ba7fe2df9c8afed9acf1daa5ea48df6fbe8b5c0cceeac11bd61c3804423ea1d",
+    "src/multisample.h": "cdbe1e0aa51827f13789ce7f46e3acc961e0b87c5d034e1c7ba22fe54c611315",
+    "src/pipeline.c": "3561b5ae9c760427bf3c79e45befe82cbcd9d577bf8625a3276da19b7b9371fc",
+    "src/pixels.c": "8e366864ac1418564d2342bd3c120ad5e8057998af21ff31ccb5663134ddfc92",
+    "src/raster_hz.h": "1cc4a6fe6f5a425607cb3b8a57d15cb19d5de537794c638b673f0bd4a14b4ed6",
+    "src/raster_msaa_impl.h": "a9048bd2e89e96d87f407d17471e50c48d35c187aa20719b5e6af3d1d026eeec",
+    "src/raster_store.h": "251cbe4d9765edfc26b4428d7d5906ab17722689feae08eac432db59a7b22934",
+    "src/raster_triangle_impl.h": "2a78075d138dd00d6d95c92adc922de9e11bc316cb5a3b03f3739974492ca24f",
+    "src/raster_types.h": "0b050bdbf31f6c398366112c84a6041390a50398d1e18acafe4c7440a0700f45",
+    "src/raster_vertex_pack.h": "956a8084b973144a9d8ee28c0d485214e3e8551a7384238f610620e00ad6e528",
+    "src/rasterizer.c": "c3d77d9b13e06cb5bc35a1639a81146f5ad252aaffc8f3d290b7723d06235700",
+    "src/simd.h": "44b532f4427f3e76886228dfe96024adf3ba1c1c748c7031d2fff2413db9c608",
+    "src/state.c": "bffa3243dffdbef27ddc90c7ad6f2394d393f0dc47bf1d3797b2b5b63e8a875c",
+    "src/texture.c": "9c4d999c73b68a7431bd1f0e88c2d3d2e7e1931670ad166ffee535f8d5764c45",
+    "src/types.h": "e2422d60a1f2e7907629c5dac711fc28a278519b626cc0488a115f3b22f7ba5a",
+    "src/vertex_inputs.h": "fb774a51f4627b91dd6d58fc2cb918df04ef224d45cd898dfa1ed5dd9a0b0db5",
+    "src/workers.c": "7d0ddec224663da28db4464aa1d7b4af99e0b90d0c93caec3281a954c697f9cc",
+    "src/workers.h": "448f1882236f93bc4c285ef9b25136c5bd157cd5e7cb9b2491af18672a3f9736",
+    "src/workers_queue_raw.inc": "af8e8a5fc2511de85c0f0d614eb1e0cb5266ab3bd61ea188a66a5d823f4232c9"
+  },
+  "testedWorkerSourcesExactlyMatchProduction": true,
+  "wasm": {
+    "simd128PthreadsBuildPassed": true,
+    "servedModules": {
+      "softgl.js": {
+        "sha256": "abc949f134ae6cc763a630c9f297e00a8965c62bc0350c5f0198d4f35c126667",
+        "bytes": 233060,
+        "coop": "same-origin",
+        "coep": "require-corp"
+      },
+      "softgl.wasm": {
+        "sha256": "4da9995e5374d63a657e669b09bea7d7388ea6a692ced0e38bf96281271b7cfd",
+        "bytes": 1262757,
+        "coop": "same-origin",
+        "coep": "require-corp"
+      }
+    },
+    "buildLogSha256": "9661b31ad5b271ccb542e9ecf1a319e45c149c5d02760c8c1ac1d12a26bb1a8f"
+  }
+}

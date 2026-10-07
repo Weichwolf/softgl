@@ -1,8 +1,8 @@
 # Native whole-frame CPU samples
 
-Status: current four-scene MSAA-off profiles complete at 640x360, four
+Status: four-scene pre-cluster MSAA-off profiles complete at 640x360, four
 configured threads, 15 warmup and 60 sampled frames.
-[Current receipt and tables](640x360/receipt.json) bind this run; the older
+[Pre-cluster receipt and tables](640x360/receipt.json) bind this run; the older
 1920x1080 and BMW 2x/4x profiles below are historical, not current optimization
 evidence. Higher-resolution runs are disabled by policy until the 640x360 target
 is met.
@@ -46,3 +46,14 @@ Sponza/Bistro vertex and clipping work is more prominent than in the historical
 higher-resolution profiles. Investigate conservative static-geometry cluster
 culling before transforming vertices, alongside queue synchronization. These
 CPU shares are diagnostic, not predicted frame-time savings.
+
+## Accepted 1ff3c2c diagnostic
+
+The profiler target now enables the same worker attribute program as the
+current SoftGL viewer. A fresh Bistro-only 640x360 off-mode run uses 15 warmup
+and 60 profiled complete frames, with caller plus three helpers.
+[Receipt and tables](current-1ff/receipt.json) bind the accepted library sources,
+wrapper, compiler, analyzer, assets and binary. Of 3505 CPU samples, 12.6%
+are in pthread broadcast and 7.3% in lock wakeup; the new attribute callback
+has 4.1%. These are scheduled CPU shares, not removable wall time or a gain.
+They motivate [bounded queue wakeups](../bounded-queue-wakeup/README.md).

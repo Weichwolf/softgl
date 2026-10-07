@@ -1,0 +1,23 @@
+Total: 3505 samples
+     442 100.0% 100.0%      442 100.0% pthread_cond_broadcast@@GLIBC_2.3.2
+       0   0.0% 100.0%      364  82.4% __libc_init_first@@GLIBC_2.2.5
+       0   0.0% 100.0%      364  82.4% __libc_start_main@GLIBC_2.2.5
+       0   0.0% 100.0%      364  82.4% _start
+       0   0.0% 100.0%      364  82.4% main
+       0   0.0% 100.0%      363  82.1% _sg_draw_elements_real
+       0   0.0% 100.0%      363  82.1% draw_part
+       0   0.0% 100.0%      363  82.1% sg_model_render
+       0   0.0% 100.0%      250  56.6% sg_workers_submit_stream
+       0   0.0% 100.0%      105  23.8% sg_submit_packed_stream
+       0   0.0% 100.0%       85  19.2% sg_queue_transform
+       0   0.0% 100.0%       81  18.3% sg_queue_render
+       0   0.0% 100.0%       78  17.6% __clone@@GLIBC_2.2.5
+       0   0.0% 100.0%       78  17.6% pthread_condattr_setpshared@GLIBC_2.2.5
+       0   0.0% 100.0%       78  17.6% sg_queue_worker (inline)
+       0   0.0% 100.0%       78  17.6% sg_worker_main
+       0   0.0% 100.0%       73  16.5% sg_workers_prepare_triangles
+       0   0.0% 100.0%       28   6.3% sg_transform_range
+       0   0.0% 100.0%       27   6.1% sg_finish_stream
+       0   0.0% 100.0%       27   6.1% sg_queue_finish (inline)
+       0   0.0% 100.0%       13   2.9% sg_workers_flush
+       0   0.0% 100.0%        1   0.2% softgl_read_rgba8

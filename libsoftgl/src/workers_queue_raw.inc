@@ -10,7 +10,7 @@ typedef struct {
 
 struct sg_stream_queue {
     sg_queue_slot slots[SG_QUEUE_SLOTS];
-    int head, count, stopping;
+    int head, count, stopping, sleepers;
     atomic_uint change;
     /* Current caller-owned inputs remain immutable until all slices finish. */
     softgl_ctx *vertex_context;
@@ -133,7 +133,7 @@ static void sg_queue_render(sg_worker_pool *p, sg_queue_slot *slot, int index) {
     slot->claimed &= ~mask;
     slot->pending &= ~mask;
     atomic_fetch_add_explicit(&p->stream_queue->change, 1, memory_order_release);
-    pthread_cond_broadcast(&p->wake);
+    if (p->stream_queue->sleepers) pthread_cond_broadcast(&p->wake);
     pthread_mutex_unlock(&p->mtx);
 }
 
@@ -158,12 +158,14 @@ static void sg_queue_vertex_run(sg_worker_pool *p, int first, int end) {
 
 static void sg_queue_worker(sg_worker_pool *p) {
     struct sg_stream_queue *q = p->stream_queue;
+    int spun = 0;
     pthread_mutex_lock(&p->mtx);
     for (;;) {
         int first, end;
         /* A finite geometry stage unblocks the next draw's producer. Work
          * already claimed by a raster worker finishes before it switches. */
         if (sg_queue_vertex_claim(q, &first, &end)) {
+            spun = 0;
             pthread_mutex_unlock(&p->mtx);
             sg_queue_vertex_run(p, first, end);
             pthread_mutex_lock(&p->mtx);
@@ -172,14 +174,30 @@ static void sg_queue_worker(sg_worker_pool *p) {
         int bin;
         sg_queue_slot *slot = sg_queue_claim(q, &bin);
         if (slot) {
+            spun = 0;
             pthread_mutex_unlock(&p->mtx);
             sg_queue_render(p, slot, bin);
             pthread_mutex_lock(&p->mtx);
         } else if (q->stopping) {
             pthread_mutex_unlock(&p->mtx);
             return;
+        } else if (!spun) {
+            unsigned before = atomic_load_explicit(&q->change, memory_order_acquire);
+            pthread_mutex_unlock(&p->mtx);
+            for (int poll = 0; poll < 256; poll++) {
+                if (atomic_load_explicit(&q->change, memory_order_acquire) != before) break;
+#if defined(__x86_64__) || defined(__i386__)
+                __builtin_ia32_pause();
+#endif
+            }
+            pthread_mutex_lock(&p->mtx);
+            spun = 1;
+            /* Recheck every queue predicate under the mutex before sleeping. */
         } else {
+            spun = 0;
+            q->sleepers++;
             pthread_cond_wait(&p->wake, &p->mtx);
+            q->sleepers--;
         }
     }
 }
@@ -196,7 +214,8 @@ static void sg_queue_transform(softgl_ctx *c, sg_worker_pool *p,
     q->vertex_storage_first = storage_first;
     atomic_store_explicit(&q->vertex_done, 0, memory_order_relaxed);
     q->vertex_active = triangles ? 2 : 1;
-    pthread_cond_broadcast(&p->wake);
+    atomic_fetch_add_explicit(&q->change, 1, memory_order_release);
+    if (p->stream_queue->sleepers) pthread_cond_broadcast(&p->wake);
     pthread_mutex_unlock(&p->mtx);
     for (;;) {
         int begin, end;
@@ -244,7 +263,8 @@ static void sg_queue_finish(sg_worker_pool *p) {
         sg_queue_retire(p);
         if (!q->count) {
             q->stopping = 1;
-            pthread_cond_broadcast(&p->wake);
+            atomic_fetch_add_explicit(&q->change, 1, memory_order_release);
+            if (p->stream_queue->sleepers) pthread_cond_broadcast(&p->wake);
             pthread_mutex_unlock(&p->mtx);
             break;
         }
@@ -418,7 +438,7 @@ static int sg_queue_submit(softgl_ctx *c, sg_worker_pool *p, sg_geometry_entry *
         atomic_fetch_add_explicit(&p->gen, 1, memory_order_acq_rel);
     }
     atomic_fetch_add_explicit(&q->change, 1, memory_order_release);
-    pthread_cond_broadcast(&p->wake);
+    if (start || q->sleepers) pthread_cond_broadcast(&p->wake);
     pthread_mutex_unlock(&p->mtx);
     return 1;
 }

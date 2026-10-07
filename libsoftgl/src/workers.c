@@ -745,15 +745,29 @@ static void *sg_worker_main(void *arg) {
     int local_gen = 0;
 
     for (;;) {
-        /* Sleep until main bumps the generation or signals die. */
-        pthread_mutex_lock(&p->mtx);
-        while (atomic_load_explicit(&p->gen, memory_order_acquire) == local_gen
-               && atomic_load_explicit(&p->alive, memory_order_acquire)) {
-            pthread_cond_wait(&p->wake, &p->mtx);
+        int next_gen = local_gen;
+        for (int poll = 0; poll < 256; poll++) {
+            next_gen = atomic_load_explicit(&p->gen, memory_order_acquire);
+            if (next_gen != local_gen) break;
+#if defined(__x86_64__) || defined(__i386__)
+            __builtin_ia32_pause();
+#endif
         }
-        int alive = atomic_load_explicit(&p->alive, memory_order_acquire);
-        local_gen = atomic_load_explicit(&p->gen, memory_order_acquire);
-        pthread_mutex_unlock(&p->mtx);
+        int alive;
+        if (next_gen != local_gen) {
+            /* Acquire observes the complete job published by the caller. */
+            alive = atomic_load_explicit(&p->alive, memory_order_acquire);
+            local_gen = next_gen;
+        } else {
+            pthread_mutex_lock(&p->mtx);
+            while (atomic_load_explicit(&p->gen, memory_order_acquire) == local_gen
+                   && atomic_load_explicit(&p->alive, memory_order_acquire)) {
+                pthread_cond_wait(&p->wake, &p->mtx);
+            }
+            alive = atomic_load_explicit(&p->alive, memory_order_acquire);
+            local_gen = atomic_load_explicit(&p->gen, memory_order_acquire);
+            pthread_mutex_unlock(&p->mtx);
+        }
         if (!alive) break;
 
         int job = atomic_load_explicit(&p->job_type, memory_order_acquire);
