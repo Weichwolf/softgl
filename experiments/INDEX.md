@@ -74,6 +74,7 @@
 | [queue-cost-priority](queue-cost-priority/README.md) | Rejected | A small BMW off benefit does not justify the 4x regression. |
 | [queue-geometry-help](queue-geometry-help/README.md) | Accepted | Workers and caller share finite next-draw vertex preparation slices. |
 | [queue-geometry-priority](queue-geometry-priority/README.md) | Accepted | Prioritizes ready finite geometry slices before claiming another raster bin. |
+| [raster-input-noalias](raster-input-noalias/README.md) | Rejected | Read-only raster restrict qualifiers leave all20 WASM objects and final module byte-exact; native +112B is unmeasured. |
 | [raster-mode-entry](raster-mode-entry/README.md) | Rejected | Outer mode separation does not reproduce BMW gains and regresses T-80 off. |
 | [raster-mode-packing](raster-mode-packing/README.md) | Rejected | Combined mode separation/packing improves BMW off but regresses BMW 4x and T-80 off. |
 | [raster-phase-profiles](raster-phase-profiles/README.md) | Diagnostic | Byte-identical production and outlined phase-state profiles establish no additional speedup. |
