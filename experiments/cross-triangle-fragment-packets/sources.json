@@ -1,0 +1,54 @@
+{
+  "reviewDate": "2026-10-07",
+  "researchBaseline": "0b794180555ba731970d8329c88b824533805e32",
+  "referenceWasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+  "status": "proposed",
+  "candidateImplemented": false,
+  "performanceMeasured": false,
+  "readmeSha256": "907571ffe9866f01141be831619bc77dd19c1b477fad160ab3209c1b95063037",
+  "repositories": [
+    {
+      "name": "softgl",
+      "url": "https://github.com/Weichwolf/softgl",
+      "revision": "0b794180555ba731970d8329c88b824533805e32",
+      "files": {
+        "wasm/model_wrap.c": "cabf45628991f2dbf75407dc42260a2dd59f60d7b1c236c44b17a5ffd4b3a52a",
+        "wasm/tank_wrap.c": "f7500486e9950b635986d296efe14a2a77f40f4c8bbf3323cbc9fe88d47ba489",
+        "experiments/validation-protocol/README.md": "ae47afa35a364da29b6c4f2c6794e7a1b57532cd0962ebe3a15e98b977ac9412",
+        "libsoftgl/src/frag_packet.h": "217cd6bfcae38b7c2428077bc4c1e772ca178d82498a21d963c0cc86061c4dc6",
+        "libsoftgl/src/rasterizer.c": "c3d77d9b13e06cb5bc35a1639a81146f5ad252aaffc8f3d290b7723d06235700",
+        "libsoftgl/src/raster_msaa_impl.h": "a9048bd2e89e96d87f407d17471e50c48d35c187aa20719b5e6af3d1d026eeec",
+        "libsoftgl/src/raster_triangle_impl.h": "2a78075d138dd00d6d95c92adc922de9e11bc316cb5a3b03f3739974492ca24f",
+        "experiments/packet-lane-occupancy/README.md": "367210d69fba677d2bf78633c95eb25e3be94537ab342e4d7b8065a3644fea99",
+        "experiments/off-pixel-packing/README.md": "85b761e5180bc5851a70a4317e1083bb0d9a6faeaa4b816d0a6880cfea55526e"
+      }
+    },
+    {
+      "name": "GLimpSW",
+      "url": "https://github.com/dubiousconst282/GLimpSW",
+      "revision": "2f915606d50b70fef8859ef29adc9d53f9aee887",
+      "files": {
+        "README.md": "bf7b892e5d41d506b76bc9439293b75cdfb7d86c7b44e44c4aaa18cdf822ab32",
+        "src/SwRast/Shading.cpp": "701689c07b078f71913c6e2348261a81a6206ce7fef909c74f08d66cb791471e"
+      }
+    }
+  ],
+  "papers": [
+    {
+      "id": "quad-fragment-merging-2010",
+      "url": "https://graphics.stanford.edu/papers/fragmerging/shade_sig10.pdf",
+      "sha256": "3a00183ffd3ab564181fa304beae611acee585d668e2fa4a41e277c11fd41414",
+      "bytes": 8938122,
+      "pages": 8,
+      "status": "downloaded-and-extracted"
+    },
+    {
+      "id": "visibility-buffer-2013",
+      "url": "https://jcgt.org/published/0002/02/04/paper.pdf",
+      "sha256": "95399037fe9fa65ea0fbcbf2b92dfed5f338fcaf1a89f94aff4939ae58b8225e",
+      "bytes": 2016549,
+      "pages": 15,
+      "status": "downloaded-and-extracted"
+    }
+  ]
+}

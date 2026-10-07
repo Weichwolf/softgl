@@ -10,6 +10,7 @@
 | [caller-strip-bounds](caller-strip-bounds/README.md) | Diagnostic / rejected variants | Caller scopes were measured; tighter depth bounds did not repay their cost. |
 | [caller-wait-intervals](caller-wait-intervals/README.md) | Diagnostic | Separates eight polling categories without claiming removable frame time. |
 | [cooperative-stage-handoffs](cooperative-stage-handoffs/README.md) | Not retained | Returning bins between triangle blocks did not justify adoption. |
+| [cross-triangle-fragment-packets](cross-triangle-fragment-packets/README.md) | Proposed | Mixed-triangle SIMD packets target sparse off lanes and scalar MSAA tails; prior within-triangle packing was rejected. |
 | [cube-cold-fallback](cube-cold-fallback/README.md) | Rejected | BMW 4x regresses +3.500%/+1.395% in both audits (5/6 pairs); off/2x change direction despite exact scratch movement. |
 | [cube-packets](cube-packets/README.md) ([historical note](cube-packets/historical-notes/README.md)) | Accepted | Coherent cube packets improve BMW 4x, with other modes and controls explicitly mixed. |
 | [cube-simd-initial](cube-simd-initial/README.md) | Rejected | Initial coherent cube packets passed correctness but lacked an acceptable renderer gain. |
@@ -31,6 +32,7 @@
 | [draw-state-specialization](draw-state-specialization/README.md) | Held proposal | Eligibility-only caching was already rejected; a new specialization needs a distinct measured mechanism. |
 | [empty-sample-filter](empty-sample-filter/README.md) | Rejected variants / diagnostics | Exact empty-reference removal reduced logical work but did not justify adoption. |
 | [four-context-architecture](four-context-architecture/README.md) | Rejected variants | Packing, tickets, texture interning and coarse coverage trials lacked reproducible BMW gains. |
+| [fragment-geometry-replay](fragment-geometry-replay/README.md) | Proposed / priority | F-buffer-inspired geometric event replay could skip repeated rasterization; exact ordered semantics and memory cost remain untested. |
 | [geometry-bin-cache](geometry-bin-cache/README.md) | Accepted | Reuses qualified ordered triangle bins while refreshing attributes. |
 | [geometry-claim-batches](geometry-claim-batches/README.md) | Rejected | Fewer geometry reservations did not improve BMW in both audits of any mode. |
 | [hierarchical-coverage](hierarchical-coverage/README.md) | Proposed | Coarse exact coverage traversal needs eligible-box diagnostics; no implementation or timing. |
@@ -102,7 +104,9 @@
 | [transient-depth-visibility](transient-depth-visibility/README.md) | Diagnostic / superseded trials | Identifies strictly hidden replay references and preserves the initial timing limitations. |
 | [triangle-size-histogram](triangle-size-histogram/README.md) | Diagnostic | Separates full triangle area from actual visited work; no timing gain is claimed. |
 | [validation-protocol](validation-protocol/README.md) | Protocol | Documents unchanged correctness gates and the 18-pair quiet-host comparison plan. |
+| [visibility-buffer-architecture](visibility-buffer-architecture/README.md) | Held / research | Primary GitHub/HPG sources reviewed; four previous opaque-deferred prototypes already regressed BMW, so ordinary retry is superseded. |
 | [visibility-byte-select](visibility-byte-select/README.md) | Rejected | Byte-group visibility selection regresses BMW off; small 4x gains do not justify it. |
 | [wasm-four-contexts](wasm-four-contexts/README.md) | Applied configuration | Defaults to at most three helpers plus the computing caller; no speed claim. |
 | [wasm-phase-conversion](wasm-phase-conversion/README.md) | Held | Native WASM proposal conversion remained correct but did not reproduce a BMW gain. |
 | [wasm-pseudo-clamps](wasm-pseudo-clamps/README.md) | Accepted | Uses direct WASM pseudo-min/max for the validated clamp path. |
+| [whole-pipeline-static-kernels](whole-pipeline-static-kernels/README.md) | Proposed | Bounded C11 kernels specialize complete hot draw pipelines beyond rejected eligibility/DOT3 helpers; no measured gain. |
