@@ -1,0 +1,10 @@
+{
+  "command": [
+    "/usr/lib/llvm-19/bin/llvm-nm",
+    "/home/cosmo/Git/softgl/build/diagnostics/cube-cold-fallback/objects/rasterizer.c.o"
+  ],
+  "version": "llvm-nm, compatible with GNU nm\nDebian LLVM version 19.1.7\n  Optimized build.",
+  "inputObjectSha256": "8a797b2d5e83546dbe8a856e706c903761bff96299f5abd0429dfc579be56a15",
+  "stdout": "0002715f T sg_packet_sample_cube_coherent\n0002719a t sg_packet_sample_cube_scalar_fallback\n00005c80 T sg_packet_sample_cube_target\n00026398 T sg_packet_sample_cube_vectors\n         U sg_sample_tex_cube\n",
+  "scope": "Bound LLVM object symbols, not final linked function boundaries or measured CPU cost."
+}

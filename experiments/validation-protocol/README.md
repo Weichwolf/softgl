@@ -17,4 +17,12 @@ and diagnostics must finish before acceptance timing. Report mode/scene costs
 and use the existing BMW-priority acceptance criteria. Upstream timings,
 logical counters and static code size do not predict SoftGL frame savings.
 
+Before committing a retained-evidence archive, verify every manifest path and
+digest against the Git index, not only files present locally. The repository
+ignores `*.log`; add the specific manifest-bound text logs explicitly so
+successful local closure checks do not publish incomplete evidence. After
+push, check the committed bytes and remote branch, and verify the source/
+canonical/live build matches the adoption or rejection decision. Keep generated
+binaries and build directories out of commits.
+
 No new renderer, benchmark run or performance result is supplied by these briefs.

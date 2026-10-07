@@ -1,0 +1,12 @@
+{
+  "candidateWasmSha256": "bb97d68857a9fa957f25eabeca0867db06f11ab76cbacbf9866aef8ab8ab3e9f",
+  "coherentArithmeticSourceEqual": true,
+  "scalarFallbackSourceEqual": true,
+  "linkedSeparateScalarFunction": false,
+  "targetLinearStackGlobalWritesBeforeCoherentCall": 0,
+  "targetVectorStoresBeforeCoherentCall": 0,
+  "targetLinearStackAllocationAfterRejection": true,
+  "sourceSha256": "4e9c131e9d78938780451687894c3bbcf3c568f9bf9b9ac9bf731f011e9ad8fd",
+  "targetWatSha256": "ba6c128cf5d6f2b3ab9532c84b5361302279abaa244865a39435021ffe2c3339",
+  "scope": "Source operation order and selected linked WASM shape only; compiler merging and remaining native stack saves are explicit. No timing or physical-cost inference."
+}

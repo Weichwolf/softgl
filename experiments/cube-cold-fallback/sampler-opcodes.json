@@ -1,0 +1,804 @@
+{
+  "records": [
+    {
+      "label": "reference",
+      "function": "sg_raster_triangle_tile_prepared",
+      "wasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+      "symbolMapSha256": "14f486d251d521be75cd216ed2ab3b6eb4e33cc5cb85f14e5cf6fdeea3c3ab7b",
+      "absoluteFunctionIndex": 427,
+      "definedFunctionLabel": 171,
+      "importFunctionCount": 256,
+      "mappingExport": {
+        "name": "softgl_create",
+        "absoluteFunctionIndex": 434,
+        "definedFunctionLabel": 178
+      },
+      "rootFile": "reference-sg_raster_triangle_tile_prepared.wat",
+      "rootSha256": "3dccca19c225397a92e94086a5945cb9e0eabaa02bf5979d9a9f2cbc715a730b",
+      "channelShufflePatterns": [
+        {
+          "channel": 0,
+          "pattern": "0 16 16 16 4 16 16 16 8 16 16 16 12 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 1,
+          "pattern": "1 16 16 16 5 16 16 16 9 16 16 16 13 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 2,
+          "pattern": "2 16 16 16 6 16 16 16 10 16 16 16 14 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 3,
+          "pattern": "3 16 16 16 7 16 16 16 11 16 16 16 15 16 16 16",
+          "sites": 0
+        }
+      ],
+      "staticOpcodeSites": {
+        "i8x16.shuffle": 84,
+        "i32x4.shr_u": 34,
+        "v128.and": 44,
+        "f32x4.convert_i32x4_s": 4,
+        "f32x4.convert_i32x4_u": 28,
+        "f32x4.mul": 210,
+        "f32x4.add": 100
+      }
+    },
+    {
+      "label": "reference",
+      "function": "sg_raster_triangle_depth_capture",
+      "wasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+      "symbolMapSha256": "14f486d251d521be75cd216ed2ab3b6eb4e33cc5cb85f14e5cf6fdeea3c3ab7b",
+      "absoluteFunctionIndex": 426,
+      "definedFunctionLabel": 170,
+      "importFunctionCount": 256,
+      "mappingExport": {
+        "name": "softgl_create",
+        "absoluteFunctionIndex": 434,
+        "definedFunctionLabel": 178
+      },
+      "rootFile": "reference-sg_raster_triangle_depth_capture.wat",
+      "rootSha256": "e46c671381e188eef294a6b26b002ea29550012dcfc782088dda6194cd457735",
+      "channelShufflePatterns": [
+        {
+          "channel": 0,
+          "pattern": "0 16 16 16 4 16 16 16 8 16 16 16 12 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 1,
+          "pattern": "1 16 16 16 5 16 16 16 9 16 16 16 13 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 2,
+          "pattern": "2 16 16 16 6 16 16 16 10 16 16 16 14 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 3,
+          "pattern": "3 16 16 16 7 16 16 16 11 16 16 16 15 16 16 16",
+          "sites": 0
+        }
+      ],
+      "staticOpcodeSites": {
+        "i8x16.shuffle": 84,
+        "i32x4.shr_u": 34,
+        "v128.and": 44,
+        "f32x4.convert_i32x4_s": 4,
+        "f32x4.convert_i32x4_u": 28,
+        "f32x4.mul": 210,
+        "f32x4.add": 100
+      }
+    },
+    {
+      "label": "reference",
+      "function": "sg_raster_triangle_msaa2",
+      "wasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+      "symbolMapSha256": "14f486d251d521be75cd216ed2ab3b6eb4e33cc5cb85f14e5cf6fdeea3c3ab7b",
+      "absoluteFunctionIndex": 420,
+      "definedFunctionLabel": 164,
+      "importFunctionCount": 256,
+      "mappingExport": {
+        "name": "softgl_create",
+        "absoluteFunctionIndex": 434,
+        "definedFunctionLabel": 178
+      },
+      "rootFile": "reference-sg_raster_triangle_msaa2.wat",
+      "rootSha256": "4ec0793a190013a92be9dcbaf717a3bdc59728008743267d403facc7c1b018ba",
+      "channelShufflePatterns": [
+        {
+          "channel": 0,
+          "pattern": "0 16 16 16 4 16 16 16 8 16 16 16 12 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 1,
+          "pattern": "1 16 16 16 5 16 16 16 9 16 16 16 13 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 2,
+          "pattern": "2 16 16 16 6 16 16 16 10 16 16 16 14 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 3,
+          "pattern": "3 16 16 16 7 16 16 16 11 16 16 16 15 16 16 16",
+          "sites": 0
+        }
+      ],
+      "staticOpcodeSites": {
+        "i8x16.shuffle": 65,
+        "i32x4.shr_u": 34,
+        "v128.and": 80,
+        "f32x4.convert_i32x4_s": 0,
+        "f32x4.convert_i32x4_u": 28,
+        "f32x4.mul": 131,
+        "f32x4.add": 65
+      }
+    },
+    {
+      "label": "reference",
+      "function": "sg_raster_triangle_msaa2_capture",
+      "wasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+      "symbolMapSha256": "14f486d251d521be75cd216ed2ab3b6eb4e33cc5cb85f14e5cf6fdeea3c3ab7b",
+      "absoluteFunctionIndex": 423,
+      "definedFunctionLabel": 167,
+      "importFunctionCount": 256,
+      "mappingExport": {
+        "name": "softgl_create",
+        "absoluteFunctionIndex": 434,
+        "definedFunctionLabel": 178
+      },
+      "rootFile": "reference-sg_raster_triangle_msaa2_capture.wat",
+      "rootSha256": "9c12eb5c1e8e108bc8114db164d2b81b04a0a25bd0a5c6b8b4c70d83c7aa6dbd",
+      "channelShufflePatterns": [
+        {
+          "channel": 0,
+          "pattern": "0 16 16 16 4 16 16 16 8 16 16 16 12 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 1,
+          "pattern": "1 16 16 16 5 16 16 16 9 16 16 16 13 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 2,
+          "pattern": "2 16 16 16 6 16 16 16 10 16 16 16 14 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 3,
+          "pattern": "3 16 16 16 7 16 16 16 11 16 16 16 15 16 16 16",
+          "sites": 0
+        }
+      ],
+      "staticOpcodeSites": {
+        "i8x16.shuffle": 65,
+        "i32x4.shr_u": 34,
+        "v128.and": 80,
+        "f32x4.convert_i32x4_s": 0,
+        "f32x4.convert_i32x4_u": 28,
+        "f32x4.mul": 131,
+        "f32x4.add": 65
+      }
+    },
+    {
+      "label": "reference",
+      "function": "sg_raster_triangle_msaa4",
+      "wasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+      "symbolMapSha256": "14f486d251d521be75cd216ed2ab3b6eb4e33cc5cb85f14e5cf6fdeea3c3ab7b",
+      "absoluteFunctionIndex": 424,
+      "definedFunctionLabel": 168,
+      "importFunctionCount": 256,
+      "mappingExport": {
+        "name": "softgl_create",
+        "absoluteFunctionIndex": 434,
+        "definedFunctionLabel": 178
+      },
+      "rootFile": "reference-sg_raster_triangle_msaa4.wat",
+      "rootSha256": "8f1495c913be5a7e3751af5445c5b191568f45302eb7ac6380c0197b86e35475",
+      "channelShufflePatterns": [
+        {
+          "channel": 0,
+          "pattern": "0 16 16 16 4 16 16 16 8 16 16 16 12 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 1,
+          "pattern": "1 16 16 16 5 16 16 16 9 16 16 16 13 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 2,
+          "pattern": "2 16 16 16 6 16 16 16 10 16 16 16 14 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 3,
+          "pattern": "3 16 16 16 7 16 16 16 11 16 16 16 15 16 16 16",
+          "sites": 0
+        }
+      ],
+      "staticOpcodeSites": {
+        "i8x16.shuffle": 65,
+        "i32x4.shr_u": 34,
+        "v128.and": 128,
+        "f32x4.convert_i32x4_s": 4,
+        "f32x4.convert_i32x4_u": 28,
+        "f32x4.mul": 136,
+        "f32x4.add": 68
+      }
+    },
+    {
+      "label": "reference",
+      "function": "sg_raster_triangle_msaa4_capture",
+      "wasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+      "symbolMapSha256": "14f486d251d521be75cd216ed2ab3b6eb4e33cc5cb85f14e5cf6fdeea3c3ab7b",
+      "absoluteFunctionIndex": 425,
+      "definedFunctionLabel": 169,
+      "importFunctionCount": 256,
+      "mappingExport": {
+        "name": "softgl_create",
+        "absoluteFunctionIndex": 434,
+        "definedFunctionLabel": 178
+      },
+      "rootFile": "reference-sg_raster_triangle_msaa4_capture.wat",
+      "rootSha256": "58235c33e4a8326456cf44a9cb82537682b3510eb67da35cb91a4404c430a786",
+      "channelShufflePatterns": [
+        {
+          "channel": 0,
+          "pattern": "0 16 16 16 4 16 16 16 8 16 16 16 12 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 1,
+          "pattern": "1 16 16 16 5 16 16 16 9 16 16 16 13 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 2,
+          "pattern": "2 16 16 16 6 16 16 16 10 16 16 16 14 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 3,
+          "pattern": "3 16 16 16 7 16 16 16 11 16 16 16 15 16 16 16",
+          "sites": 0
+        }
+      ],
+      "staticOpcodeSites": {
+        "i8x16.shuffle": 65,
+        "i32x4.shr_u": 34,
+        "v128.and": 128,
+        "f32x4.convert_i32x4_s": 4,
+        "f32x4.convert_i32x4_u": 28,
+        "f32x4.mul": 136,
+        "f32x4.add": 68
+      }
+    },
+    {
+      "label": "reference",
+      "function": "sg_packet_sample_cube_coherent",
+      "wasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+      "symbolMapSha256": "14f486d251d521be75cd216ed2ab3b6eb4e33cc5cb85f14e5cf6fdeea3c3ab7b",
+      "absoluteFunctionIndex": 431,
+      "definedFunctionLabel": 175,
+      "importFunctionCount": 256,
+      "mappingExport": {
+        "name": "softgl_create",
+        "absoluteFunctionIndex": 434,
+        "definedFunctionLabel": 178
+      },
+      "rootFile": "reference-sg_packet_sample_cube_coherent.wat",
+      "rootSha256": "d8dd923687b3dd5c523b9945be70faf2a83028442ea1bbb97197a8ee564cc31e",
+      "channelShufflePatterns": [
+        {
+          "channel": 0,
+          "pattern": "0 16 16 16 4 16 16 16 8 16 16 16 12 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 1,
+          "pattern": "1 16 16 16 5 16 16 16 9 16 16 16 13 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 2,
+          "pattern": "2 16 16 16 6 16 16 16 10 16 16 16 14 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 3,
+          "pattern": "3 16 16 16 7 16 16 16 11 16 16 16 15 16 16 16",
+          "sites": 0
+        }
+      ],
+      "staticOpcodeSites": {
+        "i8x16.shuffle": 8,
+        "i32x4.shr_u": 15,
+        "v128.and": 23,
+        "f32x4.convert_i32x4_s": 0,
+        "f32x4.convert_i32x4_u": 20,
+        "f32x4.mul": 32,
+        "f32x4.add": 16
+      }
+    },
+    {
+      "label": "reference",
+      "function": "sg_packet_sample_cube_target",
+      "wasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+      "symbolMapSha256": "14f486d251d521be75cd216ed2ab3b6eb4e33cc5cb85f14e5cf6fdeea3c3ab7b",
+      "absoluteFunctionIndex": 421,
+      "definedFunctionLabel": 165,
+      "importFunctionCount": 256,
+      "mappingExport": {
+        "name": "softgl_create",
+        "absoluteFunctionIndex": 434,
+        "definedFunctionLabel": 178
+      },
+      "rootFile": "reference-sg_packet_sample_cube_target.wat",
+      "rootSha256": "26f760783fe7114ba60220dcec6c93eb57b08af3d1fdb47837cd2359b9bec6c0",
+      "channelShufflePatterns": [
+        {
+          "channel": 0,
+          "pattern": "0 16 16 16 4 16 16 16 8 16 16 16 12 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 1,
+          "pattern": "1 16 16 16 5 16 16 16 9 16 16 16 13 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 2,
+          "pattern": "2 16 16 16 6 16 16 16 10 16 16 16 14 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 3,
+          "pattern": "3 16 16 16 7 16 16 16 11 16 16 16 15 16 16 16",
+          "sites": 0
+        }
+      ],
+      "staticOpcodeSites": {
+        "i8x16.shuffle": 8,
+        "i32x4.shr_u": 0,
+        "v128.and": 0,
+        "f32x4.convert_i32x4_s": 0,
+        "f32x4.convert_i32x4_u": 0,
+        "f32x4.mul": 0,
+        "f32x4.add": 0
+      }
+    },
+    {
+      "label": "candidate",
+      "function": "sg_raster_triangle_tile_prepared",
+      "wasmSha256": "bb97d68857a9fa957f25eabeca0867db06f11ab76cbacbf9866aef8ab8ab3e9f",
+      "symbolMapSha256": "11e72332cec4ab79c8c98f9692bae895a2e3669f13b0c34198d09e07e280c96e",
+      "absoluteFunctionIndex": 427,
+      "definedFunctionLabel": 171,
+      "importFunctionCount": 256,
+      "mappingExport": {
+        "name": "softgl_create",
+        "absoluteFunctionIndex": 435,
+        "definedFunctionLabel": 179
+      },
+      "rootFile": "candidate-sg_raster_triangle_tile_prepared.wat",
+      "rootSha256": "51fb4b34be0c5d1720fa99689f7bf6e57974d18a51e3a91fab6cf72d5bf6ebc9",
+      "channelShufflePatterns": [
+        {
+          "channel": 0,
+          "pattern": "0 16 16 16 4 16 16 16 8 16 16 16 12 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 1,
+          "pattern": "1 16 16 16 5 16 16 16 9 16 16 16 13 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 2,
+          "pattern": "2 16 16 16 6 16 16 16 10 16 16 16 14 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 3,
+          "pattern": "3 16 16 16 7 16 16 16 11 16 16 16 15 16 16 16",
+          "sites": 0
+        }
+      ],
+      "staticOpcodeSites": {
+        "i8x16.shuffle": 84,
+        "i32x4.shr_u": 34,
+        "v128.and": 44,
+        "f32x4.convert_i32x4_s": 4,
+        "f32x4.convert_i32x4_u": 28,
+        "f32x4.mul": 210,
+        "f32x4.add": 100
+      }
+    },
+    {
+      "label": "candidate",
+      "function": "sg_raster_triangle_depth_capture",
+      "wasmSha256": "bb97d68857a9fa957f25eabeca0867db06f11ab76cbacbf9866aef8ab8ab3e9f",
+      "symbolMapSha256": "11e72332cec4ab79c8c98f9692bae895a2e3669f13b0c34198d09e07e280c96e",
+      "absoluteFunctionIndex": 426,
+      "definedFunctionLabel": 170,
+      "importFunctionCount": 256,
+      "mappingExport": {
+        "name": "softgl_create",
+        "absoluteFunctionIndex": 435,
+        "definedFunctionLabel": 179
+      },
+      "rootFile": "candidate-sg_raster_triangle_depth_capture.wat",
+      "rootSha256": "fd01a959be6f19055f1ab25dddb22e84b6160fd657e602205e8e9b6305b19634",
+      "channelShufflePatterns": [
+        {
+          "channel": 0,
+          "pattern": "0 16 16 16 4 16 16 16 8 16 16 16 12 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 1,
+          "pattern": "1 16 16 16 5 16 16 16 9 16 16 16 13 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 2,
+          "pattern": "2 16 16 16 6 16 16 16 10 16 16 16 14 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 3,
+          "pattern": "3 16 16 16 7 16 16 16 11 16 16 16 15 16 16 16",
+          "sites": 0
+        }
+      ],
+      "staticOpcodeSites": {
+        "i8x16.shuffle": 84,
+        "i32x4.shr_u": 34,
+        "v128.and": 44,
+        "f32x4.convert_i32x4_s": 4,
+        "f32x4.convert_i32x4_u": 28,
+        "f32x4.mul": 210,
+        "f32x4.add": 100
+      }
+    },
+    {
+      "label": "candidate",
+      "function": "sg_raster_triangle_msaa2",
+      "wasmSha256": "bb97d68857a9fa957f25eabeca0867db06f11ab76cbacbf9866aef8ab8ab3e9f",
+      "symbolMapSha256": "11e72332cec4ab79c8c98f9692bae895a2e3669f13b0c34198d09e07e280c96e",
+      "absoluteFunctionIndex": 420,
+      "definedFunctionLabel": 164,
+      "importFunctionCount": 256,
+      "mappingExport": {
+        "name": "softgl_create",
+        "absoluteFunctionIndex": 435,
+        "definedFunctionLabel": 179
+      },
+      "rootFile": "candidate-sg_raster_triangle_msaa2.wat",
+      "rootSha256": "3f28519f7bb0877ef3a3a4f808ebd690b8547a4816e1e90c883f3f2a5a2bbaab",
+      "channelShufflePatterns": [
+        {
+          "channel": 0,
+          "pattern": "0 16 16 16 4 16 16 16 8 16 16 16 12 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 1,
+          "pattern": "1 16 16 16 5 16 16 16 9 16 16 16 13 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 2,
+          "pattern": "2 16 16 16 6 16 16 16 10 16 16 16 14 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 3,
+          "pattern": "3 16 16 16 7 16 16 16 11 16 16 16 15 16 16 16",
+          "sites": 0
+        }
+      ],
+      "staticOpcodeSites": {
+        "i8x16.shuffle": 65,
+        "i32x4.shr_u": 34,
+        "v128.and": 80,
+        "f32x4.convert_i32x4_s": 0,
+        "f32x4.convert_i32x4_u": 28,
+        "f32x4.mul": 131,
+        "f32x4.add": 65
+      }
+    },
+    {
+      "label": "candidate",
+      "function": "sg_raster_triangle_msaa2_capture",
+      "wasmSha256": "bb97d68857a9fa957f25eabeca0867db06f11ab76cbacbf9866aef8ab8ab3e9f",
+      "symbolMapSha256": "11e72332cec4ab79c8c98f9692bae895a2e3669f13b0c34198d09e07e280c96e",
+      "absoluteFunctionIndex": 423,
+      "definedFunctionLabel": 167,
+      "importFunctionCount": 256,
+      "mappingExport": {
+        "name": "softgl_create",
+        "absoluteFunctionIndex": 435,
+        "definedFunctionLabel": 179
+      },
+      "rootFile": "candidate-sg_raster_triangle_msaa2_capture.wat",
+      "rootSha256": "bab3ef7798de1641469f55996580dc55b4ed87cb0ec24851a7ad9bab7600aa51",
+      "channelShufflePatterns": [
+        {
+          "channel": 0,
+          "pattern": "0 16 16 16 4 16 16 16 8 16 16 16 12 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 1,
+          "pattern": "1 16 16 16 5 16 16 16 9 16 16 16 13 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 2,
+          "pattern": "2 16 16 16 6 16 16 16 10 16 16 16 14 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 3,
+          "pattern": "3 16 16 16 7 16 16 16 11 16 16 16 15 16 16 16",
+          "sites": 0
+        }
+      ],
+      "staticOpcodeSites": {
+        "i8x16.shuffle": 65,
+        "i32x4.shr_u": 34,
+        "v128.and": 80,
+        "f32x4.convert_i32x4_s": 0,
+        "f32x4.convert_i32x4_u": 28,
+        "f32x4.mul": 131,
+        "f32x4.add": 65
+      }
+    },
+    {
+      "label": "candidate",
+      "function": "sg_raster_triangle_msaa4",
+      "wasmSha256": "bb97d68857a9fa957f25eabeca0867db06f11ab76cbacbf9866aef8ab8ab3e9f",
+      "symbolMapSha256": "11e72332cec4ab79c8c98f9692bae895a2e3669f13b0c34198d09e07e280c96e",
+      "absoluteFunctionIndex": 424,
+      "definedFunctionLabel": 168,
+      "importFunctionCount": 256,
+      "mappingExport": {
+        "name": "softgl_create",
+        "absoluteFunctionIndex": 435,
+        "definedFunctionLabel": 179
+      },
+      "rootFile": "candidate-sg_raster_triangle_msaa4.wat",
+      "rootSha256": "326dbd934508e0b399c0bf09abaf98a9e6244bf243204461a75c4d6652371992",
+      "channelShufflePatterns": [
+        {
+          "channel": 0,
+          "pattern": "0 16 16 16 4 16 16 16 8 16 16 16 12 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 1,
+          "pattern": "1 16 16 16 5 16 16 16 9 16 16 16 13 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 2,
+          "pattern": "2 16 16 16 6 16 16 16 10 16 16 16 14 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 3,
+          "pattern": "3 16 16 16 7 16 16 16 11 16 16 16 15 16 16 16",
+          "sites": 0
+        }
+      ],
+      "staticOpcodeSites": {
+        "i8x16.shuffle": 65,
+        "i32x4.shr_u": 34,
+        "v128.and": 128,
+        "f32x4.convert_i32x4_s": 4,
+        "f32x4.convert_i32x4_u": 28,
+        "f32x4.mul": 136,
+        "f32x4.add": 68
+      }
+    },
+    {
+      "label": "candidate",
+      "function": "sg_raster_triangle_msaa4_capture",
+      "wasmSha256": "bb97d68857a9fa957f25eabeca0867db06f11ab76cbacbf9866aef8ab8ab3e9f",
+      "symbolMapSha256": "11e72332cec4ab79c8c98f9692bae895a2e3669f13b0c34198d09e07e280c96e",
+      "absoluteFunctionIndex": 425,
+      "definedFunctionLabel": 169,
+      "importFunctionCount": 256,
+      "mappingExport": {
+        "name": "softgl_create",
+        "absoluteFunctionIndex": 435,
+        "definedFunctionLabel": 179
+      },
+      "rootFile": "candidate-sg_raster_triangle_msaa4_capture.wat",
+      "rootSha256": "0eb9f1b1dffe1d2a089016f848bb290486a701ca9263edceaa9b7922a903df00",
+      "channelShufflePatterns": [
+        {
+          "channel": 0,
+          "pattern": "0 16 16 16 4 16 16 16 8 16 16 16 12 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 1,
+          "pattern": "1 16 16 16 5 16 16 16 9 16 16 16 13 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 2,
+          "pattern": "2 16 16 16 6 16 16 16 10 16 16 16 14 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 3,
+          "pattern": "3 16 16 16 7 16 16 16 11 16 16 16 15 16 16 16",
+          "sites": 0
+        }
+      ],
+      "staticOpcodeSites": {
+        "i8x16.shuffle": 65,
+        "i32x4.shr_u": 34,
+        "v128.and": 128,
+        "f32x4.convert_i32x4_s": 4,
+        "f32x4.convert_i32x4_u": 28,
+        "f32x4.mul": 136,
+        "f32x4.add": 68
+      }
+    },
+    {
+      "label": "candidate",
+      "function": "sg_packet_sample_cube_coherent",
+      "wasmSha256": "bb97d68857a9fa957f25eabeca0867db06f11ab76cbacbf9866aef8ab8ab3e9f",
+      "symbolMapSha256": "11e72332cec4ab79c8c98f9692bae895a2e3669f13b0c34198d09e07e280c96e",
+      "absoluteFunctionIndex": 432,
+      "definedFunctionLabel": 176,
+      "importFunctionCount": 256,
+      "mappingExport": {
+        "name": "softgl_create",
+        "absoluteFunctionIndex": 435,
+        "definedFunctionLabel": 179
+      },
+      "rootFile": "candidate-sg_packet_sample_cube_coherent.wat",
+      "rootSha256": "a591a372e27a662e0332567146b10c9a00ff7ea6e6ee27c4a2004de362be61da",
+      "channelShufflePatterns": [
+        {
+          "channel": 0,
+          "pattern": "0 16 16 16 4 16 16 16 8 16 16 16 12 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 1,
+          "pattern": "1 16 16 16 5 16 16 16 9 16 16 16 13 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 2,
+          "pattern": "2 16 16 16 6 16 16 16 10 16 16 16 14 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 3,
+          "pattern": "3 16 16 16 7 16 16 16 11 16 16 16 15 16 16 16",
+          "sites": 0
+        }
+      ],
+      "staticOpcodeSites": {
+        "i8x16.shuffle": 0,
+        "i32x4.shr_u": 0,
+        "v128.and": 0,
+        "f32x4.convert_i32x4_s": 0,
+        "f32x4.convert_i32x4_u": 0,
+        "f32x4.mul": 0,
+        "f32x4.add": 0
+      }
+    },
+    {
+      "label": "candidate",
+      "function": "sg_packet_sample_cube_target",
+      "wasmSha256": "bb97d68857a9fa957f25eabeca0867db06f11ab76cbacbf9866aef8ab8ab3e9f",
+      "symbolMapSha256": "11e72332cec4ab79c8c98f9692bae895a2e3669f13b0c34198d09e07e280c96e",
+      "absoluteFunctionIndex": 421,
+      "definedFunctionLabel": 165,
+      "importFunctionCount": 256,
+      "mappingExport": {
+        "name": "softgl_create",
+        "absoluteFunctionIndex": 435,
+        "definedFunctionLabel": 179
+      },
+      "rootFile": "candidate-sg_packet_sample_cube_target.wat",
+      "rootSha256": "ba6c128cf5d6f2b3ab9532c84b5361302279abaa244865a39435021ffe2c3339",
+      "channelShufflePatterns": [
+        {
+          "channel": 0,
+          "pattern": "0 16 16 16 4 16 16 16 8 16 16 16 12 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 1,
+          "pattern": "1 16 16 16 5 16 16 16 9 16 16 16 13 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 2,
+          "pattern": "2 16 16 16 6 16 16 16 10 16 16 16 14 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 3,
+          "pattern": "3 16 16 16 7 16 16 16 11 16 16 16 15 16 16 16",
+          "sites": 0
+        }
+      ],
+      "staticOpcodeSites": {
+        "i8x16.shuffle": 8,
+        "i32x4.shr_u": 0,
+        "v128.and": 0,
+        "f32x4.convert_i32x4_s": 0,
+        "f32x4.convert_i32x4_u": 0,
+        "f32x4.mul": 0,
+        "f32x4.add": 0
+      }
+    },
+    {
+      "label": "candidate",
+      "function": "sg_packet_sample_cube_vectors",
+      "wasmSha256": "bb97d68857a9fa957f25eabeca0867db06f11ab76cbacbf9866aef8ab8ab3e9f",
+      "symbolMapSha256": "11e72332cec4ab79c8c98f9692bae895a2e3669f13b0c34198d09e07e280c96e",
+      "absoluteFunctionIndex": 431,
+      "definedFunctionLabel": 175,
+      "importFunctionCount": 256,
+      "mappingExport": {
+        "name": "softgl_create",
+        "absoluteFunctionIndex": 435,
+        "definedFunctionLabel": 179
+      },
+      "rootFile": "candidate-sg_packet_sample_cube_vectors.wat",
+      "rootSha256": "cd502df0672ffea32f307a7538d09c9ca94375397631fc6e38426a5450b9f7f6",
+      "channelShufflePatterns": [
+        {
+          "channel": 0,
+          "pattern": "0 16 16 16 4 16 16 16 8 16 16 16 12 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 1,
+          "pattern": "1 16 16 16 5 16 16 16 9 16 16 16 13 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 2,
+          "pattern": "2 16 16 16 6 16 16 16 10 16 16 16 14 16 16 16",
+          "sites": 0
+        },
+        {
+          "channel": 3,
+          "pattern": "3 16 16 16 7 16 16 16 11 16 16 16 15 16 16 16",
+          "sites": 0
+        }
+      ],
+      "staticOpcodeSites": {
+        "i8x16.shuffle": 8,
+        "i32x4.shr_u": 15,
+        "v128.and": 23,
+        "f32x4.convert_i32x4_s": 0,
+        "f32x4.convert_i32x4_u": 20,
+        "f32x4.mul": 32,
+        "f32x4.add": 16
+      }
+    }
+  ],
+  "scope": "Actual bound WASM raster-root static opcode sites. Not native JIT instructions, dynamic counts, register spills, cache traffic or saved cycles."
+}

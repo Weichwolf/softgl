@@ -1,0 +1,303 @@
+{
+  "candidateWasmSha256": "bb97d68857a9fa957f25eabeca0867db06f11ab76cbacbf9866aef8ab8ab3e9f",
+  "referenceWasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+  "roots": [
+    {
+      "label": "reference",
+      "name": "sg_raster_triangle_tile_prepared",
+      "normalizedBodySha256": "c80eefe036a4c43dd68126adb1ad08a2254b8f8afee612fcafd6877f9328af0a",
+      "calls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_raster_triangle_depth_capture",
+        "sg_raster_triangle_msaa2",
+        "sg_raster_triangle_msaa2_capture",
+        "sg_raster_triangle_msaa4",
+        "sg_raster_triangle_msaa4_capture",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_off_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_fragment"
+      ]
+    },
+    {
+      "label": "reference",
+      "name": "sg_raster_triangle_depth_capture",
+      "normalizedBodySha256": "6721f7a8906c9fcf7c02877b85e00b9b16fd58217611ffdaee33d4b17e536214",
+      "calls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_off_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_fragment"
+      ]
+    },
+    {
+      "label": "reference",
+      "name": "sg_raster_triangle_msaa2",
+      "normalizedBodySha256": "58f0bf17e6a0314ce2013b3a8e963491229a7bf71eea7553878291c4f1726cec",
+      "calls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_blend_msaa2_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_multisample"
+      ]
+    },
+    {
+      "label": "reference",
+      "name": "sg_raster_triangle_msaa2_capture",
+      "normalizedBodySha256": "3e3ec65413bfb66b2b6e58f10f46be0a20af06e349c7eef520f102a1ad2f1373",
+      "calls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_blend_msaa2_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_multisample"
+      ]
+    },
+    {
+      "label": "reference",
+      "name": "sg_raster_triangle_msaa4",
+      "normalizedBodySha256": "a19a7369615f3d2498147035205d944a2369aab851d5f4a51895d1b64ce00d31",
+      "calls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_blend_msaa4_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_multisample"
+      ]
+    },
+    {
+      "label": "reference",
+      "name": "sg_raster_triangle_msaa4_capture",
+      "normalizedBodySha256": "270d336da4171fb7521983ce1f93f91c8f01a45c39253ce90f173dd24176b30b",
+      "calls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_blend_msaa4_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_multisample"
+      ]
+    },
+    {
+      "label": "reference",
+      "name": "sg_packet_sample_cube_coherent",
+      "normalizedBodySha256": "5f54788a02b2347bde65aacd7f1e732953de265ff78d8d05f41dc7da8d3a47d6",
+      "calls": []
+    },
+    {
+      "label": "reference",
+      "name": "sg_packet_sample_cube_target",
+      "normalizedBodySha256": "2d1fb83724fd3b5cfc42a679a95dc7111dd8ead06fcdd7e51d40da38b23e76a3",
+      "calls": [
+        "sg_packet_sample_cube_coherent",
+        "sg_sample_tex_cube"
+      ]
+    },
+    {
+      "label": "candidate",
+      "name": "sg_raster_triangle_tile_prepared",
+      "normalizedBodySha256": "c80eefe036a4c43dd68126adb1ad08a2254b8f8afee612fcafd6877f9328af0a",
+      "calls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_raster_triangle_depth_capture",
+        "sg_raster_triangle_msaa2",
+        "sg_raster_triangle_msaa2_capture",
+        "sg_raster_triangle_msaa4",
+        "sg_raster_triangle_msaa4_capture",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_off_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_fragment"
+      ]
+    },
+    {
+      "label": "candidate",
+      "name": "sg_raster_triangle_depth_capture",
+      "normalizedBodySha256": "6721f7a8906c9fcf7c02877b85e00b9b16fd58217611ffdaee33d4b17e536214",
+      "calls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_off_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_fragment"
+      ]
+    },
+    {
+      "label": "candidate",
+      "name": "sg_raster_triangle_msaa2",
+      "normalizedBodySha256": "58f0bf17e6a0314ce2013b3a8e963491229a7bf71eea7553878291c4f1726cec",
+      "calls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_blend_msaa2_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_multisample"
+      ]
+    },
+    {
+      "label": "candidate",
+      "name": "sg_raster_triangle_msaa2_capture",
+      "normalizedBodySha256": "3e3ec65413bfb66b2b6e58f10f46be0a20af06e349c7eef520f102a1ad2f1373",
+      "calls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_blend_msaa2_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_multisample"
+      ]
+    },
+    {
+      "label": "candidate",
+      "name": "sg_raster_triangle_msaa4",
+      "normalizedBodySha256": "a19a7369615f3d2498147035205d944a2369aab851d5f4a51895d1b64ce00d31",
+      "calls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_blend_msaa4_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_multisample"
+      ]
+    },
+    {
+      "label": "candidate",
+      "name": "sg_raster_triangle_msaa4_capture",
+      "normalizedBodySha256": "270d336da4171fb7521983ce1f93f91c8f01a45c39253ce90f173dd24176b30b",
+      "calls": [
+        "expf",
+        "sg_hot_fastpath_shade_fast",
+        "sg_packet_sample_cube_target",
+        "sg_sample_tex1d",
+        "sg_sample_tex2d",
+        "sg_sample_tex3d",
+        "sg_store_blend_msaa4_post_depth",
+        "sg_tex_env_combine_full",
+        "sg_tex_tri_sample_units",
+        "sg_write_multisample"
+      ]
+    },
+    {
+      "label": "candidate",
+      "name": "sg_packet_sample_cube_coherent",
+      "normalizedBodySha256": "8962e5812152371ccf93ae3d1f8637221f1864584c5312d1a6db4822d2dd80f4",
+      "calls": [
+        "sg_packet_sample_cube_vectors"
+      ]
+    },
+    {
+      "label": "candidate",
+      "name": "sg_packet_sample_cube_target",
+      "normalizedBodySha256": "65e4b7fc41b5caa5d42484162d765ea6a78efa7d7d888e37504abb1269d13984",
+      "calls": [
+        "sg_packet_sample_cube_vectors",
+        "sg_sample_tex_cube"
+      ]
+    },
+    {
+      "label": "candidate",
+      "name": "sg_packet_sample_cube_vectors",
+      "normalizedBodySha256": "9b489c1414201a253e59ef94cedc5873b281bf48f8f49767a26e7acf16188a4a",
+      "calls": []
+    }
+  ],
+  "unchangedRasterBodies": [
+    {
+      "name": "sg_raster_triangle_tile_prepared",
+      "normalizedBodyEqual": true
+    },
+    {
+      "name": "sg_raster_triangle_depth_capture",
+      "normalizedBodyEqual": true
+    },
+    {
+      "name": "sg_raster_triangle_msaa2",
+      "normalizedBodyEqual": true
+    },
+    {
+      "name": "sg_raster_triangle_msaa2_capture",
+      "normalizedBodyEqual": true
+    },
+    {
+      "name": "sg_raster_triangle_msaa4",
+      "normalizedBodyEqual": true
+    },
+    {
+      "name": "sg_raster_triangle_msaa4_capture",
+      "normalizedBodyEqual": true
+    }
+  ],
+  "coreParameterTypes": [
+    "i32",
+    "v128",
+    "v128",
+    "v128",
+    "i32",
+    "i32"
+  ],
+  "targetPreFirstCallSites": {
+    "reference": {
+      "v128Store": 7,
+      "v128Load": 0
+    },
+    "candidate": {
+      "v128Store": 0,
+      "v128Load": 0
+    }
+  },
+  "scope": "Bound static WASM call/parameter sites and function-label-normalized body text; not native register allocation, physical traffic, dynamic frequency, cycles or a speedup."
+}

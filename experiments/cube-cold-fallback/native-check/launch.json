@@ -1,0 +1,34 @@
+{
+  "command": [
+    "node",
+    "build/diagnostics/cube-cold-fallback/native-check/wasm_perf_jit.cjs",
+    "--bench-only",
+    "--wasm-build",
+    "build/controls/cube-cold-fallback-candidate",
+    "--native-build",
+    "build/diagnostics/cube-cold-fallback/native-full",
+    "--scenes",
+    "bmw",
+    "--samples",
+    "0",
+    "--rounds",
+    "1",
+    "--warmup",
+    "80",
+    "--frames",
+    "100",
+    "--profile-scene",
+    "bmw",
+    "--output",
+    "build/diagnostics/cube-cold-fallback/native-check/runs/candidate-ms0/result.json"
+  ],
+  "environment": {
+    "SG_RESEARCH_REPO": "/home/cosmo/Git/softgl",
+    "SG_CAPTURE_DIR": "/home/cosmo/Git/softgl/build/diagnostics/cube-cold-fallback/native-check/runs/candidate-ms0/result",
+    "NODE_PATH": "/home/cosmo/Git/softgl/build/node/node_modules",
+    "TMPDIR": "/home/cosmo/Git/softgl/build/tmp",
+    "XDG_CACHE_HOME": "/home/cosmo/Git/softgl/build/browser-cache"
+  },
+  "exitCode": 0,
+  "notAcceptanceTimings": true
+}

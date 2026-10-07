@@ -10,6 +10,7 @@
 | [caller-strip-bounds](caller-strip-bounds/README.md) | Diagnostic / rejected variants | Caller scopes were measured; tighter depth bounds did not repay their cost. |
 | [caller-wait-intervals](caller-wait-intervals/README.md) | Diagnostic | Separates eight polling categories without claiming removable frame time. |
 | [cooperative-stage-handoffs](cooperative-stage-handoffs/README.md) | Not retained | Returning bins between triangle blocks did not justify adoption. |
+| [cube-cold-fallback](cube-cold-fallback/README.md) | Rejected | BMW 4x regresses +3.500%/+1.395% in both audits (5/6 pairs); off/2x change direction despite exact scratch movement. |
 | [cube-packets](cube-packets/README.md) ([historical note](cube-packets/historical-notes/README.md)) | Accepted | Coherent cube packets improve BMW 4x, with other modes and controls explicitly mixed. |
 | [cube-simd-initial](cube-simd-initial/README.md) | Rejected | Initial coherent cube packets passed correctness but lacked an acceptable renderer gain. |
 | [cube-vector-core](cube-vector-core/README.md) | Rejected | Direct vector coordinates remove copies but regress BMW off and give mixed all-mode results. |
@@ -93,7 +94,7 @@
 | [simd-scanline-phases](simd-scanline-phases/README.md) | Held / rejected variants | Exact row recurrences did not confirm a BMW gain; SIMD proposal variants were slower. |
 | [simd-triangle-setup](simd-triangle-setup/README.md) | Proposed | Four independent descriptor lanes need uncached-work and gather-cost diagnostics. |
 | [slice-vertex-packing](slice-vertex-packing/README.md) | Rejected | Packing during geometry slices gives opposite BMW audit directions in every mode. |
-| [texture-tiled-storage](texture-tiled-storage/README.md) | Proposed | Exact tiled texels may improve bilinear locality; no implementation or timing. |
+| [texture-tiled-storage](texture-tiled-storage/README.md) | Proposed | Sampler diagnostics must cover legacy quad/scalar paths; no tiled implementation or timing. |
 | [transient-depth-visibility](transient-depth-visibility/README.md) | Diagnostic / superseded trials | Identifies strictly hidden replay references and preserves the initial timing limitations. |
 | [triangle-size-histogram](triangle-size-histogram/README.md) | Diagnostic | Separates full triangle area from actual visited work; no timing gain is claimed. |
 | [validation-protocol](validation-protocol/README.md) | Protocol | Documents unchanged correctness gates and the 18-pair quiet-host comparison plan. |

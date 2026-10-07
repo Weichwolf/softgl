@@ -38,6 +38,24 @@ live lanes, horizontal-pair eligibility and crossings of candidate block
 boundaries. Bind observations to the production module and model packs.
 Logical footprints do not establish cache misses or bandwidth limits.
 
+The existing [packet-lane census](../packet-lane-occupancy/README.md) observes
+no T-80 off packets because that mode uses the legacy quad shader; MSAA
+scalar tails also bypass its counter. Instrumenting only
+`sg_packet_sample_2d` would therefore leave important controls unobserved.
+The sampler diagnostic must account for packet, legacy quad and scalar routes,
+and distinguish a direct 2D texture from the 2D face view used by coherent cube
+packets. Keep per-route totals and coverage explicit rather than interpreting
+missing counters as zero sampling work.
+
+Record the actual four post-wrap texel addresses of each live bilinear lane,
+including seams, repeated texels and original horizontal-pair eligibility.
+Candidate block crossings and logical address groups can be derived from these
+coordinates without changing the gathers or interpolation. Use private
+per-thread rows, read/reset only after joined rendering, explicit overflow
+checks, and exact frame/hash comparisons against the accepted module. Counter
+overhead and logical block counts are diagnostic observations, not acceptance
+timings or measured cache savings.
+
 Select one fixed layout with a documented rationale before acceptance timing;
 do not choose a layout by retaining only favourable benchmark runs. Start with
 supported RGBA8 2D levels and retain row-order fallback for other formats,
