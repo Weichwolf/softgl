@@ -1,0 +1,60 @@
+{
+  "researchBaselineCommit": "d4a81c2c3bab1b24a9cfb4f17fb464ebbe3c7e1e",
+  "referenceWasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+  "changedFiles": [
+    "libsoftgl/src/frag_hot.h",
+    "libsoftgl/src/frag_packet.h",
+    "libsoftgl/src/fragment.c",
+    "libsoftgl/src/rasterizer.c",
+    "libsoftgl/src/state.c",
+    "libsoftgl/src/texture.c",
+    "libsoftgl/src/texture_layout.h",
+    "libsoftgl/src/types.h",
+    "tests/CMakeLists.txt",
+    "tests/texture_tiles4.c"
+  ],
+  "finalSourceFiles": {
+    "libsoftgl/src/frag_hot.h": "1bb07d811ee834272b81903709c9e6f6d98715c14924afd4e6024102f6ef4dab",
+    "libsoftgl/src/frag_packet.h": "a14b7e96ea1aff19fb52507fde39a622b27ad9acfec7762f549cb8df9459d74f",
+    "libsoftgl/src/fragment.c": "b879f8155a64f6b6d37fd2c801974acf53e053a83fb8c9dc69bc11c7f62d9b8d",
+    "libsoftgl/src/rasterizer.c": "7e2cd0893d3577aeae4f2b1fb09ed1351ee7e420b1a3f48d7c1957f65ea0a17b",
+    "libsoftgl/src/state.c": "b87e86f5959ef5748ea878f5f492e5090853344891e930dbe422114aa7d43e7d",
+    "libsoftgl/src/texture.c": "fbcab54f5050af97bb2069b0d9a4e5b60cd92e75dcdeb87989b6fbcdbf2b47a3",
+    "libsoftgl/src/texture_layout.h": "5a9a49608c04142431a0ff2b2c6fc67a8a6f1e718d322e3edfa4ed2e045fa817",
+    "libsoftgl/src/types.h": "4bb15114e1c2f8ac81e511e9a361452633ef8eafc3db456b870e6dfa37869aaf",
+    "tests/CMakeLists.txt": "fdb36cc59c872f88145dfc33cb49fe3e211af2b94f35389139b09c618aef446d",
+    "tests/texture_tiles4.c": "af5726a98e831a16f7cd2c4504fd73b8c9a356faa357cb769dc248eaef595d08"
+  },
+  "patchSha256": "4499cd178e7149952f8018acbc6765152fc25e1fd7b3b84854ae5494a4a5fd21",
+  "hypothesis": "Fixed row-major 4x4 derived RGBA8 direct-2D storage for POT extents >=4. Keep original row order for readback and unsupported routes/dimensions/allocation failure. Preserve wrapped coordinates, four texels and existing float/integer filtering/rounding and combiner order. Cache refresh/free uses existing worker join boundaries; queued texture metadata copies own the same derived allocation lifetime. Packet pair eligibility is re-proven using transformed x offsets; scalar/hot/legacy quad and packet paths participate. Cube views explicitly remain untiled.",
+  "predeclaredComparisons": {
+    "samples": [
+      0,
+      2,
+      4
+    ],
+    "auditsEachMode": 2,
+    "pairsEachAudit": 3,
+    "roundsEachPair": 2,
+    "warmup": 80,
+    "frames": 100,
+    "models": [
+      "bmw",
+      "tank"
+    ],
+    "workers": 3,
+    "resolvePerFrame": true
+  },
+  "decisionRule": "Complete all full gates and eighteen fixed comparisons. Require reproducible BMW benefit in both audits; inspect all modes and T-80. No parameter sweep or selective confirmation.",
+  "predeclaredLayout": {
+    "widthHeight": "POT >=4 and texel count <=INT32_MAX",
+    "tileWidth": 4,
+    "tileHeight": 4,
+    "derivedAlignment": 64,
+    "cubeEnabled": false,
+    "uploadFailureIsFallback": true,
+    "storageFlag": "SG_TEXTURE_TILES4=1"
+  },
+  "status": "fresh-candidate-source-reconstructed",
+  "productionUntouched": true
+}

@@ -1,0 +1,2359 @@
+{
+  "scope": "Linux native API-only mutation microbenchmark; no frame/FPS claim",
+  "notAcceptanceTimings": true,
+  "protocol": "six groups alternating AB/BA, each binary has four warmups and40 measured calls per operation/dimension",
+  "records": [
+    {
+      "group": 1,
+      "variant": "reference",
+      "binarySha256": "5cd2b70a2a948120dd385b1be6d03e878c575f8372ac1c80686e9fe514bab616",
+      "data": {
+        "textureStructBytes": 1896,
+        "unitStructBytes": 88,
+        "warmup": 4,
+        "iterations": 40,
+        "noWorkers": true,
+        "notAcceptanceTimings": true,
+        "records": [
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "image",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 0.904698968,
+            "msPerUpdate": 0.022617474
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "subimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002299964,
+            "msPerUpdate": 5.7499e-05
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copyimage",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 1.415897965,
+            "msPerUpdate": 0.035397449
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copysubimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003199995,
+            "msPerUpdate": 8e-05
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 3.274993956,
+            "msPerUpdate": 0.081874849
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002200007,
+            "msPerUpdate": 5.5e-05
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 4.782191038,
+            "msPerUpdate": 0.119554776
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003300011,
+            "msPerUpdate": 8.25e-05
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 6.469487965,
+            "msPerUpdate": 0.161737199
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002399981,
+            "msPerUpdate": 6e-05
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 9.112183034,
+            "msPerUpdate": 0.227804576
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003300011,
+            "msPerUpdate": 8.25e-05
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 12.945475996,
+            "msPerUpdate": 0.3236369
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002399981,
+            "msPerUpdate": 6e-05
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 19.07516396,
+            "msPerUpdate": 0.476879099
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003399968,
+            "msPerUpdate": 8.4999e-05
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 26.243550003,
+            "msPerUpdate": 0.65608875
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002399981,
+            "msPerUpdate": 6e-05
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 37.742327988,
+            "msPerUpdate": 0.9435582
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003499985,
+            "msPerUpdate": 8.75e-05
+          }
+        ]
+      },
+      "rawStdout": "{\"textureStructBytes\":1896,\"unitStructBytes\":88,\"warmup\":4,\"iterations\":40,\"noWorkers\":true,\"notAcceptanceTimings\":true,\"records\":[{\"width\":128,\"height\":128,\"operation\":\"image\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":0.904698968,\"msPerUpdate\":0.022617474},{\"width\":128,\"height\":128,\"operation\":\"subimage4x4\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":0.002299964,\"msPerUpdate\":0.000057499},{\"width\":128,\"height\":128,\"operation\":\"copyimage\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":1.415897965,\"msPerUpdate\":0.035397449},{\"width\":128,\"height\":128,\"operation\":\"copysubimage4x4\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":0.003199995,\"msPerUpdate\":0.000080000},{\"width\":256,\"height\":256,\"operation\":\"image\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":3.274993956,\"msPerUpdate\":0.081874849},{\"width\":256,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":0.002200007,\"msPerUpdate\":0.000055000},{\"width\":256,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":4.782191038,\"msPerUpdate\":0.119554776},{\"width\":256,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":0.003300011,\"msPerUpdate\":0.000082500},{\"width\":512,\"height\":256,\"operation\":\"image\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":6.469487965,\"msPerUpdate\":0.161737199},{\"width\":512,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":0.002399981,\"msPerUpdate\":0.000060000},{\"width\":512,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":9.112183034,\"msPerUpdate\":0.227804576},{\"width\":512,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":0.003300011,\"msPerUpdate\":0.000082500},{\"width\":512,\"height\":512,\"operation\":\"image\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":12.945475996,\"msPerUpdate\":0.323636900},{\"width\":512,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":0.002399981,\"msPerUpdate\":0.000060000},{\"width\":512,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":19.075163960,\"msPerUpdate\":0.476879099},{\"width\":512,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":0.003399968,\"msPerUpdate\":0.000084999},{\"width\":1024,\"height\":512,\"operation\":\"image\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":26.243550003,\"msPerUpdate\":0.656088750},{\"width\":1024,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":0.002399981,\"msPerUpdate\":0.000060000},{\"width\":1024,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":37.742327988,\"msPerUpdate\":0.943558200},{\"width\":1024,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":0.003499985,\"msPerUpdate\":0.000087500}]}\n"
+    },
+    {
+      "group": 1,
+      "variant": "candidate",
+      "binarySha256": "6a00ff09833b8cef014c931d798e824444de74e0cbb7e8127b6e76b5c37256cd",
+      "data": {
+        "textureStructBytes": 2024,
+        "unitStructBytes": 96,
+        "warmup": 4,
+        "iterations": 40,
+        "noWorkers": true,
+        "notAcceptanceTimings": true,
+        "records": [
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "image",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 1.096697986,
+            "msPerUpdate": 0.02741745
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "subimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 0.091499984,
+            "msPerUpdate": 0.0022875
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copyimage",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 1.61499697,
+            "msPerUpdate": 0.040374924
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copysubimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 0.093199015,
+            "msPerUpdate": 0.002329975
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 8.927082956,
+            "msPerUpdate": 0.223177074
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 0.33999902,
+            "msPerUpdate": 0.008499976
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 5.325389981,
+            "msPerUpdate": 0.13313475
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 0.339100003,
+            "msPerUpdate": 0.0084775
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 20.64556098,
+            "msPerUpdate": 0.516139024
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 0.799597979,
+            "msPerUpdate": 0.019989949
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 10.340679944,
+            "msPerUpdate": 0.258516999
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 0.79499799,
+            "msPerUpdate": 0.01987495
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 44.506514966,
+            "msPerUpdate": 1.112662874
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 2.713195026,
+            "msPerUpdate": 0.067829876
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 22.386557043,
+            "msPerUpdate": 0.559663926
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 2.680094004,
+            "msPerUpdate": 0.06700235
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 93.72222203,
+            "msPerUpdate": 2.343055551
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 5.827889025,
+            "msPerUpdate": 0.145697226
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 44.922614992,
+            "msPerUpdate": 1.123065375
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 6.057687998,
+            "msPerUpdate": 0.1514422
+          }
+        ]
+      },
+      "rawStdout": "{\"textureStructBytes\":2024,\"unitStructBytes\":96,\"warmup\":4,\"iterations\":40,\"noWorkers\":true,\"notAcceptanceTimings\":true,\"records\":[{\"width\":128,\"height\":128,\"operation\":\"image\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":1.096697986,\"msPerUpdate\":0.027417450},{\"width\":128,\"height\":128,\"operation\":\"subimage4x4\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":0.091499984,\"msPerUpdate\":0.002287500},{\"width\":128,\"height\":128,\"operation\":\"copyimage\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":1.614996970,\"msPerUpdate\":0.040374924},{\"width\":128,\"height\":128,\"operation\":\"copysubimage4x4\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":0.093199015,\"msPerUpdate\":0.002329975},{\"width\":256,\"height\":256,\"operation\":\"image\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":8.927082956,\"msPerUpdate\":0.223177074},{\"width\":256,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":0.339999020,\"msPerUpdate\":0.008499976},{\"width\":256,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":5.325389981,\"msPerUpdate\":0.133134750},{\"width\":256,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":0.339100003,\"msPerUpdate\":0.008477500},{\"width\":512,\"height\":256,\"operation\":\"image\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":20.645560980,\"msPerUpdate\":0.516139024},{\"width\":512,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":0.799597979,\"msPerUpdate\":0.019989949},{\"width\":512,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":10.340679944,\"msPerUpdate\":0.258516999},{\"width\":512,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":0.794997990,\"msPerUpdate\":0.019874950},{\"width\":512,\"height\":512,\"operation\":\"image\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":44.506514966,\"msPerUpdate\":1.112662874},{\"width\":512,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":2.713195026,\"msPerUpdate\":0.067829876},{\"width\":512,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":22.386557043,\"msPerUpdate\":0.559663926},{\"width\":512,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":2.680094004,\"msPerUpdate\":0.067002350},{\"width\":1024,\"height\":512,\"operation\":\"image\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":93.722222030,\"msPerUpdate\":2.343055551},{\"width\":1024,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":5.827889025,\"msPerUpdate\":0.145697226},{\"width\":1024,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":44.922614992,\"msPerUpdate\":1.123065375},{\"width\":1024,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":6.057687998,\"msPerUpdate\":0.151442200}]}\n"
+    },
+    {
+      "group": 2,
+      "variant": "candidate",
+      "binarySha256": "6a00ff09833b8cef014c931d798e824444de74e0cbb7e8127b6e76b5c37256cd",
+      "data": {
+        "textureStructBytes": 2024,
+        "unitStructBytes": 96,
+        "warmup": 4,
+        "iterations": 40,
+        "noWorkers": true,
+        "notAcceptanceTimings": true,
+        "records": [
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "image",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 0.995698035,
+            "msPerUpdate": 0.024892451
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "subimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 0.104699969,
+            "msPerUpdate": 0.002617499
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copyimage",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 1.464596987,
+            "msPerUpdate": 0.036614925
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copysubimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 0.092700005,
+            "msPerUpdate": 0.0023175
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 8.991082966,
+            "msPerUpdate": 0.224777074
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 0.336699009,
+            "msPerUpdate": 0.008417475
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 5.08028996,
+            "msPerUpdate": 0.127007249
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 0.359699011,
+            "msPerUpdate": 0.008992475
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 20.450560987,
+            "msPerUpdate": 0.511264025
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 0.744298995,
+            "msPerUpdate": 0.018607475
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 10.156780958,
+            "msPerUpdate": 0.253919524
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 0.713599026,
+            "msPerUpdate": 0.017839976
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 43.817216992,
+            "msPerUpdate": 1.095430425
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 2.770995021,
+            "msPerUpdate": 0.069274876
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 22.152157009,
+            "msPerUpdate": 0.553803925
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 2.82229501,
+            "msPerUpdate": 0.070557375
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 92.589223981,
+            "msPerUpdate": 2.3147306
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 5.806389034,
+            "msPerUpdate": 0.145159726
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 45.152714014,
+            "msPerUpdate": 1.12881785
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 5.804888964,
+            "msPerUpdate": 0.145122224
+          }
+        ]
+      },
+      "rawStdout": "{\"textureStructBytes\":2024,\"unitStructBytes\":96,\"warmup\":4,\"iterations\":40,\"noWorkers\":true,\"notAcceptanceTimings\":true,\"records\":[{\"width\":128,\"height\":128,\"operation\":\"image\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":0.995698035,\"msPerUpdate\":0.024892451},{\"width\":128,\"height\":128,\"operation\":\"subimage4x4\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":0.104699969,\"msPerUpdate\":0.002617499},{\"width\":128,\"height\":128,\"operation\":\"copyimage\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":1.464596987,\"msPerUpdate\":0.036614925},{\"width\":128,\"height\":128,\"operation\":\"copysubimage4x4\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":0.092700005,\"msPerUpdate\":0.002317500},{\"width\":256,\"height\":256,\"operation\":\"image\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":8.991082966,\"msPerUpdate\":0.224777074},{\"width\":256,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":0.336699009,\"msPerUpdate\":0.008417475},{\"width\":256,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":5.080289960,\"msPerUpdate\":0.127007249},{\"width\":256,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":0.359699011,\"msPerUpdate\":0.008992475},{\"width\":512,\"height\":256,\"operation\":\"image\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":20.450560987,\"msPerUpdate\":0.511264025},{\"width\":512,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":0.744298995,\"msPerUpdate\":0.018607475},{\"width\":512,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":10.156780958,\"msPerUpdate\":0.253919524},{\"width\":512,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":0.713599026,\"msPerUpdate\":0.017839976},{\"width\":512,\"height\":512,\"operation\":\"image\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":43.817216992,\"msPerUpdate\":1.095430425},{\"width\":512,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":2.770995021,\"msPerUpdate\":0.069274876},{\"width\":512,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":22.152157009,\"msPerUpdate\":0.553803925},{\"width\":512,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":2.822295010,\"msPerUpdate\":0.070557375},{\"width\":1024,\"height\":512,\"operation\":\"image\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":92.589223981,\"msPerUpdate\":2.314730600},{\"width\":1024,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":5.806389034,\"msPerUpdate\":0.145159726},{\"width\":1024,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":45.152714014,\"msPerUpdate\":1.128817850},{\"width\":1024,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":5.804888964,\"msPerUpdate\":0.145122224}]}\n"
+    },
+    {
+      "group": 2,
+      "variant": "reference",
+      "binarySha256": "5cd2b70a2a948120dd385b1be6d03e878c575f8372ac1c80686e9fe514bab616",
+      "data": {
+        "textureStructBytes": 1896,
+        "unitStructBytes": 88,
+        "warmup": 4,
+        "iterations": 40,
+        "noWorkers": true,
+        "notAcceptanceTimings": true,
+        "records": [
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "image",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 0.904698014,
+            "msPerUpdate": 0.02261745
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "subimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002200007,
+            "msPerUpdate": 5.5e-05
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copyimage",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 1.371696949,
+            "msPerUpdate": 0.034292424
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copysubimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003099978,
+            "msPerUpdate": 7.7499e-05
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 3.334592998,
+            "msPerUpdate": 0.083364825
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002200007,
+            "msPerUpdate": 5.5e-05
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 4.817990959,
+            "msPerUpdate": 0.120449774
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003300011,
+            "msPerUpdate": 8.25e-05
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 6.336887956,
+            "msPerUpdate": 0.158422199
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002300024,
+            "msPerUpdate": 5.7501e-05
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 9.254082978,
+            "msPerUpdate": 0.231352074
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003700018,
+            "msPerUpdate": 9.25e-05
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 13.280574977,
+            "msPerUpdate": 0.332014374
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002200007,
+            "msPerUpdate": 5.5e-05
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 19.256362975,
+            "msPerUpdate": 0.481409074
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003400028,
+            "msPerUpdate": 8.5001e-05
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 26.699948967,
+            "msPerUpdate": 0.667498724
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002399981,
+            "msPerUpdate": 6e-05
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 37.88882798,
+            "msPerUpdate": 0.947220699
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003200054,
+            "msPerUpdate": 8.0001e-05
+          }
+        ]
+      },
+      "rawStdout": "{\"textureStructBytes\":1896,\"unitStructBytes\":88,\"warmup\":4,\"iterations\":40,\"noWorkers\":true,\"notAcceptanceTimings\":true,\"records\":[{\"width\":128,\"height\":128,\"operation\":\"image\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":0.904698014,\"msPerUpdate\":0.022617450},{\"width\":128,\"height\":128,\"operation\":\"subimage4x4\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":0.002200007,\"msPerUpdate\":0.000055000},{\"width\":128,\"height\":128,\"operation\":\"copyimage\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":1.371696949,\"msPerUpdate\":0.034292424},{\"width\":128,\"height\":128,\"operation\":\"copysubimage4x4\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":0.003099978,\"msPerUpdate\":0.000077499},{\"width\":256,\"height\":256,\"operation\":\"image\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":3.334592998,\"msPerUpdate\":0.083364825},{\"width\":256,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":0.002200007,\"msPerUpdate\":0.000055000},{\"width\":256,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":4.817990959,\"msPerUpdate\":0.120449774},{\"width\":256,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":0.003300011,\"msPerUpdate\":0.000082500},{\"width\":512,\"height\":256,\"operation\":\"image\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":6.336887956,\"msPerUpdate\":0.158422199},{\"width\":512,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":0.002300024,\"msPerUpdate\":0.000057501},{\"width\":512,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":9.254082978,\"msPerUpdate\":0.231352074},{\"width\":512,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":0.003700018,\"msPerUpdate\":0.000092500},{\"width\":512,\"height\":512,\"operation\":\"image\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":13.280574977,\"msPerUpdate\":0.332014374},{\"width\":512,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":0.002200007,\"msPerUpdate\":0.000055000},{\"width\":512,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":19.256362975,\"msPerUpdate\":0.481409074},{\"width\":512,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":0.003400028,\"msPerUpdate\":0.000085001},{\"width\":1024,\"height\":512,\"operation\":\"image\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":26.699948967,\"msPerUpdate\":0.667498724},{\"width\":1024,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":0.002399981,\"msPerUpdate\":0.000060000},{\"width\":1024,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":37.888827980,\"msPerUpdate\":0.947220699},{\"width\":1024,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":0.003200054,\"msPerUpdate\":0.000080001}]}\n"
+    },
+    {
+      "group": 3,
+      "variant": "reference",
+      "binarySha256": "5cd2b70a2a948120dd385b1be6d03e878c575f8372ac1c80686e9fe514bab616",
+      "data": {
+        "textureStructBytes": 1896,
+        "unitStructBytes": 88,
+        "warmup": 4,
+        "iterations": 40,
+        "noWorkers": true,
+        "notAcceptanceTimings": true,
+        "records": [
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "image",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 0.916397989,
+            "msPerUpdate": 0.02290995
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "subimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002399981,
+            "msPerUpdate": 6e-05
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copyimage",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 1.399196982,
+            "msPerUpdate": 0.034979925
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copysubimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003199995,
+            "msPerUpdate": 8e-05
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 3.283294022,
+            "msPerUpdate": 0.082082351
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002200007,
+            "msPerUpdate": 5.5e-05
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 4.828391016,
+            "msPerUpdate": 0.120709775
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003300011,
+            "msPerUpdate": 8.25e-05
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 6.43778801,
+            "msPerUpdate": 0.1609447
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002499998,
+            "msPerUpdate": 6.25e-05
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 9.308781981,
+            "msPerUpdate": 0.23271955
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003399968,
+            "msPerUpdate": 8.4999e-05
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 13.014275014,
+            "msPerUpdate": 0.325356875
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002300024,
+            "msPerUpdate": 5.7501e-05
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 19.232363999,
+            "msPerUpdate": 0.4808091
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003399968,
+            "msPerUpdate": 8.4999e-05
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 25.981949985,
+            "msPerUpdate": 0.64954875
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002200007,
+            "msPerUpdate": 5.5e-05
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 37.874827981,
+            "msPerUpdate": 0.9468707
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003300011,
+            "msPerUpdate": 8.25e-05
+          }
+        ]
+      },
+      "rawStdout": "{\"textureStructBytes\":1896,\"unitStructBytes\":88,\"warmup\":4,\"iterations\":40,\"noWorkers\":true,\"notAcceptanceTimings\":true,\"records\":[{\"width\":128,\"height\":128,\"operation\":\"image\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":0.916397989,\"msPerUpdate\":0.022909950},{\"width\":128,\"height\":128,\"operation\":\"subimage4x4\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":0.002399981,\"msPerUpdate\":0.000060000},{\"width\":128,\"height\":128,\"operation\":\"copyimage\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":1.399196982,\"msPerUpdate\":0.034979925},{\"width\":128,\"height\":128,\"operation\":\"copysubimage4x4\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":0.003199995,\"msPerUpdate\":0.000080000},{\"width\":256,\"height\":256,\"operation\":\"image\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":3.283294022,\"msPerUpdate\":0.082082351},{\"width\":256,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":0.002200007,\"msPerUpdate\":0.000055000},{\"width\":256,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":4.828391016,\"msPerUpdate\":0.120709775},{\"width\":256,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":0.003300011,\"msPerUpdate\":0.000082500},{\"width\":512,\"height\":256,\"operation\":\"image\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":6.437788010,\"msPerUpdate\":0.160944700},{\"width\":512,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":0.002499998,\"msPerUpdate\":0.000062500},{\"width\":512,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":9.308781981,\"msPerUpdate\":0.232719550},{\"width\":512,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":0.003399968,\"msPerUpdate\":0.000084999},{\"width\":512,\"height\":512,\"operation\":\"image\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":13.014275014,\"msPerUpdate\":0.325356875},{\"width\":512,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":0.002300024,\"msPerUpdate\":0.000057501},{\"width\":512,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":19.232363999,\"msPerUpdate\":0.480809100},{\"width\":512,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":0.003399968,\"msPerUpdate\":0.000084999},{\"width\":1024,\"height\":512,\"operation\":\"image\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":25.981949985,\"msPerUpdate\":0.649548750},{\"width\":1024,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":0.002200007,\"msPerUpdate\":0.000055000},{\"width\":1024,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":37.874827981,\"msPerUpdate\":0.946870700},{\"width\":1024,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":0.003300011,\"msPerUpdate\":0.000082500}]}\n"
+    },
+    {
+      "group": 3,
+      "variant": "candidate",
+      "binarySha256": "6a00ff09833b8cef014c931d798e824444de74e0cbb7e8127b6e76b5c37256cd",
+      "data": {
+        "textureStructBytes": 2024,
+        "unitStructBytes": 96,
+        "warmup": 4,
+        "iterations": 40,
+        "noWorkers": true,
+        "notAcceptanceTimings": true,
+        "records": [
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "image",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 0.996398032,
+            "msPerUpdate": 0.024909951
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "subimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 0.091300011,
+            "msPerUpdate": 0.0022825
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copyimage",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 1.508098006,
+            "msPerUpdate": 0.03770245
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copysubimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 0.100898981,
+            "msPerUpdate": 0.002522475
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 9.020381987,
+            "msPerUpdate": 0.22550955
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 0.336899996,
+            "msPerUpdate": 0.0084225
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 5.278689981,
+            "msPerUpdate": 0.13196725
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 0.339299977,
+            "msPerUpdate": 0.008482499
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 20.670161009,
+            "msPerUpdate": 0.516754025
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 0.710398018,
+            "msPerUpdate": 0.01775995
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 10.31467998,
+            "msPerUpdate": 0.257867
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 0.76889801,
+            "msPerUpdate": 0.01922245
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 43.796716988,
+            "msPerUpdate": 1.094917925
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 2.710694969,
+            "msPerUpdate": 0.067767374
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 22.19255805,
+            "msPerUpdate": 0.554813951
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 2.765794992,
+            "msPerUpdate": 0.069144875
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 91.942924976,
+            "msPerUpdate": 2.298573124
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 5.877089024,
+            "msPerUpdate": 0.146927226
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 44.848313987,
+            "msPerUpdate": 1.12120785
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 5.791589022,
+            "msPerUpdate": 0.144789726
+          }
+        ]
+      },
+      "rawStdout": "{\"textureStructBytes\":2024,\"unitStructBytes\":96,\"warmup\":4,\"iterations\":40,\"noWorkers\":true,\"notAcceptanceTimings\":true,\"records\":[{\"width\":128,\"height\":128,\"operation\":\"image\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":0.996398032,\"msPerUpdate\":0.024909951},{\"width\":128,\"height\":128,\"operation\":\"subimage4x4\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":0.091300011,\"msPerUpdate\":0.002282500},{\"width\":128,\"height\":128,\"operation\":\"copyimage\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":1.508098006,\"msPerUpdate\":0.037702450},{\"width\":128,\"height\":128,\"operation\":\"copysubimage4x4\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":0.100898981,\"msPerUpdate\":0.002522475},{\"width\":256,\"height\":256,\"operation\":\"image\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":9.020381987,\"msPerUpdate\":0.225509550},{\"width\":256,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":0.336899996,\"msPerUpdate\":0.008422500},{\"width\":256,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":5.278689981,\"msPerUpdate\":0.131967250},{\"width\":256,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":0.339299977,\"msPerUpdate\":0.008482499},{\"width\":512,\"height\":256,\"operation\":\"image\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":20.670161009,\"msPerUpdate\":0.516754025},{\"width\":512,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":0.710398018,\"msPerUpdate\":0.017759950},{\"width\":512,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":10.314679980,\"msPerUpdate\":0.257867000},{\"width\":512,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":0.768898010,\"msPerUpdate\":0.019222450},{\"width\":512,\"height\":512,\"operation\":\"image\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":43.796716988,\"msPerUpdate\":1.094917925},{\"width\":512,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":2.710694969,\"msPerUpdate\":0.067767374},{\"width\":512,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":22.192558050,\"msPerUpdate\":0.554813951},{\"width\":512,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":2.765794992,\"msPerUpdate\":0.069144875},{\"width\":1024,\"height\":512,\"operation\":\"image\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":91.942924976,\"msPerUpdate\":2.298573124},{\"width\":1024,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":5.877089024,\"msPerUpdate\":0.146927226},{\"width\":1024,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":44.848313987,\"msPerUpdate\":1.121207850},{\"width\":1024,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":5.791589022,\"msPerUpdate\":0.144789726}]}\n"
+    },
+    {
+      "group": 4,
+      "variant": "candidate",
+      "binarySha256": "6a00ff09833b8cef014c931d798e824444de74e0cbb7e8127b6e76b5c37256cd",
+      "data": {
+        "textureStructBytes": 2024,
+        "unitStructBytes": 96,
+        "warmup": 4,
+        "iterations": 40,
+        "noWorkers": true,
+        "notAcceptanceTimings": true,
+        "records": [
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "image",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 1.00859797,
+            "msPerUpdate": 0.025214949
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "subimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 0.091400027,
+            "msPerUpdate": 0.002285001
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copyimage",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 1.536397994,
+            "msPerUpdate": 0.03840995
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copysubimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 0.091298997,
+            "msPerUpdate": 0.002282475
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 8.958282053,
+            "msPerUpdate": 0.223957051
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 0.383000016,
+            "msPerUpdate": 0.009575
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 5.122790992,
+            "msPerUpdate": 0.128069775
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 0.351198971,
+            "msPerUpdate": 0.008779974
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 20.702659965,
+            "msPerUpdate": 0.517566499
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 0.758898973,
+            "msPerUpdate": 0.018972474
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 10.240680993,
+            "msPerUpdate": 0.256017025
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 0.775798023,
+            "msPerUpdate": 0.019394951
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 46.087412,
+            "msPerUpdate": 1.1521853
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 2.771395028,
+            "msPerUpdate": 0.069284876
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 22.03115803,
+            "msPerUpdate": 0.550778951
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 2.808694959,
+            "msPerUpdate": 0.070217374
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 94.185820997,
+            "msPerUpdate": 2.354645525
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 5.861688972,
+            "msPerUpdate": 0.146542224
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 45.418412983,
+            "msPerUpdate": 1.135460325
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 5.910089016,
+            "msPerUpdate": 0.147752225
+          }
+        ]
+      },
+      "rawStdout": "{\"textureStructBytes\":2024,\"unitStructBytes\":96,\"warmup\":4,\"iterations\":40,\"noWorkers\":true,\"notAcceptanceTimings\":true,\"records\":[{\"width\":128,\"height\":128,\"operation\":\"image\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":1.008597970,\"msPerUpdate\":0.025214949},{\"width\":128,\"height\":128,\"operation\":\"subimage4x4\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":0.091400027,\"msPerUpdate\":0.002285001},{\"width\":128,\"height\":128,\"operation\":\"copyimage\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":1.536397994,\"msPerUpdate\":0.038409950},{\"width\":128,\"height\":128,\"operation\":\"copysubimage4x4\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":0.091298997,\"msPerUpdate\":0.002282475},{\"width\":256,\"height\":256,\"operation\":\"image\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":8.958282053,\"msPerUpdate\":0.223957051},{\"width\":256,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":0.383000016,\"msPerUpdate\":0.009575000},{\"width\":256,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":5.122790992,\"msPerUpdate\":0.128069775},{\"width\":256,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":0.351198971,\"msPerUpdate\":0.008779974},{\"width\":512,\"height\":256,\"operation\":\"image\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":20.702659965,\"msPerUpdate\":0.517566499},{\"width\":512,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":0.758898973,\"msPerUpdate\":0.018972474},{\"width\":512,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":10.240680993,\"msPerUpdate\":0.256017025},{\"width\":512,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":0.775798023,\"msPerUpdate\":0.019394951},{\"width\":512,\"height\":512,\"operation\":\"image\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":46.087412000,\"msPerUpdate\":1.152185300},{\"width\":512,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":2.771395028,\"msPerUpdate\":0.069284876},{\"width\":512,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":22.031158030,\"msPerUpdate\":0.550778951},{\"width\":512,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":2.808694959,\"msPerUpdate\":0.070217374},{\"width\":1024,\"height\":512,\"operation\":\"image\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":94.185820997,\"msPerUpdate\":2.354645525},{\"width\":1024,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":5.861688972,\"msPerUpdate\":0.146542224},{\"width\":1024,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":45.418412983,\"msPerUpdate\":1.135460325},{\"width\":1024,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":5.910089016,\"msPerUpdate\":0.147752225}]}\n"
+    },
+    {
+      "group": 4,
+      "variant": "reference",
+      "binarySha256": "5cd2b70a2a948120dd385b1be6d03e878c575f8372ac1c80686e9fe514bab616",
+      "data": {
+        "textureStructBytes": 1896,
+        "unitStructBytes": 88,
+        "warmup": 4,
+        "iterations": 40,
+        "noWorkers": true,
+        "notAcceptanceTimings": true,
+        "records": [
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "image",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 0.92879802,
+            "msPerUpdate": 0.02321995
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "subimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002099991,
+            "msPerUpdate": 5.25e-05
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copyimage",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 1.40169698,
+            "msPerUpdate": 0.035042424
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copysubimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003099978,
+            "msPerUpdate": 7.7499e-05
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 3.210294008,
+            "msPerUpdate": 0.08025735
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002099991,
+            "msPerUpdate": 5.25e-05
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 4.809890985,
+            "msPerUpdate": 0.120247275
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003499985,
+            "msPerUpdate": 8.75e-05
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 6.510987043,
+            "msPerUpdate": 0.162774676
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002200007,
+            "msPerUpdate": 5.5e-05
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 9.101583004,
+            "msPerUpdate": 0.227539575
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003300011,
+            "msPerUpdate": 8.25e-05
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 13.346374035,
+            "msPerUpdate": 0.333659351
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002299964,
+            "msPerUpdate": 5.7499e-05
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 19.197163045,
+            "msPerUpdate": 0.479929076
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003499985,
+            "msPerUpdate": 8.75e-05
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 26.340249002,
+            "msPerUpdate": 0.658506225
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002199948,
+            "msPerUpdate": 5.4999e-05
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 37.960328043,
+            "msPerUpdate": 0.949008201
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003399968,
+            "msPerUpdate": 8.4999e-05
+          }
+        ]
+      },
+      "rawStdout": "{\"textureStructBytes\":1896,\"unitStructBytes\":88,\"warmup\":4,\"iterations\":40,\"noWorkers\":true,\"notAcceptanceTimings\":true,\"records\":[{\"width\":128,\"height\":128,\"operation\":\"image\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":0.928798020,\"msPerUpdate\":0.023219950},{\"width\":128,\"height\":128,\"operation\":\"subimage4x4\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":0.002099991,\"msPerUpdate\":0.000052500},{\"width\":128,\"height\":128,\"operation\":\"copyimage\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":1.401696980,\"msPerUpdate\":0.035042424},{\"width\":128,\"height\":128,\"operation\":\"copysubimage4x4\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":0.003099978,\"msPerUpdate\":0.000077499},{\"width\":256,\"height\":256,\"operation\":\"image\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":3.210294008,\"msPerUpdate\":0.080257350},{\"width\":256,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":0.002099991,\"msPerUpdate\":0.000052500},{\"width\":256,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":4.809890985,\"msPerUpdate\":0.120247275},{\"width\":256,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":0.003499985,\"msPerUpdate\":0.000087500},{\"width\":512,\"height\":256,\"operation\":\"image\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":6.510987043,\"msPerUpdate\":0.162774676},{\"width\":512,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":0.002200007,\"msPerUpdate\":0.000055000},{\"width\":512,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":9.101583004,\"msPerUpdate\":0.227539575},{\"width\":512,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":0.003300011,\"msPerUpdate\":0.000082500},{\"width\":512,\"height\":512,\"operation\":\"image\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":13.346374035,\"msPerUpdate\":0.333659351},{\"width\":512,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":0.002299964,\"msPerUpdate\":0.000057499},{\"width\":512,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":19.197163045,\"msPerUpdate\":0.479929076},{\"width\":512,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":0.003499985,\"msPerUpdate\":0.000087500},{\"width\":1024,\"height\":512,\"operation\":\"image\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":26.340249002,\"msPerUpdate\":0.658506225},{\"width\":1024,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":0.002199948,\"msPerUpdate\":0.000054999},{\"width\":1024,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":37.960328043,\"msPerUpdate\":0.949008201},{\"width\":1024,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":0.003399968,\"msPerUpdate\":0.000084999}]}\n"
+    },
+    {
+      "group": 5,
+      "variant": "reference",
+      "binarySha256": "5cd2b70a2a948120dd385b1be6d03e878c575f8372ac1c80686e9fe514bab616",
+      "data": {
+        "textureStructBytes": 1896,
+        "unitStructBytes": 88,
+        "warmup": 4,
+        "iterations": 40,
+        "noWorkers": true,
+        "notAcceptanceTimings": true,
+        "records": [
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "image",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 0.905698001,
+            "msPerUpdate": 0.02264245
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "subimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002199948,
+            "msPerUpdate": 5.4999e-05
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copyimage",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 1.409696996,
+            "msPerUpdate": 0.035242425
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copysubimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003300011,
+            "msPerUpdate": 8.25e-05
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 3.170292974,
+            "msPerUpdate": 0.079257324
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002200007,
+            "msPerUpdate": 5.5e-05
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 4.812891006,
+            "msPerUpdate": 0.120322275
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003300011,
+            "msPerUpdate": 8.25e-05
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 6.681787014,
+            "msPerUpdate": 0.167044675
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002399981,
+            "msPerUpdate": 6e-05
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 9.193083048,
+            "msPerUpdate": 0.229827076
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003199995,
+            "msPerUpdate": 8e-05
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 13.039075017,
+            "msPerUpdate": 0.325976875
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002499998,
+            "msPerUpdate": 6.25e-05
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 19.273863018,
+            "msPerUpdate": 0.481846575
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003399968,
+            "msPerUpdate": 8.4999e-05
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 25.919450998,
+            "msPerUpdate": 0.647986275
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002399981,
+            "msPerUpdate": 6e-05
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 37.797828019,
+            "msPerUpdate": 0.9449457
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003600001,
+            "msPerUpdate": 9e-05
+          }
+        ]
+      },
+      "rawStdout": "{\"textureStructBytes\":1896,\"unitStructBytes\":88,\"warmup\":4,\"iterations\":40,\"noWorkers\":true,\"notAcceptanceTimings\":true,\"records\":[{\"width\":128,\"height\":128,\"operation\":\"image\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":0.905698001,\"msPerUpdate\":0.022642450},{\"width\":128,\"height\":128,\"operation\":\"subimage4x4\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":0.002199948,\"msPerUpdate\":0.000054999},{\"width\":128,\"height\":128,\"operation\":\"copyimage\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":1.409696996,\"msPerUpdate\":0.035242425},{\"width\":128,\"height\":128,\"operation\":\"copysubimage4x4\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":0.003300011,\"msPerUpdate\":0.000082500},{\"width\":256,\"height\":256,\"operation\":\"image\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":3.170292974,\"msPerUpdate\":0.079257324},{\"width\":256,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":0.002200007,\"msPerUpdate\":0.000055000},{\"width\":256,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":4.812891006,\"msPerUpdate\":0.120322275},{\"width\":256,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":0.003300011,\"msPerUpdate\":0.000082500},{\"width\":512,\"height\":256,\"operation\":\"image\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":6.681787014,\"msPerUpdate\":0.167044675},{\"width\":512,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":0.002399981,\"msPerUpdate\":0.000060000},{\"width\":512,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":9.193083048,\"msPerUpdate\":0.229827076},{\"width\":512,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":0.003199995,\"msPerUpdate\":0.000080000},{\"width\":512,\"height\":512,\"operation\":\"image\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":13.039075017,\"msPerUpdate\":0.325976875},{\"width\":512,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":0.002499998,\"msPerUpdate\":0.000062500},{\"width\":512,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":19.273863018,\"msPerUpdate\":0.481846575},{\"width\":512,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":0.003399968,\"msPerUpdate\":0.000084999},{\"width\":1024,\"height\":512,\"operation\":\"image\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":25.919450998,\"msPerUpdate\":0.647986275},{\"width\":1024,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":0.002399981,\"msPerUpdate\":0.000060000},{\"width\":1024,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":37.797828019,\"msPerUpdate\":0.944945700},{\"width\":1024,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":0.003600001,\"msPerUpdate\":0.000090000}]}\n"
+    },
+    {
+      "group": 5,
+      "variant": "candidate",
+      "binarySha256": "6a00ff09833b8cef014c931d798e824444de74e0cbb7e8127b6e76b5c37256cd",
+      "data": {
+        "textureStructBytes": 2024,
+        "unitStructBytes": 96,
+        "warmup": 4,
+        "iterations": 40,
+        "noWorkers": true,
+        "notAcceptanceTimings": true,
+        "records": [
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "image",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 0.996598005,
+            "msPerUpdate": 0.02491495
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "subimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 0.089400053,
+            "msPerUpdate": 0.002235001
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copyimage",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 1.505897045,
+            "msPerUpdate": 0.037647426
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copysubimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 0.091199994,
+            "msPerUpdate": 0.00228
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 8.828882992,
+            "msPerUpdate": 0.220722075
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 0.385798991,
+            "msPerUpdate": 0.009644975
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 5.161389947,
+            "msPerUpdate": 0.129034749
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 0.339199007,
+            "msPerUpdate": 0.008479975
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 20.244161963,
+            "msPerUpdate": 0.506104049
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 0.743498027,
+            "msPerUpdate": 0.018587451
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 10.256280005,
+            "msPerUpdate": 0.256407
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 0.797297955,
+            "msPerUpdate": 0.019932449
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 43.487217963,
+            "msPerUpdate": 1.087180449
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 2.569694996,
+            "msPerUpdate": 0.064242375
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 21.985858023,
+            "msPerUpdate": 0.549646451
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 2.660694957,
+            "msPerUpdate": 0.066517374
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 92.723123968,
+            "msPerUpdate": 2.318078099
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 5.775588989,
+            "msPerUpdate": 0.144389725
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 45.159614027,
+            "msPerUpdate": 1.128990351
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 5.751688957,
+            "msPerUpdate": 0.143792224
+          }
+        ]
+      },
+      "rawStdout": "{\"textureStructBytes\":2024,\"unitStructBytes\":96,\"warmup\":4,\"iterations\":40,\"noWorkers\":true,\"notAcceptanceTimings\":true,\"records\":[{\"width\":128,\"height\":128,\"operation\":\"image\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":0.996598005,\"msPerUpdate\":0.024914950},{\"width\":128,\"height\":128,\"operation\":\"subimage4x4\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":0.089400053,\"msPerUpdate\":0.002235001},{\"width\":128,\"height\":128,\"operation\":\"copyimage\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":1.505897045,\"msPerUpdate\":0.037647426},{\"width\":128,\"height\":128,\"operation\":\"copysubimage4x4\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":0.091199994,\"msPerUpdate\":0.002280000},{\"width\":256,\"height\":256,\"operation\":\"image\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":8.828882992,\"msPerUpdate\":0.220722075},{\"width\":256,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":0.385798991,\"msPerUpdate\":0.009644975},{\"width\":256,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":5.161389947,\"msPerUpdate\":0.129034749},{\"width\":256,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":0.339199007,\"msPerUpdate\":0.008479975},{\"width\":512,\"height\":256,\"operation\":\"image\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":20.244161963,\"msPerUpdate\":0.506104049},{\"width\":512,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":0.743498027,\"msPerUpdate\":0.018587451},{\"width\":512,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":10.256280005,\"msPerUpdate\":0.256407000},{\"width\":512,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":0.797297955,\"msPerUpdate\":0.019932449},{\"width\":512,\"height\":512,\"operation\":\"image\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":43.487217963,\"msPerUpdate\":1.087180449},{\"width\":512,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":2.569694996,\"msPerUpdate\":0.064242375},{\"width\":512,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":21.985858023,\"msPerUpdate\":0.549646451},{\"width\":512,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":2.660694957,\"msPerUpdate\":0.066517374},{\"width\":1024,\"height\":512,\"operation\":\"image\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":92.723123968,\"msPerUpdate\":2.318078099},{\"width\":1024,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":5.775588989,\"msPerUpdate\":0.144389725},{\"width\":1024,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":45.159614027,\"msPerUpdate\":1.128990351},{\"width\":1024,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":5.751688957,\"msPerUpdate\":0.143792224}]}\n"
+    },
+    {
+      "group": 6,
+      "variant": "candidate",
+      "binarySha256": "6a00ff09833b8cef014c931d798e824444de74e0cbb7e8127b6e76b5c37256cd",
+      "data": {
+        "textureStructBytes": 2024,
+        "unitStructBytes": 96,
+        "warmup": 4,
+        "iterations": 40,
+        "noWorkers": true,
+        "notAcceptanceTimings": true,
+        "records": [
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "image",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 1.050397992,
+            "msPerUpdate": 0.02625995
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "subimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 0.08949995,
+            "msPerUpdate": 0.002237499
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copyimage",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 1.507696986,
+            "msPerUpdate": 0.037692425
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copysubimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 65536,
+            "elapsedMs": 0.100499988,
+            "msPerUpdate": 0.0025125
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 8.976282954,
+            "msPerUpdate": 0.224407074
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 0.336999953,
+            "msPerUpdate": 0.008424999
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 5.194490016,
+            "msPerUpdate": 0.12986225
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 262144,
+            "elapsedMs": 0.338799,
+            "msPerUpdate": 0.008469975
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 20.197462022,
+            "msPerUpdate": 0.504936551
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 0.774897993,
+            "msPerUpdate": 0.01937245
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 10.157881021,
+            "msPerUpdate": 0.253947026
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 524288,
+            "elapsedMs": 0.763498008,
+            "msPerUpdate": 0.01908745
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 44.073816001,
+            "msPerUpdate": 1.1018454
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 2.813295007,
+            "msPerUpdate": 0.070332375
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 22.134258032,
+            "msPerUpdate": 0.553356451
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 1048576,
+            "elapsedMs": 2.779194951,
+            "msPerUpdate": 0.069479874
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 92.136623979,
+            "msPerUpdate": 2.303415599
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 5.854389012,
+            "msPerUpdate": 0.146359725
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 44.833914995,
+            "msPerUpdate": 1.120847875
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 2097152,
+            "elapsedMs": 5.728489995,
+            "msPerUpdate": 0.14321225
+          }
+        ]
+      },
+      "rawStdout": "{\"textureStructBytes\":2024,\"unitStructBytes\":96,\"warmup\":4,\"iterations\":40,\"noWorkers\":true,\"notAcceptanceTimings\":true,\"records\":[{\"width\":128,\"height\":128,\"operation\":\"image\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":1.050397992,\"msPerUpdate\":0.026259950},{\"width\":128,\"height\":128,\"operation\":\"subimage4x4\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":0.089499950,\"msPerUpdate\":0.002237499},{\"width\":128,\"height\":128,\"operation\":\"copyimage\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":1.507696986,\"msPerUpdate\":0.037692425},{\"width\":128,\"height\":128,\"operation\":\"copysubimage4x4\",\"rowBytes\":65536,\"derivedBytes\":65536,\"elapsedMs\":0.100499988,\"msPerUpdate\":0.002512500},{\"width\":256,\"height\":256,\"operation\":\"image\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":8.976282954,\"msPerUpdate\":0.224407074},{\"width\":256,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":0.336999953,\"msPerUpdate\":0.008424999},{\"width\":256,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":5.194490016,\"msPerUpdate\":0.129862250},{\"width\":256,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":262144,\"derivedBytes\":262144,\"elapsedMs\":0.338799000,\"msPerUpdate\":0.008469975},{\"width\":512,\"height\":256,\"operation\":\"image\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":20.197462022,\"msPerUpdate\":0.504936551},{\"width\":512,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":0.774897993,\"msPerUpdate\":0.019372450},{\"width\":512,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":10.157881021,\"msPerUpdate\":0.253947026},{\"width\":512,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":524288,\"derivedBytes\":524288,\"elapsedMs\":0.763498008,\"msPerUpdate\":0.019087450},{\"width\":512,\"height\":512,\"operation\":\"image\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":44.073816001,\"msPerUpdate\":1.101845400},{\"width\":512,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":2.813295007,\"msPerUpdate\":0.070332375},{\"width\":512,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":22.134258032,\"msPerUpdate\":0.553356451},{\"width\":512,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":1048576,\"elapsedMs\":2.779194951,\"msPerUpdate\":0.069479874},{\"width\":1024,\"height\":512,\"operation\":\"image\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":92.136623979,\"msPerUpdate\":2.303415599},{\"width\":1024,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":5.854389012,\"msPerUpdate\":0.146359725},{\"width\":1024,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":44.833914995,\"msPerUpdate\":1.120847875},{\"width\":1024,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":2097152,\"elapsedMs\":5.728489995,\"msPerUpdate\":0.143212250}]}\n"
+    },
+    {
+      "group": 6,
+      "variant": "reference",
+      "binarySha256": "5cd2b70a2a948120dd385b1be6d03e878c575f8372ac1c80686e9fe514bab616",
+      "data": {
+        "textureStructBytes": 1896,
+        "unitStructBytes": 88,
+        "warmup": 4,
+        "iterations": 40,
+        "noWorkers": true,
+        "notAcceptanceTimings": true,
+        "records": [
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "image",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 0.904798985,
+            "msPerUpdate": 0.022619975
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "subimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 0.00210005,
+            "msPerUpdate": 5.2501e-05
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copyimage",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 1.42989701,
+            "msPerUpdate": 0.035747425
+          },
+          {
+            "width": 128,
+            "height": 128,
+            "operation": "copysubimage4x4",
+            "rowBytes": 65536,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003299952,
+            "msPerUpdate": 8.2499e-05
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 3.166994035,
+            "msPerUpdate": 0.079174851
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002099991,
+            "msPerUpdate": 5.25e-05
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 4.872489989,
+            "msPerUpdate": 0.12181225
+          },
+          {
+            "width": 256,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 262144,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003199995,
+            "msPerUpdate": 8e-05
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "image",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 6.462688029,
+            "msPerUpdate": 0.161567201
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "subimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002200007,
+            "msPerUpdate": 5.5e-05
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copyimage",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 9.255282998,
+            "msPerUpdate": 0.231382075
+          },
+          {
+            "width": 512,
+            "height": 256,
+            "operation": "copysubimage4x4",
+            "rowBytes": 524288,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003299952,
+            "msPerUpdate": 8.2499e-05
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 13.292775035,
+            "msPerUpdate": 0.332319376
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002099991,
+            "msPerUpdate": 5.25e-05
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 19.08426404,
+            "msPerUpdate": 0.477106601
+          },
+          {
+            "width": 512,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 1048576,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003399968,
+            "msPerUpdate": 8.4999e-05
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "image",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 26.395749986,
+            "msPerUpdate": 0.65989375
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "subimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 0.002200007,
+            "msPerUpdate": 5.5e-05
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copyimage",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 37.870527983,
+            "msPerUpdate": 0.9467632
+          },
+          {
+            "width": 1024,
+            "height": 512,
+            "operation": "copysubimage4x4",
+            "rowBytes": 2097152,
+            "derivedBytes": 0,
+            "elapsedMs": 0.003199995,
+            "msPerUpdate": 8e-05
+          }
+        ]
+      },
+      "rawStdout": "{\"textureStructBytes\":1896,\"unitStructBytes\":88,\"warmup\":4,\"iterations\":40,\"noWorkers\":true,\"notAcceptanceTimings\":true,\"records\":[{\"width\":128,\"height\":128,\"operation\":\"image\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":0.904798985,\"msPerUpdate\":0.022619975},{\"width\":128,\"height\":128,\"operation\":\"subimage4x4\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":0.002100050,\"msPerUpdate\":0.000052501},{\"width\":128,\"height\":128,\"operation\":\"copyimage\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":1.429897010,\"msPerUpdate\":0.035747425},{\"width\":128,\"height\":128,\"operation\":\"copysubimage4x4\",\"rowBytes\":65536,\"derivedBytes\":0,\"elapsedMs\":0.003299952,\"msPerUpdate\":0.000082499},{\"width\":256,\"height\":256,\"operation\":\"image\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":3.166994035,\"msPerUpdate\":0.079174851},{\"width\":256,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":0.002099991,\"msPerUpdate\":0.000052500},{\"width\":256,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":4.872489989,\"msPerUpdate\":0.121812250},{\"width\":256,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":262144,\"derivedBytes\":0,\"elapsedMs\":0.003199995,\"msPerUpdate\":0.000080000},{\"width\":512,\"height\":256,\"operation\":\"image\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":6.462688029,\"msPerUpdate\":0.161567201},{\"width\":512,\"height\":256,\"operation\":\"subimage4x4\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":0.002200007,\"msPerUpdate\":0.000055000},{\"width\":512,\"height\":256,\"operation\":\"copyimage\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":9.255282998,\"msPerUpdate\":0.231382075},{\"width\":512,\"height\":256,\"operation\":\"copysubimage4x4\",\"rowBytes\":524288,\"derivedBytes\":0,\"elapsedMs\":0.003299952,\"msPerUpdate\":0.000082499},{\"width\":512,\"height\":512,\"operation\":\"image\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":13.292775035,\"msPerUpdate\":0.332319376},{\"width\":512,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":0.002099991,\"msPerUpdate\":0.000052500},{\"width\":512,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":19.084264040,\"msPerUpdate\":0.477106601},{\"width\":512,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":1048576,\"derivedBytes\":0,\"elapsedMs\":0.003399968,\"msPerUpdate\":0.000084999},{\"width\":1024,\"height\":512,\"operation\":\"image\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":26.395749986,\"msPerUpdate\":0.659893750},{\"width\":1024,\"height\":512,\"operation\":\"subimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":0.002200007,\"msPerUpdate\":0.000055000},{\"width\":1024,\"height\":512,\"operation\":\"copyimage\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":37.870527983,\"msPerUpdate\":0.946763200},{\"width\":1024,\"height\":512,\"operation\":\"copysubimage4x4\",\"rowBytes\":2097152,\"derivedBytes\":0,\"elapsedMs\":0.003199995,\"msPerUpdate\":0.000080000}]}\n"
+    }
+  ]
+}

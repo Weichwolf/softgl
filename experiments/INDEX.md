@@ -95,7 +95,8 @@
 | [simd-scanline-phases](simd-scanline-phases/README.md) | Held / rejected variants | Exact row recurrences did not confirm a BMW gain; SIMD proposal variants were slower. |
 | [simd-triangle-setup](simd-triangle-setup/README.md) | Proposed | Four independent descriptor lanes need uncached-work and gather-cost diagnostics. |
 | [slice-vertex-packing](slice-vertex-packing/README.md) | Rejected | Packing during geometry slices gives opposite BMW audit directions in every mode. |
-| [texture-tiled-storage](texture-tiled-storage/README.md) | Proposed | Complete sampler census selects a fixed direct-2D 4x4 candidate; pair-load risk, no implementation or timing. |
+| [texture-tiled-storage](texture-tiled-storage/README.md) | Research / rejected first trial | Fixed direct-2D 4x4 trial lacks an overall gain; broader layout work remains open. |
+| [texture-tiles4](texture-tiles4/README.md) | Rejected | BMW off regresses in all six pairs; BMW4 slows in both audits; doubled eligible storage and costly updates. |
 | [transient-depth-visibility](transient-depth-visibility/README.md) | Diagnostic / superseded trials | Identifies strictly hidden replay references and preserves the initial timing limitations. |
 | [triangle-size-histogram](triangle-size-histogram/README.md) | Diagnostic | Separates full triangle area from actual visited work; no timing gain is claimed. |
 | [validation-protocol](validation-protocol/README.md) | Protocol | Documents unchanged correctness gates and the 18-pair quiet-host comparison plan. |

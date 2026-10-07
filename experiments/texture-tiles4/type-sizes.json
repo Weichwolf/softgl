@@ -1,0 +1,63 @@
+{
+  "target": "actual Emscripten wasm32",
+  "records": [
+    {
+      "enabled": false,
+      "command": [
+        "emcc",
+        "-std=gnu11",
+        "-O2",
+        "-msimd128",
+        "-msse4.1",
+        "-pthread",
+        "-DSG_TEXTURE_TILES4=0",
+        "-I/home/cosmo/Git/softgl/build/diagnostics/texture-tiles4/source-root/libsoftgl/include",
+        "-I/home/cosmo/Git/softgl/build/diagnostics/texture-tiles4/source-root/libsoftgl/src",
+        "-S",
+        "-emit-llvm",
+        "/home/cosmo/Git/softgl/build/diagnostics/texture-tiles4/type-sizes.c",
+        "-o",
+        "/home/cosmo/Git/softgl/build/diagnostics/texture-tiles4/type-sizes-disabled.ll"
+      ],
+      "sourceSha256": "7d3f62f0cbdb20ae7d5bf19d34a0581623aafaf89fc8fdb0f16ac5d7f3d483c4",
+      "llvmFile": "type-sizes-disabled.ll",
+      "llvmSha256": "d40a659ee1b676c9334b94433fc606d17e75febd9201889a68654fda514ad4ba",
+      "declaration": "@sg_type_sizes = hidden local_unnamed_addr constant [4 x i32] [i32 160, i32 16, i32 1444, i32 76], align 16",
+      "sizes": {
+        "vertexBytes": 160,
+        "vertexAlignment": 16,
+        "textureBytes": 1444,
+        "unitBytes": 76
+      }
+    },
+    {
+      "enabled": true,
+      "command": [
+        "emcc",
+        "-std=gnu11",
+        "-O2",
+        "-msimd128",
+        "-msse4.1",
+        "-pthread",
+        "-DSG_TEXTURE_TILES4=1",
+        "-I/home/cosmo/Git/softgl/build/diagnostics/texture-tiles4/source-root/libsoftgl/include",
+        "-I/home/cosmo/Git/softgl/build/diagnostics/texture-tiles4/source-root/libsoftgl/src",
+        "-S",
+        "-emit-llvm",
+        "/home/cosmo/Git/softgl/build/diagnostics/texture-tiles4/type-sizes.c",
+        "-o",
+        "/home/cosmo/Git/softgl/build/diagnostics/texture-tiles4/type-sizes-enabled.ll"
+      ],
+      "sourceSha256": "7d3f62f0cbdb20ae7d5bf19d34a0581623aafaf89fc8fdb0f16ac5d7f3d483c4",
+      "llvmFile": "type-sizes-enabled.ll",
+      "llvmSha256": "95de3f4681c4f77e6f63c12542da4d6668b56669291ca5b3dbd707001adbd575",
+      "declaration": "@sg_type_sizes = hidden local_unnamed_addr constant [4 x i32] [i32 160, i32 16, i32 1508, i32 80], align 16",
+      "sizes": {
+        "vertexBytes": 160,
+        "vertexAlignment": 16,
+        "textureBytes": 1508,
+        "unitBytes": 80
+      }
+    }
+  ]
+}
