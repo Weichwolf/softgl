@@ -1,0 +1,16 @@
+{
+  "status": "new-fixture-passed-GCC14-and-Clang19-ASan-UBSan",
+  "patchSha256": "e00fa00d26e5bbf9fbb20f6d4bf18b25a5f7738d3c6d9e37160500a4842ae5d8",
+  "runs": {
+    "gcc": {
+      "log": "asan-smoke-run.log",
+      "logSha256": "9138d599a624d63bdc07f0e7ace0ea98c1bbf1ed0514ebaa52768eff7a92e403",
+      "newReplayFixturePassed": true
+    },
+    "clang": {
+      "log": "clang-asan-run.log",
+      "logSha256": "9138d599a624d63bdc07f0e7ace0ea98c1bbf1ed0514ebaa52768eff7a92e403",
+      "newReplayFixturePassed": true
+    }
+  }
+}

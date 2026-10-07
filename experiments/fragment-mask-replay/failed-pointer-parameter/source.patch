@@ -1,0 +1,959 @@
+diff --git a/libsoftgl/src/fragment_mask_stream.h b/libsoftgl/src/fragment_mask_stream.h
+new file mode 100644
+index 0000000..77bf373
+--- /dev/null
++++ b/libsoftgl/src/fragment_mask_stream.h
+@@ -0,0 +1,111 @@
++#ifndef SOFTGL_FRAGMENT_MASK_STREAM_H
++#define SOFTGL_FRAGMENT_MASK_STREAM_H
++
++#include <stdint.h>
++#include <stddef.h>
++#include <string.h>
++
++typedef struct {
++    uint32_t start, capacity, used, first, end;
++    uint32_t retained, overflow;
++    uint8_t pad[36];
++} sg_fragment_mask_bin;
++
++typedef struct sg_fragment_mask_cache {
++    size_t allocation;
++    size_t *owner_bytes;
++    unsigned refs;
++    int width, height, samples, multisample, nbins;
++    uint32_t count;
++    uint32_t *offsets;
++    uint8_t *data;
++    sg_fragment_mask_bin bins[SG_MAX_BINS];
++} sg_fragment_mask_cache;
++
++typedef struct {
++    sg_fragment_mask_bin *bin;
++    uint32_t *offset_slot;
++    uint8_t *data;
++    const uint8_t *read, *end;
++    uint32_t start, used, run, cells;
++    int capture, started, overflow, last_x, last_y;
++} sg_fragment_mask_cursor;
++
++extern _Thread_local sg_fragment_mask_cursor sg_fragment_mask_current;
++
++static inline void sg_fragment_put16(uint8_t *p, unsigned n) {
++    p[0] = (uint8_t)n; p[1] = (uint8_t)(n >> 8);
++}
++static inline unsigned sg_fragment_get16(const uint8_t *p) {
++    return p[0] | ((unsigned)p[1] << 8);
++}
++static inline void sg_fragment_put32(uint8_t *p, uint32_t n) {
++    for (int i = 0; i < 4; i++) p[i] = (uint8_t)(n >> (8 * i));
++}
++static inline uint32_t sg_fragment_get32(const uint8_t *p) {
++    return p[0] | ((uint32_t)p[1] << 8) | ((uint32_t)p[2] << 16) | ((uint32_t)p[3] << 24);
++}
++
++static inline int sg_fragment_mask_matches(int ix0, int iy0, int ix1, int iy1) {
++    const sg_fragment_mask_cursor *r = &sg_fragment_mask_current;
++    return !r->capture && r->read &&
++        sg_fragment_get16(r->read + 4) == (unsigned)ix0 &&
++        sg_fragment_get16(r->read + 6) == (unsigned)iy0 &&
++        sg_fragment_get16(r->read + 8) == (unsigned)ix1 &&
++        sg_fragment_get16(r->read + 10) == (unsigned)iy1;
++}
++
++static inline void sg_fragment_mask_start(int ix0, int iy0, int ix1, int iy1) {
++    sg_fragment_mask_cursor *r = &sg_fragment_mask_current;
++    if (!r->capture || r->overflow) return;
++    if (r->bin->capacity - r->used < 12 || ix0 < 0 || iy0 < 0 || ix1 > 65535 || iy1 > 65535) {
++        r->overflow = 1; return;
++    }
++    r->started = 1;
++    sg_fragment_put16(r->data + r->used + 4, (unsigned)ix0);
++    sg_fragment_put16(r->data + r->used + 6, (unsigned)iy0);
++    sg_fragment_put16(r->data + r->used + 8, (unsigned)ix1);
++    sg_fragment_put16(r->data + r->used + 10, (unsigned)iy1);
++    r->used += 12;
++    r->last_x = r->last_y = -1;
++    r->cells = 0;
++}
++
++/* Only geometric masks are recorded. Depth failures do not erase a bit. */
++static inline void sg_fragment_mask_put(sg_fragment_mask_cursor *r, int x, int y, unsigned mask) {
++    if (!r || !mask || r->overflow || !r->started) return;
++    if (r->last_y != y || r->last_x + 1 != x) {
++        if (r->bin->capacity - r->used < 9) { r->overflow = 1; return; }
++        r->run = r->used; r->cells = 0;
++        sg_fragment_put16(r->data + r->run, (unsigned)y);
++        sg_fragment_put16(r->data + r->run + 2, (unsigned)x);
++        sg_fragment_put16(r->data + r->run + 6, 0);
++        r->used += 8;
++    }
++    if (!(r->cells & 1)) {
++        if (r->used == r->bin->capacity) { r->overflow = 1; return; }
++        r->data[r->used++] = 0;
++    }
++    r->data[r->used - 1] |= (uint8_t)(mask << (4 * (r->cells & 1)));
++    r->cells++;
++    sg_fragment_put16(r->data + r->run + 4, r->cells);
++    r->last_x = x; r->last_y = y;
++}
++
++static inline void sg_fragment_mask_read_start(sg_fragment_mask_cursor *r) {
++    r->started = 1;
++    r->read += 12;
++}
++
++static inline int sg_fragment_mask_span(sg_fragment_mask_cursor *r, int *y, int *x0, int *x1, const uint8_t **masks) {
++    if (r->read == r->end) return 0;
++    const uint8_t *p = r->read;
++    unsigned n = sg_fragment_get16(p + 4);
++    *y = (int)sg_fragment_get16(p);
++    *x0 = (int)sg_fragment_get16(p + 2); *x1 = *x0 + (int)n;
++    *masks = p + 8;
++    r->read += 8 + (n + 1) / 2;
++    return 1;
++}
++
++#endif
+diff --git a/libsoftgl/src/raster_msaa_impl.h b/libsoftgl/src/raster_msaa_impl.h
+index b28e2d8..3be067d 100644
+--- a/libsoftgl/src/raster_msaa_impl.h
++++ b/libsoftgl/src/raster_msaa_impl.h
+@@ -1,3 +1,11 @@
++#ifndef SG_MSAA_REPLAY
++#define SG_MSAA_REPLAY 0
++#define SG_MSAA_REPLAY_DEFAULT
++#endif
++#ifndef SG_MSAA_MASK_CAPTURE
++#define SG_MSAA_MASK_CAPTURE 0
++#define SG_MSAA_MASK_CAPTURE_DEFAULT
++#endif
+ #if SG_MSAA_SAMPLES == 4
+ #define SG_MSAA_HZ_CLASS sg_hz_occlusion_class4
+ #define SG_MSAA_HZ_OCCLUDED sg_hz_occluded4
+@@ -5,7 +13,7 @@
+ #define SG_MSAA_HZ_CLASS sg_hz_occlusion_class2
+ #define SG_MSAA_HZ_OCCLUDED sg_hz_occluded2
+ #endif
+-#if defined(SG_MSAA_EDGE_TEST) && SG_MSAA_SAMPLES == 4
++#if defined(SG_MSAA_EDGE_TEST) && SG_MSAA_SAMPLES == 4 && !SG_MSAA_REPLAY
+ extern void sg_msaa_edge_test(int reused, int packed, int capture,
+     int64_t edge0, int64_t edge1, const int64_t *offsets, float inv_area,
+     sg_f32x4 b0, sg_f32x4 b1);
+@@ -32,6 +40,13 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
+ #else
+     if (SG_MSAA_HZ_OCCLUDED(c, ix0, iy0, ix1, iy1,
+         v0->ndc.z, v1->ndc.z, v2->ndc.z, z_offset)) return -1;
++#endif
++#if SG_MSAA_REPLAY
++    sg_fragment_mask_cursor *reader = &sg_fragment_mask_current;
++    sg_fragment_mask_read_start(reader);
++#elif SG_MSAA_MASK_CAPTURE
++    sg_fragment_mask_start(ix0, iy0, ix1, iy1);
++    sg_fragment_mask_cursor *capture = sg_fragment_mask_current.capture ? &sg_fragment_mask_current : NULL;
+ #endif
+     int32_t vx[3] = {sg_fp_screen_from_float(v0->ndc.x),
+                      sg_fp_screen_from_float(v1->ndc.x),
+@@ -40,7 +55,7 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
+                      sg_fp_screen_from_float(v1->ndc.y),
+                      sg_fp_screen_from_float(v2->ndc.y)};
+     int64_t dx[3], dy[3], row[3], offsets[4][3], min_offset[3], max_offset[3];
+-    for (int e = 0; e < 3; e++) {
++    for (int e = 0; e < (SG_MSAA_REPLAY ? 2 : 3); e++) {
+         int a = (e + 1) % 3, b = (e + 2) % 3;
+         dx[e] = -(int64_t)(vy[b] - vy[a]);
+         dy[e] = (int64_t)(vx[b] - vx[a]);
+@@ -57,7 +72,9 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
+             if (offsets[s][e] > max_offset[e]) max_offset[e] = offsets[s][e];
+         }
+     }
++#if !SG_MSAA_REPLAY
+     int bias[3] = {bias0, bias1, bias2};
++#endif
+     float inv_area = 1.f / (float)area;
+     unsigned full = (1u << SG_MSAA_SAMPLES) - 1u;
+     int coverage_seen = 0;
+@@ -81,6 +98,7 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
+         offset1 = sg_i32x4_set((int32_t)offsets[0][1], (int32_t)offsets[1][1],
+                               (int32_t)offsets[2][1], (int32_t)offsets[3][1]);
+     }
++#if !SG_MSAA_REPLAY
+     /* Coverage is packed only after bounding all samples over the complete
+      * rectangle. A one-unit margin also covers the top-left bias. */
+ #if SG_MSAA_SAMPLES == 4
+@@ -115,10 +133,18 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
+             (int32_t)(offsets[1][e] + bias[e]), 0, 0);
+ #endif
+     }
++#endif
+     int packet_shader = sg_packet_supported(c, tctx);
+     int common_store = SG_MSAA_COMMON_CAN(c);
+     sg_pixel_packet packet;
+     packet.count = 0;
++#if SG_MSAA_REPLAY
++    int y, first_x, end_x;
++    const uint8_t *masks;
++    while (sg_fragment_mask_span(reader, &y, &first_x, &end_x, &masks)) {
++        int64_t edge[3] = {row[0] + dx[0]*256*(first_x-ix0) + dy[0]*256*(y-iy0),
++                          row[1] + dx[1]*256*(first_x-ix0) + dy[1]*256*(y-iy0), 0};
++#else
+     /* Approximate intersections propose bounds only. Exact integer edge
+      * predicates prove that excluded pixels cannot cover any sample. */
+     int use_spans = ix1-ix0 >= 8 && (int64_t)(ix1-ix0)*(iy1-iy0) >= 64;
+@@ -150,9 +176,13 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
+         int64_t edge[3] = {row[0]+dx[0]*256*(first_x-ix0),
+                           row[1]+dx[1]*256*(first_x-ix0),
+                           row[2]+dx[2]*256*(first_x-ix0)};
++#endif
+         for (int x = first_x; x < end_x; x++) {
+             unsigned coverage = 0;
+             float depths[4];
++#if SG_MSAA_REPLAY
++            coverage = (masks[(x-first_x)/2] >> (4*((x-first_x)&1))) & 15u;
++#else
+ #if SG_MSAA_SAMPLES == 4
+             sg_i32x4 coverage_edge0 = sg_i32x4_splat(0);
+             sg_i32x4 coverage_edge1 = sg_i32x4_splat(0);
+@@ -190,12 +220,16 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
+                     }
+                 }
+             }
++            #if SG_MSAA_MASK_CAPTURE
++            if (coverage) sg_fragment_mask_put(capture, x, y, coverage);
++            #endif
++#endif
+             if (coverage && SG_MSAA_SAMPLES == 4) {
+                 coverage_seen = 1;
+                 /* SIMD lanes are samples of one pixel. Keep scalar expression
+                  * grouping so sample depth and the selected shading point match. */
+                 sg_f32x4 b0, b1;
+-#if SG_MSAA_SAMPLES == 4
++#if SG_MSAA_SAMPLES == 4 && !SG_MSAA_REPLAY
+                 if (coverage32) {
+                     /* The rectangle proof includes unbiased sample sums.
+                      * Undo only the top-left bias before float conversion. */
+@@ -220,7 +254,7 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
+                         (float)(edge[1] + offsets[2][1]), (float)(edge[1] + offsets[3][1])),
+                         sg_f32x4_splat(inv_area));
+                 }
+-#if defined(SG_MSAA_EDGE_TEST) && SG_MSAA_SAMPLES == 4
++#if defined(SG_MSAA_EDGE_TEST) && SG_MSAA_SAMPLES == 4 && !SG_MSAA_REPLAY
+                 sg_msaa_edge_test(coverage32, small_edges, SG_MSAA_DEPTH_CAPTURE,
+                     edge[0], edge[1], &offsets[0][0], inv_area, b0, b1);
+ #endif
+@@ -298,10 +332,12 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
+                     }
+                 }
+             }
+-            for (int e = 0; e < 3; e++) edge[e] += dx[e] * 256;
++            for (int e = 0; e < (SG_MSAA_REPLAY ? 2 : 3); e++) edge[e] += dx[e] * 256;
+         }
++#if !SG_MSAA_REPLAY
+         for (int e = 0; e < 3; e++) row[e] += dy[e] * 256;
+         if (use_spans) for (int e = 0; e < 3; e++) intersection_x[e] -= intersection_step[e];
++#endif
+     }
+     for (int l = 0; l < packet.count; l++) {
+         float color[4];
+@@ -323,3 +359,12 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
+ 
+ #undef SG_MSAA_HZ_CLASS
+ #undef SG_MSAA_HZ_OCCLUDED
++#ifdef SG_MSAA_REPLAY_DEFAULT
++#undef SG_MSAA_REPLAY
++#undef SG_MSAA_REPLAY_DEFAULT
++#endif
++
++#ifdef SG_MSAA_MASK_CAPTURE_DEFAULT
++#undef SG_MSAA_MASK_CAPTURE
++#undef SG_MSAA_MASK_CAPTURE_DEFAULT
++#endif
+diff --git a/libsoftgl/src/raster_triangle_impl.h b/libsoftgl/src/raster_triangle_impl.h
+index 3394df7..45ec195 100644
+--- a/libsoftgl/src/raster_triangle_impl.h
++++ b/libsoftgl/src/raster_triangle_impl.h
+@@ -100,13 +100,25 @@ int SG_RASTER_TRI_FUNCTION(softgl_ctx *c,
+     if (c->fb.samples) {
+         int result;
+         if (c->fb.samples == 4) {
+-            if (sg_raster_bin && sg_raster_bin->depth_capture)
++            if (sg_fragment_mask_matches(ix0, iy0, ix1, iy1))
++                result = sg_raster_triangle_msaa4_replay(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
++                                    area2, bias0, bias1, bias2, z_offset);
++            else if (sg_fragment_mask_current.capture)
++                result = sg_raster_triangle_msaa4_mask_capture(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
++                                    area2, bias0, bias1, bias2, z_offset);
++            else if (sg_raster_bin && sg_raster_bin->depth_capture)
+                 result = sg_raster_triangle_msaa4_capture(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
+                                     area2, bias0, bias1, bias2, z_offset);
+             else
+                 result = sg_raster_triangle_msaa4(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
+                                     area2, bias0, bias1, bias2, z_offset);
+         }
++        else if (sg_fragment_mask_matches(ix0, iy0, ix1, iy1))
++            result = sg_raster_triangle_msaa2_replay(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
++                                area2, bias0, bias1, bias2, z_offset);
++        else if (sg_fragment_mask_current.capture)
++            result = sg_raster_triangle_msaa2_mask_capture(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
++                                    area2, bias0, bias1, bias2, z_offset);
+         else if (sg_raster_bin && sg_raster_bin->depth_capture)
+             result = sg_raster_triangle_msaa2_capture(c, v0, v1, v2, tctx, ix0, iy0, ix1, iy1,
+                                     area2, bias0, bias1, bias2, z_offset);
+diff --git a/libsoftgl/src/rasterizer.c b/libsoftgl/src/rasterizer.c
+index 43589b6..8579cbc 100644
+--- a/libsoftgl/src/rasterizer.c
++++ b/libsoftgl/src/rasterizer.c
+@@ -6,6 +6,7 @@
+ #include "multisample.h"
+ #include "raster_store.h"
+ #include "workers.h"
++#include "fragment_mask_stream.h"
+ #include <math.h>
+ 
+ /* Under Emscripten (-msimd128), <smmintrin.h> remaps _mm_* onto
+@@ -713,6 +714,24 @@ SG_INLINE void sg_write_pixel_packet2(softgl_ctx *c, const sg_tex_tri_ctx *t,
+ #undef SG_MSAA_SAMPLES
+ #undef SG_MSAA_FUNCTION
+ #undef SG_MSAA_DEPTH_CAPTURE
++#define SG_MSAA_DEPTH_CAPTURE 0
++#define SG_MSAA_REPLAY 1
++#define SG_MSAA_SAMPLES 2
++#define SG_MSAA_FUNCTION sg_raster_triangle_msaa2_replay
++#include "raster_msaa_impl.h"
++#undef SG_MSAA_SAMPLES
++#undef SG_MSAA_FUNCTION
++#undef SG_MSAA_REPLAY
++#undef SG_MSAA_DEPTH_CAPTURE
++#define SG_MSAA_DEPTH_CAPTURE 1
++#define SG_MSAA_MASK_CAPTURE 1
++#define SG_MSAA_SAMPLES 2
++#define SG_MSAA_FUNCTION sg_raster_triangle_msaa2_mask_capture
++#include "raster_msaa_impl.h"
++#undef SG_MSAA_SAMPLES
++#undef SG_MSAA_FUNCTION
++#undef SG_MSAA_MASK_CAPTURE
++#undef SG_MSAA_DEPTH_CAPTURE
+ #undef SG_MSAA_COMMON_CAN
+ #undef SG_MSAA_COMMON_STORE
+ #undef SG_MSAA_PACKET_WRITE
+@@ -734,6 +753,24 @@ SG_INLINE void sg_write_pixel_packet2(softgl_ctx *c, const sg_tex_tri_ctx *t,
+ #undef SG_MSAA_SAMPLES
+ #undef SG_MSAA_FUNCTION
+ #undef SG_MSAA_DEPTH_CAPTURE
++#define SG_MSAA_DEPTH_CAPTURE 0
++#define SG_MSAA_REPLAY 1
++#define SG_MSAA_SAMPLES 4
++#define SG_MSAA_FUNCTION sg_raster_triangle_msaa4_replay
++#include "raster_msaa_impl.h"
++#undef SG_MSAA_SAMPLES
++#undef SG_MSAA_FUNCTION
++#undef SG_MSAA_REPLAY
++#undef SG_MSAA_DEPTH_CAPTURE
++#define SG_MSAA_DEPTH_CAPTURE 1
++#define SG_MSAA_MASK_CAPTURE 1
++#define SG_MSAA_SAMPLES 4
++#define SG_MSAA_FUNCTION sg_raster_triangle_msaa4_mask_capture
++#include "raster_msaa_impl.h"
++#undef SG_MSAA_SAMPLES
++#undef SG_MSAA_FUNCTION
++#undef SG_MSAA_MASK_CAPTURE
++#undef SG_MSAA_DEPTH_CAPTURE
+ #undef SG_MSAA_COMMON_CAN
+ #undef SG_MSAA_COMMON_STORE
+ #undef SG_MSAA_PACKET_WRITE
+diff --git a/libsoftgl/src/workers.c b/libsoftgl/src/workers.c
+index 2c21d3b..ce8ef3d 100644
+--- a/libsoftgl/src/workers.c
++++ b/libsoftgl/src/workers.c
+@@ -1,5 +1,6 @@
+ #include "raster_hz.h"
+ #include "workers.h"
++#include "fragment_mask_stream.h"
+ #include "raster_types.h"
+ #include "raster_vertex_pack.h"
+ #include <stdlib.h>
+@@ -271,6 +272,8 @@ struct sg_geometry_entry {
+     size_t capacity;
+     uint64_t depth_epoch;
+     int offsets[SG_MAX_BINS + 1];
++    sg_fragment_mask_cache *fragments;
++    int fragment_wanted;
+ };
+ 
+ typedef struct sg_geometry_cache {
+@@ -282,10 +285,108 @@ typedef struct sg_geometry_cache {
+     sg_position_page position_pages[SG_POSITION_MAX_PAGES];
+ } sg_geometry_cache;
+ 
++
++_Thread_local sg_fragment_mask_cursor sg_fragment_mask_current;
++static _Thread_local int sg_fragment_mask_disabled;
++static _Thread_local uint64_t sg_fragment_mask_stats[8];
++void sg_fragment_mask_test_enable(int enabled) {
++    sg_fragment_mask_disabled = !enabled;
++    memset(sg_fragment_mask_stats, 0, sizeof(sg_fragment_mask_stats));
++}
++double sg_fragment_mask_stat(int index) {
++    return index >= 0 && index < 8 ? (double)sg_fragment_mask_stats[index] : -1;
++}
++
++/* References, allocations and shared budget accounting belong to the caller.
++ * Jobs retain immutable replay storage across cache invalidation/replacement. */
++static void sg_fragment_mask_release(sg_fragment_mask_cache *s) {
++    if (!s || --s->refs) return;
++    *s->owner_bytes -= s->allocation;
++    sg_fragment_mask_stats[6] -= s->allocation;
++    sg_aligned_free(s);
++}
++static void sg_fragment_mask_forget(sg_geometry_entry *entry) {
++    sg_fragment_mask_release(entry->fragments); entry->fragments = NULL;
++}
++static int sg_pool_sort_safe(const softgl_ctx *c);
++static void sg_fragment_mask_ticket_release(sg_worker_pool *p) {
++    sg_fragment_mask_release(p->prepared_fragment_replay);
++    p->prepared_fragment_replay = NULL;
++}
++static void sg_fragment_mask_evict(sg_geometry_cache *cache, size_t need) {
++    if (need <= SG_GEOMETRY_CACHE_BYTES - cache->bytes) return;
++    for (int i = 0; i < SG_GEOMETRY_CACHE_ENTRIES; i++) sg_fragment_mask_forget(&cache->entries[i]);
++}
++static sg_fragment_mask_cache *sg_fragment_mask_create(softgl_ctx *c, sg_worker_pool *p,
++                                                       const sg_geometry_entry *entry) {
++    if (sg_fragment_mask_disabled || !entry || !entry->fragment_wanted || c->scissor_enabled ||
++        (c->fb.samples != 2 && c->fb.samples != 4) || c->fb.w > 65535 || c->fb.h > 65535) return NULL;
++    sg_geometry_cache *owner = p->geometry_cache;
++    uint32_t count = (uint32_t)entry->offsets[p->nbins];
++    size_t head = (sizeof(sg_fragment_mask_cache) + (size_t)count * 4 + 63) & ~(size_t)63;
++    size_t want = (head + (size_t)count * 32 + (size_t)p->nbins * 128 + 63) & ~(size_t)63;
++    size_t available = ((SG_GEOMETRY_CACHE_BYTES - owner->bytes) / 4) & ~(size_t)63;
++    if (available > 262144) available = 262144;
++    if (want > available) want = available;
++    if (!count || want <= head + (size_t)p->nbins * 16) return NULL;
++    sg_fragment_mask_cache *s = sg_aligned_alloc(want, 64);
++    if (!s) return NULL;
++    memset(s, 0, sizeof(*s));
++    s->allocation = want; s->owner_bytes = &owner->bytes; s->refs = 1;
++    s->width = c->fb.w; s->height = c->fb.h; s->samples = c->fb.samples;
++    s->multisample = c->multisample; s->nbins = p->nbins; s->count = count;
++    s->offsets = (uint32_t *)(s + 1); s->data = (uint8_t *)s + head;
++    memset(s->offsets, 255, (size_t)count * 4);
++    uint32_t used = 0, capacity = (uint32_t)(want - head);
++    for (int b = 0; b < p->nbins; b++) {
++        sg_fragment_mask_bin *bin = &s->bins[b];
++        bin->first = (uint32_t)entry->offsets[b]; bin->end = (uint32_t)entry->offsets[b + 1];
++        bin->start = used;
++        bin->capacity = (uint32_t)((uint64_t)capacity * bin->end / count) - used;
++        used += bin->capacity;
++    }
++    owner->bytes += want;
++    sg_fragment_mask_stats[0]++;
++    sg_fragment_mask_stats[6] += want;
++    if (owner->bytes > sg_fragment_mask_stats[4]) sg_fragment_mask_stats[4] = owner->bytes;
++    return s;
++}
++static void sg_fragment_mask_capture_triangle(sg_fragment_mask_cache *s, int b, uint32_t original) {
++    memset(&sg_fragment_mask_current, 0, sizeof(sg_fragment_mask_current));
++    if (!s) return;
++    sg_fragment_mask_bin *bin = &s->bins[b];
++    sg_fragment_mask_current = (sg_fragment_mask_cursor){.bin=bin,
++        .offset_slot=&s->offsets[bin->first + original], .data=s->data+bin->start,
++        .start=bin->used, .used=bin->used, .capture=1};
++}
++static void sg_fragment_mask_replay_triangle(sg_fragment_mask_cache *s, uint32_t original) {
++    memset(&sg_fragment_mask_current, 0, sizeof(sg_fragment_mask_current));
++    if (!s || original >= s->count || s->offsets[original] == UINT32_MAX) return;
++    const uint8_t *data = s->data + s->offsets[original];
++    uint32_t length = sg_fragment_get32(data);
++    sg_fragment_mask_current.read = data;
++    sg_fragment_mask_current.end = data + length;
++}
++static int sg_fragment_mask_end_triangle(int result) {
++    sg_fragment_mask_cursor *r = &sg_fragment_mask_current;
++    int used = 0;
++    if (r->capture) {
++        if (r->started && !r->overflow && result == 0) {
++            sg_fragment_put32(r->data + r->start, r->used - r->start);
++            *r->offset_slot = r->bin->start + r->start;
++            r->bin->used = r->used; r->bin->retained++;
++        } else if (r->overflow) r->bin->overflow++;
++    } else used = r->started;
++    memset(r, 0, sizeof(*r));
++    return used;
++}
++
+ static void sg_geometry_cache_destroy(sg_geometry_cache *cache) {
+     if (!cache) return;
+-    for (int i = 0; i < SG_GEOMETRY_CACHE_ENTRIES; i++)
++    for (int i = 0; i < SG_GEOMETRY_CACHE_ENTRIES; i++) {
++        sg_fragment_mask_forget(&cache->entries[i]);
+         sg_aligned_free(cache->entries[i].tris);
++    }
+     for (int i = 0; i < SG_POSITION_MAX_PAGES; i++)
+         sg_aligned_free(cache->position_pages[i].vertices);
+     free(cache);
+@@ -301,7 +402,10 @@ static void sg_geometry_cache_epoch(softgl_ctx *c, sg_geometry_cache *cache) {
+         cache->mv = *mv; cache->projection = *pr;
+         memcpy(cache->viewport, c->viewport, sizeof(cache->viewport));
+         cache->multisample = multisample; cache->initialized = 1;
+-        for (int i = 0; i < SG_GEOMETRY_CACHE_ENTRIES; i++) cache->entries[i].valid = 0;
++        for (int i = 0; i < SG_GEOMETRY_CACHE_ENTRIES; i++) {
++            cache->entries[i].valid = 0;
++            sg_fragment_mask_forget(&cache->entries[i]);
++        }
+         for (int i = 0; i < SG_POSITION_MAX_PAGES; i++)
+             if (cache->position_pages[i].vertices)
+                 memset(cache->position_pages[i].flags, 0, SG_POSITION_PAGE_VERTICES);
+@@ -342,11 +446,12 @@ sg_geometry_entry *sg_workers_geometry_lookup(softgl_ctx *c, GLsizei count,
+         sg_geometry_entry *entry = &cache->entries[i];
+         if (entry->occupied && !memcmp(&entry->key, &key, sizeof(key))) {
+             entry->stamp = ++cache->clock;
+-            if (entry->valid) { *imin = entry->imin; *imax = entry->imax; *hit = 1; }
++            if (entry->valid) { *imin = entry->imin; *imax = entry->imax; *hit = 1; entry->fragment_wanted = 1; }
+             return entry;
+         }
+         if (!entry->occupied || (victim->occupied && entry->stamp < victim->stamp)) victim = entry;
+     }
++    sg_fragment_mask_forget(victim); victim->fragment_wanted = 0;
+     victim->key = key; victim->occupied = 1; victim->valid = 0;
+     victim->stamp = ++cache->clock;
+     return victim;
+@@ -360,6 +465,8 @@ void sg_workers_geometry_store(softgl_ctx *c, sg_geometry_entry *entry,
+     size_t total = 0;
+     for (int b = 0; b < p->nbins; b++) total += (size_t)p->bins[b].count;
+     size_t need = total * sizeof(sg_worker_tri);
++    sg_fragment_mask_forget(entry);
++    if (need > entry->capacity) sg_fragment_mask_evict(cache, need - entry->capacity);
+     if (need > entry->capacity) {
+         if (need > SG_GEOMETRY_CACHE_BYTES ||
+             need - entry->capacity > SG_GEOMETRY_CACHE_BYTES - cache->bytes) return;
+@@ -392,6 +499,13 @@ void sg_workers_geometry_store(softgl_ctx *c, sg_geometry_entry *entry,
+ 
+ void sg_workers_geometry_replay(softgl_ctx *c, const sg_geometry_entry *entry) {
+     sg_worker_pool *p = (sg_worker_pool *)c->workers;
++    sg_fragment_mask_ticket_release(p);
++    sg_fragment_mask_cache *s = entry->fragments;
++    if (!sg_fragment_mask_disabled && s && !c->scissor_enabled && !sg_pool_sort_safe(c) &&
++        s->width == c->fb.w && s->height == c->fb.h && s->samples == c->fb.samples &&
++        s->multisample == c->multisample && s->nbins == p->nbins) {
++        s->refs++; p->prepared_fragment_replay = s;
++    }
+     for (int b = 0; b < p->nbins; b++) {
+         int first = entry->offsets[b], count = entry->offsets[b + 1] - first;
+         sg_worker_bin *bin = &p->bins[b];
+@@ -405,12 +519,14 @@ void sg_workers_geometry_replay(softgl_ctx *c, const sg_geometry_entry *entry) {
+             int out = 0;
+             for (int i = first; i < first + count; i++) {
+                 if (hidden[i >> 3] & (1u << (i & 7))) continue;
++                bin->sort_keys[out] = (uint32_t)i;
+                 bin->tris[out++] = entry->tris[i];
+             }
+             bin->count = out;
+         } else {
+             memcpy(bin->tris, entry->tris + first, (size_t)count * sizeof(*bin->tris));
+             bin->count = count;
++            for (int i = 0; i < count; i++) bin->sort_keys[i] = (uint32_t)(first + i);
+         }
+     }
+ }
+@@ -563,6 +679,8 @@ typedef struct sg_async_raster {
+     sg_geometry_entry *coverage_entry;
+     uint64_t coverage_stamp;
+     uint64_t depth_epoch;
++    sg_fragment_mask_cache *fragment_capture, *fragment_replay;
++    uint32_t fragment_replayed[SG_MAX_BINS], fragment_fallback[SG_MAX_BINS];
+ } sg_async_raster;
+ 
+ static void sg_drain_bins(softgl_ctx *c, sg_worker_pool *p,
+@@ -674,11 +792,17 @@ static void sg_publish_coverage(sg_worker_pool *p, sg_async_raster *job) {
+         for (int i = 0; i < n; i++) {
+             if (empty[i] & 1u) continue;
+             if (out != first + i) entry->tris[out] = entry->tris[first + i];
++            if (job->fragment_capture) job->fragment_capture->offsets[out] = job->fragment_capture->offsets[first + i];
+             out++;
+         }
+     }
+     entry->offsets[p->nbins] = out;
+     entry->depth_epoch = 0;
++    if (job->fragment_capture) {
++        sg_fragment_mask_forget(entry);
++        entry->fragments = job->fragment_capture; entry->fragments->refs++;
++        entry->fragments->count = (uint32_t)out;
++    }
+     size_t bitmap_bytes = ((size_t)out + 7) / 8;
+     if (job->depth_epoch && job->depth_epoch == p->depth_epoch && out &&
+         (size_t)out * sizeof(*entry->tris) + bitmap_bytes <= entry->capacity) {
+@@ -701,6 +825,22 @@ static void sg_publish_coverage(sg_worker_pool *p, sg_async_raster *job) {
+     }
+ }
+ 
++
++static void sg_fragment_mask_finish_job(sg_async_raster *job) {
++    for (int b = 0; b < SG_MAX_BINS; b++) {
++        sg_fragment_mask_stats[2] += job->fragment_replayed[b];
++        sg_fragment_mask_stats[5] += job->fragment_fallback[b];
++        job->fragment_replayed[b] = job->fragment_fallback[b] = 0;
++        if (job->fragment_capture) {
++            sg_fragment_mask_stats[1] += job->fragment_capture->bins[b].retained;
++            sg_fragment_mask_stats[3] += job->fragment_capture->bins[b].overflow;
++        }
++    }
++    if (job->fragment_capture) sg_fragment_mask_stats[7]++;
++    sg_fragment_mask_release(job->fragment_capture); job->fragment_capture = NULL;
++    sg_fragment_mask_release(job->fragment_replay); job->fragment_replay = NULL;
++}
++
+ static void sg_finish_stream(sg_worker_pool *p) {
+     if (!p->async_pending) return;
+     if (p->async_pending == 3) {
+@@ -724,6 +864,7 @@ static void sg_finish_stream(sg_worker_pool *p) {
+ 
+ static void sg_stream_destroy(sg_async_raster *job, int nbins) {
+     if (!job) return;
++    sg_fragment_mask_finish_job(job);
+     for (int i = 0; i < nbins; i++) {
+         sg_aligned_free(job->bins[i].tris);
+         sg_aligned_free(job->bins[i].sort_keys);
+@@ -1141,7 +1282,7 @@ void sg_workers_submit_stream(softgl_ctx *c) {
+     p->prepared_coverage_entry = NULL;
+     int total = 0;
+     for (int i = 0; i < p->nbins; i++) total += p->bins[i].count;
+-    if (!total) return;
++    if (!total) { sg_fragment_mask_ticket_release(p); return; }
+     size_t geometry_vertices = (p->prepared_transformed ? (size_t)p->transformed_cap : 0) +
+         (p->vpool_count ? (size_t)p->vpool_cap : 0);
+     if (geometry_vertices > SG_STREAM_VERTICES) {
+@@ -1149,6 +1290,7 @@ void sg_workers_submit_stream(softgl_ctx *c) {
+         return;
+     }
+     if (sg_queue_multitexture(c) && sg_queue_submit(c, p, entry)) return;
++    sg_fragment_mask_ticket_release(p);
+     if (!p->async_raster) {
+         p->async_raster = sg_aligned_alloc(sizeof(sg_async_raster), 16);
+         if (!p->async_raster) { sg_workers_flush(c); return; }
+@@ -1212,6 +1354,7 @@ void sg_workers_flush(softgl_ctx *c) {
+     if (!p) return;
+     if (++p->depth_epoch == 0) p->depth_epoch = 1;
+     p->prepared_coverage_entry = NULL;
++    sg_fragment_mask_ticket_release(p);
+     sg_finish_stream(p);
+ 
+     /* Short-circuit if no pending work — avoids the condvar round-trip on
+diff --git a/libsoftgl/src/workers.h b/libsoftgl/src/workers.h
+index c896f11..74fe2fb 100644
+--- a/libsoftgl/src/workers.h
++++ b/libsoftgl/src/workers.h
+@@ -156,6 +156,7 @@ typedef struct {
+     atomic_int triangle_next;
+     struct sg_geometry_entry *prepared_coverage_entry; /* caller-owned current draw */
+     uint64_t depth_epoch; /* caller only; any flush invalidates depth reuse */
++    struct sg_fragment_mask_cache *prepared_fragment_replay; /* retained caller ticket */
+ } sg_worker_pool;
+ 
+ void sg_workers_init(softgl_ctx *c, int nworkers_hint);
+diff --git a/libsoftgl/src/workers_queue_raw.inc b/libsoftgl/src/workers_queue_raw.inc
+index 2985d1a..9934d7c 100644
+--- a/libsoftgl/src/workers_queue_raw.inc
++++ b/libsoftgl/src/workers_queue_raw.inc
+@@ -52,12 +52,13 @@ static void sg_queue_retire(sg_worker_pool *p) {
+     struct sg_stream_queue *q = p->stream_queue;
+     while (q->count && !q->slots[q->head].pending) {
+         sg_async_raster *draw = q->slots[q->head].draw;
+-        if (draw->coverage_entry) {
++        if (draw->coverage_entry || draw->fragment_capture || draw->fragment_replay) {
+             /* Only the caller retires slots. Completed-slot storage remains
+              * private while other slots run; never compact under the mutex. */
+             pthread_mutex_unlock(&p->mtx);
+             sg_publish_coverage(p, draw);
+             draw->coverage_entry = NULL;
++            sg_fragment_mask_finish_job(draw);
+             pthread_mutex_lock(&p->mtx);
+         }
+         q->head = (q->head + 1) % SG_QUEUE_SLOTS;
+@@ -98,8 +99,17 @@ void sg_queue_render_packed(sg_async_raster *r, sg_worker_bin *b, int sort) {
+         const sg_vert *v0 = sg_packed_vertex_fetch(&r->packed, cache, t->v[0], &pinned, 0);
+         const sg_vert *v1 = sg_packed_vertex_fetch(&r->packed, cache, t->v[1] | marker, &pinned, 1);
+         const sg_vert *v2 = sg_packed_vertex_fetch(&r->packed, cache, t->v[2] | marker, &pinned, 2);
++        uint32_t original = sort ? b->sort_keys[i] : (uint32_t)i;
++        if (r->fragment_capture) sg_fragment_mask_capture_triangle(r->fragment_capture,
++            (int)(b-r->bins), original);
++        else if (r->fragment_replay) sg_fragment_mask_replay_triangle(r->fragment_replay, b->sort_keys[i]);
+         int empty = sg_raster_triangle_tile_prepared(&r->state, v0, v1, v2,
+             b->ix0, b->ix1, &r->texture_context);
++        int replayed = (r->fragment_capture || r->fragment_replay) ? sg_fragment_mask_end_triangle(empty) : 0;
++        if (r->fragment_replay) {
++            r->fragment_replayed[b-r->bins] += (unsigned)replayed;
++            r->fragment_fallback[b-r->bins] += (unsigned)!replayed;
++        }
+         if (r->coverage_entry) {
+             uint32_t original = sort ? b->sort_keys[i] : (uint32_t)i;
+             b->sort_keys[b->count + original] = empty >= 0 ? (uint32_t)empty : 0;
+@@ -118,9 +128,18 @@ static void sg_queue_render(sg_worker_pool *p, sg_queue_slot *slot, int index) {
+     else for (int i = 0; i < n; i++) {
+         const sg_worker_tri *t = &b->tris[slot->sort ? b->sort_keys[i] : (uint32_t)i];
+         const sg_vert *src = (t->v[0] & SG_BIN_TRANSFORMED_VERTEX) ? r->transformed : r->vpool;
++        uint32_t original = slot->sort ? b->sort_keys[i] : (uint32_t)i;
++        if (r->fragment_capture) sg_fragment_mask_capture_triangle(r->fragment_capture,
++            (int)(b-r->bins), original);
++        else if (r->fragment_replay) sg_fragment_mask_replay_triangle(r->fragment_replay, b->sort_keys[i]);
+         int empty = sg_raster_triangle_tile_prepared(&r->state,
+             &src[t->v[0] & ~SG_BIN_TRANSFORMED_VERTEX], &src[t->v[1]], &src[t->v[2]],
+             b->ix0, b->ix1, &r->texture_context);
++        int replayed = (r->fragment_capture || r->fragment_replay) ? sg_fragment_mask_end_triangle(empty) : 0;
++        if (r->fragment_replay) {
++            r->fragment_replayed[b-r->bins] += (unsigned)replayed;
++            r->fragment_fallback[b-r->bins] += (unsigned)!replayed;
++        }
+         if (r->coverage_entry) {
+             uint32_t original = slot->sort ? b->sort_keys[i] : (uint32_t)i;
+             b->sort_keys[n + original] = empty >= 0 ? (uint32_t)empty : 0;
+@@ -380,6 +399,8 @@ static int sg_queue_submit(softgl_ctx *c, sg_worker_pool *p, sg_geometry_entry *
+     r->depth_epoch = entry && (c->fb.samples == 0 || c->fb.samples == 2 || c->fb.samples == 4) && c->depth_test && !c->stencil_test &&
+         !c->polygon_offset_fill && (c->depth_func == GL_LESS || c->depth_func == GL_LEQUAL)
+         ? p->depth_epoch : 0;
++    r->fragment_replay = p->prepared_fragment_replay; p->prepared_fragment_replay = NULL;
++    r->fragment_capture = r->depth_epoch ? sg_fragment_mask_create(c, p, entry) : NULL;
+     r->state = *c;
+     r->texture_context = texture_context;
+     for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
+diff --git a/tests/CMakeLists.txt b/tests/CMakeLists.txt
+index 67a4280..02aa5be 100644
+--- a/tests/CMakeLists.txt
++++ b/tests/CMakeLists.txt
+@@ -829,3 +829,12 @@ if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+ endif()
+ add_test(NAME index_range_contract COMMAND index_range_contract)
+ set_tests_properties(index_range_contract PROPERTIES TIMEOUT 90)
++
++add_executable(fragment_mask_replay_contract fragment_mask_replay.c)
++target_include_directories(fragment_mask_replay_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
++target_link_libraries(fragment_mask_replay_contract PRIVATE softgl)
++if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
++    target_compile_options(fragment_mask_replay_contract PRIVATE -O2 -fno-fast-math -ffp-contract=off -msse4.1)
++endif()
++add_test(NAME fragment_mask_replay_contract COMMAND fragment_mask_replay_contract)
++set_tests_properties(fragment_mask_replay_contract PROPERTIES TIMEOUT 120)
+diff --git a/tests/fragment_mask_replay.c b/tests/fragment_mask_replay.c
+new file mode 100644
+index 0000000..a46524a
+--- /dev/null
++++ b/tests/fragment_mask_replay.c
+@@ -0,0 +1,219 @@
++#include "types.h"
++#include "workers.h"
++#include "fragment_mask_stream.h"
++#include "raster_types.h"
++#include <stdio.h>
++
++#define REQUIRE(x) do { if (!(x)) { fprintf(stderr, "%d: %s\n", __LINE__, #x); return 1; } } while (0)
++extern void sg_fragment_mask_test_enable(int);
++extern double sg_fragment_mask_stat(int);
++enum { W=65, H=35, N=2048, V=N*3, STAGES=16 };
++
++static uint64_t bytes(const void *p, size_t n, uint64_t h) {
++    const uint8_t *b=p;
++    for (size_t i=0; i<n; i++) h=(h^b[i])*UINT64_C(1099511628211);
++    return h;
++}
++static uint64_t planes(softgl_ctx *c) {
++    uint64_t h=bytes(softgl_read_rgba8(c),W*H*4,UINT64_C(1469598103934665603));
++    h=bytes(c->fb.color,W*H*4,h);
++    h=bytes(c->fb.depth,W*H*sizeof(float),h);
++    h=bytes(c->fb.stencil,W*H,h);
++    if(c->fb.samples) {
++        h=bytes(c->fb.sample_color,W*H*c->fb.samples*4,h);
++        h=bytes(c->fb.sample_depth,W*H*c->fb.samples*sizeof(float),h);
++        h=bytes(c->fb.sample_stencil,W*H*c->fb.samples,h);
++    }
++    return h;
++}
++static void chain(void) {
++    for(int u=0;u<4;u++) {
++        glActiveTexture(GL_TEXTURE0+u);
++        glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_COMBINE);
++        glTexEnvi(GL_TEXTURE_ENV,GL_COMBINE_RGB,u?GL_MODULATE:GL_DOT3_RGB);
++        glTexEnvi(GL_TEXTURE_ENV,GL_SOURCE0_RGB,u?GL_PREVIOUS:GL_TEXTURE);
++        glTexEnvi(GL_TEXTURE_ENV,GL_SOURCE1_RGB,u==0?GL_PRIMARY_COLOR:u==1?GL_PREVIOUS:u==2?GL_TEXTURE:GL_CONSTANT);
++        glTexEnvi(GL_TEXTURE_ENV,GL_COMBINE_ALPHA,GL_REPLACE);
++        glTexEnvi(GL_TEXTURE_ENV,GL_SOURCE0_ALPHA,u==3?GL_CONSTANT:GL_PREVIOUS);
++        glTexEnvi(GL_TEXTURE_ENV,GL_OPERAND0_RGB,GL_SRC_COLOR);
++        glTexEnvi(GL_TEXTURE_ENV,GL_OPERAND1_RGB,GL_SRC_COLOR);
++        glTexEnvi(GL_TEXTURE_ENV,GL_OPERAND0_ALPHA,GL_SRC_ALPHA);
++        const float constant[4]={.5f,.5f,.5f,.5f};
++        glTexEnvfv(GL_TEXTURE_ENV,GL_TEXTURE_ENV_COLOR,constant);
++    }
++    glActiveTexture(GL_TEXTURE0);
++}
++
++static size_t transfer_planes(softgl_ctx *c,uint8_t *p,int restore) {
++    size_t offset=0;
++    void *parts[6]={c->fb.color,c->fb.depth,c->fb.stencil,c->fb.sample_color,c->fb.sample_depth,c->fb.sample_stencil};
++    size_t sizes[6]={W*H*4,W*H*sizeof(float),W*H,
++        W*H*c->fb.samples*4,W*H*c->fb.samples*sizeof(float),W*H*c->fb.samples};
++    for(int i=0;i<6;i++) {
++        if(sizes[i]) {
++            if(restore)memcpy(parts[i],p+offset,sizes[i]);else memcpy(p+offset,parts[i],sizes[i]);
++            offset+=sizes[i];
++        }
++    }
++    return offset;
++}
++
++/* Direct original versus replay raster calls stress sample centroids, integer
++ * edges outside signed 32 bits and screen bounds without front-end clipping. */
++static int direct_edges(void) {
++    unsigned checks=0,empty=0;
++    for(int samples=2;samples<=4;samples+=2) {
++        softgl_ctx *c=softgl_create_multisample(W,H,samples);REQUIRE(c);
++        softgl_make_current(c);sg_workers_shutdown(c);
++        size_t size=(size_t)W*H*9*(1+samples);
++        uint8_t *saved=malloc(size),*expected=malloc(size),*wire=malloc(65536);
++        REQUIRE(saved && expected && wire);
++        for(int enabled=0;enabled<2;enabled++)for(int kind=0;kind<4;kind++)for(int k=0;k<32;k++) {
++            glDisable(GL_BLEND);glEnable(GL_DEPTH_TEST);glDepthMask(GL_FALSE);glDepthFunc(GL_LEQUAL);
++            if(enabled)glEnable(GL_MULTISAMPLE);else glDisable(GL_MULTISAMPLE);
++            glClearColor(.1f,.2f,.3f,.4f);glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
++            for(int p=0;p<W*H*samples;p++)c->fb.sample_depth[p]=.2f+.15f*(p%5);
++            float span=kind==0?1000000.f:kind==1?4096.f:kind==2?32.f:.0625f;
++            sg_vert v[3]={0};
++            v[0].ndc=(sg_vec4){-span+4.5f,-span+5.125f,.25f,.5f};
++            v[1].ndc=(sg_vec4){span+4.5f,-span+5.125f,.55f,.8f};
++            v[2].ndc=(sg_vec4){4.5f,span+5.125f,.4f,1.f};
++            for(int i=0;i<3;i++)v[i].color=(sg_vec4){.2f+.1f*i,.3f,.4f,.5f};
++            sg_tex_tri_ctx t;sg_tex_tri_prepare(c,&t);
++            sg_fragment_mask_bin bin={.capacity=65536};
++            sg_fragment_mask_current=(sg_fragment_mask_cursor){.capture=1,.bin=&bin,.data=wire};
++            sg_raster_triangle_tile_prepared(c,v,v+1,v+2,0,W,&t);
++            sg_fragment_mask_cursor capture=sg_fragment_mask_current;
++            REQUIRE(capture.started && !capture.overflow && capture.used>=12);
++            sg_fragment_put32(wire,capture.used);
++            if(capture.used==12)empty++;
++            memset(&sg_fragment_mask_current,0,sizeof(sg_fragment_mask_current));
++            REQUIRE(transfer_planes(c,saved,0)==size);
++            glEnable(GL_BLEND);glBlendFunc(GL_SRC_ALPHA,GL_ONE);
++            glDepthFunc(k%3==0?GL_EQUAL:k%3==1?GL_LESS:GL_LEQUAL);
++            for(int i=0;i<3;i++)v[i].color=(sg_vec4){.6f-.1f*i,.8f,.7f,.25f};
++            sg_tex_tri_prepare(c,&t);
++            sg_raster_triangle_tile_prepared(c,v,v+1,v+2,0,W,&t);
++            softgl_read_rgba8(c);REQUIRE(transfer_planes(c,expected,0)==size);
++            REQUIRE(transfer_planes(c,saved,1)==size);
++            sg_fragment_mask_current=(sg_fragment_mask_cursor){.read=wire,.end=wire+capture.used};
++            sg_raster_triangle_tile_prepared(c,v,v+1,v+2,0,W,&t);
++            REQUIRE(sg_fragment_mask_current.started);
++            memset(&sg_fragment_mask_current,0,sizeof(sg_fragment_mask_current));
++            softgl_read_rgba8(c);REQUIRE(transfer_planes(c,saved,0)==size);
++            REQUIRE(!memcmp(saved,expected,size));checks++;
++        }
++        free(saved);free(expected);free(wire);softgl_destroy(c);
++    }
++    REQUIRE(empty>0);
++    printf("Direct replay: %u exact full-plane wide-edge/centroid/depth cases, %u empty geometric streams\n",checks,empty);
++    return 0;
++}
++static int sequence(int samples,int packed,int wide,int enabled,uint64_t output[STAGES],double stats[8]) {
++    sg_fragment_mask_test_enable(enabled);
++    softgl_ctx *c=samples?softgl_create_multisample(W,H,samples):softgl_create(W,H);
++    REQUIRE(c);softgl_make_current(c);sg_workers_shutdown(c);sg_workers_init(c,3);
++    float positions[V][3],uv[V][2];GLuint indices[V];
++    for(int t=0;t<N;t++)for(int k=0;k<3;k++) {
++        int i=t*3+k;
++        positions[i][0]=1.f+(t%16)*3.5f+(k==1?5.25f:0);
++        positions[i][1]=1.f+((t/16)%8)*3.5f+(k==2?4.75f:0);
++        positions[i][2]=.25f*(t%3);
++        if(wide) {
++            positions[i][0]=.5f+(k==1?W-1.f:0.f);
++            positions[i][1]=.5f+(k==2?H-1.f:0.f);
++        }
++        uv[i][0]=(t&1)?.75f:.25f;uv[i][1]=.5f;indices[i]=(GLuint)i;
++    }
++    glViewport(0,0,W,H);glMatrixMode(GL_PROJECTION);glLoadIdentity();glOrtho(0,W,0,H,-1,1);
++    glMatrixMode(GL_MODELVIEW);glLoadIdentity();
++    GLuint buffers[2],textures[4],query;
++    glGenBuffers(2,buffers);glBindBuffer(GL_ARRAY_BUFFER,buffers[0]);
++    glBufferData(GL_ARRAY_BUFFER,sizeof(positions),positions,GL_STATIC_DRAW);
++    glVertexPointer(3,GL_FLOAT,0,NULL);glEnableClientState(GL_VERTEX_ARRAY);
++    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buffers[1]);glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices),indices,GL_STATIC_DRAW);
++    glGenTextures(4,textures);
++    for(int u=0;u<4;u++) {
++        glActiveTexture(GL_TEXTURE0+u);glBindTexture(GL_TEXTURE_2D,textures[u]);
++        uint8_t texels[8]={255,192,128,255,128,255,192,128};
++        glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,2,1,0,GL_RGBA,GL_UNSIGNED_BYTE,texels);
++        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
++        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
++        glEnable(GL_TEXTURE_2D);glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE);
++        glClientActiveTexture(GL_TEXTURE0+u);glBindBuffer(GL_ARRAY_BUFFER,0);
++        glTexCoordPointer(2,GL_FLOAT,0,uv);glEnableClientState(GL_TEXTURE_COORD_ARRAY);
++    }
++    glClientActiveTexture(GL_TEXTURE0);glActiveTexture(GL_TEXTURE0);if(packed)chain();
++    const int draw_count=wide==1?V/4:V;
++    glGenQueries(1,&query);
++    for(int stage=0;stage<STAGES;stage++) {
++        glDisable(GL_SCISSOR_TEST);glDisable(GL_POLYGON_OFFSET_FILL);glDisable(GL_STENCIL_TEST);
++        glDisable(GL_ALPHA_TEST);glDisable(GL_BLEND);glDepthMask(GL_TRUE);glDepthFunc(GL_LESS);
++        glEnable(GL_DEPTH_TEST);glEnable(GL_MULTISAMPLE);
++        glClearColor(.1f,.2f,.3f,.4f);glClearDepth(1);glClearStencil(stage);
++        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
++        glMatrixMode(GL_MODELVIEW);glLoadIdentity();
++        glTranslatef((stage%3)*.125f,0,0);
++        glColor4f(.8f,.7f,.6f,.5f);
++        if(wide && stage==15)glDepthMask(GL_FALSE);
++        glDrawElements(GL_TRIANGLES,draw_count,GL_UNSIGNED_INT,NULL);
++        /* Finish before lookup: coverage publication and mask cache ownership
++         * must both belong to the completed first draw. */
++        sg_workers_flush(c);
++        glDepthMask(GL_FALSE);glDepthFunc(GL_LEQUAL);glEnable(GL_BLEND);glBlendFunc(GL_SRC_ALPHA,GL_ONE);
++        glColor4f(.6f,.8f,.7f,.5f);
++        if(stage==3) {glEnable(GL_SCISSOR_TEST);glScissor(7,3,32,21);}
++        if(stage==4)glDisable(GL_MULTISAMPLE);
++        if(stage==5) {glEnable(GL_POLYGON_OFFSET_FILL);glPolygonOffset(.25f,1.f);}
++        if(stage==6) {glEnable(GL_ALPHA_TEST);glAlphaFunc(GL_GREATER,.25f);}
++        if(stage==7) {glEnable(GL_STENCIL_TEST);glStencilFunc(GL_ALWAYS,7,255);glStencilOp(GL_KEEP,GL_INCR,GL_INCR);}
++        if(stage==8)glDepthFunc(GL_ALWAYS);
++        if(stage==9)glDepthFunc(GL_EQUAL);
++        if(stage==10) {
++            positions[0][0]+=.125f;glBindBuffer(GL_ARRAY_BUFFER,buffers[0]);
++            glBufferSubData(GL_ARRAY_BUFFER,0,sizeof(positions),positions);glBindBuffer(GL_ARRAY_BUFFER,0);
++        }
++        if(stage==11) {uv[0][0]=.99f;glActiveTexture(GL_TEXTURE2);glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);}
++        if(stage==12)glBeginQuery(GL_SAMPLES_PASSED,query);
++        glDrawElements(GL_TRIANGLES,draw_count,GL_UNSIGNED_INT,NULL);
++        if(stage==12) {GLuint count;glEndQuery(GL_SAMPLES_PASSED);glGetQueryObjectuiv(query,GL_QUERY_RESULT,&count);output[stage]=count;}
++        else output[stage]=0;
++        /* Extra ordered replays exercise four-slot reuse and refreshed colors. */
++        if(stage==13)for(int pass=0;pass<7;pass++) {
++            glColor4f(.5f+(float)pass*.01f,.6f,.7f,.2f);glDrawElements(GL_TRIANGLES,draw_count,GL_UNSIGNED_INT,NULL);
++        }
++        if(stage==14) {
++            /* Invalidate cache ownership while the previous immutable replay
++             * job is still retained by the ordered queue. */
++            glTranslatef(.125f,0,0);glDrawElements(GL_TRIANGLES,draw_count,GL_UNSIGNED_INT,NULL);
++        }
++        output[stage]^=planes(c);
++        REQUIRE(glGetError()==GL_NO_ERROR);
++    }
++    for(int i=0;i<8;i++)stats[i]=sg_fragment_mask_stat(i);
++    softgl_destroy(c);
++    REQUIRE(sg_fragment_mask_stat(6)==0);
++    return 0;
++}
++int main(void) {
++    REQUIRE(!direct_edges());
++    for(int mode=0;mode<3;mode++)for(int packed=0;packed<2;packed++)for(int wide=0;wide<3;wide++) {
++        int samples=mode==0?0:mode==1?2:4;
++        uint64_t expected[STAGES],actual[STAGES];double inactive[8],active[8];
++        REQUIRE(!sequence(samples,packed,wide,0,expected,inactive));
++        REQUIRE(!sequence(samples,packed,wide,1,actual,active));
++        for(int stage=0;stage<STAGES;stage++) {
++            if(expected[stage]!=actual[stage]) {
++                fprintf(stderr,"Mismatch samples=%d packed=%d stage=%d %llu/%llu\n",samples,packed,stage,
++                    (unsigned long long)expected[stage],(unsigned long long)actual[stage]);return 1;
++            }
++        }
++        REQUIRE(active[4]<=4194304);
++        if(samples && wide!=2)REQUIRE(active[0]>0 && active[1]>0 && active[2]>0);
++        else REQUIRE(active[0]==0 && active[1]==0 && active[2]==0);
++        if(samples && wide==1)REQUIRE(active[3]>0);
++        printf("%dx %s %s: %d exact plane/query stages; allocated=%.0f retained=%.0f replayed=%.0f overflow=%.0f budget_peak=%.0f fallback=%.0f\n",
++            samples,packed?"packed":"raw",wide==2?"oversized":wide?"wide":"grid",STAGES,active[0],active[1],active[2],active[3],active[4],active[5]);
++    }
++    return 0;
++}

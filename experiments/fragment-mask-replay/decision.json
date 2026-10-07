@@ -1,0 +1,126 @@
+{
+  "status": "rejected",
+  "rendererAdopted": false,
+  "goalRemainsActive": true,
+  "reason": "Every BMW 2x/4x pair is slower in both fixed audits; twelve out of twelve regressions. The dense, bounded mask-cache implementation has no reproducible acceptable gain.",
+  "candidateWasmSha256": "cd84f84c4accc31e98b728189f6ee0988e6debe04185bb29900a1c9d78fe248b",
+  "referenceWasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+  "sourcePatchSha256": "e00fa00d26e5bbf9fbb20f6d4bf18b25a5f7738d3c6d9e37160500a4842ae5d8",
+  "all18PairsCompleted": true,
+  "noParameterTuning": true,
+  "bmwAudits": {
+    "2": [
+      2.878049949997652,
+      2.9942206997819687
+    ],
+    "4": [
+      3.9859482959146986,
+      3.292596906156642
+    ]
+  },
+  "descriptiveUncertainty": [
+    {
+      "scene": "bmw",
+      "samples": 0,
+      "pairedLogT95IntervalPercent": [
+        0.11599206363762578,
+        2.0516505611823685
+      ],
+      "pairedGeometricMeanChangePercent": 1.0791879551099988,
+      "pairChangesPercent": [
+        0.08702224862131569,
+        -0.1736193015887011,
+        2.1186040564463715,
+        1.4970574583623497,
+        1.2583960633846036,
+        1.7086773015748458
+      ]
+    },
+    {
+      "scene": "bmw",
+      "samples": 2,
+      "pairedLogT95IntervalPercent": [
+        2.0093721035367538,
+        3.871285188960452
+      ],
+      "pairedGeometricMeanChangePercent": 2.9361189365193265,
+      "pairChangesPercent": [
+        4.116336613188332,
+        1.567759554057746,
+        2.965899882680123,
+        3.237479968092516,
+        2.3451188313937,
+        3.4032140981645753
+      ]
+    },
+    {
+      "scene": "bmw",
+      "samples": 4,
+      "pairedLogT95IntervalPercent": [
+        2.466223582586942,
+        4.824577950579206
+      ],
+      "pairedGeometricMeanChangePercent": 3.638692780420394,
+      "pairChangesPercent": [
+        2.228422614734926,
+        5.5421505198500975,
+        4.214073379291339,
+        3.1392043047217655,
+        3.4501386908553977,
+        3.288681825561768
+      ]
+    },
+    {
+      "scene": "tank",
+      "samples": 0,
+      "pairedLogT95IntervalPercent": [
+        0.029533954210705492,
+        2.940345727017846
+      ],
+      "pairedGeometricMeanChangePercent": 1.47450324174502,
+      "pairChangesPercent": [
+        1.4124111664865602,
+        0.7028003830962914,
+        2.004983665948834,
+        4.016237524077271,
+        0.42257819027102794,
+        0.33559936481786234
+      ]
+    },
+    {
+      "scene": "tank",
+      "samples": 2,
+      "pairedLogT95IntervalPercent": [
+        -2.2852388509926604,
+        2.7131554862635894
+      ],
+      "pairedGeometricMeanChangePercent": 0.1827902146925608,
+      "pairChangesPercent": [
+        0.8358003746557152,
+        -1.496433021952559,
+        -1.954202010830608,
+        1.3708545737165956,
+        -1.7001159054210735,
+        4.183017711493164
+      ]
+    },
+    {
+      "scene": "tank",
+      "samples": 4,
+      "pairedLogT95IntervalPercent": [
+        -1.4037579859778173,
+        2.7290139775661713
+      ],
+      "pairedGeometricMeanChangePercent": 0.6414165440549718,
+      "pairChangesPercent": [
+        3.633049480729089,
+        -2.394911936081756,
+        1.535497282912801,
+        0.03506280439053988,
+        0.6507897015863628,
+        0.4852631180900069
+      ]
+    }
+  ],
+  "futureScope": "Reject this implementation only. Dense tables/fixed reservations and recording/dispatch overhead warrant separate sparse-format/local-writer and cross-triangle shading trials; no improvement or CPU-time ceiling is inferred from reference counts."
+}

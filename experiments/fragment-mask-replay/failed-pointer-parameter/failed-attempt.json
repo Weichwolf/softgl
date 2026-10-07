@@ -1,0 +1,18 @@
+{
+  "status": "GCC-ASan-UBSan-failed-before-timings",
+  "patchSha256": "bd17bd2de74091f735a31ea59f503cfd31b40200ba946a08f6d3073d0fe8b164",
+  "sourceFiles": {
+    "libsoftgl/src/workers.c": "4eb69fb854806be62ec63ec734ee876577d23a3ceed58a401ff74dab8d997255",
+    "libsoftgl/src/workers.h": "dcd7514b1e019964b131517c8e4aa429219d0bd4078dbb5d5112498dd0476cd3",
+    "libsoftgl/src/workers_queue_raw.inc": "0093c851b7397a2bd167273cb6128813158cb45166bc29b116256825213e33ce",
+    "libsoftgl/src/rasterizer.c": "bddf7efe1478556a65fd88166abf764780ed123dfafee8db7f369ce4fdd7cc5e",
+    "libsoftgl/src/raster_msaa_impl.h": "a3faf7d608308ce2d991ff37509df279c1fd53a1cc622a4054d595110dbf9f44",
+    "libsoftgl/src/raster_triangle_impl.h": "a82a12127571df40cc1d1511a420555c3532661b77cead1bf3e0ef8ff4dd8b51",
+    "libsoftgl/src/fragment_mask_stream.h": "70e6d62e31131f239956a104ba27764e3162cbbf7717d90e7e256b93c465e65e",
+    "tests/fragment_mask_replay.c": "187697be17b4fc2579a032f1839e50482302f67fa1a4da46298262edee329130",
+    "tests/CMakeLists.txt": "b6716370cb3dfb5e51fe5805308bc932fd11c5d1c75e7cfc9f27e34c6d957e12"
+  },
+  "clangFixturePassed": true,
+  "clangVariantStages": 18,
+  "gccFailure": "/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/fragment_mask_stream.h:107:6: runtime error: member access within null pointer of type 'struct sg_fragment_mask_cursor'"
+}

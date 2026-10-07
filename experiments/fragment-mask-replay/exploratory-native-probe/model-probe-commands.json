@@ -1,0 +1,24 @@
+{
+  "commands": [
+    [
+      "build/diagnostics/fragment-mask-replay/model-probe",
+      "build/assets/bmw.pack",
+      "0"
+    ],
+    [
+      "build/diagnostics/fragment-mask-replay/model-probe",
+      "build/assets/bmw.pack",
+      "2"
+    ],
+    [
+      "build/diagnostics/fragment-mask-replay/model-probe",
+      "build/assets/bmw.pack",
+      "4"
+    ]
+  ],
+  "notAcceptanceTimings": true,
+  "scope": "Six rotating native BMW frames; cumulative collector stats, not WASM counts or timing.",
+  "sourceSha256": "b114be47932c7e439309e9c0282ec6ffccf1e7219f9a8984d3664b22022bb2ef",
+  "modelSourceSha256": "cabf45628991f2dbf75407dc42260a2dd59f60d7b1c236c44b17a5ffd4b3a52a",
+  "librarySha256": "d22ee9a89833e7d498989192f554ea6225ab82e7622ab19f7f6e2e49adee6a77"
+}

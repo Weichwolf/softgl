@@ -1,0 +1,137 @@
+[  0%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/state.c.o
+[  0%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/matrix.c.o
+[  0%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/buffers.c.o
+[  0%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/texture.c.o
+[  0%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/pipeline.c.o
+[  0%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/clip.c.o
+[  0%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/fragment_write.c.o
+[ 33%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/multisample.c.o
+[ 33%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/fragment_combine.c.o
+[ 33%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/rasterizer.c.o
+[ 33%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/lines.c.o
+[ 33%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/fragment.c.o
+[ 33%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/framebuffer.c.o
+[ 33%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/lighting.c.o
+[ 33%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/api.c.o
+[ 33%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/immediate.c.o
+[ 33%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/dlist.c.o
+[ 66%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/pixels.c.o
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c: In function ‘sg_replay_stream’:
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:271:13: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  271 |             if (p) _sg_load_matrix_real((const float*)p); break; }
+      |             ^~
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:271:59: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  271 |             if (p) _sg_load_matrix_real((const float*)p); break; }
+      |                                                           ^~~~~
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:273:13: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+  273 |             if (p) _sg_mult_matrix_real((const float*)p); break; }
+      |             ^~
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:273:59: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+  273 |             if (p) _sg_mult_matrix_real((const float*)p); break; }
+      |                                                           ^~~~~
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:596:13: warning: ‘m’ may be used uninitialized [-Wmaybe-uninitialized]
+  596 |             _sg_index_mask_real(m); break; }
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:594:41: note: ‘m’ was declared here
+  594 |         case SG_OP_INDEX_MASK: { GLuint m;
+      |                                         ^
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:590:13: warning: ‘e’ may be used uninitialized [-Wmaybe-uninitialized]
+  590 |             _sg_logic_op_real(e); break; }
+      |             ^~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:588:39: note: ‘e’ was declared here
+  588 |         case SG_OP_LOGIC_OP: { GLenum e;
+      |                                       ^
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:581:13: warning: ‘p’ may be used uninitialized [-Wmaybe-uninitialized]
+  581 |             _sg_clip_plane_real(p, eq); break; }
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:578:41: note: ‘p’ was declared here
+  578 |         case SG_OP_CLIP_PLANE: { GLenum p; double eq[4];
+      |                                         ^
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:576:44: warning: ‘s’ may be used uninitialized [-Wmaybe-uninitialized]
+  576 |             sg_rd_read(&R, &s, sizeof(s)); _sg_clear_stencil_real(s); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:575:43: note: ‘s’ was declared here
+  575 |         case SG_OP_CLEAR_STENCIL: { GLint s;
+      |                                           ^
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:574:44: warning: ‘m’ may be used uninitialized [-Wmaybe-uninitialized]
+  574 |             sg_rd_read(&R, &m, sizeof(m)); _sg_stencil_mask_real(m); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:573:43: note: ‘m’ was declared here
+  573 |         case SG_OP_STENCIL_MASK: { GLuint m;
+      |                                           ^
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:556:58: warning: ‘b’ may be used uninitialized [-Wmaybe-uninitialized]
+  556 |             sg_rd_read(&R, &b, sizeof(b)); c->dlist_base = b; break; }
+      |                                            ~~~~~~~~~~~~~~^~~
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:555:40: note: ‘b’ was declared here
+  555 |         case SG_OP_LIST_BASE: { GLuint b;
+      |                                        ^
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:544:46: warning: ‘t’ may be used uninitialized [-Wmaybe-uninitialized]
+  544 |         case SG_OP_CALL_LISTS: { uint32_t n, t;
+      |                                              ^
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:548:28: warning: ‘n’ may be used uninitialized [-Wmaybe-uninitialized]
+  548 |             size_t bytes = (size_t)n * esz;
+      |                            ^~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:544:43: note: ‘n’ was declared here
+  544 |         case SG_OP_CALL_LISTS: { uint32_t n, t;
+      |                                           ^
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:543:13: warning: ‘id’ may be used uninitialized [-Wmaybe-uninitialized]
+  543 |             sg_dlist_replay(c, id); break; }
+      |             ^~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:541:40: note: ‘id’ was declared here
+  541 |         case SG_OP_CALL_LIST: { GLuint id;
+      |                                        ^~
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:536:44: warning: ‘i’ may be used uninitialized [-Wmaybe-uninitialized]
+  536 |             sg_rd_read(&R, &i, sizeof(i)); _sg_array_element_real(i); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:535:43: note: ‘i’ was declared here
+  535 |         case SG_OP_ARRAY_ELEMENT: { GLint i;
+      |                                           ^
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:531:44: warning: ‘v’ may be used uninitialized [-Wmaybe-uninitialized]
+  531 |             sg_rd_read(&R, &v, sizeof(v)); _sg_cur_edgeflag_real(v); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:530:40: note: ‘v’ was declared here
+  530 |         case SG_OP_CUR_EDGEFLAG: { int v;
+      |                                        ^
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:529:13: warning: ‘u’ may be used uninitialized [-Wmaybe-uninitialized]
+  529 |             _sg_cur_texcoord_real(u, v[0],v[1],v[2],v[3]); break; }
+      |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:526:45: note: ‘u’ was declared here
+  526 |         case SG_OP_CUR_TEXCOORD: { uint32_t u; float v[4];
+      |                                             ^
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:518:44: warning: ‘e’ may be used uninitialized [-Wmaybe-uninitialized]
+  518 |             sg_rd_read(&R, &e, sizeof(e)); _sg_begin_real(e); break; }
+      |                                            ^~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:517:36: note: ‘e’ was declared here
+  517 |         case SG_OP_BEGIN: { GLenum e;
+      |                                    ^
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:496:44: warning: ‘e’ may be used uninitialized [-Wmaybe-uninitialized]
+  496 |             sg_rd_read(&R, &e, sizeof(e)); _sg_client_active_tex_real(e); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:495:48: note: ‘e’ was declared here
+  495 |         case SG_OP_CLIENT_ACTIVE_TEX: { GLenum e;
+      |                                                ^
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:474:44: warning: ‘e’ may be used uninitialized [-Wmaybe-uninitialized]
+  474 |             sg_rd_read(&R, &e, sizeof(e)); _sg_disable_client_state_real(e); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:473:45: note: ‘e’ was declared here
+  473 |         case SG_OP_DISABLE_CLIENT: { GLenum e;
+      |                                             ^
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:472:44: warning: ‘e’ may be used uninitialized [-Wmaybe-uninitialized]
+  472 |             sg_rd_read(&R, &e, sizeof(e)); _sg_enable_client_state_real(e); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:471:44: note: ‘e’ was declared here
+  471 |         case SG_OP_ENABLE_CLIENT: { GLenum e;
+      |                                            ^
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:268:44: warning: ‘m’ may be used uninitialized [-Wmaybe-uninitialized]
+  268 |             sg_rd_read(&R, &m, sizeof(m)); _sg_matrix_mode_real(m); break; }
+      |                                            ^~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay-cursor/source-root/libsoftgl/src/dlist.c:267:42: note: ‘m’ was declared here
+  267 |         case SG_OP_MATRIX_MODE: { GLenum m;
+      |                                          ^
+[ 66%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/evaluators.c.o
+[ 66%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/workers.c.o
+[ 66%] Linking C static library libsoftgl.a
+[ 66%] Built target softgl
+[ 66%] Building C object tests/CMakeFiles/fragment_mask_replay_contract.dir/fragment_mask_replay.c.o
+[100%] Linking C executable fragment_mask_replay_contract
+[100%] Built target fragment_mask_replay_contract

@@ -1,0 +1,19 @@
+Direct replay: 512 exact full-plane wide-edge/centroid/depth cases, 128 empty geometric streams
+0x raw grid: 16 exact plane/query stages; allocated=0 retained=0 replayed=0 overflow=0 budget_peak=0 fallback=0
+0x raw wide: 16 exact plane/query stages; allocated=0 retained=0 replayed=0 overflow=0 budget_peak=0 fallback=0
+0x raw oversized: 16 exact plane/query stages; allocated=0 retained=0 replayed=0 overflow=0 budget_peak=0 fallback=0
+0x packed grid: 16 exact plane/query stages; allocated=0 retained=0 replayed=0 overflow=0 budget_peak=0 fallback=0
+0x packed wide: 16 exact plane/query stages; allocated=0 retained=0 replayed=0 overflow=0 budget_peak=0 fallback=0
+0x packed oversized: 16 exact plane/query stages; allocated=0 retained=0 replayed=0 overflow=0 budget_peak=0 fallback=0
+2x raw grid: 16 exact plane/query stages; allocated=16 retained=34738 replayed=36227 overflow=0 budget_peak=1107968 fallback=72573
+2x raw wide: 16 exact plane/query stages; allocated=16 retained=25632 replayed=27185 overflow=229890 budget_peak=1249280 fallback=251343
+2x raw oversized: 16 exact plane/query stages; allocated=0 retained=0 replayed=0 overflow=0 budget_peak=0 fallback=0
+2x packed grid: 16 exact plane/query stages; allocated=16 retained=34738 replayed=36227 overflow=0 budget_peak=1370112 fallback=72573
+2x packed wide: 16 exact plane/query stages; allocated=16 retained=25632 replayed=27185 overflow=229890 budget_peak=1249280 fallback=251343
+2x packed oversized: 16 exact plane/query stages; allocated=0 retained=0 replayed=0 overflow=0 budget_peak=0 fallback=0
+4x raw grid: 16 exact plane/query stages; allocated=16 retained=38404 replayed=38701 overflow=73 budget_peak=1107968 fallback=78035
+4x raw wide: 16 exact plane/query stages; allocated=16 retained=25520 replayed=27058 overflow=230270 budget_peak=1249280 fallback=251470
+4x raw oversized: 16 exact plane/query stages; allocated=0 retained=0 replayed=0 overflow=0 budget_peak=0 fallback=0
+4x packed grid: 16 exact plane/query stages; allocated=16 retained=38404 replayed=38701 overflow=73 budget_peak=1370112 fallback=78035
+4x packed wide: 16 exact plane/query stages; allocated=16 retained=25520 replayed=27058 overflow=230270 budget_peak=1249280 fallback=251470
+4x packed oversized: 16 exact plane/query stages; allocated=0 retained=0 replayed=0 overflow=0 budget_peak=0 fallback=0

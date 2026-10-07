@@ -1,0 +1,32 @@
+{
+  "status": "sanitizer-failed-no-timings",
+  "hypothesis": "Local assembly and wrapped UBSan show a synthesized null argument while the actual TLS cursor/read/end are nonnull; possible compiler instrumentation fault, not yet accepted as resolved.",
+  "files": {
+    "asan-debug-run.log": "4f7abcea8953ed4098ed00eb47c0f8080a39912a7313502b739bdfb7bfaef999",
+    "asan-full-tests.log": "d6a81bd110ff0a76fadffffe46356e0f698341b0460b2207d7bcb127a4b2bd9f",
+    "asan-tls-check.asm": "d1d41e14f5f6520c6c1c33cd5bb40b185461cec917e5590e0644bd6ab32fdf20",
+    "asan-wrapped-link.json": "f17947ba8b45a2807b952beb08cd7f9648f7e3a075b27b7ffbfc245cb9aefa09",
+    "asan-wrapped-run.log": "32a58267a97f26d4536fdccc660e5effbc2cb17b3242747e62e1e6fcd03146ea",
+    "candidate-source/libsoftgl/src/fragment_mask_stream.h": "1ef2a69459188553517a7ca114b07eec0ad64066f22e5db30a70d852044b91d0",
+    "candidate-source/libsoftgl/src/raster_msaa_impl.h": "cbac42f3dd6560677ff67203197bee70c05c73f3e8f86690fded69e23f7bab77",
+    "candidate-source/libsoftgl/src/raster_triangle_impl.h": "a82a12127571df40cc1d1511a420555c3532661b77cead1bf3e0ef8ff4dd8b51",
+    "candidate-source/libsoftgl/src/rasterizer.c": "bddf7efe1478556a65fd88166abf764780ed123dfafee8db7f369ce4fdd7cc5e",
+    "candidate-source/libsoftgl/src/workers.c": "4eb69fb854806be62ec63ec734ee876577d23a3ceed58a401ff74dab8d997255",
+    "candidate-source/libsoftgl/src/workers.h": "dcd7514b1e019964b131517c8e4aa429219d0bd4078dbb5d5112498dd0476cd3",
+    "candidate-source/libsoftgl/src/workers_queue_raw.inc": "0093c851b7397a2bd167273cb6128813158cb45166bc29b116256825213e33ce",
+    "candidate-source/tests/CMakeLists.txt": "b6716370cb3dfb5e51fe5805308bc932fd11c5d1c75e7cfc9f27e34c6d957e12",
+    "candidate-source/tests/fragment_mask_replay.c": "187697be17b4fc2579a032f1839e50482302f67fa1a4da46298262edee329130",
+    "early-gate-process.json": "01d48ec1e3bd87fe38c39855ddef64e0076d3f6184cfba315f4b0b90d01b1694",
+    "early-gates-driver.log": "e963cdbf8656c480f3fec281f5910cd38b9b47a44933a02583764c919bad8af7",
+    "native-full-bench.log": "4c997ff9bfab35b5b8e73302cf81a28587339d88fc0b228fc18c4ea8590dbe86",
+    "native-full-build.log": "360c07c6b19ffb5da08ea2d65803f71901adf4b98203e78718dd26424adefb16",
+    "native-full-tests.log": "af9feeb90b72d243b0a5a9c9ebeb01f3c70bc1e85be08f5571ccce8710c4a37d",
+    "object-comparison.json": "8b4e1f0e481e9aa11ee7af4006b87ebdfd4a9bc6291593b56cfbdad5d0b4e9a1",
+    "patch-reconstruction.json": "79d85ef5ce1712e7a15f8418e863df3257e57abd2a820ca6668fd95241d7f962",
+    "producer-commands.json": "a01176c6acaa713b1ddfae64e233a8c2780c9cf70f3ff50962effe9c69f04358",
+    "producer-driver.log": "cb3a4b8c16638303ffdf52e8f28e5f22a069ef2b2d8d1fec9facb7f1a28b9604",
+    "source.patch": "54c55cac78f0d14acd5ff57ac8137a3cd55ee6990023332fa13a7d3ccfc56a68",
+    "validation.json": "2a68b879a3f17a64d3df112fd62557cc47fb8577ca368406adcb0d9642ea5c97",
+    "wasm-build.log": "47c672358867ac6107708a2707c7d8e63b3cc448614d4194cfa95b13a18a09c2"
+  }
+}
