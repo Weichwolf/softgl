@@ -57,6 +57,7 @@
 | [msaa4-partial-shader-packets](msaa4-partial-shader-packets/README.md) | Rejected | Masked triangle-tail packets did not yield a reproducible BMW improvement. |
 | [msaa4-post-depth-opaque](msaa4-post-depth-opaque/README.md) | Accepted | Reuses four-sample depth masks for exact opaque stores. |
 | [off-capture-dispatch](off-capture-dispatch/README.md) | Rejected | Relocating capture selection regresses BMW MSAA modes. |
+| [off-edge-mask](off-edge-mask/README.md) | Rejected | Two fewer bitmask calls per off root do not reproduce BMW off gains; BMW4 slows +0.650%/+2.177% across audits. |
 | [off-pixel-bound](off-pixel-bound/README.md) | Not retained | A small BMW off gain does not justify BMW 4x and T-80 off costs. |
 | [off-pixel-packing](off-pixel-packing/README.md) | Rejected | Within-triangle packing improves BMW off/2x but regresses its 4x mode. |
 | [ordered-draw-queue](ordered-draw-queue/README.md) | Accepted | Queues ordered immutable multitexture draws with independent stripe progress. |
