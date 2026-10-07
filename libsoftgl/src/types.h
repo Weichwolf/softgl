@@ -301,6 +301,9 @@ struct softgl_ctx {
     GLuint    current_query[SG_QUERY_TARGET_COUNT];  /* 0 = none */
 
     softgl_vertex_attributes_fn vertex_attributes;
+    softgl_vertex_attributes_full_fn vertex_attributes_full;
+    int fused_dot3_enabled, fused_dot3_quartic;
+    float fused_dot3_tint[4];
     void *vertex_attribute_data;
     GLuint vertex_attribute_unit;
 

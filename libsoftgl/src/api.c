@@ -32,6 +32,25 @@ void softgl_set_vertex_attributes(softgl_vertex_attributes_fn program, void *use
     if (c->imm_active) { sg_set_error(GL_INVALID_OPERATION); return; }
     if (texture_unit >= SG_MAX_TEX_UNITS) { sg_set_error(GL_INVALID_VALUE); return; }
     c->vertex_attributes = program;
+    c->vertex_attributes_full = NULL;
     c->vertex_attribute_data = user;
     c->vertex_attribute_unit = texture_unit;
+}
+
+void softgl_set_vertex_attributes_full(softgl_vertex_attributes_full_fn program, void *user) {
+    softgl_ctx *c = sg_current();
+    if (!c) return;
+    if (c->imm_active) { sg_set_error(GL_INVALID_OPERATION); return; }
+    c->vertex_attributes = NULL;
+    c->vertex_attributes_full = program;
+    c->vertex_attribute_data = user;
+}
+
+void softgl_set_fused_dot3_material(const GLfloat tint[4], GLboolean quartic) {
+    softgl_ctx *c = sg_current();
+    if (!c) return;
+    if (c->imm_active) { sg_set_error(GL_INVALID_OPERATION); return; }
+    c->fused_dot3_enabled = tint != NULL;
+    c->fused_dot3_quartic = quartic != 0;
+    if (tint) for (int j = 0; j < 4; j++) c->fused_dot3_tint[j] = tint[j];
 }

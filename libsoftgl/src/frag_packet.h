@@ -252,7 +252,7 @@ SG_INLINE unsigned sg_shade_packet(const softgl_ctx *c, const sg_tex_tri_ctx *t,
         sg_f32x4 d = sg_chain_clamp(sg_f32x4_mul(sg_f32x4_splat(4.f),
             sg_f32x4_add(sg_f32x4_add(dot[0], dot[1]), dot[2])));
         color[3] = sg_chain_clamp(color[3]);
-        for (int k = 0; k < 3; k++) {
+        for (int k = 0; k < 3 && t->combine_kind < 4; k++) {
             sg_f32x4 s = t->combine_kind == 1
                 ? sg_f32x4_add(d, sg_f32x4_splat(c->tex_env[1].env_color[k])) : sg_f32x4_mul(d, d);
             s = sg_chain_clamp(s);
@@ -262,6 +262,28 @@ SG_INLINE unsigned sg_shade_packet(const softgl_ctx *c, const sg_tex_tri_ctx *t,
         }
         color[3] = t->combine_kind == 1 ? sg_chain_clamp(sg_f32x4_mul(color[3], tex[2][3]))
             : sg_f32x4_splat(sg_clampf(c->tex_env[3].env_color[3], 0.f, 1.f));
+        if (t->combine_kind >= 4) {
+            sg_f32x4 h[3];
+            for (int k = 0; k < 3; k++) {
+                const float *a = &v0->uv[1].x, *b = &v1->uv[1].x, *e = &v2->uv[1].x;
+                sg_f32x4 encoded = sg_packet_lerp(a[k], b[k], e[k], w0, w1, w2, inverse);
+                h[k] = sg_f32x4_mul(sg_f32x4_sub(tex[0][k], half), sg_f32x4_sub(encoded, half));
+            }
+            sg_f32x4 specular = sg_chain_clamp(sg_f32x4_mul(sg_f32x4_splat(4.f),
+                sg_f32x4_add(sg_f32x4_add(h[0], h[1]), h[2])));
+            specular = sg_f32x4_mul(specular, specular);
+            if (t->combine_kind == 5) specular = sg_f32x4_mul(specular, specular);
+            for (int k = 0; k < 3; k++) {
+                sg_f32x4 diffuse = sg_chain_clamp(sg_f32x4_add(d, sg_f32x4_splat(c->tex_env[1].env_color[k])));
+                diffuse = sg_chain_clamp(sg_f32x4_mul(diffuse, tex[2][k]));
+                diffuse = sg_chain_clamp(sg_f32x4_add(diffuse, tex[3][k]));
+                sg_f32x4 tinted = sg_chain_clamp(sg_f32x4_mul(specular, sg_f32x4_splat(c->fused_dot3_tint[k])));
+                color[k] = sg_chain_clamp(sg_f32x4_add(diffuse, sg_f32x4_mul(tinted,
+                    sg_f32x4_splat(sg_clampf(c->fused_dot3_tint[3], 0.f, 1.f)))));
+            }
+            color[3] = sg_chain_clamp(sg_f32x4_mul(
+                sg_packet_lerp(v0->color.w, v1->color.w, v2->color.w, w0, w1, w2, inverse), tex[2][3]));
+        }
     }
     _MM_TRANSPOSE4_PS(color[0], color[1], color[2], color[3]);
     for (int l = 0; l < 4; l++) sg_f32x4_store(result[l], color[l]);

@@ -288,6 +288,12 @@ static void sg_process_vertex(softgl_ctx *c, int index, sg_vert *out,
         }
     }
     sg_fetch_vertex_attributes(c, index, out, normal, color, inputs);
+    if (c->vertex_attributes_full) {
+        float texcoord[SG_MAX_TEX_UNITS][4];
+        memcpy(texcoord, out->uv, sizeof(texcoord));
+        c->vertex_attributes_full(c->vertex_attribute_data, (GLuint)index, color, texcoord);
+        memcpy(out->uv, texcoord, sizeof(texcoord));
+    }
     if (c->vertex_attributes) {
         float texcoord[4];
         memcpy(texcoord, &out->uv[c->vertex_attribute_unit], sizeof(texcoord));

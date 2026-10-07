@@ -116,7 +116,8 @@
 | [wasm-phase-conversion](wasm-phase-conversion/README.md) | Held | Native WASM proposal conversion remained correct but did not reproduce a BMW gain. |
 | [wasm-pseudo-clamps](wasm-pseudo-clamps/README.md) | Accepted | Uses direct WASM pseudo-min/max for the validated clamp path. |
 | [whole-pipeline-static-kernels](whole-pipeline-static-kernels/README.md) | Proposed | Bounded C11 kernels specialize complete hot draw pipelines beyond rejected eligibility/DOT3 helpers; no measured gain. |
-| [glimpsw-mesa-comparison](glimpsw-mesa-comparison/README.md) | Native baseline | 640x360: SoftGL beats Mesa on BMW/T-80, trails on Sponza/Bistro; GLimpSW faster with different rendering; 72 quiet accepted timings. |
+| [glimpsw-mesa-comparison](glimpsw-mesa-comparison/README.md) | Current 93e2356 | 640x360/off: SoftGL frame time vs Mesa BMW -38.16%, T-80 -44.78%, Sponza -6.14%, Bistro +1.32%; GLimpSW still faster; 72 quiet timings. |
 | [visible-vertex-attributes](visible-vertex-attributes/README.md) | Accepted | Worker attributes after culling: Bistro -11–12%, other scenes -3–8%, all twelve images identical. |
 | [bounded-queue-wakeup](bounded-queue-wakeup/README.md) | Accepted | Bounded generation/queue polling: BMW/Bistro -5–7%, T-80 -3–4%, Sponza -1.5%; all images identical. |
 | [packed-queue-admission](packed-queue-admission/README.md) | Accepted | Sponza -12–15%, T-80 -6.5–10.3%, Bistro -3.5–5%, BMW mixed within 0.25%; all images identical. |
+| [fused-material-pass](fused-material-pass/README.md) | Accepted | One material pass: BMW -21–27%, T-80 -25–26%, Sponza -27–30%, Bistro -39–40% frame time across off/2x/4x; 108 identical coverage comparisons, small documented color differences. |

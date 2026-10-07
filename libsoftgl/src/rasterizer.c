@@ -142,7 +142,21 @@ SG_INLINE int sg_shade_pixel(softgl_ctx *c,
                                 w0, w1, w2, one_over_wsum,
                                 unit_tex, unit_active);
         if (tctx->combine_kind) {
-            sg_dot3_chain_shade(tctx->combine_kind, c->tex_env, primary, unit_tex, col);
+            if (tctx->combine_kind >= 4) {
+                float half_vector[4];
+                sg_lerp_pc(half_vector, &v0->uv[1], &v1->uv[1], &v2->uv[1],
+                           w0, w1, w2, one_over_wsum);
+                sg_dot3_chain_shade(1, c->tex_env, primary, unit_tex, col);
+                float d = 4.f * ((unit_tex[0][0] - .5f) * (half_vector[0] - .5f)
+                              + (unit_tex[0][1] - .5f) * (half_vector[1] - .5f)
+                              + (unit_tex[0][2] - .5f) * (half_vector[2] - .5f));
+                d = sg_clampf(d, 0.f, 1.f); d *= d;
+                if (tctx->combine_kind == 5) d *= d;
+                for (int k = 0; k < 3; k++) {
+                    float specular = sg_clampf(d * c->fused_dot3_tint[k], 0.f, 1.f);
+                    col[k] = sg_clampf(col[k] + specular * sg_clampf(c->fused_dot3_tint[3], 0.f, 1.f), 0.f, 1.f);
+                }
+            } else sg_dot3_chain_shade(tctx->combine_kind, c->tex_env, primary, unit_tex, col);
         } else {
             for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
                 if (!unit_active[u]) continue;

@@ -59,3 +59,22 @@ final receipts identify accepted records and binary/source/asset hashes.
 At 640x360, libsoftgl uses about 29.7%/31.3% less frame time than Mesa
 for BMW/T-80, but 42.9%/55.3% more for Sponza/Bistro. GLimpSW is faster
 for all four under its different pipeline; these are not identical-image ratios.
+
+## Current accepted renderer: 93e2356
+
+Fresh 640x360/off comparison: 72 accepted timings, 18 rejected timings in three
+whole noisy blocks; six quiet timings per renderer/scene. Same reference binaries,
+prepared assets and cameras as above. [Summary](current-93/summary.json) and
+[source/binary/asset receipt including rejected attempts](current-93/receipt.json).
+Median complete-frame milliseconds, GLimpSW / Mesa / libsoftgl: BMW
+2.180 / 36.141 / 22.348; T-80 1.728 / 30.335 / 16.750; Sponza
+3.780 / 64.781 / 60.807; Bistro 6.024 / 167.464 / 169.680. Libsoftgl uses
+38.16% / 44.78% / 6.14% less frame time than Mesa in the first three scenes;
+Bistro remains 1.32% slower. GLimpSW remains substantially faster under its
+different lighting/visibility pipeline. No higher-resolution measurements run.
+
+```sh
+python3 experiments/glimpsw-mesa-comparison/current_compare.py \
+  --softgl build/packed-queue-admission/native/candidate \
+  --output tmp/current-three-renderers/93e2356
+```

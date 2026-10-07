@@ -943,6 +943,12 @@ const void *softgl_read_rgba8(softgl_ctx *c);
 typedef void (*softgl_vertex_attributes_fn)(void *user, GLuint index,
     GLfloat color[4], GLfloat texcoord[4]);
 void softgl_set_vertex_attributes(softgl_vertex_attributes_fn program, void *user, GLuint texture_unit);
+/* Private experiment: same lifetime/purity contract, all four raw coordinates. */
+typedef void (*softgl_vertex_attributes_full_fn)(void *user, GLuint index,
+    GLfloat color[4], GLfloat texcoord[4][4]);
+void softgl_set_vertex_attributes_full(softgl_vertex_attributes_full_fn program, void *user);
+/* NULL restores GL fragment combiners; constants are copied into draw state. */
+void softgl_set_fused_dot3_material(const GLfloat tint[4], GLboolean quartic);
 
 
 #ifdef __cplusplus

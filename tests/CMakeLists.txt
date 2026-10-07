@@ -14,6 +14,12 @@ target_link_libraries(vertex_attributes_contract PRIVATE softgl)
 add_test(NAME vertex_attributes_contract COMMAND vertex_attributes_contract)
 set_tests_properties(vertex_attributes_contract PROPERTIES TIMEOUT 30)
 
+add_executable(fused_material_contract fused_material.c)
+target_include_directories(fused_material_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_link_libraries(fused_material_contract PRIVATE softgl)
+add_test(NAME fused_material_contract COMMAND fused_material_contract)
+set_tests_properties(fused_material_contract PROPERTIES TIMEOUT 90)
+
 add_executable(static_cluster_contract static_cluster_culling.c)
 target_include_directories(static_cluster_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
 target_link_libraries(static_cluster_contract PRIVATE softgl)

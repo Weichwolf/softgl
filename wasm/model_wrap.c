@@ -275,6 +275,31 @@ static void generate_attributes(void *user, GLuint index, GLfloat color[4], GLfl
     color[3] = 1.f;
 }
 
+static void generate_fused_attributes(void *user, GLuint index, GLfloat color[4], GLfloat uv[4][4]) {
+    const model_attribute_program *program = user;
+    const float *v = program->vertices+(size_t)index*STATIC_STRIDE;
+    const float *n = v+3, *t = v+8, *matrix = program->matrix;
+    const float *light = program->object_light;
+    float b[3] = {(n[1]*t[2]-n[2]*t[1])*v[11], (n[2]*t[0]-n[0]*t[2])*v[11], (n[0]*t[1]-n[1]*t[0])*v[11]};
+    float eye[3], eye_normal[3], half[3];
+    for (int j = 0; j < 3; j++) {
+        eye[j] = matrix[j]*v[0]+matrix[4+j]*v[1]+matrix[8+j]*v[2]+matrix[12+j];
+        eye_normal[j] = matrix[j]*n[0]+matrix[4+j]*n[1]+matrix[8+j]*n[2];
+    }
+    float inv_eye = 1.f/sqrtf(eye[0]*eye[0]+eye[1]*eye[1]+eye[2]*eye[2]);
+    for (int j = 0; j < 3; j++)
+        half[j] = light[j]-(matrix[j*4]*eye[0]+matrix[j*4+1]*eye[1]+matrix[j*4+2]*eye[2])*inv_eye;
+    float inv_half = 1.f/sqrtf(fmaxf(half[0]*half[0]+half[1]*half[1]+half[2]*half[2], 1e-20f));
+    const float *basis[] = {t, b, n};
+    for (int j = 0; j < 3; j++) {
+        color[j] = .5f+.5f*(basis[j][0]*light[0]+basis[j][1]*light[1]+basis[j][2]*light[2]);
+        uv[1][j] = .5f+.5f*(basis[j][0]*half[0]+basis[j][1]*half[1]+basis[j][2]*half[2])*inv_half;
+    }
+    float dot = eye[0]*eye_normal[0]+eye[1]*eye_normal[1]+eye[2]*eye_normal[2];
+    for (int j = 0; j < 3; j++) uv[3][j] = eye[j]-2.f*dot*eye_normal[j];
+    color[3] = uv[1][3] = uv[3][3] = 1.f;
+}
+
 static void prepare_attribute_program(const float matrix[16]) {
     float light[3] = {.45f, .75f, .65f}, length = sqrtf(.45f*.45f+.75f*.75f+.65f*.65f);
     for (int j = 0; j < 3; j++) light[j] /= length;
@@ -322,7 +347,9 @@ static void draw_part(const model_part *part, int specular) {
     attribute_program.specular = specular;
     const float *all_vertices = attribute_program.vertices;
     attribute_program.vertices = all_vertices+(size_t)part->vertex*STATIC_STRIDE;
-    softgl_set_vertex_attributes(generate_attributes, &attribute_program, 3);
+    if (!specular && m->alpha_mode != 2)
+        softgl_set_vertex_attributes_full(generate_fused_attributes, &attribute_program);
+    else softgl_set_vertex_attributes(generate_attributes, &attribute_program, 3);
 #else
     glBindBuffer(GL_ARRAY_BUFFER, G.dynamic_vbo);
     base = (uintptr_t)part->vertex*DYNAMIC_STRIDE*sizeof(float);
@@ -360,10 +387,17 @@ static void draw_part(const model_part *part, int specular) {
         glTexCoordPointer(3, GL_FLOAT, DYNAMIC_STRIDE*sizeof(float), (const void*)(base+32));
 #endif
     }
+#ifdef SOFTGL_MODEL_VERTEX_ATTRIBUTES
+    float fused_tint[4];
+    for (int j = 0; j < 3; j++) fused_tint[j] = .25f*((1.f-m->metallic)*.04f+m->metallic*m->base[j]+.04f*m->coat);
+    fused_tint[3] = m->alpha_mode == 0 ? 1.f : m->base[3];
+    softgl_set_fused_dot3_material(!specular && m->alpha_mode != 2 ? fused_tint : NULL, m->roughness < .6f);
+#endif
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, G.ebo);
     glDrawElements(GL_TRIANGLES, (GLsizei)part->count, GL_UNSIGNED_INT, (const void*)((uintptr_t)part->first*4));
 #ifdef SOFTGL_MODEL_VERTEX_ATTRIBUTES
     softgl_set_vertex_attributes(NULL, NULL, 0);
+    softgl_set_fused_dot3_material(NULL, GL_FALSE);
     attribute_program.vertices = all_vertices;
 #endif
 }
@@ -408,7 +442,10 @@ void sg_model_render(float angle, int w, int h) {
         } else draw_part(p, 0);
     }
     glEnable(GL_BLEND); glBlendFunc(GL_SRC_ALPHA, GL_ONE); glDepthMask(GL_FALSE); glDepthFunc(GL_LEQUAL);
+#ifndef SOFTGL_MODEL_VERTEX_ATTRIBUTES
     for (unsigned i = 0; i < G.parts; i++) if (G.material[G.part[i].material].alpha_mode != 2) draw_part(&G.part[i], 1);
+#endif
+    /* SoftGL worker attributes evaluate nontransparent specular in the first pass. */
     for (unsigned i = 0; i < transparent; i++) {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); draw_part(&G.part[G.order[i]], 0);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE); draw_part(&G.part[G.order[i]], 1);

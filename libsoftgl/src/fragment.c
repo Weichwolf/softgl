@@ -130,6 +130,11 @@ void sg_tex_tri_prepare(softgl_ctx *c, sg_tex_tri_ctx *t) {
         for (int i = 0; i < count; i++) t->sample_mask |= source_texture(env->src_a[i], u);
     }
     if (n_active == 4) t->combine_kind = sg_dot3_chain_kind(c, t);
+    if (t->combine_kind == 1 && c->fused_dot3_enabled) {
+        t->combine_kind = c->fused_dot3_quartic ? 5 : 4;
+        /* Unit 1 carries the half vector, including in packed raster vertices. */
+        t->sample_mask |= 1u << 1;
+    }
 }
 
 /* Generic sampler: populate unit_tex/unit_active for all enabled units. */

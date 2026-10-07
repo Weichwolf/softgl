@@ -303,7 +303,8 @@ static int sg_queue_submit(softgl_ctx *c, sg_worker_pool *p, sg_geometry_entry *
         unsigned uv_mask = 0;
         for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
             if ((texture_context.sample_mask & (1u << u)) &&
-                !texture_context.unit[u].constant_color_valid)
+                (!texture_context.unit[u].constant_color_valid ||
+                 (u == 1 && texture_context.combine_kind >= 4)))
                 uv_mask |= 1u << u;
         }
         sg_packed_vertex_layout(&layout, uv_mask, p->prepared_transformed);

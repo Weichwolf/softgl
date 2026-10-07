@@ -1,0 +1,90 @@
+{
+  "candidateSha256": "a5251d3455e1c0fc4821897a15e0ba0a501a4ba4f24a928cae680b14c73e985a",
+  "nativeBenchWrapperSha256": "c22f3cf9a31f0f93c0a517bbc442e2886d6c7142d11a45ab813cf758e3521761",
+  "mesaGuardedCandidateSha256": "a5251d3455e1c0fc4821897a15e0ba0a501a4ba4f24a928cae680b14c73e985a",
+  "mesaGuardedWrapperSha256": "d239f85adcb9fbf0093dfa8e9824a6cd35b2fc9b59901ddb25e9587c95b887ce",
+  "binaryUnchangedAfterMesaGuards": true,
+  "nativeCTest": {
+    "passed": 748,
+    "failed": 0,
+    "logSha256": "45e3c744572d26c3c5ab7dd9290ad11e093708e3111bfab853fac044c3999a54"
+  },
+  "privateContract": {
+    "pairedFrames": 372,
+    "passed": true,
+    "logSha256": "b9f05876fd68f18a78be7acea86f63cec1370ac0e019bdec4ad7d1e5d3121c1f"
+  },
+  "asanUbsan": {
+    "compiler": "Clang 19",
+    "passed": 4,
+    "tests": [
+      "vertex_attributes_contract",
+      "fused_material_contract",
+      "packed_queue_admission_contract",
+      "ordered_draw_queue_contract"
+    ],
+    "launcherSha256": "789d18c94043657f975aa8ddffa67c4d56abc10aa22a6233c83080bb5a58fa81",
+    "logSha256": "de077c0bd1d7348b3a695a8fc6d80c8a1e21ff8c61f6353ffd2aacfe3bc8c8ab"
+  },
+  "coveragePairs": 108,
+  "productionSourcesSha256": {
+    "CMakeLists.txt": "03de392d67f33b5183e43bdc2a5b26e04bec31823e36a4def7ec2b4c9de8afbd",
+    "include/GL/softgl.h": "685e34db74ff0ef22d8f3da408ed6b5c5e75ddb4388f30e3f29f7dec97887398",
+    "src/api.c": "a1d20ca4078ec75d491139439629da005733539ed2ebb61449de15d35cafab50",
+    "src/buffers.c": "a0363363f060dc9cbd99a64703496e1e702c2cf82beb42b16a54337b524be2ff",
+    "src/clip.c": "f5c0b940f54a4aa52a2d55785de31d72c168d381b53012e408179f81381de3cc",
+    "src/cluster_cull.h": "b639ef7e507d28512549feda7e272e0bef855acf6fd1c8e8cad96cae6ad228d9",
+    "src/dlist.c": "e7446f33b3972e4384c103c2547869dfffad43c900e1f55bf6f8c38eaf36eae8",
+    "src/dlist.h": "4bc8e0e5966f5b226c8e086ead9a635fd6158eed18b0c55e4b4c2ed0bdbda033",
+    "src/evaluators.c": "69281ca9f25e0f7d5cc1f76f31fb17502c83b60ea6168bbbae238e65227344ba",
+    "src/frag_combine_hot.h": "e801062d6fe0ce8ade5f12730ba4cb1441689ba6bd39a331a308bc99e29f72cc",
+    "src/frag_hot.h": "e0e1cba7afec1b2c13a53a8198207d868fa0636a84ee98e059f238d131dca52e",
+    "src/frag_packet.h": "5922f2bb33d62503a75783df0711898bdf84d772dc6d3b0bba7f05612725b5ca",
+    "src/fragment.c": "862260cb8f08518897bdd215866aa133a356e6b2afcc0af51e7dc631b41cec3c",
+    "src/fragment_combine.c": "b7af7972265bf0ac384379fcba6885e93707cdd8a0de956f691ad28ed1dd7153",
+    "src/fragment_write.c": "6c806d57d87ff4ed31ecdf502be6f77772497696a607633edf71c9971da66f1d",
+    "src/framebuffer.c": "7c82e1f52d5b2c2e7d9752d155f379109a8791c41b147713cfb14f2788e1a974",
+    "src/immediate.c": "80b520a3c3c14e675eeca5d3083c5dbe423e9684a69b868446f85e99ef86534c",
+    "src/index_range.h": "4d0456bd563031b7b4ff1184bfb6fa513908ae4047bd5f6f83dc8a7f57d8bb03",
+    "src/lighting.c": "1e6db9b4f59e2a54b1f6b89e6bc129d206dc816aaa08f099d80e6f8f2f42e338",
+    "src/lines.c": "b08fef911685977a08d6f2b29265aa28721aa0497a1a208c492403bdde0bbe87",
+    "src/matrix.c": "fd5bff0e263cd87d1032fad4fa75f966f76b2cc605b746d47e3d4eeabde6d793",
+    "src/msaa_additive.h": "6fab4198defe4db18a83f1562034807e71957ba07db0c0bd51f2e26c90d4778f",
+    "src/multisample.c": "2ba7fe2df9c8afed9acf1daa5ea48df6fbe8b5c0cceeac11bd61c3804423ea1d",
+    "src/multisample.h": "cdbe1e0aa51827f13789ce7f46e3acc961e0b87c5d034e1c7ba22fe54c611315",
+    "src/pipeline.c": "fb559aa949d0e4211044451c9456f22e928982fb03c6f9132c199b316a2edfe3",
+    "src/pixels.c": "8e366864ac1418564d2342bd3c120ad5e8057998af21ff31ccb5663134ddfc92",
+    "src/raster_hz.h": "1cc4a6fe6f5a425607cb3b8a57d15cb19d5de537794c638b673f0bd4a14b4ed6",
+    "src/raster_msaa_impl.h": "a9048bd2e89e96d87f407d17471e50c48d35c187aa20719b5e6af3d1d026eeec",
+    "src/raster_store.h": "251cbe4d9765edfc26b4428d7d5906ab17722689feae08eac432db59a7b22934",
+    "src/raster_triangle_impl.h": "2a78075d138dd00d6d95c92adc922de9e11bc316cb5a3b03f3739974492ca24f",
+    "src/raster_types.h": "0b050bdbf31f6c398366112c84a6041390a50398d1e18acafe4c7440a0700f45",
+    "src/raster_vertex_pack.h": "956a8084b973144a9d8ee28c0d485214e3e8551a7384238f610620e00ad6e528",
+    "src/rasterizer.c": "48cca1e05865908dc3914edf6c641850975ad14e97c7d51dc934d0c5d06182a2",
+    "src/simd.h": "44b532f4427f3e76886228dfe96024adf3ba1c1c748c7031d2fff2413db9c608",
+    "src/state.c": "bffa3243dffdbef27ddc90c7ad6f2394d393f0dc47bf1d3797b2b5b63e8a875c",
+    "src/texture.c": "9c4d999c73b68a7431bd1f0e88c2d3d2e7e1931670ad166ffee535f8d5764c45",
+    "src/types.h": "3eaadc5b7f5eeaf3d225ebe095c5a7a9de1df4a593ab1b496304d5dcf0e6f563",
+    "src/vertex_inputs.h": "fb774a51f4627b91dd6d58fc2cb918df04ef224d45cd898dfa1ed5dd9a0b0db5",
+    "src/workers.c": "6d508994671bd23c98eb606b5a60fb22b74564a3c8857ce751093162e0f5a6d4",
+    "src/workers.h": "448f1882236f93bc4c285ef9b25136c5bd157cd5e7cb9b2491af18672a3f9736",
+    "src/workers_queue_raw.inc": "ddec9df98f32ce5f428467f97b3a772506019cd4eca90e004afe956a6b9527b3"
+  },
+  "productionWrapperSha256": "d239f85adcb9fbf0093dfa8e9824a6cd35b2fc9b59901ddb25e9587c95b887ce",
+  "regressionSha256": "bf782673711156151540d495cb6a6be7e9b1e07b495f5e23e7725fcf4b0f3c0a",
+  "wasmBuildLogSha256": "81c45da104a2a7a49bc70f772ba18fdd3585c97aa8d4e5dd74efd8f566d7778f",
+  "servedModules": {
+    "softgl.js": {
+      "sha256": "abc949f134ae6cc763a630c9f297e00a8965c62bc0350c5f0198d4f35c126667",
+      "bytes": 233060,
+      "coop": "same-origin",
+      "coep": "require-corp"
+    },
+    "softgl.wasm": {
+      "sha256": "f282141521c78b37845217ec2f66651c8e3ffacd0e25b8b95202d45939048944",
+      "bytes": 1277917,
+      "coop": "same-origin",
+      "coep": "require-corp"
+    }
+  }
+}
