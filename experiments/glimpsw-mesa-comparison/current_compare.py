@@ -11,7 +11,7 @@ import time
 
 repo = Path(__file__).resolve().parents[2]
 parser = argparse.ArgumentParser()
-parser.add_argument('--softgl', type=Path, default=repo/'build/packed-queue-admission/native/candidate')
+parser.add_argument('--softgl', type=Path, default=repo/'build/fused-material-pass/native/candidate')
 parser.add_argument('--reference-root', type=Path, default=repo/'tmp/glimpsw-original')
 parser.add_argument('--output', type=Path, default=repo/'tmp/current-three-renderers')
 parser.add_argument('--pairs', type=int, default=3)

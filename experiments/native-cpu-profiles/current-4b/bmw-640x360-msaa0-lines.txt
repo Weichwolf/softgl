@@ -1,0 +1,253 @@
+Total: 315 samples
+      26   8.3%   8.3%       26   8.3% pthread_cond_broadcast@@GLIBC_2.3.2 ??:0
+      24   7.6%  15.9%       24   7.6% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:0
+      18   5.7%  21.6%       18   5.7% __lll_lock_wake_private@@GLIBC_PRIVATE ??:0
+      12   3.8%  25.4%       12   3.8% sg_queue_worker (inline) /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:188
+       9   2.9%  28.3%        9   2.9% sg_raster_triangle_tile_prepared /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:0
+       8   2.5%  30.8%        8   2.5% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/simd.h:24
+       7   2.2%  33.0%        7   2.2% sg_f32x4_mul (inline) /home/cosmo/Git/softgl/libsoftgl/src/simd.h:56
+       7   2.2%  35.2%        7   2.2% sg_sat_i64_to_i32 (inline) /home/cosmo/Git/softgl/libsoftgl/src/rasterizer.c:65
+       5   1.6%  36.8%        5   1.6% _dl_mcount_wrapper@GLIBC_2.2.5 ??:0
+       5   1.6%  38.4%        5   1.6% sem_trywait@GLIBC_2.2.5 ??:0
+       5   1.6%  40.0%        5   1.6% sg_packet_sample_cube_coherent /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:0
+       5   1.6%  41.6%        5   1.6% sg_queue_help /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:250
+       4   1.3%  42.9%        4   1.3% sg_process_vertex /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:259
+       4   1.3%  44.1%        4   1.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:172
+       4   1.3%  45.4%        4   1.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:211
+       4   1.3%  46.7%        4   1.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/simd.h:53
+       3   1.0%  47.6%        3   1.0% sg_fp_screen_from_float (inline) /home/cosmo/Git/softgl/libsoftgl/src/raster_types.h:42
+       3   1.0%  48.6%        3   1.0% sg_packet_sample_cube_coherent /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:63
+       3   1.0%  49.5%        3   1.0% sg_packet_sample_cube_coherent /home/cosmo/Git/softgl/libsoftgl/src/simd.h:57
+       3   1.0%  50.5%        3   1.0% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:238
+       3   1.0%  51.4%        3   1.0% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/rasterizer.c:0
+       3   1.0%  52.4%        3   1.0% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/simd.h:99
+       3   1.0%  53.3%        3   1.0% sg_worker_main /home/cosmo/Git/softgl/libsoftgl/src/workers.c:750
+       2   0.6%  54.0%        2   0.6% _sg_clear_real /home/cosmo/Git/softgl/libsoftgl/src/framebuffer.c:124
+       2   0.6%  54.6%        2   0.6% generate_fused_attributes /home/cosmo/Git/softgl/wasm/model_wrap.c:287
+       2   0.6%  55.2%        2   0.6% generate_fused_attributes /home/cosmo/Git/softgl/wasm/model_wrap.c:296
+       2   0.6%  55.9%        2   0.6% sg_f32x4_add (inline) /home/cosmo/Git/softgl/libsoftgl/src/simd.h:54
+       2   0.6%  56.5%        2   0.6% sg_packed_vertex_fetch (inline) /home/cosmo/Git/softgl/libsoftgl/src/raster_vertex_pack.h:60
+       2   0.6%  57.1%        2   0.6% sg_packed_vertex_read (inline) /home/cosmo/Git/softgl/libsoftgl/src/raster_vertex_pack.h:48
+       2   0.6%  57.8%        2   0.6% sg_packet_gather (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:0
+       2   0.6%  58.4%        2   0.6% sg_packet_sample_cube_coherent /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:160
+       2   0.6%  59.0%        2   0.6% sg_packet_sample_cube_coherent /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:96
+       2   0.6%  59.7%        2   0.6% sg_process_vertex /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:295
+       2   0.6%  60.3%        2   0.6% sg_queue_render_packed /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:0
+       2   0.6%  61.0%        2   0.6% sg_queue_retire (inline) /home/cosmo/Git/softgl/libsoftgl/src/workers.c:676
+       2   0.6%  61.6%        2   0.6% sg_queue_retire (inline) /home/cosmo/Git/softgl/libsoftgl/src/workers.c:697
+       2   0.6%  62.2%        2   0.6% sg_queue_submit /home/cosmo/Git/softgl/libsoftgl/src/raster_vertex_pack.h:37
+       2   0.6%  62.9%        2   0.6% sg_queue_submit /home/cosmo/Git/softgl/libsoftgl/src/raster_vertex_pack.h:39
+       2   0.6%  63.5%        2   0.6% sg_queue_worker (inline) /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:187
+       2   0.6%  64.1%        2   0.6% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:169
+       2   0.6%  64.8%        2   0.6% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:244
+       2   0.6%  65.4%        2   0.6% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:297
+       2   0.6%  66.0%        2   0.6% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_types.h:42
+       2   0.6%  66.7%        2   0.6% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/rasterizer.c:65
+       2   0.6%  67.3%        2   0.6% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/rasterizer.c:661
+       2   0.6%  67.9%        2   0.6% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/simd.h:0
+       2   0.6%  68.6%        2   0.6% sg_raster_triangle_tile_prepared /home/cosmo/Git/softgl/libsoftgl/src/rasterizer.c:0
+       2   0.6%  69.2%        2   0.6% sg_raster_triangle_tile_prepared /home/cosmo/Git/softgl/libsoftgl/src/simd.h:24
+       2   0.6%  69.8%        2   0.6% sg_transform_slice /home/cosmo/Git/softgl/libsoftgl/src/workers.c:509
+       2   0.6%  70.5%        2   0.6% sg_tri_xbounds (inline) /home/cosmo/Git/softgl/libsoftgl/src/workers.c:81
+       2   0.6%  71.1%        2   0.6% sg_tri_xbounds (inline) /home/cosmo/Git/softgl/libsoftgl/src/workers.c:88
+       1   0.3%  71.4%        1   0.3% __lll_lock_wait_private@@GLIBC_PRIVATE ??:0
+       1   0.3%  71.7%        1   0.3% _sg_clear_real /home/cosmo/Git/softgl/libsoftgl/src/framebuffer.c:0
+       1   0.3%  72.1%        1   0.3% _sg_draw_elements_real /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:0
+       1   0.3%  72.4%        1   0.3% _sg_draw_elements_real /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:550
+       1   0.3%  72.7%        1   0.3% _sg_draw_elements_real /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:805
+       1   0.3%  73.0%        1   0.3% generate_fused_attributes /home/cosmo/Git/softgl/wasm/model_wrap.c:289
+       1   0.3%  73.3%        7   2.2% pthread_cond_wait@@GLIBC_2.3.2 ??:0
+       1   0.3%  73.7%        1   0.3% pthread_mutex_lock@@GLIBC_2.2.5 ??:0
+       1   0.3%  74.0%        1   0.3% sg_bin_sort_z (inline) /home/cosmo/Git/softgl/libsoftgl/src/workers.c:533
+       1   0.3%  74.3%        1   0.3% sg_bin_sort_z (inline) /home/cosmo/Git/softgl/libsoftgl/src/workers.c:543
+       1   0.3%  74.6%        1   0.3% sg_cube_load_rgba (inline) /home/cosmo/Git/softgl/libsoftgl/src/fragment.c:421
+       1   0.3%  74.9%        1   0.3% sg_f32x4_select (inline) /home/cosmo/Git/softgl/libsoftgl/src/simd.h:99
+       1   0.3%  75.2%        1   0.3% sg_f32x4_splat (inline) /home/cosmo/Git/softgl/libsoftgl/src/simd.h:53
+       1   0.3%  75.6%        1   0.3% sg_finish_triangle /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:356
+       1   0.3%  75.9%        1   0.3% sg_i32x4_add (inline) /home/cosmo/Git/softgl/libsoftgl/src/simd.h:27
+       1   0.3%  76.2%        1   0.3% sg_index_range /home/cosmo/Git/softgl/libsoftgl/src/index_range.h:52
+       1   0.3%  76.5%        1   0.3% sg_is_top_left (inline) /home/cosmo/Git/softgl/libsoftgl/src/rasterizer.c:0
+       1   0.3%  76.8%        1   0.3% sg_is_top_left (inline) /home/cosmo/Git/softgl/libsoftgl/src/rasterizer.c:57
+       1   0.3%  77.1%        1   0.3% sg_mask4_live (inline) /home/cosmo/Git/softgl/libsoftgl/src/simd.h:47
+       1   0.3%  77.5%        1   0.3% sg_mat4_mul_vec4 /home/cosmo/Git/softgl/libsoftgl/src/matrix.c:49
+       1   0.3%  77.8%        1   0.3% sg_packed_vertex_read (inline) /home/cosmo/Git/softgl/libsoftgl/src/raster_vertex_pack.h:46
+       1   0.3%  78.1%        1   0.3% sg_packed_vertex_read (inline) /home/cosmo/Git/softgl/libsoftgl/src/raster_vertex_pack.h:49
+       1   0.3%  78.4%        1   0.3% sg_packed_vertex_read (inline) /home/cosmo/Git/softgl/libsoftgl/src/raster_vertex_pack.h:50
+       1   0.3%  78.7%        1   0.3% sg_packed_vertex_read (inline) /home/cosmo/Git/softgl/libsoftgl/src/raster_vertex_pack.h:51
+       1   0.3%  79.0%        1   0.3% sg_packet_address4 (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:40
+       1   0.3%  79.4%        1   0.3% sg_packet_gather_pairs (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:74
+       1   0.3%  79.7%        1   0.3% sg_packet_gather_pairs (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:79
+       1   0.3%  80.0%        1   0.3% sg_packet_sample_cube_coherent /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:151
+       1   0.3%  80.3%        1   0.3% sg_packet_sample_cube_coherent /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:161
+       1   0.3%  80.6%        1   0.3% sg_packet_sample_cube_coherent /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:23
+       1   0.3%  81.0%        1   0.3% sg_packet_sample_cube_coherent /home/cosmo/Git/softgl/libsoftgl/src/rasterizer.c:1113
+       1   0.3%  81.3%        1   0.3% sg_packet_sample_cube_coherent /home/cosmo/Git/softgl/libsoftgl/src/rasterizer.c:1119
+       1   0.3%  81.6%        1   0.3% sg_packet_sample_cube_coherent /home/cosmo/Git/softgl/libsoftgl/src/rasterizer.c:1123
+       1   0.3%  81.9%        1   0.3% sg_packet_sample_cube_coherent /home/cosmo/Git/softgl/libsoftgl/src/simd.h:54
+       1   0.3%  82.2%        1   0.3% sg_packet_sample_cube_coherent /home/cosmo/Git/softgl/libsoftgl/src/simd.h:56
+       1   0.3%  82.5%        1   0.3% sg_prepare_triangle_slice /home/cosmo/Git/softgl/libsoftgl/src/workers.c:194
+       1   0.3%  82.9%        1   0.3% sg_prepare_triangle_slice /home/cosmo/Git/softgl/libsoftgl/src/workers.c:211
+       1   0.3%  83.2%        1   0.3% sg_prepare_triangle_slice /home/cosmo/Git/softgl/libsoftgl/src/workers.c:212
+       1   0.3%  83.5%        1   0.3% sg_process_triangle /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:464
+       1   0.3%  83.8%        1   0.3% sg_process_vertex /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:246
+       1   0.3%  84.1%        1   0.3% sg_process_vertex /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:255
+       1   0.3%  84.4%        1   0.3% sg_process_vertex /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:257
+       1   0.3%  84.8%        1   0.3% sg_process_vertex /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:301
+       1   0.3%  85.1%        1   0.3% sg_process_vertex /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:344
+       1   0.3%  85.4%        1   0.3% sg_quantize (inline) /home/cosmo/Git/softgl/libsoftgl/src/types.h:0
+       1   0.3%  85.7%        1   0.3% sg_queue_finish (inline) /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:276
+       1   0.3%  86.0%        1   0.3% sg_queue_help /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:252
+       1   0.3%  86.3%        1   0.3% sg_queue_render /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:118
+       1   0.3%  86.7%       12   3.8% sg_queue_render /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:136
+       1   0.3%  87.0%        1   0.3% sg_queue_render_packed /home/cosmo/Git/softgl/libsoftgl/src/raster_vertex_pack.h:0
+       1   0.3%  87.3%        1   0.3% sg_queue_render_packed /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:94
+       1   0.3%  87.6%        1   0.3% sg_queue_retire (inline) /home/cosmo/Git/softgl/libsoftgl/src/workers.c:675
+       1   0.3%  87.9%        1   0.3% sg_queue_retire (inline) /home/cosmo/Git/softgl/libsoftgl/src/workers.c:694
+       1   0.3%  88.3%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:105
+       1   0.3%  88.6%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:189
+       1   0.3%  88.9%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:197
+       1   0.3%  89.2%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:224
+       1   0.3%  89.5%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:244
+       1   0.3%  89.8%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:245
+       1   0.3%  90.2%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:275
+       1   0.3%  90.5%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:96
+       1   0.3%  90.8%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:175
+       1   0.3%  91.1%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:229
+       1   0.3%  91.4%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:234
+       1   0.3%  91.7%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:235
+       1   0.3%  92.1%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:237
+       1   0.3%  92.4%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:241
+       1   0.3%  92.7%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:299
+       1   0.3%  93.0%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:302
+       1   0.3%  93.3%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:77
+       1   0.3%  93.7%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/rasterizer.c:207
+       1   0.3%  94.0%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/rasterizer.c:208
+       1   0.3%  94.3%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/simd.h:56
+       1   0.3%  94.6%        1   0.3% sg_raster_triangle_tile_prepared /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:247
+       1   0.3%  94.9%        1   0.3% sg_raster_triangle_tile_prepared /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:167
+       1   0.3%  95.2%        1   0.3% sg_raster_triangle_tile_prepared /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:172
+       1   0.3%  95.6%        1   0.3% sg_raster_triangle_tile_prepared /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:234
+       1   0.3%  95.9%        1   0.3% sg_raster_triangle_tile_prepared /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:236
+       1   0.3%  96.2%        1   0.3% sg_raster_triangle_tile_prepared /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:238
+       1   0.3%  96.5%        1   0.3% sg_raster_triangle_tile_prepared /home/cosmo/Git/softgl/libsoftgl/src/rasterizer.c:209
+       1   0.3%  96.8%        1   0.3% sg_raster_triangle_tile_prepared /home/cosmo/Git/softgl/libsoftgl/src/simd.h:0
+       1   0.3%  97.1%        1   0.3% sg_raster_triangle_tile_prepared /home/cosmo/Git/softgl/libsoftgl/src/simd.h:51
+       1   0.3%  97.5%        1   0.3% sg_sample_tex_cube /home/cosmo/Git/softgl/libsoftgl/src/fragment.c:0
+       1   0.3%  97.8%        1   0.3% sg_sat_i64_to_i32 (inline) /home/cosmo/Git/softgl/libsoftgl/src/rasterizer.c:0
+       1   0.3%  98.1%        1   0.3% sg_transform_range /home/cosmo/Git/softgl/libsoftgl/src/workers.c:978
+       1   0.3%  98.4%        1   0.3% sg_transform_slice /home/cosmo/Git/softgl/libsoftgl/src/workers.c:502
+       1   0.3%  98.7%        1   0.3% sg_tri_xbounds (inline) /home/cosmo/Git/softgl/libsoftgl/src/workers.c:82
+       1   0.3%  99.0%        1   0.3% sg_workers_geometry_store /home/cosmo/Git/softgl/libsoftgl/src/workers.c:383
+       1   0.3%  99.4%        1   0.3% sg_write_fragment /home/cosmo/Git/softgl/libsoftgl/src/fragment_write.c:118
+       1   0.3%  99.7%        1   0.3% sg_write_fragment /home/cosmo/Git/softgl/libsoftgl/src/fragment_write.c:188
+       1   0.3% 100.0%        1   0.3% sg_write_fragment /home/cosmo/Git/softgl/libsoftgl/src/fragment_write.c:191
+       0   0.0% 100.0%      214  67.9% __clone@@GLIBC_2.2.5 ??:0
+       0   0.0% 100.0%        5   1.6% __libc_alloca_cutoff@@GLIBC_PRIVATE ??:0
+       0   0.0% 100.0%      101  32.1% __libc_init_first@@GLIBC_2.2.5 ??:0
+       0   0.0% 100.0%      101  32.1% __libc_start_main@GLIBC_2.2.5 ??:0
+       0   0.0% 100.0%        5   1.6% __nptl_death_event@@GLIBC_PRIVATE ??:0
+       0   0.0% 100.0%        3   1.0% _sg_draw_elements_real /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:506
+       0   0.0% 100.0%        1   0.3% _sg_draw_elements_real /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:551
+       0   0.0% 100.0%        2   0.6% _sg_draw_elements_real /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:556
+       0   0.0% 100.0%        1   0.3% _sg_draw_elements_real /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:784
+       0   0.0% 100.0%        1   0.3% _sg_draw_elements_real /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:787
+       0   0.0% 100.0%       12   3.8% _sg_draw_elements_real /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:789
+       0   0.0% 100.0%        1   0.3% _sg_draw_elements_real /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:803
+       0   0.0% 100.0%        2   0.6% _sg_draw_elements_real /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:821
+       0   0.0% 100.0%        3   1.0% _sg_draw_elements_real /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:837
+       0   0.0% 100.0%       66  21.0% _sg_draw_elements_real /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:901
+       0   0.0% 100.0%      101  32.1% _start ??:0
+       0   0.0% 100.0%       95  30.2% draw_part /home/cosmo/Git/softgl/wasm/model_wrap.c:397
+       0   0.0% 100.0%       98  31.1% main /home/cosmo/Git/softgl/experiments/native-cpu-profiles/profile_scene.c:51
+       0   0.0% 100.0%        3   1.0% main /home/cosmo/Git/softgl/experiments/native-cpu-profiles/profile_scene.c:52
+       0   0.0% 100.0%      214  67.9% pthread_condattr_setpshared@GLIBC_2.2.5 ??:0
+       0   0.0% 100.0%        1   0.3% pthread_kill_other_threads_np@GLIBC_2.2.5 ??:0
+       0   0.0% 100.0%       18   5.7% pthread_mutex_trylock@GLIBC_2.2.5 ??:0
+       0   0.0% 100.0%        1   0.3% sg_chain_clamp (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_combine_hot.h:47
+       0   0.0% 100.0%        1   0.3% sg_finish_stream /home/cosmo/Git/softgl/libsoftgl/src/workers.c:707
+       0   0.0% 100.0%        3   1.0% sg_model_render /home/cosmo/Git/softgl/wasm/model_wrap.c:409
+       0   0.0% 100.0%       70  22.2% sg_model_render /home/cosmo/Git/softgl/wasm/model_wrap.c:442
+       0   0.0% 100.0%       13   4.1% sg_model_render /home/cosmo/Git/softgl/wasm/model_wrap.c:450
+       0   0.0% 100.0%       12   3.8% sg_model_render /home/cosmo/Git/softgl/wasm/model_wrap.c:451
+       0   0.0% 100.0%        6   1.9% sg_packed_vertex_fetch (inline) /home/cosmo/Git/softgl/libsoftgl/src/raster_vertex_pack.h:69
+       0   0.0% 100.0%        3   1.0% sg_packet_lerp (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:19
+       0   0.0% 100.0%        1   0.3% sg_packet_sample_2d (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:0
+       0   0.0% 100.0%        1   0.3% sg_packet_sample_2d (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:104
+       0   0.0% 100.0%        1   0.3% sg_packet_sample_2d (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:115
+       0   0.0% 100.0%        2   0.6% sg_packet_sample_2d (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:130
+       0   0.0% 100.0%        2   0.6% sg_packet_sample_2d (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:133
+       0   0.0% 100.0%        1   0.3% sg_packet_sample_2d (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:94
+       0   0.0% 100.0%        1   0.3% sg_packet_sample_cube_coherent /home/cosmo/Git/softgl/libsoftgl/src/rasterizer.c:1138
+       0   0.0% 100.0%        5   1.6% sg_packet_sample_cube_coherent /home/cosmo/Git/softgl/libsoftgl/src/rasterizer.c:1146
+       0   0.0% 100.0%       29   9.2% sg_packet_sample_cube_target /home/cosmo/Git/softgl/libsoftgl/src/rasterizer.c:1164
+       0   0.0% 100.0%        3   1.0% sg_packet_sample_cube_target /home/cosmo/Git/softgl/libsoftgl/src/rasterizer.c:1166
+       0   0.0% 100.0%        3   1.0% sg_packet_sample_unit (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:184
+       0   0.0% 100.0%        1   0.3% sg_packet_wrap (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:23
+       0   0.0% 100.0%        1   0.3% sg_prepare_triangle_run (inline) /home/cosmo/Git/softgl/libsoftgl/src/workers.c:236
+       0   0.0% 100.0%        1   0.3% sg_prepare_triangle_slice /home/cosmo/Git/softgl/libsoftgl/src/workers.c:220
+       0   0.0% 100.0%        5   1.6% sg_process_vertex /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:294
+       0   0.0% 100.0%        1   0.3% sg_process_vertex /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:313
+       0   0.0% 100.0%       15   4.8% sg_process_vertex_prepared /home/cosmo/Git/softgl/libsoftgl/src/pipeline.c:691
+       0   0.0% 100.0%        1   0.3% sg_quantize_samples (inline) /home/cosmo/Git/softgl/libsoftgl/src/fragment_write.c:236
+       0   0.0% 100.0%        2   0.6% sg_queue_render /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:116
+       0   0.0% 100.0%      132  41.9% sg_queue_render /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:117
+       0   0.0% 100.0%       49  15.6% sg_queue_render /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:121
+       0   0.0% 100.0%        1   0.3% sg_queue_render /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:131
+       0   0.0% 100.0%        3   1.0% sg_queue_render_packed /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:100
+       0   0.0% 100.0%      120  38.1% sg_queue_render_packed /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:101
+       0   0.0% 100.0%        4   1.3% sg_queue_render_packed /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:98
+       0   0.0% 100.0%        1   0.3% sg_queue_render_packed /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:99
+       0   0.0% 100.0%        6   1.9% sg_queue_submit /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:347
+       0   0.0% 100.0%       37  11.7% sg_queue_submit /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:378
+       0   0.0% 100.0%       15   4.8% sg_queue_submit /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:442
+       0   0.0% 100.0%        4   1.3% sg_queue_submit /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:443
+       0   0.0% 100.0%        1   0.3% sg_queue_transform /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:154
+       0   0.0% 100.0%        7   2.2% sg_queue_transform /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:155
+       0   0.0% 100.0%        2   0.6% sg_queue_worker (inline) /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:154
+       0   0.0% 100.0%        6   1.9% sg_queue_worker (inline) /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:155
+       0   0.0% 100.0%        4   1.3% sg_queue_worker (inline) /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:178
+       0   0.0% 100.0%      170  54.0% sg_queue_worker (inline) /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:179
+       0   0.0% 100.0%        1   0.3% sg_queue_worker (inline) /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:182
+       0   0.0% 100.0%        4   1.3% sg_queue_worker (inline) /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:186
+       0   0.0% 100.0%        7   2.2% sg_queue_worker (inline) /home/cosmo/Git/softgl/libsoftgl/src/workers_queue_raw.inc:199
+       0   0.0% 100.0%       29   9.2% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:190
+       0   0.0% 100.0%        2   0.6% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:14
+       0   0.0% 100.0%        5   1.6% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:192
+       0   0.0% 100.0%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:195
+       0   0.0% 100.0%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:204
+       0   0.0% 100.0%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:205
+       0   0.0% 100.0%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:24
+       0   0.0% 100.0%        7   2.2% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:254
+       0   0.0% 100.0%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:259
+       0   0.0% 100.0%        1   0.3% sg_raster_triangle_depth_capture /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:26
+       0   0.0% 100.0%        3   1.0% sg_raster_triangle_tile_prepared /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:190
+       0   0.0% 100.0%        1   0.3% sg_raster_triangle_tile_prepared /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:14
+       0   0.0% 100.0%        3   1.0% sg_raster_triangle_tile_prepared /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:254
+       0   0.0% 100.0%        4   1.3% sg_raster_triangle_tile_prepared /home/cosmo/Git/softgl/libsoftgl/src/raster_triangle_impl.h:260
+       0   0.0% 100.0%        2   0.6% sg_sample_cube_face (inline) /home/cosmo/Git/softgl/libsoftgl/src/fragment.c:474
+       0   0.0% 100.0%        2   0.6% sg_sample_tex_cube /home/cosmo/Git/softgl/libsoftgl/src/fragment.c:496
+       0   0.0% 100.0%        1   0.3% sg_shade_packet (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:226
+       0   0.0% 100.0%        1   0.3% sg_shade_packet (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:229
+       0   0.0% 100.0%        1   0.3% sg_shade_packet (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:230
+       0   0.0% 100.0%        1   0.3% sg_shade_packet (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:234
+       0   0.0% 100.0%        2   0.6% sg_shade_packet (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:236
+       0   0.0% 100.0%        3   1.0% sg_shade_packet (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:246
+       0   0.0% 100.0%        1   0.3% sg_shade_packet (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:272
+       0   0.0% 100.0%        1   0.3% sg_store_off_post_depth /home/cosmo/Git/softgl/libsoftgl/src/fragment_write.c:478
+       0   0.0% 100.0%        7   2.2% sg_transform_range /home/cosmo/Git/softgl/libsoftgl/src/workers.c:959
+       0   0.0% 100.0%        4   1.3% sg_transform_range /home/cosmo/Git/softgl/libsoftgl/src/workers.c:960
+       0   0.0% 100.0%       15   4.8% sg_transform_slice /home/cosmo/Git/softgl/libsoftgl/src/workers.c:506
+       0   0.0% 100.0%        1   0.3% sg_worker_main /home/cosmo/Git/softgl/libsoftgl/src/workers.c:769
+       0   0.0% 100.0%        1   0.3% sg_worker_main /home/cosmo/Git/softgl/libsoftgl/src/workers.c:782
+       0   0.0% 100.0%        1   0.3% sg_worker_main /home/cosmo/Git/softgl/libsoftgl/src/workers.c:784
+       0   0.0% 100.0%      208  66.0% sg_worker_main /home/cosmo/Git/softgl/libsoftgl/src/workers.c:792
+       0   0.0% 100.0%        3   1.0% sg_workers_bin_transformed_tri /home/cosmo/Git/softgl/libsoftgl/src/workers.c:169
+       0   0.0% 100.0%        1   0.3% sg_workers_bin_tri /home/cosmo/Git/softgl/libsoftgl/src/workers.c:129
+       0   0.0% 100.0%        1   0.3% sg_workers_flush /home/cosmo/Git/softgl/libsoftgl/src/workers.c:1241
+       0   0.0% 100.0%        1   0.3% sg_workers_geometry_lookup /home/cosmo/Git/softgl/libsoftgl/src/workers.c:343
+       0   0.0% 100.0%        1   0.3% sg_workers_geometry_store /home/cosmo/Git/softgl/libsoftgl/src/workers.c:376
+       0   0.0% 100.0%        1   0.3% sg_workers_prepare_triangles /home/cosmo/Git/softgl/libsoftgl/src/workers.c:1004
+       0   0.0% 100.0%       66  21.0% sg_workers_submit_stream /home/cosmo/Git/softgl/libsoftgl/src/workers.c:1177
+       0   0.0% 100.0%        1   0.3% sg_write_fragment /home/cosmo/Git/softgl/libsoftgl/src/fragment_write.c:436
+       0   0.0% 100.0%        1   0.3% sg_write_sample (inline) /home/cosmo/Git/softgl/libsoftgl/src/fragment_write.c:193
+       0   0.0% 100.0%        1   0.3% softgl_read_rgba8 /home/cosmo/Git/softgl/libsoftgl/src/state.c:383

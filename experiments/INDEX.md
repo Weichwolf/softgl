@@ -51,7 +51,7 @@
 | [intrinsic-coverage-retirement](intrinsic-coverage-retirement/README.md) | Accepted | Prunes sample-empty cached references using coverage already computed by rasterization. |
 | [large-triangle-depth-planes](large-triangle-depth-planes/README.md) | Rejected | Restricting depth planes to larger triangles still regressed BMW. |
 | [main-raster-participation](main-raster-participation/README.md) | Accepted | Caller shares the raster-bin queue; historical BMW audits improved 7.90%/7.10%; original patch is preserved. |
-| [native-cpu-profiles](native-cpu-profiles/README.md) | Diagnostic | Fresh 1ff3c2c Bistro profile: broadcast 12.6%, lock wake 7.3% CPU samples; older four-scene profiles preserved, no timing gain claimed. |
+| [native-cpu-profiles](native-cpu-profiles/README.md) | Diagnostic | Fresh 4b58896 BMW/Bistro profiles after fusion: Bistro raster entry 37% cumulative CPU samples, broadcast 7.6%; BMW only 315 samples; no new timing gain claimed. |
 | [msaa-additive-bytes](msaa-additive-bytes/README.md) | Accepted variant | Exact guarded saturated-byte blending uses a separate WASM writer root. |
 | [msaa-coverage-recurrence](msaa-coverage-recurrence/README.md) | Rejected | Exact vector edge recurrence regresses BMW 2x and gives mixed 4x results. |
 | [msaa-edge-reuse](msaa-edge-reuse/README.md) ([historical note](msaa-edge-reuse/historical-notes/README.md)) | Accepted | Reuses four-sample coverage coefficients; three audits support a BMW 4x gain. |
@@ -116,8 +116,9 @@
 | [wasm-phase-conversion](wasm-phase-conversion/README.md) | Held | Native WASM proposal conversion remained correct but did not reproduce a BMW gain. |
 | [wasm-pseudo-clamps](wasm-pseudo-clamps/README.md) | Accepted | Uses direct WASM pseudo-min/max for the validated clamp path. |
 | [whole-pipeline-static-kernels](whole-pipeline-static-kernels/README.md) | Proposed | Bounded C11 kernels specialize complete hot draw pipelines beyond rejected eligibility/DOT3 helpers; no measured gain. |
-| [glimpsw-mesa-comparison](glimpsw-mesa-comparison/README.md) | Current 93e2356 | 640x360/off: SoftGL frame time vs Mesa BMW -38.16%, T-80 -44.78%, Sponza -6.14%, Bistro +1.32%; GLimpSW still faster; 72 quiet timings. |
+| [glimpsw-mesa-comparison](glimpsw-mesa-comparison/README.md) | Current 4b58896 | 640x360/off: SoftGL frame time vs Mesa BMW -54.98%, T-80 -59.30%, Sponza -33.17%, Bistro -38.50%; GLimpSW still faster; 72 quiet timings. |
 | [visible-vertex-attributes](visible-vertex-attributes/README.md) | Accepted | Worker attributes after culling: Bistro -11–12%, other scenes -3–8%, all twelve images identical. |
 | [bounded-queue-wakeup](bounded-queue-wakeup/README.md) | Accepted | Bounded generation/queue polling: BMW/Bistro -5–7%, T-80 -3–4%, Sponza -1.5%; all images identical. |
 | [packed-queue-admission](packed-queue-admission/README.md) | Accepted | Sponza -12–15%, T-80 -6.5–10.3%, Bistro -3.5–5%, BMW mixed within 0.25%; all images identical. |
 | [fused-material-pass](fused-material-pass/README.md) | Accepted | One material pass: BMW -21–27%, T-80 -25–26%, Sponza -27–30%, Bistro -39–40% frame time across off/2x/4x; 108 identical coverage comparisons, small documented color differences. |
+| [scene-material-visibility](scene-material-visibility/README.md) | Proposed | Scene-wide visibility and material buckets target full SIMD128 pixel packets after fusion; implementation and native evidence pending. |

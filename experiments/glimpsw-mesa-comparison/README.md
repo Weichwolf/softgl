@@ -1,6 +1,11 @@
 # GLimpSW / Mesa / libsoftgl with four common scenes
 
-Status: historical native 640x360 baseline (47e517d) complete, 72 accepted measurements, no rejected
+Status: current accepted 4b58896 beats Mesa in all four scenes at 640x360/off,
+with 33–59% less complete-frame time. GLimpSW remains faster with its different
+rendering pipeline. [Current summary](current-4b/summary.json),
+[current receipt](current-4b/receipt.json).
+
+Historical native 640x360 baseline (47e517d): 72 accepted measurements, no rejected
 blocks. Six timings per renderer/scene with three rotated forward/reverse pairs.
 [Summary](timings-quiet-summary.json), [accepted blocks](quiet-blocks.json) and
 [source/binary/asset receipt](provenance.json). Higher resolutions are excluded
@@ -60,7 +65,7 @@ At 640x360, libsoftgl uses about 29.7%/31.3% less frame time than Mesa
 for BMW/T-80, but 42.9%/55.3% more for Sponza/Bistro. GLimpSW is faster
 for all four under its different pipeline; these are not identical-image ratios.
 
-## Current accepted renderer: 93e2356
+## Accepted 93e2356 before material fusion
 
 Fresh 640x360/off comparison: 72 accepted timings, 18 rejected timings in three
 whole noisy blocks; six quiet timings per renderer/scene. Same reference binaries,
@@ -77,4 +82,23 @@ different lighting/visibility pipeline. No higher-resolution measurements run.
 python3 experiments/glimpsw-mesa-comparison/current_compare.py \
   --softgl build/packed-queue-admission/native/candidate \
   --output tmp/current-three-renderers/93e2356
+```
+
+## Current accepted renderer: 4b58896
+
+After [material pass fusion](../fused-material-pass/README.md), a fresh comparison
+has 72 quiet accepted timings, none rejected, six per renderer/scene.
+Median milliseconds, GLimpSW / Mesa / libsoftgl: BMW 2.165 / 36.063 / 16.236;
+T-80 1.758 / 30.395 / 12.370; Sponza 3.766 / 64.825 / 43.324;
+Bistro 5.991 / 167.866 / 103.236. Libsoftgl uses 54.98 / 59.30 / 33.17 /
+38.50% less frame time than Mesa. It still takes 7.50 / 7.04 / 11.50 / 17.23
+times GLimpSW's frame time. These remain different rendering pipelines.
+Source, asset, camera, copy and thread-budget scope is unchanged. The opt-in
+fused material shader adds the documented quantization/mask/tie differences;
+ordinary GL rendering keeps the original combiner path.
+
+```sh
+python3 experiments/glimpsw-mesa-comparison/current_compare.py \
+  --softgl build/fused-material-pass/native/candidate \
+  --output tmp/current-three-renderers/4b58896
 ```

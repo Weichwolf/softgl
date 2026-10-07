@@ -57,3 +57,24 @@ wrapper, compiler, analyzer, assets and binary. Of 3505 CPU samples, 12.6%
 are in pthread broadcast and 7.3% in lock wakeup; the new attribute callback
 has 4.1%. These are scheduled CPU shares, not removable wall time or a gain.
 They motivate [bounded queue wakeups](../bounded-queue-wakeup/README.md).
+
+## Accepted 4b58896 after material fusion
+
+Fresh BMW and Bistro profiles: 640x360/off, four configured threads, 15 warmup
+and 60 sampled complete frames, after the separate three-renderer comparison
+finished. [Receipt and tables](current-4b/receipt.json) bind the accepted fused
+shader and full-attribute wrapper. BMW has only 315 samples, so its proportions
+are exploratory: the coverage-capture raster entry has 43.2% cumulative samples,
+cube sampling 9.2%. Bistro has 1920 samples: the prepared raster entry has 37.0%
+cumulative, vertex processing 11.5%, broadcast 7.6%, lock wakeup 4.1%, and the
+full material attribute callback 5.4% flat. These are CPU sample shares, not
+removable wall time. Profiles favor investigating raster/shader occupancy and
+scene batching before another scalar attribute micro-optimization.
+
+```sh
+cmake --build build/native-cpu-profiles -j4
+python3 experiments/native-cpu-profiles/run_profiles.py --assets bmw,bistro \
+  --samples 0 --frames 60 --warmup 15 --width 640 --height 360 \
+  --pprof /home/cosmo/Git/softgl/tmp/native-profile/root/usr/bin/google-pprof \
+  --output tmp/native-profile/current-4b
+```
