@@ -394,6 +394,9 @@ struct softgl_ctx {
     GLubyte polygon_stipple[128];  /* 32 rows * 4 bytes */
 
     GLenum last_error;
+    struct sg_scene_visibility *scene_visibility;
+    struct sg_scene_visibility *scene_storage;
+    int scene_material;
 
 };
 
@@ -471,6 +474,9 @@ typedef struct {
 } sg_tex_tri_ctx;
 
 void sg_tex_tri_prepare(softgl_ctx *c, sg_tex_tri_ctx *t);
+void sg_scene_visibility_destroy(void *storage);
+int sg_scene_visibility_triangle(softgl_ctx *c, const sg_vert *v0,
+    const sg_vert *v1, const sg_vert *v2, int ix0, int ix1);
 /* Classification: 1 intrinsically empty, 0 covered, -1 unsupported/early HZ.
  * Explicit depth-capture jobs can also return 2: proven strictly depth-occluded.
  * Only intrinsic emptiness may permanently compact the geometry cache. */

@@ -65,7 +65,7 @@ add_executable(softgl
     ${TEST_OBJECTS}
 )
 
-target_compile_definitions(softgl PRIVATE SOFTGL_MODEL_VERTEX_ATTRIBUTES)
+target_compile_definitions(softgl PRIVATE SOFTGL_MODEL_VERTEX_ATTRIBUTES SOFTGL_MODEL_SCENE_VISIBILITY)
 
 # The preview lives beside the compiled module under the single build tree.
 configure_file(index.html ${CMAKE_CURRENT_BINARY_DIR}/index.html COPYONLY)

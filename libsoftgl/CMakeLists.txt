@@ -19,6 +19,7 @@ add_library(softgl STATIC
     src/pixels.c
     src/evaluators.c
     src/workers.c
+    src/scene_visibility.c
 )
 
 target_include_directories(softgl

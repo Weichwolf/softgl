@@ -332,6 +332,7 @@ void softgl_destroy(softgl_ctx *c) {
      * gets torn down (fb.color/depth, textures, vbos). */
     sg_workers_flush(c);
     sg_workers_shutdown(c);
+    sg_scene_visibility_destroy(c->scene_storage);
     if (c->fb.color)   sg_aligned_free(c->fb.color);
     if (c->fb.depth)   sg_aligned_free(c->fb.depth);
     if (c->fb.stencil) sg_aligned_free(c->fb.stencil);

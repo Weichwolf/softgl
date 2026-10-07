@@ -1,0 +1,41 @@
+{
+  "nativeTests": {
+    "passed": 749,
+    "failed": 0,
+    "seconds": 91.32
+  },
+  "asanUbsanLeakCheck": {
+    "passed": true,
+    "stdout": "Scene visibility: 372 serial/worker paired frames; full color/depth/stencil/sample planes PASS; 32 begins and 12 restored/replayed fallbacks\n"
+  },
+  "sceneContract": {
+    "passed": true,
+    "stdout": "Scene visibility: 372 serial/worker paired frames; full color/depth/stencil/sample planes PASS; 32 begins and 12 restored/replayed fallbacks\n"
+  },
+  "residentOracle": {
+    "pairedFrames": 288,
+    "passed": true
+  },
+  "nativeMeasurement": {
+    "acceptedRuns": 144,
+    "rejectedRuns": 4
+  },
+  "productionSourceByteIdentical": true,
+  "wasmBuildPassed": true,
+  "wasmFiles": {
+    "softgl.js": {
+      "sha256": "9cf99f3a5af717ffedcc7f2e993456231b75538d988dc4dd1239ca37a6767ab6",
+      "bytes": 233060
+    },
+    "softgl.wasm": {
+      "sha256": "a8da6015569ef9133b031c540b6304362a0354284e56fa4d2f1f6b86b12066c4",
+      "bytes": 1293601
+    }
+  },
+  "browser": {
+    "passed": true,
+    "checks": 12,
+    "errors": [],
+    "maximumHeapBytes": 2722496512
+  }
+}

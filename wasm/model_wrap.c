@@ -393,6 +393,9 @@ static void draw_part(const model_part *part, int specular) {
     fused_tint[3] = m->alpha_mode == 0 ? 1.f : m->base[3];
     softgl_set_fused_dot3_material(!specular && m->alpha_mode != 2 ? fused_tint : NULL, m->roughness < .6f);
 #endif
+#ifdef SOFTGL_MODEL_SCENE_VISIBILITY
+    softgl_scene_visibility_material();
+#endif
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, G.ebo);
     glDrawElements(GL_TRIANGLES, (GLsizei)part->count, GL_UNSIGNED_INT, (const void*)((uintptr_t)part->first*4));
 #ifdef SOFTGL_MODEL_VERTEX_ATTRIBUTES
@@ -432,6 +435,9 @@ void sg_model_render(float angle, int w, int h) {
     glEnableClientState(GL_VERTEX_ARRAY); glEnableClientState(GL_COLOR_ARRAY);
     unsigned transparent = 0;
     glDisable(GL_BLEND);
+#ifdef SOFTGL_MODEL_SCENE_VISIBILITY
+    int scene_visibility = softgl_scene_visibility_begin();
+#endif
     for (unsigned i = 0; i < G.parts; i++) {
         model_part *p = &G.part[i];
         if (G.material[p->material].alpha_mode == 2) {
@@ -441,6 +447,12 @@ void sg_model_render(float angle, int w, int h) {
             G.order[j] = i;
         } else draw_part(p, 0);
     }
+#ifdef SOFTGL_MODEL_SCENE_VISIBILITY
+    if (scene_visibility && !softgl_scene_visibility_end()) {
+        for (unsigned i = 0; i < G.parts; i++)
+            if (G.material[G.part[i].material].alpha_mode != 2) draw_part(&G.part[i], 0);
+    }
+#endif
     glEnable(GL_BLEND); glBlendFunc(GL_SRC_ALPHA, GL_ONE); glDepthMask(GL_FALSE); glDepthFunc(GL_LEQUAL);
 #ifndef SOFTGL_MODEL_VERTEX_ATTRIBUTES
     for (unsigned i = 0; i < G.parts; i++) if (G.material[G.part[i].material].alpha_mode != 2) draw_part(&G.part[i], 1);

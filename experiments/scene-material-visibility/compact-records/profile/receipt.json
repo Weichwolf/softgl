@@ -1,0 +1,72 @@
+{
+  "diagnosticOnly": true,
+  "binary": "/home/cosmo/Git/softgl/build/scene-material-visibility/native/profile_scene",
+  "binarySha256": "4530ab8c59338bed8ef36c78d4025e4280e4e98ddfe235e5ef0b1a9feddf5abb",
+  "frequencyHz": 500,
+  "width": 640,
+  "height": 360,
+  "frames": 120,
+  "warmup": 15,
+  "threads": 4,
+  "records": [
+    {
+      "asset": "bmw",
+      "samples": 0,
+      "packSha256": "76cda2c57b81e10b3c92a269537b17e4e1c5f36c653bfd1af43fcb2218473cef",
+      "camera": null,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-material-visibility/native/profile_scene",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "120",
+        "/home/cosmo/Git/softgl/tmp/scene-material-visibility/profile/bmw-640x360-msaa0.prof"
+      ],
+      "rendered": {
+        "triangles": 63009,
+        "frames": 120,
+        "threads": 4,
+        "samples": 0
+      },
+      "stderr": "PROFILE: interrupts/evictions/bytes = 637/339/34800\n",
+      "profileSha256": "d620cf7ef598c4dd51183b3ba8305ef9cf993d9d3fea28d6f6e8efa535cd0689"
+    },
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "packSha256": "4c862bcd28ef6833a89b0a058832c051098f5cf5869590999859b86f1cc993f3",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-material-visibility/native/profile_scene",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "120",
+        "/home/cosmo/Git/softgl/tmp/scene-material-visibility/profile/bistro-640x360-msaa0.prof"
+      ],
+      "rendered": {
+        "triangles": 640502,
+        "frames": 120,
+        "threads": 4,
+        "samples": 0
+      },
+      "stderr": "PROFILE: interrupts/evictions/bytes = 3482/1642/157208\n",
+      "profileSha256": "aba95a24c26391d22a1ca74222ea1f96db28ced385eff2f2c087a30d98380d0b"
+    }
+  ]
+}

@@ -74,6 +74,7 @@ typedef struct {
 /* Jobs the worker pool can be dispatched on. Each wake carries the
  * current job type; workers branch on it. */
 enum {
+    SG_JOB_CALLBACK = 6, /* joined scene resolve */
     SG_JOB_RASTER = 0,   /* drain shared independent raster bins (default) */
     SG_JOB_VERTEX = 1,   /* transform a slice of [job_first..job_first+job_count) */
     SG_JOB_ASYNC_RASTER = 2, /* drain the immutable full-vertex snapshot */
@@ -157,6 +158,8 @@ typedef struct {
     uint32_t triangle_index_min;
     atomic_int triangle_next;
     struct sg_geometry_entry *prepared_coverage_entry; /* caller-owned current draw */
+    void (*callback)(void *data);
+    void *callback_data;
     uint64_t depth_epoch; /* caller only; any flush invalidates depth reuse */
 } sg_worker_pool;
 
@@ -184,6 +187,7 @@ void sg_workers_bin_prepared_tri(softgl_ctx *c, const sg_prepared_tri *r);
  * texture image mutation/deletion and query/mode handovers must drain first.
  * Ordinary GL state changes can proceed: the pending draw owns its snapshot. */
 void sg_workers_flush(softgl_ctx *c);
+void sg_workers_run_callback(softgl_ctx *c, void (*callback)(void *), void *data);
 
 /* Parallel vertex transform: transforms source-array vertex indices
  * [first, first+count) via sg_process_vertex into the pool's shared

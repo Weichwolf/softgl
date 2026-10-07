@@ -1,0 +1,79 @@
+--- scene_visibility.c
++++ scene_visibility.c
+@@ -40,7 +40,6 @@
+ struct sg_scene_visibility {
+     softgl_ctx *context;
+     uint32_t *winner, *pixels;
+-    uint16_t *pixel_material;
+     float *backup_depth;
+     uint8_t *backup_color;
+     size_t pixel_capacity, triangle_bytes;
+@@ -56,7 +55,7 @@
+     struct sg_scene_visibility *f = storage;
+     if (!f) return;
+     for (int i = 0; i < SG_MAX_BINS; i++) free(f->bins[i].triangles);
+-    free(f->winner); free(f->pixels); free(f->pixel_material); free(f->backup_depth); free(f->backup_color);
++    free(f->winner); free(f->pixels); free(f->backup_depth); free(f->backup_color);
+     free(f->materials); free(f->tasks);
+     pthread_mutex_destroy(&f->allocation_mutex);
+     free(f);
+@@ -90,20 +89,19 @@
+     if (f->pixel_capacity < pixels) {
+         uint32_t *winner = malloc(pixels*sizeof(uint32_t));
+         uint32_t *list = malloc(pixels*sizeof(uint32_t));
+-        uint16_t *material = malloc(pixels*sizeof(uint16_t));
+         float *depth = malloc(pixels*sizeof(float));
+         uint8_t *color = malloc(pixels*4);
+-        if (!winner || !list || !material || !depth || !color) {
+-            free(winner); free(list); free(material); free(depth); free(color); return 0;
+-        }
+-        free(f->winner); free(f->pixels); free(f->pixel_material); free(f->backup_depth); free(f->backup_color);
+-        f->winner = winner; f->pixels = list; f->pixel_material = material; f->backup_depth = depth;
++        if (!winner || !list || !depth || !color) {
++            free(winner); free(list); free(depth); free(color); return 0;
++        }
++        free(f->winner); free(f->pixels); free(f->backup_depth); free(f->backup_color);
++        f->winner = winner; f->pixels = list; f->backup_depth = depth;
+         f->backup_color = color; f->pixel_capacity = pixels;
+     }
+     if (!f->materials) f->materials = calloc(SCENE_MATERIALS, sizeof(scene_material));
+     if (!f->tasks) f->tasks = malloc((pixels/256+SCENE_MATERIALS+1)*sizeof(scene_task));
+     if (!f->materials || !f->tasks) return 0;
+-    memset(f->pixel_material, 255, pixels*sizeof(uint16_t));
++    memset(f->winner, 255, pixels*sizeof(uint32_t));
+     memcpy(f->backup_depth, c->fb.depth, pixels*sizeof(float));
+     memcpy(f->backup_color, c->fb.color, pixels*4);
+     for (int i = 0; i < SG_MAX_BINS; i++) {
+@@ -270,8 +268,7 @@
+             }
+             for (int l = 0; l < 4; l++) if (live & (1u << l)) {
+                 size_t pixel = (size_t)y*c->fb.w+x+l;
+-                c->fb.depth[pixel] = depths[l]; f->winner[pixel] = record;
+-                f->pixel_material[pixel] = (uint16_t)c->scene_material; b->depth_passes++;
++                c->fb.depth[pixel] = depths[l]; f->winner[pixel] = record; b->depth_passes++;
+             }
+         }
+     }
+@@ -387,16 +384,18 @@
+         return 0;
+     }
+     uint32_t visible = 0;
+-    for (size_t p = 0; p < pixels; p++) if (f->pixel_material[p] != UINT16_MAX) {
+-        f->materials[f->pixel_material[p]].count++; visible++;
++    for (size_t p = 0; p < pixels; p++) if (f->winner[p] != UINT32_MAX) {
++        scene_triangle *t = scene_triangle_at(f,f->winner[p]);
++        f->materials[t->material].count++; visible++;
+     }
+     uint32_t first = 0;
+     for (int i = 0; i < f->material_count; i++) {
+         scene_material *m = &f->materials[i]; m->first = m->cursor = first;
+         first += m->count;
+     }
+-    for (uint32_t p = 0; p < pixels; p++) if (f->pixel_material[p] != UINT16_MAX) {
+-        scene_material *m = &f->materials[f->pixel_material[p]]; f->pixels[m->cursor++] = p;
++    for (uint32_t p = 0; p < pixels; p++) if (f->winner[p] != UINT32_MAX) {
++        scene_triangle *t = scene_triangle_at(f,f->winner[p]);
++        scene_material *m = &f->materials[t->material]; f->pixels[m->cursor++] = p;
+     }
+     uint32_t packets = 0;
+     for (int i = 0; i < f->material_count; i++) {

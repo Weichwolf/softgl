@@ -771,7 +771,9 @@ static void *sg_worker_main(void *arg) {
         if (!alive) break;
 
         int job = atomic_load_explicit(&p->job_type, memory_order_acquire);
-        if (job == SG_JOB_VERTEX) {
+        if (job == SG_JOB_CALLBACK) {
+            p->callback(p->callback_data);
+        } else if (job == SG_JOB_VERTEX) {
             int first = p->job_first;
             int count = p->job_count;
             int n     = p->nworkers;
@@ -1282,4 +1284,24 @@ void sg_workers_flush(softgl_ctx *c) {
     }
     p->vpool_count = 0;
     p->prepared_transformed = 0;
+}
+
+void sg_workers_run_callback(softgl_ctx *c, void (*callback)(void *), void *data) {
+    sg_workers_flush(c);
+    sg_worker_pool *p = c->workers;
+    if (!p || !p->nworkers) { callback(data); return; }
+    p->callback = callback; p->callback_data = data;
+    atomic_store_explicit(&p->job_type, SG_JOB_CALLBACK, memory_order_release);
+    atomic_store_explicit(&p->done_count, 0, memory_order_release);
+    pthread_mutex_lock(&p->mtx);
+    atomic_fetch_add_explicit(&p->gen, 1, memory_order_acq_rel);
+    pthread_cond_broadcast(&p->wake);
+    pthread_mutex_unlock(&p->mtx);
+    callback(data);
+    while (atomic_load_explicit(&p->done_count, memory_order_acquire) < p->nworkers) {
+#if defined(__x86_64__) || defined(__i386__)
+        __builtin_ia32_pause();
+#endif
+    }
+    atomic_store_explicit(&p->job_type, SG_JOB_RASTER, memory_order_release);
 }

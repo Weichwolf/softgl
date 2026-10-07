@@ -1,0 +1,59 @@
+--- scene_visibility.c
++++ scene_visibility.c
+@@ -203,31 +203,15 @@
+          -(int64_t)(y0-y2)*256, (int64_t)(x0-x2)*256}};
+     float inverse_area = 1.f/(float)area;
+     uint32_t record = UINT32_MAX;
+-    int64_t dx[3] = {edge[0][1], edge[1][1], -edge[0][1]-edge[1][1]};
+-    int64_t lo[3], hi[3];
+-    for (int k = 0; k < 3; k++) {
+-        lo[k] = dx[k] < 0 ? dx[k]*3 : 0;
+-        hi[k] = dx[k] > 0 ? dx[k]*3 : 0;
+-    }
+     for (int y = iy0; y < iy1; y++) {
+         int64_t e0 = edge[0][0]+edge[0][1]*ix0+edge[0][2]*y;
+         int64_t e1 = edge[1][0]+edge[1][1]*ix0+edge[1][2]*y;
+         for (int x = ix0; x < ix1; x += 4, e0 += edge[0][1]*4, e1 += edge[1][1]*4) {
+-            int64_t e2 = area-e0-e1;
+-            if (e0+bias[0]+hi[0] < 0 || e1+bias[1]+hi[1] < 0 ||
+-                e2+bias[2]+hi[2] < 0) continue;
+-            unsigned live = (1u << (ix1-x < 4 ? ix1-x : 4))-1;
+-            int64_t a[4], d[4];
++            int64_t a[4], d[4]; unsigned live = 0;
+             for (int l = 0; l < 4; l++) {
+                 a[l] = e0+edge[0][1]*l; d[l] = e1+edge[1][1]*l;
+-            }
+-            if (e0+bias[0]+lo[0] < 0 || e1+bias[1]+lo[1] < 0 ||
+-                e2+bias[2]+lo[2] < 0) {
+-                unsigned inside = 0;
+-                for (int l = 0; l < 4; l++)
+-                    if (a[l]+bias[0] >= 0 && d[l]+bias[1] >= 0 &&
+-                        area-a[l]-d[l]+bias[2] >= 0) inside |= 1u << l;
+-                live &= inside;
++                if (x+l < ix1 && a[l]+bias[0] >= 0 && d[l]+bias[1] >= 0 &&
++                    area-a[l]-d[l]+bias[2] >= 0) live |= 1u << l;
+             }
+             if (!live) continue;
+             sg_f32x4 b0 = sg_f32x4_mul(sg_f32x4_set((float)a[0],(float)a[1],(float)a[2],(float)a[3]),sg_f32x4_splat(inverse_area));
+@@ -236,18 +220,9 @@
+             sg_f32x4 z = sg_f32x4_add(sg_f32x4_add(sg_f32x4_mul(b0,sg_f32x4_splat(v0->ndc.z)),
+                 sg_f32x4_mul(b1,sg_f32x4_splat(v1->ndc.z))),sg_f32x4_mul(b2,sg_f32x4_splat(v2->ndc.z)));
+             float depths[4]; sg_f32x4_store(depths,z);
+-            if (x+3 < tile_ix1) {
+-                sg_f32x4 old = sg_f32x4_load(c->fb.depth+(size_t)y*c->fb.w+x);
+-                sg_i32x4 passing = sg_i32x4_and(sg_f32x4_lt(z,old),
+-                    sg_i32x4_and(sg_f32x4_ge(z,sg_f32x4_splat(0.f)),
+-                                  sg_f32x4_le(z,sg_f32x4_splat(1.f))));
+-                live &= sg_mask4_live(passing);
+-            } else {
+-                /* No vector access crosses this worker's stripe. */
+-                for (int l = 0; l < 4; l++) if (live & (1u << l)) {
+-                    size_t pixel = (size_t)y*c->fb.w+x+l;
+-                    if (depths[l] < 0.f || depths[l] > 1.f || !(depths[l] < c->fb.depth[pixel])) live &= ~(1u << l);
+-                }
++            for (int l = 0; l < 4; l++) if (live & (1u << l)) {
++                size_t pixel = (size_t)y*c->fb.w+x+l;
++                if (depths[l] < 0.f || depths[l] > 1.f || !(depths[l] < c->fb.depth[pixel])) live &= ~(1u << l);
+             }
+             if (!live) continue;
+             if (m->alpha_test) {

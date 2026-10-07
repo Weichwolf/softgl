@@ -5,9 +5,17 @@ int SG_RASTER_TRI_FUNCTION(softgl_ctx *c,
                              const sg_vert *v2,
                              int tile_ix0, int tile_ix1,
                              const sg_tex_tri_ctx *tctx) {
-#if !SG_RASTER_OFF_CAPTURE
-    if (!c->fb.samples && sg_raster_bin && sg_raster_bin->depth_capture)
-        return sg_raster_triangle_depth_capture(c, v0, v1, v2, tile_ix0, tile_ix1, tctx);
+#if SG_RASTER_OFF_CAPTURE
+    if (c->scene_visibility)
+        return sg_scene_visibility_triangle(c, v0, v1, v2, tile_ix0, tile_ix1);
+#else
+    /* Keep the MSAA path behind its existing sample-mode test. */
+    if (!c->fb.samples) {
+        if (c->scene_visibility)
+            return sg_scene_visibility_triangle(c, v0, v1, v2, tile_ix0, tile_ix1);
+        if (sg_raster_bin && sg_raster_bin->depth_capture)
+            return sg_raster_triangle_depth_capture(c, v0, v1, v2, tile_ix0, tile_ix1, tctx);
+    }
 #endif
     /* 16.8 fixed-point screen coords. */
     sg_screen_t x0 = sg_fp_screen_from_float(v0->ndc.x);
