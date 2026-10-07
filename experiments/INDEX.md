@@ -21,7 +21,7 @@
 | [current-producer-phases](current-producer-phases/README.md) | Diagnostic | Separates D4 replay, packing and submit scopes; no saved frame time is established. |
 | [current-texture-access](current-texture-access/README.md) | Diagnostic | D4 hardware counters do not isolate texture traffic or a hardware ceiling. |
 | [current-v8-raster-code](current-v8-raster-code/README.md) | Diagnostic | D4 JIT records expose cube-prefix stores; their removal was later tested in cube-vector-core. |
-| [deferred-opaque-visibility](deferred-opaque-visibility/README.md) | Native census / prototype pending | Duplicate eligible opaque writes: BMW 32.6%, T-80 45.3%, Sponza 55.3%, Bistro 41.8%; optimistic work bounds, no speedup yet. |
+| [deferred-opaque-visibility](deferred-opaque-visibility/README.md) | Historical 1080p census / prototype pending | Duplicate eligible opaque writes: BMW 32.6%, T-80 45.3%, Sponza 55.3%, Bistro 41.8%; optimistic work bounds, no speedup yet. |
 | [depth-replay-four](depth-replay-four/README.md) | Accepted | Specialized four-sample capture/replay improves BMW with an explicit small T-80 cost. |
 | [depth-replay-hz](depth-replay-hz/README.md) | Accepted | Strict HZ rejection supplies hidden bits reusable across later material passes. |
 | [depth-replay-off-bound](depth-replay-off-bound/README.md) | Accepted trade-off | BMW off improves about 9%; BMW 4x regresses about 1%, retained under BMW priority. |
@@ -51,7 +51,7 @@
 | [intrinsic-coverage-retirement](intrinsic-coverage-retirement/README.md) | Accepted | Prunes sample-empty cached references using coverage already computed by rasterization. |
 | [large-triangle-depth-planes](large-triangle-depth-planes/README.md) | Rejected | Restricting depth planes to larger triangles still regressed BMW. |
 | [main-raster-participation](main-raster-participation/README.md) | Accepted | Caller shares the raster-bin queue; historical BMW audits improved 7.90%/7.10%; original patch is preserved. |
-| [native-cpu-profiles](native-cpu-profiles/README.md) | Diagnostic | Native profiles of all four scenes and BMW MSAA 2x/4x locate raster/fragment work and completion polling; no speedup claimed. |
+| [native-cpu-profiles](native-cpu-profiles/README.md) | Diagnostic | Current 640x360 profiles complete for all four scenes; vertex/clipping and queue wakeups motivate cluster culling; no speedup claimed. |
 | [msaa-additive-bytes](msaa-additive-bytes/README.md) | Accepted variant | Exact guarded saturated-byte blending uses a separate WASM writer root. |
 | [msaa-coverage-recurrence](msaa-coverage-recurrence/README.md) | Rejected | Exact vector edge recurrence regresses BMW 2x and gives mixed 4x results. |
 | [msaa-edge-reuse](msaa-edge-reuse/README.md) ([historical note](msaa-edge-reuse/historical-notes/README.md)) | Accepted | Reuses four-sample coverage coefficients; three audits support a BMW 4x gain. |
@@ -108,11 +108,11 @@
 | [texture-tiles4](texture-tiles4/README.md) | Rejected | BMW off regresses in all six pairs; BMW4 slows in both audits; doubled eligible storage and costly updates. |
 | [transient-depth-visibility](transient-depth-visibility/README.md) | Diagnostic / superseded trials | Identifies strictly hidden replay references and preserves the initial timing limitations. |
 | [triangle-size-histogram](triangle-size-histogram/README.md) | Diagnostic | Separates full triangle area from actual visited work; no timing gain is claimed. |
-| [validation-protocol](validation-protocol/README.md) | Protocol | Documents unchanged correctness gates and the 18-pair quiet-host comparison plan. |
+| [validation-protocol](validation-protocol/README.md) | Protocol | Current agreement: all four scenes at 640x360, documented approximations allowed, native AB/BA off/2x/4x, update live WASM on adoption. |
 | [visibility-buffer-architecture](visibility-buffer-architecture/README.md) | Held / research | Primary GitHub/HPG sources reviewed; four previous opaque-deferred prototypes already regressed BMW, so ordinary retry is superseded. |
 | [visibility-byte-select](visibility-byte-select/README.md) | Rejected | Byte-group visibility selection regresses BMW off; small 4x gains do not justify it. |
 | [wasm-four-contexts](wasm-four-contexts/README.md) | Applied configuration | Defaults to at most three helpers plus the computing caller; no speed claim. |
 | [wasm-phase-conversion](wasm-phase-conversion/README.md) | Held | Native WASM proposal conversion remained correct but did not reproduce a BMW gain. |
 | [wasm-pseudo-clamps](wasm-pseudo-clamps/README.md) | Accepted | Uses direct WASM pseudo-min/max for the validated clamp path. |
 | [whole-pipeline-static-kernels](whole-pipeline-static-kernels/README.md) | Proposed | Bounded C11 kernels specialize complete hot draw pipelines beyond rejected eligibility/DOT3 helpers; no measured gain. |
-| [GLimpSW / Mesa / libsoftgl](glimpsw-mesa-comparison/README.md) | Running | Shared preparation and corrected UV/cameras validated; final four-scene measurements pending; Clang 22 passes 744 checks. |
+| [glimpsw-mesa-comparison](glimpsw-mesa-comparison/README.md) | Native baseline | 640x360: SoftGL beats Mesa on BMW/T-80, trails on Sponza/Bistro; GLimpSW faster with different rendering; 72 quiet accepted timings. |

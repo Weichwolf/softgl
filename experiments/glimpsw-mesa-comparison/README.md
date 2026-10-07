@@ -1,8 +1,11 @@
 # GLimpSW / Mesa / libsoftgl with four common scenes
 
-Status: final shared-asset measurements pending. Work files and rendered images
-are in `tmp/glimpsw-original/`. The initial measurements in `tmp/glimpsw-bmw/`
-used a different preparation and camera and are superseded.
+Status: native 640x360 baseline complete, 72 accepted measurements, no rejected
+blocks. Six timings per renderer/scene with three rotated forward/reverse pairs.
+[Summary](timings-quiet-summary.json), [accepted blocks](quiet-blocks.json) and
+[source/binary/asset receipt](provenance.json). Higher resolutions are excluded
+from current work until libsoftgl beats GLimpSW at 640x360. Initial preparation
+and pre-copy-barrier timings remain private and are superseded.
 
 Source: [GLimpSW](https://github.com/dubiousconst282/GLimpSW), revision
 `2f915606d50b70fef8859ef29adc9d53f9aee887`; renderer source remains unchanged.
@@ -40,8 +43,8 @@ cmake --build build-clang22 -j4
 for asset in bmw t80 sponza bistro; do
   python3 export_bmw.py ../../build/assets/$asset.pack $asset
 done
-python3 compare.py --frames 30 --warmup 15
-python3 repair_compare.py --frames 30 --warmup 15
+python3 compare.py --resolutions 640x360 --frames 30 --warmup 15
+python3 repair_compare.py --resolutions 640x360 --frames 30 --warmup 15
 python3 render_images.py
 ```
 
@@ -50,3 +53,7 @@ and resolution. A whole block is repeated if monitored foreign process CPU load
 exceeds 0.1 logical CPU. The process-level monitor does not measure hypervisor
 interference or frequency changes. Original and rejected blocks remain private;
 final receipts identify accepted records and binary/source/asset hashes.
+
+At 640x360, libsoftgl uses about 29.7%/31.3% less frame time than Mesa
+for BMW/T-80, but 42.9%/55.3% more for Sponza/Bistro. GLimpSW is faster
+for all four under its different pipeline; these are not identical-image ratios.

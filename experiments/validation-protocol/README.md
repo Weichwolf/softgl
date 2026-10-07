@@ -1,4 +1,19 @@
-# Validation protocol for proposed experiments
+# Validation protocol for optimization experiments
+
+Current user agreement (2026-10-07) supersedes the older exact-image and
+BMW-priority acceptance requirements below: optimize all four scenes natively
+at 640x360 only until SoftGL beats GLimpSW there. Keep assets, cameras and
+configured thread budgets common. Approximate rendering and differences from
+Mesa are allowed, as with GLimpSW; record the algorithm and visible quality
+effects. Missing geometry and broken materials are not acceptable. Preserve
+WASM/SIMD128 compatibility. Do not inflate existing test tolerances to obscure
+regressions: report intentional rendering changes separately and inspect native
+and browser images. Use repeatable AB/BA measurements across BMW, T-80, Sponza
+and Bistro with MSAA off/2x/4x; report per-scene/mode costs. Commit and push each
+adopted gain, then rebuild and verify the live WASM viewer.
+
+The previous exact-renderer protocol follows as historical guidance for changes
+that claim unchanged behavior.
 
 Freeze the actual accepted renderer, toolchain, JS/WASM and unchanged model
 packs before implementation. Add focused contracts for each changed behavior,

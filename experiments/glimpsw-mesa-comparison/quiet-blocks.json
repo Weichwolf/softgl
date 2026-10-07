@@ -1,0 +1,3360 @@
+{
+  "foreignCpuCoreCutoff": 0.1,
+  "accepted": [
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "meshlets": 876,
+      "frames": 30,
+      "ms": 2.628634567,
+      "rasterMs": 1.903039033,
+      "resolveMs": 0.663968733,
+      "readbackMs": 0.059883467,
+      "asset": "bmw",
+      "pair": 0,
+      "order": "forward",
+      "slot": 0,
+      "elapsedIncludingLoad": 0.40566931798821315,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/bmw/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.09860247799455765,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 2
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 2
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 36.310302365,
+      "submitMs": 20.998039661,
+      "finishReadbackMs": 15.311942705,
+      "asset": "bmw",
+      "pair": 0,
+      "order": "forward",
+      "slot": 1,
+      "elapsedIncludingLoad": 1.8190898619941436,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.06596705446340743,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 7
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 4
+        },
+        {
+          "pid": 3040204,
+          "command": "codex-code-mode",
+          "ticks": 1
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 25.068201934,
+      "submitMs": 24.606690567,
+      "finishReadbackMs": 0.461351365,
+      "asset": "bmw",
+      "pair": 0,
+      "order": "forward",
+      "slot": 2,
+      "elapsedIncludingLoad": 1.2134417440393008,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.049446131464269724,
+      "foreignProcesses": [
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 5
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 25.120475401,
+      "submitMs": 24.575460413,
+      "finishReadbackMs": 0.544951656,
+      "asset": "bmw",
+      "pair": 0,
+      "order": "reverse",
+      "slot": 0,
+      "elapsedIncludingLoad": 1.2163041519816034,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.049329766656019354,
+      "foreignProcesses": [
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 2
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 4
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 35.6996672,
+      "submitMs": 20.886242531,
+      "finishReadbackMs": 14.813138005,
+      "asset": "bmw",
+      "pair": 0,
+      "order": "reverse",
+      "slot": 1,
+      "elapsedIncludingLoad": 1.822196870984044,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.04390304981524717,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 7
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 1
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "meshlets": 876,
+      "frames": 30,
+      "ms": 2.307810233,
+      "rasterMs": 1.587478067,
+      "resolveMs": 0.654678633,
+      "readbackMs": 0.064196867,
+      "asset": "bmw",
+      "pair": 0,
+      "order": "reverse",
+      "slot": 2,
+      "elapsedIncludingLoad": 0.4058376189786941,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/bmw/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.024640396878843767,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 1
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 36.610753266,
+      "submitMs": 21.150223468,
+      "finishReadbackMs": 15.460223128,
+      "asset": "bmw",
+      "pair": 1,
+      "order": "forward",
+      "slot": 0,
+      "elapsedIncludingLoad": 1.8187976609915495,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.04398510165027736,
+      "foreignProcesses": [
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 7
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 25.041128532,
+      "submitMs": 24.539573729,
+      "finishReadbackMs": 0.501394803,
+      "asset": "bmw",
+      "pair": 1,
+      "order": "forward",
+      "slot": 1,
+      "elapsedIncludingLoad": 1.213532444962766,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.04120202983244846,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 5
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "meshlets": 876,
+      "frames": 30,
+      "ms": 2.0741829,
+      "rasterMs": 1.357577333,
+      "resolveMs": 0.657098633,
+      "readbackMs": 0.057876933,
+      "asset": "bmw",
+      "pair": 1,
+      "order": "forward",
+      "slot": 2,
+      "elapsedIncludingLoad": 0.4056303180404939,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/bmw/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.02465298957017731,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 1
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "meshlets": 876,
+      "frames": 30,
+      "ms": 2.0652762,
+      "rasterMs": 1.350693967,
+      "resolveMs": 0.654092067,
+      "readbackMs": 0.0588868,
+      "asset": "bmw",
+      "pair": 1,
+      "order": "reverse",
+      "slot": 0,
+      "elapsedIncludingLoad": 0.4051375170238316,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/bmw/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.049365953928239954,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 2
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 25.034435167,
+      "submitMs": 24.599687097,
+      "finishReadbackMs": 0.434574737,
+      "asset": "bmw",
+      "pair": 1,
+      "order": "reverse",
+      "slot": 1,
+      "elapsedIncludingLoad": 1.2125105410232209,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.04123675490507958,
+      "foreignProcesses": [
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 4
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 35.6204103,
+      "submitMs": 20.846005999,
+      "finishReadbackMs": 14.774150966,
+      "asset": "bmw",
+      "pair": 1,
+      "order": "reverse",
+      "slot": 2,
+      "elapsedIncludingLoad": 1.8199136659968644,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.038463363019837125,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 7
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 25.1651256,
+      "submitMs": 24.693140834,
+      "finishReadbackMs": 0.471831433,
+      "asset": "bmw",
+      "pair": 2,
+      "order": "forward",
+      "slot": 0,
+      "elapsedIncludingLoad": 1.2153772509773262,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.04113948978376327,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 4
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 1
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "meshlets": 876,
+      "frames": 30,
+      "ms": 2.298930233,
+      "rasterMs": 1.6373883,
+      "resolveMs": 0.602745167,
+      "readbackMs": 0.057226767,
+      "asset": "bmw",
+      "pair": 2,
+      "order": "forward",
+      "slot": 1,
+      "elapsedIncludingLoad": 0.40518621704541147,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/bmw/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.04936002055015235,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 2
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 35.618916967,
+      "submitMs": 20.821655835,
+      "finishReadbackMs": 14.796947797,
+      "asset": "bmw",
+      "pair": 2,
+      "order": "forward",
+      "slot": 2,
+      "elapsedIncludingLoad": 1.8184968610294163,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.04399237728390333,
+      "foreignProcesses": [
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 7
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 35.644523667,
+      "submitMs": 20.816362527,
+      "finishReadbackMs": 14.827851138,
+      "asset": "bmw",
+      "pair": 2,
+      "order": "reverse",
+      "slot": 0,
+      "elapsedIncludingLoad": 1.8187841610051692,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.032989071098376184,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 6
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "meshlets": 876,
+      "frames": 30,
+      "ms": 2.1301197,
+      "rasterMs": 1.4623877,
+      "resolveMs": 0.6096085,
+      "readbackMs": 0.057016833,
+      "asset": "bmw",
+      "pair": 2,
+      "order": "reverse",
+      "slot": 1,
+      "elapsedIncludingLoad": 0.4045199149986729,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/bmw/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.0494413235503266,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 2
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 25.250749133,
+      "submitMs": 24.748700995,
+      "finishReadbackMs": 0.501914805,
+      "asset": "bmw",
+      "pair": 2,
+      "order": "reverse",
+      "slot": 2,
+      "elapsedIncludingLoad": 1.2149323479970917,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.04938546586475746,
+      "foreignProcesses": [
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 1
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 4
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "meshlets": 838,
+      "frames": 30,
+      "ms": 1.563198033,
+      "rasterMs": 0.990729633,
+      "resolveMs": 0.5166048,
+      "readbackMs": 0.0547236,
+      "asset": "t80",
+      "pair": 0,
+      "order": "forward",
+      "slot": 0,
+      "elapsedIncludingLoad": 0.40462971600936726,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/t80/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.024713953534170236,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 1
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 30.014226834,
+      "submitMs": 18.413765366,
+      "finishReadbackMs": 11.600164801,
+      "asset": "t80",
+      "pair": 0,
+      "order": "forward",
+      "slot": 1,
+      "elapsedIncludingLoad": 1.6168805570341647,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.04947798998012789,
+      "foreignProcesses": [
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 7
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 20.4763882,
+      "submitMs": 19.176430897,
+      "finishReadbackMs": 1.299840635,
+      "asset": "t80",
+      "pair": 0,
+      "order": "forward",
+      "slot": 2,
+      "elapsedIncludingLoad": 1.2157479519955814,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.03290155655565141,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 4
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 20.427018033,
+      "submitMs": 19.135010968,
+      "finishReadbackMs": 1.2918704,
+      "asset": "t80",
+      "pair": 0,
+      "order": "reverse",
+      "slot": 0,
+      "elapsedIncludingLoad": 1.2145139490021393,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.041168732595521576,
+      "foreignProcesses": [
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 4
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 30.1556406,
+      "submitMs": 18.494785498,
+      "finishReadbackMs": 11.660598434,
+      "asset": "t80",
+      "pair": 0,
+      "order": "reverse",
+      "slot": 1,
+      "elapsedIncludingLoad": 1.617429459001869,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.04327854894098298,
+      "foreignProcesses": [
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 6
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "meshlets": 838,
+      "frames": 30,
+      "ms": 1.607314833,
+      "rasterMs": 1.057079933,
+      "resolveMs": 0.491671467,
+      "readbackMs": 0.057396767,
+      "asset": "t80",
+      "pair": 0,
+      "order": "reverse",
+      "slot": 2,
+      "elapsedIncludingLoad": 0.40477971598738804,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/t80/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.0494095904761768,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 2
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 30.036053568,
+      "submitMs": 18.407091873,
+      "finishReadbackMs": 11.628668365,
+      "asset": "t80",
+      "pair": 1,
+      "order": "forward",
+      "slot": 0,
+      "elapsedIncludingLoad": 1.6177018599701114,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.037089652602061395,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 6
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 20.868149367,
+      "submitMs": 19.603818903,
+      "finishReadbackMs": 1.264237129,
+      "asset": "t80",
+      "pair": 1,
+      "order": "forward",
+      "slot": 1,
+      "elapsedIncludingLoad": 1.2128296429873444,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.032980724235495446,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 4
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "meshlets": 838,
+      "frames": 30,
+      "ms": 1.706328467,
+      "rasterMs": 1.126253433,
+      "resolveMs": 0.520378167,
+      "readbackMs": 0.058233533,
+      "asset": "t80",
+      "pair": 1,
+      "order": "forward",
+      "slot": 2,
+      "elapsedIncludingLoad": 0.4044437150005251,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/t80/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.04945063863824422,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 2
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "meshlets": 838,
+      "frames": 30,
+      "ms": 1.586614767,
+      "rasterMs": 1.022563167,
+      "resolveMs": 0.5040815,
+      "readbackMs": 0.058753433,
+      "asset": "t80",
+      "pair": 1,
+      "order": "reverse",
+      "slot": 0,
+      "elapsedIncludingLoad": 0.40459501498844475,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/t80/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.07414821954950879,
+      "foreignProcesses": [
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 2
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 20.608728565,
+      "submitMs": 19.319998003,
+      "finishReadbackMs": 1.288590561,
+      "asset": "t80",
+      "pair": 1,
+      "order": "reverse",
+      "slot": 1,
+      "elapsedIncludingLoad": 1.2149946499848738,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.0329219556649883,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 4
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 30.085857065,
+      "submitMs": 18.656379369,
+      "finishReadbackMs": 11.4292377,
+      "asset": "t80",
+      "pair": 1,
+      "order": "reverse",
+      "slot": 2,
+      "elapsedIncludingLoad": 1.6171920580090955,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.04328490215699928,
+      "foreignProcesses": [
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 6
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 20.744595733,
+      "submitMs": 19.487221902,
+      "finishReadbackMs": 1.257250501,
+      "asset": "t80",
+      "pair": 2,
+      "order": "forward",
+      "slot": 0,
+      "elapsedIncludingLoad": 1.2208608720102347,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.032763766058074364,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 4
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "meshlets": 838,
+      "frames": 30,
+      "ms": 1.739821933,
+      "rasterMs": 1.191063633,
+      "resolveMs": 0.489488167,
+      "readbackMs": 0.057323467,
+      "asset": "t80",
+      "pair": 2,
+      "order": "forward",
+      "slot": 1,
+      "elapsedIncludingLoad": 0.40453001897549257,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/t80/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.04944008865065623,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 2
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 30.237344499,
+      "submitMs": 18.625789603,
+      "finishReadbackMs": 11.611301564,
+      "asset": "t80",
+      "pair": 2,
+      "order": "forward",
+      "slot": 2,
+      "elapsedIncludingLoad": 1.616730573005043,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.04329725754483005,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 7
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 30.1335842,
+      "submitMs": 18.537652562,
+      "finishReadbackMs": 11.595561637,
+      "asset": "t80",
+      "pair": 2,
+      "order": "reverse",
+      "slot": 0,
+      "elapsedIncludingLoad": 1.616593073005788,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.049486788812754964,
+      "foreignProcesses": [
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 1
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 6
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "meshlets": 838,
+      "frames": 30,
+      "ms": 1.670908367,
+      "rasterMs": 1.112009967,
+      "resolveMs": 0.496758167,
+      "readbackMs": 0.061170233,
+      "asset": "t80",
+      "pair": 2,
+      "order": "reverse",
+      "slot": 1,
+      "elapsedIncludingLoad": 0.40463672002078965,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/t80/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.02471352575091607,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 1
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 20.767565933,
+      "submitMs": 19.407038466,
+      "finishReadbackMs": 1.360374136,
+      "asset": "t80",
+      "pair": 2,
+      "order": "reverse",
+      "slot": 2,
+      "elapsedIncludingLoad": 1.2180455719935708,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.05746911413620696,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 4
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 3
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "meshlets": 3449,
+      "frames": 30,
+      "ms": 3.955098533,
+      "rasterMs": 2.274340167,
+      "resolveMs": 1.6137982,
+      "readbackMs": 0.062980167,
+      "asset": "sponza",
+      "pair": 0,
+      "order": "forward",
+      "slot": 0,
+      "elapsedIncludingLoad": 2.025241579976864,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/sponza/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.05431450800119194,
+      "foreignProcesses": [
+        {
+          "pid": 15964,
+          "command": "python3",
+          "ticks": 1
+        },
+        {
+          "pid": 2767715,
+          "command": "Relay(2767718)",
+          "ticks": 1
+        },
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 8
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 65.420453033,
+      "submitMs": 54.115805697,
+      "finishReadbackMs": 11.304374,
+      "asset": "sponza",
+      "pair": 0,
+      "order": "forward",
+      "slot": 1,
+      "elapsedIncludingLoad": 3.4409847300266847,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.043592172522903566,
+      "foreignProcesses": [
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 1
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 13
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 91.897842732,
+      "submitMs": 91.635248698,
+      "finishReadbackMs": 0.262520701,
+      "asset": "sponza",
+      "pair": 0,
+      "order": "forward",
+      "slot": 2,
+      "elapsedIncludingLoad": 4.655632382957265,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.040810782375242376,
+      "foreignProcesses": [
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 18
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 91.4121113,
+      "submitMs": 91.152917132,
+      "finishReadbackMs": 0.259127501,
+      "asset": "sponza",
+      "pair": 0,
+      "order": "reverse",
+      "slot": 0,
+      "elapsedIncludingLoad": 4.654560185037553,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.04296861401489997,
+      "foreignProcesses": [
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 1
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 18
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 64.403520166,
+      "submitMs": 52.905372363,
+      "finishReadbackMs": 11.497841137,
+      "asset": "sponza",
+      "pair": 0,
+      "order": "reverse",
+      "slot": 1,
+      "elapsedIncludingLoad": 3.4386123309959657,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.04362224803531538,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 13
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 2
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "meshlets": 3449,
+      "frames": 30,
+      "ms": 4.0055587,
+      "rasterMs": 2.4335673,
+      "resolveMs": 1.506641167,
+      "readbackMs": 0.0613569,
+      "asset": "sponza",
+      "pair": 0,
+      "order": "reverse",
+      "slot": 2,
+      "elapsedIncludingLoad": 1.8216977730044164,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/sponza/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.03293630858484589,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 6
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 64.698697698,
+      "submitMs": 53.590424336,
+      "finishReadbackMs": 11.107990029,
+      "asset": "sponza",
+      "pair": 1,
+      "order": "forward",
+      "slot": 0,
+      "elapsedIncludingLoad": 3.4406459369929507,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.049409326944165693,
+      "foreignProcesses": [
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 14
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 2
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 92.974645802,
+      "submitMs": 92.713281772,
+      "finishReadbackMs": 0.261310696,
+      "asset": "sponza",
+      "pair": 1,
+      "order": "forward",
+      "slot": 1,
+      "elapsedIncludingLoad": 4.653775373008102,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.0730589624011507,
+      "foreignProcesses": [
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 1
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 20
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 10
+        },
+        {
+          "pid": 3040204,
+          "command": "codex-code-mode",
+          "ticks": 2
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "meshlets": 3449,
+      "frames": 30,
+      "ms": 3.944205167,
+      "rasterMs": 2.334560333,
+      "resolveMs": 1.542467933,
+      "readbackMs": 0.063253533,
+      "asset": "sponza",
+      "pair": 1,
+      "order": "forward",
+      "slot": 2,
+      "elapsedIncludingLoad": 1.8196825640043244,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/sponza/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.043963711903660295,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 8
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "meshlets": 3449,
+      "frames": 30,
+      "ms": 3.778771367,
+      "rasterMs": 2.158006733,
+      "resolveMs": 1.556394533,
+      "readbackMs": 0.060463433,
+      "asset": "sponza",
+      "pair": 1,
+      "order": "reverse",
+      "slot": 0,
+      "elapsedIncludingLoad": 1.8198343649855815,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/sponza/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.060445061438803814,
+      "foreignProcesses": [
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 10
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 92.566351934,
+      "submitMs": 92.308191171,
+      "finishReadbackMs": 0.258067429,
+      "asset": "sponza",
+      "pair": 1,
+      "order": "reverse",
+      "slot": 1,
+      "elapsedIncludingLoad": 4.657796419982333,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.049379573356465506,
+      "foreignProcesses": [
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 1
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 21
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 65.372523433,
+      "submitMs": 53.93741897,
+      "finishReadbackMs": 11.434791128,
+      "asset": "sponza",
+      "pair": 1,
+      "order": "reverse",
+      "slot": 2,
+      "elapsedIncludingLoad": 3.4440070649725385,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.046457512130938614,
+      "foreignProcesses": [
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 16
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 92.326677499,
+      "submitMs": 92.065600199,
+      "finishReadbackMs": 0.260980633,
+      "asset": "sponza",
+      "pair": 2,
+      "order": "forward",
+      "slot": 0,
+      "elapsedIncludingLoad": 4.655987294972874,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.04725098804232921,
+      "foreignProcesses": [
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 21
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "meshlets": 3449,
+      "frames": 30,
+      "ms": 3.756407967,
+      "rasterMs": 2.169616567,
+      "resolveMs": 1.522071,
+      "readbackMs": 0.059937033,
+      "asset": "sponza",
+      "pair": 2,
+      "order": "forward",
+      "slot": 1,
+      "elapsedIncludingLoad": 1.8189532669493929,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/sponza/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.0604743409293211,
+      "foreignProcesses": [
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 10
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 64.574034432,
+      "submitMs": 53.199473532,
+      "finishReadbackMs": 11.374247565,
+      "asset": "sponza",
+      "pair": 2,
+      "order": "forward",
+      "slot": 2,
+      "elapsedIncludingLoad": 3.4443824639893137,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.05516228293066512,
+      "foreignProcesses": [
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 1
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 16
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 1
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 64.553744334,
+      "submitMs": 53.161070133,
+      "finishReadbackMs": 11.392397534,
+      "asset": "sponza",
+      "pair": 2,
+      "order": "reverse",
+      "slot": 0,
+      "elapsedIncludingLoad": 3.4482577809831128,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.049300258506639924,
+      "foreignProcesses": [
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 16
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "meshlets": 3449,
+      "frames": 30,
+      "ms": 3.6822511,
+      "rasterMs": 2.108616333,
+      "resolveMs": 1.506047933,
+      "readbackMs": 0.064593433,
+      "asset": "sponza",
+      "pair": 2,
+      "order": "reverse",
+      "slot": 1,
+      "elapsedIncludingLoad": 1.8194978780229576,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/sponza/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.049464196186803366,
+      "foreignProcesses": [
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 8
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 92.398107432,
+      "submitMs": 92.134186833,
+      "finishReadbackMs": 0.2638306,
+      "asset": "sponza",
+      "pair": 2,
+      "order": "reverse",
+      "slot": 2,
+      "elapsedIncludingLoad": 4.6567962859990075,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.05368497667627054,
+      "foreignProcesses": [
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 1
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 23
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 1
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "meshlets": 13287,
+      "frames": 30,
+      "ms": 5.876427667,
+      "rasterMs": 4.059038933,
+      "resolveMs": 1.753438567,
+      "readbackMs": 0.059990133,
+      "asset": "bistro",
+      "pair": 0,
+      "order": "forward",
+      "slot": 0,
+      "elapsedIncludingLoad": 25.664947878976818,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/bistro/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.04052219411876949,
+      "foreignProcesses": [
+        {
+          "pid": 15964,
+          "command": "python3",
+          "ticks": 1
+        },
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 4
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 3
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 94
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 2
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 166.356635732,
+      "submitMs": 161.556328063,
+      "finishReadbackMs": 4.799931004,
+      "asset": "bistro",
+      "pair": 0,
+      "order": "forward",
+      "slot": 1,
+      "elapsedIncludingLoad": 12.356018789985683,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.04370339744365392,
+      "foreignProcesses": [
+        {
+          "pid": 2767715,
+          "command": "Relay(2767718)",
+          "ticks": 1
+        },
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 2
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 3
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 45
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 3
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 267.455120565,
+      "submitMs": 266.818585361,
+      "finishReadbackMs": 0.636395203,
+      "asset": "bistro",
+      "pair": 0,
+      "order": "forward",
+      "slot": 2,
+      "elapsedIncludingLoad": 17.79495821596356,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.04214676937691191,
+      "foreignProcesses": [
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 3
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 3
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 62
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 7
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 265.384843932,
+      "submitMs": 264.708315267,
+      "finishReadbackMs": 0.676415331,
+      "asset": "bistro",
+      "pair": 0,
+      "order": "reverse",
+      "slot": 0,
+      "elapsedIncludingLoad": 17.78992897097487,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.04103445276206725,
+      "foreignProcesses": [
+        {
+          "pid": 16163,
+          "command": "polkitd",
+          "ticks": 1
+        },
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 2
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 3
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 64
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 3
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 166.753670135,
+      "submitMs": 161.849535144,
+      "finishReadbackMs": 4.903854989,
+      "asset": "bistro",
+      "pair": 0,
+      "order": "reverse",
+      "slot": 1,
+      "elapsedIncludingLoad": 12.13744326599408,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.041194837252164,
+      "foreignProcesses": [
+        {
+          "pid": 15964,
+          "command": "python3",
+          "ticks": 1
+        },
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 3
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 2
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 44
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "meshlets": 13287,
+      "frames": 30,
+      "ms": 5.892451367,
+      "rasterMs": 4.094402433,
+      "resolveMs": 1.729802033,
+      "readbackMs": 0.0641435,
+      "asset": "bistro",
+      "pair": 0,
+      "order": "reverse",
+      "slot": 2,
+      "elapsedIncludingLoad": 25.46008318697568,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/bistro/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.04281211463431505,
+      "foreignProcesses": [
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 4
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 4
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 96
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 5
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 171.8544362,
+      "submitMs": 166.941125542,
+      "finishReadbackMs": 4.912967326,
+      "asset": "bistro",
+      "pair": 1,
+      "order": "forward",
+      "slot": 0,
+      "elapsedIncludingLoad": 12.790015652019065,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.046911592317346575,
+      "foreignProcesses": [
+        {
+          "pid": 2767715,
+          "command": "Relay(2767718)",
+          "ticks": 1
+        },
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 1
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 3
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 52
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 3
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 264.156431367,
+      "submitMs": 263.494800668,
+      "finishReadbackMs": 0.661477365,
+      "asset": "bistro",
+      "pair": 1,
+      "order": "forward",
+      "slot": 1,
+      "elapsedIncludingLoad": 17.789276028983295,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.04272236817067569,
+      "foreignProcesses": [
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 3
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 2
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 66
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 5
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "meshlets": 13287,
+      "frames": 30,
+      "ms": 5.842678567,
+      "rasterMs": 3.997199733,
+      "resolveMs": 1.780588667,
+      "readbackMs": 0.0610335,
+      "asset": "bistro",
+      "pair": 1,
+      "order": "forward",
+      "slot": 2,
+      "elapsedIncludingLoad": 25.66376865800703,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/bistro/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.04481025430539029,
+      "foreignProcesses": [
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 4
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 5
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 104
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 2
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "meshlets": 13287,
+      "frames": 30,
+      "ms": 6.296787533,
+      "rasterMs": 4.511308667,
+      "resolveMs": 1.719505233,
+      "readbackMs": 0.0620603,
+      "asset": "bistro",
+      "pair": 1,
+      "order": "reverse",
+      "slot": 0,
+      "elapsedIncludingLoad": 26.69327504199464,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/bistro/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.04233275977646995,
+      "foreignProcesses": [
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 4
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 5
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 100
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 4
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 274.171577933,
+      "submitMs": 273.369124072,
+      "finishReadbackMs": 0.802317194,
+      "asset": "bistro",
+      "pair": 1,
+      "order": "reverse",
+      "slot": 1,
+      "elapsedIncludingLoad": 19.246701550029684,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.06027006741829022,
+      "foreignProcesses": [
+        {
+          "pid": 86,
+          "command": "systemd-udevd",
+          "ticks": 2
+        },
+        {
+          "pid": 15964,
+          "command": "python3",
+          "ticks": 7
+        },
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 3
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 4
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 82
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 16
+        },
+        {
+          "pid": 3040204,
+          "command": "codex-code-mode",
+          "ticks": 1
+        },
+        {
+          "pid": 3086632,
+          "command": "(udev-worker)",
+          "ticks": 1
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 172.765754934,
+      "submitMs": 167.930254499,
+      "finishReadbackMs": 4.835217101,
+      "asset": "bistro",
+      "pair": 1,
+      "order": "reverse",
+      "slot": 2,
+      "elapsedIncludingLoad": 12.552886922028847,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.0406281043689647,
+      "foreignProcesses": [
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 2
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 3
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 46
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 275.658127865,
+      "submitMs": 274.976151134,
+      "finishReadbackMs": 0.681873401,
+      "asset": "bistro",
+      "pair": 2,
+      "order": "forward",
+      "slot": 0,
+      "elapsedIncludingLoad": 18.197904731030576,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.04670867402391677,
+      "foreignProcesses": [
+        {
+          "pid": 2767715,
+          "command": "Relay(2767718)",
+          "ticks": 1
+        },
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 2
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 3
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 70
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 9
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "meshlets": 13287,
+      "frames": 30,
+      "ms": 8.8978339,
+      "rasterMs": 6.389621567,
+      "resolveMs": 2.426045233,
+      "readbackMs": 0.0771571,
+      "asset": "bistro",
+      "pair": 2,
+      "order": "forward",
+      "slot": 1,
+      "elapsedIncludingLoad": 26.07837796903914,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/bistro/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.046782050687677455,
+      "foreignProcesses": [
+        {
+          "pid": 15964,
+          "command": "python3",
+          "ticks": 1
+        },
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 4
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 4
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 111
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 2
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 218.803910866,
+      "submitMs": 212.550233564,
+      "finishReadbackMs": 6.253347301,
+      "asset": "bistro",
+      "pair": 2,
+      "order": "forward",
+      "slot": 2,
+      "elapsedIncludingLoad": 16.49714243900962,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.08122618841135766,
+      "foreignProcesses": [
+        {
+          "pid": 15964,
+          "command": "python3",
+          "ticks": 9
+        },
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 3
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 3
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 96
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 22
+        },
+        {
+          "pid": 3040204,
+          "command": "codex-code-mode",
+          "ticks": 1
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "mesa-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 176.265483433,
+      "submitMs": 171.22480897,
+      "finishReadbackMs": 5.040401131,
+      "asset": "bistro",
+      "pair": 2,
+      "order": "reverse",
+      "slot": 0,
+      "elapsedIncludingLoad": 13.984140183019917,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/mesa_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "Mesa GL_VERSION=4.5 (Compatibility Profile) Mesa 25.0.7-2+deb13u1 GL_RENDERER=llvmpipe (LLVM 19.1.7, 256 bits) LP_NUM_THREADS=3\n",
+      "foreignCpuCores": 0.053632185474705045,
+      "foreignProcesses": [
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 3
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 4
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 64
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 4
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "glimpsw-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "meshlets": 13287,
+      "frames": 30,
+      "ms": 6.148266767,
+      "rasterMs": 4.327577833,
+      "resolveMs": 1.754918667,
+      "readbackMs": 0.061823567,
+      "asset": "bistro",
+      "pair": 2,
+      "order": "reverse",
+      "slot": 1,
+      "elapsedIncludingLoad": 25.668013608956244,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/glimpsw_bmw",
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/bistro/scene.gltf",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.045192433574027926,
+      "foreignProcesses": [
+        {
+          "pid": 15964,
+          "command": "python3",
+          "ticks": 1
+        },
+        {
+          "pid": 2767715,
+          "command": "Relay(2767718)",
+          "ticks": 1
+        },
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 4
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 3
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 98
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 9
+        }
+      ],
+      "attempt": 0
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 267.737484201,
+      "submitMs": 267.102971134,
+      "finishReadbackMs": 0.634413067,
+      "asset": "bistro",
+      "pair": 2,
+      "order": "reverse",
+      "slot": 2,
+      "elapsedIncludingLoad": 17.804499731981196,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/glimpsw-original/build-clang22/softgl_bmw",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "640",
+        "360",
+        "4",
+        "0",
+        "15",
+        "30",
+        "-"
+      ],
+      "stderr": "",
+      "foreignCpuCores": 0.042124182722911234,
+      "foreignProcesses": [
+        {
+          "pid": 2767724,
+          "command": "btop",
+          "ticks": 3
+        },
+        {
+          "pid": 2767728,
+          "command": "Relay(2767731)",
+          "ticks": 3
+        },
+        {
+          "pid": 2767949,
+          "command": "codex",
+          "ticks": 68
+        },
+        {
+          "pid": 3040038,
+          "command": "codex",
+          "ticks": 1
+        }
+      ],
+      "attempt": 0
+    }
+  ],
+  "rejected": []
+}

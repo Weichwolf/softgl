@@ -6,8 +6,9 @@ All four angle-160 RGB reference images are byte-identical.
 
 Primary architecture reference: [GLimpSW implementation notes](https://github.com/dubiousconst282/GLimpSW/blob/2f915606d50b70fef8859ef29adc9d53f9aee887/README.md#raster-pipeline)
 and [visibility/resolve shaders](https://github.com/dubiousconst282/GLimpSW/blob/2f915606d50b70fef8859ef29adc9d53f9aee887/src/SwRast/Shading.cpp).
-GLimpSW stores surface IDs, then shades the resulting visible surfaces. SoftGL
-must retain GL ordering, equal-depth ownership and observable fragment effects.
+GLimpSW stores surface IDs, then shades the resulting visible surfaces. The current exact census retains GL ordering, equal-depth ownership and
+observable fragment effects. The user now permits approximations in future
+rendering candidates, with their visible effects documented.
 
 First measure an optimistic opportunity bound: count actual successful opaque
 color writes per pixel across each native frame, without enabling queries or
@@ -30,7 +31,7 @@ cmake -S build/native-visibility-census -B build/native-visibility-census/build 
 cmake --build build/native-visibility-census/build -j4
 # Set SOFTGL_CAMERA from assets/models.json for Sponza/Bistro.
 build/native-visibility-census/build/census \
-  build/assets/bmw.pack 1920 1080 4 0 15 30 tmp/bmw-census.ppm
+  build/assets/bmw.pack 640 360 4 0 15 30 tmp/bmw-census.ppm
 ```
 
 
@@ -41,7 +42,7 @@ build/native-visibility-census/build/census \
 | Sponza | 55.300% |
 | Bistro | 41.760% |
 
-Measured natively at 1920x1080, four configured threads, MSAA off, 15 warmup
+Historical census, measured before the 640x360-only instruction at 1920x1080, four configured threads, MSAA off, 15 warmup
 and 30 rotating/swaying frames. These are optimistic eligible-shading work
 bounds, **not frame-time reductions**. Next: quantify compatible opaque batches,
 then retain immutable draw/texture/vertex ownership and defer shading within

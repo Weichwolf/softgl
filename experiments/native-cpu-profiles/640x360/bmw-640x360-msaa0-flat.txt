@@ -1,0 +1,92 @@
+Total: 433 samples
+      82  18.9%  18.9%      125  28.9% sg_raster_triangle_depth_capture
+      58  13.4%  32.3%       75  17.3% sg_raster_triangle_tile_prepared
+      52  12.0%  44.3%       52  12.0% pthread_cond_broadcast@@GLIBC_2.3.2
+      44  10.2%  54.5%       44  10.2% __lll_lock_wake_private@@GLIBC_PRIVATE
+      26   6.0%  60.5%       26   6.0% update_vectors (inline)
+      21   4.8%  65.4%       31   7.2% sg_packet_sample_cube_coherent
+      11   2.5%  67.9%       12   2.8% sg_process_vertex
+       9   2.1%  70.0%        9   2.1% sg_queue_help
+       8   1.8%  71.8%        8   1.8% sg_packed_vertex_read (inline)
+       8   1.8%  73.7%      112  25.9% sg_workers_submit_stream
+       7   1.6%  75.3%        7   1.6% __lll_lock_wait_private@@GLIBC_PRIVATE
+       7   1.6%  76.9%        7   1.6% sem_trywait@GLIBC_2.2.5
+       7   1.6%  78.5%        7   1.6% sg_finish_vertex_at (inline)
+       7   1.6%  80.1%       12   2.8% sg_prepare_triangle_slice
+       7   1.6%  81.8%        7   1.6% sg_sat_i64_to_i32 (inline)
+       7   1.6%  83.4%        7   1.6% sg_tri_xbounds (inline)
+       6   1.4%  84.8%        9   2.1% sg_store_off_post_depth
+       5   1.2%  85.9%        5   1.2% sg_queue_retire (inline)
+       4   0.9%  86.8%        4   0.9% _dl_mcount_wrapper@GLIBC_2.2.5
+       4   0.9%  87.8%      147  33.9% _sg_draw_elements_real
+       4   0.9%  88.7%       12   2.8% sg_packed_vertex_fetch (inline)
+       4   0.9%  89.6%        4   0.9% sg_workers_bin_prepared_tri
+       3   0.7%  90.3%        3   0.7% sg_packet_gather_pairs (inline)
+       3   0.7%  91.0%      170  39.3% sg_queue_render_packed
+       3   0.7%  91.7%       22   5.1% sg_transform_slice
+       3   0.7%  92.4%        4   0.9% sg_write_fragment
+       2   0.5%  92.8%        2   0.5% sg_bin_sort_z (inline)
+       2   0.5%  93.3%        2   0.5% sg_f32x4_add (inline)
+       2   0.5%  93.8%        2   0.5% sg_f32x4_div (inline)
+       2   0.5%  94.2%        2   0.5% sg_f32x4_ge (inline)
+       2   0.5%  94.7%        2   0.5% sg_f32x4_select (inline)
+       2   0.5%  95.2%        2   0.5% sg_is_top_left (inline)
+       2   0.5%  95.6%        3   0.7% sg_packet_address4 (inline)
+       1   0.2%  95.8%        1   0.2% __default_morecore@GLIBC_2.2.5
+       1   0.2%  96.1%        8   1.8% __nptl_death_event@@GLIBC_PRIVATE
+       1   0.2%  96.3%        1   0.2% _init
+       1   0.2%  96.5%        1   0.2% _sg_bind_buffer_real (inline)
+       1   0.2%  96.8%        1   0.2% _sg_clear_real
+       1   0.2%  97.0%        1   0.2% glEnable
+       1   0.2%  97.2%        1   0.2% glEnableClientState
+       1   0.2%  97.5%        1   0.2% sg_f32x4_lt (inline)
+       1   0.2%  97.7%        1   0.2% sg_f32x4_mul (inline)
+       1   0.2%  97.9%        1   0.2% sg_f32x4_sub (inline)
+       1   0.2%  98.2%        1   0.2% sg_finish_triangle
+       1   0.2%  98.4%        1   0.2% sg_fp_screen_from_float (inline)
+       1   0.2%  98.6%        1   0.2% sg_i32x4_splat (inline)
+       1   0.2%  98.8%        1   0.2% sg_mat4_mul_vec4
+       1   0.2%  99.1%        1   0.2% sg_packet_gather (inline)
+       1   0.2%  99.3%        1   0.2% sg_quantize (inline)
+       1   0.2%  99.5%        1   0.2% sg_sample_tex_cube
+       1   0.2%  99.8%        1   0.2% sg_tex_tri_prepare
+       1   0.2% 100.0%        1   0.2% sg_workers_bin_tri
+       0   0.0% 100.0%      253  58.4% __clone@@GLIBC_2.2.5
+       0   0.0% 100.0%        7   1.6% __libc_alloca_cutoff@@GLIBC_PRIVATE
+       0   0.0% 100.0%        1   0.2% __libc_free
+       0   0.0% 100.0%      180  41.6% __libc_init_first@@GLIBC_2.2.5
+       0   0.0% 100.0%      180  41.6% __libc_start_main@GLIBC_2.2.5
+       0   0.0% 100.0%      180  41.6% _start
+       0   0.0% 100.0%      150  34.6% draw_part
+       0   0.0% 100.0%        1   0.2% glBindBuffer
+       0   0.0% 100.0%      180  41.6% main
+       0   0.0% 100.0%       13   3.0% pthread_cond_wait@@GLIBC_2.3.2
+       0   0.0% 100.0%      253  58.4% pthread_condattr_setpshared@GLIBC_2.2.5
+       0   0.0% 100.0%        4   0.9% pthread_kill_other_threads_np@GLIBC_2.2.5
+       0   0.0% 100.0%        3   0.7% pthread_mutex_lock@@GLIBC_2.2.5
+       0   0.0% 100.0%       44  10.2% pthread_mutex_trylock@GLIBC_2.2.5
+       0   0.0% 100.0%        2   0.5% sg_chain_clamp (inline)
+       0   0.0% 100.0%        2   0.5% sg_finish_stream
+       0   0.0% 100.0%      177  40.9% sg_model_render
+       0   0.0% 100.0%        1   0.2% sg_packet_lerp (inline)
+       0   0.0% 100.0%        9   2.1% sg_packet_sample_2d (inline)
+       0   0.0% 100.0%       32   7.4% sg_packet_sample_cube_target
+       0   0.0% 100.0%        3   0.7% sg_packet_sample_unit (inline)
+       0   0.0% 100.0%        2   0.5% sg_packet_wrap (inline)
+       0   0.0% 100.0%        4   0.9% sg_prepare_triangle_run (inline)
+       0   0.0% 100.0%       14   3.2% sg_process_vertex_prepared
+       0   0.0% 100.0%        2   0.5% sg_quantize_samples (inline)
+       0   0.0% 100.0%        2   0.5% sg_queue_finish (inline)
+       0   0.0% 100.0%      245  56.6% sg_queue_render
+       0   0.0% 100.0%        5   1.2% sg_queue_submit (inline)
+       0   0.0% 100.0%       15   3.5% sg_queue_transform
+       0   0.0% 100.0%       11   2.5% sg_queue_vertex_run (inline)
+       0   0.0% 100.0%      244  56.4% sg_queue_worker (inline)
+       0   0.0% 100.0%        5   1.2% sg_shade_packet (inline)
+       0   0.0% 100.0%       13   3.0% sg_transform_range
+       0   0.0% 100.0%      253  58.4% sg_worker_main
+       0   0.0% 100.0%        2   0.5% sg_workers_bin_transformed_tri
+       0   0.0% 100.0%        2   0.5% sg_workers_flush
+       0   0.0% 100.0%        8   1.8% sg_workers_prepare_triangles
+       0   0.0% 100.0%        1   0.2% sg_write_sample (inline)
+       0   0.0% 100.0%        2   0.5% softgl_read_rgba8

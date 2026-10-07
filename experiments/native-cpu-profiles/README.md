@@ -1,7 +1,11 @@
 # Native whole-frame CPU samples
 
-Status: diagnostic complete. Four scenes at MSAA off and BMW at 2x/4x,
-1920x1080, four configured threads, 15 warmup and 60 sampled frames.
+Status: current four-scene MSAA-off profiles complete at 640x360, four
+configured threads, 15 warmup and 60 sampled frames.
+[Current receipt and tables](640x360/receipt.json) bind this run; the older
+1920x1080 and BMW 2x/4x profiles below are historical, not current optimization
+evidence. Higher-resolution runs are disabled by policy until the 640x360 target
+is met.
 No performance gain is claimed. [Receipt](receipt.json) binds binaries,
 packs, cameras and raw profile hashes; raw profiles stay under `tmp/`.
 
@@ -25,7 +29,7 @@ cmake -S experiments/native-cpu-profiles -B build/native-cpu-profiles \
 cmake --build build/native-cpu-profiles -j4
 # For Sponza/Bistro set SOFTGL_CAMERA to the eight registry values first.
 CPUPROFILE_FREQUENCY=500 build/native-cpu-profiles/profile_scene \
-  build/assets/bmw.pack 1920 1080 4 0 15 120 tmp/bmw-native.prof
+  build/assets/bmw.pack 640 360 4 0 15 60 tmp/bmw-native.prof
 google-pprof --text build/native-cpu-profiles/profile_scene tmp/bmw-native.prof
 ```
 
@@ -35,3 +39,10 @@ completion polling and pthread wakeups. These percentages do not establish
 which waits are removable. Inspect the adjacent flat/line tables before trials.
 Local pprof analysis corrected its Windows detection when `/usr/bin/file` is
 absent; the receipt records the patch and analyzer hash.
+
+At 640x360 Bistro samples include 10.6% in pthread broadcast, 5.9% in
+lock wakeups, and 9.5% in the common scene wrapper’s vector update.
+Sponza/Bistro vertex and clipping work is more prominent than in the historical
+higher-resolution profiles. Investigate conservative static-geometry cluster
+culling before transforming vertices, alongside queue synchronization. These
+CPU shares are diagnostic, not predicted frame-time savings.

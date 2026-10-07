@@ -3,7 +3,7 @@ import argparse,hashlib,json,os,statistics,subprocess,time
 from pathlib import Path
 root=Path(__file__).resolve().parent
 repo=root.parents[1]
-parser=argparse.ArgumentParser();parser.add_argument('--pairs',type=int,default=3);parser.add_argument('--frames',type=int,default=120);parser.add_argument('--warmup',type=int,default=60);parser.add_argument('--resolutions',default='640x360,1920x1080');parser.add_argument('--threads',default='4');parser.add_argument('--assets',default='bmw,t80,sponza,bistro');args=parser.parse_args()
+parser=argparse.ArgumentParser();parser.add_argument('--pairs',type=int,default=3);parser.add_argument('--frames',type=int,default=120);parser.add_argument('--warmup',type=int,default=60);parser.add_argument('--resolutions',default='640x360');parser.add_argument('--threads',default='4');parser.add_argument('--assets',default='bmw,t80,sponza,bistro');args=parser.parse_args()
 models=json.loads((repo/'assets/models.json').read_text());records=[]
 def snapshot():
  result={}
