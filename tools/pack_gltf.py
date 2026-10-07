@@ -10,6 +10,7 @@ parts (material, vertex base, first index, count,
 float32 centroid). All numeric fields are little endian.
 """
 import argparse
+import copy
 import io
 import json
 import os
@@ -192,7 +193,7 @@ def material_batches(vertex_data, indices, parts, materials):
     return np.concatenate(new_vertices), new_indices, new_parts
 
 
-def simplify_batches(vertices, indices, parts, target_vertices):
+def simplify_batches(vertices, indices, parts, target_vertices, maximum_error=1.0):
     root = Path(__file__).resolve().parent.parent
     directory = root/'build/tools'
     directory.mkdir(parents=True, exist_ok=True)
@@ -227,7 +228,7 @@ def simplify_batches(vertices, indices, parts, target_vertices):
         budget = min(len(block), max(3, int(budgets[i])))
         locks = np.isin(keys[part[1]:limits[i+1]], interfaces).astype('u1')
         payload = struct.pack('<3I', len(block), len(element), budget)+block.tobytes()+element.tobytes()+locks.tobytes()
-        result = subprocess.run([str(executable)], input=payload, stdout=subprocess.PIPE, check=True).stdout
+        result = subprocess.run([str(executable), str(maximum_error)], input=payload, stdout=subprocess.PIPE, check=True).stdout
         count, index_count, error = struct.unpack_from('<2If', result)
         assert len(result) == 12+count*32+index_count*4
         block = np.frombuffer(result, dtype='<f4', count=count*8, offset=12).reshape(-1, 8).copy()
@@ -244,15 +245,16 @@ def simplify_batches(vertices, indices, parts, target_vertices):
     return np.concatenate(output_vertices), output_indices, output_parts, metrics
 
 
-def pack(archive, output, preserve_parts=False, target_vertices=50000):
+def pack(archive, output, preserve_parts=False, target_vertices=50000, max_texture_size=0,
+         only_base_textures=False, static_pose=False, max_simplification_error=1.0):
     with zipfile.ZipFile(archive) as source:
         gltf_names = [n for n in source.namelist() if n.endswith('.gltf')]
         if len(gltf_names) != 1:
             raise ValueError('Expected one .gltf scene in ZIP')
         gltf_path = Path(gltf_names[0])
         scene = json.loads(source.read(gltf_names[0]))
-        if scene.get('animations') or scene.get('skins'):
-            raise ValueError('Only static scenes are supported')
+        if scene.get('skins') or (scene.get('animations') and not static_pose):
+            raise ValueError('Only static scenes are supported; --static-pose freezes unskinned animations')
         buffers = [source.read(str(gltf_path.parent / b['uri'])) for b in scene['buffers']]
 
         def accessor(index):
@@ -284,8 +286,8 @@ def pack(archive, output, preserve_parts=False, target_vertices=50000):
                     normal = accessor(attrs['NORMAL']).astype(np.float64) @ normal_matrix.T
                     normal /= np.maximum(np.linalg.norm(normal, axis=1)[:, None], 1e-30)
                     uv = accessor(attrs['TEXCOORD_0'])
-                    # glTF and OpenGL differ in texture V orientation.
-                    uv[:, 1] = 1-uv[:, 1]
+                    # Image rows are uploaded unchanged: v=0 samples the first
+                    # source row in both glTF and this GL upload convention.
                     idx = accessor(primitive['indices']).astype('<u4').reshape(-1)
                     if len(idx) % 3 or np.any(idx >= len(pos)):
                         raise ValueError('Invalid triangle indices')
@@ -313,21 +315,66 @@ def pack(archive, output, preserve_parts=False, target_vertices=50000):
         vertex_data[:, :3] = (vertex_data[:, :3]-center)/extent
         for part in parts:
             part[4:] = ((np.asarray(part[4:])-center)/extent).tolist()
+        original_materials = scene.get('materials', [{}])
+        materials = copy.deepcopy(original_materials)
+        material_approximations = []
+
+        def source_texture(index):
+            texture = scene['textures'][index]
+            image_index = texture.get('extensions', {}).get('MSFT_texture_dds', {}).get('source', texture.get('source'))
+            image = scene['images'][image_index]
+            with Image.open(io.BytesIO(source.read(str(gltf_path.parent/image['uri'])))) as img:
+                return img.convert('RGBA')
+
+        for material in materials:
+            specular = material.get('extensions', {}).get('KHR_materials_pbrSpecularGlossiness')
+            if specular:
+                diffuse = specular.get('diffuseFactor', [1, 1, 1, 1])
+                specular_color = np.asarray(specular.get('specularFactor', [1, 1, 1]), dtype=float)
+                glossiness = specular.get('glossinessFactor', 1)
+                specular_texture = specular.get('specularGlossinessTexture', {}).get('index')
+                if specular_texture is not None:
+                    pixels = np.asarray(source_texture(specular_texture), dtype=float)/255
+                    specular_color *= pixels[:, :, :3].mean(axis=(0, 1))
+                    glossiness *= pixels[:, :, 3].mean()
+                pbr = {'baseColorFactor': diffuse,
+                       'metallicFactor': float(np.clip((specular_color.max()-.04)/.96, 0, 1)),
+                       'roughnessFactor': float(np.clip(1-glossiness, 0, 1))}
+                if 'diffuseTexture' in specular:
+                    pbr['baseColorTexture'] = specular['diffuseTexture']
+                material['pbrMetallicRoughness'] = pbr
+                material_approximations.append('specular/glossiness mapped to diffuse color and scalar metallic/roughness')
+            pbr = material.get('pbrMetallicRoughness', {})
+            mr_texture = pbr.get('metallicRoughnessTexture', {}).get('index')
+            if mr_texture is not None:
+                pixels = np.asarray(source_texture(mr_texture), dtype=float)/255
+                pbr['metallicFactor'] = float(pbr.get('metallicFactor', 1)*pixels[:, :, 2].mean())
+                pbr['roughnessFactor'] = float(pbr.get('roughnessFactor', 1)*pixels[:, :, 1].mean())
+                material_approximations.append('metallic/roughness textures reduced to channel averages')
+        used_textures = {m.get('pbrMetallicRoughness', {}).get('baseColorTexture', {}).get('index', -1)
+                         for m in materials}
+        texture_remap = {}
         textures = []
-        for texture in scene.get('textures', []):
-            image = scene['images'][texture['source']]
+        for old_index, texture in enumerate(scene.get('textures', [])):
+            if only_base_textures and old_index not in used_textures:
+                continue
+            texture_remap[old_index] = len(textures)
+            image_index = texture.get('extensions', {}).get('MSFT_texture_dds', {}).get('source', texture.get('source'))
+            image = scene['images'][image_index]
             with Image.open(io.BytesIO(source.read(str(gltf_path.parent / image['uri'])))) as img:
                 # Keep the original texture dimensions and detail.
                 rgba = img.convert('RGBA')
+                if max_texture_size:
+                    rgba.thumbnail((max_texture_size, max_texture_size), Image.Resampling.LANCZOS)
                 textures.append((rgba.width, rgba.height, rgba.tobytes()))
-        materials = scene.get('materials', [{}])
         original_vertex_count, original_parts = vertex_count, len(parts)
         if not preserve_parts:
             vertex_data, indices, parts = material_batches(vertex_data, indices, parts, materials)
             vertex_count = len(vertex_data)
         simplification = []
         if target_vertices and vertex_count > target_vertices:
-            vertex_data, indices, parts, simplification = simplify_batches(vertex_data, indices, parts, target_vertices)
+            vertex_data, indices, parts, simplification = simplify_batches(vertex_data, indices, parts, target_vertices,
+                                                                         max_simplification_error)
             vertex_count = len(vertex_data)
             index_count = sum(len(element) for element in indices)
         output = Path(output)
@@ -349,6 +396,7 @@ def pack(archive, output, preserve_parts=False, target_vertices=50000):
                     sampler_index = scene['textures'][texture].get('sampler')
                     if sampler_index is not None:
                         sampler = scene.get('samplers', [])[sampler_index]
+                    texture = texture_remap[texture]
                 coat = material.get('extensions', {}).get('KHR_materials_clearcoat', {}).get('clearcoatFactor', 0)
                 stream.write(material.get('name', 'material').encode()[:31].ljust(32, b'\0'))
                 stream.write(struct.pack('<7fiIf3I', *pbr.get('baseColorFactor', [1, 1, 1, 1]),
@@ -378,11 +426,19 @@ def pack(archive, output, preserve_parts=False, target_vertices=50000):
                     'triangles': index_count//3, 'materials': len(materials), 'textures': len(textures),
                     'parts': len(parts), 'boundsBeforeNormalization': [low.tolist(), high.tolist()],
                     'targetVertices': target_vertices, 'simplification': simplification,
-                    'preserved': ['node transforms', 'material boundaries', 'texture dimensions', 'alpha modes', 'double-sided flags'],
+                    'maxTextureSize': max_texture_size,
+                    'maxSimplificationError': max_simplification_error,
+                    'onlyBaseTextures': only_base_textures,
+                    'staticPose': static_pose,
+                    'preserved': ['node transforms', 'material boundaries', 'alpha modes', 'double-sided flags']+
+                                 ([] if max_texture_size else ['texture dimensions']),
                     'approximated': (['offline attribute-aware quadric mesh simplification'] if simplification else [])+
+                                    (['offline texture dimension limit'] if max_texture_size else [])+
+                                    sorted(set(material_approximations))+
                                     ['derived/procedural normal maps for DOT3', '128-sample GGX studio prefilter with N=V', 'clearcoat reflection strength'],
                     'materialParameters': [{'name': m.get('name'), **m.get('pbrMetallicRoughness', {}),
-                                            'extensions': m.get('extensions', {})} for m in materials]}
+                                            'extensions': m.get('extensions', {})} for m in materials],
+                    'sourceMaterialParameters': original_materials}
         output.with_suffix('.json').write_text(json.dumps(metadata, indent=2)+'\n')
         print(json.dumps({k: metadata[k] for k in ['vertices', 'triangles', 'materials', 'textures', 'parts']}))
         print(f'Wrote {output} ({output.stat().st_size/1048576:.2f} MiB)')
@@ -395,7 +451,20 @@ if __name__ == '__main__':
     parser.add_argument('--preserve-parts', action='store_true', help='Keep the original draw layout for comparisons')
     parser.add_argument('--target-vertices', type=int, default=50000,
                         help='Offline vertex budget; 0 retains the original geometry (default: 50000)')
+    parser.add_argument('--max-texture-size', type=int, default=0,
+                        help='Optional offline texture size limit; 0 preserves source dimensions')
+    parser.add_argument('--only-base-textures', action='store_true',
+                        help='Omit unreferenced normal/MR/emission textures that this fixed-function viewer does not sample')
+    parser.add_argument('--static-pose', action='store_true',
+                        help='Use initial node transforms of an unskinned animated scene')
+    parser.add_argument('--max-simplification-error', type=float, default=1.0,
+                        help='Relative weighted mesh error cap; budget may be exceeded to preserve detail')
     args = parser.parse_args()
     if args.target_vertices < 0 or 0 < args.target_vertices < 3:
         parser.error('--target-vertices must be 0 or at least 3')
-    pack(args.archive, args.output, args.preserve_parts, args.target_vertices)
+    if args.max_texture_size < 0:
+        parser.error('--max-texture-size must not be negative')
+    if not 0 < args.max_simplification_error <= 1:
+        parser.error('--max-simplification-error must be in (0, 1]')
+    pack(args.archive, args.output, args.preserve_parts, args.target_vertices,
+         args.max_texture_size, args.only_base_textures, args.static_pose, args.max_simplification_error)

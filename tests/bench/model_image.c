@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int sg_model_load(const uint8_t *bytes, int size);
+int sg_model_load(const uint8_t *bytes, unsigned size);
 void sg_model_render(float angle, int w, int h);
 void sg_model_unload(void);
 
@@ -16,7 +16,7 @@ void run_test(int w, int h) {
     uint8_t *bytes = malloc((size_t)size);
     if (!bytes || fread(bytes, 1, (size_t)size, file) != (size_t)size) exit(1);
     fclose(file);
-    if (!sg_model_load(bytes, (int)size)) {
+    if (!sg_model_load(bytes, (unsigned)size)) {
         fprintf(stderr, "BMW model load failed\n");
         exit(1);
     }

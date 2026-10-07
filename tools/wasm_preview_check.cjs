@@ -71,7 +71,7 @@ async function main() {
         await page.waitForFunction(() => document.querySelector('#name').textContent === 'test_02_clear_red');
         await page.click('#prev');
         await page.waitForFunction(() => document.querySelector('#name').textContent === 'test_01_clear_black');
-        await page.click('#tank');
+        await page.click('#t80');
         await waitTank();
         await waitWorkers(3);
         await page.click('#bench');
@@ -115,7 +115,7 @@ async function main() {
             await page.click('#next');
             await waitTest();
         }
-        await page.click('#tank');
+        await page.click('#t80');
         await waitTank();
         await waitWorkers(3);
         assert.deepEqual(errors, []);

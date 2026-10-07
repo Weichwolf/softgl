@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 3.20)
+project(SoftglNativeProfile LANGUAGES C)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_FLAGS_RELEASE "-O3 -g -DNDEBUG")
+add_compile_options(-fno-omit-frame-pointer -fno-strict-aliasing -ffast-math
+                    -fno-associative-math -fsigned-zeros -fno-finite-math-only)
+find_path(PROFILER_INCLUDE_DIR gperftools/profiler.h REQUIRED)
+find_library(PROFILER_LIBRARY profiler REQUIRED)
+add_subdirectory(../../libsoftgl libsoftgl)
+add_executable(profile_scene profile_scene.c ../../wasm/model_wrap.c)
+target_include_directories(profile_scene PRIVATE ../../libsoftgl/src ${PROFILER_INCLUDE_DIR})
+target_compile_options(profile_scene PRIVATE -msse4.1)
+target_link_libraries(profile_scene PRIVATE softgl ${PROFILER_LIBRARY} pthread m)

@@ -3,11 +3,14 @@
 #include <cmath>
 #include <cstdio>
 #include <cstdint>
+#include <cstdlib>
 #include <vector>
 
 /* Private preparation-tool protocol: counts, eight floats per vertex
  * (position, normal, UV), then local uint32 indices. Never linked to SoftGL. */
-int main() {
+int main(int argc, char **argv) {
+    float maximum_error = argc == 2 ? std::strtof(argv[1], nullptr) : 1.f;
+    if (!(maximum_error > 0.f && maximum_error <= 1.f)) return 1;
     uint32_t header[3];
     if (std::fread(header, sizeof(header), 1, stdin) != 1) return 1;
     size_t vertices = header[0], count = header[1], budget = header[2];
@@ -38,7 +41,7 @@ int main() {
         std::vector<unsigned int> indices = original;
         float error = 0.f;
         size_t result = meshopt_simplifyWithUpdate(indices.data(), count, data.data(), vertices, 8*sizeof(float),
-            data.data()+3, 8*sizeof(float), weights, 5, locks.data(), target, 1.f, options, &error);
+            data.data()+3, 8*sizeof(float), weights, 5, locks.data(), target, maximum_error, options, &error);
         if (!result) break;
         indices.resize(result);
         std::vector<unsigned char> used(vertices, 0);

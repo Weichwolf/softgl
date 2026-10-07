@@ -1,0 +1,39 @@
+{
+  "version": 3,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 21,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "native-clang22",
+      "displayName": "Native Release (Clang 22, SSE4.1)",
+      "generator": "Unix Makefiles",
+      "binaryDir": "${sourceDir}/build/native-clang22",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "clang-22"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "native-clang22",
+      "configurePreset": "native-clang22",
+      "jobs": 4
+    }
+  ],
+  "testPresets": [
+    {
+      "name": "native-clang22",
+      "configurePreset": "native-clang22",
+      "output": {
+        "outputOnFailure": true
+      },
+      "execution": {
+        "jobs": 1
+      }
+    }
+  ]
+}

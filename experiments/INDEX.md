@@ -50,6 +50,7 @@
 | [intrinsic-coverage-retirement](intrinsic-coverage-retirement/README.md) | Accepted | Prunes sample-empty cached references using coverage already computed by rasterization. |
 | [large-triangle-depth-planes](large-triangle-depth-planes/README.md) | Rejected | Restricting depth planes to larger triangles still regressed BMW. |
 | [main-raster-participation](main-raster-participation/README.md) | Accepted | Caller shares the raster-bin queue; historical BMW audits improved 7.90%/7.10%; original patch is preserved. |
+| [native-cpu-profiles](native-cpu-profiles/README.md) | Diagnostic | Native profiles of all four scenes and BMW MSAA 2x/4x locate raster/fragment work and completion polling; no speedup claimed. |
 | [msaa-additive-bytes](msaa-additive-bytes/README.md) | Accepted variant | Exact guarded saturated-byte blending uses a separate WASM writer root. |
 | [msaa-coverage-recurrence](msaa-coverage-recurrence/README.md) | Rejected | Exact vector edge recurrence regresses BMW 2x and gives mixed 4x results. |
 | [msaa-edge-reuse](msaa-edge-reuse/README.md) ([historical note](msaa-edge-reuse/historical-notes/README.md)) | Accepted | Reuses four-sample coverage coefficients; three audits support a BMW 4x gain. |
@@ -113,3 +114,4 @@
 | [wasm-phase-conversion](wasm-phase-conversion/README.md) | Held | Native WASM proposal conversion remained correct but did not reproduce a BMW gain. |
 | [wasm-pseudo-clamps](wasm-pseudo-clamps/README.md) | Accepted | Uses direct WASM pseudo-min/max for the validated clamp path. |
 | [whole-pipeline-static-kernels](whole-pipeline-static-kernels/README.md) | Proposed | Bounded C11 kernels specialize complete hot draw pipelines beyond rejected eligibility/DOT3 helpers; no measured gain. |
+| [GLimpSW / Mesa / libsoftgl](glimpsw-mesa-comparison/README.md) | Running | Shared preparation and corrected UV/cameras validated; final four-scene measurements pending; Clang 22 passes 744 checks. |

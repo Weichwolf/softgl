@@ -6,14 +6,14 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MODEL_MATERIALS 64
+#define MODEL_MATERIALS 512
 #define STATIC_STRIDE 12
 #define DYNAMIC_STRIDE 11
 
 typedef struct {
     GLuint albedo, normal, cube;
     float base[4], metallic, roughness, coat, cutoff;
-    unsigned alpha_mode, double_sided;
+    unsigned alpha_mode, double_sided, wrap_s, wrap_t;
 } model_material;
 typedef struct {
     uint32_t material, vertex, first, count;
@@ -26,6 +26,19 @@ static struct {
     model_part *part;
     unsigned *order;
 } G;
+static struct {
+    int enabled;
+    float eye[3], yaw, pitch, fov, near_plane, far_plane;
+} camera;
+
+void sg_model_set_camera(float x, float y, float z, float yaw, float pitch,
+                         float fov, float near_plane, float far_plane) {
+    if (!(fov > 0.f && fov < 179.f && near_plane > 0.f && far_plane > near_plane)) return;
+    camera.enabled = 1;
+    camera.eye[0] = x; camera.eye[1] = y; camera.eye[2] = z;
+    camera.yaw = yaw; camera.pitch = pitch; camera.fov = fov;
+    camera.near_plane = near_plane; camera.far_plane = far_plane;
+}
 
 typedef struct { const uint8_t *p, *end; } reader;
 static const void *take(reader *r, size_t n) {
@@ -57,18 +70,19 @@ void sg_model_unload(void) {
     free(G.part);
     free(G.order);
     memset(&G, 0, sizeof(G));
+    memset(&camera, 0, sizeof(camera));
 }
 
-int sg_model_load(const uint8_t *bytes, int size) {
+int sg_model_load(const uint8_t *bytes, unsigned size) {
     if (!bytes || size < 28) return 0;
     sg_model_unload();
     reader r = {bytes, bytes+size};
     const void *magic = take(&r, 4);
     uint32_t version, textures;
-    if (memcmp(magic, "SGLM", 4) || !read32(&r, &version) || version != 2 ||
+    if (!magic || memcmp(magic, "SGLM", 4) || !read32(&r, &version) || (version != 2 && version != 3) ||
         !read32(&r, &G.vertices) || !read32(&r, &G.indices) || !read32(&r, &textures) ||
         !read32(&r, &G.materials) || !read32(&r, &G.parts)) return 0;
-    if (!G.vertices || G.vertices > 2000000 || G.indices > 6000000 ||
+    if (!G.vertices || G.vertices > 8000000 || G.indices > 24000000 ||
         !G.materials || G.materials > MODEL_MATERIALS || textures > MODEL_MATERIALS ||
         !G.parts || G.parts > 4096) return 0;
     size_t vertex_bytes = (size_t)G.vertices*STATIC_STRIDE*sizeof(float);
@@ -87,9 +101,9 @@ int sg_model_load(const uint8_t *bytes, int size) {
     const uint8_t *texture_pixels[MODEL_MATERIALS];
     uint32_t tw[MODEL_MATERIALS], th[MODEL_MATERIALS];
     for (unsigned t = 0; t < textures; t++) {
-        if (!read32(&r, &tw[t]) || !read32(&r, &th[t]) || !tw[t] || !th[t] || tw[t] > 2048 || th[t] > 2048) return 0;
-        texture_pixels[t] = take(&r, (size_t)tw[t]*th[t]*4);
-        if (!texture_pixels[t]) return 0;
+        if (!read32(&r, &tw[t]) || !read32(&r, &th[t]) || !tw[t] || !th[t] || tw[t] > 4096 || th[t] > 4096) return 0;
+        texture_pixels[t] = version == 2 ? take(&r, (size_t)tw[t]*th[t]*4) : NULL;
+        if (version == 2 && !texture_pixels[t]) return 0;
     }
     const uint8_t white[4] = {255, 255, 255, 255};
     G.white = texture2d(1, 1, white);
@@ -108,20 +122,25 @@ int sg_model_load(const uint8_t *bytes, int size) {
         memcpy(&m->cutoff, data+68, 4);
         memcpy(&m->double_sided, data+72, 4);
         memcpy(&wrap_s, data+76, 4); memcpy(&wrap_t, data+80, 4);
+        m->wrap_s = wrap_s; m->wrap_t = wrap_t;
         if (texture < -1 || texture >= (int32_t)textures || m->alpha_mode > 2) return 0;
         unsigned w = texture >= 0 ? tw[texture] : 1, h = texture >= 0 ? th[texture] : 1;
         const uint8_t *input = texture >= 0 ? texture_pixels[texture] : white;
-        uint8_t *albedo = malloc((size_t)w*h*4);
-        if (!albedo) return 0;
-        for (size_t p = 0; p < (size_t)w*h; p++) for (int channel = 0; channel < 4; channel++) {
-            float factor = m->base[channel];
-            if (channel < 3) factor *= 1.f-m->metallic;
-            else if (m->alpha_mode == 0) factor = 1.f;
-            float value = input[p*4+channel]*factor;
-            albedo[p*4+channel] = (uint8_t)(fminf(255.f, fmaxf(0.f, value))+.5f);
+        if (version == 2) {
+            uint8_t *albedo = malloc((size_t)w*h*4);
+            if (!albedo) return 0;
+            for (size_t p = 0; p < (size_t)w*h; p++) for (int channel = 0; channel < 4; channel++) {
+                float factor = m->base[channel];
+                if (channel < 3) factor *= 1.f-m->metallic;
+                else if (m->alpha_mode == 0) factor = 1.f;
+                float value = input[p*4+channel]*factor;
+                albedo[p*4+channel] = (uint8_t)(fminf(255.f, fmaxf(0.f, value))+.5f);
+            }
+            m->albedo = texture2d(w, h, albedo);
+            free(albedo);
+        } else {
+            m->albedo = G.white;
         }
-        m->albedo = texture2d(w, h, albedo);
-        free(albedo);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, (GLint)wrap_s);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, (GLint)wrap_t);
         uint32_t nw, nh;
@@ -160,7 +179,22 @@ int sg_model_load(const uint8_t *bytes, int size) {
             if (idx[j] >= G.vertices-p->vertex) return 0;
         G.triangles += p->count/3;
     }
-    return r.p == r.end;
+    return r.p == r.end && glGetError() == GL_NO_ERROR;
+}
+
+int sg_model_upload_albedo(unsigned material, unsigned w, unsigned h, const uint8_t *pixels) {
+    if (material >= G.materials || !pixels || !w || !h || w > 4096 || h > 4096) return 0;
+    model_material *m = &G.material[material];
+    m->albedo = texture2d(w, h, pixels);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, (GLint)m->wrap_s);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, (GLint)m->wrap_t);
+    return glGetError() == GL_NO_ERROR;
+}
+
+int sg_model_share_albedo(unsigned material, unsigned source) {
+    if (material >= G.materials || source >= G.materials) return 0;
+    G.material[material].albedo = G.material[source].albedo;
+    return 1;
 }
 
 int sg_model_tri_count(void) { return (int)G.triangles; }
@@ -274,9 +308,18 @@ void sg_model_render(float angle, int w, int h) {
     glDisable(GL_LIGHTING); glCullFace(GL_BACK); glFrontFace(GL_CCW);
     glMatrixMode(GL_PROJECTION); glLoadIdentity();
     float aspect = (float)w/(float)h;
-    glFrustum(-.16f*aspect, .16f*aspect, -.16f, .16f, 1., 20.);
+    if (camera.enabled) {
+        float half = camera.near_plane*tanf(camera.fov*0.008726646259971648f);
+        glFrustum(-half*aspect, half*aspect, -half, half, camera.near_plane, camera.far_plane);
+    } else glFrustum(-.16f*aspect, .16f*aspect, -.16f, .16f, 1., 20.);
     glMatrixMode(GL_MODELVIEW); glLoadIdentity();
-    glTranslatef(0.f, -.035f, -2.3f); glRotatef(14.f, 1.f, 0.f, 0.f); glRotatef(angle, 0.f, 1.f, 0.f);
+    if (camera.enabled) {
+        glRotatef(camera.pitch, 1.f, 0.f, 0.f);
+        glRotatef(camera.yaw+20.f*sinf(angle*0.017453292519943295f), 0.f, 1.f, 0.f);
+        glTranslatef(-camera.eye[0], -camera.eye[1], -camera.eye[2]);
+    } else {
+        glTranslatef(0.f, -.035f, -2.3f); glRotatef(14.f, 1.f, 0.f, 0.f); glRotatef(angle, 0.f, 1.f, 0.f);
+    }
     float matrix[16]; glGetFloatv(GL_MODELVIEW_MATRIX, matrix);
     update_vectors(matrix);
     glEnableClientState(GL_VERTEX_ARRAY); glEnableClientState(GL_COLOR_ARRAY);

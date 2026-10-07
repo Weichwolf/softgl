@@ -24,6 +24,15 @@ if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
     endif()
 endif()
 
+# Clang 22 fast-math can reassociate DOT3 and discard signed zero, making
+# the specialized combiner diverge from the general GL combiner. Preserve
+# their exact arithmetic contract and the hierarchical depth infinity sentinel
+# while keeping the other native fast options.
+if(CMAKE_C_COMPILER_ID STREQUAL "Clang" AND
+   CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL 22 AND NOT EMSCRIPTEN)
+    add_compile_options(-fno-associative-math -fsigned-zeros -fno-finite-math-only)
+endif()
+
 enable_testing()
 
 add_subdirectory(libsoftgl)

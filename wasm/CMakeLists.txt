@@ -69,9 +69,16 @@ add_executable(softgl
 configure_file(index.html ${CMAKE_CURRENT_BINARY_DIR}/index.html COPYONLY)
 configure_file(main.js ${CMAKE_CURRENT_BINARY_DIR}/main.js COPYONLY)
 configure_file(${SRC}/tests/bench/tank_data/tank.pack ${CMAKE_CURRENT_BINARY_DIR}/tank.pack COPYONLY)
-if(EXISTS "${SRC}/build/assets/bmw.pack")
-    configure_file(${SRC}/build/assets/bmw.pack ${CMAKE_CURRENT_BINARY_DIR}/bmw.pack COPYONLY)
-endif()
+foreach(model bmw t80 sponza bistro)
+    if(EXISTS "${SRC}/build/assets/${model}-browser.pack")
+        configure_file(${SRC}/build/assets/${model}-browser.pack ${CMAKE_CURRENT_BINARY_DIR}/${model}-browser.pack COPYONLY)
+        configure_file(${SRC}/build/assets/${model}-textures.json ${CMAKE_CURRENT_BINARY_DIR}/${model}-textures.json COPYONLY)
+        file(COPY ${SRC}/build/assets/${model}-textures DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+    elseif(EXISTS "${SRC}/build/assets/${model}.pack")
+        configure_file(${SRC}/build/assets/${model}.pack ${CMAKE_CURRENT_BINARY_DIR}/${model}.pack COPYONLY)
+    endif()
+endforeach()
+configure_file(${SRC}/assets/models.json ${CMAKE_CURRENT_BINARY_DIR}/models.json COPYONLY)
 target_include_directories(softgl PRIVATE
     ${SRC}/libsoftgl/include
     ${SRC}/tests/harness)
@@ -81,5 +88,5 @@ target_compile_options(softgl PRIVATE -sUSE_SDL=2)
 set_target_properties(softgl PROPERTIES
     OUTPUT_NAME softgl
     SUFFIX ".js"
-    LINK_FLAGS "-O2 -msimd128 -pthread -sUSE_SDL=2 -sPTHREAD_POOL_SIZE=8 -sEXPORTED_FUNCTIONS=_softgl_create,_softgl_create_multisample,_softgl_destroy,_softgl_make_current,_softgl_read_rgba8,_sg_test_count,_sg_test_name,_sg_test_run,_sg_bench_slot_count,_sg_bench_slot_tag,_sg_bench_slot_test_index,_sg_bench_run_idx,_sg_bench_run_slot,_sg_tank_load,_sg_tank_render,_sg_tank_tri_count,_sg_tank_mat_count,_sg_tank_unload,_sg_model_load,_sg_model_render,_sg_model_unload,_sg_model_tri_count,_sg_model_mat_count,_sg_thread_count,_sg_hwthreads,_sg_viewer_create,_sg_viewer_present,_sg_viewer_destroy,_malloc,_free -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,HEAPU8,UTF8ToString -sMODULARIZE=1 -sEXPORT_NAME=createSoftGL -sALLOW_MEMORY_GROWTH=1 -sINITIAL_MEMORY=67108864 -sSTACK_SIZE=8388608"
+    LINK_FLAGS "-O2 -msimd128 -pthread -sUSE_SDL=2 -sPTHREAD_POOL_SIZE=8 -sEXPORTED_FUNCTIONS=_softgl_create,_softgl_create_multisample,_softgl_destroy,_softgl_make_current,_softgl_read_rgba8,_sg_test_count,_sg_test_name,_sg_test_run,_sg_bench_slot_count,_sg_bench_slot_tag,_sg_bench_slot_test_index,_sg_bench_run_idx,_sg_bench_run_slot,_sg_tank_load,_sg_tank_render,_sg_tank_tri_count,_sg_tank_mat_count,_sg_tank_unload,_sg_model_load,_sg_model_set_camera,_sg_model_upload_albedo,_sg_model_share_albedo,_sg_model_render,_sg_model_unload,_sg_model_tri_count,_sg_model_mat_count,_sg_thread_count,_sg_hwthreads,_sg_viewer_create,_sg_viewer_present,_sg_viewer_destroy,_malloc,_free -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,HEAPU8,UTF8ToString -sMODULARIZE=1 -sEXPORT_NAME=createSoftGL -sALLOW_MEMORY_GROWTH=1 -sMAXIMUM_MEMORY=4GB -sINITIAL_MEMORY=67108864 -sSTACK_SIZE=8388608"
 )

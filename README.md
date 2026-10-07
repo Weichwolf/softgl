@@ -336,3 +336,29 @@ The preview check exercises all test controls, benchmark completion/cancellation
 and context recycling. The default pool follows the reported processor count,
 with at most three helpers plus the calling thread. Explicit worker counts
 remain available for contract tests.
+
+## Common model assets and native Clang 22
+
+BMW, T-80, Sponza and Bistro are registered in [assets/models.json](assets/models.json)
+and prepared by the same [asset tools](assets/README.md). Sponza and Bistro source
+downloads stay under `assets/` locally; source revisions, licenses and preparation
+settings are tracked. The browser offers the four prepared models; T-80 glTF is the default.
+The historical OBJ tank remains a separate regression workload.
+
+The native Clang preset uses **Clang 22** for reproducible comparisons with
+GLimpSW. With `clang-22` on `PATH`:
+
+```sh
+cmake --preset native-clang22
+cmake --build --preset native-clang22
+ctest --preset native-clang22
+```
+
+On Debian the native requirements are `clang-22`, `cmake`, `make`,
+`libosmesa6-dev` and a C/C++ standard library toolchain. Asset preparation needs
+the pinned NumPy/Pillow packages in `tools/requirements-assets.txt`.
+Clang 22 native builds disable floating-point reassociation, retain signed zeros
+and permit infinities: the exact DOT3 contract otherwise diverges under
+`-ffast-math`, and hierarchical depth uses an infinity sentinel. SSE4.1 remains
+the native renderer path. Emscripten retains its matching bundled compiler and
+SIMD128 toolchain; the native preset does not replace that compiler.

@@ -34,8 +34,8 @@
   const nextBtn   = document.getElementById('next');
   const benchBtn  = document.getElementById('bench');
   const fsBtn     = document.getElementById('fullscreen');
-  const tankBtn   = document.getElementById('tank');
   const bmwBtn = document.getElementById('bmw');
+  const modelButtons = ['t80', 'sponza', 'bistro'].map(name => document.getElementById(name));
   const modelCredit = document.getElementById('model-credit');
   const testsBtn  = document.getElementById('tests');
   const benchOut  = document.getElementById('bench-out');
@@ -191,10 +191,56 @@
   const TANK_CAP_MS = 1000 / 30;
   const assetBytes = new Map();
   const assets = {
-    tank: {file:'tank.pack', prefix:'sg_tank', title:'T-80 MBT'},
     bmw: {file:'bmw.pack', prefix:'sg_model', title:'2014 BMW 3 Series (F31)'},
+    t80: {file:'t80.pack', prefix:'sg_model', title:'T-80 MBT'},
+    sponza: {file:'sponza.pack', prefix:'sg_model', title:'Sponza'},
+    bistro: {file:'bistro.pack', prefix:'sg_model', title:'Amazon Lumberyard Bistro'},
   };
-  let selectedAsset = 'tank';
+  let modelMetadata;
+  async function updateModelCredit() {
+    modelCredit.hidden = false;
+    if (!modelMetadata) {
+      const response = await fetch('models.json');
+      if (!response.ok) throw new Error(`Model metadata unavailable (${response.status})`);
+      modelMetadata = await response.json();
+    }
+    const metadata = modelMetadata[selectedAsset];
+    const link = document.createElement('a');
+    link.href = metadata.source;
+    link.textContent = metadata.title;
+    modelCredit.replaceChildren(link, document.createTextNode(` by ${metadata.credit} · ${metadata.license}`));
+  }
+  let selectedAsset = 't80';
+  const textureManifests = new Map();
+  async function loadOriginalTextures(name) {
+    const file = modelMetadata?.[name]?.textureManifest;
+    if (!file) return;
+    if (!textureManifests.has(name)) {
+      const response = await fetch(file);
+      if (!response.ok) throw new Error(`${file}: HTTP ${response.status}`);
+      textureManifests.set(name, await response.json());
+    }
+    const manifest = textureManifests.get(name);
+    const ptr = Mod._malloc(manifest.maximumUploadBytes);
+    if (!ptr) throw new Error('Texture upload allocation failed');
+    try {
+      for (const [index, group] of manifest.groups.entries()) {
+        nameEl.textContent = `loading ${name} textures ${index+1}/${manifest.groups.length}…`;
+        const response = await fetch(group.file);
+        if (!response.ok) throw new Error(`${group.file}: HTTP ${response.status}`);
+        const pixels = new Uint8Array(await response.arrayBuffer());
+        if (pixels.length !== group.width*group.height*4) throw new Error('Invalid texture upload');
+        Mod.HEAPU8.set(pixels, ptr);
+        if (!Mod._sg_model_upload_albedo(group.materials[0], group.width, group.height, ptr))
+          throw new Error(`Original texture upload failed: ${group.file}`);
+        for (const material of group.materials.slice(1))
+          if (!Mod._sg_model_share_albedo(material, group.materials[0])) throw new Error('Texture sharing failed');
+        await yieldBrowser();
+      }
+    } finally {
+      Mod._free(ptr);
+    }
+  }
   let tankCtx = 0;
   let tankFrameId = 0;
   let tankAngle = 0;
@@ -202,16 +248,18 @@
 
   async function loadTank() {
     const asset = assets[selectedAsset];
+    await updateModelCredit();
+    const file = modelMetadata?.[selectedAsset]?.browserPack || asset.file;
     if (!assetBytes.has(selectedAsset)) {
-      const resp = await fetch(asset.file);
-      if (!resp.ok) throw new Error(`${asset.file} not found (HTTP ${resp.status})`);
+      const resp = await fetch(file);
+      if (!resp.ok) throw new Error(`${file} not found (HTTP ${resp.status})`);
       assetBytes.set(selectedAsset, new Uint8Array(await resp.arrayBuffer()));
     }
     const bytes = assetBytes.get(selectedAsset);
 
     /* Allocate inside WASM heap, copy the file in */
     const ptr = Mod._malloc(bytes.length);
-    if (!ptr) throw new Error('Tank allocation failed');
+    if (!ptr) throw new Error(`${asset.file} allocation failed`);
     Mod.HEAPU8.set(bytes, ptr);
 
     /* A context must be current before glGenBuffers etc. can do anything */
@@ -222,12 +270,15 @@
 
     const ok = Mod.ccall(`${asset.prefix}_load`, 'number', ['number','number'], [ptr, bytes.length]);
     Mod._free(ptr);
-    if (!ok) throw new Error('sg_tank_load returned 0 (bad pack?)');
+    if (!ok) throw new Error(`${asset.prefix}_load returned 0 (bad pack?)`);
+    await loadOriginalTextures(selectedAsset);
 
     const tris = Mod.ccall(`${asset.prefix}_tri_count`, 'number', [], []);
     const mats = Mod.ccall(`${asset.prefix}_mat_count`, 'number', [], []);
     counterEl.textContent = asset.title;
-    modelCredit.hidden = selectedAsset !== 'bmw';
+    await updateModelCredit();
+    const camera = modelMetadata?.[selectedAsset]?.camera;
+    if (camera) Mod.ccall("sg_model_set_camera", null, camera.map(() => "number"), camera);
     nameEl.textContent = `${tris.toLocaleString()} triangles · ${mats} materials`;
     updateThreadStats(tankCtx);
   }
@@ -274,7 +325,7 @@
   }
 
   function setControlsBusy(busy) {
-    for (const button of [tankBtn, bmwBtn, testsBtn, prevBtn, nextBtn, pauseBtn, benchBtn, msaaSelect])
+    for (const button of [bmwBtn, ...modelButtons, testsBtn, prevBtn, nextBtn, pauseBtn, benchBtn, msaaSelect])
       if (button) button.disabled = busy;
   }
 
@@ -296,7 +347,7 @@
         const tris = Mod.ccall(`${asset.prefix}_tri_count`, 'number', [], []);
         const mats = Mod.ccall(`${asset.prefix}_mat_count`, 'number', [], []);
         nameEl.textContent = `${tris.toLocaleString()} triangles · ${mats} materials`;
-        modelCredit.hidden = selectedAsset !== 'bmw';
+        await updateModelCredit();
         updateThreadStats(tankCtx);
       }
       paused = false;
@@ -364,8 +415,10 @@
     }
     await startTank();
   }
-  if (tankBtn) tankBtn.onclick = () => startAsset('tank').catch(reportError);
   if (bmwBtn) bmwBtn.onclick = () => startAsset('bmw').catch(reportError);
+  for (const button of modelButtons) {
+    if (button) button.onclick = () => startAsset(button.id).catch(reportError);
+  }
   if (testsBtn) testsBtn.onclick = () => startTests().catch(reportError);
   msaaSelect.onchange = async () => {
     if (transitioning || benching) return;
@@ -379,7 +432,8 @@
   async function runBenchmark() {
     if (benching) { benchmarkCancelled = true; return; }
     if (transitioning) return;
-    const includeBMW = selectedAsset === 'bmw';
+    const benchmarkAsset = selectedAsset;
+    const includeModel = assets[benchmarkAsset].prefix === 'sg_model';
     benching = true;
     benchmarkCancelled = false;
     mode = 'bench';
@@ -405,7 +459,7 @@
         tag:Mod.ccall('sg_bench_slot_tag', 'string', ['number'], [s]),
         test:Mod._sg_bench_slot_test_index(s),
       }));
-      if (includeBMW) scenes.push({tag:'bmw', model:true});
+      if (includeModel) scenes.push({tag:benchmarkAsset, model:true});
       for (const benchmarkSamples of [0, 2, 4]) {
         if (benchmarkCancelled) break;
         msaaSelect.value = String(benchmarkSamples);
@@ -424,11 +478,17 @@
               Mod._softgl_make_current(c);
               updateThreadStats(c);
               if (model) {
-                const bytes = assetBytes.get('bmw');
+                const bytes = assetBytes.get(benchmarkAsset);
                 modelPtr = Mod._malloc(bytes.length);
-                if (!modelPtr) throw new Error('BMW allocation failed');
+                if (!modelPtr) throw new Error(`${benchmarkAsset} allocation failed`);
                 Mod.HEAPU8.set(bytes, modelPtr);
-                if (!Mod._sg_model_load(modelPtr, bytes.length)) throw new Error('BMW load failed');
+                if (!Mod._sg_model_load(modelPtr, bytes.length)) throw new Error(`${benchmarkAsset} load failed`);
+                Mod._free(modelPtr);
+                modelPtr = 0;
+                await loadOriginalTextures(benchmarkAsset);
+                nameEl.textContent = `Benchmark: ${tag}`;
+                const camera = modelMetadata?.[benchmarkAsset]?.camera;
+                if (camera) Mod.ccall('sg_model_set_camera', null, camera.map(() => 'number'), camera);
               }
               const render = model ? frame => Mod._sg_model_render(frame*18, W, H)
                                    : () => Mod._sg_test_run(test, W, H);
@@ -459,8 +519,8 @@
         log('');
       }
       log('');
-      log(benchmarkCancelled ? '# stopped. click "Tank" or "Tests" to resume.'
-                            : '# done. click "Tank" or "Tests" to resume.');
+      log(benchmarkCancelled ? '# stopped. Select a model or "Tests" to resume.'
+                            : '# done. Select a model or "Tests" to resume.');
     } catch (error) {
       log(`# error: ${error.message}`);
       reportError(error);
