@@ -488,7 +488,7 @@ static void sg_transform_slice(softgl_ctx *c, sg_worker_pool *p,
                                 int first, int end, int storage_first) {
     if (!p->job_position_count) {
         for (int i = first; i < end; i++)
-            p->inside_frustum[i - storage_first] = (uint8_t)sg_process_vertex_prepared(c, i,
+            p->inside_frustum[i - storage_first] = (uint8_t)sg_process_vertex_prepared(c, p->job_vertex_indices ? p->job_vertex_indices[i-p->job_first] : (uint32_t)i,
                 &p->transformed[i - storage_first], &p->vertex_inputs);
         return;
     }
@@ -878,6 +878,8 @@ void sg_workers_shutdown(softgl_ctx *c) {
     sg_aligned_free(p->triangle_scratch);
     free(p->column_bin);
     sg_geometry_cache_destroy(p->geometry_cache);
+    extern void sg_cluster_cache_destroy(void *);
+    sg_cluster_cache_destroy(p->cluster_cache);
     sg_stream_destroy(p->async_raster, p->nbins);
     sg_queue_destroy(p);
     pthread_mutex_destroy(&p->mtx);
@@ -932,7 +934,8 @@ static const sg_vert *sg_transform_range(softgl_ctx *c, int first, int count, in
 
     p->job_first = first;
     sg_prepare_vertex_inputs(c, &p->vertex_inputs);
-    sg_position_prepare(c, p, first, count);
+    if (p->job_vertex_indices) p->job_position_count = 0;
+    else sg_position_prepare(c, p, first, count);
     /* Positive: compact source count; negative: original-index storage. */
     p->prepared_transformed = compact ? count : -count;
     if (p->async_pending) {

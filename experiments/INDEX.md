@@ -104,6 +104,7 @@
 | [simd-scanline-phases](simd-scanline-phases/README.md) | Held / rejected variants | Exact row recurrences did not confirm a BMW gain; SIMD proposal variants were slower. |
 | [simd-triangle-setup](simd-triangle-setup/README.md) | Proposed | Four independent descriptor lanes need uncached-work and gather-cost diagnostics. |
 | [slice-vertex-packing](slice-vertex-packing/README.md) | Rejected | Packing during geometry slices gives opposite BMW audit directions in every mode. |
+| [static-cluster-culling](static-cluster-culling/README.md) | Adopted | 640x360 off/2x/4x: Sponza -13.13/-12.27/-11.38%, Bistro -19.29/-18.83/-17.50% frame time; BMW/T-80 mixed within 1%; tested RGB exact. |
 | [texture-tiled-storage](texture-tiled-storage/README.md) | Research / rejected first trial | Fixed direct-2D 4x4 trial lacks an overall gain; broader layout work remains open. |
 | [texture-tiles4](texture-tiles4/README.md) | Rejected | BMW off regresses in all six pairs; BMW4 slows in both audits; doubled eligible storage and costly updates. |
 | [transient-depth-visibility](transient-depth-visibility/README.md) | Diagnostic / superseded trials | Identifies strictly hidden replay references and preserves the initial timing limitations. |

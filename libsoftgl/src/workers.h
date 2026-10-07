@@ -106,6 +106,8 @@ typedef struct {
     int            prepared_transformed; /* 0 idle; compact count; negative original-index count */
     int            job_storage_first;
     struct sg_geometry_cache *geometry_cache; /* bounded bin and position cache */
+    void *cluster_cache;
+    const uint32_t *job_vertex_indices; /* joined dense vertex job only */
     int            nworkers;
     sg_worker      workers[SG_MAX_TILES];
     sg_worker_bin  bins[SG_MAX_BINS];

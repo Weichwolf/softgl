@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 3.20)
+project(StaticClusterCulling LANGUAGES C)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_FLAGS_RELEASE "-O3 -DNDEBUG")
+add_compile_options(-O3 -fno-strict-aliasing -ffast-math
+    -fno-associative-math -fsigned-zeros -fno-finite-math-only)
+set(repo ${CMAKE_CURRENT_SOURCE_DIR}/../..)
+add_subdirectory(${repo}/build/static-cluster-culling/source/libsoftgl libsoftgl)
+add_executable(candidate ${repo}/experiments/glimpsw-mesa-comparison/softgl_bmw.c
+    ${repo}/wasm/model_wrap.c)
+target_include_directories(candidate PRIVATE ${repo}/build/static-cluster-culling/source/libsoftgl/src)
+target_compile_options(candidate PRIVATE -msse4.1)
+target_link_libraries(candidate PRIVATE softgl pthread m)
+add_executable(cluster_contract contract.c)
+target_include_directories(cluster_contract PRIVATE ${repo}/build/static-cluster-culling/source/libsoftgl/src)
+target_compile_options(cluster_contract PRIVATE -msse4.1)
+target_link_libraries(cluster_contract PRIVATE softgl pthread m)

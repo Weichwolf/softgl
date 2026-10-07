@@ -1,0 +1,40 @@
+{
+  "nativeSuite": {
+    "platform": "Linux OSMesa / softgl",
+    "compiler": "Clang 22.1.8",
+    "tests": 744,
+    "failed": 0,
+    "rawLog": "/tmp/softgl-cluster-ctest.log",
+    "logSha256": "94df21086153631edb4eb962c0808644867fa40b1b3638336f7aa5a8ec0f937c"
+  },
+  "clusterContract": {
+    "pairedFrames": 72,
+    "width": 640,
+    "height": 360,
+    "samples": [
+      0,
+      2,
+      4
+    ],
+    "comparison": [
+      "resolved RGBA",
+      "depth",
+      "stencil",
+      "sample RGBA",
+      "sample depth",
+      "sample stencil",
+      "query counts"
+    ],
+    "passed": true
+  },
+  "sanitizers": {
+    "compiler": "Clang 19.1.7",
+    "note": "Diagnostic only; the portable Clang 22 installation lacks sanitizer runtimes. All performance binaries use Clang 22.",
+    "address": true,
+    "undefined": true,
+    "passed": true,
+    "output": "Cluster culling: 72 paired frames, full color/depth/stencil/sample planes and queries PASS\n",
+    "logSha256": "cf08cc2387f0ed3ef75ce9b91725943cc59f770ef0bae5279093da9673c70077"
+  },
+  "variant": "v1-sparse-superseded"
+}

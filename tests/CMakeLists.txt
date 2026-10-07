@@ -8,6 +8,12 @@ target_link_libraries(worker_pool PRIVATE softgl)
 add_test(NAME worker_pool_contract COMMAND worker_pool)
 set_tests_properties(worker_pool_contract PROPERTIES TIMEOUT 30)
 
+add_executable(static_cluster_contract static_cluster_culling.c)
+target_include_directories(static_cluster_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_link_libraries(static_cluster_contract PRIVATE softgl)
+add_test(NAME static_cluster_contract COMMAND static_cluster_contract)
+set_tests_properties(static_cluster_contract PROPERTIES TIMEOUT 30)
+
 add_executable(multisample_contract multisample.c)
 target_include_directories(multisample_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
 target_link_libraries(multisample_contract PRIVATE softgl)

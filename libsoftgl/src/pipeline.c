@@ -740,6 +740,8 @@ void sg_build_vertex_imm(softgl_ctx *c, float px, float py, float pz, float pw, 
     }
 }
 
+#include "cluster_cull.h"
+
 void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void *indices) {
     softgl_ctx *c = sg_current(); if (!c) return;
     int stream = sg_workers_can_stream(c, mode, count);
@@ -752,19 +754,28 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
     if (count <= 0) return;
     sg_vcache_clear();
     const uint8_t *index_data = sg_index_base(c, indices);
+    GLenum original_type = type; GLsizei original_count = count;
+    const uint8_t *original_index_data = index_data;
+    uint32_t cluster_minimum = 0, cluster_maximum = 0;
+    const uint8_t *cluster_indices = mode == GL_TRIANGLES ?
+        sg_cluster_filter(c, &type, &count, indices, index_data, &cluster_minimum, &cluster_maximum) : NULL;
+    if (cluster_indices) index_data = cluster_indices;
+    if (!count) return;
 
     if (mode == GL_TRIANGLES) {
         int ntri = count / 3;
-        if (ntri >= SG_PARALLEL_VTX_MIN_TRIS) {
+        if (ntri >= SG_PARALLEL_VTX_MIN_TRIS || cluster_indices) {
             /* Cache misses scan exact unsigned extrema in SIMD batches;
              * cache hits retain their existing referenced vertex range. */
             uint32_t imin = 0xFFFFFFFFu, imax = 0;
-            int geometry_hit;
-            sg_geometry_entry *geometry = sg_workers_geometry_lookup(c, count, type, indices,
+            int geometry_hit = 0;
+            sg_geometry_entry *geometry = cluster_indices ? NULL : sg_workers_geometry_lookup(c, count, type, indices,
                                                                        &imin, &imax, &geometry_hit);
-            if (!geometry_hit) sg_index_range(type, index_data, count, &imin, &imax);
+            if (cluster_indices) { imin = cluster_minimum; imax = cluster_maximum; }
+            else if (!geometry_hit) sg_index_range(type, index_data, count, &imin, &imax);
             sg_prepare_nm_cache(c);
             const sg_vert *pre = sg_workers_transform_compact(c, (int)imin, (int)(imax - imin + 1));
+            if (c->workers) ((sg_worker_pool *)c->workers)->job_vertex_indices = NULL;
             if (pre) {
                 if (geometry_hit) {
                     sg_workers_geometry_replay(c, geometry);
@@ -798,6 +809,10 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
                 if (all_inside) sg_workers_geometry_store(c, geometry, imin, imax);
                 goto triangles_done;
             }
+        }
+        if (cluster_indices) {
+            type = original_type; count = original_count; index_data = original_index_data; ntri = count/3;
+            if (c->workers) ((sg_worker_pool *)c->workers)->job_vertex_indices = NULL;
         }
         for (int t = 0; t < ntri; t++) {
             uint32_t i0 = sg_fetch_index(type, index_data, t * 3 + 0);
@@ -870,6 +885,7 @@ void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void 
             sg_process_point(c, &v);
         }
     }
+    if (c->workers) ((sg_worker_pool *)c->workers)->job_vertex_indices = NULL;
     if (stream) sg_workers_submit_stream(c);
     else sg_workers_flush(c);
 }
