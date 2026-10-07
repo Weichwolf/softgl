@@ -1162,6 +1162,15 @@ void sg_workers_submit_stream(softgl_ctx *c) {
     size_t geometry_vertices = (p->prepared_transformed ? (size_t)p->transformed_cap : 0) +
         (p->vpool_count ? (size_t)p->vpool_cap : 0);
     if (geometry_vertices > SG_STREAM_VERTICES) {
+        if (sg_queue_multitexture(c) && p->prepared_transformed >= 0) {
+            sg_tex_tri_ctx texture_context;
+            sg_tex_tri_prepare(c, &texture_context);
+            size_t count = (size_t)p->prepared_transformed + (size_t)p->vpool_count;
+            /* The queue rejects packed payloads over its unchanged budget.
+             * Never attempt an oversized raw reservation in its wait loop. */
+            if (texture_context.combine_kind && count >= 1024 &&
+                sg_queue_submit(c, p, entry)) return;
+        }
         if (!sg_submit_packed_stream(c, p, entry)) sg_workers_flush(c);
         return;
     }

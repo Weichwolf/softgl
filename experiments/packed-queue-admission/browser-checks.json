@@ -1,0 +1,106 @@
+{
+  "results": [
+    {
+      "model": "t80",
+      "samples": "0",
+      "name": "44,513 triangles \u00b7 7 materials",
+      "title": "T-80 MBT",
+      "workers": "3 (tile workers + parallel vertex transform)"
+    },
+    {
+      "model": "t80",
+      "samples": "2",
+      "name": "44,513 triangles \u00b7 7 materials",
+      "title": "T-80 MBT",
+      "workers": "3 (tile workers + parallel vertex transform)"
+    },
+    {
+      "model": "t80",
+      "samples": "4",
+      "name": "44,513 triangles \u00b7 7 materials",
+      "title": "T-80 MBT",
+      "workers": "3 (tile workers + parallel vertex transform)"
+    },
+    {
+      "model": "bmw",
+      "samples": "0",
+      "name": "63,009 triangles \u00b7 23 materials",
+      "title": "2014 BMW 3 Series (F31)",
+      "workers": "3 (tile workers + parallel vertex transform)"
+    },
+    {
+      "model": "bmw",
+      "samples": "2",
+      "name": "63,009 triangles \u00b7 23 materials",
+      "title": "2014 BMW 3 Series (F31)",
+      "workers": "3 (tile workers + parallel vertex transform)"
+    },
+    {
+      "model": "bmw",
+      "samples": "4",
+      "name": "63,009 triangles \u00b7 23 materials",
+      "title": "2014 BMW 3 Series (F31)",
+      "workers": "3 (tile workers + parallel vertex transform)"
+    },
+    {
+      "model": "sponza",
+      "samples": "0",
+      "name": "262,267 triangles \u00b7 25 materials",
+      "title": "Sponza",
+      "workers": "3 (tile workers + parallel vertex transform)"
+    },
+    {
+      "model": "sponza",
+      "samples": "2",
+      "name": "262,267 triangles \u00b7 25 materials",
+      "title": "Sponza",
+      "workers": "3 (tile workers + parallel vertex transform)"
+    },
+    {
+      "model": "sponza",
+      "samples": "4",
+      "name": "262,267 triangles \u00b7 25 materials",
+      "title": "Sponza",
+      "workers": "3 (tile workers + parallel vertex transform)"
+    },
+    {
+      "model": "bistro",
+      "samples": "0",
+      "name": "640,502 triangles \u00b7 254 materials",
+      "title": "Amazon Lumberyard Bistro",
+      "workers": "3 (tile workers + parallel vertex transform)"
+    },
+    {
+      "model": "bistro",
+      "samples": "2",
+      "name": "640,502 triangles \u00b7 254 materials",
+      "title": "Amazon Lumberyard Bistro",
+      "workers": "3 (tile workers + parallel vertex transform)"
+    },
+    {
+      "model": "bistro",
+      "samples": "4",
+      "name": "640,502 triangles \u00b7 254 materials",
+      "title": "Amazon Lumberyard Bistro",
+      "workers": "3 (tile workers + parallel vertex transform)"
+    }
+  ],
+  "errors": [],
+  "passed": true,
+  "servedModules": {
+    "softgl.js": {
+      "sha256": "abc949f134ae6cc763a630c9f297e00a8965c62bc0350c5f0198d4f35c126667",
+      "bytes": 233060,
+      "coop": "same-origin",
+      "coep": "require-corp"
+    },
+    "softgl.wasm": {
+      "sha256": "2d6a1de77b31ed18edc4c888993ceca0d40e172bb772fc4fbd1f9136a999cca4",
+      "bytes": 1262861,
+      "coop": "same-origin",
+      "coep": "require-corp"
+    }
+  },
+  "harnessSha256": "79bcaa3065c6560948c3d298d01e36badd4cf04d850e898d956309b9a1c54fea",
+  "harnessNote": "Runtime model/MSAA loading checks, not WASM acceptance timings. Debian Playwright cleanup shim applied in memory only."
+}

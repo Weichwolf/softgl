@@ -119,4 +119,4 @@
 | [glimpsw-mesa-comparison](glimpsw-mesa-comparison/README.md) | Native baseline | 640x360: SoftGL beats Mesa on BMW/T-80, trails on Sponza/Bistro; GLimpSW faster with different rendering; 72 quiet accepted timings. |
 | [visible-vertex-attributes](visible-vertex-attributes/README.md) | Accepted | Worker attributes after culling: Bistro -11–12%, other scenes -3–8%, all twelve images identical. |
 | [bounded-queue-wakeup](bounded-queue-wakeup/README.md) | Accepted | Bounded generation/queue polling: BMW/Bistro -5–7%, T-80 -3–4%, Sponza -1.5%; all images identical. |
-| [packed-queue-admission](packed-queue-admission/README.md) | Candidate / validation running | Off screen: Sponza -15.2%, T-80 -10.0%, Bistro -5.0%, BMW mixed; images identical, no adoption yet. |
+| [packed-queue-admission](packed-queue-admission/README.md) | Accepted | Sponza -12–15%, T-80 -6.5–10.3%, Bistro -3.5–5%, BMW mixed within 0.25%; all images identical. |
