@@ -1,0 +1,62 @@
+{
+  "nativeCtest": {
+    "passed": 750,
+    "failed": 0
+  },
+  "positionContract": {
+    "pairedFrames": 162,
+    "meshCommands": 162,
+    "restoredRollbacks": 6,
+    "nativePass": true,
+    "addressUndefinedLeakSanitizerPass": true
+  },
+  "residentFullFrameComparisons": 288,
+  "pairedImages": 108,
+  "browserCases": 12,
+  "browserErrors": [],
+  "maximumWasmHeapBytes": 2825977856,
+  "files": {
+    "softgl.js": {
+      "bytes": 233060,
+      "sha256": "496a1d09bea03d07375738cbe8b7625a7064f6ee90850eb60112f89c2cc81293",
+      "liveHttpMatches": true
+    },
+    "softgl.wasm": {
+      "bytes": 1305930,
+      "sha256": "cc5e7b33111ce4d48bc9eac35c0681af068be34f648eb8776078796f80635981",
+      "liveHttpMatches": true
+    },
+    "/tmp/softgl-position-production-build.log": {
+      "sha256": "20ca371a1a4912616e067f2d22547eb86ed2bcd2c1a3574d44c667d6edb47dbc"
+    },
+    "/tmp/softgl-position-production-tests.log": {
+      "sha256": "fb0fe14491ca49236cdd4e9d64a41508a7d32ed59d94cdec0b4c2f8e7792dfb3"
+    },
+    "/tmp/softgl-position-asan-build.log": {
+      "sha256": "de58f1ef565514f21285ec1eee20439605695a36cffff1ce9ec00b89b2d2abbb"
+    },
+    "/tmp/softgl-position-asan-tests.log": {
+      "sha256": "bf323acdad045d43719e883346ec6bdb795d7f7e4dd6dad4fa444bea4b2cf2ce"
+    },
+    "/tmp/softgl-position-wasm-build.log": {
+      "sha256": "0b32f2302476ebc15ce288c76fbd82d0d84f63e7d30563a1450c4c0d4dc0576e"
+    },
+    "/tmp/softgl-position-resident-quality.log": {
+      "sha256": "ea7e18ff170a2b38d77770aee2cdb20353196ec5c52ab468d928cbed7c1a3bcd"
+    },
+    "/tmp/softgl-position-browser.log": {
+      "sha256": "65ffb713c9a6696ddda5206e45ec179cbbcf20749a9a67f2ec0beae1ec34a901"
+    }
+  },
+  "productionMatchesPrivateCandidate": true,
+  "archivedVariantSourceHashesVerified": [
+    "unsorted",
+    "sorted",
+    "thin",
+    "micro",
+    "dense"
+  ],
+  "currentThreeRendererAcceptedTimings": 72,
+  "currentThreeRendererRejectedTimings": 0,
+  "currentReferenceBinariesAndAssetExportsUnchanged": true
+}

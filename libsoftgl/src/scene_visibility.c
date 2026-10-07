@@ -14,7 +14,10 @@
 #define SCENE_INDEX_BITS 27
 #define SCENE_INDEX_MASK ((UINT32_C(1) << SCENE_INDEX_BITS)-1)
 
+#include "geometry_types.inc"
+
 typedef struct {
+    scene_mesh mesh;
     sg_tex_tri_ctx texture;
     float ambient[4], tint[4], cutoff;
     int alpha_test;
@@ -27,12 +30,15 @@ typedef struct {
     int64_t edge[2][3]; /* edge at pixel 0,0; one-pixel X/Y deltas */
     float inverse_area;
     uint32_t material;
+    const scene_primitive *primitive;
 } scene_triangle;
 
 typedef struct {
     scene_triangle *triangles;
     uint32_t count, capacity;
     uint64_t depth_passes;
+    uint8_t *visible;
+    uint32_t visible_capacity;
 } scene_bin;
 
 typedef struct { uint32_t material, first, count; } scene_task;
@@ -48,6 +54,10 @@ struct sg_scene_visibility {
     scene_task *tasks;
     int material_count, task_count;
     scene_bin bins[SG_MAX_BINS];
+    scene_geometry *geometry;
+    const scene_primitive *current_primitive[SG_MAX_BINS];
+    uint32_t mesh_vertices;
+    int deferred_meshes;
     atomic_int failed, next_task;
     pthread_mutex_t allocation_mutex;
 };
@@ -55,9 +65,10 @@ struct sg_scene_visibility {
 void sg_scene_visibility_destroy(void *storage) {
     struct sg_scene_visibility *f = storage;
     if (!f) return;
-    for (int i = 0; i < SG_MAX_BINS; i++) free(f->bins[i].triangles);
+    for (int i = 0; i < SG_MAX_BINS; i++) { free(f->bins[i].triangles); free(f->bins[i].visible); }
     free(f->winner); free(f->pixels); free(f->pixel_material); free(f->backup_depth); free(f->backup_color);
     free(f->materials); free(f->tasks);
+    scene_geometry_destroy(f->geometry);
     pthread_mutex_destroy(&f->allocation_mutex);
     free(f);
 }
@@ -111,6 +122,8 @@ int softgl_scene_visibility_begin(void) {
     }
     atomic_store_explicit(&f->failed, 0, memory_order_relaxed);
     f->context = c; f->material_count = 0; f->task_count = 0;
+    memset(f->current_primitive, 0, sizeof(f->current_primitive));
+    f->deferred_meshes = 0; f->mesh_vertices = 0;
     c->scene_material = -1; c->scene_visibility = f;
     return 1;
 }
@@ -136,6 +149,7 @@ void softgl_scene_visibility_material(void) {
     memcpy(m->tint, c->fused_dot3_tint, sizeof(m->tint));
     m->alpha_test = c->alpha_test; m->cutoff = c->alpha_ref;
     m->count = m->first = m->cursor = 0;
+    m->mesh.positions = NULL;
     c->scene_material = f->material_count++;
 }
 
@@ -160,11 +174,14 @@ static uint32_t scene_triangle_record(struct sg_scene_visibility *f, int bin,
     }
     uint32_t index = b->count++;
     scene_triangle *t = &b->triangles[index];
+    t->primitive = f->current_primitive[bin];
     const sg_vert *vertices[3] = {v0,v1,v2};
     for (int i = 0; i < 3; i++) {
         t->inverse_w[i] = vertices[i]->ndc.w;
-        t->color[i] = vertices[i]->color;
-        for (int u = 0; u < 4; u++) t->uv[u][i] = vertices[i]->uv[u];
+        if (!t->primitive) {
+            t->color[i] = vertices[i]->color;
+            for (int u = 0; u < 4; u++) t->uv[u][i] = vertices[i]->uv[u];
+        }
     }
     memcpy(t->edge, edges, sizeof(t->edge)); t->inverse_area = inverse_area;
     t->material = material;
@@ -284,6 +301,8 @@ static scene_triangle *scene_triangle_at(struct sg_scene_visibility *f, uint32_t
     return &f->bins[id >> SCENE_INDEX_BITS].triangles[id & SCENE_INDEX_MASK];
 }
 
+#include "geometry.inc"
+
 static sg_f32x4 scene_gather_lerp(const scene_triangle *t[4], int field, int channel,
     sg_f32x4 w0, sg_f32x4 w1, sg_f32x4 w2, sg_f32x4 inverse) {
     float value[3][4];
@@ -379,6 +398,8 @@ int softgl_scene_visibility_end(void) {
     if (!c || !c->scene_visibility) return 0;
     struct sg_scene_visibility *f = c->scene_visibility;
     sg_workers_flush(c);
+    if (f->deferred_meshes && !atomic_load_explicit(&f->failed,memory_order_relaxed))
+        scene_geometry_build(f);
     c->scene_visibility = NULL;
     size_t pixels = (size_t)c->fb.w*c->fb.h;
     if (atomic_load_explicit(&f->failed,memory_order_relaxed)) {
@@ -386,9 +407,24 @@ int softgl_scene_visibility_end(void) {
         memcpy(c->fb.color,f->backup_color,pixels*4);
         return 0;
     }
+    if (f->deferred_meshes && !scene_geometry_visible(f)) {
+        memcpy(c->fb.depth,f->backup_depth,pixels*sizeof(float));
+        memcpy(c->fb.color,f->backup_color,pixels*4); return 0;
+    }
     uint32_t visible = 0;
     for (size_t p = 0; p < pixels; p++) if (f->pixel_material[p] != UINT16_MAX) {
         f->materials[f->pixel_material[p]].count++; visible++;
+        if (f->deferred_meshes) {
+            uint32_t id = f->winner[p];
+            f->bins[id >> SCENE_INDEX_BITS].visible[id & SCENE_INDEX_MASK] = 1;
+        }
+    }
+    if (f->deferred_meshes) {
+        scene_geometry_attributes(f);
+        if (atomic_load_explicit(&f->failed,memory_order_relaxed)) {
+            memcpy(c->fb.depth,f->backup_depth,pixels*sizeof(float));
+            memcpy(c->fb.color,f->backup_color,pixels*4); return 0;
+        }
     }
     uint32_t first = 0;
     for (int i = 0; i < f->material_count; i++) {

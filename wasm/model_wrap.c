@@ -243,6 +243,9 @@ typedef struct {
     int specular;
 } model_attribute_program;
 static model_attribute_program attribute_program;
+#ifdef SOFTGL_MODEL_SCENE_POSITIONS
+static const GLuint *scene_indices;
+#endif
 
 static void generate_attributes(void *user, GLuint index, GLfloat color[4], GLfloat texcoord[4]) {
     const model_attribute_program *program = user;
@@ -397,6 +400,14 @@ static void draw_part(const model_part *part, int specular) {
     softgl_scene_visibility_material();
 #endif
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, G.ebo);
+#ifdef SOFTGL_MODEL_SCENE_POSITIONS
+    int deferred = scene_indices && !specular && m->alpha_mode != 2 &&
+        softgl_scene_visibility_positions(attribute_program.vertices,
+            attribute_program.vertices+6, STATIC_STRIDE*sizeof(float), G.vertices-part->vertex,
+            scene_indices+part->first, (GLsizei)part->count,
+            generate_fused_attributes, &attribute_program, sizeof(attribute_program));
+    if (!deferred)
+#endif
     glDrawElements(GL_TRIANGLES, (GLsizei)part->count, GL_UNSIGNED_INT, (const void*)((uintptr_t)part->first*4));
 #ifdef SOFTGL_MODEL_VERTEX_ATTRIBUTES
     softgl_set_vertex_attributes(NULL, NULL, 0);
@@ -437,6 +448,14 @@ void sg_model_render(float angle, int w, int h) {
     glDisable(GL_BLEND);
 #ifdef SOFTGL_MODEL_SCENE_VISIBILITY
     int scene_visibility = softgl_scene_visibility_begin();
+#ifdef SOFTGL_MODEL_SCENE_POSITIONS
+    scene_indices = NULL;
+    if (scene_visibility) {
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, G.ebo);
+        scene_indices = glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_READ_ONLY);
+        if (scene_indices) glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+    }
+#endif
 #endif
     for (unsigned i = 0; i < G.parts; i++) {
         model_part *p = &G.part[i];

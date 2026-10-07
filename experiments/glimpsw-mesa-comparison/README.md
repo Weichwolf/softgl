@@ -1,9 +1,10 @@
 # GLimpSW / Mesa / libsoftgl with four common scenes
 
-Status: current accepted 94aa984 beats Mesa in all four scenes at 640x360/off,
-with 33–59% less complete-frame time. GLimpSW remains faster with its different
-rendering pipeline. [Current summary](current-94/summary.json),
-[current receipt](current-94/receipt.json).
+Status: current accepted scene-position frontend beats Mesa in all four scenes
+at 640x360/off, with 56–72% less complete-frame time. GLimpSW remains about
+6–8× faster with its different rendering pipeline.
+[Current summary](current-position/summary.json),
+[current receipt](current-position/receipt.json).
 
 Historical native 640x360 baseline (47e517d): 72 accepted measurements, no rejected
 blocks. Six timings per renderer/scene with three rotated forward/reverse pairs.
@@ -60,6 +61,9 @@ and resolution. A whole block is repeated if monitored foreign process CPU load
 exceeds 0.1 logical CPU. The process-level monitor does not measure hypervisor
 interference or frequency changes. Original and rejected blocks remain private;
 final receipts identify accepted records and binary/source/asset hashes.
+
+The original baseline described below is historical; current values are linked
+at the top and in the latest scene-position section at the end.
 
 At 640x360, libsoftgl uses about 29.7%/31.3% less frame time than Mesa
 for BMW/T-80, but 42.9%/55.3% more for Sponza/Bistro. GLimpSW is faster
@@ -125,3 +129,21 @@ GLimpSW remains about 6–15 times faster. The open optimization objective is no
 complete. [Summary](current-94/summary.json), [receipt](current-94/receipt.json).
 The receipt head 06613da adds only the reproduction patch after the 94aa984
 implementation; the library/wrapper source and module are the same.
+
+## Accepted scene-position frontend
+
+[Scene-position/late-attribute frontend](../scene-position-visibility/README.md)
+reduces off-mode frame time against the accepted 94aa984 implementation by
+2.6% / 8.2% / 19.3% / 47.4% for BMW / T-80 / Sponza / Bistro.
+The independent three-renderer comparison has 72 quiet accepted timings and
+no rejected blocks. Median GLimpSW / Mesa / libsoftgl complete-frame ms:
+BMW 2.212 / 36.476 / 15.923; T-80 1.610 / 30.644 / 9.337;
+Sponza 3.730 / 64.600 / 28.324; Bistro 5.963 / 169.718 / 47.068.
+Libsoftgl uses 56.3% / 69.5% / 56.2% / 72.3% less frame time than Mesa;
+GLimpSW remains 5.80–7.89× faster. Same unchanged reference binaries, prepared
+geometry/base textures, camera transforms, four-thread budget and copied image
+observability. GLimpSW's different PBR/cutout pipeline remains unchanged.
+
+[Summary](current-position/summary.json), [source/binary/asset receipt](current-position/receipt.json).
+No higher resolutions run. MSAA regression and image-quality validation are
+recorded in the optimization experiment; references here support off mode.

@@ -954,6 +954,14 @@ void softgl_set_fused_dot3_material(const GLfloat tint[4], GLboolean quartic);
 int softgl_scene_visibility_begin(void);
 void softgl_scene_visibility_material(void);
 int softgl_scene_visibility_end(void);
+/* Experimental canonical mesh path: positions are float XYZ; coordinates
+ * are float UV with the same byte stride. Inputs remain immutable through
+ * scene end. The copied pure program must preserve UV0/UV2 and alpha one,
+ * and may write RGB, half vector UV1, reflection UV3. Only supported opaque
+ * triangle batches participate; zero asks the caller to use glDrawElements. */
+int softgl_scene_visibility_positions(const GLfloat *positions, const GLfloat *coordinates,
+    GLsizei stride, GLuint vertex_count, const GLuint *indices, GLsizei count,
+    softgl_vertex_attributes_full_fn program, const void *user, GLuint user_bytes);
 
 
 #ifdef __cplusplus

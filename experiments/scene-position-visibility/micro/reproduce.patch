@@ -1,0 +1,96 @@
+--- libsoftgl/src/geometry.inc
++++ libsoftgl/src/geometry.inc
+@@ -77,48 +76,0 @@
+-static int scene_geometry_fast_matrix(const scene_mesh *m) {
+-    const float *v = m->modelview.m, *p = m->projection.m;
+-    if (v[3] != 0.f || v[7] != 0.f || v[11] != 0.f || v[15] != 1.f || p[11] != -1.f) return 0;
+-    for (int i = 0; i < 16; i++) {
+-        if (i == 0 || i == 5 || i == 10 || i == 11 || i == 14) continue;
+-        if (p[i] != 0.f) return 0;
+-    }
+-    return 1;
+-}
+-
+-static void scene_geometry_positions_fast(struct sg_scene_visibility *f,
+-    const scene_mesh *m, uint32_t first, uint32_t end) {
+-    scene_geometry *g = f->geometry;
+-    __m128 matrix[3][4];
+-    for (int row = 0; row < 3; row++) for (int col = 0; col < 4; col++)
+-        matrix[row][col] = _mm_set1_ps(m->modelview.m[row+col*4]);
+-    __m128 px = _mm_set1_ps(m->projection.m[0]), py = _mm_set1_ps(m->projection.m[5]);
+-    __m128 pz = _mm_set1_ps(m->projection.m[10]), pt = _mm_set1_ps(m->projection.m[14]);
+-    for (uint32_t i = first; i < end; i += 4) {
+-        const float *p[4];
+-        for (int l = 0; l < 4; l++) {
+-            uint32_t local = i+(unsigned)l < end ? i+(unsigned)l : i;
+-            p[l] = (const float *)((const uint8_t *)m->positions+(size_t)(m->minimum+local)*m->stride);
+-        }
+-        __m128 x = _mm_setr_ps(p[0][0],p[1][0],p[2][0],p[3][0]);
+-        __m128 y = _mm_setr_ps(p[0][1],p[1][1],p[2][1],p[3][1]);
+-        __m128 z = _mm_setr_ps(p[0][2],p[1][2],p[2][2],p[3][2]);
+-        __m128 eye[3];
+-        for (int row = 0; row < 3; row++)
+-            eye[row] = _mm_add_ps(_mm_add_ps(_mm_mul_ps(matrix[row][0],x),_mm_mul_ps(matrix[row][1],y)),
+-                _mm_add_ps(_mm_mul_ps(matrix[row][2],z),matrix[row][3]));
+-        __m128 clip[4] = {_mm_mul_ps(px,eye[0]),_mm_mul_ps(py,eye[1]),
+-            _mm_add_ps(_mm_mul_ps(pz,eye[2]),pt),_mm_xor_ps(eye[2],_mm_set1_ps(-0.f))};
+-        _MM_TRANSPOSE4_PS(clip[0],clip[1],clip[2],clip[3]);
+-        for (int l = 0; l < 4 && i+(unsigned)l < end; l++) {
+-            uint32_t at = m->offset+i+(unsigned)l; sg_vec4 v;
+-            _mm_store_ps(&v.x,clip[l]);
+-            if (!isfinite(v.x) || !isfinite(v.y) || !isfinite(v.z) || !isfinite(v.w)) {
+-                scene_geometry_fail(f); return;
+-            }
+-            g->positions[at].clip = v; g->positions[at].ndc = scene_viewport(v);
+-            unsigned outside = 0;
+-            for (int plane = 0; plane < 6; plane++) if (scene_clip_distance(&v,plane) < 0.f) outside |= 1u << plane;
+-            g->outcodes[at] = (uint8_t)outside; atomic_store_explicit(&g->ready[at],0,memory_order_relaxed);
+-        }
+-    }
+-}
+-
+@@ -132,3 +83,0 @@
+-        if (scene_geometry_fast_matrix(m)) {
+-            scene_geometry_positions_fast(f,m,task->first,task->end); continue;
+-        }
+@@ -436,13 +384,0 @@
+-static int scene_geometry_visible(struct sg_scene_visibility *f) {
+-    for (int bin = 0; bin < SG_MAX_BINS; bin++) {
+-        scene_bin *b = &f->bins[bin];
+-        if (b->visible_capacity < b->count) {
+-            uint8_t *next = realloc(b->visible,b->count);
+-            if (!next) return 0;
+-            b->visible = next; b->visible_capacity = b->count;
+-        }
+-        if (b->count) memset(b->visible,0,b->count);
+-    }
+-    return 1;
+-}
+-
+@@ -457 +393 @@
+-            if (!b->visible[i] || !p) continue;
++            if (!t->visible || !p) continue;
+--- libsoftgl/src/scene_visibility.c
++++ libsoftgl/src/scene_visibility.c
+@@ -33,0 +34 @@
++    int visible;
+@@ -40,2 +40,0 @@
+-    uint8_t *visible;
+-    uint32_t visible_capacity;
+@@ -68 +67 @@
+-    for (int i = 0; i < SG_MAX_BINS; i++) { free(f->bins[i].triangles); free(f->bins[i].visible); }
++    for (int i = 0; i < SG_MAX_BINS; i++) free(f->bins[i].triangles);
+@@ -177 +176 @@
+-    t->primitive = f->current_primitive[bin];
++    t->primitive = f->current_primitive[bin]; t->visible = 0;
+@@ -410,4 +408,0 @@
+-    if (f->deferred_meshes && !scene_geometry_visible(f)) {
+-        memcpy(c->fb.depth,f->backup_depth,pixels*sizeof(float));
+-        memcpy(c->fb.color,f->backup_color,pixels*4); return 0;
+-    }
+@@ -417,4 +412 @@
+-        if (f->deferred_meshes) {
+-            uint32_t id = f->winner[p];
+-            f->bins[id >> SCENE_INDEX_BITS].visible[id & SCENE_INDEX_MASK] = 1;
+-        }
++        scene_triangle_at(f,f->winner[p])->visible = 1;

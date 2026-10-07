@@ -122,3 +122,4 @@
 | [packed-queue-admission](packed-queue-admission/README.md) | Accepted | Sponza -12–15%, T-80 -6.5–10.3%, Bistro -3.5–5%, BMW mixed within 0.25%; all images identical. |
 | [fused-material-pass](fused-material-pass/README.md) | Accepted | One material pass: BMW -21–27%, T-80 -25–26%, Sponza -27–30%, Bistro -39–40% frame time across off/2x/4x; 108 identical coverage comparisons, small documented color differences. |
 | [scene-material-visibility](scene-material-visibility/README.md) | Accepted | Scene visibility/material buckets: native off BMW/T-80/Sponza/Bistro -1.6/-15.0/-22.0/-11.3%; exact images, 749 tests; Bistro MSAA +1–2% tradeoff. |
+| [scene-position-visibility](scene-position-visibility/README.md) | Accepted | Native off BMW/T-80/Sponza/Bistro -2.6/-8.2/-19.3/-47.4%; 108 exact coverage comparisons, max color delta 1, 750 tests; Sponza MSAA +2% tradeoff. |
