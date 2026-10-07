@@ -1,0 +1,30 @@
+[ 66%] Built target softgl
+[ 66%] Building C object tests/CMakeFiles/cross_triangle_packets_contract.dir/cross_triangle_packets.c.o
+/home/cosmo/Git/softgl/build/diagnostics/cross-triangle-packets/source-root/tests/cross_triangle_packets.c: In function ‘sequence’:
+/home/cosmo/Git/softgl/build/diagnostics/cross-triangle-packets/source-root/tests/cross_triangle_packets.c:218:72: error: ‘layout’ undeclared (first use in this function)
+  218 |     glClientActiveTexture(GL_TEXTURE0);glActiveTexture(GL_TEXTURE0);if(layout!=2)chain();
+      |                                                                        ^~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/cross-triangle-packets/source-root/tests/cross_triangle_packets.c:218:72: note: each undeclared identifier is reported only once for each function it appears in
+/home/cosmo/Git/softgl/build/diagnostics/cross-triangle-packets/source-root/tests/cross_triangle_packets.c: In function ‘api_sequences’:
+/home/cosmo/Git/softgl/build/diagnostics/cross-triangle-packets/source-root/tests/cross_triangle_packets.c:273:18: error: too few arguments to function ‘sequence’
+  273 |         REQUIRE(!sequence(samples,layout,wide,0,expected));
+      |                  ^~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/cross-triangle-packets/source-root/tests/cross_triangle_packets.c:11:31: note: in definition of macro ‘REQUIRE’
+   11 | #define REQUIRE(x) do { if (!(x)) { fprintf(stderr, "%d: %s\n", __LINE__, #x); return 1; } } while (0)
+      |                               ^
+/home/cosmo/Git/softgl/build/diagnostics/cross-triangle-packets/source-root/tests/cross_triangle_packets.c:184:12: note: declared here
+  184 | static int sequence(int samples,int packed,int wide,int enabled,uint64_t output[STAGES],double stats[8]) {
+      |            ^~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/cross-triangle-packets/source-root/tests/cross_triangle_packets.c:274:18: error: too few arguments to function ‘sequence’
+  274 |         REQUIRE(!sequence(samples,layout,wide,1,actual));
+      |                  ^~~~~~~~
+/home/cosmo/Git/softgl/build/diagnostics/cross-triangle-packets/source-root/tests/cross_triangle_packets.c:11:31: note: in definition of macro ‘REQUIRE’
+   11 | #define REQUIRE(x) do { if (!(x)) { fprintf(stderr, "%d: %s\n", __LINE__, #x); return 1; } } while (0)
+      |                               ^
+/home/cosmo/Git/softgl/build/diagnostics/cross-triangle-packets/source-root/tests/cross_triangle_packets.c:184:12: note: declared here
+  184 | static int sequence(int samples,int packed,int wide,int enabled,uint64_t output[STAGES],double stats[8]) {
+      |            ^~~~~~~~
+gmake[3]: *** [tests/CMakeFiles/cross_triangle_packets_contract.dir/build.make:79: tests/CMakeFiles/cross_triangle_packets_contract.dir/cross_triangle_packets.c.o] Error 1
+gmake[2]: *** [CMakeFiles/Makefile2:18295: tests/CMakeFiles/cross_triangle_packets_contract.dir/all] Error 2
+gmake[1]: *** [CMakeFiles/Makefile2:18302: tests/CMakeFiles/cross_triangle_packets_contract.dir/rule] Error 2
+gmake: *** [Makefile:6790: cross_triangle_packets_contract] Error 2

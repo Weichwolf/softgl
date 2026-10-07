@@ -1,6 +1,9 @@
 # Compact fragment packets across triangle boundaries
 
-Research brief, 2026-10-07. **Proposed; no implementation or measured gain.**
+Research brief, 2026-10-07. **Architecture hypothesis; first integrated trial rejected.**
+The bounded copying FIFO is implemented and fully tested in
+[cross-triangle-packets](../cross-triangle-packets/README.md); it supplies no
+acceptable reproducible renderer gain. Other input representations remain untested.
 Research baseline `0b794180555ba731970d8329c88b824533805e32`, accepted D4 module.
 This is our exact-output adaptation of decoupled shading work distribution.
 

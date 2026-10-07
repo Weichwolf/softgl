@@ -10,7 +10,8 @@
 | [caller-strip-bounds](caller-strip-bounds/README.md) | Diagnostic / rejected variants | Caller scopes were measured; tighter depth bounds did not repay their cost. |
 | [caller-wait-intervals](caller-wait-intervals/README.md) | Diagnostic | Separates eight polling categories without claiming removable frame time. |
 | [cooperative-stage-handoffs](cooperative-stage-handoffs/README.md) | Not retained | Returning bins between triangle blocks did not justify adoption. |
-| [cross-triangle-fragment-packets](cross-triangle-fragment-packets/README.md) | Proposed | Mixed-triangle SIMD packets target sparse off lanes and scalar MSAA tails; prior within-triangle packing was rejected. |
+| [cross-triangle-fragment-packets](cross-triangle-fragment-packets/README.md) | Research / first trial rejected | Exact cross-triangle packing remains an architecture hypothesis; the bounded copying FIFO is tested separately below. |
+| [cross-triangle-packets](cross-triangle-packets/README.md) | Rejected | Full gates pass, but BMW off/2x regress +3.096%/+1.155% across twelve pairs; 4x -0.589% remains within descriptive uncertainty. |
 | [cube-cold-fallback](cube-cold-fallback/README.md) | Rejected | BMW 4x regresses +3.500%/+1.395% in both audits (5/6 pairs); off/2x change direction despite exact scratch movement. |
 | [cube-packets](cube-packets/README.md) ([historical note](cube-packets/historical-notes/README.md)) | Accepted | Coherent cube packets improve BMW 4x, with other modes and controls explicitly mixed. |
 | [cube-simd-initial](cube-simd-initial/README.md) | Rejected | Initial coherent cube packets passed correctness but lacked an acceptable renderer gain. |

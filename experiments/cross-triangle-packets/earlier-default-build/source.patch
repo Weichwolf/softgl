@@ -1,0 +1,794 @@
+diff --git a/libsoftgl/CMakeLists.txt b/libsoftgl/CMakeLists.txt
+index e8e5407..0789b22 100644
+--- a/libsoftgl/CMakeLists.txt
++++ b/libsoftgl/CMakeLists.txt
+@@ -27,6 +27,8 @@ target_include_directories(softgl
+ )
+ 
+ target_compile_definitions(softgl PRIVATE SOFTGL_BUILD)
++# Internal packet batching is shared by the native library and its contracts.
++target_compile_definitions(softgl PUBLIC SG_CROSS_FRAGMENT_PACKETS=1)
+ 
+ # SSE4.1 (native x86) / wasm_simd128 (Emscripten) are hard requirements.
+ # simd.h emits #error if neither is defined.
+diff --git a/libsoftgl/src/cross_packet.h b/libsoftgl/src/cross_packet.h
+new file mode 100644
+index 0000000..56b5ff5
+--- /dev/null
++++ b/libsoftgl/src/cross_packet.h
+@@ -0,0 +1,12 @@
++#ifndef SOFTGL_CROSS_PACKET_H
++#define SOFTGL_CROSS_PACKET_H
++#ifndef SG_CROSS_FRAGMENT_PACKETS
++#define SG_CROSS_FRAGMENT_PACKETS 0
++#endif
++#if SG_CROSS_FRAGMENT_PACKETS
++int sg_cross_packet_begin(softgl_ctx *c, const sg_tex_tri_ctx *t);
++void sg_cross_packet_end(void);
++int sg_cross_packet_pending(void);
++void sg_cross_packet_test_enable(int enabled);
++#endif
++#endif
+diff --git a/libsoftgl/src/cross_packet_impl.h b/libsoftgl/src/cross_packet_impl.h
+new file mode 100644
+index 0000000..748aa16
+--- /dev/null
++++ b/libsoftgl/src/cross_packet_impl.h
+@@ -0,0 +1,95 @@
++#ifndef SOFTGL_CROSS_PACKET_IMPL_H
++#define SOFTGL_CROSS_PACKET_IMPL_H
++
++#include "frag_varying_packet.h"
++#include <stdatomic.h>
++
++typedef struct SG_ALIGN16 {
++    sg_varying_packet input;
++    int x[4], y[4];
++    unsigned coverage[4];
++    float depths[4][4];
++    softgl_ctx *context;
++    const sg_tex_tri_ctx *textures;
++    int count, active, common_store;
++} sg_cross_batch;
++
++static _Thread_local sg_cross_batch sg_cross_storage;
++static atomic_int sg_cross_disabled;
++
++static __attribute__((noinline)) void sg_cross_flush(void) {
++    sg_cross_batch *p = &sg_cross_storage;
++    if (!p->count) return;
++    float colors[4][4];
++    unsigned live = sg_shade_varying_packet(p->context, p->textures, &p->input,
++        (1u << p->count) - 1u, colors);
++    softgl_ctx *c = p->context;
++    for (int l = 0; l < p->count; l++) {
++        if (!(live & (1u << l))) continue;
++        if (c->fb.samples == 0) {
++            if (p->common_store)
++                sg_store_off_post_depth(c, p->x[l], p->y[l], p->depths[l][0], colors[l]);
++            else sg_write_fragment(c, p->x[l], p->y[l], p->depths[l][0],
++                colors[l][0], colors[l][1], colors[l][2], colors[l][3]);
++        } else if (p->common_store) {
++            if (c->fb.samples == 2)
++                sg_store_common_msaa2(c, p->x[l], p->y[l], p->coverage[l], p->depths[l], colors[l]);
++            else sg_store_common_msaa4(c, p->x[l], p->y[l], p->coverage[l], p->depths[l], colors[l]);
++        } else sg_write_multisample(c, p->x[l], p->y[l], p->coverage[l], p->depths[l], colors[l]);
++    }
++    p->count = 0;
++}
++
++/* Copy only shader inputs consumed by this immutable draw. Packed decode-cache
++ * pointers never survive this call. Four contributions bound all storage. */
++SG_INLINE void sg_cross_append(const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
++                               int x, int y, int64_t e0, int64_t e1, float inv_area,
++                               unsigned coverage, const float *depths) {
++    sg_cross_batch *p = &sg_cross_storage;
++    int l = p->count++;
++    p->x[l] = x; p->y[l] = y; p->coverage[l] = coverage;
++    p->input.edge0[l] = e0; p->input.edge1[l] = e1; p->input.inv_area[l] = inv_area;
++    memcpy(p->depths[l], depths, (p->context->fb.samples ? p->context->fb.samples : 1) * sizeof(float));
++    const sg_vert *v[3] = {v0, v1, v2};
++    for (int j = 0; j < 3; j++) {
++        p->input.inv_w[j][l] = v[j]->ndc.w;
++        const float color[4] = {v[j]->color.x, v[j]->color.y, v[j]->color.z, v[j]->color.w};
++        for (int k = 0; k < 4; k++) p->input.color[j][k][l] = color[k];
++        for (int u = 0; u < SG_MAX_TEX_UNITS; u++) {
++            const sg_tex_unit_tri *unit = &p->textures->unit[u];
++            if (!(p->textures->sample_mask & (1u << u)) || unit->constant_color_valid) continue;
++            p->input.uv[j][u][0][l] = v[j]->uv[u].x;
++            p->input.uv[j][u][1][l] = v[j]->uv[u].y;
++            if (unit->active_slot != SG_TEX_TARGET_2D || !unit->data0 || unit->tw <= 0 || unit->th <= 0)
++                p->input.uv[j][u][2][l] = v[j]->uv[u].z;
++        }
++    }
++    if (p->count == 4) sg_cross_flush();
++}
++
++int sg_cross_packet_begin(softgl_ctx *c, const sg_tex_tri_ctx *t) {
++    /* API barriers and the job/bin boundary drain every pending contribution. */
++    sg_cross_flush();
++    sg_cross_batch *p = &sg_cross_storage;
++    p->context = c; p->textures = t;
++    p->active = !atomic_load_explicit(&sg_cross_disabled, memory_order_relaxed) &&
++        !c->depth_mask && !c->stencil_test && !c->color_logic_op_enabled &&
++        !c->current_query[SG_QUERY_TARGET_SAMPLES_PASSED] &&
++        !c->current_query[SG_QUERY_TARGET_ANY_SAMPLES_PASSED] &&
++        (c->fb.samples == 0 || c->fb.samples == 2 || c->fb.samples == 4) &&
++        t->combine_kind && sg_packet_supported(c, t);
++    p->common_store = p->active && sg_can_store_common(c, c->fb.samples);
++    return p->active;
++}
++
++void sg_cross_packet_end(void) {
++    sg_cross_flush();
++    sg_cross_storage.active = 0;
++    sg_cross_storage.context = NULL;
++    sg_cross_storage.textures = NULL;
++}
++int sg_cross_packet_pending(void) { return sg_cross_storage.count; }
++void sg_cross_packet_test_enable(int enabled) {
++    atomic_store_explicit(&sg_cross_disabled, !enabled, memory_order_relaxed);
++}
++#endif
+diff --git a/libsoftgl/src/frag_varying_packet.h b/libsoftgl/src/frag_varying_packet.h
+new file mode 100644
+index 0000000..efe7855
+--- /dev/null
++++ b/libsoftgl/src/frag_varying_packet.h
+@@ -0,0 +1,115 @@
++#ifndef SOFTGL_FRAG_VARYING_PACKET_H
++#define SOFTGL_FRAG_VARYING_PACKET_H
++
++/* Four independently owned triangles. Each expression retains the original
++ * packet/scalar grouping; only shared-vertex broadcasts become lane loads. */
++typedef struct SG_ALIGN16 {
++    float inv_area[4], inv_w[3][4];
++    float color[3][4][4], uv[3][4][3][4];
++    int64_t edge0[4], edge1[4];
++} sg_varying_packet;
++
++SG_INLINE sg_f32x4 sg_varying_lerp(const float a[4], const float b[4], const float d[4],
++                                  sg_f32x4 w0, sg_f32x4 w1, sg_f32x4 w2,
++                                  sg_f32x4 inverse) {
++    return sg_f32x4_mul(sg_f32x4_add(sg_f32x4_add(
++        sg_f32x4_mul(sg_f32x4_load(a), w0),
++        sg_f32x4_mul(sg_f32x4_load(b), w1)),
++        sg_f32x4_mul(sg_f32x4_load(d), w2)), inverse);
++}
++
++SG_INLINE void sg_varying_sample_unit(const sg_tex_unit_tri *u, int unit,
++                                      const sg_varying_packet *p,
++                                      sg_f32x4 w0, sg_f32x4 w1, sg_f32x4 w2,
++                                      sg_f32x4 inverse, unsigned live, int integer_filter,
++                                      sg_f32x4 out[4]) {
++    if (u->constant_color_valid) {
++        for (int k = 0; k < 4; k++) out[k] = sg_f32x4_splat(u->constant_color[k]);
++        return;
++    }
++    sg_f32x4 x = sg_varying_lerp(p->uv[0][unit][0], p->uv[1][unit][0], p->uv[2][unit][0],
++                                w0, w1, w2, inverse);
++    sg_f32x4 y = sg_varying_lerp(p->uv[0][unit][1], p->uv[1][unit][1], p->uv[2][unit][1],
++                                w0, w1, w2, inverse);
++    if (u->active_slot == SG_TEX_TARGET_2D && u->data0 && u->tw > 0 && u->th > 0) {
++        sg_packet_sample_2d(u, x, y, live, integer_filter, out);
++        return;
++    }
++    sg_f32x4 z = sg_varying_lerp(p->uv[0][unit][2], p->uv[1][unit][2], p->uv[2][unit][2],
++                                w0, w1, w2, inverse);
++    if (u->active_slot == SG_TEX_TARGET_CUBE) {
++        sg_packet_sample_cube_target(u, x, y, z, live, out);
++        return;
++    }
++    float xx[4], yy[4], zz[4], tex[4][4] = {{0}};
++    sg_f32x4_store(xx, x); sg_f32x4_store(yy, y); sg_f32x4_store(zz, z);
++
++    for (int l = 0; l < 4; l++) {
++        if (!(live & (1u << l))) continue;
++        if (u->active_slot == SG_TEX_TARGET_3D)
++            sg_sample_tex3d(u->tex, u->filter_min, u->filter_mag, u->wrap_s, u->wrap_t, u->wrap_r,
++                           xx[l], yy[l], zz[l], 1, tex[l]);
++        else if (u->active_slot == SG_TEX_TARGET_1D)
++            sg_sample_tex1d(u->tex, u->filter_min, u->filter_mag, u->wrap_s, xx[l], 1, tex[l]);
++        else sg_sample_tex2d(u->tex, u->filter_min, u->filter_mag, u->wrap_s, u->wrap_t,
++                            xx[l], yy[l], 1, tex[l]);
++    }
++    sg_f32x4 a = sg_f32x4_load(tex[0]), b = sg_f32x4_load(tex[1]);
++    sg_f32x4 d = sg_f32x4_load(tex[2]), e = sg_f32x4_load(tex[3]);
++    _MM_TRANSPOSE4_PS(a, b, d, e);
++    out[0] = a; out[1] = b; out[2] = d; out[3] = e;
++}
++
++SG_INLINE unsigned sg_shade_varying_packet(const softgl_ctx *c, const sg_tex_tri_ctx *t,
++                                    const sg_varying_packet *p, unsigned live,
++                                    float result[4][4]) {
++    sg_f32x4 b0 = sg_f32x4_mul(sg_f32x4_set((float)p->edge0[0], (float)p->edge0[1],
++        (float)p->edge0[2], (float)p->edge0[3]), sg_f32x4_load(p->inv_area));
++    sg_f32x4 b1 = sg_f32x4_mul(sg_f32x4_set((float)p->edge1[0], (float)p->edge1[1],
++        (float)p->edge1[2], (float)p->edge1[3]), sg_f32x4_load(p->inv_area));
++    sg_f32x4 b2 = sg_f32x4_sub(sg_f32x4_sub(sg_f32x4_splat(1.f), b0), b1);
++    sg_f32x4 w0 = sg_f32x4_mul(b0, sg_f32x4_load(p->inv_w[0]));
++    sg_f32x4 w1 = sg_f32x4_mul(b1, sg_f32x4_load(p->inv_w[1]));
++    sg_f32x4 w2 = sg_f32x4_mul(b2, sg_f32x4_load(p->inv_w[2]));
++    sg_f32x4 sum = sg_f32x4_add(sg_f32x4_add(w0, w1), w2);
++    live &= ~sg_mask4_live(sg_f32x4_le(sum, sg_f32x4_splat(0.f)));
++    if (!live) return 0;
++    sg_f32x4 inverse = sg_f32x4_div(sg_f32x4_splat(1.f), sum);
++    sg_f32x4 color[4];
++    color[0] = sg_varying_lerp(p->color[0][0], p->color[1][0], p->color[2][0], w0, w1, w2, inverse);
++    color[1] = sg_varying_lerp(p->color[0][1], p->color[1][1], p->color[2][1], w0, w1, w2, inverse);
++    color[2] = sg_varying_lerp(p->color[0][2], p->color[1][2], p->color[2][2], w0, w1, w2, inverse);
++    color[3] = sg_varying_lerp(p->color[0][3], p->color[1][3], p->color[2][3], w0, w1, w2, inverse);
++    if (t->fastpath_kind == 1 || t->fastpath_kind == 2) {
++        sg_f32x4 tex[4];
++        sg_varying_sample_unit(&t->unit[0], 0, p, w0, w1, w2, inverse, live, 1, tex);
++        for (int k = 0; k < 4; k++) color[k] = t->fastpath_kind == 2 ? tex[k] : sg_f32x4_mul(color[k], tex[k]);
++    } else if (t->combine_kind) {
++        sg_f32x4 tex[4][4];
++        for (int u = 0; u < 4; u++) {
++            if (t->sample_mask & (1u << u))
++                sg_varying_sample_unit(&t->unit[u], u, p, w0, w1, w2, inverse, live, 0, tex[u]);
++            else for (int k = 0; k < 4; k++) tex[u][k] = sg_f32x4_splat(1.f);
++        }
++        sg_f32x4 dot[3], half = sg_f32x4_splat(.5f);
++        for (int k = 0; k < 3; k++)
++            dot[k] = sg_f32x4_mul(sg_f32x4_sub(tex[0][k], half), sg_f32x4_sub(color[k], half));
++        sg_f32x4 d = sg_chain_clamp(sg_f32x4_mul(sg_f32x4_splat(4.f),
++            sg_f32x4_add(sg_f32x4_add(dot[0], dot[1]), dot[2])));
++        color[3] = sg_chain_clamp(color[3]);
++        for (int k = 0; k < 3; k++) {
++            sg_f32x4 s = t->combine_kind == 1
++                ? sg_f32x4_add(d, sg_f32x4_splat(c->tex_env[1].env_color[k])) : sg_f32x4_mul(d, d);
++            s = sg_chain_clamp(s);
++            s = sg_chain_clamp(sg_f32x4_mul(s, t->combine_kind == 3 ? s : tex[2][k]));
++            color[k] = sg_chain_clamp(t->combine_kind == 1 ? sg_f32x4_add(s, tex[3][k])
++                : sg_f32x4_mul(s, sg_f32x4_splat(c->tex_env[3].env_color[k])));
++        }
++        color[3] = t->combine_kind == 1 ? sg_chain_clamp(sg_f32x4_mul(color[3], tex[2][3]))
++            : sg_f32x4_splat(sg_clampf(c->tex_env[3].env_color[3], 0.f, 1.f));
++    }
++    _MM_TRANSPOSE4_PS(color[0], color[1], color[2], color[3]);
++    for (int l = 0; l < 4; l++) sg_f32x4_store(result[l], color[l]);
++    return live;
++}
++#endif
+diff --git a/libsoftgl/src/raster_msaa_impl.h b/libsoftgl/src/raster_msaa_impl.h
+index b28e2d8..120f46d 100644
+--- a/libsoftgl/src/raster_msaa_impl.h
++++ b/libsoftgl/src/raster_msaa_impl.h
+@@ -286,6 +286,9 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
+                     packet.edge0[l] = e0; packet.edge1[l] = e1;
+                     memcpy(packet.depths[l], depths, SG_MSAA_SAMPLES * sizeof(float));
+                     if (packet.count == 4) {
++                        #if SG_CROSS_FRAGMENT_PACKETS
++                        if (sg_cross_storage.active) sg_cross_flush();
++                        #endif
+                         SG_MSAA_PACKET_WRITE(c, tctx, v0, v1, v2, &packet, inv_area, common_store);
+                         packet.count = 0;
+                     }
+@@ -304,6 +307,13 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
+         if (use_spans) for (int e = 0; e < 3; e++) intersection_x[e] -= intersection_step[e];
+     }
+     for (int l = 0; l < packet.count; l++) {
++        #if SG_CROSS_FRAGMENT_PACKETS
++        if (sg_cross_storage.active) {
++            sg_cross_append(v0, v1, v2, packet.x[l], packet.y[l],
++                packet.edge0[l], packet.edge1[l], inv_area, packet.coverage[l], packet.depths[l]);
++            continue;
++        }
++        #endif
+         float color[4];
+         if (sg_shade_pixel(c, tctx, v0, v1, v2, packet.x[l], packet.y[l],
+                           packet.edge0[l], packet.edge1[l], inv_area,
+diff --git a/libsoftgl/src/raster_triangle_impl.h b/libsoftgl/src/raster_triangle_impl.h
+index 3394df7..e0c9847 100644
+--- a/libsoftgl/src/raster_triangle_impl.h
++++ b/libsoftgl/src/raster_triangle_impl.h
+@@ -251,6 +251,15 @@ int SG_RASTER_TRI_FUNCTION(softgl_ctx *c,
+ #endif
+                     }
+                     if (cov) {
++                        #if SG_CROSS_FRAGMENT_PACKETS
++                        if (sg_cross_storage.active && cov != 15u) {
++                            for (int l = 0; l < 4; l++) if (cov & (1u << l))
++                                sg_cross_append(v0, v1, v2, ix + (l & 1), iy + (l >> 1),
++                                    edges0[l], edges1[l], inv_area_f, 0, &depths[l]);
++                            goto step;
++                        }
++                        if (sg_cross_storage.active) sg_cross_flush();
++                        #endif
+                         cov = sg_shade_packet(c, tctx, v0, v1, v2, edges0, edges1,
+                                               inv_area_f, cov, colors);
+                         for (int l = 0; l < 4; l++) {
+diff --git a/libsoftgl/src/rasterizer.c b/libsoftgl/src/rasterizer.c
+index 43589b6..eac0e6d 100644
+--- a/libsoftgl/src/rasterizer.c
++++ b/libsoftgl/src/rasterizer.c
+@@ -6,6 +6,7 @@
+ #include "multisample.h"
+ #include "raster_store.h"
+ #include "workers.h"
++#include "cross_packet.h"
+ #include <math.h>
+ 
+ /* Under Emscripten (-msimd128), <smmintrin.h> remaps _mm_* onto
+@@ -696,6 +697,10 @@ SG_INLINE void sg_write_pixel_packet2(softgl_ctx *c, const sg_tex_tri_ctx *t,
+     }
+ }
+ 
++#if SG_CROSS_FRAGMENT_PACKETS
++#include "cross_packet_impl.h"
++#endif
++
+ #define SG_MSAA_COMMON_CAN sg_can_store_common_msaa2
+ #define SG_MSAA_COMMON_STORE sg_store_common_msaa2
+ #define SG_MSAA_PACKET_WRITE sg_write_pixel_packet2
+diff --git a/libsoftgl/src/workers_queue_raw.inc b/libsoftgl/src/workers_queue_raw.inc
+index 2985d1a..e6b8aba 100644
+--- a/libsoftgl/src/workers_queue_raw.inc
++++ b/libsoftgl/src/workers_queue_raw.inc
+@@ -1,3 +1,5 @@
++#include "cross_packet.h"
++
+ /* Private experiment: ordered draws can progress independently per X bin.
+  * All queue bookkeeping uses p->mtx. Pixel work runs outside that mutex;
+  * completion release/acquire orders writes before the next draw in a bin. */
+@@ -114,6 +116,9 @@ static void sg_queue_render(sg_worker_pool *p, sg_queue_slot *slot, int index) {
+     b->query_samples = 0;
+     sg_raster_bin = b;
+     if (slot->sort) sg_bin_sort_z(b);
++    #if SG_CROSS_FRAGMENT_PACKETS
++    sg_cross_packet_begin(&r->state, &r->texture_context);
++    #endif
+     if (slot->packed_mode) sg_queue_render_packed(r, b, slot->sort);
+     else for (int i = 0; i < n; i++) {
+         const sg_worker_tri *t = &b->tris[slot->sort ? b->sort_keys[i] : (uint32_t)i];
+@@ -126,6 +131,9 @@ static void sg_queue_render(sg_worker_pool *p, sg_queue_slot *slot, int index) {
+             b->sort_keys[n + original] = empty >= 0 ? (uint32_t)empty : 0;
+         }
+     }
++    #if SG_CROSS_FRAGMENT_PACKETS
++    sg_cross_packet_end();
++    #endif
+     b->count = 0;
+     sg_raster_bin = NULL;
+     pthread_mutex_lock(&p->mtx);
+diff --git a/tests/CMakeLists.txt b/tests/CMakeLists.txt
+index 67a4280..d000b3b 100644
+--- a/tests/CMakeLists.txt
++++ b/tests/CMakeLists.txt
+@@ -829,3 +829,26 @@ if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+ endif()
+ add_test(NAME index_range_contract COMMAND index_range_contract)
+ set_tests_properties(index_range_contract PROPERTIES TIMEOUT 90)
++
++add_executable(cross_triangle_packets_contract cross_triangle_packets.c
++    ${CMAKE_SOURCE_DIR}/libsoftgl/src/rasterizer.c
++    ${CMAKE_SOURCE_DIR}/libsoftgl/src/fragment.c
++    ${CMAKE_SOURCE_DIR}/libsoftgl/src/fragment_combine.c)
++target_include_directories(cross_triangle_packets_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
++target_link_libraries(cross_triangle_packets_contract PRIVATE softgl)
++if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
++    target_compile_options(cross_triangle_packets_contract PRIVATE -O2 -fno-fast-math -ffp-contract=off -msse4.1)
++endif()
++add_test(NAME cross_triangle_packets_contract COMMAND cross_triangle_packets_contract)
++set_tests_properties(cross_triangle_packets_contract PROPERTIES TIMEOUT 180)
++
++# Verify original production optimization separately from the strict float oracle.
++add_executable(cross_triangle_packets_production_contract cross_triangle_packets.c)
++target_include_directories(cross_triangle_packets_production_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
++target_compile_definitions(cross_triangle_packets_production_contract PRIVATE SG_CROSS_SKIP_VARYING_SHADER=1)
++if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
++    target_compile_options(cross_triangle_packets_production_contract PRIVATE -msse4.1)
++endif()
++target_link_libraries(cross_triangle_packets_production_contract PRIVATE softgl)
++add_test(NAME cross_triangle_packets_production_contract COMMAND cross_triangle_packets_production_contract)
++set_tests_properties(cross_triangle_packets_production_contract PROPERTIES TIMEOUT 180)
+diff --git a/tests/cross_triangle_packets.c b/tests/cross_triangle_packets.c
+new file mode 100644
+index 0000000..eadb5a5
+--- /dev/null
++++ b/tests/cross_triangle_packets.c
+@@ -0,0 +1,391 @@
++#include "types.h"
++#include "simd.h"
++#include "frag_hot.h"
++#include "frag_combine_hot.h"
++#include "frag_packet.h"
++#include "frag_varying_packet.h"
++#include "cross_packet.h"
++#include "workers.h"
++#include <stdio.h>
++
++#define REQUIRE(x) do { if (!(x)) { fprintf(stderr, "%d: %s\n", __LINE__, #x); return 1; } } while (0)
++static uint32_t random_state = 719;
++static uint32_t random_bits(void) {
++    random_state ^= random_state << 13;
++    random_state ^= random_state >> 17;
++    random_state ^= random_state << 5;
++    return random_state;
++}
++static float random_float(void) { return (random_bits() >> 8) * (1.f / 16777216.f); }
++
++static int varying_shader(void) {
++    softgl_ctx *c = calloc(1, sizeof(*c));
++    REQUIRE(c);
++    uint8_t data[32 * 32 * 2 * 4];
++    for (unsigned i = 0; i < sizeof(data); i++) data[i] = (uint8_t)random_bits();
++    sg_texture texture = {0}, constant = {0};
++    texture.levels = 1; texture.data[0] = data;
++    texture.w[0] = 31; texture.h[0] = 3; texture.d[0] = 2;
++    constant.levels = 1; constant.data[0] = data; constant.w[0] = constant.h[0] = 1;
++    for (int face = 0; face < 6; face++) {
++        texture.cube_faces[face][0] = data + face * 4;
++        texture.cube_w[face][0] = 3; texture.cube_h[face][0] = 1;
++    }
++    const GLenum wraps[] = {GL_REPEAT, GL_CLAMP, GL_CLAMP_TO_EDGE};
++    unsigned comparisons = 0, rejected = 0, wide = 0;
++    for (int kind = 0; kind < 6; kind++) for (int n = 0; n < 4096; n++) {
++        sg_tex_tri_ctx t = {0};
++        t.any_active = kind != 0;
++        t.fastpath_kind = kind == 1 || kind == 2 ? kind : 0;
++        t.combine_kind = kind >= 3 ? kind - 2 : 0;
++        t.sample_mask = t.combine_kind == 1 ? 13u : t.combine_kind == 2 ? 5u : 1u;
++        for (int u = 0; u < 4; u++) {
++            sg_tex_unit_tri *a = &t.unit[u];
++            a->tex = &texture; a->data0 = data;
++            a->tw = texture.w[0]; a->th = texture.h[0]; a->td = 2;
++            a->tw_mask_pot = sg_hot_pot_mask(a->tw); a->th_mask_pot = sg_hot_pot_mask(a->th);
++            a->filter_min = GL_NEAREST; a->filter_mag = n & 1 ? GL_LINEAR : GL_NEAREST;
++            a->wrap_s = wraps[n % 3]; a->wrap_t = wraps[(n / 3) % 3]; a->wrap_r = GL_REPEAT;
++            a->active_slot = SG_TEX_TARGET_2D;
++            if (t.fastpath_kind) {
++                a->wrap_s = a->wrap_t = GL_REPEAT; a->filter_mag = GL_LINEAR;
++            } else if (t.combine_kind) {
++                if (u == 0 && n % 3 == 0) a->active_slot = SG_TEX_TARGET_3D;
++                if (u == 2 && n % 5 == 0) a->active_slot = SG_TEX_TARGET_1D;
++                if (u == 3 && n % 2) a->active_slot = SG_TEX_TARGET_CUBE;
++            }
++            a->constant_color_valid = a->active_slot == SG_TEX_TARGET_2D && n % 4 == 0;
++            if (a->constant_color_valid) { a->tex = &constant; a->tw = a->th = 1; }
++            for (int k = 0; k < 4; k++) {
++                a->constant_color[k] = data[k] * (1.f / 255.f);
++                c->tex_env[u].env_color[k] = random_float() * 2.f - .5f;
++            }
++        }
++        sg_varying_packet p = {0};
++        sg_vert v[4][3] = {0};
++        for (int l = 0; l < 4; l++) {
++            int shift = n % 7 == 0 ? 28 : 0;
++            int64_t area = (int64_t)(512 + random_bits() % 8192) << shift;
++            p.inv_area[l] = 1.f / (float)area;
++            p.edge0[l] = (int64_t)(random_bits() % 256) << shift;
++            p.edge1[l] = (int64_t)(random_bits() % 256) << shift;
++            if (p.edge0[l] > INT32_MAX || p.edge1[l] > INT32_MAX) wide++;
++            for (int j = 0; j < 3; j++) {
++                float inv_w = n % 11 == 0 ? 0.f : n % 13 == 0 ? -.01f - random_float() : .001f + random_float() * 8.f;
++                v[l][j].ndc.w = p.inv_w[j][l] = inv_w;
++                for (int k = 0; k < 4; k++) {
++                    float f = random_float() * 2.f - .5f;
++                    p.color[j][k][l] = f;
++                    if (k == 0) v[l][j].color.x = f;
++                    else if (k == 1) v[l][j].color.y = f;
++                    else if (k == 2) v[l][j].color.z = f;
++                    else v[l][j].color.w = f;
++                }
++                for (int u = 0; u < 4; u++) {
++                    v[l][j].uv[u].x = p.uv[j][u][0][l] = random_float() * 16.f - 8.f;
++                    v[l][j].uv[u].y = p.uv[j][u][1][l] = random_float() * 16.f - 8.f;
++                    v[l][j].uv[u].z = p.uv[j][u][2][l] = random_float() * 16.f - 8.f;
++                }
++            }
++        }
++        for (unsigned live = 1; live < 16; live++) {
++            float actual[4][4];
++            sg_varying_packet masked = p;
++            for (int l = 0; l < 4; l++) if (!(live & (1u << l))) {
++                masked.inv_area[l] = NAN;
++                for (int j = 0; j < 3; j++) {
++                    masked.inv_w[j][l] = NAN;
++                    for (int k = 0; k < 4; k++) masked.color[j][k][l] = NAN;
++                    for (int u = 0; u < 4; u++) for (int k = 0; k < 3; k++)
++                        masked.uv[j][u][k][l] = k & 1 ? INFINITY : NAN;
++                }
++            }
++            unsigned returned = sg_shade_varying_packet(c, &t, &masked, live, actual);
++            unsigned expected_live = 0;
++            for (int l = 0; l < 4; l++) {
++                if (!(live & (1u << l))) continue;
++                float b0 = (float)p.edge0[l] * p.inv_area[l];
++                float b1 = (float)p.edge1[l] * p.inv_area[l];
++                float b2 = 1.f - b0 - b1;
++                float w0 = b0 * v[l][0].ndc.w, w1 = b1 * v[l][1].ndc.w, w2 = b2 * v[l][2].ndc.w;
++                float sum = w0 + w1 + w2;
++                if (sum <= 0.f) { rejected++; continue; }
++                expected_live |= 1u << l;
++                float inverse = 1.f / sum, primary[4], reference[4];
++                const float a[4] = {v[l][0].color.x,v[l][0].color.y,v[l][0].color.z,v[l][0].color.w};
++                const float b[4] = {v[l][1].color.x,v[l][1].color.y,v[l][1].color.z,v[l][1].color.w};
++                const float d[4] = {v[l][2].color.x,v[l][2].color.y,v[l][2].color.z,v[l][2].color.w};
++                for (int k = 0; k < 4; k++) primary[k] = (a[k] * w0 + b[k] * w1 + d[k] * w2) * inverse;
++                if (t.fastpath_kind) {
++                    float x = (v[l][0].uv[0].x * w0 + v[l][1].uv[0].x * w1 + v[l][2].uv[0].x * w2) * inverse;
++                    float y = (v[l][0].uv[0].y * w0 + v[l][1].uv[0].y * w1 + v[l][2].uv[0].y * w2) * inverse;
++                    sg_hot_fastpath_shade_fast(&t,t.fastpath_kind,x,y,primary,reference);
++                } else if (t.combine_kind) {
++                    float tex[4][4]; int active[4];
++                    sg_tex_tri_sample_units(&t,&v[l][0],&v[l][1],&v[l][2],w0,w1,w2,inverse,tex,active);
++                    sg_dot3_chain_shade(t.combine_kind,c->tex_env,primary,tex,reference);
++                } else memcpy(reference,primary,sizeof(primary));
++                if (memcmp(reference,actual[l],sizeof(reference))) {
++                    fprintf(stderr,"Varying shader mismatch kind=%d n=%d live=%u lane=%d\n",kind,n,live,l);
++                    for (int k = 0; k < 4; k++) fprintf(stderr,"%a %a\n",reference[k],actual[l][k]);
++                    free(c); return 1;
++                }
++                comparisons++;
++            }
++            REQUIRE(returned == expected_live);
++        }
++    }
++    free(c);
++    printf("Varying shader: %u exact scalar comparisons, %u nonpositive-W rejections, %u wide edge inputs; six shader classes and all15 live masks passed\n",comparisons,rejected,wide);
++    return 0;
++}
++
++enum { W=65, H=35, N=2048, V=N*3, STAGES=16 };
++
++static uint64_t bytes(const void *p, size_t n, uint64_t h) {
++    const uint8_t *b=p;
++    for (size_t i=0; i<n; i++) h=(h^b[i])*UINT64_C(1099511628211);
++    return h;
++}
++static uint64_t planes(softgl_ctx *c) {
++    uint64_t h=bytes(softgl_read_rgba8(c),W*H*4,UINT64_C(1469598103934665603));
++    h=bytes(c->fb.color,W*H*4,h);
++    h=bytes(c->fb.depth,W*H*sizeof(float),h);
++    h=bytes(c->fb.stencil,W*H,h);
++    if(c->fb.samples) {
++        h=bytes(c->fb.sample_color,W*H*c->fb.samples*4,h);
++        h=bytes(c->fb.sample_depth,W*H*c->fb.samples*sizeof(float),h);
++        h=bytes(c->fb.sample_stencil,W*H*c->fb.samples,h);
++    }
++    return h;
++}
++static void chain(void) {
++    for(int u=0;u<4;u++) {
++        glActiveTexture(GL_TEXTURE0+u);
++        glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_COMBINE);
++        glTexEnvi(GL_TEXTURE_ENV,GL_COMBINE_RGB,u?GL_MODULATE:GL_DOT3_RGB);
++        glTexEnvi(GL_TEXTURE_ENV,GL_SOURCE0_RGB,u?GL_PREVIOUS:GL_TEXTURE);
++        glTexEnvi(GL_TEXTURE_ENV,GL_SOURCE1_RGB,u==0?GL_PRIMARY_COLOR:u==1?GL_PREVIOUS:u==2?GL_TEXTURE:GL_CONSTANT);
++        glTexEnvi(GL_TEXTURE_ENV,GL_COMBINE_ALPHA,GL_REPLACE);
++        glTexEnvi(GL_TEXTURE_ENV,GL_SOURCE0_ALPHA,u==3?GL_CONSTANT:GL_PREVIOUS);
++        glTexEnvi(GL_TEXTURE_ENV,GL_OPERAND0_RGB,GL_SRC_COLOR);
++        glTexEnvi(GL_TEXTURE_ENV,GL_OPERAND1_RGB,GL_SRC_COLOR);
++        glTexEnvi(GL_TEXTURE_ENV,GL_OPERAND0_ALPHA,GL_SRC_ALPHA);
++        const float constant[4]={.5f,.5f,.5f,.5f};
++        glTexEnvfv(GL_TEXTURE_ENV,GL_TEXTURE_ENV_COLOR,constant);
++    }
++    glActiveTexture(GL_TEXTURE0);
++}
++
++static size_t transfer_planes(softgl_ctx *c,uint8_t *p,int restore) {
++    size_t offset=0;
++    void *parts[6]={c->fb.color,c->fb.depth,c->fb.stencil,c->fb.sample_color,c->fb.sample_depth,c->fb.sample_stencil};
++    size_t sizes[6]={W*H*4,W*H*sizeof(float),W*H,
++        W*H*c->fb.samples*4,W*H*c->fb.samples*sizeof(float),W*H*c->fb.samples};
++    for(int i=0;i<6;i++) {
++        if(sizes[i]) {
++            if(restore)memcpy(parts[i],p+offset,sizes[i]);else memcpy(p+offset,parts[i],sizes[i]);
++            offset+=sizes[i];
++        }
++    }
++    return offset;
++}
++
++static int sequence(int samples,int layout,int wide,int enabled,uint64_t output[STAGES]) {
++    sg_cross_packet_test_enable(enabled);
++    softgl_ctx *c=samples?softgl_create_multisample(W,H,samples):softgl_create(W,H);
++    REQUIRE(c);softgl_make_current(c);sg_workers_shutdown(c);sg_workers_init(c,3);
++    float positions[V][3],uv[V][2];GLuint indices[V];
++    for(int t=0;t<N;t++)for(int k=0;k<3;k++) {
++        int i=t*3+k;
++        positions[i][0]=1.f+(t%16)*3.5f+(k==1?5.25f:0);
++        positions[i][1]=1.f+((t/16)%8)*3.5f+(k==2?4.75f:0);
++        positions[i][2]=.25f*(t%3);
++        if(wide) {
++            positions[i][0]=.5f+(k==1?W-1.f:0.f);
++            positions[i][1]=.5f+(k==2?H-1.f:0.f);
++        }
++        uv[i][0]=(t&1)?.75f:.25f;uv[i][1]=.5f;indices[i]=(GLuint)i;
++    }
++    glViewport(0,0,W,H);glMatrixMode(GL_PROJECTION);glLoadIdentity();glOrtho(0,W,0,H,-1,1);
++    glMatrixMode(GL_MODELVIEW);glLoadIdentity();
++    GLuint buffers[2],textures[4],query;
++    glGenBuffers(2,buffers);glBindBuffer(GL_ARRAY_BUFFER,buffers[0]);
++    glBufferData(GL_ARRAY_BUFFER,sizeof(positions),positions,GL_STATIC_DRAW);
++    glVertexPointer(3,GL_FLOAT,0,NULL);glEnableClientState(GL_VERTEX_ARRAY);
++    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buffers[1]);glBufferData(GL_ELEMENT_ARRAY_BUFFER,sizeof(indices),indices,GL_STATIC_DRAW);
++    glGenTextures(4,textures);
++    for(int u=0;u<4;u++) {
++        glActiveTexture(GL_TEXTURE0+u);glBindTexture(GL_TEXTURE_2D,textures[u]);
++        uint8_t texels[8]={255,192,128,255,128,255,192,128};
++        glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,2,1,0,GL_RGBA,GL_UNSIGNED_BYTE,texels);
++        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
++        glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_NEAREST);
++        glEnable(GL_TEXTURE_2D);glTexEnvi(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE);
++        glClientActiveTexture(GL_TEXTURE0+u);glBindBuffer(GL_ARRAY_BUFFER,0);
++        glTexCoordPointer(2,GL_FLOAT,0,uv);glEnableClientState(GL_TEXTURE_COORD_ARRAY);
++    }
++    glClientActiveTexture(GL_TEXTURE0);glActiveTexture(GL_TEXTURE0);if(layout!=2)chain();
++    const int draw_count=layout==0?768:wide?V/4:V;
++    glGenQueries(1,&query);
++    for(int stage=0;stage<STAGES;stage++) {
++        glDisable(GL_SCISSOR_TEST);glDisable(GL_POLYGON_OFFSET_FILL);glDisable(GL_STENCIL_TEST);
++        glDisable(GL_ALPHA_TEST);glDisable(GL_BLEND);glDepthMask(GL_TRUE);glDepthFunc(GL_LESS);
++        glEnable(GL_DEPTH_TEST);glEnable(GL_MULTISAMPLE);
++        glClearColor(.1f,.2f,.3f,.4f);glClearDepth(1);glClearStencil(stage);
++        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
++        glMatrixMode(GL_MODELVIEW);glLoadIdentity();
++        glTranslatef((stage%3)*.125f,0,0);
++        glColor4f(.8f,.7f,.6f,.5f);
++        if(wide && stage==15)glDepthMask(GL_FALSE);
++        glDrawElements(GL_TRIANGLES,draw_count,GL_UNSIGNED_INT,NULL);
++        /* Resolve the first draw before changing its depth and color state. */
++        sg_workers_flush(c);
++        glDepthMask(GL_FALSE);glDepthFunc(GL_LEQUAL);glEnable(GL_BLEND);glBlendFunc(GL_SRC_ALPHA,GL_ONE);
++        glColor4f(.6f,.8f,.7f,.5f);
++        if(stage==3) {glEnable(GL_SCISSOR_TEST);glScissor(7,3,32,21);}
++        if(stage==4)glDisable(GL_MULTISAMPLE);
++        if(stage==5) {glEnable(GL_POLYGON_OFFSET_FILL);glPolygonOffset(.25f,1.f);}
++        if(stage==6) {glEnable(GL_ALPHA_TEST);glAlphaFunc(GL_GREATER,.25f);}
++        if(stage==7) {glEnable(GL_STENCIL_TEST);glStencilFunc(GL_ALWAYS,7,255);glStencilOp(GL_KEEP,GL_INCR,GL_INCR);}
++        if(stage==8)glDepthFunc(GL_ALWAYS);
++        if(stage==9)glDepthFunc(GL_EQUAL);
++        if(stage==10) {
++            positions[0][0]+=.125f;glBindBuffer(GL_ARRAY_BUFFER,buffers[0]);
++            glBufferSubData(GL_ARRAY_BUFFER,0,sizeof(positions),positions);glBindBuffer(GL_ARRAY_BUFFER,0);
++        }
++        if(stage==11) {uv[0][0]=.99f;glActiveTexture(GL_TEXTURE2);glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);}
++        if(stage==12)glBeginQuery(GL_SAMPLES_PASSED,query);
++        glDrawElements(GL_TRIANGLES,draw_count,GL_UNSIGNED_INT,NULL);
++        if(stage==12) {GLuint count;glEndQuery(GL_SAMPLES_PASSED);glGetQueryObjectuiv(query,GL_QUERY_RESULT,&count);output[stage]=count;}
++        else output[stage]=0;
++        /* Extra ordered replays exercise four-slot reuse and refreshed colors. */
++        if(stage==13)for(int pass=0;pass<7;pass++) {
++            glColor4f(.5f+(float)pass*.01f,.6f,.7f,.2f);glDrawElements(GL_TRIANGLES,draw_count,GL_UNSIGNED_INT,NULL);
++        }
++        if(stage==14) {
++            /* Change transform while earlier queued source attributes remain
++             * retained by their own immutable jobs. */
++            glTranslatef(.125f,0,0);glDrawElements(GL_TRIANGLES,draw_count,GL_UNSIGNED_INT,NULL);
++        }
++        output[stage]^=planes(c);
++        REQUIRE(glGetError()==GL_NO_ERROR);
++    }
++    REQUIRE(sg_cross_packet_pending()==0);
++    softgl_destroy(c);
++    return 0;
++}
++static int direct_batches(void) {
++    unsigned comparisons = 0, deferred = 0;
++    for (int mode = 0; mode < 3; mode++) {
++        int samples = mode == 0 ? 0 : mode == 1 ? 2 : 4;
++        softgl_ctx *c = samples ? softgl_create_multisample(W,H,samples) : softgl_create(W,H);
++        REQUIRE(c); softgl_make_current(c); sg_workers_shutdown(c);
++        GLuint textures[4]; glGenTextures(4,textures);
++        for (int u = 0; u < 4; u++) {
++            glActiveTexture(GL_TEXTURE0+u); glBindTexture(GL_TEXTURE_2D,textures[u]);
++            const uint8_t texels[8] = {255,192,128,255,128,255,192,128};
++            glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA,2,1,0,GL_RGBA,GL_UNSIGNED_BYTE,texels);
++            glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_NEAREST);
++            glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
++            glEnable(GL_TEXTURE_2D);
++        }
++        chain(); glDepthMask(GL_FALSE); glDisable(GL_DEPTH_TEST);
++        sg_tex_tri_ctx t; sg_tex_tri_prepare(c,&t);
++        REQUIRE(t.combine_kind && sg_packet_supported(c,&t));
++        size_t size = (size_t)W*H*9*(1+samples);
++        uint8_t *saved = malloc(size), *expected = malloc(size), *actual = malloc(size);
++        REQUIRE(saved && expected && actual);
++        for (int state = 0; state < 12; state++) {
++            glDisable(GL_ALPHA_TEST); glDisable(GL_BLEND); glDisable(GL_SCISSOR_TEST);
++            glDisable(GL_SAMPLE_ALPHA_TO_COVERAGE); glDisable(GL_SAMPLE_ALPHA_TO_ONE); glDisable(GL_SAMPLE_COVERAGE);
++            glColorMask(GL_TRUE,GL_TRUE,GL_TRUE,GL_TRUE); glEnable(GL_MULTISAMPLE);
++            glDepthMask(GL_FALSE); glEnable(GL_DEPTH_TEST);
++            glDepthFunc(state%3 == 0 ? GL_LESS : state%3 == 1 ? GL_LEQUAL : GL_EQUAL);
++            glClearColor(.1f,.2f,.3f,.4f); glClearDepth(1.f);
++            glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
++            if (state >= 2) { glEnable(GL_BLEND); glBlendFunc(GL_SRC_ALPHA, state%2 ? GL_ONE : GL_ONE_MINUS_SRC_ALPHA); }
++            if (state == 4) { glEnable(GL_ALPHA_TEST); glAlphaFunc(GL_GREATER,.3f); }
++            if (state == 5) glColorMask(GL_TRUE,GL_FALSE,GL_TRUE,GL_FALSE);
++            if (state == 6) glDisable(GL_MULTISAMPLE);
++            if (state == 7) { glEnable(GL_SCISSOR_TEST); glScissor(10,10,21,13); }
++            if (state == 8) glEnable(GL_SAMPLE_ALPHA_TO_COVERAGE);
++            if (state == 9) glEnable(GL_SAMPLE_ALPHA_TO_ONE);
++            if (state == 10) { glEnable(GL_SAMPLE_COVERAGE); glSampleCoverage(.5f,GL_TRUE); }
++            if (state == 11) {
++                for (int q = 0; q < W*H; q++) c->fb.depth[q] = .2f+.15f*(q%5);
++                for (int q = 0; q < W*H*samples; q++) c->fb.sample_depth[q] = .2f+.15f*(q%5);
++            }
++            size_t used = transfer_planes(c,saved,0);
++            for (int enabled = 0; enabled < 2; enabled++) {
++                transfer_planes(c,saved,1); sg_cross_packet_test_enable(enabled);
++                for (int stripe = 0; stripe < 2; stripe++) {
++                    REQUIRE(sg_cross_packet_begin(c,&t) == enabled);
++                    int x0 = stripe ? 32 : 0, x1 = stripe ? W : 32;
++                    for (int k = 0; k < 23; k++) {
++                        sg_vert v[3] = {0};
++                        float x = stripe ? 44.1f : 12.1f, y = 12.1f;
++                        int large = k == 4 || k == 9 || k == 18;
++                        float span = large ? 9.8f : .8f;
++                        for (int j = 0; j < 3; j++) {
++                            v[j].ndc = (sg_vec4){x+(j==1?span:j==2?span*.5f:0.f),y+(j==2?span:0.f),.2f+.15f*j,.5f+.25f*j};
++                            v[j].color = (sg_vec4){.51f+.015f*k+.03f*j,.7f-.011f*k,.4f+.015f*j,.15f+.03f*k};
++                            for (int u = 0; u < 4; u++) v[j].uv[u] = (sg_vec4){.1f+.03f*k+.07f*j,.5f,0.f,1.f};
++                        }
++                        REQUIRE(sg_raster_triangle_tile_prepared(c,&v[0],&v[1],&v[2],x0,x1,&t) >= -1);
++                        /* This address is deliberately overwritten before the next triangle:
++                         * pending lanes must own every consumed attribute. */
++                        memset(v,0xcf,sizeof(v));
++                        if (enabled && state == 0 && k < 3) {
++                            REQUIRE(sg_cross_packet_pending() == k+1); deferred++;
++                        }
++                    }
++                    sg_cross_packet_end(); REQUIRE(sg_cross_packet_pending()==0);
++                }
++                REQUIRE(transfer_planes(c,enabled?actual:expected,0)==used);
++            }
++            REQUIRE(!memcmp(expected,actual,used)); comparisons++;
++        }
++        /* Prove effects with inter-fragment dependencies retain ordinary work. */
++        sg_cross_packet_test_enable(1);
++        c->depth_mask=1; REQUIRE(!sg_cross_packet_begin(c,&t)); sg_cross_packet_end(); c->depth_mask=0;
++        c->stencil_test=1; REQUIRE(!sg_cross_packet_begin(c,&t)); sg_cross_packet_end(); c->stencil_test=0;
++        c->color_logic_op_enabled=1; REQUIRE(!sg_cross_packet_begin(c,&t)); sg_cross_packet_end(); c->color_logic_op_enabled=0;
++        c->current_query[SG_QUERY_TARGET_SAMPLES_PASSED]=1; REQUIRE(!sg_cross_packet_begin(c,&t)); sg_cross_packet_end(); c->current_query[SG_QUERY_TARGET_SAMPLES_PASSED]=0;
++        c->current_query[SG_QUERY_TARGET_ANY_SAMPLES_PASSED]=1; REQUIRE(!sg_cross_packet_begin(c,&t)); sg_cross_packet_end(); c->current_query[SG_QUERY_TARGET_ANY_SAMPLES_PASSED]=0;
++        c->fog_enabled=1; REQUIRE(!sg_cross_packet_begin(c,&t)); sg_cross_packet_end(); c->fog_enabled=0;
++        c->polygon_stipple_enable=1; REQUIRE(!sg_cross_packet_begin(c,&t)); sg_cross_packet_end(); c->polygon_stipple_enable=0;
++        free(saved); free(expected); free(actual); softgl_destroy(c);
++    }
++    printf("Direct packet raster: %u bytewise complete-plane cases, %u proven deferred tiny-triangle stages; overlap/order, vertex overwrite, full-packet and bin drains, fresh partial-MSAA centroids and guarded effects passed\n",comparisons,deferred);
++    return 0;
++}
++
++static int api_sequences(void) {
++    unsigned comparisons = 0;
++    for (int mode = 0; mode < 3; mode++) for (int layout = 0; layout < 3; layout++) for (int wide = 0; wide < 2; wide++) {
++        int samples = mode == 0 ? 0 : mode == 1 ? 2 : 4;
++        uint64_t expected[STAGES], actual[STAGES];
++        REQUIRE(!sequence(samples,layout,wide,0,expected));
++        REQUIRE(!sequence(samples,layout,wide,1,actual));
++        for (int stage = 0; stage < STAGES; stage++) {
++            if (expected[stage] != actual[stage]) {
++                fprintf(stderr,"API mismatch samples=%d layout=%d wide=%d stage=%d %llu/%llu\n",samples,layout,wide,stage,
++                    (unsigned long long)expected[stage],(unsigned long long)actual[stage]);
++                return 1;
++            }
++            comparisons++;
++        }
++    }
++    printf("Queued packet API: %u matching full-plane/query signatures across off/2x/4x raw-DOT3, packed-DOT3 and generic fallback sequences\n",comparisons);
++    return 0;
++}
++
++int main(void) {
++    #ifndef SG_CROSS_SKIP_VARYING_SHADER
++    REQUIRE(!varying_shader());
++    #endif
++    REQUIRE(!direct_batches());
++    REQUIRE(!api_sequences());
++    return 0;
++}
+diff --git a/wasm/CMakeLists.txt b/wasm/CMakeLists.txt
+index e72652b..5e0f14e 100644
+--- a/wasm/CMakeLists.txt
++++ b/wasm/CMakeLists.txt
+@@ -24,6 +24,7 @@ add_compile_options(-O2 -msimd128 -msse -msse2 -msse3 -mssse3 -msse4.1 -pthread
+ # libsoftgl sources (wrapped rather than subdir to avoid toolchain clashes)
+ file(GLOB SOFTGL_SRC ${SRC}/libsoftgl/src/*.c)
+ add_library(softgl_objs OBJECT ${SOFTGL_SRC})
++target_compile_definitions(softgl_objs PRIVATE SG_CROSS_FRAGMENT_PACKETS=1)
+ target_include_directories(softgl_objs PUBLIC
+     ${SRC}/libsoftgl/include
+     ${SRC}/libsoftgl/src)

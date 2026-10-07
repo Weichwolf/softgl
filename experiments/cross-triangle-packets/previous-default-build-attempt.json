@@ -1,0 +1,8 @@
+{
+  "status": "failed-native-build-before-tests",
+  "notAcceptanceTimings": true,
+  "previousDirectory": "build/diagnostics/cross-triangle-packets-default",
+  "sourcePatchSha256": "b355074ab0ae068e8bf72796547e0a2f4caa95aef3135df638812f71d5d8fabe",
+  "reason": "The separate msaa_edge_instrumented object target did not inherit SG_CROSS_FRAGMENT_PACKETS=1, leaving worker queue hooks unresolved and forcing duplicate rasterizer definitions out of the production archive.",
+  "fix": "Link its usage requirements to the softgl target; production renderer source bodies remain unchanged."
+}
