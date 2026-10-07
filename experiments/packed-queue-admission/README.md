@@ -1,6 +1,6 @@
 # Admit oversized full-vertex draws by their actual packed payload
 
-Status: prepared next architecture trial; not built or timed yet.
+Status: native candidate on accepted 4c31bde; complete validation in progress.
 
 `sg_workers_submit_stream` currently tests producer full-vertex capacities
 against the 2 MiB immutable queue budget before trying the compact DOT3 queue.
@@ -29,3 +29,12 @@ plus the [fresh CPU attribution](../native-cpu-profiles/current-1ff/broadcast-ca
 No external code copied. `prepare.py --baseline <commit>` freezes the selected
 accepted source and writes only ignored build/ files. Build with native Clang 22
 and test 640x360 AB/BA off/2x/4x before considering production adoption.
+
+The Clang 22 off-mode screening uses one quiet AB/BA block per scene with
+15 warmup and 30 measured complete frames. Changes: BMW -0.22% (mixed/no
+gain claim), T-80 -9.96%, Sponza -15.21%, Bistro -5.04%. All four final
+angle-160 RGB images are byte-identical. [Screen](screen.json) and
+[receipt](screen-receipt.json) bind the frozen source, binaries, common packs
+and cameras. These results do not establish adoption or a current Mesa win.
+Three-pair off/2x/4x validation is running separately; production and the
+live WASM viewer still use accepted bounded polling at 4c31bde.
