@@ -934,6 +934,16 @@ void        softgl_destroy(softgl_ctx *c);
 void        softgl_make_current(softgl_ctx *c);
 const void *softgl_read_rgba8(softgl_ctx *c);
 
+/* Optional pure attribute program for vertex-array draws. It can run on
+ * workers; user data must be immutable until glDraw* returns, and it must
+ * not call GL. Index is the original source vertex, including dense-cull
+ * remapping. Color and the selected texture coordinate are in/out values.
+ * Positions remain GL-controlled, so conservative geometry culling stays
+ * valid. NULL disables the program. Immediate-mode vertices are unaffected. */
+typedef void (*softgl_vertex_attributes_fn)(void *user, GLuint index,
+    GLfloat color[4], GLfloat texcoord[4]);
+void softgl_set_vertex_attributes(softgl_vertex_attributes_fn program, void *user, GLuint texture_unit);
+
 
 #ifdef __cplusplus
 }

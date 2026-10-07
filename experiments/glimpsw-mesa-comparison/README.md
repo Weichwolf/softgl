@@ -1,6 +1,6 @@
 # GLimpSW / Mesa / libsoftgl with four common scenes
 
-Status: native 640x360 baseline complete, 72 accepted measurements, no rejected
+Status: historical native 640x360 baseline (47e517d) complete, 72 accepted measurements, no rejected
 blocks. Six timings per renderer/scene with three rotated forward/reverse pairs.
 [Summary](timings-quiet-summary.json), [accepted blocks](quiet-blocks.json) and
 [source/binary/asset receipt](provenance.json). Higher resolutions are excluded
@@ -19,8 +19,10 @@ match the GL scene. GLimpSW imports BLEND as alpha cutouts. Its PBR lighting
 omits the GL scene's studio cube maps and clearcoat; images are not pixel-equivalent.
 
 GLimpSW and libsoftgl use native Clang 22.1.8 with their respective AVX512 and
-SSE4.1 paths. Mesa uses installed OSMesa/llvmpipe and the identical GL calls as
-libsoftgl. Four logical CPUs are exposed under a Microsoft hypervisor (two cores,
+SSE4.1 paths. Mesa uses installed OSMesa/llvmpipe and, in this baseline, the identical GL calls as
+libsoftgl. Current libsoftgl viewer builds opt into
+[worker attribute preparation](../visible-vertex-attributes/README.md); Mesa
+retains eager GL arrays. The same shading formulas and fragment stages remain. Four logical CPUs are exposed under a Microsoft hypervisor (two cores,
 two hardware threads each). Each renderer has one caller and three configured
 helpers; Mesa auxiliary/JIT threads can differ. MSAA is disabled. Complete-frame
 cost includes clear, camera/transforms, rasterization, shading, completion and a

@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 3.20)
+project(VisibleVertexAttributesCandidate LANGUAGES C)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_FLAGS_RELEASE "-O3 -DNDEBUG")
+add_compile_options(-O3 -fno-strict-aliasing -ffast-math
+    -fno-associative-math -fsigned-zeros -fno-finite-math-only)
+get_filename_component(repo "${CMAKE_CURRENT_SOURCE_DIR}/../../.." ABSOLUTE)
+set(source ${repo}/build/visible-vertex-attributes/candidate-source)
+add_subdirectory(${source}/libsoftgl libsoftgl)
+add_executable(candidate ${repo}/experiments/glimpsw-mesa-comparison/softgl_bmw.c ${source}/model_wrap.c)
+target_include_directories(candidate PRIVATE ${source}/libsoftgl/src)
+target_compile_options(candidate PRIVATE -msse4.1)
+target_link_libraries(candidate PRIVATE softgl pthread m)

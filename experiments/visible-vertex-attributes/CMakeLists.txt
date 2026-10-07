@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 3.20)
+project(VisibleVertexAttributes LANGUAGES C)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_FLAGS_RELEASE "-O3 -DNDEBUG")
+add_compile_options(-O3 -fno-strict-aliasing -ffast-math
+    -fno-associative-math -fsigned-zeros -fno-finite-math-only)
+set(repo ${CMAKE_CURRENT_SOURCE_DIR}/../..)
+set(source ${repo}/build/visible-vertex-attributes/source)
+add_subdirectory(${source}/libsoftgl libsoftgl)
+add_executable(scope_scene ${source}/scope_scene.c ${source}/scope_wrap.c)
+target_include_directories(scope_scene PRIVATE ${source}/libsoftgl/src)
+target_compile_options(scope_scene PRIVATE -msse4.1)
+target_link_libraries(scope_scene PRIVATE softgl pthread m)

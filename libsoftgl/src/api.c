@@ -25,3 +25,13 @@ void glDepthMask(GLboolean b) {
         if (c->dlist_exec) _sg_depth_mask_real(b);
     } else _sg_depth_mask_real(b);
 }
+
+void softgl_set_vertex_attributes(softgl_vertex_attributes_fn program, void *user, GLuint texture_unit) {
+    softgl_ctx *c = sg_current();
+    if (!c) return;
+    if (c->imm_active) { sg_set_error(GL_INVALID_OPERATION); return; }
+    if (texture_unit >= SG_MAX_TEX_UNITS) { sg_set_error(GL_INVALID_VALUE); return; }
+    c->vertex_attributes = program;
+    c->vertex_attribute_data = user;
+    c->vertex_attribute_unit = texture_unit;
+}

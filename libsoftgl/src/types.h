@@ -300,6 +300,10 @@ struct softgl_ctx {
     size_t    queries_cap;
     GLuint    current_query[SG_QUERY_TARGET_COUNT];  /* 0 = none */
 
+    softgl_vertex_attributes_fn vertex_attributes;
+    void *vertex_attribute_data;
+    GLuint vertex_attribute_unit;
+
     /* Client vertex state */
     sg_attrib_ptr attr_pos;
     sg_attrib_ptr attr_normal;

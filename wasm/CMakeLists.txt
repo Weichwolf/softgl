@@ -65,6 +65,8 @@ add_executable(softgl
     ${TEST_OBJECTS}
 )
 
+target_compile_definitions(softgl PRIVATE SOFTGL_MODEL_VERTEX_ATTRIBUTES)
+
 # The preview lives beside the compiled module under the single build tree.
 configure_file(index.html ${CMAKE_CURRENT_BINARY_DIR}/index.html COPYONLY)
 configure_file(main.js ${CMAKE_CURRENT_BINARY_DIR}/main.js COPYONLY)

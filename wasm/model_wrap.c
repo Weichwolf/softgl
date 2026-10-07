@@ -1,5 +1,5 @@
-/* Static glTF-prepared SGLM v2 viewer. All rendering uses OpenGL 1.5:
- * DOT3 normal/half-vector lighting, texture combiners, cube maps and VBOs. */
+/* Static glTF-prepared SGLM viewer: GL fragment combiners and VBO geometry.
+ * SoftGL can opt into worker attribute preparation; Mesa uses eager arrays. */
 #include <GL/softgl.h>
 #include <math.h>
 #include <stdint.h>
@@ -234,6 +234,59 @@ static void update_vectors(const float matrix[16]) {
     glBindBuffer(GL_ARRAY_BUFFER, G.dynamic_vbo); glUnmapBuffer(GL_ARRAY_BUFFER);
 }
 
+#ifdef SOFTGL_MODEL_VERTEX_ATTRIBUTES
+/* Model-viewer attribute program. Geometry and fragment stages remain GL. */
+typedef struct {
+    const float *vertices;
+    const float *matrix;
+    float object_light[3];
+    int specular;
+} model_attribute_program;
+static model_attribute_program attribute_program;
+
+static void generate_attributes(void *user, GLuint index, GLfloat color[4], GLfloat texcoord[4]) {
+    const model_attribute_program *program = user;
+    const float *v = program->vertices+(size_t)index*STATIC_STRIDE;
+    const float *n = v+3, *t = v+8, *matrix = program->matrix;
+    const float *object_light = program->object_light;
+    float b[3] = {(n[1]*t[2]-n[2]*t[1])*v[11], (n[2]*t[0]-n[0]*t[2])*v[11], (n[0]*t[1]-n[1]*t[0])*v[11]};
+    float eye[3];
+    for (int j = 0; j < 3; j++)
+        eye[j] = matrix[j]*v[0]+matrix[4+j]*v[1]+matrix[8+j]*v[2]+matrix[12+j];
+    const float *basis[] = {t, b, n};
+    if (program->specular) {
+        float inv_eye = 1.f/sqrtf(eye[0]*eye[0]+eye[1]*eye[1]+eye[2]*eye[2]);
+        float half[3];
+        for (int j = 0; j < 3; j++)
+            half[j] = object_light[j]-(matrix[j*4]*eye[0]+matrix[j*4+1]*eye[1]+matrix[j*4+2]*eye[2])*inv_eye;
+        float inv_half = 1.f/sqrtf(fmaxf(half[0]*half[0]+half[1]*half[1]+half[2]*half[2], 1e-20f));
+        for (int j = 0; j < 3; j++)
+            color[j] = .5f+.5f*(basis[j][0]*half[0]+basis[j][1]*half[1]+basis[j][2]*half[2])*inv_half;
+    } else {
+        for (int j = 0; j < 3; j++)
+            color[j] = .5f+.5f*(basis[j][0]*object_light[0]+basis[j][1]*object_light[1]+basis[j][2]*object_light[2]);
+        float eye_normal[3];
+        for (int j = 0; j < 3; j++)
+            eye_normal[j] = matrix[j]*n[0]+matrix[4+j]*n[1]+matrix[8+j]*n[2];
+        float dot = eye[0]*eye_normal[0]+eye[1]*eye_normal[1]+eye[2]*eye_normal[2];
+        for (int j = 0; j < 3; j++) texcoord[j] = eye[j]-2.f*dot*eye_normal[j];
+        texcoord[3] = 1.f;
+    }
+    color[3] = 1.f;
+}
+
+static void prepare_attribute_program(const float matrix[16]) {
+    float light[3] = {.45f, .75f, .65f}, length = sqrtf(.45f*.45f+.75f*.75f+.65f*.65f);
+    for (int j = 0; j < 3; j++) light[j] /= length;
+    for (int j = 0; j < 3; j++)
+        attribute_program.object_light[j] = matrix[j*4]*light[0]+matrix[j*4+1]*light[1]+matrix[j*4+2]*light[2];
+    attribute_program.matrix = matrix;
+    glBindBuffer(GL_ARRAY_BUFFER, G.static_vbo);
+    attribute_program.vertices = glMapBuffer(GL_ARRAY_BUFFER, GL_READ_ONLY);
+    if (attribute_program.vertices) glUnmapBuffer(GL_ARRAY_BUFFER);
+}
+#endif
+
 static void combiner(GLenum function, GLenum a, GLenum b) {
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
     glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_RGB, (GLint)function);
@@ -264,9 +317,17 @@ static void draw_part(const model_part *part, int specular) {
         glActiveTexture(GL_TEXTURE0+unit);
         glDisable(GL_TEXTURE_CUBE_MAP); glEnable(GL_TEXTURE_2D);
     }
+#ifdef SOFTGL_MODEL_VERTEX_ATTRIBUTES
+    glDisableClientState(GL_COLOR_ARRAY);
+    attribute_program.specular = specular;
+    const float *all_vertices = attribute_program.vertices;
+    attribute_program.vertices = all_vertices+(size_t)part->vertex*STATIC_STRIDE;
+    softgl_set_vertex_attributes(generate_attributes, &attribute_program, 3);
+#else
     glBindBuffer(GL_ARRAY_BUFFER, G.dynamic_vbo);
     base = (uintptr_t)part->vertex*DYNAMIC_STRIDE*sizeof(float);
     glColorPointer(4, GL_FLOAT, DYNAMIC_STRIDE*sizeof(float), (const void*)(base+(specular ? 16 : 0)));
+#endif
     glActiveTexture(GL_TEXTURE0); glBindTexture(GL_TEXTURE_2D, m->normal);
     combiner(GL_DOT3_RGB, GL_TEXTURE, GL_PRIMARY_COLOR);
     glActiveTexture(GL_TEXTURE1); glBindTexture(GL_TEXTURE_2D, G.white);
@@ -293,10 +354,18 @@ static void draw_part(const model_part *part, int specular) {
         glDisable(GL_TEXTURE_2D); glEnable(GL_TEXTURE_CUBE_MAP); glBindTexture(GL_TEXTURE_CUBE_MAP, m->cube);
         combiner(GL_ADD, GL_PREVIOUS, GL_TEXTURE);
         glClientActiveTexture(GL_TEXTURE3);
+#ifdef SOFTGL_MODEL_VERTEX_ATTRIBUTES
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+#else
         glTexCoordPointer(3, GL_FLOAT, DYNAMIC_STRIDE*sizeof(float), (const void*)(base+32));
+#endif
     }
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, G.ebo);
     glDrawElements(GL_TRIANGLES, (GLsizei)part->count, GL_UNSIGNED_INT, (const void*)((uintptr_t)part->first*4));
+#ifdef SOFTGL_MODEL_VERTEX_ATTRIBUTES
+    softgl_set_vertex_attributes(NULL, NULL, 0);
+    attribute_program.vertices = all_vertices;
+#endif
 }
 
 void sg_model_render(float angle, int w, int h) {
@@ -321,7 +390,11 @@ void sg_model_render(float angle, int w, int h) {
         glTranslatef(0.f, -.035f, -2.3f); glRotatef(14.f, 1.f, 0.f, 0.f); glRotatef(angle, 0.f, 1.f, 0.f);
     }
     float matrix[16]; glGetFloatv(GL_MODELVIEW_MATRIX, matrix);
+#ifdef SOFTGL_MODEL_VERTEX_ATTRIBUTES
+    prepare_attribute_program(matrix);
+#else
     update_vectors(matrix);
+#endif
     glEnableClientState(GL_VERTEX_ARRAY); glEnableClientState(GL_COLOR_ARRAY);
     unsigned transparent = 0;
     glDisable(GL_BLEND);
