@@ -15,7 +15,7 @@ MSAA off, 2x and 4x, and run full regression checks before retaining renderer
 changes. Publish methods, results and unsuccessful experiments alongside code.
 Progress means reproducible performance gains and a better understanding of
 remaining technical limits, without fixed FPS targets.
-See [optimization evidence](experiments/README.md) and the compact
+See [optimization evidence](experiments/INDEX.md) and the compact
 [current measurements](bench_report.md).
 
 ## Scope

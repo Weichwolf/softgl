@@ -1,0 +1,63 @@
+# Exact tiled texture storage
+
+Research brief, 2026-10-07. **Proposed; not implemented or measured.** This
+expands the existing [texture-block hypothesis](../ordered-packed-capacity/next-research.md)
+with an inspected implementation and a diagnostic-first plan.
+
+## Hypothesis
+
+Small 2D texel blocks can keep both rows of a bilinear footprint near each
+other in memory. SoftGL currently stores texture levels in row order and
+loads horizontal RGBA8 pairs when all active lanes satisfy adjacency checks.
+A tiled layout could improve locality on rotated or vertically separated
+footprints, while adding address work and potentially losing those pair loads.
+
+Change storage and addressing only. Keep the original four texels, coordinate
+wrapping, mip selection, float/integer filtering, rounding and combiner
+expressions. A derived tiled copy can leave row-order storage available for
+readback and unsupported paths, at the cost of memory and update work.
+
+## Primary sources
+
+- GLimpSW, revision `2f915606d50b70fef8859ef29adc9d53f9aee887`:
+  [Texture.h](https://github.com/dubiousconst282/GLimpSW/blob/2f915606d50b70fef8859ef29adc9d53f9aee887/src/SwRast/Texture.h),
+  especially `GetTexelOffset` and `SampleLinear`: linear, 4x4 and vertical
+  eight-texel layouts with layout-specific gathers.
+- The same revision's [TexSwizzle.cpp](https://github.com/dubiousconst282/GLimpSW/blob/2f915606d50b70fef8859ef29adc9d53f9aee887/src/SwRast/Benchmarks/TexSwizzle.cpp)
+  compares several addressing layouts, including Morton ordering. Its
+  [README](https://github.com/dubiousconst282/GLimpSW/blob/2f915606d50b70fef8859ef29adc9d53f9aee887/README.md)
+  reports that practical tiling benefits can be small.
+
+Local clone: `/home/cosmo/Git/GLimpSW`. Its AVX512 instructions and filter
+choices are not drop-in SoftGL code or evidence of a WASM benefit.
+
+## First diagnostic and implementation boundary
+
+Inspect the actual BMW/T-80 sampler mix: targets, level dimensions, filters,
+live lanes, horizontal-pair eligibility and crossings of candidate block
+boundaries. Bind observations to the production module and model packs.
+Logical footprints do not establish cache misses or bandwidth limits.
+
+Select one fixed layout with a documented rationale before acceptance timing;
+do not choose a layout by retaining only favourable benchmark runs. Start with
+supported RGBA8 2D levels and retain row-order fallback for other formats,
+targets, dimensions or allocation failures. Consider cube-face support only
+after the 2D behavior is established.
+
+Integration points are [texture.c](../../libsoftgl/src/texture.c),
+[frag_packet.h](../../libsoftgl/src/frag_packet.h) and scalar/cube samplers in
+[fragment.c](../../libsoftgl/src/fragment.c). Re-prove pair eligibility at
+tile and texture boundaries rather than reusing row-order assumptions.
+
+## Validation and decision
+
+Compare exact addresses and sampled values against original storage for every
+wrap/filter combination, partial packets, NPOT and odd dimensions, small mip
+levels, seams and boundary crossings. Exercise upload/subimage, framebuffer
+copies, readback, deletion, object reuse and immutable queued texture lifetimes.
+Invalidation must finish at the existing synchronization boundaries.
+
+Apply the [shared validation protocol](../validation-protocol/README.md).
+Report memory overhead and upload/update costs separately from warmed sampling.
+Reject a candidate that changes filtering or only wins a synthetic sampler
+benchmark without reproducible renderer gains.

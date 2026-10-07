@@ -1,0 +1,49 @@
+--- a/libsoftgl/src/rasterizer.c
++++ b/libsoftgl/src/rasterizer.c
+@@ -1082,11 +1082,10 @@
+ #else
+ __attribute__((noinline))
+ #endif
+-int sg_packet_sample_cube_coherent(const sg_tex_unit_tri *u,
+-                                    const float xx[4], const float yy[4], const float zz[4],
++int sg_packet_sample_cube_vectors(const sg_tex_unit_tri *u,
++                                    sg_f32x4 x, sg_f32x4 y, sg_f32x4 z,
+                                     unsigned live, sg_f32x4 out[4]) {
+     if (!live || !u->tex) return 0;
+-    sg_f32x4 x = sg_f32x4_load(xx), y = sg_f32x4_load(yy), z = sg_f32x4_load(zz);
+     sg_i32x4 absolute = sg_i32x4_splat(0x7fffffff);
+     sg_f32x4 ax = _mm_castsi128_ps(sg_i32x4_and(_mm_castps_si128(x), absolute));
+     sg_f32x4 ay = _mm_castsi128_ps(sg_i32x4_and(_mm_castps_si128(y), absolute));
+@@ -1136,6 +1135,21 @@
+     return 1;
+ }
+ 
++/* Preserve the pointer entry and its original early guards. Production
++ * already has SIMD coordinates; its coherent route calls the vector core. */
++#ifdef __EMSCRIPTEN__
++__attribute__((used, noinline))
++#else
++__attribute__((noinline))
++#endif
++int sg_packet_sample_cube_coherent(const sg_tex_unit_tri *u,
++                                    const float xx[4], const float yy[4], const float zz[4],
++                                    unsigned live, sg_f32x4 out[4]) {
++    if (!live || !u->tex) return 0;
++    return sg_packet_sample_cube_vectors(u, sg_f32x4_load(xx), sg_f32x4_load(yy),
++                                         sg_f32x4_load(zz), live, out);
++}
++
+ /* Cube projection and scalar fallback share a target-specific kernel. The
+  * ordinary 2D shader does not carry this target's temporary arrays. */
+ #ifdef __EMSCRIPTEN__
+@@ -1145,9 +1159,9 @@
+ #endif
+ void sg_packet_sample_cube_target(const sg_tex_unit_tri *u,
+     sg_f32x4 x, sg_f32x4 y, sg_f32x4 z, unsigned live, sg_f32x4 out[4]) {
++    if (sg_packet_sample_cube_vectors(u, x, y, z, live, out)) return;
+     float xx[4], yy[4], zz[4], tex[4][4] = {{0}};
+     sg_f32x4_store(xx, x); sg_f32x4_store(yy, y); sg_f32x4_store(zz, z);
+-    if (sg_packet_sample_cube_coherent(u, xx, yy, zz, live, out)) return;
+     for (int l = 0; l < 4; l++) if (live & (1u << l))
+         sg_sample_tex_cube(u->tex, u->filter_min, u->filter_mag, u->wrap_s, u->wrap_t,
+                           xx[l], yy[l], zz[l], 1, tex[l]);

@@ -1,0 +1,33 @@
+{
+  "researchBaselineCommit": "f3672ec98331078e58a848811fd332834f2a6380",
+  "referenceWasmSha256": "d4dd244cbc59bb5d11b834596bf2e6bcbd3fd86bf883e6b2bed6528a41515ab0",
+  "changedFiles": [
+    "libsoftgl/src/rasterizer.c"
+  ],
+  "finalSourceFiles": {
+    "libsoftgl/src/rasterizer.c": "f0554171c12c70a359ed74d3c647442d82498488f9b64389758f3a13b455d14e"
+  },
+  "patchSha256": "ffe46de6db1f96ff03fed31a12289278c11e07a24a21bcc1a8327d73cb45e797",
+  "hypothesis": "Pass existing SIMD cube coordinates directly to an internal coherent core and prepare scalar coordinate/fallback arrays only after coherent rejection. Preserve original pointer entry/early guards and all arithmetic, texture/sample masks, stores, geometry and worker ownership. Remove the observed 112 logical bytes of pre-call linear-memory stores and xyz reloads, without claiming physical traffic or speed; extra entry/call/layout/native vector preservation may offset the saving.",
+  "predeclaredComparisons": {
+    "samples": [
+      0,
+      2,
+      4
+    ],
+    "auditsEachMode": 2,
+    "pairsEachAudit": 3,
+    "roundsEachPair": 2,
+    "warmup": 80,
+    "frames": 100,
+    "models": [
+      "bmw",
+      "tank"
+    ],
+    "workers": 3,
+    "resolvePerFrame": true
+  },
+  "decisionRule": "Complete all full gates and eighteen fixed comparisons. Require reproducible BMW benefit in both audits; inspect all modes and T-80. No parameter sweep or selective confirmation.",
+  "status": "fresh-candidate-source-reconstructed",
+  "productionUntouched": true
+}
