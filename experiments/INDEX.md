@@ -21,6 +21,7 @@
 | [current-producer-phases](current-producer-phases/README.md) | Diagnostic | Separates D4 replay, packing and submit scopes; no saved frame time is established. |
 | [current-texture-access](current-texture-access/README.md) | Diagnostic | D4 hardware counters do not isolate texture traffic or a hardware ceiling. |
 | [current-v8-raster-code](current-v8-raster-code/README.md) | Diagnostic | D4 JIT records expose cube-prefix stores; their removal was later tested in cube-vector-core. |
+| [deferred-opaque-visibility](deferred-opaque-visibility/README.md) | Native census / prototype pending | Duplicate eligible opaque writes: BMW 32.6%, T-80 45.3%, Sponza 55.3%, Bistro 41.8%; optimistic work bounds, no speedup yet. |
 | [depth-replay-four](depth-replay-four/README.md) | Accepted | Specialized four-sample capture/replay improves BMW with an explicit small T-80 cost. |
 | [depth-replay-hz](depth-replay-hz/README.md) | Accepted | Strict HZ rejection supplies hidden bits reusable across later material passes. |
 | [depth-replay-off-bound](depth-replay-off-bound/README.md) | Accepted trade-off | BMW off improves about 9%; BMW 4x regresses about 1%, retained under BMW priority. |
