@@ -171,3 +171,7 @@
 | [glimpsw-resource-audit](glimpsw-resource-audit/README.md) | Diagnostic / research | Resources mapped to actual implementation: hierarchy/LUT/cache work remains; user-only perf works in WSL, PCM lacks a required reference counter. |
 | [msaa-scaled-coverage](msaa-scaled-coverage/README.md) | Validated / no adoption | Exact native/WASM hashes and 108 asset views; 4× -0.6/-4.9/-3.3/-1.0% screen but OFF controls regress, no broad gain. |
 | [scene-msaa-occlusion](scene-msaa-occlusion/README.md) | Accepted | Current-frame MSAA occlusion: Bistro2/4 frame time -7.6/-7.0% vs accepted deferred; 144 runs, 108 exact views, 757 tests, sanitizer/WASM/browser and rollback mutation pass. |
+| [scene-msaa-compact](scene-msaa-compact/README.md) | Not adopted | Exact native views/contracts; Bistro2/4 scalar +0.9/-1.2%, packed +1.3/+1.0%, aligned +3.0/-2.1% screens; no confirmed broad gain. |
+| [scene-compact-triangles](scene-compact-triangles/README.md) | Not adopted | Native snapshots 320→256B, 108 exact views; Bistro2/4 screen −0.9/−1.5%; OFF −11.4% outlier-driven/unconfirmed; WASM layout pending. |
+| [scene-msaa-exact-kernel](scene-msaa-exact-kernel/README.md) | Not adopted | Exact native planes; fresh 144-run repeat after user-reported interference: Bistro4 −2.53% time (+2.6% FPS), Bistro2 +3.30%; no broad gain, shared-setup isolation pending. |
+| [scene-depth-order](scene-depth-order/README.md) | Private / unmeasured | Opt-in stable near-first packet bins, optional opaque-first partition; existing budgets, quality/performance effects pending. |
