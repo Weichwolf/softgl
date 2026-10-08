@@ -1,6 +1,7 @@
 # Compact packet identifiers and bin masks
 
-Status: queued architecture experiment, not measured or adopted.
+Status: isolated mask16 variant not adopted after initial native screening.
+Combined packet variants remain open. Frozen SIMD128-only baseline `da8ab07`.
 User explicitly requested this family; both native and WASM must use SIMD128.
 
 Group sixteen consecutive emitted primitives into a logical packet (bitmask
@@ -32,3 +33,35 @@ contracts, sanitizers and actual WASM SIMD128/browser/heap checks before
 adoption. Approximations are permitted but must be measured and documented;
 no missing geometry or broken materials. Individual and combined variants
 remain distinct receipts. No speedup forecast is an experimental result.
+
+## Initial correctness evidence
+
+36 actual shared-asset off views have exact RGBA/depth/stencil/sample planes.
+The ordered-bin oracle passes 54 pairs and six allocation/late-program rollback
+checks. Its random/distributed geometry did not generate any fully populated
+16-bit mask, so an initial assertion demanding that coverage failed. This was
+a fixture-coverage failure, not an image discrepancy. Add a tiny co-located
+coplanar geometry case against the ordinary GL oracle to exercise complete
+masks and depth ties. The corrected audited contract passes 55 pairs:
+216,224 original references become 65,605 packet references, including 384
+full masks. These are fixture counts, not full-scene performance savings.
+Audit atomics are compiled out of performance binaries. The actual native
+candidate archive also passes the no-AVX/no-YMM/ZMM instruction audit.
+
+Sources and first logs are in [screening](screening/). Initial speed tests use
+one balanced off-mode block per scene; only independent repeated all-mode
+measurements and complete native/WASM gates can establish a gain. No current
+production library or browser pipeline is replaced by this private prototype.
+
+## First native screen: isolated representation is insufficient
+
+One balanced AB/BA block per scene, 60 warm/30 measured frames, same assets,
+standard cameras, 640×360/off and four threads. Frame-time changes
+BMW/T-80/Sponza/Bistro -0.03/-1.18/+2.69/+0.63%. This initial screen does not
+justify isolated adoption or a broad gain; no additional full-suite/WASM gates
+are run for this variant. All raw accepted attempts are retained. Packed
+references alone still reconstruct and set up each triangle independently.
+The next architecture variant should combine packet references with the
+producer/consumer triangle packet data, rather than infer success from reduced
+fixture reference counts. Four-lane masks with bounded 32-bit encoding are a
+separate storage tradeoff, not silently substituted into these measurements.
