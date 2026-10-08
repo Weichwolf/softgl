@@ -22,6 +22,8 @@ parser.add_argument("--samples", default="0")
 parser.add_argument("--assets", default="bmw,t80,sponza,bistro")
 parser.add_argument("--baseline-source", type=Path, default=repo / "build/scene-meshlets-soa/baseline-source/libsoftgl")
 parser.add_argument("--baseline-wrapper", type=Path, default=repo / "build/scene-meshlets-soa/baseline-source/model_wrap.c")
+parser.add_argument("--candidate-source",type=Path,default=repo/"build/scene-meshlets-soa/source/libsoftgl")
+parser.add_argument("--candidate-wrapper",type=Path,default=repo/"build/scene-meshlets-soa/source/model_wrap.c")
 args = parser.parse_args()
 args.output.mkdir(parents=True, exist_ok=True)
 models = json.loads((repo / "assets/models.json").read_text())
@@ -49,11 +51,11 @@ receipt = {"screeningOnly": args.pairs < 3, "width": 640, "height": 360,
            "gitHead": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo, text=True).strip(),
            "packsSha256": {a: digest(repo / "build/assets" / f"{a}.pack") for a in args.assets.split(",")},
            "records": records}
-source = repo / "build/scene-meshlets-soa/source/libsoftgl"
+source = args.candidate_source
 receipt["candidateSourcesSha256"] = {str(p.relative_to(source)): digest(p)
                                       for p in sorted(source.rglob("*")) if p.is_file()}
 receipt["baselineWrapperSha256"] = digest(args.baseline_wrapper)
-receipt["candidateWrapperSha256"] = digest(repo / "build/scene-meshlets-soa/source/model_wrap.c")
+receipt["candidateWrapperSha256"] = digest(args.candidate_wrapper)
 receipt["baselineSourcesSha256"] = {str(p.relative_to(args.baseline_source)): digest(p) for p in sorted(args.baseline_source.rglob("*")) if p.is_file()}
 receipt["driverSha256"] = digest(repo / "experiments/scene-material-visibility/resident_trial.c")
 receipt["runnerSha256"] = digest(Path(__file__))

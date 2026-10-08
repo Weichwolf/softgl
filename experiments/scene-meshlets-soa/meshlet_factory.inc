@@ -1,9 +1,9 @@
 #include "index_range.h"
 
 #ifdef SOFTGL_MESHLET_AUDIT
-static atomic_ullong scene_meshlet_audit[6];
+static atomic_ullong scene_meshlet_audit[10];
 unsigned long long softgl_scene_meshlet_audit(unsigned index) {
-    return index < 6 ? atomic_load_explicit(&scene_meshlet_audit[index],memory_order_relaxed) : 0;
+    return index < 10 ? atomic_load_explicit(&scene_meshlet_audit[index],memory_order_relaxed) : 0;
 }
 #define SCENE_MESHLET_AUDIT(index,value) atomic_fetch_add_explicit(&scene_meshlet_audit[index],value,memory_order_relaxed)
 #else
@@ -36,6 +36,9 @@ softgl_meshlets *softgl_meshlets_create(const GLfloat *positions, const GLfloat 
     if (!meshlets->indices || !meshlets->coordinates) { softgl_meshlets_destroy(meshlets); return NULL; }
     meshlets->minimum = minimum; meshlets->span = span; meshlets->bytes = bytes;
     meshlets->vertex_count = vertex_count; meshlets->index_count = (uint32_t)count;
+#if SG_MESHLET_CLIP_BOUNDS
+    for (int axis = 0; axis < 3; axis++) { meshlets->lower[axis] = INFINITY; meshlets->upper[axis] = -INFINITY; }
+#endif
     memcpy(meshlets->indices,indices,(size_t)count*sizeof(uint32_t));
     for (uint32_t i = 0; i < span; i++) {
         const float *uv = (const float *)((const uint8_t *)coordinates+(size_t)(minimum+i)*stride);
@@ -64,6 +67,9 @@ softgl_meshlets *softgl_meshlets_create(const GLfloat *positions, const GLfloat 
             }
             group = &meshlets->groups[meshlets->group_count++];
             memset(group,0,sizeof(*group));
+#if SG_MESHLET_CLIP_BOUNDS
+            for (int axis = 0; axis < 3; axis++) { group->lower[axis] = INFINITY; group->upper[axis] = -INFINITY; }
+#endif
             SCENE_MESHLET_AUDIT(1,1);
         }
         for (unsigned j = 0; j < 3; j++) {
@@ -75,6 +81,12 @@ softgl_meshlets *softgl_meshlets_create(const GLfloat *positions, const GLfloat 
                 for (unsigned axis = 0; axis < 3; axis++) {
                     if (!isfinite(p[axis])) { softgl_meshlets_destroy(meshlets); return NULL; }
                     group->positions[axis][slot] = p[axis];
+#if SG_MESHLET_CLIP_BOUNDS
+                    if (p[axis] < group->lower[axis]) group->lower[axis] = p[axis];
+                    if (p[axis] > group->upper[axis]) group->upper[axis] = p[axis];
+                    if (p[axis] < meshlets->lower[axis]) meshlets->lower[axis] = p[axis];
+                    if (p[axis] > meshlets->upper[axis]) meshlets->upper[axis] = p[axis];
+#endif
                 }
                 group->vertices[slot] = index; group->vertex_count++;
             }

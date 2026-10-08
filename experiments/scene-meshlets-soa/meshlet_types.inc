@@ -4,6 +4,9 @@ typedef struct {
     uint32_t vertices[64];
     uint8_t indices[3][128];
     uint16_t vertex_count, triangle_count;
+#if SG_MESHLET_CLIP_BOUNDS
+    float lower[3], upper[3];
+#endif
 } scene_meshlet;
 
 struct softgl_meshlets {
@@ -14,6 +17,9 @@ struct softgl_meshlets {
     uint32_t group_count, group_capacity;
     uint32_t minimum, span, vertex_count, index_count;
     size_t bytes;
+#if SG_MESHLET_CLIP_BOUNDS
+    float lower[3], upper[3];
+#endif
 };
 
 #define SCENE_MESHLET_BYTES (128u * 1024u * 1024u)

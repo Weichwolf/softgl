@@ -6,7 +6,8 @@ add_compile_options(-O3 -fno-strict-aliasing -ffast-math
     -fno-associative-math -fsigned-zeros -fno-finite-math-only
     -msse4.1 -mno-avx -mno-avx2 -mno-avx512f)
 get_filename_component(repo "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
-set(root ${repo}/build/scene-meshlets-soa)
+set(SCENE_TRIAL_ROOT "${repo}/build/scene-meshlets-soa" CACHE PATH "Prepared variant sources")
+set(root ${SCENE_TRIAL_ROOT})
 add_subdirectory(${root}/source/libsoftgl candidate-library)
 add_subdirectory(${root}/baseline-source/libsoftgl baseline-library)
 foreach(variant baseline candidate)

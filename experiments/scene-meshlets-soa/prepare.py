@@ -9,9 +9,12 @@ import tarfile
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--baseline', default='8085056')
+parser.add_argument('--output-root', type=Path)
+parser.add_argument('--packet-simd', action='store_true')
+parser.add_argument('--clip-bounds', action='store_true')
 args = parser.parse_args()
 repo = Path(__file__).resolve().parents[2]
-root = repo / 'build/scene-meshlets-soa'
+root = args.output_root or repo / 'build/scene-meshlets-soa'
 base = subprocess.check_output(['git','rev-parse',args.baseline],cwd=repo,text=True).strip()
 archive = subprocess.check_output(['git','archive',base,'libsoftgl','wasm/model_wrap.c'],cwd=repo)
 for variant in ('source','baseline-source'):
@@ -45,9 +48,17 @@ p.write_text(code)
 
 p = root/'source/libsoftgl/src/geometry_types.inc'
 code = p.read_text()
+code = f'#define SG_MESHLET_PACKET_SIMD {int(args.packet_simd)}\n#define SG_MESHLET_CLIP_BOUNDS {int(args.clip_bounds)}\n'+code
 code = replace_once(code,'typedef struct {\n    const float *positions, *coordinates;',
     (Path(__file__).parent/'meshlet_types.inc').read_text()+'\ntypedef struct {\n    softgl_meshlets *meshlets;\n    uint32_t coordinate_first;\n    const float *positions, *coordinates;')
 p.write_text(code)
+
+# A producer's partial packet scratch is private to its geometry task.
+if args.packet_simd:
+    code = p.read_text()
+    code = replace_once(code,'    uint32_t material, first, end;\n    scene_primitive *primitives;',
+        '    uint32_t material, first, end;\n    SG_ALIGN16 sg_vec4 packet_input[3][4];\n    scene_primitive *primitives;')
+    p.write_text(code)
 
 p = root/'source/libsoftgl/src/scene_visibility.c'
 code = p.read_text()

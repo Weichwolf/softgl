@@ -1,8 +1,8 @@
 # Meshlets with structure-of-arrays positions
 
 Status: first owned-meshlet/local-transform/scalar-packet-emission variant tested;
-no broad OFF gain, not adopted. SIMD128 packet emission and conservative bound
-variants remain open.
+no broad OFF gain, not adopted. Combined SIMD128 packet emission/conservative
+clip bounds passes selected native/WASM correctness; performance still unmeasured.
 User explicitly requested this family; both native and WASM must use SIMD128.
 
 Create bounded geometry groups (up to 64 vertices/128 triangles), explicit local
@@ -69,8 +69,8 @@ position scratch live. Emit packet positions during triangle append instead
 of writing the whole scene's 32-byte clip/NDC position array and rereading it
 after a joined phase. Keep original attribute indices and clipped interpolation
 bases alive through final shading. Bound handle/scratch storage and charge
-any per-frame rebuilding/queue handoffs to the frame timer. This is a design
-for the requested meshlet trial, not implemented or measured yet.
+any per-frame rebuilding/queue handoffs to the frame timer. The implementations
+below exercise this design; neither is adopted.
 
 ## First implemented scalar-emission variant
 
@@ -123,6 +123,42 @@ no broad gain, so do not adopt this scalar-emission variant. All raw timing
 attempts and native/WASM/census proofs are in
 [scalar-emission/checks.json](scalar-emission/checks.json). Full suite,
 sanitizers and full-asset browser gates are not claimed for this variant.
-Next separate variants batch producer packet conversion in SIMD128 and use
-conservative per-frame meshlet/parent clip bounds; these have no timing claim
-until implemented and measured. Production/live WASM remains `8085056`.
+Combined producer/bound implementation below has no timing claim yet.
+Production/live WASM remains `8085056`.
+
+## Combined SIMD128 emission and conservative clip bounds
+
+`prepare.py --packet-simd --clip-bounds --output-root PATH` creates an independent
+variant from the same `8085056` baseline. `SCENE_TRIAL_ROOT`, runner source/wrapper
+arguments and WASM script root arguments keep variant builds/receipts separate.
+
+Triangle append retains four triangles in aligned task scratch, transposes their
+screen X/Y/Z/W and emits four-lane SIMD128 packed XY/full-float Z/W packets.
+Partial packets duplicate initialized lanes and mask inactive triangles. The
+consumer is unchanged. The scratch costs 192 additional bytes per task; no
+whole-scene transformed-position reread is introduced.
+
+Owned meshlets/parents also retain unquantized source-position bounds. Only the
+existing fast affine-modelview/centered-perspective case uses conservative float
+interval classification, with the same multiply/add grouping as actual position
+transformation and no FMA. Nonfinite or unsupported matrices remain unknown.
+Proven outside groups skip transform/emission; proven inside groups still
+transform vertices but skip outcodes. Unknown groups retain clipping. Parent
+bounds are classified once per eight-group task, then group bounds as needed.
+
+All 36 OFF asset views have exact full RGBA/depth/stencil/sample planes. Each of
+216 native hashes matches the independent native baseline, and each of 216 WASM
+hashes matches the independent WASM baseline. Twelve pre-existing baseline hashes
+differ across platforms; cross-platform bit identity is not asserted. A controlled
+fully-inside pair compares owned and ordinary inputs with exact full planes.
+Native/WASM counts agree: 604 SIMD packets, 40 culled groups, six proven inside
+groups, 8,736 fast-transformed vertices. WASM pointers are four bytes, heap 256 MiB
+in this small contract. This is not a full-asset browser heap result.
+
+The initial combined fixture passed all 216 comparisons but its assertion that
+an inside group was exercised failed: the broad inherited geometry provided none.
+The dedicated inside geometry now exercises the branch; thresholds were not
+loosened. Both first failed attempts and corrected native/WASM runs remain in
+[combined-validation](combined-validation/checks.json). No combined performance,
+full-suite/sanitizer or full-asset browser result is claimed. The new user MSAA
+comparison takes priority before further OFF-only screening.

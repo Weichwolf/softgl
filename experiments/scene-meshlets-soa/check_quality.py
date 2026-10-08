@@ -14,11 +14,13 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--assets',default='bmw,t80,sponza,bistro')
 parser.add_argument('--samples',default='0,2,4')
 parser.add_argument('--allow-reorder',action='store_true')
+parser.add_argument("--root",type=Path,default=repo/"build/scene-meshlets-soa")
+parser.add_argument("--output",type=Path,default=repo/"tmp/scene-meshlets-soa/quality")
 args = parser.parse_args()
-output = repo/'tmp/scene-meshlets-soa/quality'
+output = args.output
 output.mkdir(parents=True,exist_ok=True)
 models = json.loads((repo/'assets/models.json').read_text())
-binaries = {v:repo/'build/scene-meshlets-soa/native'/f'quality_{v}' for v in ('baseline','candidate')}
+binaries = {v:args.root/'native'/f'quality_{v}' for v in ('baseline','candidate')}
 def digest(p):
     return hashlib.sha256(p.read_bytes()).hexdigest()
 receipt = {'width':640,'height':360,'threads':4,'angles':[0,45,90,135,160,180,225,270,315],

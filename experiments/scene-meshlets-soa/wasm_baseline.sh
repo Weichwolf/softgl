@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 repo="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd)"
-trial_source="$repo/build/scene-meshlets-soa/baseline-source"
-trial_output="$repo/build/scene-meshlets-soa/wasm-audit"
+trial_root="${1:-$repo/build/scene-meshlets-soa}"
+trial_source="$trial_root/baseline-source"
+trial_output="$trial_root/wasm-audit"
 mkdir -p "$trial_output"
 mapfile -t trial_sources < <(rg --files "$trial_source/libsoftgl/src" -g '*.c' | sort)
 EM_CACHE="$repo/build/emscripten-cache" emcc -std=gnu11 -O2 -pthread \
