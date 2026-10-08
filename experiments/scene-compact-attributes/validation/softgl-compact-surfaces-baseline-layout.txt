@@ -1,0 +1,832 @@
+
+*** Dumping AST Record Layout
+         0 | struct __atomic_wide_counter::(unnamed at /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h:28:3)
+         0 |   unsigned int __low
+         4 |   unsigned int __high
+           | [sizeof=8, align=4]
+
+*** Dumping AST Record Layout
+         0 | __atomic_wide_counter
+         0 |   unsigned long long __value64
+         0 |   struct __atomic_wide_counter::(unnamed at /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h:28:3) __value32
+         0 |     unsigned int __low
+         4 |     unsigned int __high
+           | [sizeof=8, align=8]
+
+*** Dumping AST Record Layout
+         0 | struct __pthread_internal_list
+         0 |   struct __pthread_internal_list * __prev
+         8 |   struct __pthread_internal_list * __next
+           | [sizeof=16, align=8]
+
+*** Dumping AST Record Layout
+         0 | struct __pthread_mutex_s
+         0 |   int __lock
+         4 |   unsigned int __count
+         8 |   int __owner
+        12 |   unsigned int __nusers
+        16 |   int __kind
+        20 |   short __spins
+        22 |   short __elision
+        24 |   struct __pthread_internal_list __list
+        24 |     struct __pthread_internal_list * __prev
+        32 |     struct __pthread_internal_list * __next
+           | [sizeof=40, align=8]
+
+*** Dumping AST Record Layout
+         0 | struct __pthread_cond_s
+         0 |   __atomic_wide_counter __wseq
+         0 |     unsigned long long __value64
+         0 |     struct __atomic_wide_counter::(unnamed at /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h:28:3) __value32
+         0 |       unsigned int __low
+         4 |       unsigned int __high
+         8 |   __atomic_wide_counter __g1_start
+         8 |     unsigned long long __value64
+         8 |     struct __atomic_wide_counter::(unnamed at /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h:28:3) __value32
+         8 |       unsigned int __low
+        12 |       unsigned int __high
+        16 |   unsigned int[2] __g_size
+        24 |   unsigned int __g1_orig_size
+        28 |   unsigned int __wrefs
+        32 |   unsigned int[2] __g_signals
+        40 |   unsigned int __unused_initialized_1
+        44 |   unsigned int __unused_initialized_2
+           | [sizeof=48, align=8]
+
+*** Dumping AST Record Layout
+         0 | struct __pthread_rwlock_arch_t
+         0 |   unsigned int __readers
+         4 |   unsigned int __writers
+         8 |   unsigned int __wrphase_futex
+        12 |   unsigned int __writers_futex
+        16 |   unsigned int __pad3
+        20 |   unsigned int __pad4
+        24 |   int __cur_writer
+        28 |   int __shared
+        32 |   signed char __rwelision
+        33 |   unsigned char[7] __pad1
+        40 |   unsigned long __pad2
+        48 |   unsigned int __flags
+           | [sizeof=56, align=8]
+
+*** Dumping AST Record Layout
+         0 | sg_vec4
+         0 |   float x
+         4 |   float y
+         8 |   float z
+        12 |   float w
+           | [sizeof=16, align=16]
+
+*** Dumping AST Record Layout
+         0 | sg_light
+         0 |   int enabled
+         4 |   float[4] ambient
+        20 |   float[4] diffuse
+        36 |   float[4] specular
+        52 |   float[4] position
+        68 |   float att_const
+        72 |   float att_linear
+        76 |   float att_quad
+           | [sizeof=80, align=4]
+
+*** Dumping AST Record Layout
+         0 | sg_mat4
+         0 |   float[16] m
+           | [sizeof=64, align=16]
+
+*** Dumping AST Record Layout
+         0 | sg_tex_env
+         0 |   GLenum env_mode
+         4 |   GLenum combine_rgb
+         8 |   GLenum combine_a
+        12 |   GLenum[3] src_rgb
+        24 |   GLenum[3] src_a
+        36 |   GLenum[3] op_rgb
+        48 |   GLenum[3] op_a
+        60 |   float[4] env_color
+        76 |   float rgb_scale
+        80 |   float alpha_scale
+        84 |   int[4] enabled_target
+       100 |   GLuint[4] bound_tex_target
+           | [sizeof=116, align=4]
+
+*** Dumping AST Record Layout
+         0 | sg_attrib_ptr
+         0 |   int enabled
+         4 |   int size
+         8 |   GLenum type
+        12 |   int stride
+        16 |   const uint8_t * ptr
+        24 |   GLuint buffer
+           | [sizeof=32, align=8]
+
+*** Dumping AST Record Layout
+         0 | sg_map1
+         0 |   int enabled
+         4 |   int defined
+         8 |   float u0
+        12 |   float u1
+        16 |   int order
+        20 |   int components
+        24 |   float * points
+           | [sizeof=32, align=8]
+
+*** Dumping AST Record Layout
+         0 | sg_map2
+         0 |   int enabled
+         4 |   int defined
+         8 |   float u0
+        12 |   float u1
+        16 |   float v0
+        20 |   float v1
+        24 |   int u_order
+        28 |   int v_order
+        32 |   int components
+        40 |   float * points
+           | [sizeof=48, align=8]
+
+*** Dumping AST Record Layout
+         0 | sg_framebuffer
+         0 |   int w
+         4 |   int h
+         8 |   uint8_t * color
+        16 |   float * depth
+        24 |   uint8_t * stencil
+        32 |   int samples
+        40 |   uint8_t * sample_color
+        48 |   float * sample_depth
+        56 |   uint8_t * sample_stencil
+           | [sizeof=64, align=8]
+
+*** Dumping AST Record Layout
+         0 | sg_tex_unit_tri
+         0 |   int active_slot
+         8 |   sg_texture * tex
+        16 |   GLenum filter_min
+        20 |   GLenum filter_mag
+        24 |   GLenum wrap_s
+        28 |   GLenum wrap_t
+        32 |   GLenum wrap_r
+        36 |   int tw
+        40 |   int th
+        44 |   int td
+        48 |   const uint8_t * data0
+        56 |   int tw_mask_pot
+        60 |   int th_mask_pot
+        64 |   int tw_log2
+        68 |   int constant_color_valid
+        72 |   float[4] constant_color
+           | [sizeof=88, align=8]
+
+*** Dumping AST Record Layout
+         0 | sg_resolved_attrib
+         0 |   const uint8_t * base
+         8 |   int stride
+        12 |   int size
+        16 |   GLenum type
+           | [sizeof=24, align=8]
+
+*** Dumping AST Record Layout
+         0 | struct timespec
+         0 |   __time_t tv_sec
+         8 |   __syscall_slong_t tv_nsec
+           | [sizeof=16, align=8]
+
+*** Dumping AST Record Layout
+         0 | struct __cancel_jmp_buf_tag
+         0 |   __jmp_buf __cancel_jmp_buf
+        64 |   int __mask_was_saved
+           | [sizeof=72, align=8]
+
+*** Dumping AST Record Layout
+         0 | __sigset_t
+         0 |   unsigned long[16] __val
+           | [sizeof=128, align=8]
+
+*** Dumping AST Record Layout
+         0 | struct __jmp_buf_tag
+         0 |   __jmp_buf __jmpbuf
+        64 |   int __mask_was_saved
+        72 |   __sigset_t __saved_mask
+        72 |     unsigned long[16] __val
+           | [sizeof=200, align=8]
+
+*** Dumping AST Record Layout
+         0 | sg_worker_tri
+         0 |   uint32_t[3] v
+        12 |   float zkey
+           | [sizeof=16, align=4]
+
+*** Dumping AST Record Layout
+         0 | sg_prepared_tri
+         0 |   sg_worker_tri tri
+         0 |     uint32_t[3] v
+        12 |     float zkey
+        16 |   int ix0
+        20 |   int ix1
+        24 |   uint8_t first
+        25 |   uint8_t end
+        26 |   uint8_t kind
+           | [sizeof=28, align=4]
+
+*** Dumping AST Record Layout
+         0 | sg_worker
+         0 |   pthread_t thread
+         8 |   softgl_ctx * ctx
+        16 |   int tile_idx
+        20 |   int started
+           | [sizeof=24, align=8]
+
+*** Dumping AST Record Layout
+         0 | sg_worker_bin
+         0 |   sg_worker_tri * tris
+         8 |   uint32_t * sort_keys
+        16 |   int count
+        20 |   int cap
+        24 |   int ix0
+        28 |   int ix1
+        32 |   GLuint64 query_samples
+        40 |   int coverage_count
+        44 |   int depth_capture
+        48 |   uint8_t[56] _pad
+           | [sizeof=104, align=8]
+
+*** Dumping AST Record Layout
+         0 | sg_texture
+         0 |   uint32_t id
+         4 |   int in_use
+         8 |   GLenum target
+        12 |   GLenum wrap_s
+        16 |   GLenum wrap_t
+        20 |   GLenum wrap_r
+        24 |   GLenum min_filter
+        28 |   GLenum mag_filter
+        32 |   int levels
+        36 |   int[16] w
+       100 |   int[16] h
+       164 |   int[16] d
+       232 |   uint8_t *[16] data
+       360 |   uint8_t *[6][16] cube_faces
+      1128 |   int[6][16] cube_w
+      1512 |   int[6][16] cube_h
+           | [sizeof=1896, align=8]
+
+*** Dumping AST Record Layout
+         0 | sg_vert
+         0 |   sg_vec4 clip
+         0 |     float x
+         4 |     float y
+         8 |     float z
+        12 |     float w
+        16 |   sg_vec4 ndc
+        16 |     float x
+        20 |     float y
+        24 |     float z
+        28 |     float w
+        32 |   sg_vec4 color
+        32 |     float x
+        36 |     float y
+        40 |     float z
+        44 |     float w
+        48 |   sg_vec4 color_back
+        48 |     float x
+        52 |     float y
+        56 |     float z
+        60 |     float w
+        64 |   sg_vec4 normal
+        64 |     float x
+        68 |     float y
+        72 |     float z
+        76 |     float w
+        80 |   sg_vec4[4] uv
+       144 |   sg_vec4 eye
+       144 |     float x
+       148 |     float y
+       152 |     float z
+       156 |     float w
+           | [sizeof=160, align=16]
+
+*** Dumping AST Record Layout
+         0 | sg_material
+         0 |   float[4] ambient
+        16 |   float[4] diffuse
+        32 |   float[4] specular
+        48 |   float[4] emission
+        64 |   float shininess
+           | [sizeof=68, align=4]
+
+*** Dumping AST Record Layout
+         0 | struct softgl_ctx::(unnamed at build/scene-compact-surfaces/baseline-source/libsoftgl/src/types.h:337:5)
+         0 |   GLint alignment
+         4 |   GLint row_length
+         8 |   GLint skip_rows
+        12 |   GLint skip_pixels
+        16 |   GLint lsb_first
+        20 |   GLint swap_bytes
+           | [sizeof=24, align=4]
+
+*** Dumping AST Record Layout
+         0 | struct softgl_ctx
+         0 |   sg_framebuffer fb
+         0 |     int w
+         4 |     int h
+         8 |     uint8_t * color
+        16 |     float * depth
+        24 |     uint8_t * stencil
+        32 |     int samples
+        40 |     uint8_t * sample_color
+        48 |     float * sample_depth
+        56 |     uint8_t * sample_stencil
+        64 |   float[4] clear_color
+        80 |   float clear_depth
+        84 |   int[4] viewport
+       100 |   int[4] scissor
+       116 |   int scissor_enabled
+       120 |   int cull_enabled
+       124 |   GLenum cull_face
+       128 |   GLenum front_face
+       132 |   int depth_test
+       136 |   GLenum depth_func
+       140 |   int depth_mask
+       144 |   int blend
+       148 |   GLenum blend_src
+       152 |   GLenum blend_dst
+       156 |   int alpha_test
+       160 |   GLenum alpha_func
+       164 |   float alpha_ref
+       168 |   int multisample
+       172 |   int sample_alpha_to_coverage
+       176 |   int sample_alpha_to_one
+       180 |   int sample_coverage
+       184 |   float sample_coverage_value
+       188 |   int sample_coverage_invert
+       192 |   int stencil_test
+       196 |   GLenum stencil_func
+       200 |   GLint stencil_ref
+       204 |   GLuint stencil_value_mask
+       208 |   GLuint stencil_write_mask
+       212 |   GLenum stencil_sfail
+       216 |   GLenum stencil_dpfail
+       220 |   GLenum stencil_dppass
+       224 |   GLint clear_stencil
+       228 |   float line_width
+       232 |   float point_size
+       236 |   GLenum polygon_mode_front
+       240 |   GLenum polygon_mode_back
+       244 |   float polygon_offset_factor
+       248 |   float polygon_offset_units
+       252 |   int polygon_offset_fill
+       256 |   int polygon_offset_line
+       260 |   int polygon_offset_point
+       264 |   int fog_enabled
+       268 |   GLenum fog_mode
+       272 |   float fog_density
+       276 |   float fog_start
+       280 |   float fog_end
+       284 |   float[4] fog_color
+       300 |   int lighting
+       304 |   int normalize
+       308 |   sg_light[8] lights
+       948 |   sg_material material_front
+       948 |     float[4] ambient
+       964 |     float[4] diffuse
+       980 |     float[4] specular
+       996 |     float[4] emission
+      1012 |     float shininess
+      1016 |   sg_material material_back
+      1016 |     float[4] ambient
+      1032 |     float[4] diffuse
+      1048 |     float[4] specular
+      1064 |     float[4] emission
+      1080 |     float shininess
+      1084 |   float[4] light_model_ambient
+      1100 |   int light_model_local_viewer
+      1104 |   int light_model_two_side
+      1108 |   int color_material_enabled
+      1112 |   GLenum color_material_face
+      1116 |   GLenum color_material_mode
+      1120 |   GLenum shade_model
+      1128 |   double[6][4] clip_plane_eq
+      1320 |   int[6] clip_plane_enabled
+      1344 |   int[4] color_mask
+      1360 |   int color_logic_op_enabled
+      1364 |   GLenum logic_op
+      1368 |   GLuint index_writemask
+      1372 |   GLenum hint_perspective_correction
+      1376 |   GLenum hint_point_smooth
+      1380 |   GLenum hint_line_smooth
+      1384 |   GLenum hint_polygon_smooth
+      1388 |   GLenum hint_fog
+      1392 |   GLenum hint_generate_mipmap
+      1396 |   GLenum matrix_mode
+      1408 |   sg_mat4[32] mv_stack
+      3456 |   sg_mat4[32] pr_stack
+      5504 |   sg_mat4[4][32] tex_stack
+     13696 |   int mv_top
+     13700 |   int pr_top
+     13704 |   int[4] tex_top
+     13720 |   GLuint active_tex_unit
+     13724 |   GLuint client_tex_unit
+     13728 |   sg_tex_env[4] tex_env
+     14192 |   sg_buffer * buffers
+     14200 |   size_t buffers_cap
+     14208 |   sg_texture * textures
+     14216 |   size_t textures_cap
+     14224 |   GLuint array_buffer_binding
+     14228 |   GLuint element_buffer_binding
+     14232 |   sg_query * queries
+     14240 |   size_t queries_cap
+     14248 |   GLuint[2] current_query
+     14256 |   softgl_vertex_attributes_fn vertex_attributes
+     14264 |   softgl_vertex_attributes_full_fn vertex_attributes_full
+     14272 |   int fused_dot3_enabled
+     14276 |   int fused_dot3_quartic
+     14280 |   float[4] fused_dot3_tint
+     14296 |   void * vertex_attribute_data
+     14304 |   GLuint vertex_attribute_unit
+     14312 |   sg_attrib_ptr attr_pos
+     14312 |     int enabled
+     14316 |     int size
+     14320 |     GLenum type
+     14324 |     int stride
+     14328 |     const uint8_t * ptr
+     14336 |     GLuint buffer
+     14344 |   sg_attrib_ptr attr_normal
+     14344 |     int enabled
+     14348 |     int size
+     14352 |     GLenum type
+     14356 |     int stride
+     14360 |     const uint8_t * ptr
+     14368 |     GLuint buffer
+     14376 |   sg_attrib_ptr attr_color
+     14376 |     int enabled
+     14380 |     int size
+     14384 |     GLenum type
+     14388 |     int stride
+     14392 |     const uint8_t * ptr
+     14400 |     GLuint buffer
+     14408 |   sg_attrib_ptr[4] attr_tex
+     14536 |   float[4] current_color
+     14552 |   float[3] current_normal
+     14564 |   float[4][4] current_texcoord
+     14628 |   int current_edge_flag
+     14632 |   int imm_active
+     14636 |   GLenum imm_mode
+     14640 |   sg_vert * imm_buf
+     14648 |   size_t imm_count
+     14656 |   size_t imm_cap
+     14664 |   struct sg_dlist * lists
+     14672 |   size_t lists_cap
+     14680 |   int dlist_recording
+     14684 |   GLuint dlist_cur
+     14688 |   int dlist_exec
+     14692 |   GLuint dlist_base
+     14696 |   int dlist_depth
+     14700 |   struct softgl_ctx::(unnamed at build/scene-compact-surfaces/baseline-source/libsoftgl/src/types.h:337:5) pack
+     14700 |     GLint alignment
+     14704 |     GLint row_length
+     14708 |     GLint skip_rows
+     14712 |     GLint skip_pixels
+     14716 |     GLint lsb_first
+     14720 |     GLint swap_bytes
+     14724 |   struct softgl_ctx::(unnamed at build/scene-compact-surfaces/baseline-source/libsoftgl/src/types.h:337:5) unpack
+     14724 |     GLint alignment
+     14728 |     GLint row_length
+     14732 |     GLint skip_rows
+     14736 |     GLint skip_pixels
+     14740 |     GLint lsb_first
+     14744 |     GLint swap_bytes
+     14748 |   float pixel_zoom_x
+     14752 |   float pixel_zoom_y
+     14756 |   float[4] raster_pos
+     14772 |   float[4] raster_color
+     14788 |   float[4] raster_texcoord
+     14804 |   int raster_pos_valid
+     14808 |   sg_map1[8] map1
+     15064 |   sg_map2[8] map2
+     15448 |   int map1_grid_n
+     15452 |   float map1_grid_u0
+     15456 |   float map1_grid_u1
+     15460 |   int map2_grid_nu
+     15464 |   float map2_grid_u0
+     15468 |   float map2_grid_u1
+     15472 |   int map2_grid_nv
+     15476 |   float map2_grid_v0
+     15480 |   float map2_grid_v1
+     15484 |   int auto_normal
+     15488 |   float * accum
+     15496 |   float[4] clear_accum
+     15512 |   GLenum render_mode
+     15520 |   GLuint * sel_buffer
+     15528 |   GLsizei sel_buffer_size
+     15532 |   GLsizei sel_buffer_used
+     15536 |   int sel_overflow
+     15540 |   GLuint[64] name_stack
+     15796 |   int name_stack_top
+     15800 |   int sel_hit_count
+     15804 |   int sel_hit_record_open
+     15808 |   float sel_hit_zmin
+     15812 |   float sel_hit_zmax
+     15816 |   GLfloat * fb_buffer
+     15824 |   GLsizei fb_buffer_size
+     15828 |   GLsizei fb_buffer_used
+     15832 |   GLenum fb_type
+     15836 |   int fb_overflow
+     15840 |   void * workers
+     15848 |   int line_stipple_enable
+     15852 |   int line_stipple_factor
+     15856 |   GLushort line_stipple_pattern
+     15860 |   int line_stipple_counter
+     15864 |   int polygon_stipple_enable
+     15868 |   GLubyte[128] polygon_stipple
+     15996 |   GLenum last_error
+     16000 |   struct sg_scene_visibility * scene_visibility
+     16008 |   struct sg_scene_visibility * scene_storage
+     16016 |   int scene_material
+           | [sizeof=16032, align=16]
+
+*** Dumping AST Record Layout
+         0 | sg_tex_tri_ctx
+         0 |   sg_tex_unit_tri[4] unit
+       352 |   int any_active
+       356 |   int fastpath_kind
+       360 |   int combine_kind
+       364 |   unsigned int sample_mask
+           | [sizeof=368, align=8]
+
+*** Dumping AST Record Layout
+         0 | sg_hz_tile
+         0 |   uint64_t written
+         8 |   float maximum
+        12 |   uint32_t maximum_sample
+           | [sizeof=16, align=8]
+
+*** Dumping AST Record Layout
+         0 | scene_geometry_bin
+         0 |   uint32_t * references
+         8 |   uint32_t count
+        12 |   uint32_t capacity
+           | [sizeof=16, align=8]
+
+*** Dumping AST Record Layout
+         0 | scene_mesh
+         0 |   const float * positions
+         8 |   const float * coordinates
+        16 |   const uint32_t * indices
+        24 |   uint32_t minimum
+        28 |   uint32_t span
+        32 |   uint32_t offset
+        36 |   uint32_t count
+        40 |   size_t stride
+        48 |   sg_mat4 modelview
+        48 |     float[16] m
+       112 |   sg_mat4 projection
+       112 |     float[16] m
+       176 |   int cull_enabled
+       180 |   GLenum cull_face
+       184 |   GLenum front_face
+       192 |   softgl_vertex_attributes_full_fn program
+       208 |   unsigned char[128] user
+           | [sizeof=336, align=16]
+
+*** Dumping AST Record Layout
+         0 | scene_bin
+         0 |   scene_triangle * triangles
+         8 |   uint32_t count
+        12 |   uint32_t capacity
+        16 |   uint64_t depth_passes
+        24 |   uint8_t * visible
+        32 |   uint32_t visible_capacity
+           | [sizeof=40, align=8]
+
+*** Dumping AST Record Layout
+         0 | scene_geometry
+         0 |   scene_position * positions
+         8 |   scene_attribute * attributes
+        16 |   uint8_t * outcodes
+        24 |   atomic_uchar * ready
+        32 |   uint32_t vertex_capacity
+        36 |   uint32_t vertices
+        40 |   size_t primitive_bytes
+        48 |   size_t reference_bytes
+        56 |   scene_position_task * position_tasks
+        64 |   scene_geometry_task * tasks
+        72 |   int position_count
+        76 |   int task_count
+        80 |   scene_geometry_bin[32] bins
+       592 |   atomic_int next_task
+           | [sizeof=600, align=8]
+
+*** Dumping AST Record Layout
+         0 | pthread_mutex_t
+         0 |   struct __pthread_mutex_s __data
+         0 |     int __lock
+         4 |     unsigned int __count
+         8 |     int __owner
+        12 |     unsigned int __nusers
+        16 |     int __kind
+        20 |     short __spins
+        22 |     short __elision
+        24 |     struct __pthread_internal_list __list
+        24 |       struct __pthread_internal_list * __prev
+        32 |       struct __pthread_internal_list * __next
+         0 |   char[40] __size
+         0 |   long __align
+           | [sizeof=40, align=8]
+
+*** Dumping AST Record Layout
+         0 | struct sg_scene_visibility
+         0 |   softgl_ctx * context
+         8 |   uint32_t * winner
+        16 |   uint32_t * pixels
+        24 |   uint16_t * pixel_material
+        32 |   float * backup_depth
+        40 |   uint8_t * backup_color
+        48 |   size_t pixel_capacity
+        56 |   size_t triangle_bytes
+        64 |   scene_material * materials
+        72 |   scene_task * tasks
+        80 |   int material_count
+        84 |   int task_count
+        88 |   scene_bin[32] bins
+      1368 |   scene_geometry * geometry
+      1376 |   const scene_primitive *[32] current_primitive
+      1632 |   uint32_t mesh_vertices
+      1636 |   int deferred_meshes
+      1640 |   atomic_int failed
+      1644 |   atomic_int next_task
+      1648 |   pthread_mutex_t allocation_mutex
+      1648 |     struct __pthread_mutex_s __data
+      1648 |       int __lock
+      1652 |       unsigned int __count
+      1656 |       int __owner
+      1660 |       unsigned int __nusers
+      1664 |       int __kind
+      1668 |       short __spins
+      1670 |       short __elision
+      1672 |       struct __pthread_internal_list __list
+      1672 |         struct __pthread_internal_list * __prev
+      1680 |         struct __pthread_internal_list * __next
+      1648 |     char[40] __size
+      1648 |     long __align
+           | [sizeof=1688, align=8]
+
+*** Dumping AST Record Layout
+         0 | pthread_mutexattr_t
+         0 |   char[4] __size
+         0 |   int __align
+           | [sizeof=4, align=4]
+
+*** Dumping AST Record Layout
+         0 | scene_material
+         0 |   scene_mesh mesh
+         0 |     const float * positions
+         8 |     const float * coordinates
+        16 |     const uint32_t * indices
+        24 |     uint32_t minimum
+        28 |     uint32_t span
+        32 |     uint32_t offset
+        36 |     uint32_t count
+        40 |     size_t stride
+        48 |     sg_mat4 modelview
+        48 |       float[16] m
+       112 |     sg_mat4 projection
+       112 |       float[16] m
+       176 |     int cull_enabled
+       180 |     GLenum cull_face
+       184 |     GLenum front_face
+       192 |     softgl_vertex_attributes_full_fn program
+       208 |     unsigned char[128] user
+       336 |   sg_tex_tri_ctx texture
+       336 |     sg_tex_unit_tri[4] unit
+       688 |     int any_active
+       692 |     int fastpath_kind
+       696 |     int combine_kind
+       700 |     unsigned int sample_mask
+       704 |   float[4] ambient
+       720 |   float[4] tint
+       736 |   float cutoff
+       740 |   int alpha_test
+       744 |   uint32_t count
+       748 |   uint32_t first
+       752 |   uint32_t cursor
+           | [sizeof=768, align=16]
+
+*** Dumping AST Record Layout
+         0 | scene_triangle
+         0 |   float[3] inverse_w
+        16 |   sg_vec4[3] color
+        64 |   sg_vec4[4][3] uv
+       256 |   int64_t[2][3] edge
+       304 |   float inverse_area
+       308 |   uint32_t material
+       312 |   const scene_primitive * primitive
+           | [sizeof=320, align=16]
+
+*** Dumping AST Record Layout
+         0 | scene_position
+         0 |   sg_vec4 clip
+         0 |     float x
+         4 |     float y
+         8 |     float z
+        12 |     float w
+        16 |   sg_vec4 ndc
+        16 |     float x
+        20 |     float y
+        24 |     float z
+        28 |     float w
+           | [sizeof=32, align=16]
+
+*** Dumping AST Record Layout
+         0 | scene_attribute
+         0 |   sg_vec4 color
+         0 |     float x
+         4 |     float y
+         8 |     float z
+        12 |     float w
+        16 |   sg_vec4[4] uv
+           | [sizeof=80, align=16]
+
+*** Dumping AST Record Layout
+         0 | scene_clip_vertex
+         0 |   sg_vec4 clip
+         0 |     float x
+         4 |     float y
+         8 |     float z
+        12 |     float w
+        16 |   float[3] basis
+        28 |   float[2] uv
+           | [sizeof=48, align=16]
+
+*** Dumping AST Record Layout
+         0 | scene_geometry_task
+         0 |   uint32_t material
+         4 |   uint32_t first
+         8 |   uint32_t end
+        16 |   scene_primitive * primitives
+        24 |   uint32_t count
+        28 |   uint32_t capacity
+        32 |   uint32_t[32] bin_counts
+       160 |   uint32_t[32] bin_offsets
+       288 |   scene_clipped_primitive * clipped
+       296 |   uint32_t clipped_count
+       300 |   uint32_t clipped_capacity
+           | [sizeof=304, align=8]
+
+*** Dumping AST Record Layout
+         0 | scene_primitive
+         0 |   uint32_t[3] indices
+        12 |   uint32_t clipped
+        16 |   uint16_t material
+        18 |   uint16_t first_bin
+        20 |   uint16_t last_bin
+        22 |   uint16_t task
+           | [sizeof=24, align=4]
+
+*** Dumping AST Record Layout
+         0 | scene_clipped_primitive
+         0 |   sg_vec4[3] ndc
+        48 |   float[3][3] basis
+        84 |   float[3][2] coordinates
+           | [sizeof=112, align=16]
+
+*** Dumping AST Record Layout
+         0 | scene_position_task
+         0 |   uint32_t material
+         4 |   uint32_t first
+         8 |   uint32_t end
+           | [sizeof=12, align=4]
+
+*** Dumping AST Record Layout
+         0 | struct _IO_FILE
+         0 |   int _flags
+         8 |   char * _IO_read_ptr
+        16 |   char * _IO_read_end
+        24 |   char * _IO_read_base
+        32 |   char * _IO_write_base
+        40 |   char * _IO_write_ptr
+        48 |   char * _IO_write_end
+        56 |   char * _IO_buf_base
+        64 |   char * _IO_buf_end
+        72 |   char * _IO_save_base
+        80 |   char * _IO_backup_base
+        88 |   char * _IO_save_end
+        96 |   struct _IO_marker * _markers
+       104 |   struct _IO_FILE * _chain
+       112 |   int _fileno
+  116:0-23 |   int _flags2
+       119 |   char[1] _short_backupbuf
+       120 |   __off_t _old_offset
+       128 |   unsigned short _cur_column
+       130 |   signed char _vtable_offset
+       131 |   char[1] _shortbuf
+       136 |   _IO_lock_t * _lock
+       144 |   __off64_t _offset
+       152 |   struct _IO_codecvt * _codecvt
+       160 |   struct _IO_wide_data * _wide_data
+       168 |   struct _IO_FILE * _freeres_list
+       176 |   void * _freeres_buf
+       184 |   struct _IO_FILE ** _prevchain
+       192 |   int _mode
+       196 |   char[20] _unused2
+           | [sizeof=216, align=8]

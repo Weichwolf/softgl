@@ -1,0 +1,429 @@
+{
+  "baselineRevision": "350eb2346b01a79dd391cf284f9065218d25a74d",
+  "frozenRoot": "/home/cosmo/Git/softgl/build/scene-msaa-uniform-metadata/combined4-v4",
+  "variant": "baseline=350eb2346b01a79dd391cf284f9065218d25a74d\nlossless_visibility_metadata=true\nmaterialized_sample_depth=true\ndirect_clear=True\nmsaa4_only=True\n",
+  "sourceSha256": {
+    "CMakeLists.txt": "41a69b787380c1ec562b95a8f02c6bd9d7cd7624f23439454b893a17992a1fb7",
+    "include/GL/softgl.h": "708d12068fcaf7203706aa5d9e2bacf10a3256765ec0addbe87d701ed7973c43",
+    "src/api.c": "9c373504af364d620c212afdfc9046bcc899bd61af198a6558fdda81f01691e1",
+    "src/buffers.c": "a0363363f060dc9cbd99a64703496e1e702c2cf82beb42b16a54337b524be2ff",
+    "src/clip.c": "f5c0b940f54a4aa52a2d55785de31d72c168d381b53012e408179f81381de3cc",
+    "src/cluster_cull.h": "b639ef7e507d28512549feda7e272e0bef855acf6fd1c8e8cad96cae6ad228d9",
+    "src/dlist.c": "e7446f33b3972e4384c103c2547869dfffad43c900e1f55bf6f8c38eaf36eae8",
+    "src/dlist.h": "4bc8e0e5966f5b226c8e086ead9a635fd6158eed18b0c55e4b4c2ed0bdbda033",
+    "src/evaluators.c": "69281ca9f25e0f7d5cc1f76f31fb17502c83b60ea6168bbbae238e65227344ba",
+    "src/frag_combine_hot.h": "e801062d6fe0ce8ade5f12730ba4cb1441689ba6bd39a331a308bc99e29f72cc",
+    "src/frag_hot.h": "e0e1cba7afec1b2c13a53a8198207d868fa0636a84ee98e059f238d131dca52e",
+    "src/frag_packet.h": "f06d0fa6a43404fbdbc2ca391d96162dcafb8e53dcfaca45afc46ebb7ff6b6de",
+    "src/fragment.c": "d1883401993e1576f565710c6ad9e3066d401684ac698928940f72fd582ef1d2",
+    "src/fragment_combine.c": "b7af7972265bf0ac384379fcba6885e93707cdd8a0de956f691ad28ed1dd7153",
+    "src/fragment_write.c": "6c806d57d87ff4ed31ecdf502be6f77772497696a607633edf71c9971da66f1d",
+    "src/framebuffer.c": "7c82e1f52d5b2c2e7d9752d155f379109a8791c41b147713cfb14f2788e1a974",
+    "src/geometry.inc": "e9a7763e667b85c1803f19697b5ead6e5752923b107f3f321fe342c178297824",
+    "src/geometry_types.inc": "7ef7af9f69ee68ee53dae5d8d3f3e2c1b07b9e8140d5820926a0a2ba796d5417",
+    "src/immediate.c": "80b520a3c3c14e675eeca5d3083c5dbe423e9684a69b868446f85e99ef86534c",
+    "src/index_range.h": "4d0456bd563031b7b4ff1184bfb6fa513908ae4047bd5f6f83dc8a7f57d8bb03",
+    "src/lighting.c": "1e6db9b4f59e2a54b1f6b89e6bc129d206dc816aaa08f099d80e6f8f2f42e338",
+    "src/lines.c": "b08fef911685977a08d6f2b29265aa28721aa0497a1a208c492403bdde0bbe87",
+    "src/matrix.c": "fd5bff0e263cd87d1032fad4fa75f966f76b2cc605b746d47e3d4eeabde6d793",
+    "src/msaa_additive.h": "6fab4198defe4db18a83f1562034807e71957ba07db0c0bd51f2e26c90d4778f",
+    "src/multisample.c": "2ba7fe2df9c8afed9acf1daa5ea48df6fbe8b5c0cceeac11bd61c3804423ea1d",
+    "src/multisample.h": "cdbe1e0aa51827f13789ce7f46e3acc961e0b87c5d034e1c7ba22fe54c611315",
+    "src/pipeline.c": "fb559aa949d0e4211044451c9456f22e928982fb03c6f9132c199b316a2edfe3",
+    "src/pixels.c": "8e366864ac1418564d2342bd3c120ad5e8057998af21ff31ccb5663134ddfc92",
+    "src/raster_hz.h": "1cc4a6fe6f5a425607cb3b8a57d15cb19d5de537794c638b673f0bd4a14b4ed6",
+    "src/raster_msaa_impl.h": "1c5ace8d35a4413d5628ebf5c397c58d633758a3dd93145932d2973b3a61ae0f",
+    "src/raster_store.h": "251cbe4d9765edfc26b4428d7d5906ab17722689feae08eac432db59a7b22934",
+    "src/raster_triangle_impl.h": "51b5cf82bdd1298bcb42722a4af5cac0edbebe8442b4703a1cf0fbde35487915",
+    "src/raster_types.h": "0b050bdbf31f6c398366112c84a6041390a50398d1e18acafe4c7440a0700f45",
+    "src/raster_vertex_pack.h": "956a8084b973144a9d8ee28c0d485214e3e8551a7384238f610620e00ad6e528",
+    "src/rasterizer.c": "8cfc012004b794e6a83eeb8eb33b2dea674ba199a32c1a65baf691106cc596bc",
+    "src/scene_visibility.c": "52752a00c8326483c175c76c2f245637f6a31fddad032af9d6b1f125ef84d913",
+    "src/simd.h": "c639184db1b8a3c79b0aa07ad4fbe0a96b8c79e16536b3d98abef0b72d74e150",
+    "src/state.c": "04f4a8355c1fc37c3521001719dae9a55a1e9b7a34c2f1a70c53990a0d26fb38",
+    "src/texture.c": "9c4d999c73b68a7431bd1f0e88c2d3d2e7e1931670ad166ffee535f8d5764c45",
+    "src/types.h": "9eb99eb4dc29359b7edeb4dc817a7dfa8a108f32b84fa97e190a95f3e73a8cfe",
+    "src/vertex_inputs.h": "fb774a51f4627b91dd6d58fc2cb918df04ef224d45cd898dfa1ed5dd9a0b0db5",
+    "src/workers.c": "47c2bb16e01d1f17ce552ce3baa13e15a13f3d125a3c2ee0d6f30ebce8c63e21",
+    "src/workers.h": "3a74a68a42b0e1fc80b426cd3236e329ee70b145a5afe687520575599e709c5a",
+    "src/workers_queue_raw.inc": "ddec9df98f32ce5f428467f97b3a772506019cd4eca90e004afe956a6b9527b3"
+  },
+  "librarySha256": "7a1614fc1ac186e82ed9de39ff17066d3efd43885d4a337bb1f745880abca226",
+  "logs": [
+    {
+      "source": "/tmp/softgl-uniform-combined4-audit-admission.txt",
+      "originalSha256": "533b1330555da6eeb763829c6f6598d44b0599e5e45f42c92c0d3ad63e192953",
+      "archived": "softgl-uniform-combined4-audit-admission.txt",
+      "archivedSha256": "533b1330555da6eeb763829c6f6598d44b0599e5e45f42c92c0d3ad63e192953",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-audit-build.txt",
+      "originalSha256": "5f58262af02db54ca407f25835058b584290dbf6d2e8242e77c89b9d8711784c",
+      "archived": "softgl-uniform-combined4-audit-build.txt",
+      "archivedSha256": "5f58262af02db54ca407f25835058b584290dbf6d2e8242e77c89b9d8711784c",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-audit-configure.txt",
+      "originalSha256": "9e11d4b213d6945ef0318dfb8a5da2df49b74cf89146422bd7ddf40a5c70c3f6",
+      "archived": "softgl-uniform-combined4-audit-configure.txt",
+      "archivedSha256": "9e11d4b213d6945ef0318dfb8a5da2df49b74cf89146422bd7ddf40a5c70c3f6",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-audit-contract.txt",
+      "originalSha256": "f0951235447bab9f3dd563ec49280607885004889bb1fa1018a36aab89848888",
+      "archived": "softgl-uniform-combined4-audit-contract.txt",
+      "archivedSha256": "f0951235447bab9f3dd563ec49280607885004889bb1fa1018a36aab89848888",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-audit-counts.txt",
+      "originalSha256": "e651eb8eb914fee51d3566f80809a610f98eab57e4dc2bc27d245f4c4f9ea313",
+      "archived": "softgl-uniform-combined4-audit-counts.txt",
+      "archivedSha256": "e651eb8eb914fee51d3566f80809a610f98eab57e4dc2bc27d245f4c4f9ea313",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-bistro-canonical-census.txt",
+      "originalSha256": "24b6a94ff47c61eb0740dff389c06e2fcf3322daf9b386e36f4531f4f9d4b4de",
+      "archived": "softgl-uniform-combined4-bistro-canonical-census.txt",
+      "archivedSha256": "24b6a94ff47c61eb0740dff389c06e2fcf3322daf9b386e36f4531f4f9d4b4de",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-bistro-canonical-counts.txt",
+      "originalSha256": "27725ba9163b74f9615c9ff8c0ef8427b3b12cb321b365a2813ee1c32eb3bf49",
+      "archived": "softgl-uniform-combined4-bistro-canonical-counts.txt",
+      "archivedSha256": "27725ba9163b74f9615c9ff8c0ef8427b3b12cb321b365a2813ee1c32eb3bf49",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-bistro-census.txt",
+      "originalSha256": "87fc3de328b07830011d8c92b60c6a6eb3e302edaa832ded57c21609c9251b15",
+      "archived": "softgl-uniform-combined4-bistro-census.txt",
+      "archivedSha256": "87fc3de328b07830011d8c92b60c6a6eb3e302edaa832ded57c21609c9251b15",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-bistro-counts.txt",
+      "originalSha256": "091fabf44a533435f05982a3dd45ccbceb8c12f0c0ef6f125c9abf249b6f3228",
+      "archived": "softgl-uniform-combined4-bistro-counts.txt",
+      "archivedSha256": "091fabf44a533435f05982a3dd45ccbceb8c12f0c0ef6f125c9abf249b6f3228",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-build.txt",
+      "originalSha256": "120fa6670ecf19864cecf06b3fdf29ede8918fdf7da75f4f89cb07e81f9df93b",
+      "archived": "softgl-uniform-combined4-build.txt",
+      "archivedSha256": "120fa6670ecf19864cecf06b3fdf29ede8918fdf7da75f4f89cb07e81f9df93b",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-configure.txt",
+      "originalSha256": "1b1ed41a4efb97fdd6aae1947f4c05135dde7f03e1832abcd457a086b58784df",
+      "archived": "softgl-uniform-combined4-configure.txt",
+      "archivedSha256": "1b1ed41a4efb97fdd6aae1947f4c05135dde7f03e1832abcd457a086b58784df",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-confirmation.txt",
+      "originalSha256": "42f20731267d6744b5cc9af932037ccfbe310819fabe210643afac9d0648c251",
+      "archived": "softgl-uniform-combined4-confirmation.txt",
+      "archivedSha256": "42f20731267d6744b5cc9af932037ccfbe310819fabe210643afac9d0648c251",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-hz.txt",
+      "originalSha256": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+      "archived": "softgl-uniform-combined4-hz.txt",
+      "archivedSha256": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-prepare.txt",
+      "originalSha256": "04b2456c01c0c911e47fb549479fbaf82996793bede86c71d53d4a2522e425f0",
+      "archived": "softgl-uniform-combined4-prepare.txt",
+      "archivedSha256": "04b2456c01c0c911e47fb549479fbaf82996793bede86c71d53d4a2522e425f0",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-quality.txt",
+      "originalSha256": "91b062b758d8871e6b7ebd8d5874ab01b75345e51add1e1302f21b8bbccd573e",
+      "archived": "softgl-uniform-combined4-quality.txt",
+      "archivedSha256": "91b062b758d8871e6b7ebd8d5874ab01b75345e51add1e1302f21b8bbccd573e",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-quantized-baseline.txt",
+      "originalSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "archived": "softgl-uniform-combined4-quantized-baseline.txt",
+      "archivedSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-quantized-candidate.txt",
+      "originalSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "archived": "softgl-uniform-combined4-quantized-candidate.txt",
+      "archivedSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-resident.txt",
+      "originalSha256": "ea7e18ff170a2b38d77770aee2cdb20353196ec5c52ab468d928cbed7c1a3bcd",
+      "archived": "softgl-uniform-combined4-resident.txt",
+      "archivedSha256": "ea7e18ff170a2b38d77770aee2cdb20353196ec5c52ab468d928cbed7c1a3bcd",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-sanitize-build.txt",
+      "originalSha256": "48a3273566aba7ce87cf8ffa8850c449bfd03cd1f63d6909cc754fb8937abc08",
+      "archived": "softgl-uniform-combined4-sanitize-build.txt",
+      "archivedSha256": "48a3273566aba7ce87cf8ffa8850c449bfd03cd1f63d6909cc754fb8937abc08",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-sanitize-configure.txt",
+      "originalSha256": "05ae453d376a3923fe96ca4d949433a6b99e4712a5f3c6a465c6c5bac2926327",
+      "archived": "softgl-uniform-combined4-sanitize-configure.txt",
+      "archivedSha256": "05ae453d376a3923fe96ca4d949433a6b99e4712a5f3c6a465c6c5bac2926327",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-sanitize-hz_contract.txt",
+      "originalSha256": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+      "archived": "softgl-uniform-combined4-sanitize-hz_contract.txt",
+      "archivedSha256": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-sanitize-msaa_contract.txt",
+      "originalSha256": "533b1330555da6eeb763829c6f6598d44b0599e5e45f42c92c0d3ad63e192953",
+      "archived": "softgl-uniform-combined4-sanitize-msaa_contract.txt",
+      "archivedSha256": "533b1330555da6eeb763829c6f6598d44b0599e5e45f42c92c0d3ad63e192953",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-sanitize-quantized_candidate.txt",
+      "originalSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "archived": "softgl-uniform-combined4-sanitize-quantized_candidate.txt",
+      "archivedSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-sanitize-small_candidate.txt",
+      "originalSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "archived": "softgl-uniform-combined4-sanitize-small_candidate.txt",
+      "archivedSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-sanitize-uniform_candidate.txt",
+      "originalSha256": "8aae079a77274c9d604fbfb77a4704ae89192f0696fb6f08f98da4cc2f70aa9a",
+      "archived": "softgl-uniform-combined4-sanitize-uniform_candidate.txt",
+      "archivedSha256": "8aae079a77274c9d604fbfb77a4704ae89192f0696fb6f08f98da4cc2f70aa9a",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-screen.txt",
+      "originalSha256": "7410475f5b842c6d98bee925a952cc50f9f6bcb3b87e9e3554c89b138c9d29d1",
+      "archived": "softgl-uniform-combined4-screen.txt",
+      "archivedSha256": "7410475f5b842c6d98bee925a952cc50f9f6bcb3b87e9e3554c89b138c9d29d1",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-small-baseline.txt",
+      "originalSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "archived": "softgl-uniform-combined4-small-baseline.txt",
+      "archivedSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-small-candidate.txt",
+      "originalSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "archived": "softgl-uniform-combined4-small-candidate.txt",
+      "archivedSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-uniform-baseline.txt",
+      "originalSha256": "f0951235447bab9f3dd563ec49280607885004889bb1fa1018a36aab89848888",
+      "archived": "softgl-uniform-combined4-uniform-baseline.txt",
+      "archivedSha256": "f0951235447bab9f3dd563ec49280607885004889bb1fa1018a36aab89848888",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-uniform-candidate.txt",
+      "originalSha256": "f0951235447bab9f3dd563ec49280607885004889bb1fa1018a36aab89848888",
+      "archived": "softgl-uniform-combined4-uniform-candidate.txt",
+      "archivedSha256": "f0951235447bab9f3dd563ec49280607885004889bb1fa1018a36aab89848888",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-wasm-contract.txt",
+      "originalSha256": "f7bc7b85b065db38d9b7ca7655fe177896b9883ef045ee20f0688fc0bcdf44bc",
+      "archived": "softgl-uniform-combined4-wasm-contract.txt",
+      "archivedSha256": "f7bc7b85b065db38d9b7ca7655fe177896b9883ef045ee20f0688fc0bcdf44bc",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-wasm-small.txt",
+      "originalSha256": "53e7279cbec0c9f0da10b6bfcc484733ba777458bfee710da26459d1cd2ee021",
+      "archived": "softgl-uniform-combined4-wasm-small.txt",
+      "archivedSha256": "53e7279cbec0c9f0da10b6bfcc484733ba777458bfee710da26459d1cd2ee021",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-combined4-wasm-uniform.txt",
+      "originalSha256": "652038cb0d9a3e3a08deb9acdc0b7c57cd272a95ab5e9179950791427464bc7d",
+      "archived": "softgl-uniform-combined4-wasm-uniform.txt",
+      "archivedSha256": "652038cb0d9a3e3a08deb9acdc0b7c57cd272a95ab5e9179950791427464bc7d",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-production-browser.txt",
+      "originalSha256": "4e7fc3f20944221f3eb0f133f93724656f672beb84a5eee8e403d8f54a91a96d",
+      "archived": "softgl-uniform-production-browser.txt",
+      "archivedSha256": "4e7fc3f20944221f3eb0f133f93724656f672beb84a5eee8e403d8f54a91a96d",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-production-ctest.txt",
+      "originalSha256": "c8367486b29a679760c9e206087ba7046e0e6925f4e1f5306a02190414376cb9",
+      "archived": "softgl-uniform-production-ctest.txt",
+      "archivedSha256": "c8367486b29a679760c9e206087ba7046e0e6925f4e1f5306a02190414376cb9",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-production-native-build.txt",
+      "originalSha256": "6feee047a121ed7871e1cf1b594ed0008c7c3c9790817ea5d1e621cd234b8bf6",
+      "archived": "softgl-uniform-production-native-build.txt",
+      "archivedSha256": "6feee047a121ed7871e1cf1b594ed0008c7c3c9790817ea5d1e621cd234b8bf6",
+      "normalizeEofBlankLines": false
+    },
+    {
+      "source": "/tmp/softgl-uniform-production-wasm-build.txt",
+      "originalSha256": "ec437e31194a24a77896f4c60a776ae9b84cbc3cf9181e2e5b920c0aa4776c0c",
+      "archived": "softgl-uniform-production-wasm-build.txt",
+      "archivedSha256": "ec437e31194a24a77896f4c60a776ae9b84cbc3cf9181e2e5b920c0aa4776c0c",
+      "normalizeEofBlankLines": false
+    }
+  ],
+  "productionAdopted": true,
+  "confirmationCompleted": true,
+  "qualityPairs": 108,
+  "residentPairs": 288,
+  "actualWasmPairs": [
+    216,
+    576,
+    60
+  ],
+  "sanitizers": "ASan/UBSan/leak fixture gates passed",
+  "invalidEarlierSixFieldCameraOverrideExcluded": true,
+  "wasmBinariesSha256": {
+    "wasm-audit/baseline.wasm": "431c9c214705413fd61101556ff035e1cfdeaa18835f0d5c4fa3f2bbabd35968",
+    "wasm-audit/rollback-replay.wasm": "38d95d361c015d0d729dae8eb9be7b9ab60576e85889e2ebb208c29850e17818",
+    "wasm-audit/candidate.wasm": "726ec945e61d447b73ebc7528cfdf236306cbe83b609841bcc0d0e66b3f0e9ad",
+    "wasm-small-audit/baseline.wasm": "275d6070d6860066be402f1bf3370272b2e85889e3a163b5f77f7a79f9d27419",
+    "wasm-small-audit/candidate.wasm": "3ca05226ae76778ab34740ce6f57f30879a93e590fc3014d356e9173b3af24a3",
+    "wasm-uniform-audit/baseline.wasm": "e538701468807cf666d24b05e3d2756e9bc899d6a256711dca624bbf9856453b",
+    "wasm-uniform-audit/candidate.wasm": "a316a3f8eed7180fd13414643001e21d74e31defe761f5be502f67164780b631"
+  },
+  "artifactsSha256": {
+    "canonical-camera.json": "93e65b484b9c509725653efa74fefef0d95007b82f7d9fb72848cd06522ff9c0",
+    "confirmation-receipt.json": "f9364299e981394980ed351563f90c749b7d570746691def8c2fcf40d2efd0d9",
+    "confirmation-summary.json": "e81daa3f55bcdebb8e224987564303c5f2bab0de30a576d3e306411b65bbf382",
+    "isa.json": "0dc037b406d254af7a407da31ed5ceb76d36ad5a554ed686370b352d4849f88e",
+    "production-browser.json": "a0ee3ab74ae365f9f54e3c935973cf04ea5e2aeaff76436dc14d8c7ab76e55a1",
+    "production-live.json": "62d9dc5b3b767eb5d702df0ed9c19a9548dfa5511d1a169528e055567bb0a6d7",
+    "quality-receipt.json": "4eedb10e08ef552cfd168d8a8ddc0f82bc097274880ec2fc0c11c3cbc7d43c2d",
+    "resident-receipt.json": "9c43cddcfb23942e2cf6d578bd6b6eff67843d11bb69fcfe04961cc8b2a9dba2",
+    "screen-receipt.json": "bdd706e787f0cdb7d2a3ef39b44b9e3203683ca1bab52b069b8b4107e6f4bbec",
+    "screen-summary.json": "8c5f33a9c7468a777fdc37108462b9537c59e84c56cefa8eea0a213a5abdfdb6",
+    "softgl-uniform-combined4-audit-admission.txt": "533b1330555da6eeb763829c6f6598d44b0599e5e45f42c92c0d3ad63e192953",
+    "softgl-uniform-combined4-audit-build.txt": "5f58262af02db54ca407f25835058b584290dbf6d2e8242e77c89b9d8711784c",
+    "softgl-uniform-combined4-audit-configure.txt": "9e11d4b213d6945ef0318dfb8a5da2df49b74cf89146422bd7ddf40a5c70c3f6",
+    "softgl-uniform-combined4-audit-contract.txt": "f0951235447bab9f3dd563ec49280607885004889bb1fa1018a36aab89848888",
+    "softgl-uniform-combined4-audit-counts.txt": "e651eb8eb914fee51d3566f80809a610f98eab57e4dc2bc27d245f4c4f9ea313",
+    "softgl-uniform-combined4-bistro-canonical-census.txt": "24b6a94ff47c61eb0740dff389c06e2fcf3322daf9b386e36f4531f4f9d4b4de",
+    "softgl-uniform-combined4-bistro-canonical-counts.txt": "27725ba9163b74f9615c9ff8c0ef8427b3b12cb321b365a2813ee1c32eb3bf49",
+    "softgl-uniform-combined4-bistro-census.txt": "87fc3de328b07830011d8c92b60c6a6eb3e302edaa832ded57c21609c9251b15",
+    "softgl-uniform-combined4-bistro-counts.txt": "091fabf44a533435f05982a3dd45ccbceb8c12f0c0ef6f125c9abf249b6f3228",
+    "softgl-uniform-combined4-build.txt": "120fa6670ecf19864cecf06b3fdf29ede8918fdf7da75f4f89cb07e81f9df93b",
+    "softgl-uniform-combined4-configure.txt": "1b1ed41a4efb97fdd6aae1947f4c05135dde7f03e1832abcd457a086b58784df",
+    "softgl-uniform-combined4-confirmation.txt": "42f20731267d6744b5cc9af932037ccfbe310819fabe210643afac9d0648c251",
+    "softgl-uniform-combined4-hz.txt": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+    "softgl-uniform-combined4-prepare.txt": "04b2456c01c0c911e47fb549479fbaf82996793bede86c71d53d4a2522e425f0",
+    "softgl-uniform-combined4-quality.txt": "91b062b758d8871e6b7ebd8d5874ab01b75345e51add1e1302f21b8bbccd573e",
+    "softgl-uniform-combined4-quantized-baseline.txt": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+    "softgl-uniform-combined4-quantized-candidate.txt": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+    "softgl-uniform-combined4-resident.txt": "ea7e18ff170a2b38d77770aee2cdb20353196ec5c52ab468d928cbed7c1a3bcd",
+    "softgl-uniform-combined4-sanitize-build.txt": "48a3273566aba7ce87cf8ffa8850c449bfd03cd1f63d6909cc754fb8937abc08",
+    "softgl-uniform-combined4-sanitize-configure.txt": "05ae453d376a3923fe96ca4d949433a6b99e4712a5f3c6a465c6c5bac2926327",
+    "softgl-uniform-combined4-sanitize-hz_contract.txt": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+    "softgl-uniform-combined4-sanitize-msaa_contract.txt": "533b1330555da6eeb763829c6f6598d44b0599e5e45f42c92c0d3ad63e192953",
+    "softgl-uniform-combined4-sanitize-quantized_candidate.txt": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+    "softgl-uniform-combined4-sanitize-small_candidate.txt": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+    "softgl-uniform-combined4-sanitize-uniform_candidate.txt": "8aae079a77274c9d604fbfb77a4704ae89192f0696fb6f08f98da4cc2f70aa9a",
+    "softgl-uniform-combined4-screen.txt": "7410475f5b842c6d98bee925a952cc50f9f6bcb3b87e9e3554c89b138c9d29d1",
+    "softgl-uniform-combined4-small-baseline.txt": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+    "softgl-uniform-combined4-small-candidate.txt": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+    "softgl-uniform-combined4-uniform-baseline.txt": "f0951235447bab9f3dd563ec49280607885004889bb1fa1018a36aab89848888",
+    "softgl-uniform-combined4-uniform-candidate.txt": "f0951235447bab9f3dd563ec49280607885004889bb1fa1018a36aab89848888",
+    "softgl-uniform-combined4-wasm-contract.txt": "f7bc7b85b065db38d9b7ca7655fe177896b9883ef045ee20f0688fc0bcdf44bc",
+    "softgl-uniform-combined4-wasm-small.txt": "53e7279cbec0c9f0da10b6bfcc484733ba777458bfee710da26459d1cd2ee021",
+    "softgl-uniform-combined4-wasm-uniform.txt": "652038cb0d9a3e3a08deb9acdc0b7c57cd272a95ab5e9179950791427464bc7d",
+    "softgl-uniform-production-browser.txt": "4e7fc3f20944221f3eb0f133f93724656f672beb84a5eee8e403d8f54a91a96d",
+    "softgl-uniform-production-ctest.txt": "c8367486b29a679760c9e206087ba7046e0e6925f4e1f5306a02190414376cb9",
+    "softgl-uniform-production-native-build.txt": "6feee047a121ed7871e1cf1b594ed0008c7c3c9790817ea5d1e621cd234b8bf6",
+    "softgl-uniform-production-wasm-build.txt": "ec437e31194a24a77896f4c60a776ae9b84cbc3cf9181e2e5b920c0aa4776c0c",
+    "source-reproduction.json": "61147c0065fc6d7b115c60d7dbf960bf12837351b60e80c2c36440a1b0e5fe6e",
+    "source.patch": "2ba48f108d3337445a88d1bef542903eef79b3f69936e8563349a805b661ce2a",
+    "wasm-audit-baseline.txt": "5d2b4f0e17b0c536f4fae60265eada43cf0ccccb3420aeb8e44806304951366c",
+    "wasm-audit-candidate.txt": "dc4078e81c2a66ab5c76a76619bb10dde359a879557daf7cad75509f5eee5bfa",
+    "wasm-audit-rollback-replay.txt": "5caa0898b620ac489b0e2b22cf1a0537977f8a3020ac5439433e4862acb28bd5",
+    "wasm-small-audit-baseline.txt": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+    "wasm-small-audit-candidate.txt": "d0db8c4e34367510e55233810aeaf39ec3acc7a389e0408ca5e314f66b771ba7",
+    "wasm-uniform-audit-baseline-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "wasm-uniform-audit-baseline.txt": "f0951235447bab9f3dd563ec49280607885004889bb1fa1018a36aab89848888",
+    "wasm-uniform-audit-candidate-stderr.txt": "e651eb8eb914fee51d3566f80809a610f98eab57e4dc2bc27d245f4c4f9ea313",
+    "wasm-uniform-audit-candidate.txt": "f0951235447bab9f3dd563ec49280607885004889bb1fa1018a36aab89848888"
+  },
+  "productionCtest": {
+    "passed": 757,
+    "failed": 0,
+    "seconds": 50.69
+  },
+  "productionNativeLibrarySha256": "7a1614fc1ac186e82ed9de39ff17066d3efd43885d4a337bb1f745880abca226",
+  "productionMatchesTimedLibrary": true,
+  "productionBrowser": {
+    "passed": 12,
+    "errors": 0,
+    "peakHeapBytes": 2845573120,
+    "bistro4ScreenshotVisuallyInspected": true
+  },
+  "productionLive": [
+    {
+      "file": "softgl.js",
+      "bytes": 233060,
+      "sha256": "ce2bf218eaed956f29d0858310825659b734656825f64d3d340113de148d88d4",
+      "buildLocalHttpByteIdentical": true
+    },
+    {
+      "file": "softgl.wasm",
+      "bytes": 1367047,
+      "sha256": "042e5b742f6592d100079bd1496fb2f60bb9a4fe876f389bc11275ee9667d3c0",
+      "buildLocalHttpByteIdentical": true
+    }
+  ],
+  "sourceReproduction": {
+    "baseline": "350eb2346b01a79dd391cf284f9065218d25a74d",
+    "arguments": [
+      "--direct-clear",
+      "--msaa4-only"
+    ],
+    "filesCompared": 44,
+    "allReproducedTimedProductionByteIdentical": true
+  }
+}

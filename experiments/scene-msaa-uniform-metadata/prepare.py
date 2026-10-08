@@ -5,11 +5,13 @@ import io
 from pathlib import Path
 import subprocess
 import tarfile
+import textwrap
 
 repo = Path(__file__).resolve().parents[2]
 parser = argparse.ArgumentParser()
 parser.add_argument('--baseline', default='84041db')
 parser.add_argument('--direct-clear', action='store_true')
+parser.add_argument('--msaa4-only', action='store_true')
 parser.add_argument('--output-root', type=Path, default=repo/'build/scene-msaa-uniform-metadata')
 args = parser.parse_args()
 revision = subprocess.check_output(['git','rev-parse',args.baseline],cwd=repo,text=True).strip()
@@ -27,12 +29,14 @@ p = root/'baseline-source/libsoftgl/CMakeLists.txt'
 p.write_text(p.read_text().replace('softgl','baseline_softgl'))
 p = root/'source/libsoftgl/src/scene_visibility.c'
 code = p.read_text()
+original = code
 anchor = '/* The ordinary MSAA kernel supplies exact coverage, depth and shading edges.'
 assert code.count(anchor) == 1
 code = code.replace(anchor,(Path(__file__).parent/'uniform.inc').read_text()+'\n'+anchor)
 anchor = '    memset(f->pixel_material, 255, units*sizeof(uint16_t));'
 assert code.count(anchor) == 1
-code = code.replace(anchor,anchor+'\n    if (c->fb.samples) memset(f->shade_mask,0,units);')
+mask_condition = 'c->fb.samples == 4' if args.msaa4_only else 'c->fb.samples'
+code = code.replace(anchor,anchor+f'\n    if ({mask_condition}) memset(f->shade_mask,0,units);')
 for n in ('c->fb.samples','4'):
     old = f'''        for (int s = 0; s < {n}; s++) if (coverage & (1u << s)) {{
             c->fb.sample_depth[base+s] = packet->depths[l][s];
@@ -42,7 +46,13 @@ for n in ('c->fb.samples','4'):
             SCENE_MSAA_AUDIT(2,1);
         }}'''
     assert code.count(old) == 1
-    code = code.replace(old,f'''        scene_msaa_store_pixel(f,c,bin,base,{n},coverage,*record,point,packet->depths[l]);''')
+    replacement = f'''        scene_msaa_store_pixel(f,c,bin,base,{n},coverage,*record,point,packet->depths[l]);'''
+    if args.msaa4_only and n == 'c->fb.samples':
+        replacement = '''        if (c->fb.samples == 4) {
+            scene_msaa_store_pixel(f,c,bin,base,4,coverage,*record,point,packet->depths[l]);
+        } else {
+'''+textwrap.indent(old,'    ')+'''\n        }'''
+    code = code.replace(old,replacement)
 anchor = '            memset(f->shade_mask+first,0,end-first);'
 assert code.count(anchor) == 1
 code = code.replace(anchor,'')
@@ -65,6 +75,21 @@ anchor = '''                    unsigned mask = 1u << s;
 assert code.count(anchor) == 1
 code = code.replace(anchor,'''                    unsigned mask = uniform ? (1u << n)-1u : 1u << s;
                     if (!uniform) for (unsigned k = s+1; k < n; k++) if (f->pixel_material[base+k] != UINT16_MAX &&''')
+if args.msaa4_only:
+    start = code.index('static void scene_msaa_group_bins(')
+    end = code.index('static uint32_t scene_msaa_groups(',start)
+    old_start = original.index('static void scene_msaa_group_bins(')
+    old_end = original.index('static uint32_t scene_msaa_groups(',old_start)
+    uniform = code[start:end].replace('scene_msaa_group_bins(', 'scene_msaa_group_bins_uniform(',1)
+    ordinary = original[old_start:old_end].replace('scene_msaa_group_bins(', 'scene_msaa_group_bins_ordinary(',1)
+    wrapper = '''static void scene_msaa_group_bins(void *data) {
+    struct sg_scene_visibility *f = data;
+    if (f->context->fb.samples == 4) scene_msaa_group_bins_uniform(data);
+    else scene_msaa_group_bins_ordinary(data);
+}
+
+'''
+    code = code[:start]+ordinary+uniform+wrapper+code[end:]
 p.write_text(code)
 for name, source in [('hz_contract.c',repo/'tests/scene_msaa.c'),
                      ('msaa_contract.c',repo/'experiments/scene-msaa-visibility/msaa_contract.c')]:
@@ -75,5 +100,5 @@ assert fixture.count('int main(void) {') == 1
 fixture = fixture.replace('int main(void) {','static int run_uniform_contract(void) {')
 fixture += (Path(__file__).parent/'contract_tail.inc').read_text()
 (root/'source/uniform_contract.c').write_text(fixture)
-(root/'variant.txt').write_text(f'baseline={revision}\nlossless_visibility_metadata=true\nmaterialized_sample_depth=true\ndirect_clear={args.direct_clear}\n')
+(root/'variant.txt').write_text(f'baseline={revision}\nlossless_visibility_metadata=true\nmaterialized_sample_depth=true\ndirect_clear={args.direct_clear}\nmsaa4_only={args.msaa4_only}\n')
 print(root/'source')

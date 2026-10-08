@@ -1,0 +1,173 @@
+--- a/libsoftgl/src/scene_visibility.c
++++ b/libsoftgl/src/scene_visibility.c
+@@ -137,6 +137,7 @@
+         f->group_counts = calloc((size_t)SG_MAX_BINS*SCENE_MATERIALS,sizeof(uint32_t));
+     if (!f->materials || !f->tasks || (c->fb.samples && !f->group_counts)) return 0;
+     memset(f->pixel_material, 255, units*sizeof(uint16_t));
++    if (c->fb.samples == 4) memset(f->shade_mask,0,units);
+     if (c->fb.samples) {
+         memcpy(f->backup_depth,c->fb.sample_depth,units*sizeof(float));
+         memcpy(f->backup_color,c->fb.sample_color,units*4);
+@@ -235,6 +236,54 @@
+ #define SCENE_MSAA_AUDIT(i,n) ((void)0)
+ #endif
+ 
++/* The unused high bit of the existing mask marks a full-pixel winner.
++ * Actual depth samples stay materialized for ordinary rasterization/Hi-Z. */
++#ifdef SOFTGL_MSAA_UNIFORM_AUDIT
++static atomic_ullong scene_uniform_counts[3];
++unsigned long long softgl_scene_msaa_uniform_audit(unsigned index) {
++    return index < 3 ? atomic_load_explicit(&scene_uniform_counts[index],memory_order_relaxed) : 0;
++}
++#define SCENE_UNIFORM_AUDIT(i,n) atomic_fetch_add_explicit(&scene_uniform_counts[i],(n),memory_order_relaxed)
++#else
++#define SCENE_UNIFORM_AUDIT(i,n) ((void)0)
++#endif
++
++static inline void scene_msaa_store_pixel(struct sg_scene_visibility *f,
++    softgl_ctx *c, int bin, size_t base, unsigned n, unsigned coverage,
++    uint32_t record, uint8_t point, const float *depth) {
++    unsigned full = (1u << n)-1u;
++    if (coverage == full) {
++        if (n == 4) _mm_storeu_ps(c->fb.sample_depth+base,_mm_loadu_ps(depth));
++        else for (unsigned s = 0; s < n; s++) c->fb.sample_depth[base+s] = depth[s];
++        f->winner[base] = record;
++        f->sample_point[base] = point;
++        f->pixel_material[base] = (uint16_t)c->scene_material;
++        f->shade_mask[base] = 0x80;
++        f->bins[bin].depth_passes += n;
++        SCENE_MSAA_AUDIT(2,n);
++        SCENE_UNIFORM_AUDIT(0,1);
++        return;
++    }
++    if (f->shade_mask[base] == 0x80) {
++        /* Partial overwrite must preserve every previously covered sample. */
++        for (unsigned s = 1; s < n; s++) {
++            f->winner[base+s] = f->winner[base];
++            f->sample_point[base+s] = f->sample_point[base];
++            f->pixel_material[base+s] = f->pixel_material[base];
++        }
++        f->shade_mask[base] = 0;
++        SCENE_UNIFORM_AUDIT(1,1);
++    }
++    for (unsigned s = 0; s < n; s++) if (coverage & (1u << s)) {
++        c->fb.sample_depth[base+s] = depth[s];
++        f->winner[base+s] = record;
++        f->sample_point[base+s] = point;
++        f->pixel_material[base+s] = (uint16_t)c->scene_material;
++        f->bins[bin].depth_passes++;
++        SCENE_MSAA_AUDIT(2,1);
++    }
++}
++
+ /* The ordinary MSAA kernel supplies exact coverage, depth and shading edges.
+  * A record is cached for this triangle/stripe, not for each pixel packet. */
+ void sg_scene_visibility_msaa_packet(softgl_ctx *c,
+@@ -291,12 +340,16 @@
+         unsigned coverage = packet->coverage[l];
+         uint8_t point = coverage == full ? 4 : (uint8_t)__builtin_ctz(coverage);
+         SCENE_MSAA_AUDIT(3,point == 4);
+-        for (int s = 0; s < c->fb.samples; s++) if (coverage & (1u << s)) {
+-            c->fb.sample_depth[base+s] = packet->depths[l][s];
+-            f->winner[base+s] = *record; f->sample_point[base+s] = point;
+-            f->pixel_material[base+s] = (uint16_t)c->scene_material;
+-            f->bins[bin].depth_passes++;
+-            SCENE_MSAA_AUDIT(2,1);
++        if (c->fb.samples == 4) {
++            scene_msaa_store_pixel(f,c,bin,base,4,coverage,*record,point,packet->depths[l]);
++        } else {
++            for (int s = 0; s < c->fb.samples; s++) if (coverage & (1u << s)) {
++                c->fb.sample_depth[base+s] = packet->depths[l][s];
++                f->winner[base+s] = *record; f->sample_point[base+s] = point;
++                f->pixel_material[base+s] = (uint16_t)c->scene_material;
++                f->bins[bin].depth_passes++;
++                SCENE_MSAA_AUDIT(2,1);
++            }
+         }
+         /* Alpha was already accepted and every covered sample has been
+          * committed. Updating a bound earlier could discard visible holes. */
+@@ -467,13 +520,7 @@
+         unsigned coverage = packet->coverage[l];
+         uint8_t point = coverage == full ? 4 : (uint8_t)__builtin_ctz(coverage);
+         SCENE_MSAA_AUDIT(3,point == 4);
+-        for (int s = 0; s < 4; s++) if (coverage & (1u << s)) {
+-            c->fb.sample_depth[base+s] = packet->depths[l][s];
+-            f->winner[base+s] = *record; f->sample_point[base+s] = point;
+-            f->pixel_material[base+s] = (uint16_t)c->scene_material;
+-            f->bins[bin].depth_passes++;
+-            SCENE_MSAA_AUDIT(2,1);
+-        }
++        scene_msaa_store_pixel(f,c,bin,base,4,coverage,*record,point,packet->depths[l]);
+         /* Alpha was already accepted and every covered sample has been
+          * committed. Updating a bound earlier could discard visible holes. */
+         sg_hz_record_pixel(c,packet->x[l],packet->y[l],coverage,packet->depths[l]);
+@@ -1249,7 +1296,7 @@
+ 
+ /* Each worker owns an existing X stripe. Counts/cursors, masks and triangle
+  * visibility are disjoint; the joined prefix needs no per-fragment atomics. */
+-static void scene_msaa_group_bins(void *data) {
++static void scene_msaa_group_bins_ordinary(void *data) {
+     struct sg_scene_visibility *f = data;
+     softgl_ctx *c = f->context;
+     sg_worker_pool *pool = c->workers;
+@@ -1291,6 +1338,60 @@
+     }
+ }
+ 
++static void scene_msaa_group_bins_uniform(void *data) {
++    struct sg_scene_visibility *f = data;
++    softgl_ctx *c = f->context;
++    sg_worker_pool *pool = c->workers;
++    unsigned n = (unsigned)c->fb.samples;
++    for (;;) {
++        int bin = atomic_fetch_add_explicit(&f->next_task,1,memory_order_relaxed);
++        if (bin >= pool->nbins) break;
++        uint32_t *counts = f->group_counts+(size_t)bin*SCENE_MATERIALS;
++        memset(counts,0,(size_t)f->material_count*sizeof(*counts));
++        uint32_t groups = 0;
++        for (int y = 0; y < c->fb.h; y++) {
++            size_t first = ((size_t)y*c->fb.w+pool->bins[bin].ix0)*n;
++            size_t end = ((size_t)y*c->fb.w+pool->bins[bin].ix1)*n;
++
++            for (size_t base = first; base < end; base += n) {
++                int uniform = f->shade_mask[base] == 0x80;
++                uint32_t zero = 0;
++                if (n == 4) memcpy(f->shade_mask+base,&zero,4);
++                else if (n == 2) memcpy(f->shade_mask+base,&zero,2);
++                else memset(f->shade_mask+base,0,n);
++                SCENE_UNIFORM_AUDIT(2,uniform);
++                unsigned seen = 0;
++                for (unsigned s = 0; s < n; s++) {
++                    size_t at = base+s;
++                    if ((seen & (1u << s)) || f->pixel_material[at] == UINT16_MAX) continue;
++                    unsigned mask = uniform ? (1u << n)-1u : 1u << s;
++                    if (!uniform) for (unsigned k = s+1; k < n; k++) if (f->pixel_material[base+k] != UINT16_MAX &&
++                        f->winner[base+k] == f->winner[at] &&
++                        f->sample_point[base+k] == f->sample_point[at]) mask |= 1u << k;
++                    f->shade_mask[at] = (uint8_t)mask; seen |= mask;
++                    counts[f->pixel_material[at]]++; groups++;
++                    if (f->deferred_meshes) {
++                        uint32_t id = f->winner[at];
++                        /* A recorded winner belongs to the stripe that wrote it.
++                         * Fail and restore rather than race on a violated contract. */
++                        if ((id >> SCENE_INDEX_BITS) != (unsigned)bin) {
++                            atomic_store_explicit(&f->failed,1,memory_order_relaxed);
++                        } else f->bins[bin].visible[id & SCENE_INDEX_MASK] = 1;
++                    }
++                }
++            }
++        }
++        SCENE_MSAA_AUDIT(4,groups);
++        (void)groups; /* Counter is compiled out in the ordinary build. */
++    }
++}
++
++static void scene_msaa_group_bins(void *data) {
++    struct sg_scene_visibility *f = data;
++    if (f->context->fb.samples == 4) scene_msaa_group_bins_uniform(data);
++    else scene_msaa_group_bins_ordinary(data);
++}
++
+ static uint32_t scene_msaa_groups(struct sg_scene_visibility *f) {
+     sg_worker_pool *pool = f->context->workers;
+     atomic_store_explicit(&f->next_task,0,memory_order_relaxed);

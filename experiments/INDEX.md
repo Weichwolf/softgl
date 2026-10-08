@@ -184,4 +184,5 @@
 | [scene-msaa-pixel-occlusion](scene-msaa-pixel-occlusion/README.md) | Not adopted screen | Conservative four-depth test: general-only Bistro 4× +0.30%, including small kernel -1.20% frame time; both 216+48 independent hashes exact, repeat/WASM gates unrun. |
 | [scene-msaa-between-samples](scene-msaa-between-samples/README.md) | Accepted | Exact empty-sample geometry culling: Bistro 2×/4× FPS +7.11/+1.94%; 144 quiet runs, native/WASM sample planes exact, 757 tests, live browser updated. |
 | [scene-msaa-packet-occlusion](scene-msaa-packet-occlusion/README.md) | Adopted | SIMD128 Bistro 2×/4× -2.74/-2.48% time (+2.82/+2.54% FPS); exact native/actual WASM planes, 757 tests and 12 live browser cases pass. |
-| [scene-msaa-uniform-metadata](scene-msaa-uniform-metadata/README.md) | Native screen | Lossless metadata: 216+576+60 hashes exact; first Bistro screen improves, confirmation/WASM and combined packet comparison pending. |
+| [scene-msaa-uniform-metadata](scene-msaa-uniform-metadata/README.md) | Adopted | Bistro 4× -1.93% time/+1.97% FPS, 2× flat; exact native/WASM gates, 757 tests and 12 browser modes pass; T-80 4× +1.45% cost recorded. |
+| [scene-compact-attributes](scene-compact-attributes/README.md) | Native prototype | 320→80-byte records share canonical attributes; 216+576 hashes and 162 legacy comparisons pass; ISA SIMD128, FPS/WASM pending. |
