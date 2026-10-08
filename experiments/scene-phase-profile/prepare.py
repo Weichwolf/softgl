@@ -1,12 +1,17 @@
 #!/usr/bin/env python3
 """Freeze accepted renderer and measure synchronized wall-time phases privately."""
+import argparse
 import io
 from pathlib import Path
 import subprocess
 import tarfile
 repo = Path(__file__).resolve().parents[2]
-root = repo/'build/scene-phase-profile'
-revision = subprocess.check_output(['git','rev-parse','da48afd'],cwd=repo,text=True).strip()
+parser = argparse.ArgumentParser()
+parser.add_argument('--baseline',default='da48afd')
+parser.add_argument('--output-root',type=Path,default=repo/'build/scene-phase-profile')
+args = parser.parse_args()
+root = args.output_root.resolve()
+revision = subprocess.check_output(['git','rev-parse',args.baseline],cwd=repo,text=True).strip()
 target = root/'source'
 assert not target.exists(), 'Keep diagnostic sources frozen'
 target.mkdir(parents=True)
@@ -34,8 +39,18 @@ replace(p,'    c->scene_material = -1; c->scene_visibility = f;\n    return 1;',
     '    c->scene_material = -1; c->scene_visibility = f;\n    SG_PHASE_END(begin);\n    return 1;')
 replace(p,'static uint32_t scene_msaa_groups(struct sg_scene_visibility *f) {',
     'static uint32_t scene_msaa_groups(struct sg_scene_visibility *f) {\n    SG_PHASE_BEGIN(grouping);')
-replace(p,'    SCENE_MSAA_AUDIT(4,groups);\n    return groups;',
-    '    SCENE_MSAA_AUDIT(4,groups);\n    SG_PHASE_END(grouping);\n    return groups;')
+legacy = '    SCENE_MSAA_AUDIT(4,groups);\n    return groups;'
+if legacy in p.read_text():
+    replace(p,legacy,'    SCENE_MSAA_AUDIT(4,groups);\n    SG_PHASE_END(grouping);\n    return groups;')
+else:
+    # Current grouping joins stripe callbacks and accumulates their counts.
+    value = p.read_text()
+    start = value.index('static uint32_t scene_msaa_groups(')
+    end = value.index('\nstatic void scene_msaa_list_bins(',start)
+    section = value[start:end]
+    assert section.count('    return groups;') == 1
+    value = value[:start]+section.replace('    return groups;','    SG_PHASE_END(grouping);\n    return groups;')+value[end:]
+    p.write_text(value)
 replace(p,'    if (f->deferred_meshes && !scene_geometry_visible(f)) {',
     '    SG_PHASE_BEGIN(visibility_mark);\n    if (f->deferred_meshes && !scene_geometry_visible(f)) {')
 replace(p,'    uint32_t visible = 0;','    SG_PHASE_END(visibility_mark);\n    uint32_t visible = 0;')

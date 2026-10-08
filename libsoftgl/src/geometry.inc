@@ -21,6 +21,7 @@ static void scene_geometry_destroy(scene_geometry *g) {
     if (!g) return;
     if (g->tasks) for (int i = 0; i < SCENE_GEOMETRY_TASKS; i++) {
         free(g->tasks[i].primitives); free(g->tasks[i].clipped); free(g->tasks[i].packets);
+        free(g->tasks[i].occlusion_packets);
     }
     for (int i = 0; i < SG_MAX_BINS; i++) free(g->bins[i].references);
     free(g->positions); free(g->attributes); free(g->outcodes); free(g->ready);
@@ -355,6 +356,7 @@ static void scene_geometry_triangles(void *data) {
             }
         }
         scene_geometry_make_packets(f,task);
+        scene_geometry_occlusion_packets(f,task);
     }
 }
 
@@ -373,7 +375,8 @@ static void scene_geometry_raster(void *data) {
             unsigned first = base & SCENE_PRIMITIVE_MASK;
             for (unsigned offset = 0; offset < 16; offset += 4) {
                 unsigned live = (mask >> offset)&15u;
-                if (live) scene_packet_draw(&local,task,first+offset,live,bin);
+                if (live && !scene_occlusion_packet_hidden(&local,task,first+offset,live,bin))
+                    scene_packet_draw(&local,task,first+offset,live,bin);
             }
         }
         f->current_primitive[bin] = NULL;

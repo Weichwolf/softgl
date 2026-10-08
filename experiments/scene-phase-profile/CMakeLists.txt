@@ -7,7 +7,8 @@ add_compile_options(-O3 -fno-strict-aliasing -ffast-math
     -fno-associative-math -fsigned-zeros -fno-finite-math-only
     -msse4.1 -mno-avx -mno-avx2 -mno-avx512f)
 get_filename_component(repo "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
-set(root "${repo}/build/scene-phase-profile/source")
+set(SCENE_PHASE_ROOT "${repo}/build/scene-phase-profile" CACHE PATH "Frozen diagnostic tree")
+set(root "${SCENE_PHASE_ROOT}/source")
 add_subdirectory(${root}/libsoftgl candidate-library)
 add_executable(resident ${root}/resident.c ${root}/model_wrap.c)
 target_compile_definitions(resident PRIVATE SOFTGL_MODEL_VERTEX_ATTRIBUTES SOFTGL_MODEL_SCENE_VISIBILITY

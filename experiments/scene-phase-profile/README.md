@@ -58,3 +58,48 @@ wall-time figures above. Profiler timings are excluded from acceptance.
 binary/source digests and the two independent CPU-profile reports.
 Next experiment: [parallel MSAA grouping/lists](../scene-msaa-parallel-groups/README.md),
 targeting 8.71 ms of serial work without reducing real sample count.
+
+## Current accepted baseline, 84041db
+
+The generator now accepts `--baseline` and `--output-root`; CMake accepts
+`SCENE_PHASE_ROOT`. Its old default stays `da48afd` to reproduce the historical
+diagnostic. A separate frozen `build/scene-phase-profile/current-84041db`
+instruments the current parallel grouping code as well as the other stages.
+
+Quiet native AB/BA uses the same resident assets/camera, 640×360, four total
+threads, 60 warmup and 30 orbit frames per request. Four runs are accepted,
+each below 0.1 foreign CPU core. The two instrumented requests contain 120
+warmup and 60 measured frames. All final RGBA/depth/stencil/MSAA planes equal
+the independent uninstrumented accepted renderer. This is a final-view check,
+not per-frame equality through the full orbit.
+
+Mean measured synchronized wall time in the instrumented build:
+
+| Phase | ms |
+| --- | ---: |
+| Model setup, scene begin, command capture | 2.45 |
+| Positions | 3.34 |
+| Triangle preparation/culling/clipping | 5.43 |
+| Bin references | 0.56 |
+| Rasterization/depth/visibility capture | 28.32 |
+| Visibility initialization | 0.01 |
+| MSAA grouping | 1.96 |
+| Winning vertex attributes | 2.31 |
+| Shading-list construction | 1.09 |
+| Material shading | 17.44 |
+| Transparent submission | 0.36 |
+| Actual resolve/readback | 1.49 |
+| Other overhead | 0.34 |
+| Total | 65.08 |
+
+Uninstrumented median is 62.213822 ms versus 65.093304 ms instrumented
+(+4.63% time). Diagnose the dominant stages; do not present instrumented wall
+figures as uninstrumented frame latency or as an optimization gain. The initial
+standalone diagnostic overlapped another untimed audit and is archived but
+excluded from the figures above. The quiet runner/raw logs, parsed 180 frames
+and source identities are retained under [current validation](validation/current-84041db/).
+
+Raster/capture and shading remain dominant. The new
+[compact packet-occlusion trial](../scene-msaa-packet-occlusion/README.md)
+tries to avoid individual raster setup for whole hidden groups. Lazy cluster
+processing and less redundant shading remain separate architecture candidates.

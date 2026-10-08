@@ -32,6 +32,14 @@ typedef struct {
 } scene_triangle_packet;
 _Static_assert(sizeof(scene_triangle_packet) == 160, "four-triangle packet stride");
 
+#define SCENE_OCCLUSION_PACKET_TRIANGLES 4
+typedef struct {
+    uint16_t left, right, bottom, top;
+    float near;
+    uint32_t eligible;
+} scene_occlusion_packet;
+_Static_assert(sizeof(scene_occlusion_packet) == 16, "compact occlusion packet stride");
+
 typedef struct { sg_vec4 clip, ndc; } scene_position;
 typedef struct { sg_vec4 color, uv[4]; } scene_attribute;
 typedef struct { uint32_t material, first, end; } scene_position_task;
@@ -41,6 +49,8 @@ typedef struct {
     uint32_t count, capacity;
     uint32_t packet_bins;
     uint32_t bin_counts[SG_MAX_BINS], bin_offsets[SG_MAX_BINS];
+    scene_occlusion_packet *occlusion_packets;
+    uint32_t occlusion_capacity;
     scene_triangle_packet *packets;
     uint32_t packet_capacity;
     scene_clipped_primitive *clipped;

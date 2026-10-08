@@ -1,0 +1,52 @@
+[  3%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/state.c.o
+[  3%] Building C object candidate-library/CMakeFiles/softgl.dir/src/matrix.c.o
+[  6%] Building C object candidate-library/CMakeFiles/softgl.dir/src/state.c.o
+[  6%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/matrix.c.o
+[  9%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/buffers.c.o
+[  9%] Building C object candidate-library/CMakeFiles/softgl.dir/src/buffers.c.o
+[ 10%] Building C object candidate-library/CMakeFiles/softgl.dir/src/texture.c.o
+[ 12%] Building C object candidate-library/CMakeFiles/softgl.dir/src/pipeline.c.o
+[ 13%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/texture.c.o
+[ 15%] Building C object candidate-library/CMakeFiles/softgl.dir/src/clip.c.o
+[ 16%] Building C object candidate-library/CMakeFiles/softgl.dir/src/fragment_write.c.o
+[ 18%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/pipeline.c.o
+[ 19%] Building C object candidate-library/CMakeFiles/softgl.dir/src/multisample.c.o
+[ 21%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/clip.c.o
+[ 22%] Building C object candidate-library/CMakeFiles/softgl.dir/src/fragment_combine.c.o
+[ 24%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/fragment_write.c.o
+[ 25%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/multisample.c.o
+[ 27%] Building C object candidate-library/CMakeFiles/softgl.dir/src/rasterizer.c.o
+[ 28%] Building C object candidate-library/CMakeFiles/softgl.dir/src/lines.c.o
+[ 30%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/fragment_combine.c.o
+[ 31%] Building C object candidate-library/CMakeFiles/softgl.dir/src/fragment.c.o
+[ 33%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/rasterizer.c.o
+[ 34%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/lines.c.o
+[ 36%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/fragment.c.o
+[ 37%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/framebuffer.c.o
+[ 39%] Building C object candidate-library/CMakeFiles/softgl.dir/src/framebuffer.c.o
+[ 40%] Building C object candidate-library/CMakeFiles/softgl.dir/src/lighting.c.o
+[ 42%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/lighting.c.o
+[ 43%] Building C object candidate-library/CMakeFiles/softgl.dir/src/api.c.o
+[ 45%] Building C object candidate-library/CMakeFiles/softgl.dir/src/immediate.c.o
+[ 46%] Building C object candidate-library/CMakeFiles/softgl.dir/src/dlist.c.o
+[ 48%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/api.c.o
+[ 50%] Building C object candidate-library/CMakeFiles/softgl.dir/src/pixels.c.o
+[ 51%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/immediate.c.o
+[ 53%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/dlist.c.o
+[ 54%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/pixels.c.o
+[ 56%] Building C object candidate-library/CMakeFiles/softgl.dir/src/evaluators.c.o
+[ 57%] Building C object candidate-library/CMakeFiles/softgl.dir/src/workers.c.o
+[ 59%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/evaluators.c.o
+[ 60%] Building C object candidate-library/CMakeFiles/softgl.dir/src/scene_visibility.c.o
+[ 62%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/workers.c.o
+/home/cosmo/Git/softgl/build/scene-msaa-packet-occlusion/source/libsoftgl/src/scene_visibility.c:1077:46: error: member reference base type 'void' is not a structure or union
+ 1077 |     const sg_worker_bin *stripe = &c->workers->bins[bin];
+      |                                    ~~~~~~~~~~^ ~~~~
+1 error generated.
+[ 63%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/scene_visibility.c.o
+gmake[2]: *** [candidate-library/CMakeFiles/softgl.dir/build.make:359: candidate-library/CMakeFiles/softgl.dir/src/scene_visibility.c.o] Error 1
+gmake[1]: *** [CMakeFiles/Makefile2:444: candidate-library/CMakeFiles/softgl.dir/all] Error 2
+gmake[1]: *** Waiting for unfinished jobs....
+[ 65%] Linking C static library libbaseline_softgl.a
+[ 65%] Built target baseline_softgl
+gmake: *** [Makefile:91: all] Error 2

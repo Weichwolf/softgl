@@ -1,0 +1,418 @@
+In archive build/scene-msaa-uniform-metadata/v1/native/candidate-library/libsoftgl.a:
+
+state.c.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+matrix.c.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+buffers.c.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+texture.c.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+pipeline.c.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+clip.c.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+fragment_write.c.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+multisample.c.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+fragment_combine.c.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+rasterizer.c.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+lines.c.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+fragment.c.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+framebuffer.c.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+lighting.c.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+api.c.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+immediate.c.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+dlist.c.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+pixels.c.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+evaluators.c.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+workers.c.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+scene_visibility.c.o:     file format elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000014920 <scene_msaa_group_bins>:
+   14920:	55                   	push   %rbp
+   14921:	41 57                	push   %r15
+   14923:	41 56                	push   %r14
+   14925:	41 55                	push   %r13
+   14927:	41 54                	push   %r12
+   14929:	53                   	push   %rbx
+   1492a:	48 81 ec 88 00 00 00 	sub    $0x88,%rsp
+   14931:	48 8b 07             	mov    (%rdi),%rax
+   14934:	48 8b 88 e0 3d 00 00 	mov    0x3de0(%rax),%rcx
+   1493b:	8b 50 20             	mov    0x20(%rax),%edx
+   1493e:	bd 01 00 00 00       	mov    $0x1,%ebp
+   14943:	f0 0f c1 af 8c 06 00 	lock xadd %ebp,0x68c(%rdi)
+   1494a:	00
+   1494b:	48 89 4c 24 18       	mov    %rcx,0x18(%rsp)
+   14950:	3b a9 4c 11 00 00    	cmp    0x114c(%rcx),%ebp
+   14956:	0f 8d 4c 04 00 00    	jge    14da8 <scene_msaa_group_bins+0x488>
+   1495c:	48 89 fb             	mov    %rdi,%rbx
+   1495f:	48 8b 4c 24 18       	mov    0x18(%rsp),%rcx
+   14964:	48 81 c1 f8 00 00 00 	add    $0xf8,%rcx
+   1496b:	48 89 4c 24 30       	mov    %rcx,0x30(%rsp)
+   14970:	48 89 d1             	mov    %rdx,%rcx
+   14973:	89 ca                	mov    %ecx,%edx
+   14975:	41 bc ff ff ff ff    	mov    $0xffffffff,%r12d
+   1497b:	41 d3 e4             	shl    %cl,%r12d
+   1497e:	85 c9                	test   %ecx,%ecx
+   14980:	48 89 44 24 20       	mov    %rax,0x20(%rsp)
+   14985:	48 89 54 24 08       	mov    %rdx,0x8(%rsp)
+   1498a:	0f 84 9a 03 00 00    	je     14d2a <scene_msaa_group_bins+0x40a>
+   14990:	41 f7 d4             	not    %r12d
+   14993:	48 8d 04 95 00 00 00 	lea    0x0(,%rdx,4),%rax
+   1499a:	00
+   1499b:	48 89 44 24 40       	mov    %rax,0x40(%rsp)
+   149a0:	48 8d 04 12          	lea    (%rdx,%rdx,1),%rax
+   149a4:	48 89 44 24 38       	mov    %rax,0x38(%rsp)
+   149a9:	f7 d9                	neg    %ecx
+   149ab:	48 89 8c 24 80 00 00 	mov    %rcx,0x80(%rsp)
+   149b2:	00
+   149b3:	44 89 64 24 04       	mov    %r12d,0x4(%rsp)
+   149b8:	eb 24                	jmp    149de <scene_msaa_group_bins+0xbe>
+   149ba:	66 0f 1f 44 00 00    	nopw   0x0(%rax,%rax,1)
+   149c0:	bd 01 00 00 00       	mov    $0x1,%ebp
+   149c5:	f0 0f c1 ab 8c 06 00 	lock xadd %ebp,0x68c(%rbx)
+   149cc:	00
+   149cd:	48 8b 44 24 18       	mov    0x18(%rsp),%rax
+   149d2:	3b a8 4c 11 00 00    	cmp    0x114c(%rax),%ebp
+   149d8:	0f 8d ca 03 00 00    	jge    14da8 <scene_msaa_group_bins+0x488>
+   149de:	4c 63 fd             	movslq %ebp,%r15
+   149e1:	4d 89 fd             	mov    %r15,%r13
+   149e4:	49 c1 e5 0e          	shl    $0xe,%r13
+   149e8:	4c 03 ab 80 06 00 00 	add    0x680(%rbx),%r13
+   149ef:	48 63 53 50          	movslq 0x50(%rbx),%rdx
+   149f3:	48 c1 e2 02          	shl    $0x2,%rdx
+   149f7:	4c 89 ef             	mov    %r13,%rdi
+   149fa:	31 f6                	xor    %esi,%esi
+   149fc:	e8 00 00 00 00       	call   14a01 <scene_msaa_group_bins+0xe1>
+			149fd: R_X86_64_PLT32	memset-0x4
+   14a01:	48 8b 54 24 20       	mov    0x20(%rsp),%rdx
+   14a06:	8b 42 04             	mov    0x4(%rdx),%eax
+   14a09:	85 c0                	test   %eax,%eax
+   14a0b:	7e b3                	jle    149c0 <scene_msaa_group_bins+0xa0>
+   14a0d:	49 6b f7 68          	imul   $0x68,%r15,%rsi
+   14a11:	48 03 74 24 30       	add    0x30(%rsp),%rsi
+   14a16:	4b 8d 0c bf          	lea    (%r15,%r15,4),%rcx
+   14a1a:	48 8d 0c cb          	lea    (%rbx,%rcx,8),%rcx
+   14a1e:	48 89 4c 24 50       	mov    %rcx,0x50(%rsp)
+   14a23:	31 ff                	xor    %edi,%edi
+   14a25:	89 6c 24 14          	mov    %ebp,0x14(%rsp)
+   14a29:	48 89 74 24 68       	mov    %rsi,0x68(%rsp)
+   14a2e:	eb 21                	jmp    14a51 <scene_msaa_group_bins+0x131>
+   14a30:	48 8b 54 24 20       	mov    0x20(%rsp),%rdx
+   14a35:	8b 42 04             	mov    0x4(%rdx),%eax
+   14a38:	48 8b 74 24 68       	mov    0x68(%rsp),%rsi
+   14a3d:	48 8b 7c 24 70       	mov    0x70(%rsp),%rdi
+   14a42:	48 ff c7             	inc    %rdi
+   14a45:	48 63 c8             	movslq %eax,%rcx
+   14a48:	48 39 cf             	cmp    %rcx,%rdi
+   14a4b:	0f 8d 6f ff ff ff    	jge    149c0 <scene_msaa_group_bins+0xa0>
+   14a51:	48 63 0a             	movslq (%rdx),%rcx
+   14a54:	48 0f af cf          	imul   %rdi,%rcx
+   14a58:	4c 63 46 18          	movslq 0x18(%rsi),%r8
+   14a5c:	49 01 c8             	add    %rcx,%r8
+   14a5f:	4d 89 c6             	mov    %r8,%r14
+   14a62:	4c 8b 7c 24 08       	mov    0x8(%rsp),%r15
+   14a67:	4d 0f af f7          	imul   %r15,%r14
+   14a6b:	4c 63 4e 1c          	movslq 0x1c(%rsi),%r9
+   14a6f:	49 01 c9             	add    %rcx,%r9
+   14a72:	4d 0f af cf          	imul   %r15,%r9
+   14a76:	4c 89 4c 24 78       	mov    %r9,0x78(%rsp)
+   14a7b:	4d 39 ce             	cmp    %r9,%r14
+   14a7e:	73 c2                	jae    14a42 <scene_msaa_group_bins+0x122>
+   14a80:	48 89 7c 24 70       	mov    %rdi,0x70(%rsp)
+   14a85:	4c 89 c0             	mov    %r8,%rax
+   14a88:	49 0f af c7          	imul   %r15,%rax
+   14a8c:	48 ff c0             	inc    %rax
+   14a8f:	48 89 44 24 48       	mov    %rax,0x48(%rsp)
+   14a94:	48 8b 44 24 40       	mov    0x40(%rsp),%rax
+   14a99:	49 0f af c0          	imul   %r8,%rax
+   14a9d:	48 83 c0 04          	add    $0x4,%rax
+   14aa1:	48 89 44 24 28       	mov    %rax,0x28(%rsp)
+   14aa6:	4c 0f af 44 24 38    	imul   0x38(%rsp),%r8
+   14aac:	49 83 c0 02          	add    $0x2,%r8
+   14ab0:	eb 3a                	jmp    14aec <scene_msaa_group_bins+0x1cc>
+   14ab2:	66 66 66 66 66 2e 0f 	data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   14ab9:	1f 84 00 00 00 00 00
+   14ac0:	4d 01 fe             	add    %r15,%r14
+   14ac3:	4c 01 7c 24 48       	add    %r15,0x48(%rsp)
+   14ac8:	48 8b 44 24 28       	mov    0x28(%rsp),%rax
+   14acd:	48 03 44 24 40       	add    0x40(%rsp),%rax
+   14ad2:	48 89 44 24 28       	mov    %rax,0x28(%rsp)
+   14ad7:	4c 8b 44 24 58       	mov    0x58(%rsp),%r8
+   14adc:	4c 03 44 24 38       	add    0x38(%rsp),%r8
+   14ae1:	4c 3b 74 24 78       	cmp    0x78(%rsp),%r14
+   14ae6:	0f 83 44 ff ff ff    	jae    14a30 <scene_msaa_group_bins+0x110>
+   14aec:	4c 89 44 24 58       	mov    %r8,0x58(%rsp)
+   14af1:	48 8b bb 78 06 00 00 	mov    0x678(%rbx),%rdi
+   14af8:	42 0f b6 2c 37       	movzbl (%rdi,%r14,1),%ebp
+   14afd:	4c 01 f7             	add    %r14,%rdi
+   14b00:	31 f6                	xor    %esi,%esi
+   14b02:	4c 89 fa             	mov    %r15,%rdx
+   14b05:	e8 00 00 00 00       	call   14b0a <scene_msaa_group_bins+0x1ea>
+			14b06: R_X86_64_PLT32	memset-0x4
+   14b0a:	40 80 fd 80          	cmp    $0x80,%bpl
+   14b0e:	0f 85 9c 00 00 00    	jne    14bb0 <scene_msaa_group_bins+0x290>
+   14b14:	31 c0                	xor    %eax,%eax
+   14b16:	4c 89 f9             	mov    %r15,%rcx
+   14b19:	4c 89 f2             	mov    %r14,%rdx
+   14b1c:	31 f6                	xor    %esi,%esi
+   14b1e:	8b 6c 24 14          	mov    0x14(%rsp),%ebp
+   14b22:	eb 2a                	jmp    14b4e <scene_msaa_group_bins+0x22e>
+   14b24:	4c 8b 44 24 50       	mov    0x50(%rsp),%r8
+   14b29:	4d 8b 40 70          	mov    0x70(%r8),%r8
+   14b2d:	81 e7 ff ff ff 07    	and    $0x7ffffff,%edi
+   14b33:	41 c6 04 38 01       	movb   $0x1,(%r8,%rdi,1)
+   14b38:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
+   14b3f:	00
+   14b40:	ff c0                	inc    %eax
+   14b42:	48 ff c2             	inc    %rdx
+   14b45:	48 ff c9             	dec    %rcx
+   14b48:	0f 84 72 ff ff ff    	je     14ac0 <scene_msaa_group_bins+0x1a0>
+   14b4e:	0f a3 c6             	bt     %eax,%esi
+   14b51:	72 ed                	jb     14b40 <scene_msaa_group_bins+0x220>
+   14b53:	48 8b 7b 18          	mov    0x18(%rbx),%rdi
+   14b57:	66 83 3c 57 ff       	cmpw   $0xffff,(%rdi,%rdx,2)
+   14b5c:	74 e2                	je     14b40 <scene_msaa_group_bins+0x220>
+   14b5e:	48 8b bb 78 06 00 00 	mov    0x678(%rbx),%rdi
+   14b65:	44 88 24 17          	mov    %r12b,(%rdi,%rdx,1)
+   14b69:	48 8b 7b 18          	mov    0x18(%rbx),%rdi
+   14b6d:	0f b7 3c 57          	movzwl (%rdi,%rdx,2),%edi
+   14b71:	41 ff 44 bd 00       	incl   0x0(%r13,%rdi,4)
+   14b76:	44 09 e6             	or     %r12d,%esi
+   14b79:	83 bb 68 06 00 00 00 	cmpl   $0x0,0x668(%rbx)
+   14b80:	74 be                	je     14b40 <scene_msaa_group_bins+0x220>
+   14b82:	48 8b 7b 08          	mov    0x8(%rbx),%rdi
+   14b86:	8b 3c 97             	mov    (%rdi,%rdx,4),%edi
+   14b89:	41 89 f8             	mov    %edi,%r8d
+   14b8c:	41 c1 e8 1b          	shr    $0x1b,%r8d
+   14b90:	41 39 e8             	cmp    %ebp,%r8d
+   14b93:	74 8f                	je     14b24 <scene_msaa_group_bins+0x204>
+   14b95:	c7 83 88 06 00 00 01 	movl   $0x1,0x688(%rbx)
+   14b9c:	00 00 00
+   14b9f:	eb 9f                	jmp    14b40 <scene_msaa_group_bins+0x220>
+   14ba1:	66 66 66 66 66 66 2e 	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   14ba8:	0f 1f 84 00 00 00 00
+   14baf:	00
+   14bb0:	31 c9                	xor    %ecx,%ecx
+   14bb2:	b8 01 00 00 00       	mov    $0x1,%eax
+   14bb7:	48 8b 54 24 58       	mov    0x58(%rsp),%rdx
+   14bbc:	48 8b 74 24 28       	mov    0x28(%rsp),%rsi
+   14bc1:	48 8b 7c 24 48       	mov    0x48(%rsp),%rdi
+   14bc6:	45 31 c0             	xor    %r8d,%r8d
+   14bc9:	4c 89 74 24 60       	mov    %r14,0x60(%rsp)
+   14bce:	eb 2a                	jmp    14bfa <scene_msaa_group_bins+0x2da>
+   14bd0:	4c 8b 7c 24 08       	mov    0x8(%rsp),%r15
+   14bd5:	44 8b 64 24 04       	mov    0x4(%rsp),%r12d
+   14bda:	4c 8b 74 24 60       	mov    0x60(%rsp),%r14
+   14bdf:	90                   	nop
+   14be0:	48 ff c1             	inc    %rcx
+   14be3:	48 ff c0             	inc    %rax
+   14be6:	48 ff c7             	inc    %rdi
+   14be9:	48 83 c6 04          	add    $0x4,%rsi
+   14bed:	48 83 c2 02          	add    $0x2,%rdx
+   14bf1:	4c 39 f9             	cmp    %r15,%rcx
+   14bf4:	0f 84 c6 fe ff ff    	je     14ac0 <scene_msaa_group_bins+0x1a0>
+   14bfa:	41 b9 01 00 00 00    	mov    $0x1,%r9d
+   14c00:	41 d3 e1             	shl    %cl,%r9d
+   14c03:	41 0f a3 c8          	bt     %ecx,%r8d
+   14c07:	72 d7                	jb     14be0 <scene_msaa_group_bins+0x2c0>
+   14c09:	4d 8d 14 0e          	lea    (%r14,%rcx,1),%r10
+   14c0d:	4c 8b 5b 18          	mov    0x18(%rbx),%r11
+   14c11:	66 43 83 3c 53 ff    	cmpw   $0xffff,(%r11,%r10,2)
+   14c17:	74 c7                	je     14be0 <scene_msaa_group_bins+0x2c0>
+   14c19:	4d 89 ee             	mov    %r13,%r14
+   14c1c:	4c 8d 69 01          	lea    0x1(%rcx),%r13
+   14c20:	4d 39 fd             	cmp    %r15,%r13
+   14c23:	73 6b                	jae    14c90 <scene_msaa_group_bins+0x370>
+   14c25:	49 01 d3             	add    %rdx,%r11
+   14c28:	4c 8b bc 24 80 00 00 	mov    0x80(%rsp),%r15
+   14c2f:	00
+   14c30:	4d 8d 2c 07          	lea    (%r15,%rax,1),%r13
+   14c34:	31 ed                	xor    %ebp,%ebp
+   14c36:	eb 13                	jmp    14c4b <scene_msaa_group_bins+0x32b>
+   14c38:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
+   14c3f:	00
+   14c40:	48 ff c5             	inc    %rbp
+   14c43:	45 89 ef             	mov    %r13d,%r15d
+   14c46:	41 01 ef             	add    %ebp,%r15d
+   14c49:	74 45                	je     14c90 <scene_msaa_group_bins+0x370>
+   14c4b:	66 41 83 3c 6b ff    	cmpw   $0xffff,(%r11,%rbp,2)
+   14c51:	74 ed                	je     14c40 <scene_msaa_group_bins+0x320>
+   14c53:	4c 8b 63 08          	mov    0x8(%rbx),%r12
+   14c57:	4d 8d 3c 34          	lea    (%r12,%rsi,1),%r15
+   14c5b:	45 8b 3c af          	mov    (%r15,%rbp,4),%r15d
+   14c5f:	47 3b 3c 94          	cmp    (%r12,%r10,4),%r15d
+   14c63:	75 db                	jne    14c40 <scene_msaa_group_bins+0x320>
+   14c65:	4c 8b bb 70 06 00 00 	mov    0x670(%rbx),%r15
+   14c6c:	4d 8d 24 3f          	lea    (%r15,%rdi,1),%r12
+   14c70:	46 0f b6 64 25 00    	movzbl 0x0(%rbp,%r12,1),%r12d
+   14c76:	47 3a 24 17          	cmp    (%r15,%r10,1),%r12b
+   14c7a:	75 c4                	jne    14c40 <scene_msaa_group_bins+0x320>
+   14c7c:	44 8d 3c 28          	lea    (%rax,%rbp,1),%r15d
+   14c80:	45 0f ab f9          	bts    %r15d,%r9d
+   14c84:	eb ba                	jmp    14c40 <scene_msaa_group_bins+0x320>
+   14c86:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
+   14c8d:	00 00 00
+   14c90:	4c 8b 9b 78 06 00 00 	mov    0x678(%rbx),%r11
+   14c97:	47 88 0c 13          	mov    %r9b,(%r11,%r10,1)
+   14c9b:	4c 8b 5b 18          	mov    0x18(%rbx),%r11
+   14c9f:	47 0f b7 1c 53       	movzwl (%r11,%r10,2),%r11d
+   14ca4:	4d 89 f5             	mov    %r14,%r13
+   14ca7:	43 ff 04 9e          	incl   (%r14,%r11,4)
+   14cab:	45 09 c8             	or     %r9d,%r8d
+   14cae:	83 bb 68 06 00 00 00 	cmpl   $0x0,0x668(%rbx)
+   14cb5:	0f 84 15 ff ff ff    	je     14bd0 <scene_msaa_group_bins+0x2b0>
+   14cbb:	4c 8b 4b 08          	mov    0x8(%rbx),%r9
+   14cbf:	47 8b 0c 91          	mov    (%r9,%r10,4),%r9d
+   14cc3:	45 89 ca             	mov    %r9d,%r10d
+   14cc6:	41 c1 ea 1b          	shr    $0x1b,%r10d
+   14cca:	8b 6c 24 14          	mov    0x14(%rsp),%ebp
+   14cce:	41 39 ea             	cmp    %ebp,%r10d
+   14cd1:	4c 8b 7c 24 08       	mov    0x8(%rsp),%r15
+   14cd6:	4c 8b 74 24 60       	mov    0x60(%rsp),%r14
+   14cdb:	75 17                	jne    14cf4 <scene_msaa_group_bins+0x3d4>
+   14cdd:	4c 8b 54 24 50       	mov    0x50(%rsp),%r10
+   14ce2:	4d 8b 52 70          	mov    0x70(%r10),%r10
+   14ce6:	41 81 e1 ff ff ff 07 	and    $0x7ffffff,%r9d
+   14ced:	43 c6 04 0a 01       	movb   $0x1,(%r10,%r9,1)
+   14cf2:	eb 0a                	jmp    14cfe <scene_msaa_group_bins+0x3de>
+   14cf4:	c7 83 88 06 00 00 01 	movl   $0x1,0x688(%rbx)
+   14cfb:	00 00 00
+   14cfe:	44 8b 64 24 04       	mov    0x4(%rsp),%r12d
+   14d03:	e9 d8 fe ff ff       	jmp    14be0 <scene_msaa_group_bins+0x2c0>
+   14d08:	0f 1f 84 00 00 00 00 	nopl   0x0(%rax,%rax,1)
+   14d0f:	00
+   14d10:	bd 01 00 00 00       	mov    $0x1,%ebp
+   14d15:	f0 0f c1 ab 8c 06 00 	lock xadd %ebp,0x68c(%rbx)
+   14d1c:	00
+   14d1d:	48 8b 44 24 18       	mov    0x18(%rsp),%rax
+   14d22:	3b a8 4c 11 00 00    	cmp    0x114c(%rax),%ebp
+   14d28:	7d 7e                	jge    14da8 <scene_msaa_group_bins+0x488>
+   14d2a:	4c 63 fd             	movslq %ebp,%r15
+   14d2d:	4c 89 ff             	mov    %r15,%rdi
+   14d30:	48 c1 e7 0e          	shl    $0xe,%rdi
+   14d34:	48 03 bb 80 06 00 00 	add    0x680(%rbx),%rdi
+   14d3b:	48 63 53 50          	movslq 0x50(%rbx),%rdx
+   14d3f:	48 c1 e2 02          	shl    $0x2,%rdx
+   14d43:	31 f6                	xor    %esi,%esi
+   14d45:	e8 00 00 00 00       	call   14d4a <scene_msaa_group_bins+0x42a>
+			14d46: R_X86_64_PLT32	memset-0x4
+   14d4a:	48 8b 4c 24 20       	mov    0x20(%rsp),%rcx
+   14d4f:	48 63 41 04          	movslq 0x4(%rcx),%rax
+   14d53:	48 85 c0             	test   %rax,%rax
+   14d56:	7e b8                	jle    14d10 <scene_msaa_group_bins+0x3f0>
+   14d58:	49 6b d7 68          	imul   $0x68,%r15,%rdx
+   14d5c:	48 63 09             	movslq (%rcx),%rcx
+   14d5f:	48 8b 74 24 30       	mov    0x30(%rsp),%rsi
+   14d64:	4c 63 7c 16 18       	movslq 0x18(%rsi,%rdx,1),%r15
+   14d69:	48 63 54 16 1c       	movslq 0x1c(%rsi,%rdx,1),%rdx
+   14d6e:	48 8b 74 24 08       	mov    0x8(%rsp),%rsi
+   14d73:	48 0f af d6          	imul   %rsi,%rdx
+   14d77:	48 0f af ce          	imul   %rsi,%rcx
+   14d7b:	4c 0f af fe          	imul   %rsi,%r15
+   14d7f:	31 f6                	xor    %esi,%esi
+   14d81:	66 66 66 66 66 66 2e 	data16 data16 data16 data16 data16 cs nopw 0x0(%rax,%rax,1)
+   14d88:	0f 1f 84 00 00 00 00
+   14d8f:	00
+   14d90:	49 39 d7             	cmp    %rdx,%r15
+   14d93:	72 25                	jb     14dba <scene_msaa_group_bins+0x49a>
+   14d95:	48 ff c6             	inc    %rsi
+   14d98:	48 01 ca             	add    %rcx,%rdx
+   14d9b:	49 01 cf             	add    %rcx,%r15
+   14d9e:	48 39 c6             	cmp    %rax,%rsi
+   14da1:	72 ed                	jb     14d90 <scene_msaa_group_bins+0x470>
+   14da3:	e9 68 ff ff ff       	jmp    14d10 <scene_msaa_group_bins+0x3f0>
+   14da8:	48 81 c4 88 00 00 00 	add    $0x88,%rsp
+   14daf:	5b                   	pop    %rbx
+   14db0:	41 5c                	pop    %r12
+   14db2:	41 5d                	pop    %r13
+   14db4:	41 5e                	pop    %r14
+   14db6:	41 5f                	pop    %r15
+   14db8:	5d                   	pop    %rbp
+   14db9:	c3                   	ret
+   14dba:	4c 8b 74 24 08       	mov    0x8(%rsp),%r14
+   14dbf:	90                   	nop
+   14dc0:	48 8b bb 78 06 00 00 	mov    0x678(%rbx),%rdi
+   14dc7:	4c 01 ff             	add    %r15,%rdi
+   14dca:	31 f6                	xor    %esi,%esi
+   14dcc:	4c 89 f2             	mov    %r14,%rdx
+   14dcf:	e8 00 00 00 00       	call   14dd4 <scene_msaa_group_bins+0x4b4>
+			14dd0: R_X86_64_PLT32	memset-0x4
+   14dd4:	eb ea                	jmp    14dc0 <scene_msaa_group_bins+0x4a0>
