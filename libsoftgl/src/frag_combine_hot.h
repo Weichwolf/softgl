@@ -37,15 +37,33 @@ SG_INLINE int sg_dot3_chain_kind(const softgl_ctx *c, const sg_tex_tri_ctx *t) {
 }
 
 SG_INLINE sg_f32x4 sg_chain_clamp(sg_f32x4 v) {
+    /* Stored IEEE bits retain zero signs and NaN payloads under fast-math,
+     * including native denormals-are-zero mode. Positive finite bits are
+     * ordered like their values; negative nonzero ordered values clamp to 0. */
 #if defined(__wasm_simd128__)
-    /* Pseudo-min/max retain the first operand for ties and unordered values. */
-    v128_t bounded = wasm_f32x4_pmax((v128_t)v, wasm_f32x4_splat(0.f));
-    return (sg_f32x4)wasm_f32x4_pmin(bounded, wasm_f32x4_splat(1.f));
+    v128_t bits = (v128_t)v;
+    v128_t zero = wasm_i32x4_splat(0);
+    v128_t one = wasm_i32x4_splat(INT32_C(0x3f800000));
+    v128_t magnitude = wasm_v128_and(bits, wasm_i32x4_splat(INT32_MAX));
+    v128_t nan = wasm_i32x4_gt(magnitude, wasm_i32x4_splat(INT32_C(0x7f800000)));
+    v128_t low = wasm_v128_and(wasm_i32x4_lt(bits, zero),
+                               wasm_i32x4_gt(magnitude, zero));
+    low = wasm_v128_andnot(low, nan);
+    v128_t high = wasm_v128_andnot(wasm_i32x4_gt(bits, one), nan);
+    bits = wasm_v128_andnot(bits, low);
+    return (sg_f32x4)wasm_v128_bitselect(one, bits, high);
 #else
-    v = sg_f32x4_select(sg_f32x4_lt(v, sg_f32x4_splat(0.f)),
-                       sg_f32x4_splat(0.f), v);
-    return sg_f32x4_select(sg_f32x4_gt(v, sg_f32x4_splat(1.f)),
-                          sg_f32x4_splat(1.f), v);
+    __m128i bits = _mm_castps_si128(v);
+    __m128i zero = _mm_setzero_si128();
+    __m128i one = _mm_set1_epi32(INT32_C(0x3f800000));
+    __m128i magnitude = _mm_and_si128(bits, _mm_set1_epi32(INT32_MAX));
+    __m128i nan = _mm_cmpgt_epi32(magnitude, _mm_set1_epi32(INT32_C(0x7f800000)));
+    __m128i low = _mm_and_si128(_mm_cmplt_epi32(bits, zero),
+                               _mm_cmpgt_epi32(magnitude, zero));
+    low = _mm_andnot_si128(nan, low);
+    __m128i high = _mm_andnot_si128(nan, _mm_cmpgt_epi32(bits, one));
+    bits = _mm_andnot_si128(low, bits);
+    return _mm_castsi128_ps(_mm_blendv_epi8(bits, one, high));
 #endif
 }
 
@@ -54,9 +72,7 @@ SG_INLINE sg_f32x4 sg_chain_clamp(sg_f32x4 v) {
 SG_INLINE void sg_dot3_chain_shade(int kind, const sg_tex_env env[4],
                                    const float primary[4], float tex[4][4],
                                    float out[4]) {
-    float d = 4.f * ((tex[0][0] - .5f) * (primary[0] - .5f)
-                   + (tex[0][1] - .5f) * (primary[1] - .5f)
-                   + (tex[0][2] - .5f) * (primary[2] - .5f));
+    float d = sg_dot3_product(tex[0], primary);
     sg_f32x4 color = sg_f32x4_splat(sg_clampf(d, 0.f, 1.f));
     float alpha = sg_clampf(primary[3], 0.f, 1.f);
     if (kind == 1) color = sg_f32x4_add(color, sg_f32x4_load(env[1].env_color));

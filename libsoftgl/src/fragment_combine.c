@@ -1,5 +1,19 @@
 #include "types.h"
 
+/* Both combiner paths must round the signed dot product at the same boundary.
+ * Inlining lets fast-math choose different reduction orders in each caller.
+ * Keep the shared WASM root so Binaryen also preserves this boundary. */
+#if defined(__wasm__)
+__attribute__((used, noinline))
+#elif defined(__GNUC__)
+__attribute__((noinline))
+#endif
+float sg_dot3_product(const float a[3], const float b[3]) {
+    return 4.f * ((a[0] - .5f) * (b[0] - .5f)
+               + (a[1] - .5f) * (b[1] - .5f)
+               + (a[2] - .5f) * (b[2] - .5f));
+}
+
 /* GL 1.5 / ARB_texture_env_combine. Cross-unit refs (GL_TEXTUREn, n !=
  * current) read from unit_tex[n] which the rasterizer pre-samples per pixel. */
 
@@ -159,9 +173,7 @@ void sg_tex_env_combine_full(const sg_tex_env *env, int current_unit,
         float a0[3], a1[3];
         sg_operand_rgb(env->op_rgb[0], s0, a0);
         sg_operand_rgb(env->op_rgb[1], s1, a1);
-        float d = 4.f * ((a0[0] - 0.5f) * (a1[0] - 0.5f)
-                       + (a0[1] - 0.5f) * (a1[1] - 0.5f)
-                       + (a0[2] - 0.5f) * (a1[2] - 0.5f));
+        float d = sg_dot3_product(a0, a1);
         rgb_out[0] = rgb_out[1] = rgb_out[2] = d;
         if (env->combine_rgb == GL_DOT3_RGBA) {
             alpha_out = d;   /* spec: overrides combine_a */

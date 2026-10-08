@@ -431,6 +431,8 @@ void sg_sample_tex3d(const sg_texture *t, GLenum min_filter, GLenum mag_filter,
 void sg_sample_tex_cube(const sg_texture *t, GLenum min_filter, GLenum mag_filter,
                         GLenum wrap_s, GLenum wrap_t,
                         float x, float y, float z, int mag, float out[4]);
+float sg_dot3_product(const float a[3], const float b[3]);
+
 void sg_tex_env_combine_full(const sg_tex_env *env, int current_unit,
                              const float primary[4],
                              const float previous[4],

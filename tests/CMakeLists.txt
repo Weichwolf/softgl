@@ -69,6 +69,17 @@ endif()
 add_test(NAME dot3_chain_contract COMMAND dot3_chain_contract)
 set_tests_properties(dot3_chain_contract PROPERTIES TIMEOUT 30)
 
+# Retain every stored clamp bit with the production floating-point policy.
+add_executable(simd_clamp_fast_contract simd_clamp.c)
+target_include_directories(simd_clamp_fast_contract PRIVATE
+    ${CMAKE_SOURCE_DIR}/libsoftgl/src ${CMAKE_SOURCE_DIR}/libsoftgl/include)
+if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(simd_clamp_fast_contract PRIVATE
+        -O2 -ffast-math -msse4.1 -Werror)
+endif()
+add_test(NAME simd_clamp_fast_contract COMMAND simd_clamp_fast_contract)
+set_tests_properties(simd_clamp_fast_contract PROPERTIES TIMEOUT 30)
+
 add_executable(constant_texture_contract constant_texture.c)
 target_include_directories(constant_texture_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
 target_link_libraries(constant_texture_contract PRIVATE softgl)
