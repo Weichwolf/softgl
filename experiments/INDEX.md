@@ -130,3 +130,4 @@
 | [scene-simd-positions](scene-simd-positions/README.md) | Rejected | SIMD position postprocessing has 36 exact off views, but Sponza/Bistro +3.0/+2.3%; tail/non-finite contract passes. |
 | [native-vector-registers](native-vector-registers/README.md) | Not adopted | Native extended registers preserve 36 exact off views, but give no broad full-frame gain. |
 | [scene-parallel-bins](scene-parallel-bins/README.md) | Accepted | Stable parallel references: off BMW/T-80/Sponza/Bistro -7.4/-13.6/-4.9/-7.0%; 108 exact images, 752 tests; MSAA within ±0.9%. |
+| [fused-transparent-pass](fused-transparent-pass/README.md) | Validating | BMW off -13.36% in six independent AB/BA blocks; 72 analytic blend cases pass; full off/2×/4× validation running, no adoption. |
