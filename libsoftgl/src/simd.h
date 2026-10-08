@@ -11,6 +11,10 @@
 
 #include <stdint.h>
 
+#if !defined(__wasm__) && (defined(__AVX__) || defined(__AVX2__) || defined(__AVX512F__))
+    #error "libsoftgl requires native SIMD128; compile with AVX disabled"
+#endif
+
 #if defined(__SSE4_1__)
     #include <smmintrin.h>
     #if defined(__wasm_simd128__)

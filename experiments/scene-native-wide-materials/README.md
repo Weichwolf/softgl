@@ -1,6 +1,9 @@
 # Optional native SIMD512 material resolve with portable fallback
 
-Status: accepted in production; all adoption gates pass. Independent off BMW/T-80/
+Status: superseded by the user requirement that native also use SIMD128.
+The following gains and validation describe historical revision `91ab0d1`,
+not the current policy. The implementation is removed from production.
+Historical adoption gates passed. Independent off BMW/T-80/
 Sponza/Bistro frame-time reductions: 2.05/6.44/6.98/5.95%. All 108 coverage
 views are exact; additional RGB rounding is at most one value. 756 native tests,
 2,024 enabled sanitizer pairs, 288 resident/fresh comparisons, 2,024 actual

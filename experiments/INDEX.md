@@ -149,7 +149,7 @@
 | [scene-selective-guardband-outlined](scene-selective-guardband-outlined/README.md) | Not adopted | Full-orbit warm-up confirms only Bistro -2.0%; T-80 +4.9%, Sponza +0.9%; no broad gain. |
 | [scene-material-mip-sampling](scene-material-mip-sampling/README.md) | Held | Centroid LOD shows floor seams; off +0.3/-3.2/-5.3/-7.7%, 36 exact coverage views; all-mode audit terminated before final Bistro4 result. |
 | [scene-material-pixel-mips](scene-material-pixel-mips/README.md) | Held | Pixel footprints: off +0.9/-2.4/-3.1/-8.4%; 384 numerical and 216 render checks pass, exact coverage in 36 views, visible discrete floor LOD changes. |
-| [scene-native-wide-materials](scene-native-wide-materials/README.md) | Accepted | Optional native SIMD512: off -2.1/-6.4/-7.0/-6.0%; 756 tests, 108 exact coverage views/max RGB 1, sanitizer/context/WASM gates pass; live SIMD128 updated, peak 2.63 GiB. |
+| [scene-native-wide-materials](scene-native-wide-materials/README.md) | Superseded | Historical native SIMD512 gains 2–7%; removed because native and WASM must both use SIMD128. |
 | [scene-fixed-width-addressing](scene-fixed-width-addressing/README.md) | Not adopted | Mixed off screen -0.2/-2.1/+4.6/+1.1%; 36 exact views. User now permits standard-format variants alongside a general path. |
 | [scene-native-wide-fixed-width](scene-native-wide-fixed-width/README.md) | Not adopted | Fixed-width combination gives no additional confirmed gain; 2,015 enabled comparisons and 36 views max RGB error 1; standard-format permission now allows future generic-backed variants. |
 | [scene-variable-viewport](scene-variable-viewport/README.md) | Private trial | Runtime dimensions pass 2,106 small even/odd-size frame pairs, 216 quantization pairs and 36 exact asset views; performance/WASM gates pending. |
@@ -159,3 +159,8 @@
 | [scene-current-phase-accounting](scene-current-phase-accounting/README.md) | Diagnostic | Current SIMD512 renderer: visibility 39.5–47.5% of elapsed frame, triangle preparation 6.3–13.1%; 480 frames and four exact final RGB images. |
 | [scene-vertical-coverage](scene-vertical-coverage/README.md) | Held | Vertical SIMD128: confirmed off +0.5/-2.2/-3.4/-1.2%; 8,568 native/WASM pairs pass; Bistro2 +2.37%, independent recheck +1.43%; no adoption. |
 | [scene-quantized-affine-depth](scene-quantized-affine-depth/README.md) | Not adopted | Two-weight depth confirmation +4.3/+3.4/-2.5/-0.5%; 36 exact masks and 4M numeric checks pass; sparse RGB tie changes, no broad gain. |
+| [scene-simd128-policy](scene-simd128-policy/README.md) | Applied | Native AVX512 removed; ISA audit, 756 native tests, 108 exact views, sanitizer/WASM contracts and 12 live browser cases pass; fresh timings pending. |
+| [scene-meshlets-soa](scene-meshlets-soa/README.md) | Queued | Meshlets with structure-of-arrays positions; requested architecture trial, SIMD128 only; no measurements yet. |
+| [scene-triangle-packets](scene-triangle-packets/README.md) | Queued | SIMD128 triangle packets through visibility; requested architecture trial, SIMD128 only; no measurements yet. |
+| [scene-packet-bin-masks](scene-packet-bin-masks/README.md) | Queued | Compact packet identifiers and bin masks; requested architecture trial, SIMD128 only; no measurements yet. |
+| [scene-tiled-4x4](scene-tiled-4x4/README.md) | Queued | 4x4 pixel blocks and matching visibility storage; requested architecture trial, SIMD128 only; no measurements yet. |

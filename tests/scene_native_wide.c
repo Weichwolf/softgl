@@ -1,16 +1,9 @@
-/* Optional native resolve versus the accepted SIMD128 path. Independently
- * checked rectangles cover lengths 1–31; private audit tests trace dispatch. */
+/* The removed native-wide opt-in must stay unsupported, including on hosts
+ * with AVX512. Independently checked SIMD128 rectangles cover lengths 1–31. */
 #include "types.h"
 static softgl_ctx *reference_context;
 static int request_wide, request_quantization, enabled_calls;
-static int native_available(void) {
-#if defined(__x86_64__) && !defined(__wasm__) && (defined(__GNUC__) || defined(__clang__))
-    return __builtin_cpu_supports("avx512f") && __builtin_cpu_supports("avx512dq") &&
-        __builtin_cpu_supports("avx512bw") && __builtin_cpu_supports("avx512vl");
-#else
-    return 0;
-#endif
-}
+static int native_available(void) { return 0; }
 static int begin_selected_wide(void) {
     int begun = softgl_scene_visibility_begin();
     if (begun) {
@@ -119,8 +112,8 @@ int main(void) {
     }
     CHECK(comparisons == 2024 && restored == 6 && captured);
     CHECK(tails == 131070u);
-    if (native_available()) CHECK(enabled_calls);
-    printf("Native wide: %d paired full-plane frames, all rectangle/tail lengths; %d rollbacks; availability=%d PASS\n",
+    CHECK(enabled_calls == 0);
+    printf("SIMD128 compatibility: %d paired full-plane frames, all rectangle/tail lengths; %d rollbacks; availability=%d PASS\n",
         comparisons,restored,native_available());
     return 0;
 }

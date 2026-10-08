@@ -35,7 +35,7 @@ Open `http://localhost:8000`. The server supplies COOP/COEP headers required by 
 
 ## Coding Style & Naming Conventions
 
-Use four-space indentation, same-line braces, and `snake_case`. Preserve `gl*` API names, `softgl_*` integration functions, `sg_*` internals, and `SG_*` constants. Keep helpers `static` where possible. Follow adjacent code; no formatter or linter configuration is tracked. Resolve compiler warnings. Preserve SSE4.1/native and SIMD128/WASM paths, vertex alignment, and bottom-origin framebuffer coordinates.
+Use four-space indentation, same-line braces, and `snake_case`. Preserve `gl*` API names, `softgl_*` integration functions, `sg_*` internals, and `SG_*` constants. Keep helpers `static` where possible. Follow adjacent code; no formatter or linter configuration is tracked. Resolve compiler warnings. Native and WASM libsoftgl must both use SIMD128 exclusively. Do not add AVX2/AVX512 paths or use wider auto-vectorization; native benchmarks must use the same SIMD width as WASM. Preserve SSE4.1/native and SIMD128/WASM paths, vertex alignment, and bottom-origin framebuffer coordinates.
 
 ## Testing Guidelines
 

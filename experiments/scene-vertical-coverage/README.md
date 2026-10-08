@@ -1,6 +1,8 @@
 # Vertical SIMD128 coverage for narrow triangles
 
-Status: held; outlined off gains are small and Bistro2 control regressions remain. Baseline `05195fe`.
+Status: held; all recorded timings use the historical native-wide baseline
+`05195fe`. Native is now SIMD128-only: rebase before any further execution.
+Outlined off gains are small and Bistro2 control regressions remain.
 
 The accepted quantized coverage kernel tests four neighboring X samples per
 row. A one-pixel-wide bounding box leaves at most one live lane even when it

@@ -957,8 +957,8 @@ int softgl_scene_visibility_begin(void);
  * Call after a successful begin; each new begin restores full precision.
  * Legacy draws and MSAA keep their existing renderer. */
 void softgl_scene_quantized_visibility(GLboolean enabled);
-/* Optional native AVX512 material resolve. Call after scene begin; resets for
- * each frame. Returns actual enablement; SSE4.1/WASM SIMD128 stay available. */
+/* Compatibility entry point for the removed native-wide backend.
+ * Always returns zero; native and WASM rendering use SIMD128 exclusively. */
 int softgl_scene_native_wide(GLboolean enabled);
 void softgl_scene_visibility_material(void);
 int softgl_scene_visibility_end(void);

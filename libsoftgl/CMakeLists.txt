@@ -32,8 +32,9 @@ target_compile_definitions(softgl PRIVATE SOFTGL_BUILD)
 # SSE4.1 (native x86) / wasm_simd128 (Emscripten) are hard requirements.
 # simd.h emits #error if neither is defined.
 if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
-    if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86|AMD64|amd64|i386|i686")
-        target_compile_options(softgl PRIVATE -msse4.1)
+    if(NOT EMSCRIPTEN AND CMAKE_SYSTEM_PROCESSOR MATCHES "x86|AMD64|amd64|i386|i686")
+        # Keep auto-vectorization within SIMD128 even with caller -march=native.
+        target_compile_options(softgl PRIVATE -msse4.1 -mno-avx -mno-avx2 -mno-avx512f)
     endif()
 endif()
 

@@ -230,6 +230,8 @@ is accepted with isolated off-mode gains of 1.9/3.1/3.7/2.8% on the same four
 scenes. The direct three-backend table above still measures f1df73f; its values
 are not relabeled as new measurements of that later renderer.
 
-Current production comparison: [native SIMD512](current-native-wide-materials/README.md),
-640×360/off, 60 warm frames, 72 accepted balanced runs. Older dated evidence
+The [native SIMD512 comparison](current-native-wide-materials/README.md) is
+historical: native now also must use SIMD128. The validated
+[SIMD128-only policy](../scene-simd128-policy/README.md) supersedes that backend;
+fresh three-renderer measurements are pending. Older dated evidence
 below retains its original source and warm-up scope.

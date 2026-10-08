@@ -1,4 +1,7 @@
-# Current native SIMD512 comparison
+# Historical native SIMD512 comparison
+
+Superseded: native libsoftgl must now also use SIMD128; this table measures
+revision `91ab0d1`, not the current renderer.
 
 Production native library and common wrapper, 640×360, off, four total threads,
 60 warm/30 measured frames and three balanced forward/reverse blocks per scene.
