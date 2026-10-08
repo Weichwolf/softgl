@@ -1,0 +1,162 @@
+--- a/libsoftgl/src/scene_visibility.c
++++ b/libsoftgl/src/scene_visibility.c
+@@ -62,6 +62,7 @@
+     int quantized;
+     int deferred_meshes;
+     uint8_t *sample_point, *shade_mask;
++    uint32_t *group_counts;
+     atomic_int failed, next_task;
+     pthread_mutex_t allocation_mutex;
+ };
+@@ -71,7 +72,7 @@
+     if (!f) return;
+     for (int i = 0; i < SG_MAX_BINS; i++) { free(f->bins[i].triangles); free(f->bins[i].visible); }
+     free(f->winner); free(f->pixels); free(f->pixel_material); free(f->backup_depth); free(f->backup_color);
+-    free(f->materials); free(f->tasks); free(f->sample_point); free(f->shade_mask);
++    free(f->group_counts); free(f->materials); free(f->tasks); free(f->sample_point); free(f->shade_mask);
+     scene_geometry_destroy(f->geometry);
+     pthread_mutex_destroy(&f->allocation_mutex);
+     free(f);
+@@ -132,7 +133,9 @@
+     }
+     if (!f->materials) f->materials = calloc(SCENE_MATERIALS, sizeof(scene_material));
+     if (!f->tasks) f->tasks = malloc((pixels*4/256+SCENE_MATERIALS+1)*sizeof(scene_task));
+-    if (!f->materials || !f->tasks) return 0;
++    if (c->fb.samples && !f->group_counts)
++        f->group_counts = calloc((size_t)SG_MAX_BINS*SCENE_MATERIALS,sizeof(uint32_t));
++    if (!f->materials || !f->tasks || (c->fb.samples && !f->group_counts)) return 0;
+     memset(f->pixel_material, 255, units*sizeof(uint16_t));
+     if (c->fb.samples) {
+         memcpy(f->backup_depth,c->fb.sample_depth,units*sizeof(float));
+@@ -957,41 +960,92 @@
+     }
+ }
+ 
+-/* Distinct winner/shading-point pairs of one pixel share one shade job.
+- * No job writes any sample owned by a different job. */
++/* Each worker owns an existing X stripe. Counts/cursors, masks and triangle
++ * visibility are disjoint; the joined prefix needs no per-fragment atomics. */
++static void scene_msaa_group_bins(void *data) {
++    struct sg_scene_visibility *f = data;
++    softgl_ctx *c = f->context;
++    sg_worker_pool *pool = c->workers;
++    unsigned n = (unsigned)c->fb.samples;
++    for (;;) {
++        int bin = atomic_fetch_add_explicit(&f->next_task,1,memory_order_relaxed);
++        if (bin >= pool->nbins) break;
++        uint32_t *counts = f->group_counts+(size_t)bin*SCENE_MATERIALS;
++        memset(counts,0,(size_t)f->material_count*sizeof(*counts));
++        uint32_t groups = 0;
++        for (int y = 0; y < c->fb.h; y++) {
++            size_t first = ((size_t)y*c->fb.w+pool->bins[bin].ix0)*n;
++            size_t end = ((size_t)y*c->fb.w+pool->bins[bin].ix1)*n;
++            memset(f->shade_mask+first,0,end-first);
++            for (size_t base = first; base < end; base += n) {
++                unsigned seen = 0;
++                for (unsigned s = 0; s < n; s++) {
++                    size_t at = base+s;
++                    if ((seen & (1u << s)) || f->pixel_material[at] == UINT16_MAX) continue;
++                    unsigned mask = 1u << s;
++                    for (unsigned k = s+1; k < n; k++) if (f->pixel_material[base+k] != UINT16_MAX &&
++                        f->winner[base+k] == f->winner[at] &&
++                        f->sample_point[base+k] == f->sample_point[at]) mask |= 1u << k;
++                    f->shade_mask[at] = (uint8_t)mask; seen |= mask;
++                    counts[f->pixel_material[at]]++; groups++;
++                    if (f->deferred_meshes) {
++                        uint32_t id = f->winner[at];
++                        /* A recorded winner belongs to the stripe that wrote it.
++                         * Fail and restore rather than race on a violated contract. */
++                        if ((id >> SCENE_INDEX_BITS) != (unsigned)bin) {
++                            atomic_store_explicit(&f->failed,1,memory_order_relaxed);
++                        } else f->bins[bin].visible[id & SCENE_INDEX_MASK] = 1;
++                    }
++                }
++            }
++        }
++        SCENE_MSAA_AUDIT(4,groups);
++    }
++}
++
+ static uint32_t scene_msaa_groups(struct sg_scene_visibility *f) {
++    sg_worker_pool *pool = f->context->workers;
++    atomic_store_explicit(&f->next_task,0,memory_order_relaxed);
++    sg_workers_run_callback(f->context,scene_msaa_group_bins,f);
++    uint32_t groups = 0;
++    for (int bin = 0; bin < pool->nbins; bin++) {
++        const uint32_t *counts = f->group_counts+(size_t)bin*SCENE_MATERIALS;
++        for (int m = 0; m < f->material_count; m++) {
++            f->materials[m].count += counts[m]; groups += counts[m];
++        }
++    }
++    return groups;
++}
++
++static void scene_msaa_list_bins(void *data) {
++    struct sg_scene_visibility *f = data;
+     softgl_ctx *c = f->context;
+-    size_t pixels = (size_t)c->fb.w*c->fb.h;
++    sg_worker_pool *pool = c->workers;
+     unsigned n = (unsigned)c->fb.samples;
+-    uint32_t groups = 0;
+-    memset(f->shade_mask,0,pixels*n);
+-    for (size_t p = 0; p < pixels; p++) {
+-        size_t base = p*n; unsigned seen = 0;
+-        for (unsigned s = 0; s < n; s++) {
+-            size_t at = base+s;
+-            if ((seen & (1u << s)) || f->pixel_material[at] == UINT16_MAX) continue;
+-            unsigned mask = 1u << s;
+-            for (unsigned k = s+1; k < n; k++) if (f->pixel_material[base+k] != UINT16_MAX &&
+-                f->winner[base+k] == f->winner[at] && f->sample_point[base+k] == f->sample_point[at]) mask |= 1u << k;
+-            f->shade_mask[at] = (uint8_t)mask; seen |= mask;
+-            f->materials[f->pixel_material[at]].count++; groups++;
+-            if (f->deferred_meshes) {
+-                uint32_t id = f->winner[at];
+-                f->bins[id >> SCENE_INDEX_BITS].visible[id & SCENE_INDEX_MASK] = 1;
+-            }
+-        }
+-    }
+-    SCENE_MSAA_AUDIT(4,groups);
+-    return groups;
++    for (;;) {
++        int bin = atomic_fetch_add_explicit(&f->next_task,1,memory_order_relaxed);
++        if (bin >= pool->nbins) break;
++        uint32_t *cursor = f->group_counts+(size_t)bin*SCENE_MATERIALS;
++        for (int y = 0; y < c->fb.h; y++) {
++            uint32_t first = ((unsigned)y*(unsigned)c->fb.w+(unsigned)pool->bins[bin].ix0)*n;
++            uint32_t end = ((unsigned)y*(unsigned)c->fb.w+(unsigned)pool->bins[bin].ix1)*n;
++            for (uint32_t at = first; at < end; at++) if (f->shade_mask[at])
++                f->pixels[cursor[f->pixel_material[at]]++] = at;
++        }
++    }
+ }
+ 
+ static void scene_msaa_list(struct sg_scene_visibility *f) {
+-    softgl_ctx *c = f->context;
+-    uint32_t units = (unsigned)c->fb.w*(unsigned)c->fb.h*(unsigned)c->fb.samples;
+-    for (uint32_t at = 0; at < units; at++) if (f->shade_mask[at]) {
+-        scene_material *m = &f->materials[f->pixel_material[at]];
+-        f->pixels[m->cursor++] = at;
+-    }
++    sg_worker_pool *pool = f->context->workers;
++    for (int m = 0; m < f->material_count; m++) {
++        uint32_t first = f->materials[m].first;
++        for (int bin = 0; bin < pool->nbins; bin++) {
++            uint32_t *cursor = f->group_counts+(size_t)bin*SCENE_MATERIALS+m;
++            uint32_t count = *cursor; *cursor = first; first += count;
++        }
++    }
++    atomic_store_explicit(&f->next_task,0,memory_order_relaxed);
++    sg_workers_run_callback(f->context,scene_msaa_list_bins,f);
+ }
+ 
+ int softgl_scene_visibility_end(void) {
+@@ -1019,6 +1073,9 @@
+             f->bins[id >> SCENE_INDEX_BITS].visible[id & SCENE_INDEX_MASK] = 1;
+         }
+     }
++    if (atomic_load_explicit(&f->failed,memory_order_relaxed)) {
++        scene_restore(f); return 0;
++    }
+     if (f->deferred_meshes) {
+         scene_geometry_attributes(f);
+         if (atomic_load_explicit(&f->failed,memory_order_relaxed)) {

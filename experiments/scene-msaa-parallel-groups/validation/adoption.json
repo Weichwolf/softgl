@@ -1,0 +1,62 @@
+{
+  "baseline": "da48afd182569a070d9d43412988ca93768d4096",
+  "nativeArchiveSha256": "97674fe383a9cbb5e244aed359826d9dd87159fea579e8be86aba212d0a56778",
+  "measuredCandidateArchiveSha256": "97674fe383a9cbb5e244aed359826d9dd87159fea579e8be86aba212d0a56778",
+  "productionSourceSha256": "bde413f294a609b2a921623c25d7377bf2702b1de0a32a2cdb345a44031d8b0f",
+  "measuredSourceSha256": "d25fcf6f3e5be0a2d2c6f847c0b8957694e6e3b864adfc2b8b5e685b24fbc719",
+  "sameGeneratedNativeArchive": true,
+  "completed": {
+    "nativeCtest": 757,
+    "nativeBaselineHashPairs": 216,
+    "canonicalPairs": 162,
+    "simd128Pairs": 2024,
+    "assetViewsExact": 108,
+    "residentFreshFramePairs": 288,
+    "wasmBaselineHashPairs": 216,
+    "asanUbsanLeakChecks": true,
+    "actualWasmRollbackReplay": true,
+    "liveBrowserCases": 12
+  },
+  "compilers": {
+    "native": "Clang 22.1.8",
+    "sanitize": "Clang 19.1.7",
+    "wasm": "Emscripten 3.1.69"
+  },
+  "validationFilesSha256": {
+    "audit-build.txt": "3ef7d689db54dd9d4efee3fb7733f8ba6dfe2959dd7834e87acfe54400f53924",
+    "audit-contract.txt": "533b1330555da6eeb763829c6f6598d44b0599e5e45f42c92c0d3ad63e192953",
+    "baseline-contract.txt": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+    "bistro-screen-receipt.json": "5a3ef7dcd4fe7fe311382f14ca5d1be7ab93250612a0ae63d86e0c1f78730f68",
+    "bistro-screen-summary.json": "eaba2a9e646df95a2ca436afe68b0f37574832f18b2fa96cbbae201ddf319016",
+    "browser-smoke.json": "d7c1c474de70a89fccc540677fa7b44a351bbe43aa0ff054f833156fd0f2619b",
+    "browser.txt": "0181fc9c9a43a17b48175d1661e2f8fc0ae1bc063228686962341aef4722edff",
+    "candidate-contract.txt": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+    "confirmation-receipt.json": "83b5952e004a8c384848757d24c5001793b0af33a8db44ce74f95519f5add1b3",
+    "confirmation-summary.json": "ad4afc40bbbc3be51c309194c5b0f4986edc1535a44d6df13ae1ee44bf4c0040",
+    "ctest.txt": "5d8202c032b06020d856d28f19d49f028eda82064c92af2c82f319f8c912f21e",
+    "isa.json": "cad317b6ebed057da80417074c664860cad6b9cf16183cba1608719a22c56065",
+    "live-files.json": "e12687feb2675009d636cd517b322e9991b1865f2ec872ad1894b8aa9f148ccc",
+    "native-build.txt": "8f1fd70973f65e0c399e7a9421ebf7400c775848f2ac6df6aed12b8561022b99",
+    "positions.txt": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+    "production-build.txt": "53187db32f42d41adac955ae38a0a1f508c2a9754f39b26ee86b5d1c7339aa6c",
+    "production.patch": "97d7aa008601a716c70600e92a25ab6cb52d646425bca06570b3624fe4d7bd09",
+    "quality.json": "037cf3b6830f5b594c30c0e5e2a9fa84d37b18b32509eae442c15ffb314cf845",
+    "resident-quality.json": "2ff298a41a7f4ea53c0c67b2b1d0c3844e9282964e3c76bdded601e20a4af040",
+    "rollback-replay.txt": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+    "sanitize-build.txt": "84a1324da6b775e67db273b5a61255306ca5069b17b4bf6c199779517515cdf3",
+    "sanitize-msaa.txt": "533b1330555da6eeb763829c6f6598d44b0599e5e45f42c92c0d3ad63e192953",
+    "sanitize-replay.txt": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+    "sanitize-simd.txt": "c00c7f19846471fb9c73d304e9d58981d8d10270353474530f5624be8a0536d8",
+    "simd128-contract.txt": "c00c7f19846471fb9c73d304e9d58981d8d10270353474530f5624be8a0536d8",
+    "source.patch": "d38b4e4ee77a3480739d1ecde4abde18aa76f94a9e1b0f31fdcb9d25b2f2788a",
+    "wasm-build-cache-failure.txt": "74092c8f26d20201ff548e53a78e4cef8edca13fdad68e82548f63fa2d6aad67",
+    "wasm-build.txt": "c4b659111fb3231de0225ec2b60161a393d32e2181c28a38f32fe442f9b2b555",
+    "wasm-contract.txt": "f7bc7b85b065db38d9b7ca7655fe177896b9883ef045ee20f0688fc0bcdf44bc"
+  },
+  "browserPeakHeapBytes": 2845114368,
+  "visualInspection": {
+    "image": "tmp/scene-msaa-occlusion/browser/bistro-browser-4.png",
+    "sha256": "6d83ce48378e4ac55a4e2707e91f2e88cfcd6b7b246415510009d7e3319e8041",
+    "finding": "No obvious missing major geometry or broken materials at this inspected view"
+  }
+}

@@ -1,0 +1,33 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 20K of event 'cycles:u'
+# Event count (approx.): 94043077141
+#
+# Overhead  Symbol                                   IPC   [IPC Coverage]
+# ........  .......................................  ....................
+#
+    23.74%  [.] sg_raster_triangle_msaa4             -      -            
+    22.66%  [.] scene_resolve                        -      -            
+    10.96%  [.] sg_scene_visibility_msaa_packet      -      -            
+     5.72%  [.] scene_geometry_append                -      -            
+     5.55%  [.] scene_geometry_positions             -      -            
+     4.37%  [.] scene_packet_fallback                -      -            
+     4.32%  [.] softgl_scene_visibility_end          -      -            
+     3.42%  [.] sg_sample_tex_cube                   -      -            
+     2.78%  [.] sg_raster_triangle_tile_prepared     -      -            
+     2.51%  [.] scene_geometry_attribute_bins        -      -            
+     2.22%  [.] scene_geometry_raster                -      -            
+     2.08%  [.] scene_geometry_triangles             -      -            
+     2.08%  [.] sg_packet_sample_cube_coherent       -      -            
+     1.39%  [.] sg_scene_visibility_triangle         -      -            
+     1.21%  [.] scene_triangle_record                -      -            
+     0.98%  [.] generate_fused_attributes            -      -            
+     0.95%  [.] scene_geometry_references            -      -            
+
+
+#
+# (Tip: Use --symfs <dir> if your symbol files are in non-standard locations)
+#

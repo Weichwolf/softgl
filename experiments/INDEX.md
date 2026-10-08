@@ -174,4 +174,9 @@
 | [scene-msaa-compact](scene-msaa-compact/README.md) | Not adopted | Exact native views/contracts; Bistro2/4 scalar +0.9/-1.2%, packed +1.3/+1.0%, aligned +3.0/-2.1% screens; no confirmed broad gain. |
 | [scene-compact-triangles](scene-compact-triangles/README.md) | Not adopted | Native snapshots 320→256B, 108 exact views; Bistro2/4 screen −0.9/−1.5%; OFF −11.4% outlier-driven/unconfirmed; WASM layout pending. |
 | [scene-msaa-exact-kernel](scene-msaa-exact-kernel/README.md) | Not adopted | Exact native planes; fresh 144-run repeat after user-reported interference: Bistro4 −2.53% time (+2.6% FPS), Bistro2 +3.30%; no broad gain, shared-setup isolation pending. |
-| [scene-depth-order](scene-depth-order/README.md) | Private / unmeasured | Opt-in stable near-first packet bins, optional opaque-first partition; existing budgets, quality/performance effects pending. |
+| [scene-depth-order](scene-depth-order/README.md) | Private / screened | Near-first Bistro OFF/2×/4× −0.88/−3.55/−5.09% preliminary; 108 coverage-identical views with sparse changed winners, 99 enabled controls; no adoption. |
+| [scene-phase-profile](scene-phase-profile/README.md) | Diagnostic | Bistro4 72.49 ms: joined raster/capture 32.38, shading 16.82, serial grouping/list 8.71; instrumented, final planes exact, no gain claim. |
+| [a4-sparse-aa](a4-sparse-aa/README.md) | Research / locally reviewed | A4 paper and pinned SimdRast: sparse edge AA and tiled fragment resolve; hybrid timings do not predict CPU-only 4× speed. |
+| [scene-msaa-parallel-groups](scene-msaa-parallel-groups/README.md) | Accepted | 144 accepted/8 rejected runs: Bistro2/4 FPS +6.31/+10.83%; 108 exact views, 757 tests, sanitizer/WASM and 12 live browser cases pass (2.65 GiB). |
+| [scene-msaa-surface-merge](scene-msaa-surface-merge/README.md) | Research | Merge shading of compatible adjacent surface fragments while retaining all 4× depth/coverage; approximation and speed unmeasured. |
+| [scene-msaa-triangle-packets](scene-msaa-triangle-packets/README.md) | Research | Full-precision four-triangle SIMD128 MSAA setup; accepted OFF packets currently bypass MSAA; implementation/gain pending. |
