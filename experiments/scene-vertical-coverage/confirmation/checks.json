@@ -1,0 +1,27 @@
+{
+  "status": "off-mode confirmation passed; MSAA/context/sanitizer/native-suite/live-browser gates pending",
+  "offAttempts": 52,
+  "acceptedOffAttempts": 48,
+  "rejectedOffAttempts": 4,
+  "exactRgbFullPlaneViews": 36,
+  "nativeKnownShapePairs": 8568,
+  "wasmKnownShapePairs": 8568,
+  "actualVerticalCalls": 12046,
+  "actualVerticalPassingWrites": 109675,
+  "wasmHeapBytes": 268435456,
+  "outlinedExecutableMatchesInitialScreen": true,
+  "remaining": [
+    "MSAA2/4 balanced confirmation",
+    "renderer sanitizer",
+    "resident/fresh contexts",
+    "native regression suite",
+    "current candidate live-browser cases"
+  ],
+  "filesSha256": {
+    "quality.txt": "2b37ab873ee77bd31236c9434ccd795d02f74c785c8b9f98cf5e61417c2ff676",
+    "quality.json": "c76b240bfd6c9df5c6d4880d6962059ec75cd3a61c8208d63f6423f4ac7aeeab",
+    "receipt.json": "68587af9f2cfdaaf1484ae563ecc0cad835e95dda9b30b55388406bbca722620",
+    "summary.json": "f6f78943b4a2dfceea2ff65930a8386d15b7d071d7d94f70bb50d948533638f0",
+    "build.txt": "ffd44bbe18d27eb346ed251d571bd0728cd0a0104706301b0e6775a7721b41ce"
+  }
+}
