@@ -87,3 +87,10 @@ and [summary](confirmation/summary.json) retain individual samples.
 The MSAA2/4 confirmation has been started separately; no all-mode adoption
 is claimed. Sanitizer, context-reuse, native-suite and live-browser gates remain.
 Production and live preview are still the accepted renderer.
+
+Adoption recipes prepared: `sanitize.sh` runs the actual renderer contracts
+with Clang 19 Address/UndefinedBehavior/leak sanitizers and the accepted math
+flags; it has not yet been executed. `check_resident.py` requires a complete
+108-view receipt at `validation/quality.json`, then checks off/2×/4×/off context
+reuse against that fresh-context oracle. Its complete oracle is deliberately
+not supplied by the current 36-view off-only receipt. These are pending gates.

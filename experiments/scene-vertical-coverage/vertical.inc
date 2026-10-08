@@ -97,4 +97,3 @@ static int scene_quantized_vertical(softgl_ctx *c, const sg_vert *v0,
     }
     return 0;
 }
-
