@@ -6,7 +6,7 @@ import shutil
 import subprocess
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--baseline', default='0bd845b')
+parser.add_argument('--baseline', default='d5e79c7')
 args = parser.parse_args()
 repo = Path(__file__).resolve().parents[2]
 base = subprocess.check_output(['git','rev-parse',args.baseline],cwd=repo,text=True).strip()

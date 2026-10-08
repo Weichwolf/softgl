@@ -1,8 +1,9 @@
 # Separate opaque and masked SIMD32 visibility kernels
 
-Status: private native prototype; screening pending.
+Status: not adopted; 36 exact views and 216-pair quantized contract pass,
+but BMW/Sponza screening regresses.
 
-The accepted 0bd845b four-bit subpixel kernel includes the alpha sampler,
+The accepted d5e79c7 four-bit subpixel kernel includes the alpha sampler,
 perspective UV interpolation and cutoff branch in the same function used for
 opaque triangles. This original C11 trial compiles two separate noinline
 kernels from exactly that body, with alpha eligibility constant false or true.
@@ -20,7 +21,7 @@ enable quantized visibility and transparent fusion; the UV-reuse experiment
 is not included, so this is an independent kernel specialization screen.
 
 Sources: original specialization of accepted
-[quantized visibility](../../libsoftgl/src/scene_visibility.c) at 0bd845b;
+[quantized visibility](../../libsoftgl/src/scene_visibility.c) at d5e79c7;
 [accepted subpixel experiment](../scene-quantized-visibility/README.md).
 The accepted [transparent packet helper](../fused-transparent-pass/README.md)
 provides a local example of isolating large shader code/register lifetimes.
@@ -30,3 +31,6 @@ Reproduce with prepare.py and this folder's Clang22 Release CMake project,
 then check_quality.py --samples 0 and resident_trial.py --pairs 1 --samples 0
 for all four shared 640×360 scenes, caller plus three helpers. Promising
 results need independent all-mode AB/BA and correctness/WASM gates.
+
+[Native screening evidence](screening/README.md): +1.50/-0.70/+4.43/-1.69%
+frame time for BMW/T-80/Sponza/Bistro. No broad gain from this exact split.

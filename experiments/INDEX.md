@@ -139,4 +139,12 @@
 | [scene-vector-barycentrics](scene-vector-barycentrics/README.md) | Not adopted | 36 exact views and three contracts pass; extra guarded SIMD conversion regresses BMW/Sponza/Bistro in screening. |
 | [scene-quantized-visibility](scene-quantized-visibility/README.md) | Accepted | Opt-in 16.4 SIMD32: off BMW/T-80/Sponza/Bistro -6.0/-8.6/-5.8/-1.9%; documented image differences, 754 tests, scalar/sanitizer/context gates; live WASM updated. |
 | [scene-shared-material-uv](scene-shared-material-uv/README.md) | Accepted | Exact canonical UV reuse: off BMW/T-80/Sponza/Bistro -1.9/-3.1/-3.7/-2.8%; 108 exact views, 755 tests, sampler/worker/sanitizer/context gates; live WASM updated. |
-| [scene-quantized-specialization](scene-quantized-specialization/README.md) | Prototype | Separate opaque/masked SIMD32 kernels to reduce alpha-only code and register lifetimes; screening pending. |
+| [scene-quantized-specialization](scene-quantized-specialization/README.md) | Not adopted | 36 exact off views and 216-pair contract pass; separate kernels regress BMW/Sponza by +1.5/+4.4% in screening. |
+| [scene-primitive-winners](scene-primitive-winners/README.md) | Not adopted | 36 exact off views; serial final surfaces regress all four scenes by +7.7–22.1% in screening. |
+| [scene-primitive-winners-parallel](scene-primitive-winners-parallel/README.md) | Not adopted | 36 exact off views; parallel shared final surfaces regress all four scenes in screening (+13–21%). |
+| [scene-simd-triangle-setup](scene-simd-triangle-setup/README.md) | Held | 36 exact views, 216-pair old/240-frame new contracts; mixed Sponza and unstable MSAA controls prevent adoption. |
+| [scene-vector-material-gather](scene-vector-material-gather/README.md) | Not adopted | 36 exact views and 216-pair contract; vector gathers give mixed +0.6/+1.6/-1.5/-2.7% screening. |
+| [scene-guardband-clipping](scene-guardband-clipping/README.md) | Not adopted | Expanded-plane guardband gives no broad gain; 36 coverage masks exact, RGB/depth changes documented. |
+| [scene-selective-guardband](scene-selective-guardband/README.md) | Not adopted | Confirmed off Sponza/Bistro -4.5/-2.4%, but T-80 +3.7%; 36 masks exact, inspected RGB changes. |
+| [scene-selective-guardband-outlined](scene-selective-guardband-outlined/README.md) | Not adopted | Full-orbit warm-up confirms only Bistro -2.0%; T-80 +4.9%, Sponza +0.9%; no broad gain. |
+| [scene-material-mip-sampling](scene-material-mip-sampling/README.md) | Proposed | GLimpSW uses gradient-selected mips/nearest color minification; scene implementation and measurement pending. |
