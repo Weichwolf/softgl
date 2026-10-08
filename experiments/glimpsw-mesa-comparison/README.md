@@ -1,10 +1,10 @@
 # GLimpSW / Mesa / libsoftgl with four common scenes
 
-Status: current accepted rolling SIMD128 coverage beats Mesa in all four scenes
-at 640x360/off, with 57.6–73.7% less complete-frame time. GLimpSW remains
-5.42–7.42× faster with its different rendering pipeline.
-[Current summary](current-simd/summary.json),
-[current receipt](current-simd/receipt.json).
+Status: accepted stable parallel-bin frontend beats Mesa in all four scenes
+at 640×360/off, with 58.4–76.2% less complete-frame time. GLimpSW remains
+4.86–7.25× faster with its different rendering pipeline.
+[Current summary](current-parallel-bins/summary.json),
+[current receipt](current-parallel-bins/receipt.json).
 
 Historical native 640x360 baseline (47e517d): 72 accepted measurements, no rejected
 blocks. Six timings per renderer/scene with three rotated forward/reverse pairs.
@@ -63,7 +63,7 @@ interference or frequency changes. Original and rejected blocks remain private;
 final receipts identify accepted records and binary/source/asset hashes.
 
 The original baseline described below is historical; current values are linked
-at the top and in the latest rolling SIMD section at the end.
+at the top and in the latest parallel-bin section at the end.
 
 At 640x360, libsoftgl uses about 29.7%/31.3% less frame time than Mesa
 for BMW/T-80, but 42.9%/55.3% more for Sponza/Bistro. GLimpSW is faster
@@ -168,3 +168,24 @@ GLimpSW is still faster; the objective remains open. Reproduce with
 `current_compare.py --softgl build/scene-simd-coverage/native/candidate`.
 Native MSAA regression and browser validation belong to the
 [optimization experiment](../scene-simd-coverage/README.md).
+
+## Accepted stable parallel-bin frontend
+
+Task-local counts and prefix partitions remove the serial complete-primitive
+walks from reference construction while preserving per-stripe draw order.
+The independent three-renderer comparison has 72 quiet accepted requests and
+no rejected blocks. Same prepared assets, cameras, copied image observability,
+reference binaries and four-thread budgets as the preceding comparison.
+
+| Asset | GLimpSW ms | Mesa ms | libsoftgl ms | SG time vs Mesa | SG / GLimpSW |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| bmw | 2.269 | 35.796 | 13.389 | -62.60% | 5.90× |
+| t80 | 1.630 | 30.165 | 7.917 | -73.75% | 4.86× |
+| sponza | 3.700 | 64.425 | 26.819 | -58.37% | 7.25× |
+| bistro | 6.046 | 171.092 | 40.680 | -76.22% | 6.73× |
+
+[Summary and sources](current-parallel-bins/README.md),
+[receipt](current-parallel-bins/receipt.json). Native gain validation, exact
+108-image comparisons, 752 tests, sanitizers and the live WASM update belong
+to the [optimization experiment](../scene-parallel-bins/README.md).
+GLimpSW remains faster under its different rendering pipeline.
