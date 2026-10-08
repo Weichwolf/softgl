@@ -1,0 +1,49 @@
+Total: 165 samples
+      51  30.9%  30.9%       70  42.4% sg_scene_visibility_triangle
+      21  12.7%  43.6%       91  55.2% softgl_scene_visibility_end
+      12   7.3%  50.9%       12   7.3% scene_geometry_append
+      12   7.3%  58.2%       26  15.8% scene_resolve
+       8   4.8%  63.0%        8   4.8% sg_packet_gather_pairs (inline)
+       7   4.2%  67.3%       70  42.4% sg_workers_run_callback
+       5   3.0%  70.3%        5   3.0% _dl_mcount_wrapper@GLIBC_2.2.5
+       4   2.4%  72.7%       74  44.8% scene_geometry_raster
+       3   1.8%  74.5%        3   1.8% pthread_cond_broadcast@@GLIBC_2.3.2
+       3   1.8%  76.4%        3   1.8% scene_geometry_positions
+       3   1.8%  78.2%       15   9.1% scene_geometry_triangles
+       3   1.8%  80.0%        3   1.8% sg_f32x4_mul (inline)
+       3   1.8%  81.8%        3   1.8% sg_i32x4_splat (inline)
+       2   1.2%  83.0%        2   1.2% _sg_clear_real
+       2   1.2%  84.2%        2   1.2% generate_fused_attributes
+       2   1.2%  85.5%        4   2.4% scene_geometry_attribute_bins
+       2   1.2%  86.7%        2   1.2% sg_cube_load_rgba (inline)
+       2   1.2%  87.9%        2   1.2% sg_f32x4_ge (inline)
+       2   1.2%  89.1%        2   1.2% sg_f32x4_le (inline)
+       2   1.2%  90.3%        2   1.2% sg_f32x4_lt (inline)
+       2   1.2%  91.5%        2   1.2% sg_f32x4_splat (inline)
+       2   1.2%  92.7%        2   1.2% sg_i32x4_add (inline)
+       2   1.2%  93.9%        2   1.2% sg_mask4_live (inline)
+       2   1.2%  95.2%        4   2.4% sg_sample_tex_cube
+       2   1.2%  96.4%       65  39.4% sg_worker_main
+       1   0.6%  97.0%        1   0.6% pthread_mutex_lock@@GLIBC_2.2.5
+       1   0.6%  97.6%        1   0.6% sg_f32x4_select (inline)
+       1   0.6%  98.2%        1   0.6% sg_f32x4_set (inline)
+       1   0.6%  98.8%        1   0.6% sg_f32x4_sub (inline)
+       1   0.6%  99.4%        1   0.6% sg_index_range
+       1   0.6% 100.0%        1   0.6% sg_tex_tri_prepare
+       0   0.0% 100.0%       65  39.4% __clone@@GLIBC_2.2.5
+       0   0.0% 100.0%      100  60.6% __libc_init_first@@GLIBC_2.2.5
+       0   0.0% 100.0%      100  60.6% __libc_start_main@GLIBC_2.2.5
+       0   0.0% 100.0%      100  60.6% _start
+       0   0.0% 100.0%        2   1.2% draw_part
+       0   0.0% 100.0%      100  60.6% main
+       0   0.0% 100.0%       65  39.4% pthread_condattr_setpshared@GLIBC_2.2.5
+       0   0.0% 100.0%        9   5.5% scene_shade_packet (inline)
+       0   0.0% 100.0%        1   0.6% sg_chain_clamp (inline)
+       0   0.0% 100.0%       98  59.4% sg_model_render
+       0   0.0% 100.0%        8   4.8% sg_packet_sample_2d (inline)
+       0   0.0% 100.0%        1   0.6% sg_packet_sample_cube_coherent
+       0   0.0% 100.0%        5   3.0% sg_packet_sample_cube_target
+       0   0.0% 100.0%        2   1.2% sg_sample_cube_face (inline)
+       0   0.0% 100.0%        3   1.8% softgl_scene_visibility_begin
+       0   0.0% 100.0%        1   0.6% softgl_scene_visibility_material
+       0   0.0% 100.0%        1   0.6% softgl_scene_visibility_positions

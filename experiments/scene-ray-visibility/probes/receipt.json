@@ -1,0 +1,80 @@
+{
+  "diagnosticOnly": true,
+  "completeFrameBenchmark": false,
+  "revision": "4b8509fd26b29801c8f79386cf8a1ce5713070fb",
+  "sourcesSha256": {
+    "README.md": "0a0833dd588a97225562215216610c9ccb3266a01b85aa51a2dc6b55ef35392a",
+    "LICENSE": "f50e32f96aacf63d90362309a85de33d133192acb3fc9178c55e23cec92bc8dc",
+    "examples/tiny_bvh_minimal.cpp": "5925354df1a5565de2088212c96700f96a5a5aa229d53148ada1bc6886304be0",
+    "tiny_bvh.h": "4e8af9a04a60f87ac531e2b4543e2965221bccde4897b12ffd2d3419f1a9b8ed",
+    "tiny_bvh_arm_double.h": "f15003432e9856ff04308adc7a65c5623c7b71b1282c07349756d0147ededd45",
+    "tiny_bvh_arm_float.h": "aa8f4449a3a70eedfa46459babfbd575588236e4c8709b8efbaebb8107a5c405",
+    "tiny_bvh_base.h": "9c9b8e15682950e98d7ed27eec62d2e2fc73c10060ca039927af52a654a93bff",
+    "tiny_bvh_x86_double.h": "5cc9f25002b94587f6d8da75111242eee02e52d8ada831e295d68374fb754671",
+    "tiny_bvh_x86_float.h": "e4123b8a6675f0168c23d94acb657674ab21718ab57b7d62668e492a324c27ce",
+    "tiny_ocl.h": "4ef49d9dd2e0f058eb2f39fc93e7924246285b3033e7b7e1219dabb0193cf5f9",
+    "tiny_scene.h": "51482bbc9c7e9a5379ea7575eb02adcf43c10899074db7ddcadbcf7ce6cae199"
+  },
+  "runnerSha256": "1d35c027ca80a5a8a793aebbd8af4651bbca8f86891f8fb31b773534cb1f63a0",
+  "runs": [
+    {
+      "command": [
+        "clang++-22",
+        "-std=c++17",
+        "-O3",
+        "-DNO_THREADED_BUILDS",
+        "-I/home/cosmo/Git/tinybvh",
+        "/home/cosmo/Git/tinybvh/examples/tiny_bvh_minimal.cpp",
+        "-mavx2",
+        "-mfma",
+        "-msse4.2",
+        "-o",
+        "/home/cosmo/Git/softgl/build/scene-ray-visibility/upstream-native"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-ray-visibility/upstream-native"
+      ],
+      "returncode": 0,
+      "stdout": "hit prim 5538 at t=0.561425 (39 steps)\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "em++",
+        "-std=c++17",
+        "-O3",
+        "-DNO_THREADED_BUILDS",
+        "-I/home/cosmo/Git/tinybvh",
+        "/home/cosmo/Git/tinybvh/examples/tiny_bvh_minimal.cpp",
+        "-msimd128",
+        "-DTINYBVH_NO_SIMD",
+        "-sENVIRONMENT=node",
+        "-sALLOW_MEMORY_GROWTH=1",
+        "-o",
+        "/home/cosmo/Git/softgl/build/scene-ray-visibility/upstream-wasm.js"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "node",
+        "/home/cosmo/Git/softgl/build/scene-ray-visibility/upstream-wasm.js"
+      ],
+      "returncode": 0,
+      "stdout": "hit prim 4316 at t=0.534238 (30 steps)\n",
+      "stderr": ""
+    }
+  ],
+  "binarySha256": {
+    "upstream-native": "575607178e0afc7365d1291f15117d3360563bbd4e6a9df1bc9cb050a9af08c3",
+    "upstream-wasm.js": "b4161d94c6d7345dafbd44e9e5de0604ca823b6ea79dac197706587bb5433d31",
+    "upstream-wasm.wasm": "5cd656674ef3960dc32c5feb1b4a2586e773d98fb7895d099319c79cfcf48e0f"
+  }
+}

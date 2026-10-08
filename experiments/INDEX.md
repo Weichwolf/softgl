@@ -124,3 +124,5 @@
 | [scene-material-visibility](scene-material-visibility/README.md) | Accepted | Scene visibility/material buckets: native off BMW/T-80/Sponza/Bistro -1.6/-15.0/-22.0/-11.3%; exact images, 749 tests; Bistro MSAA +1–2% tradeoff. |
 | [scene-position-visibility](scene-position-visibility/README.md) | Accepted | Native off BMW/T-80/Sponza/Bistro -2.6/-8.2/-19.3/-47.4%; 108 exact coverage comparisons, max color delta 1, 750 tests; Sponza MSAA +2% tradeoff. |
 | [scene-simd-coverage](scene-simd-coverage/README.md) | Accepted | Exact rolling SIMD128 coverage: native off BMW/T-80/Sponza/Bistro -9.6/-9.5/-4.5/-4.6%; 108 exact images, 751 tests, unchanged interpolation; MSAA within ±1.3%. |
+| [scene-hierarchical-depth](scene-hierarchical-depth/README.md) | Not adopted | 4×4/8×8 maxima regress; repeated bucket sorting BMW/T-80/Sponza/Bistro -0.2/-3.2/+2.8/-1.9%, with exact off-depth planes but color ties. |
+| [scene-ray-visibility](scene-ray-visibility/README.md) | Investigation | Static object-space BVH visibility to avoid invisible per-frame geometry; local TinyBVH source inspected, no renderer timing yet. |

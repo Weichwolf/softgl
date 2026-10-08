@@ -1,0 +1,74 @@
+Total: 270 samples
+       0   0.0%   0.0%      144  53.3% __libc_init_first@@GLIBC_2.2.5
+       0   0.0%   0.0%      144  53.3% __libc_start_main@GLIBC_2.2.5
+       0   0.0%   0.0%      144  53.3% _start
+       0   0.0%   0.0%      144  53.3% main
+       0   0.0%   0.0%      137  50.7% sg_model_render
+       0   0.0%   0.0%      126  46.7% __clone@@GLIBC_2.2.5
+       0   0.0%   0.0%      126  46.7% pthread_condattr_setpshared@GLIBC_2.2.5
+       0   0.0%   0.0%      126  46.7% sg_worker_main
+      20   7.4%   7.4%      100  37.0% softgl_scene_visibility_end
+       9   3.3%  10.7%       97  35.9% scene_geometry_raster
+      66  24.4%  35.2%       88  32.6% sg_scene_visibility_triangle
+       4   1.5%  36.7%       80  29.6% sg_workers_run_callback
+       6   2.2%  38.9%       41  15.2% sg_queue_worker (inline)
+       0   0.0%  38.9%       31  11.5% draw_part
+       2   0.7%  39.6%       29  10.7% _sg_draw_elements_real
+      17   6.3%  45.9%       29  10.7% scene_resolve
+       1   0.4%  46.3%       28  10.4% sg_queue_render
+       4   1.5%  47.8%       22   8.1% scene_geometry_triangles
+      10   3.7%  51.5%       22   8.1% sg_raster_triangle_tile_prepared
+      20   7.4%  58.9%       20   7.4% pthread_cond_broadcast@@GLIBC_2.3.2
+       0   0.0%  58.9%       19   7.0% sg_queue_submit
+       0   0.0%  58.9%       19   7.0% sg_workers_submit_stream
+      18   6.7%  65.6%       18   6.7% scene_geometry_append
+       0   0.0%  65.6%       13   4.8% sg_packet_sample_cube_target
+       5   1.9%  67.4%        8   3.0% sg_packet_sample_cube_coherent
+       7   2.6%  70.0%        8   3.0% sg_raster_triangle_depth_capture
+       7   2.6%  72.6%        7   2.6% scene_geometry_attribute_bins
+       6   2.2%  74.8%        6   2.2% __lll_lock_wake_private@@GLIBC_PRIVATE
+       0   0.0%  74.8%        6   2.2% pthread_mutex_trylock@GLIBC_2.2.5
+       0   0.0%  74.8%        6   2.2% sg_finish_stream
+       3   1.1%  75.9%        6   2.2% sg_process_vertex
+       2   0.7%  76.7%        6   2.2% sg_queue_finish (inline)
+       6   2.2%  78.9%        6   2.2% sg_queue_help
+       0   0.0%  78.9%        6   2.2% sg_workers_flush
+       0   0.0%  78.9%        6   2.2% softgl_read_rgba8
+       5   1.9%  80.7%        5   1.9% sg_i32x4_add (inline)
+       2   0.7%  81.5%        5   1.9% sg_sample_tex_cube
+       1   0.4%  81.9%        5   1.9% sg_transform_range
+       0   0.0%  81.9%        4   1.5% __libc_alloca_cutoff@@GLIBC_PRIVATE
+       0   0.0%  81.9%        4   1.5% __nptl_death_event@@GLIBC_PRIVATE
+       4   1.5%  83.3%        4   1.5% _dl_mcount_wrapper@GLIBC_2.2.5
+       0   0.0%  83.3%        4   1.5% pthread_cond_wait@@GLIBC_2.3.2
+       4   1.5%  84.8%        4   1.5% sem_trywait@GLIBC_2.2.5
+       4   1.5%  86.3%        4   1.5% sg_f32x4_ge (inline)
+       4   1.5%  87.8%        4   1.5% sg_i32x4_splat (inline)
+       1   0.4%  88.1%        4   1.5% sg_transform_slice
+       3   1.1%  89.3%        3   1.1% _sg_clear_real
+       3   1.1%  90.4%        3   1.1% scene_geometry_positions
+       3   1.1%  91.5%        3   1.1% sg_packet_gather_pairs (inline)
+       0   0.0%  91.5%        3   1.1% sg_packet_sample_2d (inline)
+       0   0.0%  91.5%        3   1.1% sg_sample_cube_face (inline)
+       0   0.0%  91.5%        3   1.1% softgl_scene_visibility_begin
+       2   0.7%  92.2%        2   0.7% __lll_lock_wait_private@@GLIBC_PRIVATE
+       0   0.0%  92.2%        2   0.7% pthread_mutex_lock@@GLIBC_2.2.5
+       2   0.7%  93.0%        2   0.7% sg_cube_load_rgba (inline)
+       2   0.7%  93.7%        2   0.7% sg_f32x4_le (inline)
+       2   0.7%  94.4%        2   0.7% sg_f32x4_lt (inline)
+       2   0.7%  95.2%        2   0.7% sg_f32x4_mul (inline)
+       2   0.7%  95.9%        2   0.7% sg_f32x4_set (inline)
+       1   0.4%  96.3%        1   0.4% combiner (inline)
+       1   0.4%  96.7%        1   0.4% generate_attributes
+       0   0.0%  96.7%        1   0.4% scene_shade_packet (inline)
+       1   0.4%  97.0%        1   0.4% sg_f32x4_splat (inline)
+       1   0.4%  97.4%        1   0.4% sg_f32x4_sub (inline)
+       1   0.4%  97.8%        1   0.4% sg_fetch_attrib
+       1   0.4%  98.1%        1   0.4% sg_fp_screen_from_float (inline)
+       1   0.4%  98.5%        1   0.4% sg_index_range
+       1   0.4%  98.9%        1   0.4% sg_mask4_live (inline)
+       1   0.4%  99.3%        1   0.4% sg_mat4_mul_vec4
+       0   0.0%  99.3%        1   0.4% sg_process_vertex_prepared
+       1   0.4%  99.6%        1   0.4% sg_sat_i64_to_i32 (inline)
+       1   0.4% 100.0%        1   0.4% sg_write_fragment
+       0   0.0% 100.0%        1   0.4% softgl_scene_visibility_positions
