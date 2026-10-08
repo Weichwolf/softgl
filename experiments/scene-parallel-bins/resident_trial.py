@@ -12,9 +12,9 @@ import time
 
 repo = Path(__file__).resolve().parents[2]
 parser = argparse.ArgumentParser()
-parser.add_argument("--baseline", type=Path, default=repo / "build/scene-ray-visibility/native/resident_baseline")
-parser.add_argument("--candidate", type=Path, default=repo / "build/scene-ray-visibility/native/resident_candidate")
-parser.add_argument("--output", type=Path, default=repo / "tmp/scene-ray-visibility/resident-validation")
+parser.add_argument("--baseline", type=Path, default=repo / "build/scene-parallel-bins/native/resident_baseline")
+parser.add_argument("--candidate", type=Path, default=repo / "build/scene-parallel-bins/native/resident_candidate")
+parser.add_argument("--output", type=Path, default=repo / "tmp/scene-parallel-bins/resident-validation")
 parser.add_argument("--pairs", type=int, default=1)
 parser.add_argument("--frames", type=int, default=30)
 parser.add_argument("--warmup", type=int, default=15)
@@ -47,28 +47,17 @@ receipt = {"screeningOnly": args.pairs < 3, "width": 640, "height": 360,
            "gitHead": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=repo, text=True).strip(),
            "packsSha256": {a: digest(repo / "build/assets" / f"{a}.pack") for a in args.assets.split(",")},
            "records": records}
-source = repo / "build/scene-ray-visibility/source/libsoftgl"
+source = repo / "build/scene-parallel-bins/source/libsoftgl"
 receipt["candidateSourcesSha256"] = {str(p.relative_to(source)): digest(p)
                                       for p in sorted(source.rglob("*")) if p.is_file()}
-receipt["baselineWrapperSha256"] = digest(repo / "build/scene-ray-visibility/baseline-source/model_wrap.c")
-receipt["candidateWrapperSha256"] = digest(repo / "build/scene-ray-visibility/source/model_wrap.c")
-receipt["baselineSourcesSha256"] = {str(p.relative_to(repo / "build/scene-ray-visibility/baseline-source/libsoftgl")): digest(p) for p in sorted((repo / "build/scene-ray-visibility/baseline-source/libsoftgl").rglob("*")) if p.is_file()}
+receipt["baselineWrapperSha256"] = digest(repo / "build/scene-parallel-bins/baseline-source/model_wrap.c")
+receipt["candidateWrapperSha256"] = digest(repo / "build/scene-parallel-bins/source/model_wrap.c")
+receipt["baselineSourcesSha256"] = {str(p.relative_to(repo / "build/scene-parallel-bins/baseline-source/libsoftgl")): digest(p) for p in sorted((repo / "build/scene-parallel-bins/baseline-source/libsoftgl").rglob("*")) if p.is_file()}
 receipt["driverSha256"] = digest(repo / "experiments/scene-material-visibility/resident_trial.c")
 receipt["runnerSha256"] = digest(Path(__file__))
 receipt["residentAssets"] = True
-receipt["backend"] = (repo / "build/scene-ray-visibility/source/backend.txt").read_text().strip()
-receipt["nativeCmakeCacheSha256"] = digest(args.candidate.parent / "CMakeCache.txt")
-receipt["bvhCompileFlags"] = (args.candidate.parent / "CMakeFiles/ray_bvh.dir/flags.make").read_text()
-receipt["frontendSourcesSha256"] = {str(p.relative_to(repo)): digest(p) for p in [
-    repo/"experiments/scene-ray-visibility/bvh.c",
-    repo/"experiments/scene-ray-visibility/scene_bvh.h",
-    repo/"experiments/scene-ray-visibility/scene_bvh_raster.inc",
-    repo/"experiments/scene-ray-visibility/scene_bvh_prepared.inc",
-    repo/"experiments/scene-ray-visibility/scene_bvh_hz.inc",
-    repo/"experiments/scene-ray-visibility/prepare.py",
-    repo/"experiments/scene-ray-visibility/CMakeLists.txt"]}
-receipt["researchDependencyRevision"] = subprocess.check_output(["git", "-C", str(Path.home()/"Git/tinybvh"), "rev-parse", "HEAD"], text=True).strip()
-receipt["researchSourcesSha256"] = {str(p): digest(p) for p in [repo/"experiments/scene-ray-visibility/bridge.cpp", repo/"experiments/scene-ray-visibility/CMakeLists.txt", *sorted((Path.home()/"Git/tinybvh").glob("*.h"))]}
+
+receipt["cmakeCacheSha256"] = digest(args.candidate.parent / "CMakeCache.txt")
 resident = {}
 
 def run(asset, samples, variant, pair, order, attempt):

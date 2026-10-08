@@ -6,8 +6,10 @@ parser=argparse.ArgumentParser()
 parser.add_argument('--baseline',default='d481c90')
 parser.add_argument('--backend',choices=('scalar','packet','raster'),default='packet')
 parser.add_argument('--occlusion',action='store_true')
+parser.add_argument('--prepared-raster',action='store_true')
 args=parser.parse_args()
 if args.occlusion and args.backend != 'raster': parser.error('--occlusion requires --backend raster')
+if args.prepared_raster and args.backend != 'raster': parser.error('--prepared-raster requires --backend raster')
 repo=Path(__file__).resolve().parents[2]
 base=subprocess.check_output(['git','rev-parse',args.baseline],cwd=repo,text=True).strip()
 root=repo/'build/scene-ray-visibility'
@@ -27,11 +29,28 @@ if args.backend == 'raster':
     shutil.copyfile(Path(__file__).parent/'scene_bvh_hz.inc',src/'scene_bvh_hz.inc')
     with (src/'scene_ray.inc').open('a') as out:
         if args.occlusion: out.write('\n#define SCENE_BVH_OCCLUSION\n')
-        out.write((Path(__file__).parent/'scene_bvh_raster.inc').read_text())
+        out.write((Path(__file__).parent/('scene_bvh_prepared.inc' if args.prepared_raster else 'scene_bvh_raster.inc')).read_text())
     p=src/'scene_ray.inc';s=p.read_text().replace('static int scene_ray_build(struct sg_scene_visibility *f)', 'static int scene_ray_build_unused(struct sg_scene_visibility *f)')
     s=s.replace('    sg_workers_run_callback(f->context,scene_ray_pixels,f);','    sg_workers_run_callback(f->context,scene_bvh_raster,f);')
     s=s.replace('static int scene_ray_build_unused(struct sg_scene_visibility *f) {','static void scene_bvh_raster(void *);\nstatic int scene_ray_build(struct sg_scene_visibility *f) {')
     p.write_text(s)
+    if args.prepared_raster:
+        s=s.replace('    uint8_t reversed;','    uint8_t reversed;\n    uint16_t bounds[4];')
+        s=s.replace('    t->inverse_area = 1.f/(float)t->area;','''    int minx = x[0], maxx = x[0], miny = y[0], maxy = y[0];
+    for (int j = 1; j < 3; j++) {
+        if (x[j] < minx) minx = x[j]; if (x[j] > maxx) maxx = x[j];
+        if (y[j] < miny) miny = y[j]; if (y[j] > maxy) maxy = y[j];
+    }
+    int box[4] = {minx >> 8,(maxx >> 8)+1,miny >> 8,(maxy >> 8)+1};
+    for (int j = 0; j < 4; j++) {
+        int limit = j < 2 ? 640 : 360;
+        if (box[j] < 0) box[j] = 0; if (box[j] > limit) box[j] = limit;
+        t->bounds[j] = (uint16_t)box[j];
+    }
+    if (minx >= -262144 && maxx <= 262144 && miny >= -262144 && maxy <= 262144)
+        t->bounds[0] |= UINT16_C(0x8000);
+    t->inverse_area = 1.f/(float)t->area;''')
+        p.write_text(s)
 shutil.copyfile(Path(__file__).parent/'scene_bvh.h',src/'scene_bvh.h')
 p=src/'scene_visibility.c';s=p.read_text()
 def replace(old,new):
@@ -57,6 +76,7 @@ if args.backend == 'raster':
     s=s.replace('    f->deferred_meshes = 0; f->mesh_vertices = 0; f->ray_epoch = 0;', '    f->deferred_meshes = 0; f->mesh_vertices = 0; f->ray_epoch = 0; f->ray_active = 0;\n    for (int i = 0; i < SG_MAX_BINS; i++) f->ray_current[i] = UINT32_MAX;')
     s=s.replace('    t->primitive = f->current_primitive[bin];','    t->primitive = f->current_primitive[bin];\n    t->ray_key = f->ray_current[bin];')
     s=s.replace('        if (!t->primitive) {','        if (!t->primitive && t->ray_key == UINT32_MAX) {')
+    if args.prepared_raster: s=s.replace('    int64_t edges[2][3], float inverse_area, uint32_t material)', '    const int64_t edges[2][3], float inverse_area, uint32_t material)')
     s=s.replace('        if (scene_ray_build(f)) f->deferred_meshes = 0;', '        if (scene_ray_build(f)) f->ray_active = 1;')
     p.write_text(s)
     p=src/'geometry.inc';s=p.read_text().replace('            if (!b->visible[i] || !p) continue;', '            if (!b->visible[i]) continue;\n            if (t->ray_key != UINT32_MAX) { scene_ray_fill_record(f,t); continue; }\n            if (!p) continue;')

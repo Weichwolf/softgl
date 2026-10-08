@@ -125,4 +125,8 @@
 | [scene-position-visibility](scene-position-visibility/README.md) | Accepted | Native off BMW/T-80/Sponza/Bistro -2.6/-8.2/-19.3/-47.4%; 108 exact coverage comparisons, max color delta 1, 750 tests; Sponza MSAA +2% tradeoff. |
 | [scene-simd-coverage](scene-simd-coverage/README.md) | Accepted | Exact rolling SIMD128 coverage: native off BMW/T-80/Sponza/Bistro -9.6/-9.5/-4.5/-4.6%; 108 exact images, 751 tests, unchanged interpolation; MSAA within ±1.3%. |
 | [scene-hierarchical-depth](scene-hierarchical-depth/README.md) | Not adopted | 4×4/8×8 maxima regress; repeated bucket sorting BMW/T-80/Sponza/Bistro -0.2/-3.2/+2.8/-1.9%, with exact off-depth planes but color ties. |
-| [scene-ray-visibility](scene-ray-visibility/README.md) | No adoption | Six BVH ray/raster variants: 36 exact off images each; group occlusion reaches baseline Bistro time but Sponza still +15–20%; epoch/rollback contract passes. |
+| [scene-ray-visibility](scene-ray-visibility/README.md) | No adoption | Cached BVH setup: repeated off BMW/T-80/Bistro -8.1/-13.2/-5.6%, Sponza +10.4%; 108 exact views; held. |
+| [scene-prepared-primitives](scene-prepared-primitives/README.md) | Rejected | 96-byte inline and 56-byte sidecar setup have 36 exact off views each but regress Bistro or Sponza/BMW. |
+| [scene-simd-positions](scene-simd-positions/README.md) | Rejected | SIMD position postprocessing has 36 exact off views, but Sponza/Bistro +3.0/+2.3%; tail/non-finite contract passes. |
+| [native-vector-registers](native-vector-registers/README.md) | Not adopted | Native extended registers preserve 36 exact off views, but give no broad full-frame gain. |
+| [scene-parallel-bins](scene-parallel-bins/README.md) | Native trial | Task-local counts and stable prefixes permit parallel bin references; quality/timing pending. |
