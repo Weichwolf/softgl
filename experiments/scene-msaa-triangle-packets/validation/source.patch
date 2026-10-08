@@ -1,0 +1,597 @@
+--- a/libsoftgl/src/geometry.inc
++++ b/libsoftgl/src/geometry.inc
+@@ -20,7 +20,7 @@
+ static void scene_geometry_destroy(scene_geometry *g) {
+     if (!g) return;
+     if (g->tasks) for (int i = 0; i < SCENE_GEOMETRY_TASKS; i++) {
+-        free(g->tasks[i].primitives); free(g->tasks[i].clipped); free(g->tasks[i].packets);
++        free(g->tasks[i].primitives); free(g->tasks[i].clipped); free(g->tasks[i].packets); free(g->tasks[i].msaa_packets);
+     }
+     for (int i = 0; i < SG_MAX_BINS; i++) free(g->bins[i].references);
+     free(g->positions); free(g->attributes); free(g->outcodes); free(g->ready);
+--- a/libsoftgl/src/geometry_types.inc
++++ b/libsoftgl/src/geometry_types.inc
+@@ -32,6 +32,15 @@
+ } scene_triangle_packet;
+ _Static_assert(sizeof(scene_triangle_packet) == 160, "four-triangle packet stride");
+ 
++typedef struct {
++    SG_ALIGN16 int32_t x[3][4], y[3][4];
++    SG_ALIGN16 float zw[3][2][4];
++    SG_ALIGN16 int64_t area[4];
++    SG_ALIGN16 int32_t bounds[4][4]; /* left, right, bottom, top */
++    uint32_t eligible;
++} scene_msaa_triangle_packet;
++_Static_assert(sizeof(scene_msaa_triangle_packet) == 304, "full-precision MSAA packet stride");
++
+ typedef struct { sg_vec4 clip, ndc; } scene_position;
+ typedef struct { sg_vec4 color, uv[4]; } scene_attribute;
+ typedef struct { uint32_t material, first, end; } scene_position_task;
+@@ -43,6 +52,8 @@
+     uint32_t bin_counts[SG_MAX_BINS], bin_offsets[SG_MAX_BINS];
+     scene_triangle_packet *packets;
+     uint32_t packet_capacity;
++    scene_msaa_triangle_packet *msaa_packets;
++    uint32_t msaa_packet_capacity;
+     scene_clipped_primitive *clipped;
+     uint32_t clipped_count, clipped_capacity;
+ } scene_geometry_task;
+--- /dev/null
++++ b/libsoftgl/src/raster_scene_msaa_impl.h
+@@ -0,0 +1,330 @@
++#if SG_MSAA_SAMPLES == 4
++#define SG_MSAA_HZ_CLASS sg_hz_occlusion_class4
++#define SG_MSAA_HZ_OCCLUDED sg_hz_occluded4
++#else
++#define SG_MSAA_HZ_CLASS sg_hz_occlusion_class2
++#define SG_MSAA_HZ_OCCLUDED sg_hz_occluded2
++#endif
++#if defined(SG_MSAA_EDGE_TEST) && SG_MSAA_SAMPLES == 4
++extern void sg_msaa_edge_test(int reused, int packed, int capture,
++    int64_t edge0, int64_t edge1, const int64_t *offsets, float inv_area,
++    sg_f32x4 b0, sg_f32x4 b1);
++#endif
++/* Included with compile-time sample count and depth-capture mode. */
++#ifdef __EMSCRIPTEN__
++/* LLVM noinline alone is lost before Binaryen. Retain these roots so
++ * the whole-program optimizer keeps sample-count loops outside the common
++ * rasterizer. No additional GL API is declared. */
++__attribute__((used, noinline))
++#else
++__attribute__((noinline))
++#endif
++int SG_MSAA_FUNCTION(softgl_ctx *c,
++                         const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
++                         const sg_tex_tri_ctx *tctx,
++                         int ix0, int iy0, int ix1, int iy1,
++                         int64_t area, int bias0, int bias1, int bias2,
++                         float z_offset, const int32_t *prepared_x, const int32_t *prepared_y) {
++    /* Admitted scene state: GL_LESS, depth writes, no stencil or
++     * sample-coverage operations. No general shader/store dispatch here. */
++    if (SG_MSAA_HZ_OCCLUDED(c,ix0,iy0,ix1,iy1,
++        v0->ndc.z,v1->ndc.z,v2->ndc.z,z_offset)) {
++#ifdef SOFTGL_MSAA_VISIBILITY_AUDIT
++        sg_scene_msaa_hz_count(1);
++#endif
++        return -1;
++    }
++    int scene_w = c->fb.w;
++    float *scene_depth = c->fb.sample_depth;
++    int scene_alpha = sg_scene_visibility_alpha(c);
++    const int32_t *vx = prepared_x, *vy = prepared_y;
++    int64_t dx[3], dy[3], row[3], offsets[4][3], min_offset[3], max_offset[3];
++    for (int e = 0; e < 3; e++) {
++        int a = (e + 1) % 3, b = (e + 2) % 3;
++        dx[e] = -(int64_t)(vy[b] - vy[a]);
++        dy[e] = (int64_t)(vx[b] - vx[a]);
++        row[e] = dy[e] * ((int64_t)iy0 * 256 - vy[a])
++               + dx[e] * ((int64_t)ix0 * 256 - vx[a]);
++        for (int s = 0; s < SG_MSAA_SAMPLES; s++) {
++            int sx = 128, sy = 128;
++            if (1) sg_sample_position(SG_MSAA_SAMPLES, s, &sx, &sy);
++            offsets[s][e] = dx[e] * sx + dy[e] * sy;
++        }
++        min_offset[e] = max_offset[e] = offsets[0][e];
++        for (int s = 1; s < SG_MSAA_SAMPLES; s++) {
++            if (offsets[s][e] < min_offset[e]) min_offset[e] = offsets[s][e];
++            if (offsets[s][e] > max_offset[e]) max_offset[e] = offsets[s][e];
++        }
++    }
++    int bias[3] = {bias0, bias1, bias2};
++    float inv_area = 1.f / (float)area;
++    unsigned full = (1u << SG_MSAA_SAMPLES) - 1u;
++    int coverage_seen = 0;
++#if SG_MSAA_DEPTH_CAPTURE
++    int weak_seen = 0;
++#endif
++    /* A covered sample has raw barycentric edges in [0, area]. Other
++     * samples of that pixel differ by at most 256*(abs(dx)+abs(dy)).
++     * Only this proven range uses packed signed-32 conversion, after coverage
++     * is verified. Uncovered pixels can have arbitrarily large edge values. */
++    int small_edges = 1;
++    for (int e = 0; e < 2; e++) {
++        int64_t span = 256 * ((dx[e] < 0 ? -dx[e] : dx[e]) +
++                             (dy[e] < 0 ? -dy[e] : dy[e]));
++        if (span > INT32_MAX || area > INT32_MAX - span) small_edges = 0;
++    }
++    sg_i32x4 offset0 = sg_i32x4_splat(0), offset1 = sg_i32x4_splat(0);
++    if (small_edges && SG_MSAA_SAMPLES == 4) {
++        offset0 = sg_i32x4_set((int32_t)offsets[0][0], (int32_t)offsets[1][0],
++                              (int32_t)offsets[2][0], (int32_t)offsets[3][0]);
++        offset1 = sg_i32x4_set((int32_t)offsets[0][1], (int32_t)offsets[1][1],
++                              (int32_t)offsets[2][1], (int32_t)offsets[3][1]);
++    }
++    /* Coverage is packed only after bounding all samples over the complete
++     * rectangle. A one-unit margin also covers the top-left bias. */
++#if SG_MSAA_SAMPLES == 4
++    int coverage32 = small_edges && ix1 - ix0 <= 65536 && iy1 - iy0 <= 65536;
++#else
++    int coverage32 = ix1 - ix0 <= 65536 && iy1 - iy0 <= 65536;
++#endif
++    sg_i32x4 coverage_offsets[3];
++#if SG_MSAA_SAMPLES == 4
++    sg_i32x4 coverage_bias0 = sg_i32x4_splat(bias0);
++    sg_i32x4 coverage_bias1 = sg_i32x4_splat(bias1);
++#endif
++    if (coverage32) for (int e = 0; e < 3; e++) {
++        /* Reject a large origin before adding spans: the remaining sums
++         * then stay far inside i64 even for extreme fixed coordinates. */
++        if (row[e] < INT32_MIN || row[e] > INT32_MAX) { coverage32 = 0; break; }
++        int64_t xs = dx[e] * 256 * (ix1 - ix0 - 1);
++        int64_t ys = dy[e] * 256 * (iy1 - iy0 - 1);
++        int64_t low = row[e] + min_offset[e] + (xs < 0 ? xs : 0) + (ys < 0 ? ys : 0);
++        int64_t high = row[e] + max_offset[e] + (xs > 0 ? xs : 0) + (ys > 0 ? ys : 0);
++        if (low < (int64_t)INT32_MIN + 1 || high > (int64_t)INT32_MAX - 1) {
++            coverage32 = 0; break;
++        }
++        /* SIMD additions wrap modulo 2^32. The proved final sample sums
++         * fit signed 32 bits, even if a base or offset cast wraps. */
++#if SG_MSAA_SAMPLES == 4
++        coverage_offsets[e] = sg_i32x4_set((int32_t)(offsets[0][e] + bias[e]),
++            (int32_t)(offsets[1][e] + bias[e]), (int32_t)(offsets[2][e] + bias[e]),
++            (int32_t)(offsets[3][e] + bias[e]));
++#else
++        coverage_offsets[e] = sg_i32x4_set((int32_t)(offsets[0][e] + bias[e]),
++            (int32_t)(offsets[1][e] + bias[e]), 0, 0);
++#endif
++    }
++    uint32_t scene_record = UINT32_MAX;
++    int packet_shader = 1;
++    int common_store = 0;
++    sg_pixel_packet packet;
++    packet.count = 0;
++    /* Approximate intersections propose bounds only. Exact integer edge
++     * predicates prove that excluded pixels cannot cover any sample. */
++    int use_spans = ix1-ix0 >= 8 && (int64_t)(ix1-ix0)*(iy1-iy0) >= 64;
++    float intersection_x[3] = {0.f,0.f,0.f}, intersection_step[3] = {0.f,0.f,0.f};
++    if (use_spans) for (int e = 0; e < 3; e++) if (dx[e]) {
++        float inverse_step = 1.f/(float)(dx[e]*256);
++        intersection_x[e] = -(float)(row[e]+max_offset[e]+bias[e])*inverse_step;
++        intersection_step[e] = (float)(dy[e]*256)*inverse_step;
++    }
++    for (int y = iy0; y < iy1; y++) {
++        int first_x = ix0, end_x = ix1;
++        if (use_spans) for (int e = 0; e < 3; e++) {
++            int64_t step = dx[e]*256;
++            int64_t at_first = row[e]+max_offset[e]+bias[e];
++            if (step > 0) {
++                if (at_first + step*(ix1-ix0-1) < 0) { end_x = first_x; break; }
++                if (at_first >= 0) continue;
++                float intersection = intersection_x[e];
++                int candidate = intersection <= 0.f ? ix0 : intersection >= (float)(ix1-ix0) ? ix1 : ix0+(int)intersection;
++                if (candidate > first_x && at_first + step*(candidate-ix0-1) < 0) first_x = candidate;
++            } else if (step < 0) {
++                if (at_first < 0) { end_x = first_x; break; }
++                if (at_first + step*(ix1-ix0-1) >= 0) continue;
++                float intersection = intersection_x[e];
++                int candidate = intersection < 0.f ? ix0 : intersection >= (float)(ix1-ix0-2) ? ix1 : ix0+(int)intersection+2;
++                if (candidate < end_x && at_first + step*(candidate-ix0) < 0) end_x = candidate;
++            } else if (at_first < 0) { end_x = first_x; break; }
++        }
++        int64_t edge[3] = {row[0]+dx[0]*256*(first_x-ix0),
++                          row[1]+dx[1]*256*(first_x-ix0),
++                          row[2]+dx[2]*256*(first_x-ix0)};
++        for (int x = first_x; x < end_x; x++) {
++            unsigned coverage = 0;
++            float depths[4];
++#if SG_MSAA_SAMPLES == 4
++            sg_i32x4 coverage_edge0 = sg_i32x4_splat(0);
++            sg_i32x4 coverage_edge1 = sg_i32x4_splat(0);
++#endif
++            if (coverage32) {
++                sg_i32x4 e0 = sg_i32x4_add(sg_i32x4_splat((int32_t)edge[0]), coverage_offsets[0]);
++                sg_i32x4 e1 = sg_i32x4_add(sg_i32x4_splat((int32_t)edge[1]), coverage_offsets[1]);
++                sg_i32x4 e2 = sg_i32x4_add(sg_i32x4_splat((int32_t)edge[2]), coverage_offsets[2]);
++#if SG_MSAA_SAMPLES == 4
++                coverage_edge0 = e0;
++                coverage_edge1 = e1;
++#endif
++                coverage = sg_i32x4_mask_nonneg(_mm_or_si128(_mm_or_si128(e0, e1), e2));
++#if SG_MSAA_SAMPLES == 2
++                coverage &= full;
++#endif
++            } else
++            {
++                /* Edge extrema reject an empty pixel or accept all samples with
++                 * three comparisons. Only boundary pixels need individual tests. */
++                if (edge[0] + max_offset[0] + bias[0] >= 0 &&
++                    edge[1] + max_offset[1] + bias[1] >= 0 &&
++                    edge[2] + max_offset[2] + bias[2] >= 0) {
++                    if (edge[0] + min_offset[0] + bias[0] >= 0 &&
++                        edge[1] + min_offset[1] + bias[1] >= 0 &&
++                        edge[2] + min_offset[2] + bias[2] >= 0) {
++                        coverage = full;
++                    } else {
++                        for (int s = 0; s < SG_MSAA_SAMPLES; s++) {
++                            if (edge[0] + offsets[s][0] + bias[0] >= 0 &&
++                                edge[1] + offsets[s][1] + bias[1] >= 0 &&
++                                edge[2] + offsets[s][2] + bias[2] >= 0)
++                                coverage |= 1u << s;
++                        }
++                    }
++                }
++            }
++            if (coverage && SG_MSAA_SAMPLES == 4) {
++                coverage_seen = 1;
++                /* SIMD lanes are samples of one pixel. Keep scalar expression
++                 * grouping so sample depth and the selected shading point match. */
++                sg_f32x4 b0, b1;
++#if SG_MSAA_SAMPLES == 4
++                if (coverage32) {
++                    /* The rectangle proof includes unbiased sample sums.
++                     * Undo only the top-left bias before float conversion. */
++                    b0 = sg_f32x4_mul(_mm_cvtepi32_ps(_mm_sub_epi32(
++                        coverage_edge0, coverage_bias0)), sg_f32x4_splat(inv_area));
++                    b1 = sg_f32x4_mul(_mm_cvtepi32_ps(_mm_sub_epi32(
++                        coverage_edge1, coverage_bias1)), sg_f32x4_splat(inv_area));
++                } else
++#endif
++                if (small_edges) {
++                    b0 = sg_f32x4_mul(_mm_cvtepi32_ps(sg_i32x4_add(
++                        sg_i32x4_splat((int32_t)edge[0]), offset0)), sg_f32x4_splat(inv_area));
++                    b1 = sg_f32x4_mul(_mm_cvtepi32_ps(sg_i32x4_add(
++                        sg_i32x4_splat((int32_t)edge[1]), offset1)), sg_f32x4_splat(inv_area));
++                } else {
++                    b0 = sg_f32x4_mul(sg_f32x4_set(
++                        (float)(edge[0] + offsets[0][0]), (float)(edge[0] + offsets[1][0]),
++                        (float)(edge[0] + offsets[2][0]), (float)(edge[0] + offsets[3][0])),
++                        sg_f32x4_splat(inv_area));
++                    b1 = sg_f32x4_mul(sg_f32x4_set(
++                        (float)(edge[1] + offsets[0][1]), (float)(edge[1] + offsets[1][1]),
++                        (float)(edge[1] + offsets[2][1]), (float)(edge[1] + offsets[3][1])),
++                        sg_f32x4_splat(inv_area));
++                }
++#if defined(SG_MSAA_EDGE_TEST) && SG_MSAA_SAMPLES == 4
++                sg_msaa_edge_test(coverage32, small_edges, SG_MSAA_DEPTH_CAPTURE,
++                    edge[0], edge[1], &offsets[0][0], inv_area, b0, b1);
++#endif
++                sg_f32x4 b2 = sg_f32x4_sub(sg_f32x4_sub(sg_f32x4_splat(1.f), b0), b1);
++                sg_f32x4 z = sg_f32x4_add(sg_f32x4_add(sg_f32x4_add(
++                    sg_f32x4_mul(b0, sg_f32x4_splat(v0->ndc.z)),
++                    sg_f32x4_mul(b1, sg_f32x4_splat(v1->ndc.z))),
++                    sg_f32x4_mul(b2, sg_f32x4_splat(v2->ndc.z))),
++                    sg_f32x4_splat(z_offset));
++                z = sg_f32x4_select(sg_f32x4_lt(z, sg_f32x4_splat(0.f)), sg_f32x4_splat(0.f), z);
++                z = sg_f32x4_select(sg_f32x4_gt(z, sg_f32x4_splat(1.f)), sg_f32x4_splat(1.f), z);
++                sg_f32x4_store(depths, z);
++                if (1) {
++                    size_t idx = ((size_t)y * scene_w + x) * 4;
++                    #if SG_MSAA_DEPTH_CAPTURE
++                    sg_f32x4 old_depth = _mm_loadu_ps(&scene_depth[idx]);
++                    unsigned passed = coverage & sg_mask4_live(sg_depth_test_simd(GL_LESS, z, old_depth));
++                    if (!weak_seen) {
++                        /* LESS failure can include equality. Preserve ties. */
++                        weak_seen = passed || (coverage & sg_mask4_live(sg_f32x4_le(z, old_depth)));
++                    }
++                    coverage = passed;
++#else
++                    coverage &= sg_mask4_live(sg_depth_test_simd(GL_LESS, z,
++                        _mm_loadu_ps(&scene_depth[idx])));
++#endif
++                }
++            } else if (coverage) {
++                coverage_seen = 1;
++                for (int s = 0; s < SG_MSAA_SAMPLES; s++) {
++                    if (!(coverage & (1u << s))) continue;
++                    float b0 = (float)(edge[0] + offsets[s][0]) * inv_area;
++                    float b1 = (float)(edge[1] + offsets[s][1]) * inv_area;
++                    float b2 = 1.f - b0 - b1;
++                    float z = b0 * v0->ndc.z + b1 * v1->ndc.z + b2 * v2->ndc.z + z_offset;
++                    depths[s] = z < 0.f ? 0.f : z > 1.f ? 1.f : z;
++#if SG_MSAA_DEPTH_CAPTURE
++                    if (1) {
++                        float old_depth = scene_depth[
++                            ((size_t)y * scene_w + x) * SG_MSAA_SAMPLES + s];
++                        int passed = sg_sample_depth_pass(GL_LESS, depths[s], old_depth);
++                        /* A LESS equality failure must remain available for
++                         * a later LEQUAL/EQUAL material pass. */
++                        if (!weak_seen && (passed || depths[s] <= old_depth)) weak_seen = 1;
++                        if (!passed) coverage &= ~(1u << s);
++                    }
++#else
++                    if (1 &&
++                        !sg_sample_depth_pass(GL_LESS, depths[s],
++                            scene_depth[((size_t)y * scene_w + x) * SG_MSAA_SAMPLES + s]))
++                        coverage &= ~(1u << s);
++#endif
++                }
++            }
++            if (coverage) {
++                int64_t e0 = 0, e1 = 0;
++                if (scene_alpha) {
++                    int first = __builtin_ctz(coverage);
++                    e0 = edge[0] + (coverage == full ? (dx[0] + dy[0]) * 128 : offsets[first][0]);
++                    e1 = edge[1] + (coverage == full ? (dx[1] + dy[1]) * 128 : offsets[first][1]);
++                }
++                if (packet_shader) {
++                    int l = packet.count++;
++                    packet.x[l] = x; packet.y[l] = y;
++                    packet.coverage[l] = coverage;
++                    packet.edge0[l] = e0; packet.edge1[l] = e1;
++                    memcpy(packet.depths[l], depths, SG_MSAA_SAMPLES * sizeof(float));
++                    if (packet.count == 4) {
++                        sg_scene_visibility_msaa_packet(c,v0,v1,v2,tctx,&packet,inv_area,&scene_record);
++                        packet.count = 0;
++                    }
++                } else {
++                    float color[4];
++                    if (sg_shade_pixel(c, tctx, v0, v1, v2, x, y, e0, e1,
++                                      inv_area, v0->ndc.w, v1->ndc.w, v2->ndc.w, z_offset, color)) {
++                        if (common_store) SG_MSAA_COMMON_STORE(c, x, y, coverage, depths, color);
++                        else sg_write_multisample(c, x, y, coverage, depths, color);
++                    }
++                }
++            }
++            for (int e = 0; e < 3; e++) edge[e] += dx[e] * 256;
++        }
++        for (int e = 0; e < 3; e++) row[e] += dy[e] * 256;
++        if (use_spans) for (int e = 0; e < 3; e++) intersection_x[e] -= intersection_step[e];
++    }
++    if (packet.count)
++        sg_scene_visibility_msaa_packet(c,v0,v1,v2,tctx,&packet,inv_area,&scene_record);
++    else for (int l = 0; l < packet.count; l++) {
++        float color[4];
++        if (sg_shade_pixel(c, tctx, v0, v1, v2, packet.x[l], packet.y[l],
++                          packet.edge0[l], packet.edge1[l], inv_area,
++                          v0->ndc.w, v1->ndc.w, v2->ndc.w, z_offset, color)) {
++            if (common_store)
++                SG_MSAA_COMMON_STORE(c, packet.x[l], packet.y[l], packet.coverage[l], packet.depths[l], color);
++            else sg_write_multisample(c, packet.x[l], packet.y[l], packet.coverage[l],
++                                     packet.depths[l], color);
++        }
++    }
++    #if SG_MSAA_DEPTH_CAPTURE
++    return !coverage_seen ? 1 : weak_seen ? 0 : 2;
++#else
++    return coverage_seen ? 0 : 1;
++#endif
++}
++
++#undef SG_MSAA_HZ_CLASS
++#undef SG_MSAA_HZ_OCCLUDED
+--- a/libsoftgl/src/rasterizer.c
++++ b/libsoftgl/src/rasterizer.c
+@@ -748,6 +748,34 @@
+ #undef SG_MSAA_COMMON_STORE
+ #undef SG_MSAA_PACKET_WRITE
+ 
++#define SG_MSAA_COMMON_CAN sg_can_store_common_msaa2
++#define SG_MSAA_COMMON_STORE sg_store_common_msaa2
++#define SG_MSAA_PACKET_WRITE sg_write_pixel_packet2
++#define SG_MSAA_DEPTH_CAPTURE 0
++#define SG_MSAA_SAMPLES 2
++#define SG_MSAA_FUNCTION sg_raster_scene_prepared_msaa2
++#include "raster_scene_msaa_impl.h"
++#undef SG_MSAA_COMMON_CAN
++#undef SG_MSAA_COMMON_STORE
++#undef SG_MSAA_PACKET_WRITE
++#undef SG_MSAA_DEPTH_CAPTURE
++#undef SG_MSAA_SAMPLES
++#undef SG_MSAA_FUNCTION
++
++#define SG_MSAA_COMMON_CAN sg_can_store_common_msaa4
++#define SG_MSAA_COMMON_STORE sg_store_common_msaa4
++#define SG_MSAA_PACKET_WRITE sg_write_pixel_packet
++#define SG_MSAA_DEPTH_CAPTURE 0
++#define SG_MSAA_SAMPLES 4
++#define SG_MSAA_FUNCTION sg_raster_scene_prepared_msaa4
++#include "raster_scene_msaa_impl.h"
++#undef SG_MSAA_COMMON_CAN
++#undef SG_MSAA_COMMON_STORE
++#undef SG_MSAA_PACKET_WRITE
++#undef SG_MSAA_DEPTH_CAPTURE
++#undef SG_MSAA_SAMPLES
++#undef SG_MSAA_FUNCTION
++
+ /* Internal: rasterize v0,v1,v2 restricted to x in [tile_ix0, tile_ix1).
+  * tile_ix0=0, tile_ix1=fb.w reproduces the whole-FB behaviour exactly
+  * (caller is the single-thread path). Workers pass their owned X-stripe
+--- a/libsoftgl/src/scene_visibility.c
++++ b/libsoftgl/src/scene_visibility.c
+@@ -237,6 +237,11 @@
+ 
+ /* The ordinary MSAA kernel supplies exact coverage, depth and shading edges.
+  * A record is cached for this triangle/stripe, not for each pixel packet. */
++int sg_scene_visibility_alpha(const softgl_ctx *c) {
++    const struct sg_scene_visibility *f = c->scene_visibility;
++    return f->materials[c->scene_material].alpha_test;
++}
++
+ void sg_scene_visibility_msaa_packet(softgl_ctx *c,
+     const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
+     const sg_tex_tri_ctx *texture, const sg_pixel_packet *packet,
+@@ -693,7 +698,91 @@
+ #define SCENE_TRI_PACKET_AUDIT(index,value) ((void)0)
+ #endif
+ 
++#ifdef SOFTGL_MSAA_VISIBILITY_AUDIT
++static atomic_ullong scene_msaa_packet_counts[4];
++unsigned long long softgl_scene_msaa_packet_audit(unsigned index) {
++    return index < 4 ? atomic_load_explicit(&scene_msaa_packet_counts[index],memory_order_relaxed) : 0;
++}
++#define SCENE_MSAA_PACKET_AUDIT(i,n) atomic_fetch_add_explicit(&scene_msaa_packet_counts[i],(n),memory_order_relaxed)
++#else
++#define SCENE_MSAA_PACKET_AUDIT(i,n) ((void)0)
++#endif
++
++/* Four triangles share fixed-coordinate conversion, bounds and exact i64 area
++ * preparation. Packets survive all immutable references of this frame. */
++static void scene_geometry_make_msaa_packets(struct sg_scene_visibility *f, scene_geometry_task *task) {
++    if (!task->count || atomic_load_explicit(&f->failed,memory_order_relaxed)) return;
++    unsigned packets = (task->count+3u)/4u;
++    if (packets > task->msaa_packet_capacity) {
++        unsigned capacity = task->msaa_packet_capacity ? task->msaa_packet_capacity : 64;
++        while (capacity < packets) capacity *= 2;
++        size_t delta = (size_t)(capacity-task->msaa_packet_capacity)*sizeof(scene_msaa_triangle_packet);
++        pthread_mutex_lock(&f->allocation_mutex);
++        scene_msaa_triangle_packet *next = NULL;
++        if (delta <= SCENE_GEOMETRY_BYTES-f->geometry->primitive_bytes)
++            next = realloc(task->msaa_packets,(size_t)capacity*sizeof(*next));
++        if (next) {
++            task->msaa_packets = next; task->msaa_packet_capacity = capacity;
++            f->geometry->primitive_bytes += delta;
++        }
++        pthread_mutex_unlock(&f->allocation_mutex);
++        if (!next) { atomic_store_explicit(&f->failed,1,memory_order_relaxed); return; }
++    }
++    const scene_mesh *m = &f->materials[task->material].mesh;
++    for (unsigned k = 0; k < task->count; k += 4) {
++        scene_msaa_triangle_packet *packet = &task->msaa_packets[k/4];
++        unsigned count = task->count-k; if (count > 4) count = 4;
++        __m128 eligible = _mm_castsi128_ps(_mm_set1_epi32(-1));
++        __m128i x[3], y[3];
++        for (unsigned vertex = 0; vertex < 3; vertex++) {
++            __m128 ndc[4];
++            for (unsigned lane = 0; lane < 4; lane++) {
++                const scene_primitive *p = &task->primitives[k+(lane < count ? lane : 0)];
++                const sg_vec4 *v = p->clipped == UINT32_MAX ?
++                    &f->geometry->positions[m->offset+p->indices[vertex]-m->minimum].ndc :
++                    &task->clipped[p->clipped].ndc[vertex];
++                ndc[lane] = _mm_load_ps(&v->x);
++            }
++            _MM_TRANSPOSE4_PS(ndc[0],ndc[1],ndc[2],ndc[3]);
++            eligible = _mm_and_ps(eligible,_mm_and_ps(
++                _mm_and_ps(_mm_cmpge_ps(ndc[0],_mm_set1_ps(-1.f)),
++                    _mm_cmple_ps(ndc[0],_mm_set1_ps((float)f->context->fb.w+1.f))),
++                _mm_and_ps(_mm_cmpge_ps(ndc[1],_mm_set1_ps(-1.f)),
++                    _mm_cmple_ps(ndc[1],_mm_set1_ps((float)f->context->fb.h+1.f)))));
++            x[vertex] = sg_f32x4_trunc_i32(_mm_mul_ps(ndc[0],_mm_set1_ps(256.f)));
++            y[vertex] = sg_f32x4_trunc_i32(_mm_mul_ps(ndc[1],_mm_set1_ps(256.f)));
++            _mm_store_si128((__m128i *)packet->x[vertex],x[vertex]);
++            _mm_store_si128((__m128i *)packet->y[vertex],y[vertex]);
++            _mm_store_ps(packet->zw[vertex][0],ndc[2]);
++            _mm_store_ps(packet->zw[vertex][1],ndc[3]);
++        }
++        /* SSE4.1/WASM SIMD128 signed 32x32 -> 64 products retain large areas.
++         * Bounded eligible screen coordinates make the subtractions exact. */
++        __m128i ax = _mm_sub_epi32(x[1],x[0]), ay = _mm_sub_epi32(y[1],y[0]);
++        __m128i bx = _mm_sub_epi32(x[2],x[0]), by = _mm_sub_epi32(y[2],y[0]);
++        __m128i even = _mm_sub_epi64(_mm_mul_epi32(ax,by),_mm_mul_epi32(ay,bx));
++        __m128i odd = _mm_sub_epi64(_mm_mul_epi32(_mm_srli_si128(ax,4),_mm_srli_si128(by,4)),
++            _mm_mul_epi32(_mm_srli_si128(ay,4),_mm_srli_si128(bx,4)));
++        _mm_store_si128((__m128i *)packet->area,_mm_unpacklo_epi64(even,odd));
++        _mm_store_si128((__m128i *)(packet->area+2),_mm_unpackhi_epi64(even,odd));
++        __m128i minx = _mm_min_epi32(_mm_min_epi32(x[0],x[1]),x[2]);
++        __m128i maxx = _mm_max_epi32(_mm_max_epi32(x[0],x[1]),x[2]);
++        __m128i miny = _mm_min_epi32(_mm_min_epi32(y[0],y[1]),y[2]);
++        __m128i maxy = _mm_max_epi32(_mm_max_epi32(y[0],y[1]),y[2]);
++        __m128i zero = _mm_setzero_si128(), one = _mm_set1_epi32(1);
++        _mm_store_si128((__m128i *)packet->bounds[0],_mm_max_epi32(_mm_srai_epi32(minx,8),zero));
++        _mm_store_si128((__m128i *)packet->bounds[1],_mm_min_epi32(
++            _mm_add_epi32(_mm_srai_epi32(maxx,8),one),_mm_set1_epi32(f->context->fb.w)));
++        _mm_store_si128((__m128i *)packet->bounds[2],_mm_max_epi32(_mm_srai_epi32(miny,8),zero));
++        _mm_store_si128((__m128i *)packet->bounds[3],_mm_min_epi32(
++            _mm_add_epi32(_mm_srai_epi32(maxy,8),one),_mm_set1_epi32(f->context->fb.h)));
++        packet->eligible = (unsigned)_mm_movemask_ps(eligible) & ((1u << count)-1u);
++        SCENE_MSAA_PACKET_AUDIT(0,count);
++    }
++}
++
+ static void scene_geometry_make_packets(struct sg_scene_visibility *f, scene_geometry_task *task) {
++    if (f->context->fb.samples) { scene_geometry_make_msaa_packets(f,task); return; }
+     if (!f->quantized || !task->count || atomic_load_explicit(&f->failed,memory_order_relaxed)) return;
+     unsigned packets = (task->count+3u)/4u;
+     if (packets > task->packet_capacity) {
+@@ -761,6 +850,56 @@
+     sg_scene_visibility_triangle(c,v,v+1,v+2,pool->bins[bin].ix0,pool->bins[bin].ix1);
+ }
+ 
++static void scene_msaa_packet_draw(softgl_ctx *c, scene_geometry_task *task,
++    unsigned first, unsigned live, int bin) {
++    struct sg_scene_visibility *f = c->scene_visibility;
++    sg_worker_pool *pool = c->workers;
++    const scene_msaa_triangle_packet *packet = &task->msaa_packets[first/4];
++    const scene_material *material = &f->materials[task->material];
++    const scene_mesh *mesh = &material->mesh;
++    for (unsigned lane = 0; lane < 4; lane++) if (live & (1u << lane)) {
++        const scene_primitive *p = &task->primitives[first+lane];
++        if (!(packet->eligible & (1u << lane))) {
++            SCENE_MSAA_PACKET_AUDIT(2,1);
++            scene_packet_fallback(c,p,bin); continue;
++        }
++        int left = packet->bounds[0][lane], right = packet->bounds[1][lane];
++        if (left < pool->bins[bin].ix0) left = pool->bins[bin].ix0;
++        if (right > pool->bins[bin].ix1) right = pool->bins[bin].ix1;
++        int bottom = packet->bounds[2][lane], top = packet->bounds[3][lane];
++        if (packet->area[lane] <= 0 || left >= right || bottom >= top) continue;
++        sg_vert vertices[3]; int32_t x[3], y[3];
++        const scene_clipped_primitive *clipped = p->clipped == UINT32_MAX ? NULL :
++            &task->clipped[p->clipped];
++        for (int j = 0; j < 3; j++) {
++            x[j] = packet->x[j][lane]; y[j] = packet->y[j][lane];
++            /* Eligible coordinates are below 2^24 fixed units, so this
++             * round trip preserves every original 16.8 integer exactly. */
++            vertices[j].ndc = (sg_vec4){(float)x[j]*(1.f/256.f),(float)y[j]*(1.f/256.f),
++                packet->zw[j][0][lane],packet->zw[j][1][lane]};
++            vertices[j].color.w = 1.f;
++            if (material->alpha_test) {
++                const float *uv = clipped ? clipped->coordinates[j] :
++                    (const float *)((const uint8_t *)mesh->coordinates+(size_t)p->indices[j]*mesh->stride);
++                vertices[j].uv[2] = (sg_vec4){uv[0],uv[1],0.f,1.f};
++            }
++        }
++        int bias[3];
++        for (int e = 0; e < 3; e++) {
++            int a = (e+1)%3, b = (e+2)%3;
++            bias[e] = ((y[b]-y[a]) < 0 || ((y[b]-y[a]) == 0 && (x[b]-x[a]) < 0)) ? 0 : -1;
++        }
++        f->current_primitive[bin] = p; c->scene_material = (int)p->material;
++        SCENE_MSAA_PACKET_AUDIT(1,1);
++        SCENE_MSAA_PACKET_AUDIT(3,packet->area[lane] > INT32_MAX);
++        if (c->fb.samples == 4)
++            sg_raster_scene_prepared_msaa4(c,vertices,vertices+1,vertices+2,&material->texture,
++                left,bottom,right,top,packet->area[lane],bias[0],bias[1],bias[2],0.f,x,y);
++        else sg_raster_scene_prepared_msaa2(c,vertices,vertices+1,vertices+2,&material->texture,
++                left,bottom,right,top,packet->area[lane],bias[0],bias[1],bias[2],0.f,x,y);
++    }
++}
++
+ static void scene_packet_draw(softgl_ctx *c, scene_geometry_task *task,
+     unsigned first, unsigned live, int bin) {
+     struct sg_scene_visibility *f = c->scene_visibility;
+@@ -768,6 +907,7 @@
+     SCENE_TRI_PACKET_AUDIT(2,1);
+     SCENE_TRI_PACKET_AUDIT(5,live != 15);
+     SCENE_TRI_PACKET_AUDIT(6,live == 15);
++    if (c->fb.samples) { scene_msaa_packet_draw(c,task,first,live,bin); return; }
+     if (!f->quantized) {
+         for (unsigned lane = 0; lane < 4; lane++) if (live & (1u << lane)) {
+             SCENE_TRI_PACKET_AUDIT(4,1);
+--- a/libsoftgl/src/types.h
++++ b/libsoftgl/src/types.h
+@@ -480,6 +480,15 @@
+     int64_t edge0[4], edge1[4];
+     float depths[4][4];
+ } sg_pixel_packet;
++int sg_scene_visibility_alpha(const softgl_ctx *c);
++int sg_raster_scene_prepared_msaa2(softgl_ctx *c,
++    const sg_vert *v0, const sg_vert *v1, const sg_vert *v2, const sg_tex_tri_ctx *texture,
++    int ix0, int iy0, int ix1, int iy1, int64_t area, int bias0, int bias1, int bias2,
++    float z_offset, const int32_t *prepared_x, const int32_t *prepared_y);
++int sg_raster_scene_prepared_msaa4(softgl_ctx *c,
++    const sg_vert *v0, const sg_vert *v1, const sg_vert *v2, const sg_tex_tri_ctx *texture,
++    int ix0, int iy0, int ix1, int iy1, int64_t area, int bias0, int bias1, int bias2,
++    float z_offset, const int32_t *prepared_x, const int32_t *prepared_y);
+ void sg_scene_visibility_msaa_packet(softgl_ctx *c,
+     const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
+     const sg_tex_tri_ctx *texture, const sg_pixel_packet *packet,

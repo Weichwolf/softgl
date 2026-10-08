@@ -178,5 +178,7 @@
 | [scene-phase-profile](scene-phase-profile/README.md) | Diagnostic | Bistro4 72.49 ms: joined raster/capture 32.38, shading 16.82, serial grouping/list 8.71; instrumented, final planes exact, no gain claim. |
 | [a4-sparse-aa](a4-sparse-aa/README.md) | Research / locally reviewed | A4 paper and pinned SimdRast: sparse edge AA and tiled fragment resolve; hybrid timings do not predict CPU-only 4× speed. |
 | [scene-msaa-parallel-groups](scene-msaa-parallel-groups/README.md) | Accepted | 144 accepted/8 rejected runs: Bistro2/4 FPS +6.31/+10.83%; 108 exact views, 757 tests, sanitizer/WASM and 12 live browser cases pass (2.65 GiB). |
-| [scene-msaa-surface-merge](scene-msaa-surface-merge/README.md) | Research | Merge shading of compatible adjacent surface fragments while retaining all 4× depth/coverage; approximation and speed unmeasured. |
-| [scene-msaa-triangle-packets](scene-msaa-triangle-packets/README.md) | Research | Full-precision four-triangle SIMD128 MSAA setup; accepted OFF packets currently bypass MSAA; implementation/gain pending. |
+| [scene-msaa-surface-merge](scene-msaa-surface-merge/README.md) | Census | Bistro adjacency-only opportunities: 5.74% fewer 2× / 10.96% fewer 4× shading jobs across nine views; no color sharing or FPS gain yet. |
+| [scene-msaa-triangle-packets](scene-msaa-triangle-packets/README.md) | Rejected screen | Exact full-precision SIMD128 packets regress Bistro 2× +4.64% / 4× +9.09% frame time; 108 model views and independent sample-plane fixtures exact. |
+| [scene-msaa-small-triangles](scene-msaa-small-triangles/README.md) | Accepted | Short exact SIMD128 MSAA kernel for ≤8×8 triangle boxes: Bistro 4× frame -3.89% / FPS +4.05%; 144 quiet runs, native/WASM sample planes exact, live browser updated. |
+| [scene-msaa-pixel-occlusion](scene-msaa-pixel-occlusion/README.md) | Prepared | HPG 2011 adaptation: compare four real depths to a conservative bound before sample coverage; implementation unmeasured. |
