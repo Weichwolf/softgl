@@ -1,0 +1,257 @@
+-- The C compiler identification is Clang 22.1.8
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /home/cosmo/.local/bin/clang-22 - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- Configuring done (1.3s)
+-- Generating done (0.1s)
+-- Build files have been written to: /home/cosmo/Git/softgl/build/scene-tiled-4x4/audit
+[  4%] Building C object candidate-library/CMakeFiles/softgl.dir/src/state.c.o
+[  8%] Building C object candidate-library/CMakeFiles/softgl.dir/src/matrix.c.o
+[ 12%] Building C object candidate-library/CMakeFiles/softgl.dir/src/buffers.c.o
+[ 16%] Building C object candidate-library/CMakeFiles/softgl.dir/src/texture.c.o
+[ 20%] Building C object candidate-library/CMakeFiles/softgl.dir/src/pipeline.c.o
+[ 25%] Building C object candidate-library/CMakeFiles/softgl.dir/src/clip.c.o
+[ 29%] Building C object candidate-library/CMakeFiles/softgl.dir/src/fragment_write.c.o
+[ 33%] Building C object candidate-library/CMakeFiles/softgl.dir/src/multisample.c.o
+[ 37%] Building C object candidate-library/CMakeFiles/softgl.dir/src/fragment_combine.c.o
+[ 41%] Building C object candidate-library/CMakeFiles/softgl.dir/src/rasterizer.c.o
+[ 45%] Building C object candidate-library/CMakeFiles/softgl.dir/src/lines.c.o
+[ 50%] Building C object candidate-library/CMakeFiles/softgl.dir/src/fragment.c.o
+[ 54%] Building C object candidate-library/CMakeFiles/softgl.dir/src/framebuffer.c.o
+[ 58%] Building C object candidate-library/CMakeFiles/softgl.dir/src/lighting.c.o
+[ 62%] Building C object candidate-library/CMakeFiles/softgl.dir/src/api.c.o
+[ 66%] Building C object candidate-library/CMakeFiles/softgl.dir/src/immediate.c.o
+[ 70%] Building C object candidate-library/CMakeFiles/softgl.dir/src/dlist.c.o
+[ 75%] Building C object candidate-library/CMakeFiles/softgl.dir/src/pixels.c.o
+[ 79%] Building C object candidate-library/CMakeFiles/softgl.dir/src/evaluators.c.o
+[ 83%] Building C object candidate-library/CMakeFiles/softgl.dir/src/workers.c.o
+[ 87%] Building C object candidate-library/CMakeFiles/softgl.dir/src/scene_visibility.c.o
+[ 91%] Linking C static library libsoftgl.a
+[ 91%] Built target softgl
+[ 95%] Building C object CMakeFiles/tile_contract.dir/tile_contract.c.o
+[100%] Linking C executable tile_contract
+[100%] Built target tile_contract
+{"enabled":0,"helpers":3,"samples":0,"variant":0,"planes":"65ff8be1dba56325"}
+{"enabled":0,"helpers":3,"samples":0,"variant":1,"planes":"73a2b252d839722f"}
+{"enabled":0,"helpers":3,"samples":0,"variant":2,"planes":"08ad0dec21ae7485"}
+{"enabled":0,"helpers":3,"samples":0,"variant":3,"planes":"65ff8be1dba56325"}
+{"enabled":0,"helpers":3,"samples":0,"variant":4,"planes":"58b1fb6a0456b355"}
+{"enabled":0,"helpers":3,"samples":0,"variant":5,"planes":"e0f6aaf004d9f34d"}
+{"enabled":0,"helpers":3,"samples":0,"variant":6,"planes":"16d3411fe25127de"}
+{"enabled":0,"helpers":3,"samples":0,"variant":7,"planes":"267ef80ae414700e"}
+{"enabled":0,"helpers":3,"samples":0,"variant":8,"planes":"65ff8be1dba56325"}
+{"enabled":0,"helpers":3,"samples":0,"variant":9,"planes":"65ff8be1dba56325"}
+{"enabled":0,"helpers":3,"samples":0,"variant":10,"planes":"65ff8be1dba56325"}
+{"enabled":0,"helpers":3,"samples":0,"variant":11,"planes":"ed7c6acfa0080890"}
+{"enabled":0,"helpers":3,"samples":0,"variant":12,"planes":"65ff8be1dba56325"}
+{"enabled":0,"helpers":3,"samples":0,"variant":13,"planes":"65ff8be1dba56325"}
+{"enabled":0,"helpers":3,"samples":0,"variant":14,"planes":"65ff8be1dba56325"}
+{"enabled":0,"helpers":3,"samples":0,"variant":15,"planes":"65ff8be1dba56325"}
+{"enabled":0,"helpers":3,"samples":0,"variant":16,"planes":"65ff8be1dba56325"}
+{"enabled":0,"helpers":3,"samples":0,"variant":17,"planes":"65ff8be1dba56325"}
+{"enabled":0,"helpers":3,"samples":2,"variant":0,"planes":"930ca50999abe325"}
+{"enabled":0,"helpers":3,"samples":2,"variant":1,"planes":"d857ec7a01d9ff17"}
+{"enabled":0,"helpers":3,"samples":2,"variant":2,"planes":"e6dfa75a3d6485e2"}
+{"enabled":0,"helpers":3,"samples":2,"variant":3,"planes":"930ca50999abe325"}
+{"enabled":0,"helpers":3,"samples":2,"variant":4,"planes":"47b0adf1c64489de"}
+{"enabled":0,"helpers":3,"samples":2,"variant":5,"planes":"deb3a1d938a93621"}
+{"enabled":0,"helpers":3,"samples":2,"variant":6,"planes":"04cc1de6ca9e5273"}
+{"enabled":0,"helpers":3,"samples":2,"variant":7,"planes":"c9b0c7b535359dba"}
+{"enabled":0,"helpers":3,"samples":2,"variant":8,"planes":"930ca50999abe325"}
+{"enabled":0,"helpers":3,"samples":2,"variant":9,"planes":"930ca50999abe325"}
+{"enabled":0,"helpers":3,"samples":2,"variant":10,"planes":"930ca50999abe325"}
+{"enabled":0,"helpers":3,"samples":2,"variant":11,"planes":"234cdf7d0569714f"}
+{"enabled":0,"helpers":3,"samples":2,"variant":12,"planes":"930ca50999abe325"}
+{"enabled":0,"helpers":3,"samples":2,"variant":13,"planes":"930ca50999abe325"}
+{"enabled":0,"helpers":3,"samples":2,"variant":14,"planes":"930ca50999abe325"}
+{"enabled":0,"helpers":3,"samples":2,"variant":15,"planes":"930ca50999abe325"}
+{"enabled":0,"helpers":3,"samples":2,"variant":16,"planes":"930ca50999abe325"}
+{"enabled":0,"helpers":3,"samples":2,"variant":17,"planes":"930ca50999abe325"}
+{"enabled":0,"helpers":3,"samples":4,"variant":0,"planes":"773b10a2f3b26325"}
+{"enabled":0,"helpers":3,"samples":4,"variant":1,"planes":"36c5143e68bc68e5"}
+{"enabled":0,"helpers":3,"samples":4,"variant":2,"planes":"5f6658aec21aeceb"}
+{"enabled":0,"helpers":3,"samples":4,"variant":3,"planes":"773b10a2f3b26325"}
+{"enabled":0,"helpers":3,"samples":4,"variant":4,"planes":"40b8a84e59a453d7"}
+{"enabled":0,"helpers":3,"samples":4,"variant":5,"planes":"e54758f344db5c43"}
+{"enabled":0,"helpers":3,"samples":4,"variant":6,"planes":"46994c96f2bc4855"}
+{"enabled":0,"helpers":3,"samples":4,"variant":7,"planes":"49599e7b81a9b86d"}
+{"enabled":0,"helpers":3,"samples":4,"variant":8,"planes":"773b10a2f3b26325"}
+{"enabled":0,"helpers":3,"samples":4,"variant":9,"planes":"773b10a2f3b26325"}
+{"enabled":0,"helpers":3,"samples":4,"variant":10,"planes":"773b10a2f3b26325"}
+{"enabled":0,"helpers":3,"samples":4,"variant":11,"planes":"dcad5a9ba3296d1e"}
+{"enabled":0,"helpers":3,"samples":4,"variant":12,"planes":"773b10a2f3b26325"}
+{"enabled":0,"helpers":3,"samples":4,"variant":13,"planes":"773b10a2f3b26325"}
+{"enabled":0,"helpers":3,"samples":4,"variant":14,"planes":"773b10a2f3b26325"}
+{"enabled":0,"helpers":3,"samples":4,"variant":15,"planes":"773b10a2f3b26325"}
+{"enabled":0,"helpers":3,"samples":4,"variant":16,"planes":"773b10a2f3b26325"}
+{"enabled":0,"helpers":3,"samples":4,"variant":17,"planes":"773b10a2f3b26325"}
+{"enabled":0,"helpers":8,"samples":0,"variant":0,"planes":"65ff8be1dba56325"}
+{"enabled":0,"helpers":8,"samples":0,"variant":1,"planes":"73a2b252d839722f"}
+{"enabled":0,"helpers":8,"samples":0,"variant":2,"planes":"08ad0dec21ae7485"}
+{"enabled":0,"helpers":8,"samples":0,"variant":3,"planes":"65ff8be1dba56325"}
+{"enabled":0,"helpers":8,"samples":0,"variant":4,"planes":"58b1fb6a0456b355"}
+{"enabled":0,"helpers":8,"samples":0,"variant":5,"planes":"e0f6aaf004d9f34d"}
+{"enabled":0,"helpers":8,"samples":0,"variant":6,"planes":"16d3411fe25127de"}
+{"enabled":0,"helpers":8,"samples":0,"variant":7,"planes":"267ef80ae414700e"}
+{"enabled":0,"helpers":8,"samples":0,"variant":8,"planes":"65ff8be1dba56325"}
+{"enabled":0,"helpers":8,"samples":0,"variant":9,"planes":"65ff8be1dba56325"}
+{"enabled":0,"helpers":8,"samples":0,"variant":10,"planes":"65ff8be1dba56325"}
+{"enabled":0,"helpers":8,"samples":0,"variant":11,"planes":"ed7c6acfa0080890"}
+{"enabled":0,"helpers":8,"samples":0,"variant":12,"planes":"65ff8be1dba56325"}
+{"enabled":0,"helpers":8,"samples":0,"variant":13,"planes":"65ff8be1dba56325"}
+{"enabled":0,"helpers":8,"samples":0,"variant":14,"planes":"65ff8be1dba56325"}
+{"enabled":0,"helpers":8,"samples":0,"variant":15,"planes":"65ff8be1dba56325"}
+{"enabled":0,"helpers":8,"samples":0,"variant":16,"planes":"65ff8be1dba56325"}
+{"enabled":0,"helpers":8,"samples":0,"variant":17,"planes":"65ff8be1dba56325"}
+{"enabled":0,"helpers":8,"samples":2,"variant":0,"planes":"930ca50999abe325"}
+{"enabled":0,"helpers":8,"samples":2,"variant":1,"planes":"d857ec7a01d9ff17"}
+{"enabled":0,"helpers":8,"samples":2,"variant":2,"planes":"e6dfa75a3d6485e2"}
+{"enabled":0,"helpers":8,"samples":2,"variant":3,"planes":"930ca50999abe325"}
+{"enabled":0,"helpers":8,"samples":2,"variant":4,"planes":"47b0adf1c64489de"}
+{"enabled":0,"helpers":8,"samples":2,"variant":5,"planes":"deb3a1d938a93621"}
+{"enabled":0,"helpers":8,"samples":2,"variant":6,"planes":"04cc1de6ca9e5273"}
+{"enabled":0,"helpers":8,"samples":2,"variant":7,"planes":"c9b0c7b535359dba"}
+{"enabled":0,"helpers":8,"samples":2,"variant":8,"planes":"930ca50999abe325"}
+{"enabled":0,"helpers":8,"samples":2,"variant":9,"planes":"930ca50999abe325"}
+{"enabled":0,"helpers":8,"samples":2,"variant":10,"planes":"930ca50999abe325"}
+{"enabled":0,"helpers":8,"samples":2,"variant":11,"planes":"234cdf7d0569714f"}
+{"enabled":0,"helpers":8,"samples":2,"variant":12,"planes":"930ca50999abe325"}
+{"enabled":0,"helpers":8,"samples":2,"variant":13,"planes":"930ca50999abe325"}
+{"enabled":0,"helpers":8,"samples":2,"variant":14,"planes":"930ca50999abe325"}
+{"enabled":0,"helpers":8,"samples":2,"variant":15,"planes":"930ca50999abe325"}
+{"enabled":0,"helpers":8,"samples":2,"variant":16,"planes":"930ca50999abe325"}
+{"enabled":0,"helpers":8,"samples":2,"variant":17,"planes":"930ca50999abe325"}
+{"enabled":0,"helpers":8,"samples":4,"variant":0,"planes":"773b10a2f3b26325"}
+{"enabled":0,"helpers":8,"samples":4,"variant":1,"planes":"36c5143e68bc68e5"}
+{"enabled":0,"helpers":8,"samples":4,"variant":2,"planes":"5f6658aec21aeceb"}
+{"enabled":0,"helpers":8,"samples":4,"variant":3,"planes":"773b10a2f3b26325"}
+{"enabled":0,"helpers":8,"samples":4,"variant":4,"planes":"40b8a84e59a453d7"}
+{"enabled":0,"helpers":8,"samples":4,"variant":5,"planes":"e54758f344db5c43"}
+{"enabled":0,"helpers":8,"samples":4,"variant":6,"planes":"46994c96f2bc4855"}
+{"enabled":0,"helpers":8,"samples":4,"variant":7,"planes":"49599e7b81a9b86d"}
+{"enabled":0,"helpers":8,"samples":4,"variant":8,"planes":"773b10a2f3b26325"}
+{"enabled":0,"helpers":8,"samples":4,"variant":9,"planes":"773b10a2f3b26325"}
+{"enabled":0,"helpers":8,"samples":4,"variant":10,"planes":"773b10a2f3b26325"}
+{"enabled":0,"helpers":8,"samples":4,"variant":11,"planes":"dcad5a9ba3296d1e"}
+{"enabled":0,"helpers":8,"samples":4,"variant":12,"planes":"773b10a2f3b26325"}
+{"enabled":0,"helpers":8,"samples":4,"variant":13,"planes":"773b10a2f3b26325"}
+{"enabled":0,"helpers":8,"samples":4,"variant":14,"planes":"773b10a2f3b26325"}
+{"enabled":0,"helpers":8,"samples":4,"variant":15,"planes":"773b10a2f3b26325"}
+{"enabled":0,"helpers":8,"samples":4,"variant":16,"planes":"773b10a2f3b26325"}
+{"enabled":0,"helpers":8,"samples":4,"variant":17,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":3,"samples":0,"variant":0,"planes":"65ff8be1dba56325"}
+{"enabled":1,"helpers":3,"samples":0,"variant":1,"planes":"2c2da178382e00fb"}
+{"enabled":1,"helpers":3,"samples":0,"variant":2,"planes":"497195a3913acf91"}
+{"enabled":1,"helpers":3,"samples":0,"variant":3,"planes":"65ff8be1dba56325"}
+{"enabled":1,"helpers":3,"samples":0,"variant":4,"planes":"82d5aafdcc7cd2c3"}
+{"enabled":1,"helpers":3,"samples":0,"variant":5,"planes":"7204ebe91f520afa"}
+{"enabled":1,"helpers":3,"samples":0,"variant":6,"planes":"56c4037d4255b68d"}
+{"enabled":1,"helpers":3,"samples":0,"variant":7,"planes":"41540585c6b35936"}
+{"enabled":1,"helpers":3,"samples":0,"variant":8,"planes":"65ff8be1dba56325"}
+{"enabled":1,"helpers":3,"samples":0,"variant":9,"planes":"65ff8be1dba56325"}
+{"enabled":1,"helpers":3,"samples":0,"variant":10,"planes":"65ff8be1dba56325"}
+{"enabled":1,"helpers":3,"samples":0,"variant":11,"planes":"455844b6d5e8d6af"}
+{"enabled":1,"helpers":3,"samples":0,"variant":12,"planes":"65ff8be1dba56325"}
+{"enabled":1,"helpers":3,"samples":0,"variant":13,"planes":"65ff8be1dba56325"}
+{"enabled":1,"helpers":3,"samples":0,"variant":14,"planes":"65ff8be1dba56325"}
+{"enabled":1,"helpers":3,"samples":0,"variant":15,"planes":"65ff8be1dba56325"}
+{"enabled":1,"helpers":3,"samples":0,"variant":16,"planes":"65ff8be1dba56325"}
+{"enabled":1,"helpers":3,"samples":0,"variant":17,"planes":"65ff8be1dba56325"}
+{"enabled":1,"helpers":3,"samples":2,"variant":0,"planes":"930ca50999abe325"}
+{"enabled":1,"helpers":3,"samples":2,"variant":1,"planes":"d857ec7a01d9ff17"}
+{"enabled":1,"helpers":3,"samples":2,"variant":2,"planes":"e6dfa75a3d6485e2"}
+{"enabled":1,"helpers":3,"samples":2,"variant":3,"planes":"930ca50999abe325"}
+{"enabled":1,"helpers":3,"samples":2,"variant":4,"planes":"47b0adf1c64489de"}
+{"enabled":1,"helpers":3,"samples":2,"variant":5,"planes":"deb3a1d938a93621"}
+{"enabled":1,"helpers":3,"samples":2,"variant":6,"planes":"04cc1de6ca9e5273"}
+{"enabled":1,"helpers":3,"samples":2,"variant":7,"planes":"c9b0c7b535359dba"}
+{"enabled":1,"helpers":3,"samples":2,"variant":8,"planes":"930ca50999abe325"}
+{"enabled":1,"helpers":3,"samples":2,"variant":9,"planes":"930ca50999abe325"}
+{"enabled":1,"helpers":3,"samples":2,"variant":10,"planes":"930ca50999abe325"}
+{"enabled":1,"helpers":3,"samples":2,"variant":11,"planes":"234cdf7d0569714f"}
+{"enabled":1,"helpers":3,"samples":2,"variant":12,"planes":"930ca50999abe325"}
+{"enabled":1,"helpers":3,"samples":2,"variant":13,"planes":"930ca50999abe325"}
+{"enabled":1,"helpers":3,"samples":2,"variant":14,"planes":"930ca50999abe325"}
+{"enabled":1,"helpers":3,"samples":2,"variant":15,"planes":"930ca50999abe325"}
+{"enabled":1,"helpers":3,"samples":2,"variant":16,"planes":"930ca50999abe325"}
+{"enabled":1,"helpers":3,"samples":2,"variant":17,"planes":"930ca50999abe325"}
+{"enabled":1,"helpers":3,"samples":4,"variant":0,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":3,"samples":4,"variant":1,"planes":"36c5143e68bc68e5"}
+{"enabled":1,"helpers":3,"samples":4,"variant":2,"planes":"5f6658aec21aeceb"}
+{"enabled":1,"helpers":3,"samples":4,"variant":3,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":3,"samples":4,"variant":4,"planes":"40b8a84e59a453d7"}
+{"enabled":1,"helpers":3,"samples":4,"variant":5,"planes":"e54758f344db5c43"}
+{"enabled":1,"helpers":3,"samples":4,"variant":6,"planes":"46994c96f2bc4855"}
+{"enabled":1,"helpers":3,"samples":4,"variant":7,"planes":"49599e7b81a9b86d"}
+{"enabled":1,"helpers":3,"samples":4,"variant":8,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":3,"samples":4,"variant":9,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":3,"samples":4,"variant":10,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":3,"samples":4,"variant":11,"planes":"dcad5a9ba3296d1e"}
+{"enabled":1,"helpers":3,"samples":4,"variant":12,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":3,"samples":4,"variant":13,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":3,"samples":4,"variant":14,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":3,"samples":4,"variant":15,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":3,"samples":4,"variant":16,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":3,"samples":4,"variant":17,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":8,"samples":0,"variant":0,"planes":"65ff8be1dba56325"}
+{"enabled":1,"helpers":8,"samples":0,"variant":1,"planes":"2c2da178382e00fb"}
+{"enabled":1,"helpers":8,"samples":0,"variant":2,"planes":"497195a3913acf91"}
+{"enabled":1,"helpers":8,"samples":0,"variant":3,"planes":"65ff8be1dba56325"}
+{"enabled":1,"helpers":8,"samples":0,"variant":4,"planes":"82d5aafdcc7cd2c3"}
+{"enabled":1,"helpers":8,"samples":0,"variant":5,"planes":"7204ebe91f520afa"}
+{"enabled":1,"helpers":8,"samples":0,"variant":6,"planes":"56c4037d4255b68d"}
+{"enabled":1,"helpers":8,"samples":0,"variant":7,"planes":"41540585c6b35936"}
+{"enabled":1,"helpers":8,"samples":0,"variant":8,"planes":"65ff8be1dba56325"}
+{"enabled":1,"helpers":8,"samples":0,"variant":9,"planes":"65ff8be1dba56325"}
+{"enabled":1,"helpers":8,"samples":0,"variant":10,"planes":"65ff8be1dba56325"}
+{"enabled":1,"helpers":8,"samples":0,"variant":11,"planes":"455844b6d5e8d6af"}
+{"enabled":1,"helpers":8,"samples":0,"variant":12,"planes":"65ff8be1dba56325"}
+{"enabled":1,"helpers":8,"samples":0,"variant":13,"planes":"65ff8be1dba56325"}
+{"enabled":1,"helpers":8,"samples":0,"variant":14,"planes":"65ff8be1dba56325"}
+{"enabled":1,"helpers":8,"samples":0,"variant":15,"planes":"65ff8be1dba56325"}
+{"enabled":1,"helpers":8,"samples":0,"variant":16,"planes":"65ff8be1dba56325"}
+{"enabled":1,"helpers":8,"samples":0,"variant":17,"planes":"65ff8be1dba56325"}
+{"enabled":1,"helpers":8,"samples":2,"variant":0,"planes":"930ca50999abe325"}
+{"enabled":1,"helpers":8,"samples":2,"variant":1,"planes":"d857ec7a01d9ff17"}
+{"enabled":1,"helpers":8,"samples":2,"variant":2,"planes":"e6dfa75a3d6485e2"}
+{"enabled":1,"helpers":8,"samples":2,"variant":3,"planes":"930ca50999abe325"}
+{"enabled":1,"helpers":8,"samples":2,"variant":4,"planes":"47b0adf1c64489de"}
+{"enabled":1,"helpers":8,"samples":2,"variant":5,"planes":"deb3a1d938a93621"}
+{"enabled":1,"helpers":8,"samples":2,"variant":6,"planes":"04cc1de6ca9e5273"}
+{"enabled":1,"helpers":8,"samples":2,"variant":7,"planes":"c9b0c7b535359dba"}
+{"enabled":1,"helpers":8,"samples":2,"variant":8,"planes":"930ca50999abe325"}
+{"enabled":1,"helpers":8,"samples":2,"variant":9,"planes":"930ca50999abe325"}
+{"enabled":1,"helpers":8,"samples":2,"variant":10,"planes":"930ca50999abe325"}
+{"enabled":1,"helpers":8,"samples":2,"variant":11,"planes":"234cdf7d0569714f"}
+{"enabled":1,"helpers":8,"samples":2,"variant":12,"planes":"930ca50999abe325"}
+{"enabled":1,"helpers":8,"samples":2,"variant":13,"planes":"930ca50999abe325"}
+{"enabled":1,"helpers":8,"samples":2,"variant":14,"planes":"930ca50999abe325"}
+{"enabled":1,"helpers":8,"samples":2,"variant":15,"planes":"930ca50999abe325"}
+{"enabled":1,"helpers":8,"samples":2,"variant":16,"planes":"930ca50999abe325"}
+{"enabled":1,"helpers":8,"samples":2,"variant":17,"planes":"930ca50999abe325"}
+{"enabled":1,"helpers":8,"samples":4,"variant":0,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":8,"samples":4,"variant":1,"planes":"36c5143e68bc68e5"}
+{"enabled":1,"helpers":8,"samples":4,"variant":2,"planes":"5f6658aec21aeceb"}
+{"enabled":1,"helpers":8,"samples":4,"variant":3,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":8,"samples":4,"variant":4,"planes":"40b8a84e59a453d7"}
+{"enabled":1,"helpers":8,"samples":4,"variant":5,"planes":"e54758f344db5c43"}
+{"enabled":1,"helpers":8,"samples":4,"variant":6,"planes":"46994c96f2bc4855"}
+{"enabled":1,"helpers":8,"samples":4,"variant":7,"planes":"49599e7b81a9b86d"}
+{"enabled":1,"helpers":8,"samples":4,"variant":8,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":8,"samples":4,"variant":9,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":8,"samples":4,"variant":10,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":8,"samples":4,"variant":11,"planes":"dcad5a9ba3296d1e"}
+{"enabled":1,"helpers":8,"samples":4,"variant":12,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":8,"samples":4,"variant":13,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":8,"samples":4,"variant":14,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":8,"samples":4,"variant":15,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":8,"samples":4,"variant":16,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":8,"samples":4,"variant":17,"planes":"773b10a2f3b26325"}
+Quantized visibility: 216 paired exact full-plane frames, 16 rollbacks PASS
+4x4 tiles: frames=152 blocks=812216 rejected=411150 full=307859
+Actual SIMD128 4x4 tiled visibility contract PASS

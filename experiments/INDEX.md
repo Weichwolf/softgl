@@ -163,6 +163,6 @@
 | [scene-meshlets-soa](scene-meshlets-soa/README.md) | Queued | Meshlets with structure-of-arrays positions; requested architecture trial, SIMD128 only; no measurements yet. |
 | [scene-triangle-packets](scene-triangle-packets/README.md) | Accepted combined variant | SIMD128 SoA packets + mask16 bins: independent OFF −5.2/−6.9/−7.9/−9.4%; MSAA controls −0.2…+1.1%; 756 tests, exact native/WASM planes, live browser updated. |
 | [scene-packet-bin-masks](scene-packet-bin-masks/README.md) | Isolated variant not adopted | SIMD128 mask16 screen -0.03/-1.18/+2.69/+0.63%; 36 exact views, 55-pair audited oracle; combine with triangle packets next. |
-| [scene-tiled-4x4](scene-tiled-4x4/README.md) | Queued | 4x4 pixel blocks and matching visibility storage; requested architecture trial, SIMD128 only; no measurements yet. |
+| [scene-tiled-4x4](scene-tiled-4x4/README.md) | First standalone variant rejected | Actual tiled depth/winners + SIMD128 4×4 coverage: 36 exact asset planes and 216 native/WASM baseline hashes, but OFF +27/+65/+28/+15%; direct-address/combined variants remain open. |
 | [scene-meshlet-occlusion](scene-meshlet-occlusion/README.md) | Research | Current-frame conservative cluster occlusion inspired by masked depth/coverage; no performance claim. |
 | [scene-opacity-micromaps](scene-opacity-micromaps/README.md) | Research | Conservative opaque/transparent cutout classification; CPU raster adaptation unmeasured. |

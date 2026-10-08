@@ -1,0 +1,36 @@
+{
+  "status": "First standalone tiled storage/block coverage variant rejected by initial timing; architecture family remains open",
+  "baseline": "da8ab07",
+  "nativeFullPlaneAssetPairs": 36,
+  "nativeIndependentContractPairs": 216,
+  "wasmIndependentBaselineContractPairs": 216,
+  "rollbacks": 16,
+  "nativeSIMD128Only": true,
+  "wasmHeapBytes": 268435456,
+  "nativeAndWasmActualDispatchCounts": {
+    "frames": 152,
+    "blocks": 812216,
+    "rejectedBlocks": 411150,
+    "fullBlocks": 307859
+  },
+  "firstScreenFrameTimeChangePercent": {
+    "bmw": 27.04716979507642,
+    "t80": 64.75255455654849,
+    "sponza": 27.86236828798634,
+    "bistro": 14.62292767283242
+  },
+  "acceptedTimingRequests": 16,
+  "rejectedTimingRequests": 0,
+  "filesSha256": {
+    "audit.txt": "6fc354132f9337dec92d6d8145cd9e17d83ccf01c9b26e026b1400ce134ac088",
+    "baseline.txt": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+    "build.txt": "517198ccd043b92c9068dc3c92db25494af688d798265ff7dcc731d464053b7f",
+    "contract.txt": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+    "isa.json": "69d588aa513fa375982ee4ef8c729be34c6e3dc2180b713ed93bcd61df2723f3",
+    "quality.json": "2d1cb2459e6dbcf54e2d7199c2ab28463ef9394fac061ec43012dc637d00851a",
+    "quality.txt": "2b37ab873ee77bd31236c9434ccd795d02f74c785c8b9f98cf5e61417c2ff676",
+    "receipt.json": "ec2d1446dadcf860343c35d60700349e5658b5457a9c37d99dc32daba92f4fcc",
+    "summary.json": "3382e1902af4237641eea43e39c42bccddcd9cc60949bc4f3029917a0f99ff8b",
+    "wasm.txt": "b64b9a1550dd4c87d3e27fcf6362a67fe523760e0d8f7ac3f25441d3d3972981"
+  }
+}
