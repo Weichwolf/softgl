@@ -1,0 +1,4 @@
+emcc: warning: -pthread + ALLOW_MEMORY_GROWTH may run non-wasm code slowly, see https://github.com/WebAssembly/design/issues/1271 [-Wpthreads-mem-growth]
+Native wide: 2024 paired full-plane frames, all rectangle/tail lengths; 6 rollbacks; availability=0 PASS
+Actual tagged dispatch: SIMD128 narrow=4749270 legacy=5142850; native-wide narrow=0 legacy=0 PASS
+WASM: pointerBytes=4 heapBytes=268435456 nativeWide=0 PASS
