@@ -1,6 +1,6 @@
 # Two weighted vertex differences for quantized depth
 
-Status: private trial; no adoption claim. Frozen baseline `05195fe`.
+Status: not adopted after repeated native confirmation. Frozen baseline `05195fe`.
 
 The current bounded 16.4 kernel reconstructs depth as
 `b0*z0 + b1*z1 + (1-b0-b1)*z2`. This experiment uses
@@ -58,3 +58,15 @@ performance and adoption gates remain pending.
 
 [Screening receipt](screening/receipt.json), [summary](screening/summary.json),
 [quality](screening/quality.json), [numeric contract](screening/oracle.txt).
+
+## Independent confirmation: rejected
+
+Three balanced native off-mode blocks per scene, 60 warm-up and 30 measured
+frames, same first-screen executables. BMW/T-80/Sponza/Bistro frame-time changes
++4.31/+3.43/-2.54/-0.47%. The BMW first-screen gain reverses and T-80 also
+regresses. No production adoption or further all-mode/WASM gates. All raw
+samples remain in [confirmation](confirmation/receipt.json), including a
+51.33 ms Bistro baseline outlier with monitored foreign CPU below the gate.
+That sample was retained; the current filter does not observe every possible
+host scheduling or frequency change. The median summary includes all accepted
+runs and is not an assertion of tight confidence bounds.

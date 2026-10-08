@@ -1,5 +1,5 @@
 {
-  "status": "off-mode confirmation passed; MSAA/context/sanitizer/native-suite/live-browser gates pending",
+  "status": "held: independent Bistro2 recheck +1.43%; code-placement trial pending; no adoption",
   "offAttempts": 52,
   "acceptedOffAttempts": 48,
   "rejectedOffAttempts": 4,
@@ -11,7 +11,7 @@
   "wasmHeapBytes": 268435456,
   "outlinedExecutableMatchesInitialScreen": true,
   "remaining": [
-    "MSAA2/4 balanced confirmation",
+    "separate cold-helper code-placement trial; resolve MSAA control regressions before adoption",
     "renderer sanitizer",
     "resident/fresh contexts",
     "native regression suite",
@@ -19,9 +19,26 @@
   ],
   "filesSha256": {
     "quality.txt": "2b37ab873ee77bd31236c9434ccd795d02f74c785c8b9f98cf5e61417c2ff676",
+    "msaa-summary.json": "5e3799f081f473c7c921f85074fbb3a46c0992c7f61973f62747ce63f6fb2af0",
     "quality.json": "c76b240bfd6c9df5c6d4880d6962059ec75cd3a61c8208d63f6423f4ac7aeeab",
     "receipt.json": "68587af9f2cfdaaf1484ae563ecc0cad835e95dda9b30b55388406bbca722620",
     "summary.json": "f6f78943b4a2dfceea2ff65930a8386d15b7d071d7d94f70bb50d948533638f0",
-    "build.txt": "ffd44bbe18d27eb346ed251d571bd0728cd0a0104706301b0e6775a7721b41ce"
-  }
+    "msaa-receipt.json": "dbfa2140da9c44dcff72ee3ae14572c3adbe6f5c1d77cbd3c63ea9917f88cc79",
+    "build.txt": "ffd44bbe18d27eb346ed251d571bd0728cd0a0104706301b0e6775a7721b41ce",
+    "bistro2-recheck-receipt.json": "6604ed806328acd2c32f86974da75084ede64bbb9f79b3008819bde6afdb1ffa",
+    "bistro2-recheck-summary.json": "88add222af771f6863ae06c58bf92f9eb6e481fa6c824d80c0a8f3e47bb68e6c"
+  },
+  "msaaAttempts": 100,
+  "acceptedMsaaAttempts": 96,
+  "msaaFrameTimeChangesPercent": {
+    "bmw:2": -0.7463422078130999,
+    "bmw:4": -0.3164830605200786,
+    "t80:2": -0.8164805885763071,
+    "t80:4": -0.30129801187338545,
+    "sponza:2": -0.41482374077334017,
+    "sponza:4": -1.905905854042711,
+    "bistro:2": 2.372927211108622,
+    "bistro:4": 1.2923854726235362
+  },
+  "bistro2RecheckFrameTimeChangePercent": 1.4272748698117788
 }

@@ -8,6 +8,7 @@ parser=argparse.ArgumentParser()
 parser.add_argument('--baseline',default='05195fe')
 parser.add_argument('--maximum-width',type=int,default=3)
 parser.add_argument('--outline',action='store_true')
+parser.add_argument('--cold',action='store_true')
 parser.add_argument('--minimum-height',type=int,default=4)
 args=parser.parse_args()
 assert 1<=args.maximum_width<=640 and args.minimum_height>=4
@@ -24,7 +25,9 @@ for variant in ('source','baseline-source'):
 p=root/'baseline-source/libsoftgl/CMakeLists.txt';p.write_text(p.read_text().replace('softgl','baseline_softgl'))
 p=root/'source/libsoftgl/src/scene_visibility.c';code=p.read_text()
 helper=(Path(__file__).parent/'vertical.inc').read_text()
-if args.outline:
+if args.cold:
+    helper=helper.replace('static int scene_quantized_vertical(', 'static __attribute__((noinline,cold)) int scene_quantized_vertical(')
+elif args.outline:
     helper=helper.replace('static int scene_quantized_vertical(', 'static __attribute__((noinline)) int scene_quantized_vertical(')
 start=code.index('static int scene_quantized_triangle(')
 end=code.index('\nint sg_scene_visibility_triangle(',start)

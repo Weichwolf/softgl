@@ -1,6 +1,6 @@
 # Vertical SIMD128 coverage for narrow triangles
 
-Status: private trial; outlined variant undergoing repeated native confirmation. Baseline `05195fe`.
+Status: held; outlined off gains are small and Bistro2 control regressions remain. Baseline `05195fe`.
 
 The accepted quantized coverage kernel tests four neighboring X samples per
 row. A one-pixel-wide bounding box leaves at most one live lane even when it
@@ -84,8 +84,8 @@ Frame-time changes BMW/T-80/Sponza/Bistro +0.53/-2.15/-3.36/-1.17%.
 All 36 current candidate/reference views have exact full RGBA hashes and
 depth/stencil/sample planes. [Confirmation receipt](confirmation/receipt.json)
 and [summary](confirmation/summary.json) retain individual samples.
-The MSAA2/4 confirmation has been started separately; no all-mode adoption
-is claimed. Sanitizer, context-reuse, native-suite and live-browser gates remain.
+The MSAA2/4 confirmation and independent Bistro2 recheck have completed;
+no all-mode adoption is claimed. Sanitizer, context-reuse, native-suite and live-browser gates remain.
 Production and live preview are still the accepted renderer.
 
 Adoption recipes prepared: `sanitize.sh` runs the actual renderer contracts
@@ -94,3 +94,35 @@ flags; it has not yet been executed. `check_resident.py` requires a complete
 108-view receipt at `validation/quality.json`, then checks off/2×/4×/off context
 reuse against that fresh-context oracle. Its complete oracle is deliberately
 not supplied by the current 36-view off-only receipt. These are pending gates.
+
+## MSAA controls and integer bounds
+
+Three balanced blocks per asset at 2×/4×; 96 accepted quiet attempts.
+Frame-time changes BMW -0.75/-0.32%, T-80 -0.82/-0.30%, Sponza -0.42/-1.91%,
+Bistro +2.37/+1.29%. The vertical kernel is disabled at MSAA. The Bistro2
+independent recheck is +1.43% (121.49 to 123.22 ms), with wide timing
+variation despite the process-load filter. This does not establish a stable
+regression mechanism or an all-mode gain. Adoption remains held. Symbol inspection
+shows identical sizes for the existing MSAA raster functions but their entry
+addresses move by 0x1d70 bytes in the candidate. This observation does not
+prove layout causes the timing difference; host effects remain possible.
+`prepare.py --cold` tests a separate helper with Clang's `cold,noinline`
+attributes, rather than adding explicit padding or changing old MSAA math.
+That variant is pending. All original raw samples remain in
+[MSAA receipt](confirmation/msaa-receipt.json).
+
+The vertical recurrence retains the original 16.4 bounds gate. Integer vertex
+coordinates are in [-16,10256] × [-16,5776]. Columns tested are 0–639; rows
+including inactive lanes and the final unused four-row increment are 0–366.
+Thus raw absolute edge magnitude is bounded by
+`10272*5880 + 5792*10248 = 119755776`. The -1 top-left bias remains safe.
+Even the conservative intermediate bound for `area-a-d`, using twice the
+coordinate-range product for area and two edge bounds, is below 359 million.
+Explicit scalar origin/step products and sums and all vector increments stay
+well within int32; no int64-to-float reconstruction or new precision loss is
+introduced. This bound includes the inactive bottom tail before its stores
+are masked and depth reads switch to the live-lane scalar path.
+
+[Independent Bistro2 recheck](confirmation/bistro2-recheck-summary.json) and
+[all recheck attempts](confirmation/bistro2-recheck-receipt.json) retain the
+three balanced blocks without post-hoc sample removal.
