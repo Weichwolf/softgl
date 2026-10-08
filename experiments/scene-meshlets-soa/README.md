@@ -1,6 +1,8 @@
 # Meshlets with structure-of-arrays positions
 
-Status: queued architecture experiment, not measured or adopted.
+Status: first owned-meshlet/local-transform/scalar-packet-emission variant tested;
+no broad OFF gain, not adopted. SIMD128 packet emission and conservative bound
+variants remain open.
 User explicitly requested this family; both native and WASM must use SIMD128.
 
 Create bounded geometry groups (up to 64 vertices/128 triangles), explicit local
@@ -69,3 +71,58 @@ after a joined phase. Keep original attribute indices and clipped interpolation
 bases alive through final shading. Bound handle/scratch storage and charge
 any per-frame rebuilding/queue handoffs to the frame timer. This is a design
 for the requested meshlet trial, not implemented or measured yet.
+
+## First implemented scalar-emission variant
+
+Freeze accepted packet renderer `8085056`. An owned immutable handle copies
+geometry into sequential ≤64-vertex/128-triangle groups, local byte indices,
+three aligned position planes, original indices and owned UVs. Matrix/program
+state is captured each frame. The model wrapper constructs handles once at
+load; active captures retain ownership until end/rollback, even if the caller
+releases the handle immediately. Arbitrary client arrays retain the old path.
+MSAA/unquantized/unsupported state rejects the handle path to the existing
+fallback. No upstream implementation code or AVX instructions are copied.
+
+A worker processes eight consecutive groups per task. Each group's four-lane
+position loads, transform, clipping and packet emission run together with
+only 64 clip/NDC positions in local scratch. Winning primitive/clip data stays
+alive through deferred attributes. This first variant emits scalar packed XY,
+Z/W packet fields per triangle; consumer setup/raster remains SIMD128. The
+legacy global position allocation is retained for mixed-command compatibility,
+but these owned-group commands do not write/reread that whole-scene array.
+
+All 36 shared-asset OFF views have exact RGBA/depth/stencil/sample planes.
+216 native baseline/owned-input fixture hashes and 16 rollbacks match. The
+fixture poisons/frees caller geometry and releases its handle before scene end.
+Actual WASM matches all 216 accepted packet-renderer hashes, with four-byte
+pointers and 268,435,456-byte heap. Native and WASM actual counts agree: 1,320
+handles built, 2,640 groups built, 21,120 local vertices transformed, 440 groups
+processed, 224 captured handles and 2,156 packet triangles emitted. Actual
+native archive passes the SIMD128/no-AVX audit.
+
+The inherited rollback fixture deliberately supplies invalid array-size
+metadata to check rejection before reads. The first ownership-test adapter
+copied that declared size and crashed; it now delegates those deliberate
+legacy admission cases before copying. Constructor span budget is also checked
+before source access. Corrected native/WASM fixture results above are retained
+separately from the first failed attempt. The census initially missed the
+workers/atomic header; the corrected build and unchanged original thresholds
+are recorded.
+
+Independent preprocessing census reconstructs original triangle order,
+positions and UV bits for all source parts (including transparent parts; model
+renderer retains opaque/masked handles only). One cold creation pass costs
+BMW/T-80/Sponza/Bistro 12.97/8.69/50.78/124.84 ms. Owned capacity totals are
+4.34/2.61/11.23/44.69 MB; groups 1,241/839/3,438/13,618 and local vertices
+77,589/53,252/218,752/856,374. These are preprocessing costs and allocated
+capacities, not frame gains or full browser peaks. Full cold asset-load wall
+times are additionally retained in timing receipts.
+
+First one-block balanced OFF screen: +1.54/+3.92/+4.73/+2.21% frame time;
+no broad gain, so do not adopt this scalar-emission variant. All raw timing
+attempts and native/WASM/census proofs are in
+[scalar-emission/checks.json](scalar-emission/checks.json). Full suite,
+sanitizers and full-asset browser gates are not claimed for this variant.
+Next separate variants batch producer packet conversion in SIMD128 and use
+conservative per-frame meshlet/parent clip bounds; these have no timing claim
+until implemented and measured. Production/live WASM remains `8085056`.
