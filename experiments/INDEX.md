@@ -116,7 +116,7 @@
 | [wasm-phase-conversion](wasm-phase-conversion/README.md) | Held | Native WASM proposal conversion remained correct but did not reproduce a BMW gain. |
 | [wasm-pseudo-clamps](wasm-pseudo-clamps/README.md) | Accepted | Uses direct WASM pseudo-min/max for the validated clamp path. |
 | [whole-pipeline-static-kernels](whole-pipeline-static-kernels/README.md) | Proposed | Bounded C11 kernels specialize complete hot draw pipelines beyond rejected eligibility/DOT3 helpers; no measured gain. |
-| [glimpsw-mesa-comparison](glimpsw-mesa-comparison/README.md) | Measured f1df73f | 640×360/off: libsoftgl takes 61.5–76.9% less frame time than Mesa; GLimpSW remains 4.29–6.46× faster; 72 accepted timings. |
+| [glimpsw-mesa-comparison](glimpsw-mesa-comparison/README.md) | Current | Native SIMD512, 640×360/off: SG frame time -65.9–78.8% versus Mesa, still 4.2–6.1× GLimpSW; same inputs/budgets, 72 balanced runs. |
 | [visible-vertex-attributes](visible-vertex-attributes/README.md) | Accepted | Worker attributes after culling: Bistro -11–12%, other scenes -3–8%, all twelve images identical. |
 | [bounded-queue-wakeup](bounded-queue-wakeup/README.md) | Accepted | Bounded generation/queue polling: BMW/Bistro -5–7%, T-80 -3–4%, Sponza -1.5%; all images identical. |
 | [packed-queue-admission](packed-queue-admission/README.md) | Accepted | Sponza -12–15%, T-80 -6.5–10.3%, Bistro -3.5–5%, BMW mixed within 0.25%; all images identical. |
@@ -147,4 +147,10 @@
 | [scene-guardband-clipping](scene-guardband-clipping/README.md) | Not adopted | Expanded-plane guardband gives no broad gain; 36 coverage masks exact, RGB/depth changes documented. |
 | [scene-selective-guardband](scene-selective-guardband/README.md) | Not adopted | Confirmed off Sponza/Bistro -4.5/-2.4%, but T-80 +3.7%; 36 masks exact, inspected RGB changes. |
 | [scene-selective-guardband-outlined](scene-selective-guardband-outlined/README.md) | Not adopted | Full-orbit warm-up confirms only Bistro -2.0%; T-80 +4.9%, Sponza +0.9%; no broad gain. |
-| [scene-material-mip-sampling](scene-material-mip-sampling/README.md) | Proposed | GLimpSW uses gradient-selected mips/nearest color minification; scene implementation and measurement pending. |
+| [scene-material-mip-sampling](scene-material-mip-sampling/README.md) | Held | Centroid LOD shows floor seams; off +0.3/-3.2/-5.3/-7.7%, 36 exact coverage views; all-mode audit terminated before final Bistro4 result. |
+| [scene-material-pixel-mips](scene-material-pixel-mips/README.md) | Held | Pixel footprints: off +0.9/-2.4/-3.1/-8.4%; 384 numerical and 216 render checks pass, exact coverage in 36 views, visible discrete floor LOD changes. |
+| [scene-native-wide-materials](scene-native-wide-materials/README.md) | Accepted | Optional native SIMD512: off -2.1/-6.4/-7.0/-6.0%; 756 tests, 108 exact coverage views/max RGB 1, sanitizer/context/WASM gates pass; live SIMD128 updated, peak 2.63 GiB. |
+| [scene-fixed-width-addressing](scene-fixed-width-addressing/README.md) | Not adopted | Mixed off screen -0.2/-2.1/+4.6/+1.1%; 36 exact views. User now permits standard-format variants alongside a general path. |
+| [scene-native-wide-fixed-width](scene-native-wide-fixed-width/README.md) | Not adopted | Fixed-width combination gives no additional confirmed gain; 2,015 enabled comparisons and 36 views max RGB error 1; standard-format permission now allows future generic-backed variants. |
+| [scene-variable-viewport](scene-variable-viewport/README.md) | Private trial | Runtime dimensions pass 2,106 small even/odd-size frame pairs, 216 quantization pairs and 36 exact asset views; performance/WASM gates pending. |
+| [scene-native-wide-attribute-gathers](scene-native-wide-attribute-gathers/README.md) | Not adopted | Direct gathers regress T80/Sponza +7.4/+5.0% versus wide shader; 2,024 native/sanitized/WASM pairs pass, 36 exact coverage views/max RGB 1. |

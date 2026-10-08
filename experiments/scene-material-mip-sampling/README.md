@@ -1,7 +1,13 @@
 # Minification-aware material sampling from derived mip pyramids
 
-Status: proposed after local GLimpSW sampler inspection; not implemented or
-measured. No performance or quality claim is made.
+Status: implemented privately; initial screen gives BMW/T-80/Sponza/Bistro
+-1.08/-5.70/-4.74/-6.38% off frame time. All 36 views have exact coverage
+planes. Centroid LOD produces visibly abrupt floor sharpness at triangle
+boundaries in Sponza/Bistro, so this representation will not be adopted as-is.
+The all-mode audit stopped with SIGTERM (143) during the final Bistro 4×
+reverse baseline; its cause is unknown. All 151 attempts and 11 completed
+summaries are preserved in validation/. Completed off changes were
++0.26/-3.25/-5.34/-7.69%. The per-pixel follow-up is implemented separately. No production/WASM change or accepted gain yet.
 
 GLimpSW computes UV gradients, selects a mip level and uses nearest minification
 for color data, while normal/material data retains linear minification. The

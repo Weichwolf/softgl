@@ -1,0 +1,17 @@
+cmake_minimum_required(VERSION 3.20)
+project(SceneNativeWideProduction LANGUAGES C)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_FLAGS_RELEASE "-O3 -DNDEBUG")
+add_compile_options(-O3 -fno-strict-aliasing -ffast-math
+    -fno-associative-math -fsigned-zeros -fno-finite-math-only)
+get_filename_component(repo "${CMAKE_CURRENT_SOURCE_DIR}/../../.." ABSOLUTE)
+add_subdirectory(${repo}/libsoftgl library)
+add_executable(candidate ${repo}/experiments/glimpsw-mesa-comparison/softgl_bmw.c ${repo}/wasm/model_wrap.c)
+add_executable(resident_candidate ${repo}/experiments/scene-material-visibility/resident_trial.c ${repo}/wasm/model_wrap.c)
+foreach(target candidate resident_candidate)
+    target_compile_definitions(${target} PRIVATE SOFTGL_MODEL_VERTEX_ATTRIBUTES SOFTGL_MODEL_SCENE_VISIBILITY
+        SOFTGL_MODEL_SCENE_POSITIONS SOFTGL_MODEL_TRANSPARENT_FUSION SOFTGL_MODEL_QUANTIZED_VISIBILITY)
+    target_include_directories(${target} PRIVATE ${repo}/libsoftgl/src)
+    target_compile_options(${target} PRIVATE -msse4.1)
+    target_link_libraries(${target} PRIVATE softgl pthread m)
+endforeach()

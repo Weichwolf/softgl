@@ -1,0 +1,28 @@
+{
+  "status": "held; no production gain or deployment",
+  "baseline": "d5e79c7",
+  "width": 640,
+  "height": 360,
+  "threads": 4,
+  "warmFrames": 60,
+  "measuredFrames": 30,
+  "qualityComparisons": 36,
+  "exactCoveragePlanes": true,
+  "independentTrialComplete": false,
+  "missingIndependentResult": "Bistro MSAA4 last reverse baseline: process terminated with SIGTERM (143); cause unknown. 151 attempts retained, 11 summaries. Do not treat as a complete all-mode trial.",
+  "remaining": [
+    "pixel-mip all-mode confirmation",
+    "sanitizer if pursuing adoption",
+    "WASM heap/browser gates",
+    "texture detail and LOD seam quality acceptance"
+  ],
+  "auditFilesSha256": {
+    "build.txt": "a18f2a049fff07b2917269ecb03900484e4bdf1324aeb865bd2bb8ffc1c9e5ff",
+    "confirmation-all-modes-receipt.json": "ba8d86d4171c130a06fde6254afac2011349da8f6592f50a42df3ed65925750d",
+    "confirmation-all-modes-summary.json": "05511f928a76f3e33ecbe99adbdac05a2f39d86a9f438946725eee87a978701e",
+    "quality.json": "a28f822387c8abf28277253898b67116ae2424859d936eff3533da20c29e507c",
+    "quality.txt": "88daabda5bb6982bd073cae93c09d61dbb9b39874e19d1ea0be22ce197703e6b",
+    "resident-validation-receipt.json": "a2bb82c52b1b9c3a1d8ba70e4abd3d4ba26816d11ddf460d56a1a699d46f6103",
+    "resident-validation-summary.json": "666801c7d85fcfc29122978ee9d3b486b4c068bbb2f54a301b73faeaaf0d348f"
+  }
+}

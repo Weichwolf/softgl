@@ -463,6 +463,7 @@ void sg_model_render(float angle, int w, int h) {
 #ifdef SOFTGL_MODEL_QUANTIZED_VISIBILITY
     if (scene_visibility) softgl_scene_quantized_visibility(GL_TRUE);
 #endif
+    if (scene_visibility) softgl_scene_native_wide(GL_TRUE);
 #ifdef SOFTGL_MODEL_SCENE_POSITIONS
     scene_indices = NULL;
     if (scene_visibility) {

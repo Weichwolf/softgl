@@ -1,0 +1,145 @@
+{
+  "status": "accepted; all adoption gates passed",
+  "frameTimeChangesPercent": [
+    {
+      "asset": "bmw",
+      "samples": 0,
+      "frameTimeChangePercent": -2.051999800468274
+    },
+    {
+      "asset": "bmw",
+      "samples": 2,
+      "frameTimeChangePercent": -1.887120349207816
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "frameTimeChangePercent": -0.10234771076849114
+    },
+    {
+      "asset": "t80",
+      "samples": 0,
+      "frameTimeChangePercent": -6.436874943894411
+    },
+    {
+      "asset": "t80",
+      "samples": 2,
+      "frameTimeChangePercent": 0.0903610809269706
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "frameTimeChangePercent": 4.642759266835128
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "frameTimeChangePercent": -6.975820595782278
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "frameTimeChangePercent": -1.1189902523881856
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "frameTimeChangePercent": -1.5534957121646542
+    },
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "frameTimeChangePercent": -5.949640627598418
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "frameTimeChangePercent": -1.2347670735126548
+    },
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "frameTimeChangePercent": -0.5703687997590134
+    }
+  ],
+  "attempts": 148,
+  "exactCoverageComparisons": 108,
+  "maxRgbChannelError": 1,
+  "exactMsaaRgbComparisons": 72,
+  "enabledAuditPairs": 2015,
+  "enabledAuditRollbacks": 6,
+  "allTailLengths": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16
+  ],
+  "runtimeWidth": true,
+  "sourceHashesMatchMeasured": true,
+  "auditBinarySha256": "dc464d8f13b16a2108505789d865e5602de7263d301bc7d6110424ca07b1bf2e",
+  "remaining": [],
+  "filesSha256": {
+    "asan-build.txt": "ef614834e077bb5171320a56a2fee31718981c30aa9829cee3c3ef31dd9e3c2d",
+    "asan.txt": "351e9a234014473efa0ad7e748e05efbeee7667f132297fd7398a15589dbda37",
+    "audit-build.txt": "095b2489625ca9a26526bf28109547ec4e4b47523a382acf71e8f407a54ba2ee",
+    "audit-fixture-2015.c": "c35c6c21cbc8cb1feadf6c876d9241f855e32502af7fc7d0ec54828e70b250c7",
+    "audit.txt": "c9e610b98283d892cfe143ece50bb3a2faef96e8dfce6489dab8527c3f4672eb",
+    "browser-smoke.json": "f129f420d377c919161241db3e9c05edc5cb0ee942f9701c77cb8f8aa04e3e69",
+    "browser-smoke.txt": "109bc5255569ed88de8505289f57b0ec3532acecca141e04206f7fb256489453",
+    "build.txt": "dc3474dab2cbbb0a8e33cfafd7b36ad6e92c41c0a2d0d8f9d962f36a4e010384",
+    "native-build.txt": "1a2826040e3560a2107045ee102bc9ca76d43d20863a05a85dc75dc92b11d356",
+    "native-tests.txt": "06f9056ac880f9749eb8607c2038f1e65d51e68a29ffa1d652588fb2cae89379",
+    "quality.json": "9e2209e3976b5776493b70a95207884bba84c3dac2f95b16d7576efaae8c4bca",
+    "quality.txt": "4ff27bb2e4b9f8bc8e60a7078454640d91e8d3f8dfbba8f08163d67f50d05f97",
+    "receipt.json": "caa5cac0b975abd0f4fcccfe4c568298eed6da6db9845a72a0974982ff809db2",
+    "resident-quality.json": "2da74cee7d1239a20faafb0e9b7290981fa6cb45e7d107610526dc9e6a5969d1",
+    "resident-quality.txt": "ea7e18ff170a2b38d77770aee2cdb20353196ec5c52ab468d928cbed7c1a3bcd",
+    "summary.json": "115887cdb18353fd911a2ce3797ebb5ab16d7150be878e48ef2173fabbcb18cf",
+    "t80-msaa4-receipt.json": "3368d374884c073306f0dcda176faa4626db04156a09f80277882e3073e00317",
+    "t80-msaa4-summary.json": "605b4531c41e548bb2ef916ecd1eb322be7064c5c143b097e49e4c7d0cafc847",
+    "wasm-build.txt": "5bb422d124c53ad9ed4be898cee869cb5eaf1f80be806233b1db6e428e294280",
+    "wasm-fallback.txt": "e82202626d66b71dc3744aaea0524f56f31970fd185fbdf38ae86f7034e0e4b3"
+  },
+  "nativeCtestPassed": 756,
+  "nativeCtestFailed": 0,
+  "nativeEnabledSanitizedPairs": 2024,
+  "nativeSanitizedCanonicalPackets": 1187305,
+  "nativeSanitizedLegacyPackets": 46,
+  "addressUndefinedLeakSanitizersPassed": true,
+  "wasmFallbackFramePairs": 2024,
+  "wasmFallbackNativeWideAvailable": false,
+  "wasmFallbackHeapBytes": 268435456,
+  "residentFreshContextComparisons": 288,
+  "browserCases": 12,
+  "maximumWasmHeapBytes": 2824339456,
+  "liveFiles": {
+    "softgl.js": {
+      "bytes": 233060,
+      "sha256": "496a1d09bea03d07375738cbe8b7625a7064f6ee90850eb60112f89c2cc81293",
+      "liveHttpMatches": true,
+      "crossOriginIsolationHeadersMatch": true
+    },
+    "softgl.wasm": {
+      "bytes": 1323117,
+      "sha256": "3c17ca8c5cc95d2db6383da458702edd93b07104e69776514e2468732e561858",
+      "liveHttpMatches": true,
+      "crossOriginIsolationHeadersMatch": true
+    }
+  },
+  "productionSceneSourceMatchesMeasuredCandidate": true,
+  "productionSceneSourceSha256": "91c1c9e7513dec1594fb614e6d4891fc2acd0e1af64bb8fc6c1941caad92b3a3",
+  "t80Msaa4RecheckPercent": 0.3490953828871435,
+  "currentThreeRendererChecksSha256": "03f91be0a8c9a1ecce64a999128a50abdcd0a55ef13a05c7c32729e0278087be"
+}
