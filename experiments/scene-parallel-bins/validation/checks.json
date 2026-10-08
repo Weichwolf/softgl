@@ -1,0 +1,49 @@
+{
+  "nativeCtestPassed": 752,
+  "nativeCtestFailed": 0,
+  "pairedImages": 108,
+  "maximumChannelDifference": 0,
+  "coveragePlanesByteIdentical": true,
+  "residentFullFrameComparisons": 288,
+  "binOrderContractPairedFrames": 54,
+  "binOrderRollbacks": 6,
+  "positionContractPairedFrames": 162,
+  "coverageContractPairedFrames": 372,
+  "allThreeContractsAddressUndefinedLeakSanitizersPassed": true,
+  "productionGeometrySourcesMatchCandidate": true,
+  "files": {
+    "softgl.js": {
+      "bytes": 233060,
+      "sha256": "496a1d09bea03d07375738cbe8b7625a7064f6ee90850eb60112f89c2cc81293",
+      "liveHttpMatches": true,
+      "crossOriginIsolationHeadersMatch": true
+    },
+    "softgl.wasm": {
+      "bytes": 1306310,
+      "sha256": "6eef1a3cbbed54472ee363bd9148aa9ce5cb5dca24f44268d628e5a7640ee999",
+      "liveHttpMatches": true,
+      "crossOriginIsolationHeadersMatch": true
+    },
+    "experiments/scene-parallel-bins/validation/production-build.txt": {
+      "sha256": "e1a163b6cbb1d2383ef8023da4e7d89c86deaedcb449ca4a4c4f0aee225f88b7"
+    },
+    "experiments/scene-parallel-bins/validation/production-tests.txt": {
+      "sha256": "fd7f02250ac98e5a72200194dabfeab1031e576da81b1c00a51da9d603ad64a4"
+    },
+    "experiments/scene-parallel-bins/validation/asan-build.txt": {
+      "sha256": "6d37bccd8c6c10e4c5835820c1f306ba7f71a2fbf1ee9724ca03f672cc481d6c"
+    },
+    "experiments/scene-parallel-bins/validation/quality108.txt": {
+      "sha256": "91b062b758d8871e6b7ebd8d5874ab01b75345e51add1e1302f21b8bbccd573e"
+    },
+    "experiments/scene-parallel-bins/validation/resident-quality.txt": {
+      "sha256": "ea7e18ff170a2b38d77770aee2cdb20353196ec5c52ab468d928cbed7c1a3bcd"
+    },
+    "experiments/scene-parallel-bins/validation/wasm-build.txt": {
+      "sha256": "98d1707e1dd5700ff332f80928ea5a46ed6e1733eadaab67c3bd4c8bbd0b5b38"
+    }
+  },
+  "browserCases": 12,
+  "maximumWasmHeapBytes": 2824536064,
+  "pairedRgbaHashesByteIdentical": true
+}

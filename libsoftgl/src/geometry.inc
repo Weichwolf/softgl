@@ -258,6 +258,7 @@ static void scene_geometry_append(struct sg_scene_visibility *f, scene_geometry_
         task->clipped[task->clipped_count++] = *clipped;
     }
     task->primitives[task->count++] = *p;
+    for (int bin = p->first_bin; bin <= p->last_bin; bin++) task->bin_counts[bin]++;
 }
 
 static void scene_geometry_triangles(void *data) {
@@ -368,9 +369,27 @@ static int scene_geometry_allocate(struct sg_scene_visibility *f) {
             scene_geometry_task *task = &g->tasks[g->task_count++];
             task->material = (uint32_t)i; task->first = first; task->end = m->count-first > 3072 ? first+3072 : m->count;
             task->count = 0; task->clipped_count = 0;
+            memset(task->bin_counts,0,sizeof(task->bin_counts));
         }
     }
     return 1;
+}
+
+static void scene_geometry_references(void *data) {
+    struct sg_scene_visibility *f = data;
+    scene_geometry *g = f->geometry;
+    for (;;) {
+        int id = atomic_fetch_add_explicit(&g->next_task,1,memory_order_relaxed);
+        if (id >= g->task_count || atomic_load_explicit(&f->failed,memory_order_relaxed)) break;
+        scene_geometry_task *task = &g->tasks[id];
+        uint32_t cursor[SG_MAX_BINS];
+        memcpy(cursor,task->bin_offsets,sizeof(cursor));
+        for (uint32_t k = 0; k < task->count; k++) {
+            const scene_primitive *p = &task->primitives[k];
+            for (int bin = p->first_bin; bin <= p->last_bin; bin++)
+                g->bins[bin].references[cursor[bin]++] = ((uint32_t)id << SCENE_PRIMITIVE_BITS)|k;
+        }
+    }
 }
 
 static void scene_geometry_build(struct sg_scene_visibility *f) {
@@ -382,10 +401,16 @@ static void scene_geometry_build(struct sg_scene_visibility *f) {
     atomic_store_explicit(&g->next_task,0,memory_order_relaxed);
     sg_workers_run_callback(f->context,scene_geometry_triangles,f);
     if (atomic_load_explicit(&f->failed,memory_order_relaxed)) return;
-    for (int bin = 0; bin < SG_MAX_BINS; bin++) g->bins[bin].count = 0;
-    for (int i = 0; i < g->task_count; i++) for (uint32_t k = 0; k < g->tasks[i].count; k++) {
-        const scene_primitive *p = &g->tasks[i].primitives[k];
-        for (int bin = p->first_bin; bin <= p->last_bin; bin++) g->bins[bin].count++;
+    /* Prefixes assign each geometry task a disjoint, original-order segment
+     * in every bin. Only task totals are visited by the caller. */
+    for (int bin = 0; bin < SG_MAX_BINS; bin++) {
+        uint32_t total = 0;
+        for (int i = 0; i < g->task_count; i++) {
+            scene_geometry_task *task = &g->tasks[i];
+            task->bin_offsets[bin] = total;
+            total += task->bin_counts[bin];
+        }
+        g->bins[bin].count = total;
     }
     for (int bin = 0; bin < SG_MAX_BINS; bin++) {
         scene_geometry_bin *b = &g->bins[bin];
@@ -398,14 +423,9 @@ static void scene_geometry_build(struct sg_scene_visibility *f) {
             if (!next) { scene_geometry_fail(f); return; }
             b->references = next; b->capacity = capacity; g->reference_bytes += delta;
         }
-        b->count = 0;
     }
-    for (int i = 0; i < g->task_count; i++) for (uint32_t k = 0; k < g->tasks[i].count; k++) {
-        const scene_primitive *p = &g->tasks[i].primitives[k];
-        for (int bin = p->first_bin; bin <= p->last_bin; bin++) {
-            scene_geometry_bin *b = &g->bins[bin]; b->references[b->count++] = ((uint32_t)i << SCENE_PRIMITIVE_BITS)|k;
-        }
-    }
+    atomic_store_explicit(&g->next_task,0,memory_order_relaxed);
+    sg_workers_run_callback(f->context,scene_geometry_references,f);
     atomic_store_explicit(&g->next_task,0,memory_order_relaxed);
     sg_workers_run_callback(f->context,scene_geometry_raster,f);
 }

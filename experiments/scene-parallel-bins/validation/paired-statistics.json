@@ -1,0 +1,105 @@
+{
+  "note": "Descriptive resampling of six balanced AB/BA block changes, including all quiet accepted blocks and timing outliers. This is uncertainty for these blocks, not a guarantee on other hardware or views.",
+  "receiptSha256": {
+    "receipt.json": "ee24471abcc99931aacc884475475d2e9feb05827975440fa18c2fb193c779e9",
+    "confirmation-receipt.json": "b0d20425c92743803573c5398954e3bd19afecf74f7c7103f6fff92701675075"
+  },
+  "records": [
+    {
+      "asset": "bmw",
+      "completeFramesPerRequest": 30,
+      "warmup": 15,
+      "balancedBlocks": 6,
+      "combinedMediansMs": {
+        "baseline": 14.5079016995,
+        "candidate": 13.440425166499999
+      },
+      "combinedFrameTimeChangePercent": -7.357897476220076,
+      "blockFrameTimeChangesPercent": [
+        -7.507029986836344,
+        -6.695155017031307,
+        -6.993431922961147,
+        -8.42319050476208,
+        -7.783019031208704,
+        -8.375287563120882
+      ],
+      "meanBlockChangePercent": -7.629519004320077,
+      "descriptiveBootstrap95MeanBlockPercent": [
+        -8.147834192301827,
+        -7.1112038163383255
+      ]
+    },
+    {
+      "asset": "t80",
+      "completeFramesPerRequest": 30,
+      "warmup": 15,
+      "balancedBlocks": 6,
+      "combinedMediansMs": {
+        "baseline": 9.133187434,
+        "candidate": 7.893805368000001
+      },
+      "combinedFrameTimeChangePercent": -13.570093408859297,
+      "blockFrameTimeChangesPercent": [
+        -18.244820084883283,
+        -12.925200768398392,
+        -10.703774813768408,
+        -11.465034884486991,
+        -14.642309304704993,
+        2.403165954778541
+      ],
+      "meanBlockChangePercent": -10.929662316910587,
+      "descriptiveBootstrap95MeanBlockPercent": [
+        -15.25759654293504,
+        -5.176964503756028
+      ]
+    },
+    {
+      "asset": "sponza",
+      "completeFramesPerRequest": 30,
+      "warmup": 15,
+      "balancedBlocks": 6,
+      "combinedMediansMs": {
+        "baseline": 26.6101980495,
+        "candidate": 25.29680605
+      },
+      "combinedFrameTimeChangePercent": -4.935671643844364,
+      "blockFrameTimeChangesPercent": [
+        -2.490582205077374,
+        -6.156015783553837,
+        -2.4602281871830334,
+        -6.9045263474244445,
+        -9.402663067969009,
+        -1.1228009940092987
+      ],
+      "meanBlockChangePercent": -4.756136097536166,
+      "descriptiveBootstrap95MeanBlockPercent": [
+        -7.168433829348679,
+        -2.5372899536187914
+      ]
+    },
+    {
+      "asset": "bistro",
+      "completeFramesPerRequest": 30,
+      "warmup": 15,
+      "balancedBlocks": 6,
+      "combinedMediansMs": {
+        "baseline": 45.0286821665,
+        "candidate": 41.896874416
+      },
+      "combinedFrameTimeChangePercent": -6.955139701667679,
+      "blockFrameTimeChangesPercent": [
+        -7.487224095401612,
+        -7.058133058874782,
+        -6.2775294939765525,
+        -6.780024073337132,
+        -7.958110644926519,
+        -7.135471590950349
+      ],
+      "meanBlockChangePercent": -7.116082159577824,
+      "descriptiveBootstrap95MeanBlockPercent": [
+        -7.533285527065513,
+        -6.696274976777036
+      ]
+    }
+  ]
+}

@@ -32,6 +32,7 @@ typedef struct {
     uint32_t material, first, end;
     scene_primitive *primitives;
     uint32_t count, capacity;
+    uint32_t bin_counts[SG_MAX_BINS], bin_offsets[SG_MAX_BINS];
     scene_clipped_primitive *clipped;
     uint32_t clipped_count, clipped_capacity;
 } scene_geometry_task;

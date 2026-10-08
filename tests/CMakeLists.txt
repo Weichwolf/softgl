@@ -877,3 +877,11 @@ target_compile_options(scene_coverage_contract PRIVATE -msse4.1)
 target_link_libraries(scene_coverage_contract PRIVATE softgl)
 add_test(NAME scene_coverage_contract COMMAND scene_coverage_contract)
 set_tests_properties(scene_coverage_contract PROPERTIES TIMEOUT 90)
+
+# Stable reference partitioning across parallel geometry tasks and depth ties.
+add_executable(scene_bins_contract scene_bins.c)
+target_include_directories(scene_bins_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_compile_options(scene_bins_contract PRIVATE -msse4.1)
+target_link_libraries(scene_bins_contract PRIVATE softgl)
+add_test(NAME scene_bins_contract COMMAND scene_bins_contract)
+set_tests_properties(scene_bins_contract PROPERTIES TIMEOUT 90)

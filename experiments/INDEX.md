@@ -129,4 +129,4 @@
 | [scene-prepared-primitives](scene-prepared-primitives/README.md) | Rejected | 96-byte inline and 56-byte sidecar setup have 36 exact off views each but regress Bistro or Sponza/BMW. |
 | [scene-simd-positions](scene-simd-positions/README.md) | Rejected | SIMD position postprocessing has 36 exact off views, but Sponza/Bistro +3.0/+2.3%; tail/non-finite contract passes. |
 | [native-vector-registers](native-vector-registers/README.md) | Not adopted | Native extended registers preserve 36 exact off views, but give no broad full-frame gain. |
-| [scene-parallel-bins](scene-parallel-bins/README.md) | Native trial | Task-local counts and stable prefixes permit parallel bin references; quality/timing pending. |
+| [scene-parallel-bins](scene-parallel-bins/README.md) | Accepted | Stable parallel references: off BMW/T-80/Sponza/Bistro -7.4/-13.6/-4.9/-7.0%; 108 exact images, 752 tests; MSAA within ±0.9%. |
