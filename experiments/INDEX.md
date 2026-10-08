@@ -116,7 +116,7 @@
 | [wasm-phase-conversion](wasm-phase-conversion/README.md) | Held | Native WASM proposal conversion remained correct but did not reproduce a BMW gain. |
 | [wasm-pseudo-clamps](wasm-pseudo-clamps/README.md) | Accepted | Uses direct WASM pseudo-min/max for the validated clamp path. |
 | [whole-pipeline-static-kernels](whole-pipeline-static-kernels/README.md) | Proposed | Bounded C11 kernels specialize complete hot draw pipelines beyond rejected eligibility/DOT3 helpers; no measured gain. |
-| [glimpsw-mesa-comparison](glimpsw-mesa-comparison/README.md) | Prior comparison b7c7c23 | 640×360/off: libsoftgl takes 58.4–76.2% less frame time than Mesa; GLimpSW remains 4.86–7.25× faster; 72 quiet timings. |
+| [glimpsw-mesa-comparison](glimpsw-mesa-comparison/README.md) | Current bff1bcd | 640×360/off: libsoftgl takes 60.0–75.9% less frame time than Mesa; GLimpSW remains 5.01–6.80× faster; 72 accepted timings. |
 | [visible-vertex-attributes](visible-vertex-attributes/README.md) | Accepted | Worker attributes after culling: Bistro -11–12%, other scenes -3–8%, all twelve images identical. |
 | [bounded-queue-wakeup](bounded-queue-wakeup/README.md) | Accepted | Bounded generation/queue polling: BMW/Bistro -5–7%, T-80 -3–4%, Sponza -1.5%; all images identical. |
 | [packed-queue-admission](packed-queue-admission/README.md) | Accepted | Sponza -12–15%, T-80 -6.5–10.3%, Bistro -3.5–5%, BMW mixed within 0.25%; all images identical. |
@@ -131,3 +131,4 @@
 | [native-vector-registers](native-vector-registers/README.md) | Not adopted | Native extended registers preserve 36 exact off views, but give no broad full-frame gain. |
 | [scene-parallel-bins](scene-parallel-bins/README.md) | Accepted | Stable parallel references: off BMW/T-80/Sponza/Bistro -7.4/-13.6/-4.9/-7.0%; 108 exact images, 752 tests; MSAA within ±0.9%. |
 | [fused-transparent-pass](fused-transparent-pass/README.md) | Accepted | BMW frame time -12.9/-8.6/-10.4% off/2×/4×; independent off -13.36%; small documented RGB changes, 753 tests, 108 images, 288 resident checks; live WASM updated. |
+| [scene-compact-surfaces](scene-compact-surfaces/README.md) | Not adopted | Dense and direct-vertex storage each preserve 36 exact views and three geometry contracts; both lack a broad full-frame gain. |
