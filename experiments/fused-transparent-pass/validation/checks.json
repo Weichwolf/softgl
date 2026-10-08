@@ -1,0 +1,83 @@
+{
+  "nativeCtestPassed": 753,
+  "nativeCtestFailed": 0,
+  "legacyMesaChecksUseTransparentFusion": false,
+  "viewerAndNativeCandidateUseTransparentFusion": true,
+  "productionChangedSourcesMatchCandidate": true,
+  "productionSourceSha256": {
+    "include/GL/softgl.h": "8b293b9fcfd4a22c4c47b99c464dd27849507a9ddbe5eec161123a5359bced79",
+    "src/api.c": "9c373504af364d620c212afdfc9046bcc899bd61af198a6558fdda81f01691e1",
+    "src/frag_packet.h": "f06d0fa6a43404fbdbc2ca391d96162dcafb8e53dcfaca45afc46ebb7ff6b6de",
+    "src/fragment.c": "d1883401993e1576f565710c6ad9e3066d401684ac698928940f72fd582ef1d2",
+    "src/rasterizer.c": "6405fc8d4d8f20d61be50f249b37a05d836e7f62c0e6f29870ce65537bd7b46d"
+  },
+  "productionWrapperSha256": "527818b4aa0eaea026b4119cd8d6ffd7b7bb035dd688a90b26b1174583ad7ab0",
+  "pairedImages": 108,
+  "coveragePlanesByteIdentical": true,
+  "worstMeanRgbErrorBytes": 0.018071469907407406,
+  "worstRgbChannelDifference": 11,
+  "residentFullFrameComparisons": 288,
+  "analyticContractFrames": 72,
+  "analyticContractAddressUndefinedLeakSanitizersPassed": true,
+  "browserCases": 12,
+  "maximumWasmHeapBytes": 2824536064,
+  "files": {
+    "softgl.js": {
+      "bytes": 233060,
+      "sha256": "496a1d09bea03d07375738cbe8b7625a7064f6ee90850eb60112f89c2cc81293",
+      "liveHttpMatches": true,
+      "crossOriginIsolationHeadersMatch": true
+    },
+    "softgl.wasm": {
+      "bytes": 1316035,
+      "sha256": "f9e6a2f5df9cb9bc5e10ef7872e90764445cbba0e9200cb1fb3a064eaee1ff3f",
+      "liveHttpMatches": true,
+      "crossOriginIsolationHeadersMatch": true
+    },
+    "experiments/fused-transparent-pass/validation/asan-build.txt": {
+      "sha256": "b2963b8fbdaae40fd2f10a27489e772fa7d8a9e25c285375151dbeb4a22e3036"
+    },
+    "experiments/fused-transparent-pass/validation/asan-contract.txt": {
+      "sha256": "fdc7ab75718e23e4fa6c76c755d4521702450583f898948cd3dc0253c81ca81e"
+    },
+    "experiments/fused-transparent-pass/validation/browser-smoke.json": {
+      "sha256": "64b60be6369164a8cf819814468833e378524ec1c836b20154e349c1fe7aa3f0"
+    },
+    "experiments/fused-transparent-pass/validation/browser-smoke.txt": {
+      "sha256": "1d7b11d0c7ebab820edffecbd452ae0952d7aec92e1c6411d23b7ca4b3a4534e"
+    },
+    "experiments/fused-transparent-pass/validation/contract.txt": {
+      "sha256": "fdc7ab75718e23e4fa6c76c755d4521702450583f898948cd3dc0253c81ca81e"
+    },
+    "experiments/fused-transparent-pass/validation/guard-build.txt": {
+      "sha256": "5781b3e90bf25eff5d917374aa74823514cbb20f1c2ed83d5e4036fba915833d"
+    },
+    "experiments/fused-transparent-pass/validation/guard-provenance.json": {
+      "sha256": "fa4fe1ff46114fc2b7dc5854d9f739d07631e2512077075d3e82db4a5dc0acde"
+    },
+    "experiments/fused-transparent-pass/validation/initial-native-failure.txt": {
+      "sha256": "0f10f3574f11dceb6c8aed95a216cfe712f1eacf5c5476a30daa3dae2a2cf31a"
+    },
+    "experiments/fused-transparent-pass/validation/native-build.txt": {
+      "sha256": "d2c22c0175474155b9cca97696b44dd159e0fdefd4a25843a25724129e793aa8"
+    },
+    "experiments/fused-transparent-pass/validation/native-tests.txt": {
+      "sha256": "5816274d311561175d570bb8b7d0967b26198f5fbad1b7b68284b9b0e9685d45"
+    },
+    "experiments/fused-transparent-pass/validation/quality.json": {
+      "sha256": "da46ebb95715d85d4b8d1d4c2bcaefdc342b4a3a34999842369722f65c4e011f"
+    },
+    "experiments/fused-transparent-pass/validation/receipt.json": {
+      "sha256": "dfbc8abcf506bf2a2fe452dff055c173442dbdffafc0b0c14e4ac03380ed2838"
+    },
+    "experiments/fused-transparent-pass/validation/resident-quality.json": {
+      "sha256": "ad83f0d922e93b02bb1d56d35941ac7823120b3aa0921d2b1826f3d4499c234e"
+    },
+    "experiments/fused-transparent-pass/validation/summary.json": {
+      "sha256": "02110eed8ac75b0a519fbbf7f515ed27523be5e4f23d95566b333bb7b9463f42"
+    },
+    "experiments/fused-transparent-pass/validation/wasm-build.txt": {
+      "sha256": "dbe2076c90d3d1fdf43f77ec6037e4dd2c2e5929c999069dcd5f63fcd163802d"
+    }
+  }
+}

@@ -885,3 +885,11 @@ target_compile_options(scene_bins_contract PRIVATE -msse4.1)
 target_link_libraries(scene_bins_contract PRIVATE softgl)
 add_test(NAME scene_bins_contract COMMAND scene_bins_contract)
 set_tests_properties(scene_bins_contract PROPERTIES TIMEOUT 90)
+
+# Opt-in premultiplied transparent material math and draw-state snapshots.
+add_executable(transparent_material_contract transparent_material.c)
+target_include_directories(transparent_material_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_compile_options(transparent_material_contract PRIVATE -msse4.1)
+target_link_libraries(transparent_material_contract PRIVATE softgl)
+add_test(NAME transparent_material_contract COMMAND transparent_material_contract)
+set_tests_properties(transparent_material_contract PROPERTIES TIMEOUT 90)

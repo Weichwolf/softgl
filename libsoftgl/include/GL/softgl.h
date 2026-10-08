@@ -949,6 +949,7 @@ typedef void (*softgl_vertex_attributes_full_fn)(void *user, GLuint index,
 void softgl_set_vertex_attributes_full(softgl_vertex_attributes_full_fn program, void *user);
 /* NULL restores GL fragment combiners; constants are copied into draw state. */
 void softgl_set_fused_dot3_material(const GLfloat tint[4], GLboolean quartic);
+void softgl_set_fused_dot3_transparent(const GLfloat tint[4], GLboolean quartic);
 /* Private scene experiment: supported opaque material draws only between
  * begin/end. A failed end restores the pre-batch framebuffer for caller replay. */
 int softgl_scene_visibility_begin(void);

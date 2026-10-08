@@ -350,7 +350,11 @@ static void draw_part(const model_part *part, int specular) {
     attribute_program.specular = specular;
     const float *all_vertices = attribute_program.vertices;
     attribute_program.vertices = all_vertices+(size_t)part->vertex*STATIC_STRIDE;
+#ifdef SOFTGL_MODEL_TRANSPARENT_FUSION
+    if (!specular)
+#else
     if (!specular && m->alpha_mode != 2)
+#endif
         softgl_set_vertex_attributes_full(generate_fused_attributes, &attribute_program);
     else softgl_set_vertex_attributes(generate_attributes, &attribute_program, 3);
 #else
@@ -394,7 +398,15 @@ static void draw_part(const model_part *part, int specular) {
     float fused_tint[4];
     for (int j = 0; j < 3; j++) fused_tint[j] = .25f*((1.f-m->metallic)*.04f+m->metallic*m->base[j]+.04f*m->coat);
     fused_tint[3] = m->alpha_mode == 0 ? 1.f : m->base[3];
-    softgl_set_fused_dot3_material(!specular && m->alpha_mode != 2 ? fused_tint : NULL, m->roughness < .6f);
+#ifdef SOFTGL_MODEL_TRANSPARENT_FUSION
+    if (!specular && m->alpha_mode == 2) {
+        softgl_set_fused_dot3_transparent(fused_tint,m->roughness < .6f);
+        /* Specular survives an albedo-alpha hole in the old additive pass. */
+        glDisable(GL_ALPHA_TEST);
+    } else softgl_set_fused_dot3_material(!specular ? fused_tint : NULL, m->roughness < .6f);
+#else
+    softgl_set_fused_dot3_material(!specular && m->alpha_mode != 2 ? fused_tint : NULL,m->roughness < .6f);
+#endif
 #endif
 #ifdef SOFTGL_MODEL_SCENE_VISIBILITY
     softgl_scene_visibility_material();
@@ -478,8 +490,12 @@ void sg_model_render(float angle, int w, int h) {
 #endif
     /* SoftGL worker attributes evaluate nontransparent specular in the first pass. */
     for (unsigned i = 0; i < transparent; i++) {
+#if defined(SOFTGL_MODEL_VERTEX_ATTRIBUTES) && defined(SOFTGL_MODEL_TRANSPARENT_FUSION)
+        glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA); draw_part(&G.part[G.order[i]], 0);
+#else
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); draw_part(&G.part[G.order[i]], 0);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE); draw_part(&G.part[G.order[i]], 1);
+#endif
     }
     glDepthMask(GL_TRUE); glDisable(GL_BLEND); glDisable(GL_ALPHA_TEST);
     glActiveTexture(GL_TEXTURE0); glClientActiveTexture(GL_TEXTURE0);

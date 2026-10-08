@@ -131,7 +131,9 @@ void sg_tex_tri_prepare(softgl_ctx *c, sg_tex_tri_ctx *t) {
     }
     if (n_active == 4) t->combine_kind = sg_dot3_chain_kind(c, t);
     if (t->combine_kind == 1 && c->fused_dot3_enabled) {
-        t->combine_kind = c->fused_dot3_quartic ? 5 : 4;
+        t->combine_kind = (c->fused_dot3_quartic ? 5 : 4)+
+            (c->fused_dot3_enabled == 2 && c->blend && c->blend_src == GL_ONE &&
+             c->blend_dst == GL_ONE_MINUS_SRC_ALPHA ? 2 : 0);
         /* Unit 1 carries the half vector, including in packed raster vertices. */
         t->sample_mask |= 1u << 1;
     }

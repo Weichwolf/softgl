@@ -1,7 +1,7 @@
 # Independent BMW confirmation
 
-Status: BMW off-mode gain confirmed; production adoption still pending broader
-validation. Six balanced AB/BA blocks, 15 warm-up and 60 measured full frames
+Status: BMW off-mode gain confirmed; production adoption validated separately
+in [final validation](../validation/README.md). Six balanced AB/BA blocks, 15 warm-up and 60 measured full frames
 per request, caller plus three helpers at 640×360. All 24 requests accepted,
 none rejected. Every measured candidate request is faster than every measured
 baseline request in this series.
@@ -14,4 +14,4 @@ source/binary/wrapper/pack hashes remain in the receipts.
 Lighting/alpha differences and the independent blend oracle are documented
 in the [parent](../README.md) and [outlined variant](../outlined/README.md).
 MSAA/all-asset repeated validation, full production tests, sanitizer and WASM
-validation are still required before adoption. No live renderer change yet.
+validation subsequently passed; see the parent for accepted production behavior.

@@ -151,9 +151,10 @@ SG_INLINE int sg_shade_pixel(softgl_ctx *c,
                               + (unit_tex[0][1] - .5f) * (half_vector[1] - .5f)
                               + (unit_tex[0][2] - .5f) * (half_vector[2] - .5f));
                 d = sg_clampf(d, 0.f, 1.f); d *= d;
-                if (tctx->combine_kind == 5) d *= d;
+                if (tctx->combine_kind == 5 || tctx->combine_kind == 7) d *= d;
                 for (int k = 0; k < 3; k++) {
                     float specular = sg_clampf(d * c->fused_dot3_tint[k], 0.f, 1.f);
+                    if (tctx->combine_kind >= 6) col[k] *= col[3];
                     col[k] = sg_clampf(col[k] + specular * sg_clampf(c->fused_dot3_tint[3], 0.f, 1.f), 0.f, 1.f);
                 }
             } else sg_dot3_chain_shade(tctx->combine_kind, c->tex_env, primary, unit_tex, col);

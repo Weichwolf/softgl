@@ -54,3 +54,12 @@ void softgl_set_fused_dot3_material(const GLfloat tint[4], GLboolean quartic) {
     c->fused_dot3_quartic = quartic != 0;
     if (tint) for (int j = 0; j < 4; j++) c->fused_dot3_tint[j] = tint[j];
 }
+
+void softgl_set_fused_dot3_transparent(const GLfloat tint[4], GLboolean quartic) {
+    softgl_ctx *c = sg_current();
+    if (!c) return;
+    if (c->imm_active) { sg_set_error(GL_INVALID_OPERATION); return; }
+    c->fused_dot3_enabled = tint ? 2 : 0;
+    c->fused_dot3_quartic = quartic != 0;
+    if (tint) for (int j = 0; j < 4; j++) c->fused_dot3_tint[j] = tint[j];
+}

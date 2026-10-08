@@ -34,6 +34,12 @@ p=root/'source/model_wrap.c';s=p.read_text();s=s.replace('if (!specular && m->al
 s=s.replace('    softgl_set_fused_dot3_material(!specular && m->alpha_mode != 2 ? fused_tint : NULL, m->roughness < .6f);', '    if (!specular && m->alpha_mode == 2) {\n        softgl_set_fused_dot3_transparent(fused_tint,m->roughness < .6f);\n        /* Specular survives an albedo-alpha hole in the old additive pass. */\n        glDisable(GL_ALPHA_TEST);\n    } else softgl_set_fused_dot3_material(!specular ? fused_tint : NULL, m->roughness < .6f);')
 s=s.replace('        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); draw_part(&G.part[G.order[i]], 0);\n        glBlendFunc(GL_SRC_ALPHA, GL_ONE); draw_part(&G.part[G.order[i]], 1);', '#ifdef SOFTGL_MODEL_VERTEX_ATTRIBUTES\n        glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA); draw_part(&G.part[G.order[i]], 0);\n#else\n        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); draw_part(&G.part[G.order[i]], 0);\n        glBlendFunc(GL_SRC_ALPHA, GL_ONE); draw_part(&G.part[G.order[i]], 1);\n#endif')
 p.write_text(s)
+p=root/'source/model_wrap.c';s=p.read_text()
+s=s.replace('    if (!specular)\n        softgl_set_vertex_attributes_full', '#ifdef SOFTGL_MODEL_TRANSPARENT_FUSION\n    if (!specular)\n#else\n    if (!specular && m->alpha_mode != 2)\n#endif\n        softgl_set_vertex_attributes_full')
+a=s.index('    if (!specular && m->alpha_mode == 2) {');b=s.index('\n#endif',a)
+s=s[:a]+'#ifdef SOFTGL_MODEL_TRANSPARENT_FUSION\n'+s[a:b]+'\n#else\n    softgl_set_fused_dot3_material(!specular && m->alpha_mode != 2 ? fused_tint : NULL,m->roughness < .6f);\n#endif'+s[b:]
+s=s.replace('for (unsigned i = 0; i < transparent; i++) {\n#ifdef SOFTGL_MODEL_VERTEX_ATTRIBUTES', 'for (unsigned i = 0; i < transparent; i++) {\n#if defined(SOFTGL_MODEL_VERTEX_ATTRIBUTES) && defined(SOFTGL_MODEL_TRANSPARENT_FUSION)')
+p.write_text(s)
 if args.shader == 'outlined':
     p=src/'src/frag_packet.h'
     s=subprocess.check_output(['git','show',f'{base}:libsoftgl/src/frag_packet.h'],cwd=repo,text=True)
