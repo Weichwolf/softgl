@@ -1,0 +1,99 @@
+{
+  "width": 640,
+  "height": 360,
+  "samples": 0,
+  "diagnosticOnly": true,
+  "binarySha256": "a17327ff28fc10e996a49f611d926f3cd5e1798122bea2d8c60082f39ee848ba",
+  "records": [
+    {
+      "asset": "bmw",
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-static-groups/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "camera": null,
+      "angle": 160,
+      "stats": {
+        "groups": 890,
+        "rejected": 0,
+        "positionsBefore": 44190,
+        "referencedPositions": 44190,
+        "cacheBytes": 36490
+      },
+      "stdout": "{\"ready\":true,\"width\":640,\"height\":360}\n{\"renderer\":\"softgl-native\",\"width\":640,\"height\":360,\"threads\":4,\"samples\":0,\"triangles\":63009,\"frames\":1,\"ms\":16.415849968,\"submitMs\":15.820147994,\"finishReadbackMs\":0.595401973,\"angle\":160,\"rgba\":\"e68906a6b39154e3\",\"depth\":\"5adfd235690f989e\",\"stencil\":\"97422459bb4b3383\",\"sampleDepth\":\"0000000000000000\",\"sampleStencil\":\"0000000000000000\"}\n",
+      "stderr": "GROUPS {\"groups\":890,\"rejected\":0,\"positionsBefore\":44190,\"referencedPositions\":44190,\"cacheBytes\":36490}\nGROUPS {\"groups\":890,\"rejected\":0,\"positionsBefore\":44190,\"referencedPositions\":44190,\"cacheBytes\":36490}\n"
+    },
+    {
+      "asset": "t80",
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-static-groups/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "camera": null,
+      "angle": 160,
+      "stats": {
+        "groups": 699,
+        "rejected": 0,
+        "positionsBefore": 51330,
+        "referencedPositions": 51330,
+        "cacheBytes": 28659
+      },
+      "stdout": "{\"ready\":true,\"width\":640,\"height\":360}\n{\"renderer\":\"softgl-native\",\"width\":640,\"height\":360,\"threads\":4,\"samples\":0,\"triangles\":44513,\"frames\":1,\"ms\":10.185630003,\"submitMs\":10.098829982,\"finishReadbackMs\":0.086700020,\"angle\":160,\"rgba\":\"4f5a32df7c6d841f\",\"depth\":\"cfc94bb62f5cc55e\",\"stencil\":\"97422459bb4b3383\",\"sampleDepth\":\"0000000000000000\",\"sampleStencil\":\"0000000000000000\"}\n",
+      "stderr": "GROUPS {\"groups\":699,\"rejected\":0,\"positionsBefore\":51330,\"referencedPositions\":51330,\"cacheBytes\":28659}\nGROUPS {\"groups\":699,\"rejected\":0,\"positionsBefore\":51330,\"referencedPositions\":51330,\"cacheBytes\":28659}\n"
+    },
+    {
+      "asset": "sponza",
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-static-groups/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "angle": 160,
+      "stats": {
+        "groups": 4106,
+        "rejected": 907,
+        "positionsBefore": 192474,
+        "referencedPositions": 148115,
+        "cacheBytes": 168346
+      },
+      "stdout": "{\"ready\":true,\"width\":640,\"height\":360}\n{\"renderer\":\"softgl-native\",\"width\":640,\"height\":360,\"threads\":4,\"samples\":0,\"triangles\":262267,\"frames\":1,\"ms\":39.414218045,\"submitMs\":39.330218046,\"finishReadbackMs\":0.083799998,\"angle\":160,\"rgba\":\"d0fd9124e1100f1c\",\"depth\":\"4be557aa782d4f66\",\"stencil\":\"97422459bb4b3383\",\"sampleDepth\":\"0000000000000000\",\"sampleStencil\":\"0000000000000000\"}\n",
+      "stderr": "GROUPS {\"groups\":4106,\"rejected\":907,\"positionsBefore\":192474,\"referencedPositions\":148115,\"cacheBytes\":168346}\nGROUPS {\"groups\":4106,\"rejected\":914,\"positionsBefore\":192474,\"referencedPositions\":147992,\"cacheBytes\":168346}\n"
+    },
+    {
+      "asset": "bistro",
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-static-groups/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "angle": 160,
+      "stats": {
+        "groups": 10126,
+        "rejected": 2848,
+        "positionsBefore": 807087,
+        "referencedPositions": 566619,
+        "cacheBytes": 415166
+      },
+      "stdout": "{\"ready\":true,\"width\":640,\"height\":360}\n{\"renderer\":\"softgl-native\",\"width\":640,\"height\":360,\"threads\":4,\"samples\":0,\"triangles\":640502,\"frames\":1,\"ms\":86.177858990,\"submitMs\":85.646156978,\"finishReadbackMs\":0.531302008,\"angle\":160,\"rgba\":\"47d0dc8d13bc88a6\",\"depth\":\"8bf0e0ade22f58d1\",\"stencil\":\"97422459bb4b3383\",\"sampleDepth\":\"0000000000000000\",\"sampleStencil\":\"0000000000000000\"}\n",
+      "stderr": "GROUPS {\"groups\":10126,\"rejected\":2848,\"positionsBefore\":807087,\"referencedPositions\":566619,\"cacheBytes\":415166}\nGROUPS {\"groups\":10126,\"rejected\":3326,\"positionsBefore\":807087,\"referencedPositions\":536395,\"cacheBytes\":415166}\n"
+    }
+  ]
+}

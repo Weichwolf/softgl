@@ -1,0 +1,63 @@
+{
+  "nativeCtestPassed": 754,
+  "nativeCtestFailed": 0,
+  "legacyMesaChecksUseQuantization": false,
+  "viewerAndRegularNativeBenchmarkUseQuantization": true,
+  "pairedImages": 108,
+  "msaaExactRgbAndCoveragePairs": 72,
+  "enabledScalarReferenceExactPairs": 36,
+  "analyticWorkerContractPairs": 216,
+  "analyticRollbackChecks": 16,
+  "analyticScalarReferenceHashesMatch": true,
+  "addressUndefinedLeakSanitizersPassed": true,
+  "residentFreshContextComparisons": 288,
+  "browserCases": 12,
+  "maximumWasmHeapBytes": 2824208384,
+  "CxxPublicHeaderLinkagePassed": true,
+  "productionSceneSourceMatchesMeasuredCandidate": true,
+  "productionWrapperMatchesMeasuredCandidate": true,
+  "publicHeaderNote": "The production opt-in prototype is inside C/C++ linkage/header guards; private measured C11 prototype was declared after the guards. Signature and implementation are identical. Production C++ link smoke passes.",
+  "qualityMaxima": {
+    "bmw": {
+      "maxCoveredPixelMismatchCount": 62,
+      "maxDepthError": 0.5148603916168213,
+      "worstMeanRgbError": 0.23475405092592594
+    },
+    "t80": {
+      "maxCoveredPixelMismatchCount": 83,
+      "maxDepthError": 0.5258206725120544,
+      "worstMeanRgbError": 0.10392795138888888
+    },
+    "sponza": {
+      "maxCoveredPixelMismatchCount": 0,
+      "maxDepthError": 0.03394895792007446,
+      "worstMeanRgbError": 1.490078125
+    },
+    "bistro": {
+      "maxCoveredPixelMismatchCount": 2,
+      "maxDepthError": 0.033932268619537354,
+      "worstMeanRgbError": 3.2374175347222223
+    }
+  },
+  "liveFiles": {
+    "softgl.js": {
+      "bytes": 233060,
+      "sha256": "496a1d09bea03d07375738cbe8b7625a7064f6ee90850eb60112f89c2cc81293",
+      "liveHttpMatches": true,
+      "crossOriginIsolationHeadersMatch": true
+    },
+    "softgl.wasm": {
+      "bytes": 1322912,
+      "sha256": "06acbfc0162d9119c58a2b9c7dfd5530b67419748d846a933bf1ea0a029f6a05",
+      "liveHttpMatches": true,
+      "crossOriginIsolationHeadersMatch": true
+    }
+  },
+  "productionSourcesSha256": {
+    "libsoftgl/src/scene_visibility.c": "0e663f8eaa7e6b6b174ef7289d988dcddd6b06bb5f5c3567d09769327a1daad2",
+    "libsoftgl/include/GL/softgl.h": "91393e1e618233ed6dbb12883b33d40ebe57c73eb83fb000832b3f061b08a3d3",
+    "wasm/model_wrap.c": "28b5483cc332226d5e2a4771c0adc9b52b236c155e0a10ac0e7a956baaa3e430",
+    "wasm/CMakeLists.txt": "dceb89f1d782de0a17dc2d1182223b4cafc1a4e1adbe78be49383a4bf3f01168",
+    "tests/scene_quantized.c": "d263891f5eb5ad37eca97a602f18f2c1125dbe925633a60e5d9faa4b838a7e90"
+  }
+}

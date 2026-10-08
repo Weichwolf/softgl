@@ -1,0 +1,8 @@
+First browser smoke attempt failed its new canvas-size assertion:
+Error: Unexpected canvas resolution
+    at /home/cosmo/Git/softgl/experiments/scene-quantized-visibility/browser-smoke.cjs:25:56
+
+This compared SDL presentation canvas dimensions to renderer framebuffer dimensions.
+The corrected check observes the actual native context-creation dimensions and
+sample count, while recording canvas dimensions separately. No renderer or
+viewer behavior was changed to satisfy this check.

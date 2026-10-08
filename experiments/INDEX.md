@@ -116,7 +116,7 @@
 | [wasm-phase-conversion](wasm-phase-conversion/README.md) | Held | Native WASM proposal conversion remained correct but did not reproduce a BMW gain. |
 | [wasm-pseudo-clamps](wasm-pseudo-clamps/README.md) | Accepted | Uses direct WASM pseudo-min/max for the validated clamp path. |
 | [whole-pipeline-static-kernels](whole-pipeline-static-kernels/README.md) | Proposed | Bounded C11 kernels specialize complete hot draw pipelines beyond rejected eligibility/DOT3 helpers; no measured gain. |
-| [glimpsw-mesa-comparison](glimpsw-mesa-comparison/README.md) | Current bff1bcd | 640×360/off: libsoftgl takes 60.0–75.9% less frame time than Mesa; GLimpSW remains 5.01–6.80× faster; 72 accepted timings. |
+| [glimpsw-mesa-comparison](glimpsw-mesa-comparison/README.md) | Measured bff1bcd | 640×360/off: libsoftgl takes 60.0–75.9% less frame time than Mesa; GLimpSW remains 5.01–6.80× faster; 72 accepted timings. |
 | [visible-vertex-attributes](visible-vertex-attributes/README.md) | Accepted | Worker attributes after culling: Bistro -11–12%, other scenes -3–8%, all twelve images identical. |
 | [bounded-queue-wakeup](bounded-queue-wakeup/README.md) | Accepted | Bounded generation/queue polling: BMW/Bistro -5–7%, T-80 -3–4%, Sponza -1.5%; all images identical. |
 | [packed-queue-admission](packed-queue-admission/README.md) | Accepted | Sponza -12–15%, T-80 -6.5–10.3%, Bistro -3.5–5%, BMW mixed within 0.25%; all images identical. |
@@ -132,3 +132,9 @@
 | [scene-parallel-bins](scene-parallel-bins/README.md) | Accepted | Stable parallel references: off BMW/T-80/Sponza/Bistro -7.4/-13.6/-4.9/-7.0%; 108 exact images, 752 tests; MSAA within ±0.9%. |
 | [fused-transparent-pass](fused-transparent-pass/README.md) | Accepted | BMW frame time -12.9/-8.6/-10.4% off/2×/4×; independent off -13.36%; small documented RGB changes, 753 tests, 108 images, 288 resident checks; live WASM updated. |
 | [scene-compact-surfaces](scene-compact-surfaces/README.md) | Not adopted | Dense and direct-vertex storage each preserve 36 exact views and three geometry contracts; both lack a broad full-frame gain. |
+| [scene-static-groups](scene-static-groups/README.md) | Not adopted | Frustum/cone/unique-reference screens each have 36 exact views and epoch contract; fewer indoor vertices do not establish a broad frame-time gain. |
+| [scene-coarse-shading](scene-coarse-shading/README.md) | Not adopted | 36 exact coverage views each; coarse RGB details differ; outlined Sponza -8.65% screen falls to -2.02% in independent three-block confirmation. |
+| [scene-phase-accounting](scene-phase-accounting/README.md) | Diagnostic | Accepted native phase clocks, 480 frames and four exact final images; visibility dominates T-80/Sponza/Bistro, not position transforms. |
+| [scene-single-pixel](scene-single-pixel/README.md) | Not adopted | 36 exact views and three contracts pass; independent off/2×/4× confirms no off gain: BMW/T-80/Sponza/Bistro +0.2/+1.4/+0.9/-0.2%. |
+| [scene-vector-barycentrics](scene-vector-barycentrics/README.md) | Not adopted | 36 exact views and three contracts pass; extra guarded SIMD conversion regresses BMW/Sponza/Bistro in screening. |
+| [scene-quantized-visibility](scene-quantized-visibility/README.md) | Accepted | Opt-in 16.4 SIMD32: off BMW/T-80/Sponza/Bistro -6.0/-8.6/-5.8/-1.9%; documented image differences, 754 tests, scalar/sanitizer/context gates; live WASM updated. |

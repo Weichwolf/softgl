@@ -11,7 +11,8 @@ import time
 
 repo = Path(__file__).resolve().parents[2]
 parser = argparse.ArgumentParser()
-parser.add_argument('--softgl', type=Path, default=repo/'build/fused-transparent-pass/native/candidate')
+parser.add_argument('--softgl', type=Path, default=repo/'build/scene-quantized-visibility/native/candidate')
+parser.add_argument('--softgl-source', type=Path, default=repo/'build/scene-quantized-visibility/source')
 parser.add_argument('--reference-root', type=Path, default=repo/'tmp/glimpsw-original')
 parser.add_argument('--output', type=Path, default=repo/'tmp/current-three-renderers')
 parser.add_argument('--pairs', type=int, default=3)
@@ -40,11 +41,14 @@ receipt = {'width':640,'height':360,'samples':0,'threads':4,'warmup':args.warmup
            'binarySha256':{k:digest(p) for k,p in binaries.items()},
            'packsSha256':{a:digest(repo/'build/assets'/f'{a}.pack') for a in ('bmw','t80','sponza','bistro')},
            'runnerSha256':digest(Path(__file__)),
-           'softglSourcesSha256':{str(p.relative_to(repo/'libsoftgl')):digest(p) for p in sorted((repo/'libsoftgl').rglob('*')) if p.is_file()},
-           'softglWrapperSha256':digest(repo/'wasm/model_wrap.c'),
+           'softglSourcesSha256':{str(p.relative_to(args.softgl_source/'libsoftgl')):digest(p) for p in sorted((args.softgl_source/'libsoftgl').rglob('*')) if p.is_file()},
+           'softglWrapperSha256':digest(args.softgl_source/'model_wrap.c'),
+           'softglSourceRoot':str(args.softgl_source),
+           'productionSourcesSha256':{str(p.relative_to(repo/'libsoftgl')):digest(p) for p in sorted((repo/'libsoftgl').rglob('*')) if p.is_file()},
+           'productionWrapperSha256':digest(repo/'wasm/model_wrap.c'),
            'referenceProvenanceSha256':digest(repo/'experiments/glimpsw-mesa-comparison/provenance.json'),
            'exportFilesSha256':{a:{str(p.relative_to(args.reference_root/a)):digest(p) for p in sorted((args.reference_root/a).rglob('*')) if p.is_file()} for a in ('bmw','t80','sponza','bistro')},
-           'renderingNote':'Same prepared geometry/base assets/cameras; GLimpSW uses its different PBR/quantized/cutout pipeline. SoftGL worker attributes retain the eager Mesa wrapper formulas for opaque/masked material draws; opt-in transparent fusion uses one premultiplied pass with documented RGB/alpha differences. GLimpSW and the OSMesa comparison driver support off mode only.'}
+           'renderingNote':'Same prepared geometry/base assets/cameras; GLimpSW uses its different PBR/quantized/cutout pipeline. SoftGL worker attributes retain the eager Mesa wrapper formulas for opaque/masked material draws; opt-in transparent fusion uses one premultiplied pass with documented RGB/alpha differences. SoftGL off also explicitly uses 1/16-pixel canonical visibility edges with quantified depth/coverage/RGB differences. GLimpSW and the OSMesa comparison driver support off mode only.'}
 def run(asset,renderer,pair,order,attempt):
     env = os.environ.copy(); env.pop('SOFTGL_CAMERA',None)
     if 'camera' in models[asset]: env['SOFTGL_CAMERA'] = ','.join(map(str,models[asset]['camera']))

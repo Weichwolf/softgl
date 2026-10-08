@@ -460,6 +460,9 @@ void sg_model_render(float angle, int w, int h) {
     glDisable(GL_BLEND);
 #ifdef SOFTGL_MODEL_SCENE_VISIBILITY
     int scene_visibility = softgl_scene_visibility_begin();
+#ifdef SOFTGL_MODEL_QUANTIZED_VISIBILITY
+    if (scene_visibility) softgl_scene_quantized_visibility(GL_TRUE);
+#endif
 #ifdef SOFTGL_MODEL_SCENE_POSITIONS
     scene_indices = NULL;
     if (scene_visibility) {
