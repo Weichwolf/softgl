@@ -1,10 +1,10 @@
 # GLimpSW / Mesa / libsoftgl with four common scenes
 
-Status: accepted single-pass transparent renderer bff1bcd beats Mesa in all
-four scenes at 640×360/off, with 60.0–75.9% less complete-frame time. GLimpSW
-remains 5.01–6.80× faster with its different rendering pipeline.
-[Current summary](current-transparent-fusion/summary.json),
-[current receipt](current-transparent-fusion/receipt.json).
+Status: accepted opt-in SIMD32 visibility renderer f1df73f beats Mesa in all
+four scenes at 640×360/off, with 61.5–76.9% less complete-frame time. GLimpSW
+remains 4.29–6.46× faster with its different rendering pipeline.
+[Current summary](current-quantized-visibility/summary.json),
+[current receipt](current-quantized-visibility/receipt.json).
 
 Historical native 640x360 baseline (47e517d): 72 accepted measurements, no rejected
 blocks. Six timings per renderer/scene with three rotated forward/reverse pairs.
@@ -28,7 +28,7 @@ GLimpSW and libsoftgl use native Clang 22.1.8 with their respective AVX512 and
 SSE4.1 paths. Mesa uses installed OSMesa/llvmpipe and, in this baseline, the identical GL calls as
 libsoftgl. Current libsoftgl viewer builds opt into
 [worker attribute preparation](../visible-vertex-attributes/README.md); Mesa
-retains eager GL arrays. Opaque/masked shading formulas remain; accepted [transparent fusion](../fused-transparent-pass/README.md) uses one premultiplied pass with documented RGB/alpha differences. Four logical CPUs are exposed under a Microsoft hypervisor (two cores,
+retains eager GL arrays. Opaque/masked shading formulas remain; the [opt-in subpixel visibility](../scene-quantized-visibility/README.md) changes off-mode coverage and interpolation; accepted [transparent fusion](../fused-transparent-pass/README.md) uses one premultiplied pass with documented RGB/alpha differences. Four logical CPUs are exposed under a Microsoft hypervisor (two cores,
 two hardware threads each). Each renderer has one caller and three configured
 helpers; Mesa auxiliary/JIT threads can differ. MSAA is disabled. Complete-frame
 cost includes clear, camera/transforms, rasterization, shading, completion and a
@@ -202,3 +202,24 @@ GLimpSW's frame time. [All attempts and provenance](current-transparent-fusion/R
 The regular native softgl_bmw CMake target now also enables transparent fusion;
 Mesa's target keeps its original wrapper. Approximations are covered separately
 by native analytical/image checks and documented in the material experiment.
+
+
+## Accepted opt-in four-bit subpixel visibility: f1df73f
+
+The SIMD32 visibility kernel preserves the shared geometry/textures but
+explicitly approximates raster vertices to 1/16 pixel in canonical off-mode
+scenes. All 754 native tests, enabled scalar-reference/worker/rollback checks,
+sanitizers, asset/resident image checks and live SIMD128/WASM browser modes
+pass; image changes are quantified rather than hidden by tolerance changes.
+
+| Asset | GLimpSW ms | Mesa ms | libsoftgl ms | SG time vs Mesa | SG / GLimpSW |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| bmw | 2.098 | 35.884 | 10.784 | -69.95% | 5.14× |
+| t80 | 1.655 | 29.852 | 7.098 | -76.22% | 4.29× |
+| sponza | 3.838 | 64.472 | 24.806 | -61.52% | 6.46× |
+| bistro | 6.106 | 169.623 | 39.099 | -76.95% | 6.40× |
+
+[All comparison attempts and exact source provenance](current-quantized-visibility/README.md).
+Isolated native AB/BA gains and approximation quality belong to the
+[optimization experiment](../scene-quantized-visibility/README.md). This
+comparison updates the backend gap; GLimpSW still remains faster.
