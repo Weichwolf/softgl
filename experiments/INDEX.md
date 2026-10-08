@@ -116,7 +116,7 @@
 | [wasm-phase-conversion](wasm-phase-conversion/README.md) | Held | Native WASM proposal conversion remained correct but did not reproduce a BMW gain. |
 | [wasm-pseudo-clamps](wasm-pseudo-clamps/README.md) | Accepted | Uses direct WASM pseudo-min/max for the validated clamp path. |
 | [whole-pipeline-static-kernels](whole-pipeline-static-kernels/README.md) | Proposed | Bounded C11 kernels specialize complete hot draw pipelines beyond rejected eligibility/DOT3 helpers; no measured gain. |
-| [glimpsw-mesa-comparison](glimpsw-mesa-comparison/README.md) | Current 4b58896 | 640x360/off: SoftGL frame time vs Mesa BMW -54.98%, T-80 -59.30%, Sponza -33.17%, Bistro -38.50%; GLimpSW still faster; 72 quiet timings. |
+| [glimpsw-mesa-comparison](glimpsw-mesa-comparison/README.md) | Current a3d9400 | 640×360/off: libsoftgl takes 57.6–73.7% less frame time than Mesa; GLimpSW remains 5.42–7.42× faster; 72 quiet timings. |
 | [visible-vertex-attributes](visible-vertex-attributes/README.md) | Accepted | Worker attributes after culling: Bistro -11–12%, other scenes -3–8%, all twelve images identical. |
 | [bounded-queue-wakeup](bounded-queue-wakeup/README.md) | Accepted | Bounded generation/queue polling: BMW/Bistro -5–7%, T-80 -3–4%, Sponza -1.5%; all images identical. |
 | [packed-queue-admission](packed-queue-admission/README.md) | Accepted | Sponza -12–15%, T-80 -6.5–10.3%, Bistro -3.5–5%, BMW mixed within 0.25%; all images identical. |
@@ -125,4 +125,4 @@
 | [scene-position-visibility](scene-position-visibility/README.md) | Accepted | Native off BMW/T-80/Sponza/Bistro -2.6/-8.2/-19.3/-47.4%; 108 exact coverage comparisons, max color delta 1, 750 tests; Sponza MSAA +2% tradeoff. |
 | [scene-simd-coverage](scene-simd-coverage/README.md) | Accepted | Exact rolling SIMD128 coverage: native off BMW/T-80/Sponza/Bistro -9.6/-9.5/-4.5/-4.6%; 108 exact images, 751 tests, unchanged interpolation; MSAA within ±1.3%. |
 | [scene-hierarchical-depth](scene-hierarchical-depth/README.md) | Not adopted | 4×4/8×8 maxima regress; repeated bucket sorting BMW/T-80/Sponza/Bistro -0.2/-3.2/+2.8/-1.9%, with exact off-depth planes but color ties. |
-| [scene-ray-visibility](scene-ray-visibility/README.md) | Investigation | Static object-space BVH visibility to avoid invisible per-frame geometry; local TinyBVH source inspected, no renderer timing yet. |
+| [scene-ray-visibility](scene-ray-visibility/README.md) | No adoption | Six BVH ray/raster variants: 36 exact off images each; group occlusion reaches baseline Bistro time but Sponza still +15–20%; epoch/rollback contract passes. |
