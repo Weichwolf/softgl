@@ -1,10 +1,10 @@
 # GLimpSW / Mesa / libsoftgl with four common scenes
 
-Status: accepted stable parallel-bin frontend beats Mesa in all four scenes
-at 640×360/off, with 58.4–76.2% less complete-frame time. GLimpSW remains
-4.86–7.25× faster with its different rendering pipeline.
-[Current summary](current-parallel-bins/summary.json),
-[current receipt](current-parallel-bins/receipt.json).
+Status: accepted single-pass transparent renderer bff1bcd beats Mesa in all
+four scenes at 640×360/off, with 60.0–75.9% less complete-frame time. GLimpSW
+remains 5.01–6.80× faster with its different rendering pipeline.
+[Current summary](current-transparent-fusion/summary.json),
+[current receipt](current-transparent-fusion/receipt.json).
 
 Historical native 640x360 baseline (47e517d): 72 accepted measurements, no rejected
 blocks. Six timings per renderer/scene with three rotated forward/reverse pairs.
@@ -28,7 +28,7 @@ GLimpSW and libsoftgl use native Clang 22.1.8 with their respective AVX512 and
 SSE4.1 paths. Mesa uses installed OSMesa/llvmpipe and, in this baseline, the identical GL calls as
 libsoftgl. Current libsoftgl viewer builds opt into
 [worker attribute preparation](../visible-vertex-attributes/README.md); Mesa
-retains eager GL arrays. The same shading formulas and fragment stages remain. Four logical CPUs are exposed under a Microsoft hypervisor (two cores,
+retains eager GL arrays. Opaque/masked shading formulas remain; accepted [transparent fusion](../fused-transparent-pass/README.md) uses one premultiplied pass with documented RGB/alpha differences. Four logical CPUs are exposed under a Microsoft hypervisor (two cores,
 two hardware threads each). Each renderer has one caller and three configured
 helpers; Mesa auxiliary/JIT threads can differ. MSAA is disabled. Complete-frame
 cost includes clear, camera/transforms, rasterization, shading, completion and a
@@ -63,7 +63,7 @@ interference or frequency changes. Original and rejected blocks remain private;
 final receipts identify accepted records and binary/source/asset hashes.
 
 The original baseline described below is historical; current values are linked
-at the top and in the latest parallel-bin section at the end.
+at the top and in the latest transparent-fusion section at the end.
 
 At 640x360, libsoftgl uses about 29.7%/31.3% less frame time than Mesa
 for BMW/T-80, but 42.9%/55.3% more for Sponza/Bistro. GLimpSW is faster
@@ -189,3 +189,16 @@ reference binaries and four-thread budgets as the preceding comparison.
 108-image comparisons, 752 tests, sanitizers and the live WASM update belong
 to the [optimization experiment](../scene-parallel-bins/README.md).
 GLimpSW remains faster under its different rendering pipeline.
+
+## Accepted one-pass transparent materials: bff1bcd
+
+Fresh four-scene comparison: 72 accepted complete-frame timings at 640×360/off,
+unchanged assets, cameras and reference binaries, caller plus three helpers.
+Median GLimpSW / Mesa / libsoftgl milliseconds: BMW 2.280 / 36.255 / 11.697;
+T-80 1.611 / 30.544 / 8.078; Sponza 3.810 / 64.766 / 25.903;
+Bistro 6.201 / 169.735 / 40.893. Libsoftgl uses 67.74% / 73.55% / 60.01% /
+75.91% less frame time than Mesa, but takes 5.13 / 5.01 / 6.80 / 6.59 times
+GLimpSW's frame time. [All attempts and provenance](current-transparent-fusion/README.md).
+The regular native softgl_bmw CMake target now also enables transparent fusion;
+Mesa's target keeps its original wrapper. Approximations are covered separately
+by native analytical/image checks and documented in the material experiment.
