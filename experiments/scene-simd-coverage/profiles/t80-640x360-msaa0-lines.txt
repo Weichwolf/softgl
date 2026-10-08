@@ -1,0 +1,184 @@
+Total: 403 samples
+      48  11.9%  11.9%       48  11.9% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:0
+      20   5.0%  16.9%       20   5.0% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:234
+      15   3.7%  20.6%       15   3.7% sg_packet_gather_pairs (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:77
+      12   3.0%  23.6%       12   3.0% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:247
+      12   3.0%  26.6%       12   3.0% softgl_scene_visibility_end /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:388
+      10   2.5%  29.0%       10   2.5% sg_workers_run_callback /home/cosmo/Git/softgl/libsoftgl/src/workers.c:1301
+       8   2.0%  31.0%        8   2.0% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:231
+       8   2.0%  33.0%        8   2.0% softgl_scene_visibility_end /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:405
+       7   1.7%  34.7%        7   1.7% scene_resolve /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:311
+       7   1.7%  36.5%        7   1.7% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:288
+       7   1.7%  38.2%        7   1.7% softgl_scene_visibility_end /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:435
+       6   1.5%  39.7%        6   1.5% _dl_mcount_wrapper@GLIBC_2.2.5 ??:0
+       6   1.5%  41.2%        6   1.5% scene_geometry_triangles /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:269
+       6   1.5%  42.7%        6   1.5% sg_packet_gather_pairs (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:78
+       6   1.5%  44.2%        6   1.5% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:219
+       6   1.5%  45.7%        6   1.5% softgl_scene_visibility_end /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:415
+       6   1.5%  47.1%        6   1.5% softgl_scene_visibility_end /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:416
+       5   1.2%  48.4%        5   1.2% pthread_cond_broadcast@@GLIBC_2.3.2 ??:0
+       5   1.2%  49.6%        5   1.2% scene_resolve /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:326
+       5   1.2%  50.9%        5   1.2% scene_resolve /home/cosmo/Git/softgl/libsoftgl/src/simd.h:56
+       5   1.2%  52.1%        5   1.2% sg_f32x4_le (inline) /home/cosmo/Git/softgl/libsoftgl/src/simd.h:83
+       5   1.2%  53.3%        5   1.2% sg_f32x4_sub (inline) /home/cosmo/Git/softgl/libsoftgl/src/simd.h:55
+       5   1.2%  54.6%        5   1.2% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:290
+       5   1.2%  55.8%        5   1.2% sg_worker_main /home/cosmo/Git/softgl/libsoftgl/src/workers.c:750
+       5   1.2%  57.1%        5   1.2% softgl_scene_visibility_end /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:434
+       4   1.0%  58.1%        4   1.0% scene_geometry_append /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:0
+       4   1.0%  59.1%        4   1.0% scene_geometry_append /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:233
+       4   1.0%  60.0%        4   1.0% scene_geometry_append /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:260
+       4   1.0%  61.0%        4   1.0% scene_geometry_raster /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:323
+       4   1.0%  62.0%        4   1.0% sg_cube_load_rgba (inline) /home/cosmo/Git/softgl/libsoftgl/src/fragment.c:421
+       4   1.0%  63.0%        4   1.0% sg_f32x4_lt (inline) /home/cosmo/Git/softgl/libsoftgl/src/simd.h:80
+       4   1.0%  64.0%        4   1.0% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:236
+       4   1.0%  65.0%        4   1.0% softgl_scene_visibility_end /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:419
+       3   0.7%  65.8%        3   0.7% scene_geometry_attribute_bins /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:416
+       3   0.7%  66.5%        3   0.7% scene_geometry_raster /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:318
+       3   0.7%  67.2%        3   0.7% scene_geometry_raster /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:322
+       3   0.7%  68.0%        3   0.7% scene_resolve /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:310
+       3   0.7%  68.7%        3   0.7% sem_trywait@GLIBC_2.2.5 ??:0
+       3   0.7%  69.5%        3   0.7% sg_f32x4_mul (inline) /home/cosmo/Git/softgl/libsoftgl/src/simd.h:56
+       3   0.7%  70.2%        3   0.7% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:238
+       3   0.7%  71.0%        3   0.7% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:241
+       3   0.7%  71.7%        3   0.7% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:243
+       3   0.7%  72.5%        3   0.7% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:252
+       3   0.7%  73.2%        3   0.7% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:272
+       3   0.7%  73.9%        3   0.7% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:298
+       3   0.7%  74.7%        3   0.7% softgl_scene_visibility_end /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:403
+       2   0.5%  75.2%        2   0.5% scene_geometry_append /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:193
+       2   0.5%  75.7%        2   0.5% scene_geometry_append /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:197
+       2   0.5%  76.2%        2   0.5% scene_geometry_append /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:231
+       2   0.5%  76.7%        2   0.5% scene_geometry_append /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:261
+       2   0.5%  77.2%        2   0.5% scene_geometry_attribute_bins /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:459
+       2   0.5%  77.7%        2   0.5% scene_geometry_positions /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:102
+       2   0.5%  78.2%        2   0.5% scene_geometry_raster /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:324
+       2   0.5%  78.7%        2   0.5% scene_resolve /home/cosmo/Git/softgl/libsoftgl/src/simd.h:54
+       2   0.5%  79.2%        2   0.5% sg_f32x4_add (inline) /home/cosmo/Git/softgl/libsoftgl/src/simd.h:54
+       2   0.5%  79.7%        2   0.5% sg_f32x4_set (inline) /home/cosmo/Git/softgl/libsoftgl/src/simd.h:51
+       2   0.5%  80.1%        2   0.5% sg_index_range /home/cosmo/Git/softgl/libsoftgl/src/index_range.h:52
+       2   0.5%  80.6%        2   0.5% sg_packet_gather_pairs (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:79
+       2   0.5%  81.1%        2   0.5% sg_sample_tex_cube /home/cosmo/Git/softgl/libsoftgl/src/fragment.c:0
+       2   0.5%  81.6%        2   0.5% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:177
+       2   0.5%  82.1%        2   0.5% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:215
+       2   0.5%  82.6%        2   0.5% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:216
+       2   0.5%  83.1%        2   0.5% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:217
+       2   0.5%  83.6%        2   0.5% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:251
+       2   0.5%  84.1%        6   1.5% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:253
+       2   0.5%  84.6%        2   0.5% softgl_scene_visibility_end /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:406
+       1   0.2%  84.9%        1   0.2% __lll_lock_wake_private@@GLIBC_PRIVATE ??:0
+       1   0.2%  85.1%        1   0.2% _init ??:0
+       1   0.2%  85.4%        1   0.2% _sg_clear_real /home/cosmo/Git/softgl/libsoftgl/src/framebuffer.c:105
+       1   0.2%  85.6%        1   0.2% _sg_clear_real /home/cosmo/Git/softgl/libsoftgl/src/framebuffer.c:124
+       1   0.2%  85.9%        1   0.2% generate_fused_attributes /home/cosmo/Git/softgl/wasm/model_wrap.c:295
+       1   0.2%  86.1%        1   0.2% scene_geometry_append /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:182
+       1   0.2%  86.4%        1   0.2% scene_geometry_append /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:206
+       1   0.2%  86.6%        1   0.2% scene_geometry_append /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:210
+       1   0.2%  86.8%        1   0.2% scene_geometry_append /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:213
+       1   0.2%  87.1%        1   0.2% scene_geometry_append /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:214
+       1   0.2%  87.3%        1   0.2% scene_geometry_append /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:215
+       1   0.2%  87.6%        1   0.2% scene_geometry_attribute_bins /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:0
+       1   0.2%  87.8%        1   0.2% scene_geometry_attribute_bins /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:419
+       1   0.2%  88.1%        1   0.2% scene_geometry_attribute_bins /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:421
+       1   0.2%  88.3%        1   0.2% scene_geometry_attribute_bins /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:457
+       1   0.2%  88.6%        1   0.2% scene_geometry_attribute_bins /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:460
+       1   0.2%  88.8%        1   0.2% scene_geometry_positions /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:0
+       1   0.2%  89.1%        1   0.2% scene_geometry_positions /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:101
+       1   0.2%  89.3%        1   0.2% scene_geometry_positions /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:114
+       1   0.2%  89.6%        1   0.2% scene_geometry_positions /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:73
+       1   0.2%  89.8%        1   0.2% scene_geometry_positions /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:98
+       1   0.2%  90.1%        1   0.2% scene_geometry_triangles /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:0
+       1   0.2%  90.3%        1   0.2% scene_geometry_triangles /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:273
+       1   0.2%  90.6%        1   0.2% scene_resolve /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:0
+       1   0.2%  90.8%        1   0.2% scene_resolve /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:162
+       1   0.2%  91.1%        1   0.2% scene_resolve /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:164
+       1   0.2%  91.3%        1   0.2% scene_resolve /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:95
+       1   0.2%  91.6%        1   0.2% scene_resolve /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:96
+       1   0.2%  91.8%        1   0.2% scene_resolve /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:0
+       1   0.2%  92.1%        1   0.2% scene_resolve /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:301
+       1   0.2%  92.3%        1   0.2% scene_resolve /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:327
+       1   0.2%  92.6%        1   0.2% scene_resolve /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:328
+       1   0.2%  92.8%        1   0.2% scene_resolve /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:339
+       1   0.2%  93.1%        1   0.2% scene_resolve /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:345
+       1   0.2%  93.3%       12   3.0% scene_resolve /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:347
+       1   0.2%  93.5%        1   0.2% scene_resolve /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:348
+       1   0.2%  93.8%        1   0.2% scene_resolve /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:384
+       1   0.2%  94.0%        1   0.2% scene_resolve /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:388
+       1   0.2%  94.3%        1   0.2% scene_resolve /home/cosmo/Git/softgl/libsoftgl/src/simd.h:0
+       1   0.2%  94.5%        1   0.2% scene_resolve /home/cosmo/Git/softgl/libsoftgl/src/simd.h:99
+       1   0.2%  94.8%        1   0.2% sg_cube_load_rgba (inline) /home/cosmo/Git/softgl/libsoftgl/src/fragment.c:420
+       1   0.2%  95.0%        1   0.2% sg_f32x4_ge (inline) /home/cosmo/Git/softgl/libsoftgl/src/simd.h:89
+       1   0.2%  95.3%        1   0.2% sg_f32x4_mul (inline) /home/cosmo/Git/softgl/libsoftgl/src/simd.h:0
+       1   0.2%  95.5%        1   0.2% sg_f32x4_sub (inline) /home/cosmo/Git/softgl/libsoftgl/src/simd.h:0
+       1   0.2%  95.8%        1   0.2% sg_f32x4_trunc_i32 (inline) /home/cosmo/Git/softgl/libsoftgl/src/simd.h:70
+       1   0.2%  96.0%        1   0.2% sg_mask4_live (inline) /home/cosmo/Git/softgl/libsoftgl/src/simd.h:47
+       1   0.2%  96.3%        1   0.2% sg_packet_address4 (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:43
+       1   0.2%  96.5%        1   0.2% sg_packet_gather_pairs (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:74
+       1   0.2%  96.8%        1   0.2% sg_packet_sample_cube_coherent /home/cosmo/Git/softgl/libsoftgl/src/rasterizer.c:1102
+       1   0.2%  97.0%        1   0.2% sg_packet_sample_cube_coherent /home/cosmo/Git/softgl/libsoftgl/src/simd.h:56
+       1   0.2%  97.3%        1   0.2% sg_sample_tex_cube /home/cosmo/Git/softgl/libsoftgl/src/fragment.c:451
+       1   0.2%  97.5%        1   0.2% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/raster_types.h:42
+       1   0.2%  97.8%        1   0.2% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:160
+       1   0.2%  98.0%        1   0.2% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:211
+       1   0.2%  98.3%        1   0.2% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:229
+       1   0.2%  98.5%        1   0.2% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:237
+       1   0.2%  98.8%        1   0.2% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:249
+       1   0.2%  99.0%        1   0.2% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:291
+       1   0.2%  99.3%        1   0.2% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/simd.h:51
+       1   0.2%  99.5%        1   0.2% sg_worker_main /home/cosmo/Git/softgl/libsoftgl/src/workers.c:749
+       1   0.2%  99.8%        1   0.2% sg_worker_main /home/cosmo/Git/softgl/libsoftgl/src/workers.c:751
+       1   0.2% 100.0%        1   0.2% softgl_scene_visibility_end /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:386
+       0   0.0% 100.0%      217  53.8% __clone@@GLIBC_2.2.5 ??:0
+       0   0.0% 100.0%        3   0.7% __libc_alloca_cutoff@@GLIBC_PRIVATE ??:0
+       0   0.0% 100.0%      186  46.2% __libc_init_first@@GLIBC_2.2.5 ??:0
+       0   0.0% 100.0%      186  46.2% __libc_start_main@GLIBC_2.2.5 ??:0
+       0   0.0% 100.0%        3   0.7% __nptl_death_event@@GLIBC_PRIVATE ??:0
+       0   0.0% 100.0%      186  46.2% _start ??:0
+       0   0.0% 100.0%        2   0.5% draw_part /home/cosmo/Git/softgl/wasm/model_wrap.c:405
+       0   0.0% 100.0%      185  45.9% main /home/cosmo/Git/softgl/experiments/native-cpu-profiles/profile_scene.c:51
+       0   0.0% 100.0%        1   0.2% main /home/cosmo/Git/softgl/experiments/native-cpu-profiles/profile_scene.c:52
+       0   0.0% 100.0%        3   0.7% pthread_cond_wait@@GLIBC_2.3.2 ??:0
+       0   0.0% 100.0%      217  53.8% pthread_condattr_setpshared@GLIBC_2.2.5 ??:0
+       0   0.0% 100.0%        1   0.2% pthread_mutex_trylock@GLIBC_2.2.5 ??:0
+       0   0.0% 100.0%        1   0.2% scene_gather_lerp (inline) /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:313
+       0   0.0% 100.0%        1   0.2% scene_geometry_attribute_bins /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:420
+       0   0.0% 100.0%      171  42.4% scene_geometry_raster /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:331
+       0   0.0% 100.0%       26   6.5% scene_geometry_triangles /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:279
+       0   0.0% 100.0%       27   6.7% scene_resolve /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:391
+       0   0.0% 100.0%        1   0.2% scene_shade_packet (inline) /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:344
+       0   0.0% 100.0%       26   6.5% scene_shade_packet (inline) /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:348
+       0   0.0% 100.0%        2   0.5% sg_model_render /home/cosmo/Git/softgl/wasm/model_wrap.c:423
+       0   0.0% 100.0%        5   1.2% sg_model_render /home/cosmo/Git/softgl/wasm/model_wrap.c:450
+       0   0.0% 100.0%        2   0.5% sg_model_render /home/cosmo/Git/softgl/wasm/model_wrap.c:467
+       0   0.0% 100.0%      176  43.7% sg_model_render /home/cosmo/Git/softgl/wasm/model_wrap.c:470
+       0   0.0% 100.0%        1   0.2% sg_packet_sample_2d (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:102
+       0   0.0% 100.0%        1   0.2% sg_packet_sample_2d (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:104
+       0   0.0% 100.0%       20   5.0% sg_packet_sample_2d (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:130
+       0   0.0% 100.0%        4   1.0% sg_packet_sample_2d (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:131
+       0   0.0% 100.0%        1   0.2% sg_packet_sample_2d (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:94
+       0   0.0% 100.0%        1   0.2% sg_packet_sample_cube_coherent /home/cosmo/Git/softgl/libsoftgl/src/rasterizer.c:1146
+       0   0.0% 100.0%        3   0.7% sg_packet_sample_cube_target /home/cosmo/Git/softgl/libsoftgl/src/rasterizer.c:1164
+       0   0.0% 100.0%        8   2.0% sg_packet_sample_cube_target /home/cosmo/Git/softgl/libsoftgl/src/rasterizer.c:1166
+       0   0.0% 100.0%        1   0.2% sg_packet_wrap (inline) /home/cosmo/Git/softgl/libsoftgl/src/frag_packet.h:24
+       0   0.0% 100.0%        4   1.0% sg_sample_cube_face (inline) /home/cosmo/Git/softgl/libsoftgl/src/fragment.c:474
+       0   0.0% 100.0%        1   0.2% sg_sample_cube_face (inline) /home/cosmo/Git/softgl/libsoftgl/src/fragment.c:476
+       0   0.0% 100.0%        5   1.2% sg_sample_tex_cube /home/cosmo/Git/softgl/libsoftgl/src/fragment.c:496
+       0   0.0% 100.0%        5   1.2% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:254
+       0   0.0% 100.0%        3   0.7% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:255
+       0   0.0% 100.0%        4   1.0% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:260
+       0   0.0% 100.0%        1   0.2% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:261
+       0   0.0% 100.0%        5   1.2% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:262
+       0   0.0% 100.0%        1   0.2% sg_scene_visibility_triangle /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:263
+       0   0.0% 100.0%        3   0.7% sg_worker_main /home/cosmo/Git/softgl/libsoftgl/src/workers.c:765
+       0   0.0% 100.0%      207  51.4% sg_worker_main /home/cosmo/Git/softgl/libsoftgl/src/workers.c:775
+       0   0.0% 100.0%        5   1.2% sg_workers_run_callback /home/cosmo/Git/softgl/libsoftgl/src/workers.c:1298
+       0   0.0% 100.0%        1   0.2% sg_workers_run_callback /home/cosmo/Git/softgl/libsoftgl/src/workers.c:1299
+       0   0.0% 100.0%      105  26.1% sg_workers_run_callback /home/cosmo/Git/softgl/libsoftgl/src/workers.c:1300
+       0   0.0% 100.0%        2   0.5% softgl_scene_visibility_begin /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:118
+       0   0.0% 100.0%        3   0.7% softgl_scene_visibility_begin /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:119
+       0   0.0% 100.0%        2   0.5% softgl_scene_visibility_end /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:380
+       0   0.0% 100.0%       19   4.7% softgl_scene_visibility_end /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:383
+       0   0.0% 100.0%       65  16.1% softgl_scene_visibility_end /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:410
+       0   0.0% 100.0%        6   1.5% softgl_scene_visibility_end /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:476
+       0   0.0% 100.0%       29   7.2% softgl_scene_visibility_end /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:444
+       0   0.0% 100.0%        1   0.2% softgl_scene_visibility_end /home/cosmo/Git/softgl/libsoftgl/src/scene_visibility.c:445
+       0   0.0% 100.0%        2   0.5% softgl_scene_visibility_positions /home/cosmo/Git/softgl/libsoftgl/src/geometry.inc:42

@@ -1,6 +1,6 @@
 # Accepted scene-position frontend comparison
 
-Status: current accepted libsoftgl renderer. 72 accepted native measurements,
+Status: accepted scene-position renderer, superseded by rolling SIMD128 coverage. 72 accepted native measurements,
 no rejected blocks: three rotated forward/reverse blocks, six timings per
 renderer/asset, 640×360/off, four threads, 15 warm-up and 30 measured full frames.
 

@@ -221,6 +221,18 @@ int sg_scene_visibility_triangle(softgl_ctx *c, const sg_vert *v0,
         {(int64_t)(x0-x2)*(128-y2)-(int64_t)(y0-y2)*(128-x2),
          -(int64_t)(y0-y2)*256, (int64_t)(x0-x2)*256}};
     float inverse_area = 1.f/(float)area;
+    /* All edge steps are multiples of 256. Floor-dividing a biased edge by
+     * 256 preserves its sign exactly and permits four int32 lane tests.
+     * The coordinate gate bounds every viewport sample edge below INT32_MAX;
+     * legacy batches using larger viewports retain the original int64 path. */
+    int coverage32 = minx >= -262144 && maxx <= 262144 &&
+        miny >= -262144 && maxy <= 262144;
+    sg_i32x4 coverage_delta[3];
+    if (coverage32) {
+        int32_t sx[3] = {-(y2-y1),-(y0-y2),-(y1-y0)};
+        for (int k = 0; k < 3; k++)
+            coverage_delta[k] = sg_i32x4_set(0,sx[k],sx[k]*2,sx[k]*3);
+    }
     uint32_t record = UINT32_MAX;
     int64_t dx[3] = {edge[0][1], edge[1][1], -edge[0][1]-edge[1][1]};
     int64_t lo[3], hi[3];
@@ -228,27 +240,41 @@ int sg_scene_visibility_triangle(softgl_ctx *c, const sg_vert *v0,
         lo[k] = dx[k] < 0 ? dx[k]*3 : 0;
         hi[k] = dx[k] > 0 ? dx[k]*3 : 0;
     }
+    sg_i32x4 step[3];
+    if (coverage32) for (int k = 0; k < 3; k++)
+        step[k] = sg_i32x4_splat((int32_t)(dx[k] >> 8)*4);
     for (int y = iy0; y < iy1; y++) {
         int64_t e0 = edge[0][0]+edge[0][1]*ix0+edge[0][2]*y;
         int64_t e1 = edge[1][0]+edge[1][1]*ix0+edge[1][2]*y;
+        sg_i32x4 q0, q1, q2;
+        if (coverage32) {
+            q0 = sg_i32x4_add(sg_i32x4_splat((int32_t)((e0+bias[0]) >> 8)),coverage_delta[0]);
+            q1 = sg_i32x4_add(sg_i32x4_splat((int32_t)((e1+bias[1]) >> 8)),coverage_delta[1]);
+            q2 = sg_i32x4_add(sg_i32x4_splat((int32_t)((area-e0-e1+bias[2]) >> 8)),coverage_delta[2]);
+        }
         for (int x = ix0; x < ix1; x += 4, e0 += edge[0][1]*4, e1 += edge[1][1]*4) {
-            int64_t e2 = area-e0-e1;
-            if (e0+bias[0]+hi[0] < 0 || e1+bias[1]+hi[1] < 0 ||
-                e2+bias[2]+hi[2] < 0) continue;
             unsigned live = (1u << (ix1-x < 4 ? ix1-x : 4))-1;
+            if (coverage32) {
+                unsigned inside = (unsigned)~_mm_movemask_ps(_mm_castsi128_ps(_mm_or_si128(_mm_or_si128(q0,q1),q2))) & 15u;
+                q0 = sg_i32x4_add(q0,step[0]); q1 = sg_i32x4_add(q1,step[1]); q2 = sg_i32x4_add(q2,step[2]);
+                live &= inside;
+            } else {
+                int64_t e2 = area-e0-e1;
+                if (e0+bias[0]+hi[0] < 0 || e1+bias[1]+hi[1] < 0 || e2+bias[2]+hi[2] < 0) continue;
+                if (e0+bias[0]+lo[0] < 0 || e1+bias[1]+lo[1] < 0 || e2+bias[2]+lo[2] < 0) {
+                    unsigned inside = 0;
+                    for (int l = 0; l < 4; l++) {
+                        int64_t a = e0+edge[0][1]*l, d = e1+edge[1][1]*l;
+                        if (a+bias[0] >= 0 && d+bias[1] >= 0 && area-a-d+bias[2] >= 0) inside |= 1u << l;
+                    }
+                    live &= inside;
+                }
+            }
+            if (!live) continue;
             int64_t a[4], d[4];
             for (int l = 0; l < 4; l++) {
                 a[l] = e0+edge[0][1]*l; d[l] = e1+edge[1][1]*l;
             }
-            if (e0+bias[0]+lo[0] < 0 || e1+bias[1]+lo[1] < 0 ||
-                e2+bias[2]+lo[2] < 0) {
-                unsigned inside = 0;
-                for (int l = 0; l < 4; l++)
-                    if (a[l]+bias[0] >= 0 && d[l]+bias[1] >= 0 &&
-                        area-a[l]-d[l]+bias[2] >= 0) inside |= 1u << l;
-                live &= inside;
-            }
-            if (!live) continue;
             sg_f32x4 b0 = sg_f32x4_mul(sg_f32x4_set((float)a[0],(float)a[1],(float)a[2],(float)a[3]),sg_f32x4_splat(inverse_area));
             sg_f32x4 b1 = sg_f32x4_mul(sg_f32x4_set((float)d[0],(float)d[1],(float)d[2],(float)d[3]),sg_f32x4_splat(inverse_area));
             sg_f32x4 b2 = sg_f32x4_sub(sg_f32x4_sub(sg_f32x4_splat(1.f),b0),b1);

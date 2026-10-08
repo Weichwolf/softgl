@@ -1,0 +1,45 @@
+{
+  "nativeCtestPassed": 751,
+  "nativeCtestFailed": 0,
+  "positionContractPairedFrames": 162,
+  "visibilityBoundaryPairedFrames": 372,
+  "bothContractsAddressUndefinedLeakSanitizersPassed": true,
+  "residentFullFrameComparisons": 288,
+  "pairedImages": 108,
+  "browserCases": 12,
+  "maximumWasmHeapBytes": 2807169024,
+  "productionSceneSourceMatchesCandidate": true,
+  "files": {
+    "softgl.js": {
+      "bytes": 233060,
+      "sha256": "496a1d09bea03d07375738cbe8b7625a7064f6ee90850eb60112f89c2cc81293",
+      "liveHttpMatches": true
+    },
+    "softgl.wasm": {
+      "bytes": 1306363,
+      "sha256": "5ecc27c83979fca65572da6b03053f79198fea391cc839a0d133998fb1829ee2",
+      "liveHttpMatches": true
+    },
+    "/tmp/softgl-simd-coverage-production-build.log": {
+      "sha256": "c73183ddb0b9acd8484ce8eddf9fdb93765e3be89f2287a4a29901faaa8c60a1"
+    },
+    "/tmp/softgl-simd-coverage-production-tests.log": {
+      "sha256": "b42b144d7ab7e7b197ed04f0245bb87ccab9f569c79ebada75c42d669fd9207a"
+    },
+    "/tmp/softgl-simd-coverage-asan-build.log": {
+      "sha256": "c5ca7d7c9f231f5008c7c835daebdb3d3bdd5a8ebc9710b00547cb32d997f69c"
+    },
+    "/tmp/softgl-simd-coverage-asan-tests.log": {
+      "sha256": "cdf1ad03d465a360da565c0fa98c0248c577bc840d9b887faa2d766c0e049a91"
+    },
+    "/tmp/softgl-simd-coverage-wasm-build.log": {
+      "sha256": "bf0b93ffc0839fba0b142d04f571f8ddd32c20e831d129a932e67f6ea99f9b26"
+    },
+    "/tmp/softgl-simd-coverage-resident-quality.log": {
+      "sha256": "ea7e18ff170a2b38d77770aee2cdb20353196ec5c52ab468d928cbed7c1a3bcd"
+    },
+    "/tmp/softgl-simd-coverage-browser.log": {
+      "sha256": "9afdf8e8f1793d0d0e521f2cd4ff6e25941815a4aeab4dbe8c9544a72f8e3542"
+    }
+  }
+}

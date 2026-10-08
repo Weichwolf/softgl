@@ -1,10 +1,10 @@
 # GLimpSW / Mesa / libsoftgl with four common scenes
 
-Status: current accepted scene-position frontend beats Mesa in all four scenes
-at 640x360/off, with 56–72% less complete-frame time. GLimpSW remains about
-6–8× faster with its different rendering pipeline.
-[Current summary](current-position/summary.json),
-[current receipt](current-position/receipt.json).
+Status: current accepted rolling SIMD128 coverage beats Mesa in all four scenes
+at 640x360/off, with 57.6–73.7% less complete-frame time. GLimpSW remains
+5.42–7.42× faster with its different rendering pipeline.
+[Current summary](current-simd/summary.json),
+[current receipt](current-simd/receipt.json).
 
 Historical native 640x360 baseline (47e517d): 72 accepted measurements, no rejected
 blocks. Six timings per renderer/scene with three rotated forward/reverse pairs.
@@ -63,7 +63,7 @@ interference or frequency changes. Original and rejected blocks remain private;
 final receipts identify accepted records and binary/source/asset hashes.
 
 The original baseline described below is historical; current values are linked
-at the top and in the latest scene-position section at the end.
+at the top and in the latest rolling SIMD section at the end.
 
 At 640x360, libsoftgl uses about 29.7%/31.3% less frame time than Mesa
 for BMW/T-80, but 42.9%/55.3% more for Sponza/Bistro. GLimpSW is faster
@@ -147,3 +147,24 @@ observability. GLimpSW's different PBR/cutout pipeline remains unchanged.
 [Summary](current-position/summary.json), [source/binary/asset receipt](current-position/receipt.json).
 No higher resolutions run. MSAA regression and image-quality validation are
 recorded in the optimization experiment; references here support off mode.
+
+## Accepted rolling SIMD128 coverage
+
+Exact biased-edge quotient vectors reduce off-mode frame time against 91ab0da
+by 9.6% / 9.5% / 4.5% / 4.6% for BMW / T-80 / Sponza / Bistro, with no new
+color or coverage differences. The independent three-renderer comparison has
+72 quiet accepted runs, no rejected runs, and unchanged reference binaries,
+prepared packs, exports, camera registry, wrapper and thread budgets.
+
+| Asset | GLimpSW ms | Mesa ms | libsoftgl ms | libsoftgl frame time vs Mesa | SG / GLimpSW |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| bmw | 2.120 | 36.151 | 14.253 | -60.57% | 6.72x |
+| t80 | 1.638 | 30.527 | 8.874 | -70.93% | 5.42x |
+| sponza | 3.872 | 64.569 | 27.350 | -57.64% | 7.06x |
+| bistro | 5.999 | 169.127 | 44.517 | -73.68% | 7.42x |
+
+[Summary](current-simd/summary.json), [receipt](current-simd/receipt.json).
+GLimpSW is still faster; the objective remains open. Reproduce with
+`current_compare.py --softgl build/scene-simd-coverage/native/candidate`.
+Native MSAA regression and browser validation belong to the
+[optimization experiment](../scene-simd-coverage/README.md).
