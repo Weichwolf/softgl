@@ -1,0 +1,85 @@
+diff -urN build/scene-msaa-lazy-depth-summary/baseline-source/libsoftgl/CMakeLists.txt build/scene-msaa-lazy-depth-summary/source/libsoftgl/CMakeLists.txt
+--- build/scene-msaa-lazy-depth-summary/baseline-source/libsoftgl/CMakeLists.txt	2026-10-09 00:39:40.795596320 +0200
++++ build/scene-msaa-lazy-depth-summary/source/libsoftgl/CMakeLists.txt	2026-10-09 00:27:09.000000000 +0200
+@@ -1,4 +1,4 @@
+-add_library(baseline_softgl STATIC
++add_library(softgl STATIC
+     src/state.c
+     src/matrix.c
+     src/buffers.c
+@@ -22,19 +22,19 @@
+     src/scene_visibility.c
+ )
+ 
+-target_include_directories(baseline_softgl
++target_include_directories(softgl
+     PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR}/include
+     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
+ )
+ 
+-target_compile_definitions(baseline_softgl PRIVATE SOFTGL_BUILD)
++target_compile_definitions(softgl PRIVATE SOFTGL_BUILD)
+ 
+ # SSE4.1 (native x86) / wasm_simd128 (Emscripten) are hard requirements.
+ # simd.h emits #error if neither is defined.
+ if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+     if(NOT EMSCRIPTEN AND CMAKE_SYSTEM_PROCESSOR MATCHES "x86|AMD64|amd64|i386|i686")
+         # Keep auto-vectorization within SIMD128 even with caller -march=native.
+-        target_compile_options(baseline_softgl PRIVATE -msse4.1 -mno-avx -mno-avx2 -mno-avx512f)
++        target_compile_options(softgl PRIVATE -msse4.1 -mno-avx -mno-avx2 -mno-avx512f)
+     endif()
+ endif()
+ 
+@@ -43,5 +43,5 @@
+ # workers collapse to a no-op fallback via sg_workers_init().
+ if(NOT EMSCRIPTEN)
+     find_package(Threads REQUIRED)
+-    target_link_libraries(baseline_softgl PUBLIC Threads::Threads m)
++    target_link_libraries(softgl PUBLIC Threads::Threads m)
+ endif()
+diff -urN build/scene-msaa-lazy-depth-summary/baseline-source/libsoftgl/src/raster_hz.h build/scene-msaa-lazy-depth-summary/source/libsoftgl/src/raster_hz.h
+--- build/scene-msaa-lazy-depth-summary/baseline-source/libsoftgl/src/raster_hz.h	2026-10-09 00:27:09.000000000 +0200
++++ build/scene-msaa-lazy-depth-summary/source/libsoftgl/src/raster_hz.h	2026-10-09 00:39:40.795778421 +0200
+@@ -4,6 +4,9 @@
+ #include "simd.h"
+ #include <math.h>
+ 
++/* Actual sample indices occupy only the low six bits. */
++#define SG_HZ_DIRTY_MAXIMUM UINT32_C(0x80000000)
++
+ SG_INLINE sg_hz_state *sg_hz_state_from_ctx4(const softgl_ctx *c) {
+     return c->fb.samples == 4 && c->fb.sample_color ?
+         ((sg_hz_state *)c->fb.sample_color) - 1 : NULL;
+@@ -96,9 +99,14 @@
+     if (tile->written != UINT64_MAX) {
+         tile->written |= mask;
+         if (tile->written == UINT64_MAX) sg_hz_refresh4(c, x, y, tile);
++    } else if (tile->maximum_sample & SG_HZ_DIRTY_MAXIMUM) {
++        /* Monotonic scene writes leave the old maximum conservative. An
++         * ordinary writer resumes eager tracking from real sample depths. */
++        if (!c->scene_visibility) sg_hz_refresh4(c, x, y, tile);
+     } else if ((mask & (UINT64_C(1) << tile->maximum_sample)) &&
+                z[tile->maximum_sample & 3] < tile->maximum) {
+-        sg_hz_refresh4(c, x, y, tile);
++        if (c->scene_visibility) tile->maximum_sample |= SG_HZ_DIRTY_MAXIMUM;
++        else sg_hz_refresh4(c, x, y, tile);
+     }
+ }
+ 
+@@ -197,9 +205,14 @@
+     lower = lower < 0.f ? 0.f : lower > 1.f ? 1.f : lower;
+     int strictly_hidden = 1;
+     for (int x = x0 >> 2; x <= (x1 - 1) >> 2; x++) {
+-        const sg_hz_tile *column = state->tiles + (size_t)x * state->rows;
+         for (int y = y0 >> 2; y <= (y1 - 1) >> 2; y++) {
+-            const sg_hz_tile *tile = column + y;
++            sg_hz_tile *tile = state->tiles+(size_t)x*state->rows+y;
++            /* Scene queries are bin-clamped; only the cell's stripe owner
++             * mutates it. Refresh only if the stale upper bound cannot yet
++             * prove rejection. Actual coverage/depth samples are unchanged. */
++            if (c->scene_visibility && tile->written == UINT64_MAX &&
++                (tile->maximum_sample & SG_HZ_DIRTY_MAXIMUM) && lower <= tile->maximum)
++                sg_hz_refresh4(c,x*4,y*4,tile);
+             if (tile->written != UINT64_MAX ||
+                 (c->depth_func == GL_LESS ? lower < tile->maximum : lower <= tile->maximum)) return 0;
+             if (classify_strict && lower <= tile->maximum) strictly_hidden = 0;

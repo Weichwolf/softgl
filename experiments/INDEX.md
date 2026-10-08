@@ -185,4 +185,7 @@
 | [scene-msaa-between-samples](scene-msaa-between-samples/README.md) | Accepted | Exact empty-sample geometry culling: Bistro 2×/4× FPS +7.11/+1.94%; 144 quiet runs, native/WASM sample planes exact, 757 tests, live browser updated. |
 | [scene-msaa-packet-occlusion](scene-msaa-packet-occlusion/README.md) | Adopted | SIMD128 Bistro 2×/4× -2.74/-2.48% time (+2.82/+2.54% FPS); exact native/actual WASM planes, 757 tests and 12 live browser cases pass. |
 | [scene-msaa-uniform-metadata](scene-msaa-uniform-metadata/README.md) | Adopted | Bistro 4× -1.93% time/+1.97% FPS, 2× flat; exact native/WASM gates, 757 tests and 12 browser modes pass; T-80 4× +1.45% cost recorded. |
-| [scene-compact-attributes](scene-compact-attributes/README.md) | Native prototype | 320→80-byte records share canonical attributes; 216+576 hashes and 162 legacy comparisons pass; ISA SIMD128, FPS/WASM pending. |
+| [scene-compact-attributes](scene-compact-attributes/README.md) | Not adopted screen | Exact 320→80B shared records: combined Bistro OFF -1.95%, 2× +0.34%, 4× +0.17% time; initial MSAA gain not retained. |
+| [scene-packet-coordinate-decode](scene-packet-coordinate-decode/README.md) | Not adopted | 9.757M native/WASM numeric checks and 216/576 render hashes exact; full repeat Bistro4 +0.21%, Sponza OFF +1.84% time, no broad gain. |
+| [cpu-rasterizer-msaa-audit](cpu-rasterizer-msaa-audit/README.md) | Research | Pinned local CPU-Rasterizer and SIGGRAPH 2011 sources reviewed; pixel-frequency MSAA reuse already implemented, no new gain. |
+| [scene-msaa-lazy-depth-summary](scene-msaa-lazy-depth-summary/README.md) | Prepared hypothesis | Own monotonic upper-bound marker defers 64-sample rescans until needed; unbuilt, no FPS claim. |

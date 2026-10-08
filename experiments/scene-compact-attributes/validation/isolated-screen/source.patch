@@ -1,0 +1,246 @@
+diff -urN build/scene-compact-attributes/baseline-source/libsoftgl/CMakeLists.txt build/scene-compact-attributes/source/libsoftgl/CMakeLists.txt
+--- build/scene-compact-attributes/baseline-source/libsoftgl/CMakeLists.txt	2026-10-08 23:55:09.969161936 +0200
++++ build/scene-compact-attributes/source/libsoftgl/CMakeLists.txt	2026-10-08 23:42:00.000000000 +0200
+@@ -1,4 +1,4 @@
+-add_library(baseline_softgl STATIC
++add_library(softgl STATIC
+     src/state.c
+     src/matrix.c
+     src/buffers.c
+@@ -22,19 +22,19 @@
+     src/scene_visibility.c
+ )
+ 
+-target_include_directories(baseline_softgl
++target_include_directories(softgl
+     PUBLIC  ${CMAKE_CURRENT_SOURCE_DIR}/include
+     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src
+ )
+ 
+-target_compile_definitions(baseline_softgl PRIVATE SOFTGL_BUILD)
++target_compile_definitions(softgl PRIVATE SOFTGL_BUILD)
+ 
+ # SSE4.1 (native x86) / wasm_simd128 (Emscripten) are hard requirements.
+ # simd.h emits #error if neither is defined.
+ if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+     if(NOT EMSCRIPTEN AND CMAKE_SYSTEM_PROCESSOR MATCHES "x86|AMD64|amd64|i386|i686")
+         # Keep auto-vectorization within SIMD128 even with caller -march=native.
+-        target_compile_options(baseline_softgl PRIVATE -msse4.1 -mno-avx -mno-avx2 -mno-avx512f)
++        target_compile_options(softgl PRIVATE -msse4.1 -mno-avx -mno-avx2 -mno-avx512f)
+     endif()
+ endif()
+ 
+@@ -43,5 +43,5 @@
+ # workers collapse to a no-op fallback via sg_workers_init().
+ if(NOT EMSCRIPTEN)
+     find_package(Threads REQUIRED)
+-    target_link_libraries(baseline_softgl PUBLIC Threads::Threads m)
++    target_link_libraries(softgl PUBLIC Threads::Threads m)
+ endif()
+diff -urN build/scene-compact-attributes/baseline-source/libsoftgl/src/geometry.inc build/scene-compact-attributes/source/libsoftgl/src/geometry.inc
+--- build/scene-compact-attributes/baseline-source/libsoftgl/src/geometry.inc	2026-10-08 23:42:00.000000000 +0200
++++ build/scene-compact-attributes/source/libsoftgl/src/geometry.inc	2026-10-08 23:55:09.970857942 +0200
+@@ -539,12 +539,17 @@
+             const scene_mesh *m = &f->materials[p->material].mesh; scene_attribute *a[3];
+             const scene_clipped_primitive *clipped = p->clipped == UINT32_MAX ? NULL : &g->tasks[p->task].clipped[p->clipped];
+             for (int j = 0; j < 3; j++) a[j] = scene_geometry_attribute(f,m,p->indices[j]);
++            if (!clipped) { SCENE_RECORD_AUDIT(0,1); continue; }
++            t->payload = scene_payload_allocate(f,bin);
++            if (t->payload == UINT32_MAX) return;
++            SCENE_RECORD_AUDIT(1,1);
+             for (int j = 0; j < 3; j++) {
+-                t->color[j] = clipped ? scene_geometry_interpolate(&a[0]->color,&a[1]->color,&a[2]->color,clipped->basis[j]) : a[j]->color;
+-                t->color[j].w = 1.f;
++                scene_attribute *out = &b->payloads[t->payload].vertex[j];
++                out->color = scene_geometry_interpolate(&a[0]->color,&a[1]->color,&a[2]->color,clipped->basis[j]);
++                out->color.w = 1.f;
+                 for (int u = 0; u < 4; u++) {
+-                    t->uv[u][j] = clipped ? scene_geometry_interpolate(&a[0]->uv[u],&a[1]->uv[u],&a[2]->uv[u],clipped->basis[j]) : a[j]->uv[u];
+-                    if (clipped && (u == 0 || u == 2)) t->uv[u][j] = (sg_vec4){clipped->coordinates[j][0],clipped->coordinates[j][1],0.f,1.f};
++                    out->uv[u] = scene_geometry_interpolate(&a[0]->uv[u],&a[1]->uv[u],&a[2]->uv[u],clipped->basis[j]);
++                    if (u == 0 || u == 2) out->uv[u] = (sg_vec4){clipped->coordinates[j][0],clipped->coordinates[j][1],0.f,1.f};
+                 }
+             }
+         }
+diff -urN build/scene-compact-attributes/baseline-source/libsoftgl/src/scene_visibility.c build/scene-compact-attributes/source/libsoftgl/src/scene_visibility.c
+--- build/scene-compact-attributes/baseline-source/libsoftgl/src/scene_visibility.c	2026-10-08 23:42:00.000000000 +0200
++++ build/scene-compact-attributes/source/libsoftgl/src/scene_visibility.c	2026-10-08 23:55:09.970396741 +0200
+@@ -26,18 +26,21 @@
+     uint32_t count, first, cursor;
+ } scene_material;
+ 
+-typedef struct {
+-    float inverse_w[3];
+-    sg_vec4 color[3], uv[4][3];
++typedef struct SG_ALIGN16 {
++    float inverse_w[3], inverse_area;
+     int64_t edge[2][3]; /* edge at pixel 0,0; one-pixel X/Y deltas */
+-    float inverse_area;
+-    uint32_t material;
++    uint32_t material, payload;
+     const scene_primitive *primitive;
+ } scene_triangle;
++_Static_assert(sizeof(scene_triangle) == 80, "compact exact winner record");
++typedef struct { scene_attribute vertex[3]; } scene_triangle_payload;
++_Static_assert(sizeof(scene_triangle_payload) == 240, "exception attribute stride");
+ 
+ typedef struct {
+     scene_triangle *triangles;
+     uint32_t count, capacity;
++    scene_triangle_payload *payloads;
++    uint32_t payload_count, payload_capacity;
+     uint64_t depth_passes;
+     uint8_t *visible;
+     uint32_t visible_capacity;
+@@ -70,7 +73,7 @@
+ void sg_scene_visibility_destroy(void *storage) {
+     struct sg_scene_visibility *f = storage;
+     if (!f) return;
+-    for (int i = 0; i < SG_MAX_BINS; i++) { free(f->bins[i].triangles); free(f->bins[i].visible); }
++    for (int i = 0; i < SG_MAX_BINS; i++) { free(f->bins[i].triangles); free(f->bins[i].visible); free(f->bins[i].payloads); }
+     free(f->winner); free(f->pixels); free(f->pixel_material); free(f->backup_depth); free(f->backup_color);
+     free(f->group_counts); free(f->materials); free(f->tasks); free(f->sample_point); free(f->shade_mask);
+     scene_geometry_destroy(f->geometry);
+@@ -147,7 +150,7 @@
+         memcpy(f->backup_color, c->fb.color, pixels*4);
+     }
+     for (int i = 0; i < SG_MAX_BINS; i++) {
+-        f->bins[i].count = 0; f->bins[i].depth_passes = 0;
++        f->bins[i].count = 0; f->bins[i].depth_passes = 0; f->bins[i].payload_count = 0;
+     }
+     atomic_store_explicit(&f->failed, 0, memory_order_relaxed);
+     f->quantized = 0;
+@@ -183,6 +186,39 @@
+     c->scene_material = f->material_count++;
+ }
+ 
++#ifdef SOFTGL_SCENE_RECORD_AUDIT
++static atomic_ullong scene_record_counts[3];
++unsigned long long softgl_scene_record_audit(unsigned index) {
++    return index < 3 ? atomic_load_explicit(&scene_record_counts[index],memory_order_relaxed) : 0;
++}
++#define SCENE_RECORD_AUDIT(i,n) atomic_fetch_add_explicit(&scene_record_counts[i],(n),memory_order_relaxed)
++#else
++#define SCENE_RECORD_AUDIT(i,n) ((void)0)
++#endif
++
++/* Only clipped winners and ordinary captured triangles need private copies. */
++static uint32_t scene_payload_allocate(struct sg_scene_visibility *f, int bin) {
++    scene_bin *b = &f->bins[bin];
++    if (b->payload_count == b->payload_capacity) {
++        uint32_t capacity = b->payload_capacity ? b->payload_capacity*2 : 64;
++        size_t delta = (size_t)(capacity-b->payload_capacity)*sizeof(scene_triangle_payload);
++        pthread_mutex_lock(&f->allocation_mutex);
++        scene_triangle_payload *next = NULL;
++        if (delta <= SCENE_TRIANGLE_BYTES-f->triangle_bytes)
++            next = realloc(b->payloads,(size_t)capacity*sizeof(*next));
++        if (next) {
++            b->payloads = next; b->payload_capacity = capacity;
++            f->triangle_bytes += delta;
++        }
++        pthread_mutex_unlock(&f->allocation_mutex);
++        if (!next) {
++            atomic_store_explicit(&f->failed,1,memory_order_relaxed);
++            return UINT32_MAX;
++        }
++    }
++    return b->payload_count++;
++}
++
+ static uint32_t scene_triangle_record(struct sg_scene_visibility *f, int bin,
+     const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
+     int64_t edges[2][3], float inverse_area, uint32_t material) {
+@@ -205,12 +241,19 @@
+     uint32_t index = b->count++;
+     scene_triangle *t = &b->triangles[index];
+     t->primitive = f->current_primitive[bin];
++    t->payload = UINT32_MAX;
++    if (!t->primitive) {
++        t->payload = scene_payload_allocate(f,bin);
++        if (t->payload == UINT32_MAX) return UINT32_MAX;
++        SCENE_RECORD_AUDIT(2,1);
++    }
+     const sg_vert *vertices[3] = {v0,v1,v2};
+     for (int i = 0; i < 3; i++) {
+         t->inverse_w[i] = vertices[i]->ndc.w;
+         if (!t->primitive) {
+-            t->color[i] = vertices[i]->color;
+-            for (int u = 0; u < 4; u++) t->uv[u][i] = vertices[i]->uv[u];
++            scene_attribute *a = &b->payloads[t->payload].vertex[i];
++            a->color = vertices[i]->color;
++            for (int u = 0; u < 4; u++) a->uv[u] = vertices[i]->uv[u];
+         }
+     }
+     memcpy(t->edge, edges, sizeof(t->edge)); t->inverse_area = inverse_area;
+@@ -761,7 +804,7 @@
+     }
+     uint32_t index = b->count++;
+     scene_triangle *t = &b->triangles[index];
+-    t->primitive = primitive;
++    t->primitive = primitive; t->payload = UINT32_MAX;
+     for (int i = 0; i < 3; i++) t->inverse_w[i] = packet->zw[i][1][lane];
+     memcpy(t->edge, edges, sizeof(t->edge)); t->inverse_area = inverse_area;
+     t->material = material;
+@@ -1100,11 +1143,11 @@
+ 
+ #include "geometry.inc"
+ 
+-static sg_f32x4 scene_gather_lerp(const scene_triangle *t[4], int field, int channel,
++static sg_f32x4 scene_gather_lerp(const scene_attribute *attributes[4][3], int field, int channel,
+     sg_f32x4 w0, sg_f32x4 w1, sg_f32x4 w2, sg_f32x4 inverse) {
+     float value[3][4];
+     for (int v = 0; v < 3; v++) for (int l = 0; l < 4; l++) {
+-        sg_vec4 a = field < 0 ? t[l]->color[v] : t[l]->uv[field][v];
++        sg_vec4 a = field < 0 ? attributes[l][v]->color : attributes[l][v]->uv[field];
+         value[v][l] = channel == 0 ? a.x : channel == 1 ? a.y : channel == 2 ? a.z : a.w;
+     }
+     return sg_f32x4_mul(sg_f32x4_add(sg_f32x4_add(sg_f32x4_mul(sg_f32x4_load(value[0]),w0),
+@@ -1115,12 +1158,21 @@
+     const uint32_t pixels[4], unsigned live) {
+     softgl_ctx *c = f->context;
+     const scene_triangle *tri[4];
++    const scene_attribute *attributes[4][3];
+     float bary[3][4];
+     for (int l = 0; l < 4; l++) {
+         tri[l] = scene_triangle_at(f,f->winner[pixels[l]]);
+         uint32_t pixel = c->fb.samples ? pixels[l]/(unsigned)c->fb.samples : pixels[l];
+         int x = (int)(pixel % (unsigned)c->fb.w), y = (int)(pixel / (unsigned)c->fb.w);
+         const scene_triangle *t = tri[l];
++        if (t->payload != UINT32_MAX) {
++            const scene_bin *bin = &f->bins[f->winner[pixels[l]] >> SCENE_INDEX_BITS];
++            for (int v = 0; v < 3; v++) attributes[l][v] = &bin->payloads[t->payload].vertex[v];
++        } else {
++            const scene_mesh *mesh = &f->materials[t->primitive->material].mesh;
++            for (int v = 0; v < 3; v++)
++                attributes[l][v] = &f->geometry->attributes[mesh->offset+t->primitive->indices[v]-mesh->minimum];
++        }
+         int sx = 128, sy = 128;
+         if (c->fb.samples && f->sample_point[pixels[l]] != 4)
+             sg_sample_position(c->fb.samples,f->sample_point[pixels[l]],&sx,&sy);
+@@ -1138,8 +1190,8 @@
+     sg_f32x4 w0 = sg_f32x4_load(bary[0]), w1 = sg_f32x4_load(bary[1]), w2 = sg_f32x4_load(bary[2]);
+     sg_f32x4 inverse = sg_f32x4_div(sg_f32x4_splat(1.f),sg_f32x4_add(sg_f32x4_add(w0,w1),w2));
+     sg_f32x4 primary[4], encoded_half[3], tex[4][4];
+-    for (int k = 0; k < 4; k++) primary[k] = scene_gather_lerp(tri,-1,k,w0,w1,w2,inverse);
+-    for (int k = 0; k < 3; k++) encoded_half[k] = scene_gather_lerp(tri,1,k,w0,w1,w2,inverse);
++    for (int k = 0; k < 4; k++) primary[k] = scene_gather_lerp(attributes,-1,k,w0,w1,w2,inverse);
++    for (int k = 0; k < 3; k++) encoded_half[k] = scene_gather_lerp(attributes,1,k,w0,w1,w2,inverse);
+     /* Canonical programs must preserve identical UV0/UV2; geometry validation
+      * restores the scene if any program violates that contract. */
+     int shared_uv = tri[0]->primitive && tri[1]->primitive && tri[2]->primitive && tri[3]->primitive;
+@@ -1156,12 +1208,12 @@
+         if (u == 2 && have_uv) {
+             x = shared_x; y = shared_y;
+         } else {
+-            x = scene_gather_lerp(tri,u,0,w0,w1,w2,inverse);
+-            y = scene_gather_lerp(tri,u,1,w0,w1,w2,inverse);
++            x = scene_gather_lerp(attributes,u,0,w0,w1,w2,inverse);
++            y = scene_gather_lerp(attributes,u,1,w0,w1,w2,inverse);
+             if (u == 0 && shared_uv) { shared_x = x; shared_y = y; have_uv = 1; }
+         }
+         if (unit->active_slot == SG_TEX_TARGET_CUBE) {
+-            sg_f32x4 z = scene_gather_lerp(tri,u,2,w0,w1,w2,inverse);
++            sg_f32x4 z = scene_gather_lerp(attributes,u,2,w0,w1,w2,inverse);
+             sg_packet_sample_cube_target(unit,x,y,z,live,tex[u]);
+         } else sg_packet_sample_2d(unit,x,y,live,0,tex[u]);
+     }

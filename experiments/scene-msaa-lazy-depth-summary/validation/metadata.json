@@ -1,6 +1,8 @@
 {
-  "baselineRevision": "350eb2346b01a79dd391cf284f9065218d25a74d",
+  "baselineRevision": "7d67a8e10e2b7f447dc352a850c0a32b2c7e55ec",
   "productionAdopted": false,
+  "built": false,
+  "measured": false,
   "sourceSha256": {
     "CMakeLists.txt": "41a69b787380c1ec562b95a8f02c6bd9d7cd7624f23439454b893a17992a1fb7",
     "include/GL/softgl.h": "708d12068fcaf7203706aa5d9e2bacf10a3256765ec0addbe87d701ed7973c43",
@@ -18,7 +20,7 @@
     "src/fragment_combine.c": "b7af7972265bf0ac384379fcba6885e93707cdd8a0de956f691ad28ed1dd7153",
     "src/fragment_write.c": "6c806d57d87ff4ed31ecdf502be6f77772497696a607633edf71c9971da66f1d",
     "src/framebuffer.c": "7c82e1f52d5b2c2e7d9752d155f379109a8791c41b147713cfb14f2788e1a974",
-    "src/geometry.inc": "5db0eb4424fd7eb5510801ab4c65a667c697b185e956a3c2e3a62e5c09a2b7b6",
+    "src/geometry.inc": "e9a7763e667b85c1803f19697b5ead6e5752923b107f3f321fe342c178297824",
     "src/geometry_types.inc": "7ef7af9f69ee68ee53dae5d8d3f3e2c1b07b9e8140d5820926a0a2ba796d5417",
     "src/immediate.c": "80b520a3c3c14e675eeca5d3083c5dbe423e9684a69b868446f85e99ef86534c",
     "src/index_range.h": "4d0456bd563031b7b4ff1184bfb6fa513908ae4047bd5f6f83dc8a7f57d8bb03",
@@ -30,14 +32,14 @@
     "src/multisample.h": "cdbe1e0aa51827f13789ce7f46e3acc961e0b87c5d034e1c7ba22fe54c611315",
     "src/pipeline.c": "fb559aa949d0e4211044451c9456f22e928982fb03c6f9132c199b316a2edfe3",
     "src/pixels.c": "8e366864ac1418564d2342bd3c120ad5e8057998af21ff31ccb5663134ddfc92",
-    "src/raster_hz.h": "1cc4a6fe6f5a425607cb3b8a57d15cb19d5de537794c638b673f0bd4a14b4ed6",
+    "src/raster_hz.h": "f81bf5b2c943e381873919d5e73457b5f1f72b36a7eb18f4e9a837994bfa2da6",
     "src/raster_msaa_impl.h": "1c5ace8d35a4413d5628ebf5c397c58d633758a3dd93145932d2973b3a61ae0f",
     "src/raster_store.h": "251cbe4d9765edfc26b4428d7d5906ab17722689feae08eac432db59a7b22934",
     "src/raster_triangle_impl.h": "51b5cf82bdd1298bcb42722a4af5cac0edbebe8442b4703a1cf0fbde35487915",
     "src/raster_types.h": "0b050bdbf31f6c398366112c84a6041390a50398d1e18acafe4c7440a0700f45",
     "src/raster_vertex_pack.h": "956a8084b973144a9d8ee28c0d485214e3e8551a7384238f610620e00ad6e528",
     "src/rasterizer.c": "8cfc012004b794e6a83eeb8eb33b2dea674ba199a32c1a65baf691106cc596bc",
-    "src/scene_visibility.c": "49b2ae9e660fb6a37991b4b3604145d6f6264dcfa44126b49f02a81aae038f95",
+    "src/scene_visibility.c": "52752a00c8326483c175c76c2f245637f6a31fddad032af9d6b1f125ef84d913",
     "src/simd.h": "c639184db1b8a3c79b0aa07ad4fbe0a96b8c79e16536b3d98abef0b72d74e150",
     "src/state.c": "04f4a8355c1fc37c3521001719dae9a55a1e9b7a34c2f1a70c53990a0d26fb38",
     "src/texture.c": "9c4d999c73b68a7431bd1f0e88c2d3d2e7e1931670ad166ffee535f8d5764c45",
@@ -47,40 +49,12 @@
     "src/workers.h": "3a74a68a42b0e1fc80b426cd3236e329ee70b145a5afe687520575599e709c5a",
     "src/workers_queue_raw.inc": "ddec9df98f32ce5f428467f97b3a772506019cd4eca90e004afe956a6b9527b3"
   },
-  "librarySha256": "021eb2da29a6b00592079ef62a2146e1bf31cfa1cb78ce977b267ef1cc1d9940",
-  "recordBytes": 80,
-  "nativeOriginalHashes": 216,
-  "nativeSmallHashes": 576,
-  "canonicalLegacyComparisons": 162,
-  "performancePending": true,
-  "wasmPending": true,
+  "maximumSampleConsumersAudited": [
+    "sg_hz_record_pixel4",
+    "sg_hz_record_pixel2"
+  ],
+  "ownershipAuditPending": true,
   "artifactsSha256": {
-    "isa.json": "ec66a9eabde51ca32b997b2055df5f0bfef0f952f3d4b0c3e51547ded86ca391",
-    "softgl-compact-build.txt": "edb187c3f366f012ed83d2020b99ed4b0e3f13a43a8ea2d1932aade2addcabd1",
-    "softgl-compact-configure.txt": "196ca38841c2c8f9ff8ca9b67357bc077e6af46a8be46687e45351792691a0b6",
-    "softgl-compact-hz.txt": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
-    "softgl-compact-positions-baseline.txt": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
-    "softgl-compact-positions-candidate.txt": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
-    "softgl-compact-quantized-baseline.txt": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
-    "softgl-compact-quantized-candidate.txt": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
-    "softgl-compact-small-baseline.txt": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
-    "softgl-compact-small-candidate.txt": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
-    "softgl-compact-surfaces-baseline-layout.txt": "b293aab55c3e245293b3b382b708a26a2bd420fcaf4b034f9147f9375886e3c7",
-    "softgl-compact-surfaces-build.txt": "35c1b2f1f6710a5baecad826fc6d0e0d97ae0e639f298d5109ef5bf39fac3ea7",
-    "softgl-compact-surfaces-contracts.txt": "59589e8c7e886bea316ea529c009a714a50d35d686ebb6b9c2950ff38535adaa",
-    "softgl-compact-surfaces-layout.txt": "76b366053e63e73425da3280e5da6f69ed93cd7e5cd6023da0f24349564026af",
-    "softgl-compact-surfaces-prepare.txt": "1159b9cda7a26c61e7384c65481a67a250f14da069829663fcca301847693c63",
-    "softgl-compact-surfaces-quality.txt": "2b37ab873ee77bd31236c9434ccd795d02f74c785c8b9f98cf5e61417c2ff676",
-    "softgl-compact-surfaces-screening.txt": "a39dd953c60da80a5e5fec13b50d95e83e0664b6f2e0874a942a8c40dc0794eb",
-    "source.patch": "90fd1029f8dcba9f264c87e96b7b7868fc13ad82219cb49376f844c4f9eb0b6a"
-  },
-  "historicalSurfaceLogsNotEvidenceForThisVariant": [
-    "softgl-compact-surfaces-quality.txt",
-    "softgl-compact-surfaces-layout.txt",
-    "softgl-compact-surfaces-baseline-layout.txt",
-    "softgl-compact-surfaces-contracts.txt",
-    "softgl-compact-surfaces-prepare.txt",
-    "softgl-compact-surfaces-build.txt",
-    "softgl-compact-surfaces-screening.txt"
-  ]
+    "source.patch": "7de30e12f4e1d46c8a146ec9d4a61d02f6527365d0e6ff4c4e681c01ebd1445f"
+  }
 }
