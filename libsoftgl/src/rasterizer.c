@@ -674,12 +674,7 @@ SG_INLINE int sg_sample_depth_pass(GLenum func, float z, float d) {
 
 /* Shade once per pixel. Coverage and depth use each sample's actual location;
  * partially covered pixels interpolate color/UV at a covered sample. */
-typedef struct {
-    int count, x[4], y[4];
-    unsigned coverage[4];
-    int64_t edge0[4], edge1[4];
-    float depths[4][4];
-} sg_pixel_packet;
+/* sg_pixel_packet is shared with scene MSAA capture in types.h. */
 
 SG_INLINE void sg_write_pixel_packet(softgl_ctx *c, const sg_tex_tri_ctx *t,
                                       const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,

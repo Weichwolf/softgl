@@ -1,0 +1,37 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 18K of event 'cycles:u'
+# Event count (approx.): 79243438752
+#
+# Overhead  Symbol                                   IPC   [IPC Coverage]
+# ........  .......................................  ....................
+#
+    55.01%  [.] sg_raster_triangle_msaa4             -      -            
+     7.67%  [.] sg_sample_tex2d                      -      -            
+     5.21%  [.] sg_packet_sample_cube_coherent       -      -            
+     3.03%  [.] sg_sample_tex_cube                   -      -            
+     3.00%  [.] sg_raster_triangle_msaa4_capture     -      -            
+     2.97%  [.] sg_process_vertex                    -      -            
+     2.77%  [.] generate_fused_attributes            -      -            
+     2.53%  [.] sg_prepare_triangle_slice            -      -            
+     2.40%  [.] sg_write_multisample                 -      -            
+     2.02%  [.] sg_queue_render_packed               -      -            
+     1.53%  [.] sg_raster_triangle_tile_prepared     -      -            
+     1.14%  [.] sg_queue_submit                      -      -            
+     1.07%  [.] _sg_draw_elements_real               -      -            
+     0.84%  [.] sg_tex_tri_sample_units              -      -            
+     0.83%  [.] sg_worker_main                       -      -            
+     0.81%  [.] sg_queue_help                        -      -            
+     0.77%  [.] __memmove_evex_unaligned_erms        -      -            
+     0.60%  [.] sg_workers_flush                     -      -            
+     0.59%  [.] sg_transform_slice                   -      -            
+     0.57%  [.] sg_queue_render                      -      -            
+     0.55%  [.] sg_process_vertex_prepared           -      -            
+
+
+#
+# (Tip: Use --symfs <dir> if your symbol files are in non-standard locations)
+#

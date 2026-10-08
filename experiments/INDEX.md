@@ -167,4 +167,6 @@
 | [scene-meshlet-occlusion](scene-meshlet-occlusion/README.md) | Research | Current-frame conservative cluster occlusion inspired by masked depth/coverage; no performance claim. |
 | [scene-opacity-micromaps](scene-opacity-micromaps/README.md) | Research | Conservative opaque/transparent cutout classification; CPU raster adaptation unmeasured. |
 | [renderer-msaa4-comparison](renderer-msaa4-comparison/README.md) | Measured | 120 accepted/20 rejected runs: libsoftgl 4× is 65–82% less time than Mesa 4× but 8.3–21.1× GLimpSW OFF; GLimpSW lacks native MSAA, verified Mesa sample count/coverage. |
-| [scene-msaa-visibility](scene-msaa-visibility/README.md) | Planned | Current MSAA bypasses scene-wide deferred visibility; try per-sample winners with shared shading and remembered shading points, bounded WASM buffers; no speedup claim. |
+| [scene-msaa-visibility](scene-msaa-visibility/README.md) | Accepted adaptive variant | Three AB/BA blocks: Bistro 2× FPS +76%, 4× +59%; other controls -2.4…+1.2% frame time; exact coverage, 757 tests, sanitizer and 12 live WASM cases pass (2.65 GiB). |
+| [glimpsw-resource-audit](glimpsw-resource-audit/README.md) | Diagnostic / research | Resources mapped to actual implementation: hierarchy/LUT/cache work remains; user-only perf works in WSL, PCM lacks a required reference counter. |
+| [msaa-scaled-coverage](msaa-scaled-coverage/README.md) | Validated / no adoption | Exact native/WASM hashes and 108 asset views; 4× -0.6/-4.9/-3.3/-1.0% screen but OFF controls regress, no broad gain. |

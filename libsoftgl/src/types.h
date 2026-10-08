@@ -474,6 +474,16 @@ typedef struct {
 } sg_tex_tri_ctx;
 
 void sg_tex_tri_prepare(softgl_ctx *c, sg_tex_tri_ctx *t);
+typedef struct {
+    int count, x[4], y[4];
+    unsigned coverage[4];
+    int64_t edge0[4], edge1[4];
+    float depths[4][4];
+} sg_pixel_packet;
+void sg_scene_visibility_msaa_packet(softgl_ctx *c,
+    const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
+    const sg_tex_tri_ctx *texture, const sg_pixel_packet *packet,
+    float inverse_area, uint32_t *record);
 void sg_scene_visibility_destroy(void *storage);
 int sg_scene_visibility_triangle(softgl_ctx *c, const sg_vert *v0,
     const sg_vert *v1, const sg_vert *v2, int ix0, int ix1);

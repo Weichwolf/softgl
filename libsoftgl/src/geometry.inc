@@ -227,7 +227,7 @@ static void scene_geometry_append(struct sg_scene_visibility *f, scene_geometry_
     if (first >= last || maxy < 0 || (miny >> 8) >= 360) return;
     int bottom = miny >> 8, top = (maxy >> 8)+1;
     if (bottom < 0) bottom = 0; if (top > 360) top = 360;
-    if (last-first == 1 && top-bottom == 1) {
+    if (!f->context->fb.samples && last-first == 1 && top-bottom == 1) {
         /* Subpixel triangles often cover no sample. Reject them before bin
          * storage using the rasterizer's exact 16.8 top-left rule. */
         int32_t px = first*256+128, py = bottom*256+128;

@@ -1,0 +1,41 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 34K of event 'cycles:u'
+# Event count (approx.): 129033112965
+#
+# Overhead  Symbol                                   IPC   [IPC Coverage]
+# ........  .......................................  ....................
+#
+    43.24%  [.] sg_raster_triangle_msaa4             -      -            
+     6.37%  [.] sg_process_vertex                    -      -            
+     6.04%  [.] sg_sample_tex2d                      -      -            
+     5.48%  [.] generate_fused_attributes            -      -            
+     3.62%  [.] sg_prepare_triangle_slice            -      -            
+     3.26%  [.] sg_worker_main                       -      -            
+     2.92%  [.] sg_packet_sample_cube_coherent       -      -            
+     2.86%  [.] sg_sample_tex_cube                   -      -            
+     2.82%  [.] sg_raster_triangle_tile_prepared     -      -            
+     2.39%  [.] _sg_draw_elements_real               -      -            
+     2.36%  [.] sg_queue_help                        -      -            
+     2.14%  [.] sg_queue_render_packed               -      -            
+     1.63%  [.] sg_process_vertex_prepared           -      -            
+     1.48%  [.] sg_workers_flush                     -      -            
+     1.34%  [.] sg_queue_submit                      -      -            
+     1.25%  [.] sg_write_multisample                 -      -            
+     1.15%  [.] sg_transform_slice                   -      -            
+     0.97%  [.] __memmove_evex_unaligned_erms        -      -            
+     0.67%  [.] sg_raster_triangle_msaa4_capture     -      -            
+     0.66%  [.] sg_queue_render                      -      -            
+     0.65%  [.] sg_workers_bin_prepared_tri          -      -            
+     0.62%  [.] sg_clip_triangle                     -      -            
+     0.61%  [.] sg_mat4_mul_vec4                     -      -            
+     0.57%  [.] sg_tex_tri_sample_units              -      -            
+     0.55%  [.] sg_finish_stream                     -      -            
+
+
+#
+# (Tip: Save output of perf stat using: perf stat record <target workload>)
+#

@@ -1,0 +1,40 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 4K of event 'cycles:u'
+# Event count (approx.): 18172233081
+#
+# Overhead  Symbol                                   IPC   [IPC Coverage]
+# ........  .......................................  ....................
+#
+    31.41%  [.] sg_raster_triangle_msaa4_capture     -      -            
+    22.25%  [.] sg_raster_triangle_msaa4             -      -            
+     6.09%  [.] sg_sample_tex2d                      -      -            
+     4.21%  [.] sg_process_vertex                    -      -            
+     3.70%  [.] sg_packet_sample_cube_coherent       -      -            
+     3.24%  [.] sg_queue_render_packed               -      -            
+     3.21%  [.] sg_raster_triangle_tile_prepared     -      -            
+     3.15%  [.] generate_fused_attributes            -      -            
+     2.91%  [.] sg_sample_tex_cube                   -      -            
+     2.58%  [.] sg_prepare_triangle_slice            -      -            
+     1.85%  [.] sg_worker_main                       -      -            
+     1.66%  [.] sg_transform_slice                   -      -            
+     1.63%  [.] _sg_clear_real                       -      -            
+     1.58%  [.] sg_process_vertex_prepared           -      -            
+     1.38%  [.] sg_msaa_resolve                      -      -            
+     1.38%  [.] sg_queue_submit                      -      -            
+     0.86%  [.] sg_tex_tri_sample_units              -      -            
+     0.83%  [.] sg_queue_help                        -      -            
+     0.76%  [.] sg_workers_bin_prepared_tri          -      -            
+     0.66%  [.] sg_workers_flush                     -      -            
+     0.57%  [.] sg_mat4_mul_vec4                     -      -            
+     0.55%  [.] __memmove_evex_unaligned_erms        -      -            
+     0.54%  [.] sg_queue_render                      -      -            
+     0.52%  [.] sg_drain_bins                        -      -            
+
+
+#
+# (Tip: To compute metrics for samples use perf record -e '{cycles,instructions}' ... ; perf script -F +metric)
+#

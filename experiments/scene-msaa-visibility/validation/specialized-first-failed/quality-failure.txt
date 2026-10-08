@@ -1,0 +1,12 @@
+{"asset": "bmw", "samples": 0, "nineCoverageComparisons": "PASS", "worstMeanError": 0.0, "maxChannelError": 0}
+{"asset": "bmw", "samples": 2, "nineCoverageComparisons": "PASS", "worstMeanError": 0.0013411458333333333, "maxChannelError": 109}
+{"asset": "bmw", "samples": 4, "nineCoverageComparisons": "PASS", "worstMeanError": 0.0029210069444444444, "maxChannelError": 101}
+{"asset": "t80", "samples": 0, "nineCoverageComparisons": "PASS", "worstMeanError": 0.0, "maxChannelError": 0}
+{"asset": "t80", "samples": 2, "nineCoverageComparisons": "PASS", "worstMeanError": 0.0014641203703703704, "maxChannelError": 13}
+{"asset": "t80", "samples": 4, "nineCoverageComparisons": "PASS", "worstMeanError": 0.002191840277777778, "maxChannelError": 28}
+{"asset": "sponza", "samples": 0, "nineCoverageComparisons": "PASS", "worstMeanError": 0.0, "maxChannelError": 0}
+Traceback (most recent call last):
+  File "/home/cosmo/Git/softgl/experiments/scene-meshlets-soa/check_quality.py", line 69, in <module>
+    assert row['coveragePlanesByteIdentical'], row
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'asset': 'sponza', 'samples': 2, 'angle': 0, 'coveragePlanesByteIdentical': False, 'depthCoverageMaskByteIdentical': True, 'stencilAndSamplePlanesByteIdentical': False, 'maxAbsoluteDepthError': 0.008297383785247803, 'maxDepthUlps': 139207, 'meanAbsoluteChannelError': 0.7529007523148148, 'maxChannelError': 110, 'pixelFractionOver1': 0.04131944444444444, 'pixelFractionOver8': 0.028923611111111112, 'pixelFractionOver32': 0.0090625, 'imageSha256': {'baseline': '7053784f39a2004cbf054f9dca4a60223c02d96084e3bd0711d2a01b6a575057', 'candidate': '78de203c2f60ab1b2a75dca8eb0f4093f5c936389281aaff272e422f9a1088d1'}}

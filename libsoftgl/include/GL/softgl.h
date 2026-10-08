@@ -953,6 +953,7 @@ void softgl_set_fused_dot3_transparent(const GLfloat tint[4], GLboolean quartic)
 /* Private scene experiment: supported opaque material draws only between
  * begin/end. A failed end restores the pre-batch framebuffer for caller replay. */
 int softgl_scene_visibility_begin(void);
+int softgl_scene_visibility_begin_hint(GLuint triangles);
 /* Explicit 1/16-pixel raster quantization for canonical meshes in this scene.
  * Call after a successful begin; each new begin restores full precision.
  * Legacy draws and MSAA keep their existing renderer. */

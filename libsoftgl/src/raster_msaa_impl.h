@@ -115,7 +115,8 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
             (int32_t)(offsets[1][e] + bias[e]), 0, 0);
 #endif
     }
-    int packet_shader = sg_packet_supported(c, tctx);
+    uint32_t scene_record = UINT32_MAX;
+    int packet_shader = c->scene_visibility || sg_packet_supported(c, tctx);
     int common_store = SG_MSAA_COMMON_CAN(c);
     sg_pixel_packet packet;
     packet.count = 0;
@@ -286,7 +287,9 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
                     packet.edge0[l] = e0; packet.edge1[l] = e1;
                     memcpy(packet.depths[l], depths, SG_MSAA_SAMPLES * sizeof(float));
                     if (packet.count == 4) {
-                        SG_MSAA_PACKET_WRITE(c, tctx, v0, v1, v2, &packet, inv_area, common_store);
+                        if (c->scene_visibility)
+                            sg_scene_visibility_msaa_packet(c,v0,v1,v2,tctx,&packet,inv_area,&scene_record);
+                        else SG_MSAA_PACKET_WRITE(c, tctx, v0, v1, v2, &packet, inv_area, common_store);
                         packet.count = 0;
                     }
                 } else {
@@ -303,7 +306,9 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
         for (int e = 0; e < 3; e++) row[e] += dy[e] * 256;
         if (use_spans) for (int e = 0; e < 3; e++) intersection_x[e] -= intersection_step[e];
     }
-    for (int l = 0; l < packet.count; l++) {
+    if (c->scene_visibility && packet.count)
+        sg_scene_visibility_msaa_packet(c,v0,v1,v2,tctx,&packet,inv_area,&scene_record);
+    else for (int l = 0; l < packet.count; l++) {
         float color[4];
         if (sg_shade_pixel(c, tctx, v0, v1, v2, packet.x[l], packet.y[l],
                           packet.edge0[l], packet.edge1[l], inv_area,

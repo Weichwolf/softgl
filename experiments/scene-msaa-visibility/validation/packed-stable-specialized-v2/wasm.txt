@@ -1,0 +1,11 @@
+emcc: warning: -pthread + ALLOW_MEMORY_GROWTH may run non-wasm code slowly, see https://github.com/WebAssembly/design/issues/1271 [-Wpthreads-mem-growth]
+{"enabled":1,"helpers":8,"samples":4,"variant":15,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":8,"samples":4,"variant":16,"planes":"773b10a2f3b26325"}
+{"enabled":1,"helpers":8,"samples":4,"variant":17,"planes":"773b10a2f3b26325"}
+Quantized visibility: 216 paired exact full-plane frames, 16 rollbacks PASS
+emcc: warning: -pthread + ALLOW_MEMORY_GROWTH may run non-wasm code slowly, see https://github.com/WebAssembly/design/issues/1271 [-Wpthreads-mem-growth]
+Mixed captured alpha/opaque state: 18 legacy/deferred full sample-plane pairs PASS
+MSAA visibility dispatch: packets=3693717 records=29176 depthWrites=38597738 centers=12448464 groups=13288582 shades=12678517 sampleColors=36791558 rollbacks=12
+Sample-buffer rollback/admission and actual grouped MSAA visibility PASS
+WASM pointerBytes=4 heapBytes=268435456
+Actual WASM: 216 independent baseline/candidate full-plane hashes exact PASS

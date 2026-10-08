@@ -1,0 +1,35 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 25K of event 'cycles:u'
+# Event count (approx.): 115933850240
+#
+# Overhead  Symbol                                 IPC   [IPC Coverage]
+# ........  .....................................  ....................
+#
+    33.96%  [.] sg_raster_triangle_msaa4           -      -            
+    19.95%  [.] scene_resolve                      -      -            
+     8.16%  [.] sg_scene_visibility_msaa_packet    -      -            
+     5.03%  [.] softgl_scene_visibility_end        -      -            
+     4.81%  [.] scene_geometry_positions           -      -            
+     4.47%  [.] scene_geometry_append              -      -            
+     3.93%  [.] sg_sample_tex_cube                 -      -            
+     3.48%  [.] scene_packet_fallback              -      -            
+     2.72%  [.] sg_raster_triangle_tile_prepared   -      -            
+     2.02%  [.] scene_geometry_attribute_bins      -      -            
+     1.76%  [.] scene_geometry_triangles           -      -            
+     1.66%  [.] sg_packet_sample_cube_coherent     -      -            
+     1.21%  [.] scene_triangle_record              -      -            
+     1.21%  [.] scene_geometry_raster              -      -            
+     0.87%  [.] generate_fused_attributes          -      -            
+     0.78%  [.] scene_geometry_references          -      -            
+     0.63%  [.] sg_workers_run_callback            -      -            
+     0.56%  [.] __memmove_evex_unaligned_erms      -      -            
+     0.50%  [.] sg_scene_visibility_triangle       -      -            
+
+
+#
+# (Tip: For hierarchical output, try: perf report --hierarchy)
+#

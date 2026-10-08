@@ -871,6 +871,13 @@ target_link_libraries(scene_positions_contract PRIVATE softgl)
 add_test(NAME scene_positions_contract COMMAND scene_positions_contract)
 set_tests_properties(scene_positions_contract PROPERTIES TIMEOUT 90)
 
+add_executable(scene_msaa_contract scene_msaa.c)
+target_include_directories(scene_msaa_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_compile_options(scene_msaa_contract PRIVATE -msse4.1)
+target_link_libraries(scene_msaa_contract PRIVATE softgl)
+add_test(NAME scene_msaa_contract COMMAND scene_msaa_contract)
+set_tests_properties(scene_msaa_contract PROPERTIES TIMEOUT 90)
+
 add_executable(scene_coverage_contract scene_coverage.c)
 target_include_directories(scene_coverage_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
 target_compile_options(scene_coverage_contract PRIVATE -msse4.1)

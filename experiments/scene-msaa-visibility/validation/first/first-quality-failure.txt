@@ -1,0 +1,6 @@
+{"asset": "bmw", "samples": 0, "nineCoverageComparisons": "PASS", "worstMeanError": 0.0, "maxChannelError": 0}
+Traceback (most recent call last):
+  File "/home/cosmo/Git/softgl/experiments/scene-meshlets-soa/check_quality.py", line 69, in <module>
+    assert row['coveragePlanesByteIdentical'], row
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'asset': 'bmw', 'samples': 2, 'angle': 0, 'coveragePlanesByteIdentical': False, 'depthCoverageMaskByteIdentical': True, 'stencilAndSamplePlanesByteIdentical': False, 'maxAbsoluteDepthError': 0.044107913970947266, 'maxDepthUlps': 982441, 'meanAbsoluteChannelError': 0.0016131365740740741, 'maxChannelError': 82, 'pixelFractionOver1': 0.0001996527777777778, 'pixelFractionOver8': 5.208333333333334e-05, 'pixelFractionOver32': 1.736111111111111e-05, 'imageSha256': {'baseline': '24ab0c99eca53214d1c2edb042dacb1b512029186b9830a2f2d004a8d64400b1', 'candidate': '337f0b67001dd18cd170288486f866b955e4cc0d6d21c5640f92932a2b64aa79'}}

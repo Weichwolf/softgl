@@ -1,0 +1,39 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 6K of event 'cycles:u'
+# Event count (approx.): 28633622035
+#
+# Overhead  Symbol                                 IPC   [IPC Coverage]
+# ........  .....................................  ....................
+#
+    42.41%  [.] sg_raster_triangle_msaa4           -      -            
+    10.74%  [.] scene_resolve                      -      -            
+     6.43%  [.] sg_scene_visibility_msaa_packet    -      -            
+     4.79%  [.] softgl_scene_visibility_end        -      -            
+     3.46%  [.] sg_sample_tex_cube                 -      -            
+     3.01%  [.] scene_geometry_append              -      -            
+     2.60%  [.] scene_geometry_attribute_bins      -      -            
+     2.57%  [.] sg_packet_sample_cube_coherent     -      -            
+     2.46%  [.] sg_raster_triangle_tile_prepared   -      -            
+     2.38%  [.] scene_triangle_record              -      -            
+     2.36%  [.] sg_raster_triangle_msaa4_capture   -      -            
+     2.07%  [.] __memmove_evex_unaligned_erms      -      -            
+     1.73%  [.] scene_packet_fallback              -      -            
+     1.32%  [.] sg_workers_run_callback            -      -            
+     1.12%  [.] sg_worker_main                     -      -            
+     1.08%  [.] scene_geometry_raster              -      -            
+     1.05%  [.] _sg_clear_real                     -      -            
+     1.05%  [.] scene_geometry_positions           -      -            
+     0.86%  [.] sg_msaa_resolve                    -      -            
+     0.84%  [.] generate_fused_attributes          -      -            
+     0.79%  [.] scene_geometry_references          -      -            
+     0.67%  [.] sg_store_blend_msaa4_post_depth    -      -            
+     0.65%  [.] scene_geometry_triangles           -      -            
+
+
+#
+# (Tip: To analyze cache line scalability issues use perf c2c record ... ; perf c2c report)
+#

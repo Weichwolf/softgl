@@ -1,0 +1,20 @@
+
+ Intel(r) Performance Counter Monitor  (202502-1)
+
+
+Detected a hypervisor/virtualization technology. Some metrics might not be available due to configuration or availability of virtual hardware features.
+
+=====  Processor information  =====
+Linux arch_perfmon flag  : yes
+Hybrid processor         : no
+IBRS and IBPB supported  : yes
+STIBP supported          : yes
+Spec arch caps supported : yes
+Max CPUID level          : 21
+CPU family               : 6
+CPU model number         : 140
+PCM Error: can't open MSR handle for core 0 (No such file or directory)
+Try no-MSR mode by setting env variable PCM_NO_MSR=1
+Can not access CPUs Model Specific Registers (MSRs).
+execute 'modprobe msr' as root user, then execute pcm as root user.
+Access to Intel(r) Performance Counter Monitor has denied (no MSR or PCI CFG space access).

@@ -7,6 +7,7 @@
 #include "frag_combine_hot.h"
 #include "frag_packet.h"
 #include "raster_store.h"
+#include "multisample.h"
 #include <stdio.h>
 
 #define SCENE_MATERIALS 4096
@@ -59,6 +60,7 @@ struct sg_scene_visibility {
     uint32_t mesh_vertices;
     int quantized;
     int deferred_meshes;
+    uint8_t *sample_point, *shade_mask;
     atomic_int failed, next_task;
     pthread_mutex_t allocation_mutex;
 };
@@ -68,14 +70,15 @@ void sg_scene_visibility_destroy(void *storage) {
     if (!f) return;
     for (int i = 0; i < SG_MAX_BINS; i++) { free(f->bins[i].triangles); free(f->bins[i].visible); }
     free(f->winner); free(f->pixels); free(f->pixel_material); free(f->backup_depth); free(f->backup_color);
-    free(f->materials); free(f->tasks);
+    free(f->materials); free(f->tasks); free(f->sample_point); free(f->shade_mask);
     scene_geometry_destroy(f->geometry);
     pthread_mutex_destroy(&f->allocation_mutex);
     free(f);
 }
 
 static int scene_state_supported(const softgl_ctx *c) {
-    return !c->fb.samples && c->fb.w == 640 && c->fb.h == 360 &&
+    return (!c->fb.samples || (c->multisample && !c->sample_alpha_to_coverage &&
+        !c->sample_alpha_to_one && !c->sample_coverage)) && c->fb.w == 640 && c->fb.h == 360 &&
         c->render_mode == GL_RENDER && c->depth_test && c->depth_mask &&
         c->depth_func == GL_LESS && !c->blend && !c->stencil_test &&
         !c->fog_enabled && !c->scissor_enabled && !c->polygon_offset_fill &&
@@ -83,6 +86,15 @@ static int scene_state_supported(const softgl_ctx *c) {
         !c->current_query[SG_QUERY_TARGET_SAMPLES_PASSED] &&
         !c->current_query[SG_QUERY_TARGET_ANY_SAMPLES_PASSED] &&
         c->color_mask[0] && c->color_mask[1] && c->color_mask[2] && c->color_mask[3];
+}
+
+/* Optional cost hint chooses a pipeline, never culls geometry. Small MSAA
+ * scenes stay on forward rendering before allocating or copying any buffers. */
+int softgl_scene_visibility_begin_hint(GLuint triangles) {
+    softgl_ctx *c = sg_current();
+    if (c && c->fb.samples && (uint64_t)triangles < (uint64_t)c->fb.w*c->fb.h*2u)
+        return 0;
+    return softgl_scene_visibility_begin();
 }
 
 int softgl_scene_visibility_begin(void) {
@@ -99,25 +111,37 @@ int softgl_scene_visibility_begin(void) {
         c->scene_storage = f;
     }
     size_t pixels = (size_t)c->fb.w*c->fb.h;
-    if (f->pixel_capacity < pixels) {
-        uint32_t *winner = malloc(pixels*sizeof(uint32_t));
-        uint32_t *list = malloc(pixels*sizeof(uint32_t));
-        uint16_t *material = malloc(pixels*sizeof(uint16_t));
-        float *depth = malloc(pixels*sizeof(float));
-        uint8_t *color = malloc(pixels*4);
-        if (!winner || !list || !material || !depth || !color) {
-            free(winner); free(list); free(material); free(depth); free(color); return 0;
+    size_t units = pixels*(c->fb.samples ? (unsigned)c->fb.samples : 1u);
+    if (f->pixel_capacity < units) {
+        uint32_t *winner = malloc(units*sizeof(uint32_t));
+        uint32_t *list = malloc(units*sizeof(uint32_t));
+        uint16_t *material = malloc(units*sizeof(uint16_t));
+        size_t backup_units = units+(c->fb.samples ? pixels : 0);
+        float *depth = malloc(backup_units*sizeof(float));
+        uint8_t *color = malloc(backup_units*4);
+        uint8_t *point = malloc(units), *mask = malloc(units);
+        if (!winner || !list || !material || !depth || !color || !point || !mask) {
+            free(winner); free(list); free(material); free(depth); free(color);
+            free(point); free(mask); return 0;
         }
+        free(f->sample_point); free(f->shade_mask); f->sample_point = point; f->shade_mask = mask;
         free(f->winner); free(f->pixels); free(f->pixel_material); free(f->backup_depth); free(f->backup_color);
         f->winner = winner; f->pixels = list; f->pixel_material = material; f->backup_depth = depth;
-        f->backup_color = color; f->pixel_capacity = pixels;
+        f->backup_color = color; f->pixel_capacity = units;
     }
     if (!f->materials) f->materials = calloc(SCENE_MATERIALS, sizeof(scene_material));
-    if (!f->tasks) f->tasks = malloc((pixels/256+SCENE_MATERIALS+1)*sizeof(scene_task));
+    if (!f->tasks) f->tasks = malloc((pixels*4/256+SCENE_MATERIALS+1)*sizeof(scene_task));
     if (!f->materials || !f->tasks) return 0;
-    memset(f->pixel_material, 255, pixels*sizeof(uint16_t));
-    memcpy(f->backup_depth, c->fb.depth, pixels*sizeof(float));
-    memcpy(f->backup_color, c->fb.color, pixels*4);
+    memset(f->pixel_material, 255, units*sizeof(uint16_t));
+    if (c->fb.samples) {
+        memcpy(f->backup_depth,c->fb.sample_depth,units*sizeof(float));
+        memcpy(f->backup_color,c->fb.sample_color,units*4);
+        memcpy(f->backup_depth+units,c->fb.depth,pixels*sizeof(float));
+        memcpy(f->backup_color+units*4,c->fb.color,pixels*4);
+    } else {
+        memcpy(f->backup_depth, c->fb.depth, pixels*sizeof(float));
+        memcpy(f->backup_color, c->fb.color, pixels*4);
+    }
     for (int i = 0; i < SG_MAX_BINS; i++) {
         f->bins[i].count = 0; f->bins[i].depth_passes = 0;
     }
@@ -190,11 +214,87 @@ static uint32_t scene_triangle_record(struct sg_scene_visibility *f, int bin,
     return ((uint32_t)bin << SCENE_INDEX_BITS) | index;
 }
 
+#ifdef SOFTGL_MSAA_VISIBILITY_AUDIT
+static atomic_ullong scene_msaa_audit[8];
+unsigned long long softgl_scene_msaa_audit(unsigned index) {
+    return index < 8 ? atomic_load_explicit(&scene_msaa_audit[index],memory_order_relaxed) : 0;
+}
+#define SCENE_MSAA_AUDIT(i,n) atomic_fetch_add_explicit(&scene_msaa_audit[i],(n),memory_order_relaxed)
+#else
+#define SCENE_MSAA_AUDIT(i,n) ((void)0)
+#endif
+
+/* The ordinary MSAA kernel supplies exact coverage, depth and shading edges.
+ * A record is cached for this triangle/stripe, not for each pixel packet. */
+void sg_scene_visibility_msaa_packet(softgl_ctx *c,
+    const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
+    const sg_tex_tri_ctx *texture, const sg_pixel_packet *packet,
+    float inverse_area, uint32_t *record) {
+    struct sg_scene_visibility *f = c->scene_visibility;
+    SCENE_MSAA_AUDIT(0,1);
+    if (atomic_load_explicit(&f->failed,memory_order_relaxed)) return;
+    if (c->scene_material < 0 || c->scene_material >= f->material_count) {
+        atomic_store_explicit(&f->failed,1,memory_order_relaxed); return;
+    }
+    unsigned live = (1u << packet->count)-1u;
+    const scene_material *m = &f->materials[c->scene_material];
+    if (m->alpha_test) {
+        float e0[4], e1[4];
+        for (int l = 0; l < 4; l++) {
+            int at = l < packet->count ? l : 0;
+            e0[l] = (float)packet->edge0[at]; e1[l] = (float)packet->edge1[at];
+        }
+        sg_f32x4 b0 = sg_f32x4_mul(sg_f32x4_load(e0),sg_f32x4_splat(inverse_area));
+        sg_f32x4 b1 = sg_f32x4_mul(sg_f32x4_load(e1),sg_f32x4_splat(inverse_area));
+        sg_f32x4 b2 = sg_f32x4_sub(sg_f32x4_sub(sg_f32x4_splat(1.f),b0),b1);
+        sg_f32x4 w0 = sg_f32x4_mul(b0,sg_f32x4_splat(v0->ndc.w));
+        sg_f32x4 w1 = sg_f32x4_mul(b1,sg_f32x4_splat(v1->ndc.w));
+        sg_f32x4 w2 = sg_f32x4_mul(b2,sg_f32x4_splat(v2->ndc.w));
+        sg_f32x4 inverse = sg_f32x4_div(sg_f32x4_splat(1.f),sg_f32x4_add(sg_f32x4_add(w0,w1),w2));
+        sg_f32x4 tex[4];
+        sg_packet_sample_unit(&texture->unit[2],2,v0,v1,v2,w0,w1,w2,inverse,live,0,tex);
+        sg_f32x4 alpha = sg_chain_clamp(sg_f32x4_mul(tex[3],
+            sg_packet_lerp(v0->color.w,v1->color.w,v2->color.w,w0,w1,w2,inverse)));
+        live &= sg_mask4_live(sg_f32x4_gt(alpha,sg_f32x4_splat(m->cutoff)));
+        if (!live) return;
+    }
+    sg_worker_pool *pool = c->workers;
+    int bin = pool->column_bin[packet->x[0]];
+    if (*record == UINT32_MAX) {
+        int32_t x[3] = {sg_fp_screen_from_float(v0->ndc.x),sg_fp_screen_from_float(v1->ndc.x),sg_fp_screen_from_float(v2->ndc.x)};
+        int32_t y[3] = {sg_fp_screen_from_float(v0->ndc.y),sg_fp_screen_from_float(v1->ndc.y),sg_fp_screen_from_float(v2->ndc.y)};
+        int64_t edge[2][3];
+        for (int k = 0; k < 2; k++) {
+            int a = (k+1)%3, b = (k+2)%3;
+            edge[k][0] = (int64_t)(x[b]-x[a])*(128-y[a])-(int64_t)(y[b]-y[a])*(128-x[a]);
+            edge[k][1] = -(int64_t)(y[b]-y[a])*256;
+            edge[k][2] = (int64_t)(x[b]-x[a])*256;
+        }
+        *record = scene_triangle_record(f,bin,v0,v1,v2,edge,inverse_area,(uint32_t)c->scene_material);
+        if (*record == UINT32_MAX) return;
+        SCENE_MSAA_AUDIT(1,1);
+    }
+    unsigned full = (1u << c->fb.samples)-1u;
+    for (int l = 0; l < packet->count; l++) if (live & (1u << l)) {
+        size_t base = ((size_t)packet->y[l]*c->fb.w+packet->x[l])*c->fb.samples;
+        unsigned coverage = packet->coverage[l];
+        uint8_t point = coverage == full ? 4 : (uint8_t)__builtin_ctz(coverage);
+        SCENE_MSAA_AUDIT(3,point == 4);
+        for (int s = 0; s < c->fb.samples; s++) if (coverage & (1u << s)) {
+            c->fb.sample_depth[base+s] = packet->depths[l][s];
+            f->winner[base+s] = *record; f->sample_point[base+s] = point;
+            f->pixel_material[base+s] = (uint16_t)c->scene_material;
+            f->bins[bin].depth_passes++;
+            SCENE_MSAA_AUDIT(2,1);
+        }
+    }
+}
+
 void softgl_scene_quantized_visibility(GLboolean enabled) {
     softgl_ctx *c = sg_current();
     if (c && c->scene_visibility) {
         struct sg_scene_visibility *f = c->scene_visibility;
-        f->quantized = enabled != GL_FALSE;
+        f->quantized = enabled != GL_FALSE && !c->fb.samples;
     }
 }
 
@@ -304,6 +404,8 @@ int sg_scene_visibility_triangle(softgl_ctx *c, const sg_vert *v0,
         atomic_store_explicit(&f->failed, 1, memory_order_relaxed); return 0;
     }
     const scene_material *m = &f->materials[c->scene_material];
+    if (c->fb.samples)
+        return sg_raster_triangle_tile_prepared(c,v0,v1,v2,tile_ix0,tile_ix1,&m->texture);
     sg_worker_pool *pool = c->workers;
     int bin = pool->column_bin[tile_ix0];
     scene_bin *b = &f->bins[bin];
@@ -712,10 +814,20 @@ static void scene_shade_packet(struct sg_scene_visibility *f, scene_material *m,
     float bary[3][4];
     for (int l = 0; l < 4; l++) {
         tri[l] = scene_triangle_at(f,f->winner[pixels[l]]);
-        int x = (int)(pixels[l] % (unsigned)c->fb.w), y = (int)(pixels[l] / (unsigned)c->fb.w);
+        uint32_t pixel = c->fb.samples ? pixels[l]/(unsigned)c->fb.samples : pixels[l];
+        int x = (int)(pixel % (unsigned)c->fb.w), y = (int)(pixel / (unsigned)c->fb.w);
         const scene_triangle *t = tri[l];
-        bary[0][l] = (float)(t->edge[0][0]+t->edge[0][1]*x+t->edge[0][2]*y)*t->inverse_area;
-        bary[1][l] = (float)(t->edge[1][0]+t->edge[1][1]*x+t->edge[1][2]*y)*t->inverse_area;
+        int sx = 128, sy = 128;
+        if (c->fb.samples && f->sample_point[pixels[l]] != 4)
+            sg_sample_position(c->fb.samples,f->sample_point[pixels[l]],&sx,&sy);
+        int64_t e0 = t->edge[0][0]+t->edge[0][1]*x+t->edge[0][2]*y;
+        int64_t e1 = t->edge[1][0]+t->edge[1][1]*x+t->edge[1][2]*y;
+        if (c->fb.samples) {
+            e0 += (t->edge[0][1]/256)*(sx-128)+(t->edge[0][2]/256)*(sy-128);
+            e1 += (t->edge[1][1]/256)*(sx-128)+(t->edge[1][2]/256)*(sy-128);
+        }
+        bary[0][l] = (float)e0*t->inverse_area;
+        bary[1][l] = (float)e1*t->inverse_area;
         bary[2][l] = 1.f-bary[0][l]-bary[1][l];
         for (int v = 0; v < 3; v++) bary[v][l] *= t->inverse_w[v];
     }
@@ -772,7 +884,12 @@ static void scene_shade_packet(struct sg_scene_visibility *f, scene_material *m,
     for (int l = 0; l < 4; l++) if (live & (1u << l)) {
         float rgba[4]; sg_f32x4_store(rgba,color[l]);
         uint32_t packed = sg_store_quantize_rgba(rgba);
-        memcpy(c->fb.color+(size_t)pixels[l]*4,&packed,sizeof(packed));
+        if (c->fb.samples) {
+            size_t base = (size_t)(pixels[l]/(unsigned)c->fb.samples)*c->fb.samples;
+            for (int s = 0; s < c->fb.samples; s++) if (f->shade_mask[pixels[l]] & (1u << s))
+                { memcpy(c->fb.sample_color+(base+s)*4,&packed,sizeof(packed)); SCENE_MSAA_AUDIT(6,1); }
+            SCENE_MSAA_AUDIT(5,1);
+        } else memcpy(c->fb.color+(size_t)pixels[l]*4,&packed,sizeof(packed));
     }
 }
 
@@ -802,6 +919,59 @@ static void scene_resolve(void *data) {
     }
 }
 
+static void scene_restore(struct sg_scene_visibility *f) {
+    softgl_ctx *c = f->context;
+    size_t pixels = (size_t)c->fb.w*c->fb.h;
+    if (c->fb.samples) {
+        SCENE_MSAA_AUDIT(7,1);
+        size_t units = pixels*(unsigned)c->fb.samples;
+        memcpy(c->fb.sample_depth,f->backup_depth,units*sizeof(float));
+        memcpy(c->fb.sample_color,f->backup_color,units*4);
+        memcpy(c->fb.depth,f->backup_depth+units,pixels*sizeof(float));
+        memcpy(c->fb.color,f->backup_color+units*4,pixels*4);
+    } else {
+        memcpy(c->fb.depth,f->backup_depth,pixels*sizeof(float));
+        memcpy(c->fb.color,f->backup_color,pixels*4);
+    }
+}
+
+/* Distinct winner/shading-point pairs of one pixel share one shade job.
+ * No job writes any sample owned by a different job. */
+static uint32_t scene_msaa_groups(struct sg_scene_visibility *f) {
+    softgl_ctx *c = f->context;
+    size_t pixels = (size_t)c->fb.w*c->fb.h;
+    unsigned n = (unsigned)c->fb.samples;
+    uint32_t groups = 0;
+    memset(f->shade_mask,0,pixels*n);
+    for (size_t p = 0; p < pixels; p++) {
+        size_t base = p*n; unsigned seen = 0;
+        for (unsigned s = 0; s < n; s++) {
+            size_t at = base+s;
+            if ((seen & (1u << s)) || f->pixel_material[at] == UINT16_MAX) continue;
+            unsigned mask = 1u << s;
+            for (unsigned k = s+1; k < n; k++) if (f->pixel_material[base+k] != UINT16_MAX &&
+                f->winner[base+k] == f->winner[at] && f->sample_point[base+k] == f->sample_point[at]) mask |= 1u << k;
+            f->shade_mask[at] = (uint8_t)mask; seen |= mask;
+            f->materials[f->pixel_material[at]].count++; groups++;
+            if (f->deferred_meshes) {
+                uint32_t id = f->winner[at];
+                f->bins[id >> SCENE_INDEX_BITS].visible[id & SCENE_INDEX_MASK] = 1;
+            }
+        }
+    }
+    SCENE_MSAA_AUDIT(4,groups);
+    return groups;
+}
+
+static void scene_msaa_list(struct sg_scene_visibility *f) {
+    softgl_ctx *c = f->context;
+    uint32_t units = (unsigned)c->fb.w*(unsigned)c->fb.h*(unsigned)c->fb.samples;
+    for (uint32_t at = 0; at < units; at++) if (f->shade_mask[at]) {
+        scene_material *m = &f->materials[f->pixel_material[at]];
+        f->pixels[m->cursor++] = at;
+    }
+}
+
 int softgl_scene_visibility_end(void) {
     softgl_ctx *c = sg_current();
     if (!c || !c->scene_visibility) return 0;
@@ -812,16 +982,15 @@ int softgl_scene_visibility_end(void) {
     c->scene_visibility = NULL;
     size_t pixels = (size_t)c->fb.w*c->fb.h;
     if (atomic_load_explicit(&f->failed,memory_order_relaxed)) {
-        memcpy(c->fb.depth,f->backup_depth,pixels*sizeof(float));
-        memcpy(c->fb.color,f->backup_color,pixels*4);
+        scene_restore(f);
         return 0;
     }
     if (f->deferred_meshes && !scene_geometry_visible(f)) {
-        memcpy(c->fb.depth,f->backup_depth,pixels*sizeof(float));
-        memcpy(c->fb.color,f->backup_color,pixels*4); return 0;
+        scene_restore(f); return 0;
     }
     uint32_t visible = 0;
-    for (size_t p = 0; p < pixels; p++) if (f->pixel_material[p] != UINT16_MAX) {
+    if (c->fb.samples) visible = scene_msaa_groups(f);
+    else for (size_t p = 0; p < pixels; p++) if (f->pixel_material[p] != UINT16_MAX) {
         f->materials[f->pixel_material[p]].count++; visible++;
         if (f->deferred_meshes) {
             uint32_t id = f->winner[p];
@@ -831,8 +1000,7 @@ int softgl_scene_visibility_end(void) {
     if (f->deferred_meshes) {
         scene_geometry_attributes(f);
         if (atomic_load_explicit(&f->failed,memory_order_relaxed)) {
-            memcpy(c->fb.depth,f->backup_depth,pixels*sizeof(float));
-            memcpy(c->fb.color,f->backup_color,pixels*4); return 0;
+            scene_restore(f); return 0;
         }
     }
     uint32_t first = 0;
@@ -840,7 +1008,8 @@ int softgl_scene_visibility_end(void) {
         scene_material *m = &f->materials[i]; m->first = m->cursor = first;
         first += m->count;
     }
-    for (uint32_t p = 0; p < pixels; p++) if (f->pixel_material[p] != UINT16_MAX) {
+    if (c->fb.samples) scene_msaa_list(f);
+    else for (uint32_t p = 0; p < pixels; p++) if (f->pixel_material[p] != UINT16_MAX) {
         scene_material *m = &f->materials[f->pixel_material[p]]; f->pixels[m->cursor++] = p;
     }
     uint32_t packets = 0;

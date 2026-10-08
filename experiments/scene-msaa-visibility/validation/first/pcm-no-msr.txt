@@ -1,0 +1,55 @@
+
+ Intel(r) Performance Counter Monitor  (202502-1)
+
+
+Detected a hypervisor/virtualization technology. Some metrics might not be available due to configuration or availability of virtual hardware features.
+
+=====  Processor information  =====
+Linux arch_perfmon flag  : yes
+Hybrid processor         : no
+IBRS and IBPB supported  : yes
+STIBP supported          : yes
+Spec arch caps supported : yes
+Max CPUID level          : 21
+CPU family               : 6
+CPU model number         : 140
+INFO: Reducing the number of programmable counters to 3 to workaround the fixed cycle counter virtualization issue on AWS.
+      You can disable the workaround by setting PCM_NO_AWS_WORKAROUND=1 environment variable
+Number of physical cores: 2
+Number of logical cores: 4
+Number of online logical cores: 4
+Threads (logical cores) per physical core: 2
+Num sockets: 1
+Physical cores per socket: 2
+Last level cache slices per socket: 2
+Core PMU (perfmon) version: 5
+Number of core PMU generic (programmable) counters: 3
+Width of generic (programmable) counters: 48 bits
+Number of core PMU fixed counters: 4
+Width of fixed counters: 48 bits
+Nominal core frequency: 2400000000 Hz
+IBRS enabled in the kernel   : no
+STIBP enabled in the kernel  : no
+The processor is not susceptible to Rogue Data Cache Load: no
+The processor supports enhanced IBRS                     : no
+Package thermal spec power: 0 Watt; Package minimum power: 0 Watt; Package maximum power: 0 Watt;
+
+Can not read memory controller counter information from PCI configuration space. Access to memory bandwidth counters is not possible.
+You must be root to access these SandyBridge/IvyBridge/Haswell counters in PCM. 
+INFO: Linux perf interface to program uncore PMUs is NOT present
+Socket 0: 0 PCU units detected. 0 IIO units detected. 0 IRP units detected. 0 CHA/CBO units detected. 0 MDF units detected. 0 UBOX units detected. 0 CXL units detected. 0 PCIE_GEN5x16 units detected. 0 PCIE_GEN5x8 units detected.
+
+ Closed perf event handles
+Trying to use Linux perf events...
+Linux Perf: Error when programming INST_RETIRED, error: Permission denied with config 0x1 config1 0x0 for tid -1 leader -1
+try running with environment variable PCM_NO_PERF=1
+Linux Perf: Error when programming INST_RETIRED, error: Permission denied with config 0x1 config1 0x0 for tid -1 leader -1
+try running with environment variable PCM_NO_PERF=1
+Linux Perf: Error when programming INST_RETIRED, error: Permission denied with config 0x1 config1 0x0 for tid -1 leader -1
+try running with environment variable PCM_NO_PERF=1
+Linux Perf: Error when programming INST_RETIRED, error: Permission denied with config 0x1 config1 0x0 for tid -1 leader -1
+try running with environment variable PCM_NO_PERF=1
+Access to Intel(r) Performance Counter Monitor has denied (Unknown error).
+Cleaning up
+ Closed perf event handles
+ Zeroed uncore PMU registers
