@@ -1,5 +1,12 @@
 # GLimpSW / Mesa / libsoftgl with four common scenes
 
+Latest comparison adds genuine same-resolution 4× MSAA at 640×360 with the
+accepted SIMD128 packet renderer `8085056`: libsoftgl needs 65–82% less complete
+frame time than Mesa 4×, but 8.3–21.1× GLimpSW OFF. GLimpSW has no native MSAA
+path in the pinned revision; it is not labeled as a 4× result.
+[All OFF/4× medians and reproducible driver](../renderer-msaa4-comparison/README.md).
+The comparisons below are historical OFF-only measurements.
+
 Last direct comparison: opt-in SIMD32 visibility renderer f1df73f beats Mesa in all
 four scenes at 640×360/off, with 61.5–76.9% less complete-frame time. GLimpSW
 remains 4.29–6.46× faster with its different rendering pipeline.

@@ -1,0 +1,52 @@
+{
+  "acceptedRuns": 120,
+  "rejectedRunsRetained": 20,
+  "balancedBlocksPerAsset": 3,
+  "samples": [
+    0,
+    4
+  ],
+  "glimpswSupports4x": false,
+  "mesa4xVerifiedAttachmentsAndFramebuffer": true,
+  "same4xSamplePositionsAsSoftgl": true,
+  "probeFractionalEdgePixels": {
+    "off": 0,
+    "msaa4": 1125
+  },
+  "bmwOffBytesMatchPreviousMesaExecutable": true,
+  "contactSheetInspectedAllFourAssetsFiveProfiles": true,
+  "contactSheetSha256": "1c27481b55f09bcb50faf218e8a78bdb04b3c155b7a8ca5cc97aeb6534989972",
+  "productionLibraryChanged": false,
+  "productionVersion": "8085056",
+  "optimizationGoalAchieved": false,
+  "mediansMs": {
+    "bmw": {
+      "glimpsw-0": 2.157544817,
+      "mesa-0": 37.0750113845,
+      "softgl-0": 10.537979965,
+      "mesa-4": 102.217415317,
+      "softgl-4": 18.158519617
+    },
+    "t80": {
+      "glimpsw-0": 1.78565035,
+      "mesa-0": 30.735688866,
+      "softgl-0": 7.022414400000001,
+      "mesa-4": 75.159123417,
+      "softgl-4": 14.857107882000001
+    },
+    "sponza": {
+      "glimpsw-0": 4.05479885,
+      "mesa-0": 69.408220833,
+      "softgl-0": 24.3267065165,
+      "mesa-4": 169.7803578,
+      "softgl-4": 59.449802083
+    },
+    "bistro": {
+      "glimpsw-0": 5.989068016499999,
+      "mesa-0": 169.227619184,
+      "softgl-0": 36.210627234,
+      "mesa-4": 402.115600133,
+      "softgl-4": 126.08747946700001
+    }
+  }
+}
