@@ -2,13 +2,25 @@
  * positions, primitives and finally winning vertex attributes run in batches. */
 #include "index_range.h"
 
+/* Logical sixteen-triangle masks do not require sixteen SIMD lanes. */
+#ifdef SOFTGL_PACKET_BIN_AUDIT
+static atomic_ullong scene_packet_audit[3];
+unsigned long long softgl_scene_packet_bin_audit(unsigned index) {
+    return index < 3 ? atomic_load_explicit(&scene_packet_audit[index],memory_order_relaxed) : 0;
+}
+#define SCENE_PACKET_AUDIT(index,value) atomic_fetch_add_explicit(&scene_packet_audit[index],value,memory_order_relaxed)
+#else
+#define SCENE_PACKET_AUDIT(index,value) ((void)0)
+#endif
+
+
 #define SCENE_PRIMITIVE_BITS 18
 #define SCENE_PRIMITIVE_MASK ((1u << SCENE_PRIMITIVE_BITS)-1)
 
 static void scene_geometry_destroy(scene_geometry *g) {
     if (!g) return;
     if (g->tasks) for (int i = 0; i < SCENE_GEOMETRY_TASKS; i++) {
-        free(g->tasks[i].primitives); free(g->tasks[i].clipped);
+        free(g->tasks[i].primitives); free(g->tasks[i].clipped); free(g->tasks[i].packets);
     }
     for (int i = 0; i < SG_MAX_BINS; i++) free(g->bins[i].references);
     free(g->positions); free(g->attributes); free(g->outcodes); free(g->ready);
@@ -257,8 +269,13 @@ static void scene_geometry_append(struct sg_scene_visibility *f, scene_geometry_
         p->clipped = task->clipped_count;
         task->clipped[task->clipped_count++] = *clipped;
     }
+    if (!(task->count & 15u)) task->packet_bins = 0;
     task->primitives[task->count++] = *p;
-    for (int bin = p->first_bin; bin <= p->last_bin; bin++) task->bin_counts[bin]++;
+    for (int bin = p->first_bin; bin <= p->last_bin; bin++) {
+        uint32_t bit = UINT32_C(1) << bin;
+        if (!(task->packet_bins & bit)) task->bin_counts[bin]++;
+        task->packet_bins |= bit;
+    }
 }
 
 static void scene_geometry_triangles(void *data) {
@@ -304,6 +321,7 @@ static void scene_geometry_triangles(void *data) {
                 scene_geometry_append(f,task,&p,clipped.ndc,&clipped);
             }
         }
+        scene_geometry_make_packets(f,task);
     }
 }
 
@@ -315,21 +333,15 @@ static void scene_geometry_raster(void *data) {
         if (bin >= pool->nbins || atomic_load_explicit(&f->failed,memory_order_relaxed)) break;
         scene_geometry_bin *list = &g->bins[bin];
         for (uint32_t i = 0; i < list->count; i++) {
-            uint32_t id = list->references[i];
-            const scene_primitive *p = &g->tasks[id >> SCENE_PRIMITIVE_BITS].primitives[id & SCENE_PRIMITIVE_MASK];
-            const scene_mesh *m = &f->materials[p->material].mesh;
-            const scene_clipped_primitive *clipped = p->clipped == UINT32_MAX ? NULL : &g->tasks[p->task].clipped[p->clipped];
-            sg_vert v[3];
-            for (int j = 0; j < 3; j++) {
-                v[j].ndc = clipped ? clipped->ndc[j] : g->positions[m->offset+p->indices[j]-m->minimum].ndc;
-                v[j].color.w = 1.f;
-                if (f->materials[p->material].alpha_test) {
-                    const float *uv = clipped ? clipped->coordinates[j] : (const float *)((const uint8_t *)m->coordinates+(size_t)p->indices[j]*m->stride);
-                    v[j].uv[2] = (sg_vec4){uv[0],uv[1],0.f,1.f};
-                }
+            uint64_t reference = list->references[i];
+            unsigned mask = (unsigned)reference & 65535u;
+            uint32_t base = (uint32_t)(reference >> 16);
+            scene_geometry_task *task = &g->tasks[base >> SCENE_PRIMITIVE_BITS];
+            unsigned first = base & SCENE_PRIMITIVE_MASK;
+            for (unsigned offset = 0; offset < 16; offset += 4) {
+                unsigned live = (mask >> offset)&15u;
+                if (live) scene_packet_draw(&local,task,first+offset,live,bin);
             }
-            f->current_primitive[bin] = p; local.scene_material = (int)p->material;
-            sg_scene_visibility_triangle(&local,v,v+1,v+2,pool->bins[bin].ix0,pool->bins[bin].ix1);
         }
         f->current_primitive[bin] = NULL;
     }
@@ -384,10 +396,23 @@ static void scene_geometry_references(void *data) {
         scene_geometry_task *task = &g->tasks[id];
         uint32_t cursor[SG_MAX_BINS];
         memcpy(cursor,task->bin_offsets,sizeof(cursor));
-        for (uint32_t k = 0; k < task->count; k++) {
-            const scene_primitive *p = &task->primitives[k];
-            for (int bin = p->first_bin; bin <= p->last_bin; bin++)
-                g->bins[bin].references[cursor[bin]++] = ((uint32_t)id << SCENE_PRIMITIVE_BITS)|k;
+        for (uint32_t k = 0; k < task->count; k += 16) {
+            uint16_t masks[SG_MAX_BINS] = {0};
+            unsigned count = task->count-k;
+            if (count > 16) count = 16;
+            for (unsigned lane = 0; lane < count; lane++) {
+                const scene_primitive *p = &task->primitives[k+lane];
+                for (int bin = p->first_bin; bin <= p->last_bin; bin++) {
+                    masks[bin] |= (uint16_t)(1u << lane);
+                    SCENE_PACKET_AUDIT(0,1);
+                }
+            }
+            uint32_t base = ((uint32_t)id << SCENE_PRIMITIVE_BITS)|k;
+            for (int bin = 0; bin < SG_MAX_BINS; bin++) if (masks[bin]) {
+                g->bins[bin].references[cursor[bin]++] = ((uint64_t)base << 16)|masks[bin];
+                SCENE_PACKET_AUDIT(1,1);
+                SCENE_PACKET_AUDIT(2,masks[bin] == 65535u);
+            }
         }
     }
 }
@@ -417,9 +442,9 @@ static void scene_geometry_build(struct sg_scene_visibility *f) {
         if (b->count > b->capacity) {
             uint32_t capacity = b->capacity ? b->capacity : 1024;
             while (capacity < b->count) capacity *= 2;
-            size_t delta = (size_t)(capacity-b->capacity)*sizeof(uint32_t);
+            size_t delta = (size_t)(capacity-b->capacity)*sizeof(*b->references);
             if (delta > SCENE_REFERENCE_BYTES-g->reference_bytes) { scene_geometry_fail(f); return; }
-            uint32_t *next = realloc(b->references,(size_t)capacity*sizeof(*next));
+            uint64_t *next = realloc(b->references,(size_t)capacity*sizeof(*next));
             if (!next) { scene_geometry_fail(f); return; }
             b->references = next; b->capacity = capacity; g->reference_bytes += delta;
         }

@@ -440,6 +440,258 @@ static scene_triangle *scene_triangle_at(struct sg_scene_visibility *f, uint32_t
     return &f->bins[id >> SCENE_INDEX_BITS].triangles[id & SCENE_INDEX_MASK];
 }
 
+static uint32_t scene_packet_record(struct sg_scene_visibility *f, int bin,
+    const scene_primitive *primitive, const scene_triangle_packet *packet, unsigned lane,
+    int64_t edges[2][3], float inverse_area, uint32_t material) {
+    scene_bin *b = &f->bins[bin];
+    if (b->count == b->capacity) {
+        uint32_t capacity = b->capacity ? b->capacity*2 : 1024;
+        size_t delta = (size_t)(capacity-b->capacity)*sizeof(scene_triangle);
+        pthread_mutex_lock(&f->allocation_mutex);
+        scene_triangle *next = NULL;
+        if (delta <= SCENE_TRIANGLE_BYTES-f->triangle_bytes)
+            next = realloc(b->triangles, (size_t)capacity*sizeof(scene_triangle));
+        if (next) {
+            b->triangles = next; b->capacity = capacity; f->triangle_bytes += delta;
+        }
+        pthread_mutex_unlock(&f->allocation_mutex);
+        if (!next) {
+            atomic_store_explicit(&f->failed, 1, memory_order_relaxed); return UINT32_MAX;
+        }
+    }
+    uint32_t index = b->count++;
+    scene_triangle *t = &b->triangles[index];
+    t->primitive = primitive;
+    for (int i = 0; i < 3; i++) t->inverse_w[i] = packet->zw[i][1][lane];
+    memcpy(t->edge, edges, sizeof(t->edge)); t->inverse_area = inverse_area;
+    t->material = material;
+    return ((uint32_t)bin << SCENE_INDEX_BITS) | index;
+}
+
+static int scene_packet_triangle(softgl_ctx *c, const scene_primitive *primitive,
+    const scene_triangle_packet *packet, unsigned lane,
+    const int32_t x[3][4], const int32_t y[3][4], int32_t area,
+    int ix0, int ix1, int iy0, int iy1, int bin) {
+    struct sg_scene_visibility *f = c->scene_visibility;
+    scene_bin *b = &f->bins[bin];
+    const scene_material *m = &f->materials[c->scene_material];
+    int32_t x0 = x[0][lane], x1 = x[1][lane], x2 = x[2][lane];
+    int32_t y0 = y[0][lane], y1 = y[1][lane], y2 = y[2][lane];
+    int bias[3] = {((y2-y1)<0 || ((y2-y1)==0 && (x2-x1)<0)) ? 0 : -1,
+                   ((y0-y2)<0 || ((y0-y2)==0 && (x0-x2)<0)) ? 0 : -1,
+                   ((y1-y0)<0 || ((y1-y0)==0 && (x1-x0)<0)) ? 0 : -1};
+    int32_t edge[2][3] = {
+        {(x2-x1)*(8-y1)-(y2-y1)*(8-x1),-(y2-y1)*16,(x2-x1)*16},
+        {(x0-x2)*(8-y2)-(y0-y2)*(8-x2),-(y0-y2)*16,(x0-x2)*16}};
+    float inverse_area = 1.f/(float)area;
+    sg_i32x4 delta[2], step[2], bias0 = sg_i32x4_splat(bias[0]);
+    sg_i32x4 bias1 = sg_i32x4_splat(bias[1]), bias2 = sg_i32x4_splat(bias[2]);
+    for (int k = 0; k < 2; k++) {
+        int32_t dx = edge[k][1];
+        delta[k] = sg_i32x4_set(0,dx,dx*2,dx*3);
+        step[k] = sg_i32x4_splat(dx*4);
+    }
+    sg_i32x4 area4 = sg_i32x4_splat(area);
+    sg_f32x4 inverse4 = sg_f32x4_splat(inverse_area);
+    uint32_t record = UINT32_MAX;
+    for (int y = iy0; y < iy1; y++) {
+        int32_t e0 = edge[0][0]+edge[0][1]*ix0+edge[0][2]*y;
+        int32_t e1 = edge[1][0]+edge[1][1]*ix0+edge[1][2]*y;
+        sg_i32x4 q0 = sg_i32x4_add(sg_i32x4_splat(e0),delta[0]);
+        sg_i32x4 q1 = sg_i32x4_add(sg_i32x4_splat(e1),delta[1]);
+        for (int x = ix0; x < ix1; x += 4) {
+            sg_i32x4 a = q0, d = q1;
+            sg_i32x4 q2 = _mm_sub_epi32(_mm_sub_epi32(area4,a),d);
+            unsigned live = (1u << (ix1-x < 4 ? ix1-x : 4))-1;
+            sg_i32x4 coverage = _mm_or_si128(_mm_or_si128(sg_i32x4_add(a,bias0),
+                sg_i32x4_add(d,bias1)),sg_i32x4_add(q2,bias2));
+            live &= sg_i32x4_mask_nonneg(coverage);
+            q0 = sg_i32x4_add(q0,step[0]); q1 = sg_i32x4_add(q1,step[1]);
+            if (!live) continue;
+            sg_f32x4 b0 = sg_f32x4_mul(_mm_cvtepi32_ps(a),inverse4);
+            sg_f32x4 b1 = sg_f32x4_mul(_mm_cvtepi32_ps(d),inverse4);
+            sg_f32x4 b2 = sg_f32x4_sub(sg_f32x4_sub(sg_f32x4_splat(1.f),b0),b1);
+            sg_f32x4 z = sg_f32x4_add(sg_f32x4_add(sg_f32x4_mul(b0,sg_f32x4_splat(packet->zw[0][0][lane])),
+                sg_f32x4_mul(b1,sg_f32x4_splat(packet->zw[1][0][lane]))),sg_f32x4_mul(b2,sg_f32x4_splat(packet->zw[2][0][lane])));
+            float depths[4]; sg_f32x4_store(depths,z);
+            if (x+3 < ((sg_worker_pool *)c->workers)->bins[bin].ix1) {
+                sg_f32x4 old = sg_f32x4_load(c->fb.depth+(size_t)y*c->fb.w+x);
+                sg_i32x4 passing = sg_i32x4_and(sg_f32x4_lt(z,old),
+                    sg_i32x4_and(sg_f32x4_ge(z,sg_f32x4_splat(0.f)),
+                                  sg_f32x4_le(z,sg_f32x4_splat(1.f))));
+                live &= sg_mask4_live(passing);
+            } else {
+                for (int l = 0; l < 4; l++) if (live & (1u << l)) {
+                    size_t pixel = (size_t)y*c->fb.w+x+l;
+                    if (depths[l] < 0.f || depths[l] > 1.f || !(depths[l] < c->fb.depth[pixel])) live &= ~(1u << l);
+                }
+            }
+            if (!live) continue;
+            if (m->alpha_test) {
+                sg_vert vertices[3];
+                const scene_mesh *mesh = &m->mesh;
+                const scene_clipped_primitive *clipped = primitive->clipped == UINT32_MAX ? NULL :
+                    &f->geometry->tasks[primitive->task].clipped[primitive->clipped];
+                for (int j = 0; j < 3; j++) {
+                    const float *uv = clipped ? clipped->coordinates[j] :
+                        (const float *)((const uint8_t *)mesh->coordinates+(size_t)primitive->indices[j]*mesh->stride);
+                    vertices[j].uv[2] = (sg_vec4){uv[0],uv[1],0.f,1.f};
+                }
+                sg_f32x4 w0 = sg_f32x4_mul(b0,sg_f32x4_splat(packet->zw[0][1][lane]));
+                sg_f32x4 w1 = sg_f32x4_mul(b1,sg_f32x4_splat(packet->zw[1][1][lane]));
+                sg_f32x4 w2 = sg_f32x4_mul(b2,sg_f32x4_splat(packet->zw[2][1][lane]));
+                sg_f32x4 inverse = sg_f32x4_div(sg_f32x4_splat(1.f),sg_f32x4_add(sg_f32x4_add(w0,w1),w2));
+                sg_f32x4 tex[4];
+                sg_packet_sample_unit(&m->texture.unit[2],2,vertices,vertices+1,vertices+2,w0,w1,w2,inverse,live,0,tex);
+                sg_f32x4 alpha = sg_chain_clamp(sg_f32x4_mul(tex[3],
+                    sg_packet_lerp(1.f,1.f,1.f,w0,w1,w2,inverse)));
+                live &= sg_mask4_live(sg_f32x4_gt(alpha,sg_f32x4_splat(m->cutoff)));
+                if (!live) continue;
+            }
+            if (record == UINT32_MAX) {
+                int64_t stored[2][3];
+                for (int k = 0; k < 2; k++) for (int j = 0; j < 3; j++) stored[k][j] = edge[k][j];
+                record = scene_packet_record(f,bin,primitive,packet,lane,stored,inverse_area,(uint32_t)c->scene_material);
+                if (record == UINT32_MAX) return 0;
+            }
+            for (int l = 0; l < 4; l++) if (live & (1u << l)) {
+                size_t pixel = (size_t)y*c->fb.w+x+l;
+                c->fb.depth[pixel] = depths[l]; f->winner[pixel] = record;
+                f->pixel_material[pixel] = (uint16_t)c->scene_material; b->depth_passes++;
+            }
+        }
+    }
+    return 0;
+}
+
+#ifdef SOFTGL_TRIANGLE_PACKET_AUDIT
+static atomic_ullong scene_triangle_packet_audit[7];
+unsigned long long softgl_scene_triangle_packet_audit(unsigned index) {
+    return index < 7 ? atomic_load_explicit(&scene_triangle_packet_audit[index],memory_order_relaxed) : 0;
+}
+#define SCENE_TRI_PACKET_AUDIT(index,value) atomic_fetch_add_explicit(&scene_triangle_packet_audit[index],value,memory_order_relaxed)
+#else
+#define SCENE_TRI_PACKET_AUDIT(index,value) ((void)0)
+#endif
+
+static void scene_geometry_make_packets(struct sg_scene_visibility *f, scene_geometry_task *task) {
+    if (!f->quantized || !task->count || atomic_load_explicit(&f->failed,memory_order_relaxed)) return;
+    unsigned packets = (task->count+3u)/4u;
+    if (packets > task->packet_capacity) {
+        unsigned capacity = task->packet_capacity ? task->packet_capacity : 64;
+        while (capacity < packets) capacity *= 2;
+        size_t delta = (size_t)(capacity-task->packet_capacity)*sizeof(scene_triangle_packet);
+        pthread_mutex_lock(&f->allocation_mutex);
+        scene_triangle_packet *next = NULL;
+        if (delta <= SCENE_GEOMETRY_BYTES-f->geometry->primitive_bytes)
+            next = realloc(task->packets,(size_t)capacity*sizeof(*next));
+        if (next) {
+            task->packets = next; task->packet_capacity = capacity;
+            f->geometry->primitive_bytes += delta;
+        }
+        pthread_mutex_unlock(&f->allocation_mutex);
+        if (!next) { atomic_store_explicit(&f->failed,1,memory_order_relaxed); return; }
+    }
+    const scene_mesh *m = &f->materials[task->material].mesh;
+    for (unsigned k = 0; k < task->count; k += 4) {
+        scene_triangle_packet *packet = &task->packets[k/4];
+        unsigned count = task->count-k; if (count > 4) count = 4;
+        __m128 eligible = _mm_castsi128_ps(_mm_set1_epi32(-1));
+        for (unsigned vertex = 0; vertex < 3; vertex++) {
+            __m128 ndc[4];
+            for (unsigned lane = 0; lane < 4; lane++) {
+                const scene_primitive *p = &task->primitives[k+(lane < count ? lane : 0)];
+                const sg_vec4 *v = p->clipped == UINT32_MAX ?
+                    &f->geometry->positions[m->offset+p->indices[vertex]-m->minimum].ndc :
+                    &task->clipped[p->clipped].ndc[vertex];
+                ndc[lane] = _mm_load_ps(&v->x);
+            }
+            _MM_TRANSPOSE4_PS(ndc[0],ndc[1],ndc[2],ndc[3]);
+            eligible = _mm_and_ps(eligible,_mm_and_ps(
+                _mm_and_ps(_mm_cmpge_ps(ndc[0],_mm_set1_ps(-1.f)),_mm_cmple_ps(ndc[0],_mm_set1_ps(641.f))),
+                _mm_and_ps(_mm_cmpge_ps(ndc[1],_mm_set1_ps(-1.f)),_mm_cmple_ps(ndc[1],_mm_set1_ps(361.f)))));
+            __m128i x = sg_f32x4_trunc_i32(_mm_mul_ps(ndc[0],_mm_set1_ps(16.f)));
+            __m128i y = sg_f32x4_trunc_i32(_mm_mul_ps(ndc[1],_mm_set1_ps(16.f)));
+            __m128i xy = _mm_or_si128(_mm_and_si128(x,_mm_set1_epi32(65535)),_mm_slli_epi32(y,16));
+            _mm_store_si128((__m128i *)packet->xy[vertex],xy);
+            _mm_store_ps(packet->zw[vertex][0],ndc[2]);
+            _mm_store_ps(packet->zw[vertex][1],ndc[3]);
+        }
+        packet->eligible = (unsigned)_mm_movemask_ps(eligible) & ((1u << count)-1u);
+        SCENE_TRI_PACKET_AUDIT(0,count);
+        SCENE_TRI_PACKET_AUDIT(1,1);
+    }
+}
+
+static void scene_packet_fallback(softgl_ctx *c, const scene_primitive *p, int bin) {
+    struct sg_scene_visibility *f = c->scene_visibility;
+    scene_geometry *g = f->geometry; sg_worker_pool *pool = c->workers;
+    const scene_mesh *m = &f->materials[p->material].mesh;
+    const scene_clipped_primitive *clipped = p->clipped == UINT32_MAX ? NULL : &g->tasks[p->task].clipped[p->clipped];
+    sg_vert v[3];
+    for (int j = 0; j < 3; j++) {
+        v[j].ndc = clipped ? clipped->ndc[j] : g->positions[m->offset+p->indices[j]-m->minimum].ndc;
+        v[j].color.w = 1.f;
+        if (f->materials[p->material].alpha_test) {
+            const float *uv = clipped ? clipped->coordinates[j] :
+                (const float *)((const uint8_t *)m->coordinates+(size_t)p->indices[j]*m->stride);
+            v[j].uv[2] = (sg_vec4){uv[0],uv[1],0.f,1.f};
+        }
+    }
+    f->current_primitive[bin] = p; c->scene_material = (int)p->material;
+    sg_scene_visibility_triangle(c,v,v+1,v+2,pool->bins[bin].ix0,pool->bins[bin].ix1);
+}
+
+static void scene_packet_draw(softgl_ctx *c, scene_geometry_task *task,
+    unsigned first, unsigned live, int bin) {
+    struct sg_scene_visibility *f = c->scene_visibility;
+    sg_worker_pool *pool = c->workers;
+    SCENE_TRI_PACKET_AUDIT(2,1);
+    SCENE_TRI_PACKET_AUDIT(5,live != 15);
+    SCENE_TRI_PACKET_AUDIT(6,live == 15);
+    if (!f->quantized) {
+        for (unsigned lane = 0; lane < 4; lane++) if (live & (1u << lane)) {
+            SCENE_TRI_PACKET_AUDIT(4,1);
+            scene_packet_fallback(c,&task->primitives[first+lane],bin);
+        }
+        return;
+    }
+    const scene_triangle_packet *packet = &task->packets[first/4];
+    int32_t x[3][4], y[3][4], areas[4], left[4], right[4], bottom[4], top[4];
+    __m128i vx[3], vy[3];
+    for (unsigned j = 0; j < 3; j++) {
+        __m128i xy = _mm_load_si128((const __m128i *)packet->xy[j]);
+        vx[j] = _mm_srai_epi32(_mm_slli_epi32(xy,16),16);
+        vy[j] = _mm_srai_epi32(xy,16);
+        _mm_storeu_si128((__m128i *)x[j],vx[j]);
+        _mm_storeu_si128((__m128i *)y[j],vy[j]);
+    }
+    __m128i area = _mm_sub_epi32(
+        _mm_mullo_epi32(_mm_sub_epi32(vx[1],vx[0]),_mm_sub_epi32(vy[2],vy[0])),
+        _mm_mullo_epi32(_mm_sub_epi32(vy[1],vy[0]),_mm_sub_epi32(vx[2],vx[0])));
+    __m128i minx = _mm_min_epi32(_mm_min_epi32(vx[0],vx[1]),vx[2]);
+    __m128i maxx = _mm_max_epi32(_mm_max_epi32(vx[0],vx[1]),vx[2]);
+    __m128i miny = _mm_min_epi32(_mm_min_epi32(vy[0],vy[1]),vy[2]);
+    __m128i maxy = _mm_max_epi32(_mm_max_epi32(vy[0],vy[1]),vy[2]);
+    __m128i one = _mm_set1_epi32(1);
+    _mm_storeu_si128((__m128i *)areas,area);
+    _mm_storeu_si128((__m128i *)left,_mm_max_epi32(_mm_srai_epi32(minx,4),_mm_set1_epi32(pool->bins[bin].ix0)));
+    _mm_storeu_si128((__m128i *)right,_mm_min_epi32(_mm_add_epi32(_mm_srai_epi32(maxx,4),one),_mm_set1_epi32(pool->bins[bin].ix1)));
+    _mm_storeu_si128((__m128i *)bottom,_mm_max_epi32(_mm_srai_epi32(miny,4),_mm_setzero_si128()));
+    _mm_storeu_si128((__m128i *)top,_mm_min_epi32(_mm_add_epi32(_mm_srai_epi32(maxy,4),one),_mm_set1_epi32(c->fb.h)));
+    for (unsigned lane = 0; lane < 4; lane++) if (live & (1u << lane)) {
+        const scene_primitive *p = &task->primitives[first+lane];
+        if (!(packet->eligible & (1u << lane))) {
+            SCENE_TRI_PACKET_AUDIT(4,1);
+            scene_packet_fallback(c,p,bin); continue;
+        }
+        SCENE_TRI_PACKET_AUDIT(3,1);
+        if (areas[lane] <= 0 || left[lane] >= right[lane] || bottom[lane] >= top[lane]) continue;
+        f->current_primitive[bin] = p; c->scene_material = (int)p->material;
+        scene_packet_triangle(c,p,packet,lane,x,y,areas[lane],left[lane],right[lane],bottom[lane],top[lane],bin);
+    }
+}
+
 #include "geometry.inc"
 
 static sg_f32x4 scene_gather_lerp(const scene_triangle *t[4], int field, int channel,

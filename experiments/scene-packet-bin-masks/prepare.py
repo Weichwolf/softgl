@@ -9,9 +9,10 @@ import tarfile
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--baseline', default='da8ab07')
+parser.add_argument('--output-root', type=Path)
 args = parser.parse_args()
 repo = Path(__file__).resolve().parents[2]
-root = repo / 'build/scene-packet-bin-masks'
+root = args.output_root or repo / 'build/scene-packet-bin-masks'
 base = subprocess.check_output(['git', 'rev-parse', args.baseline], cwd=repo, text=True).strip()
 archive = subprocess.check_output(['git', 'archive', base, 'libsoftgl', 'wasm/model_wrap.c'], cwd=repo)
 for variant in ('source', 'baseline-source'):

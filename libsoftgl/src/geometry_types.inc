@@ -25,6 +25,13 @@ typedef struct {
     uint16_t material, first_bin, last_bin, task;
 } scene_primitive;
 
+typedef struct {
+    SG_ALIGN16 uint32_t xy[3][4];
+    SG_ALIGN16 float zw[3][2][4];
+    uint32_t eligible;
+} scene_triangle_packet;
+_Static_assert(sizeof(scene_triangle_packet) == 160, "four-triangle packet stride");
+
 typedef struct { sg_vec4 clip, ndc; } scene_position;
 typedef struct { sg_vec4 color, uv[4]; } scene_attribute;
 typedef struct { uint32_t material, first, end; } scene_position_task;
@@ -32,11 +39,14 @@ typedef struct {
     uint32_t material, first, end;
     scene_primitive *primitives;
     uint32_t count, capacity;
+    uint32_t packet_bins;
     uint32_t bin_counts[SG_MAX_BINS], bin_offsets[SG_MAX_BINS];
+    scene_triangle_packet *packets;
+    uint32_t packet_capacity;
     scene_clipped_primitive *clipped;
     uint32_t clipped_count, clipped_capacity;
 } scene_geometry_task;
-typedef struct { uint32_t *references, count, capacity; } scene_geometry_bin;
+typedef struct { uint64_t *references; uint32_t count, capacity; } scene_geometry_bin;
 
 typedef struct {
     scene_position *positions;

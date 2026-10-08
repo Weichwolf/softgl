@@ -1,7 +1,8 @@
 # SIMD128 exclusively on native and WASM
 
 Status: required policy change validated; native and WASM use SIMD128 exclusively.
-This is not a performance gain. Fresh three-renderer timings are pending.
+This is not a performance gain. Fresh three-renderer timings are complete:
+[current comparison](../glimpsw-mesa-comparison/current-native-simd128/README.md).
 User constraint: native libsoftgl must use SIMD128 too. Remove the
 AVX512 implementation, native capability detection, wide scene state and model
 wrapper opt-in. Keep the public opt-in symbol as an unsupported compatibility

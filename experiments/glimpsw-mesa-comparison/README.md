@@ -233,5 +233,8 @@ are not relabeled as new measurements of that later renderer.
 The [native SIMD512 comparison](current-native-wide-materials/README.md) is
 historical: native now also must use SIMD128. The validated
 [SIMD128-only policy](../scene-simd128-policy/README.md) supersedes that backend;
-fresh three-renderer measurements are pending. Older dated evidence
+the [SIMD128-only policy-baseline comparison](current-native-simd128/README.md)
+contains 72 accepted balanced runs with verified `da8ab07` source hashes.
+The subsequent [triangle-packet gain](../scene-triangle-packets/README.md) has
+separate isolated evidence; these three-renderer times retain their original source. Older dated evidence
 below retains its original source and warm-up scope.

@@ -1,15 +1,72 @@
 {
-  "status": "SIMD128 exclusively native/WASM; policy validation and current three-renderer comparison completed; optimization goal unachieved",
+  "status": "Accepted combined SIMD128 triangle packets plus mask16 bin references; goal not achieved",
+  "baseline": "da8ab07",
+  "width": 640,
+  "height": 360,
+  "threads": 4,
+  "balancedBlocksPerMode": 3,
+  "acceptedTimingRequests": 144,
+  "rejectedTimingRequests": 32,
+  "offFrameTimeChangePercent": {
+    "bmw": -5.158272806900854,
+    "t80": -6.942722328686878,
+    "sponza": -7.880810450601161,
+    "bistro": -9.388957779628715
+  },
+  "msaaFrameTimeChanges": [
+    {
+      "asset": "bmw",
+      "samples": 2,
+      "frameTimeChangePercent": -0.13099380551555573
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "frameTimeChangePercent": 0.5843317628172251
+    },
+    {
+      "asset": "t80",
+      "samples": 2,
+      "frameTimeChangePercent": 0.6841368274672632
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "frameTimeChangePercent": 0.49134306552032214
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "frameTimeChangePercent": -0.19535782471017393
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "frameTimeChangePercent": -0.18374275632383474
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "frameTimeChangePercent": 1.0602547515465632
+    },
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "frameTimeChangePercent": 1.0984165592286654
+    }
+  ],
   "nativeTests": 756,
-  "exactPreWideFullPlaneViews": 108,
-  "nativeContractPairs": 2024,
-  "sanitizedContractPairs": 2024,
-  "wasmContractPairs": 2024,
-  "residentFreshFrames": 288,
+  "exactFullAssetPlanePairs": 108,
+  "residentFreshPairs": 288,
+  "nativeSanitizedCompatibilityPairs": 2024,
+  "nativeSanitizedPacketPairs": 216,
+  "independentWasmBaselinePacketFullPlaneHashes": 216,
+  "actualWasmPacketContractPairs": 216,
+  "actualWasmPacketDispatchAudit": "../screening/checks.json",
   "liveBrowserCases": 12,
   "peakBrowserHeapBytes": 2807169024,
-  "nativeLibrarySIMD128Only": true,
-  "callerMarchNativeOverrideSIMD128Only": true,
+  "performanceAndProductionLibraryByteIdentical": true,
+  "nativeSIMD128Only": true,
   "productionSourcesSha256": {
     "CMakeLists.txt": "41a69b787380c1ec562b95a8f02c6bd9d7cd7624f23439454b893a17992a1fb7",
     "include/GL/softgl.h": "48467c131a6c272817e44ab9b76a8b4d1c95f26f1724cecd4d38de497db87fab",
@@ -27,8 +84,8 @@
     "src/fragment_combine.c": "b7af7972265bf0ac384379fcba6885e93707cdd8a0de956f691ad28ed1dd7153",
     "src/fragment_write.c": "6c806d57d87ff4ed31ecdf502be6f77772497696a607633edf71c9971da66f1d",
     "src/framebuffer.c": "7c82e1f52d5b2c2e7d9752d155f379109a8791c41b147713cfb14f2788e1a974",
-    "src/geometry.inc": "103ad66f70517af170317445873b8d25ff25ca90ba5fa070b0350503448ac90c",
-    "src/geometry_types.inc": "58cc815c538f5d31042d8508ff87c6a0ea82930e008a62515f19d6a19473df5c",
+    "src/geometry.inc": "8eec2d633527136e7b6073678383bafb00fa442ffdd356cdba3fe6ce6b12c6fb",
+    "src/geometry_types.inc": "1199b4dc9ec7f502390f68c87b387b48edcd52adfd2838e5613ac832bb79758a",
     "src/immediate.c": "80b520a3c3c14e675eeca5d3083c5dbe423e9684a69b868446f85e99ef86534c",
     "src/index_range.h": "4d0456bd563031b7b4ff1184bfb6fa513908ae4047bd5f6f83dc8a7f57d8bb03",
     "src/lighting.c": "1e6db9b4f59e2a54b1f6b89e6bc129d206dc816aaa08f099d80e6f8f2f42e338",
@@ -46,7 +103,7 @@
     "src/raster_types.h": "0b050bdbf31f6c398366112c84a6041390a50398d1e18acafe4c7440a0700f45",
     "src/raster_vertex_pack.h": "956a8084b973144a9d8ee28c0d485214e3e8551a7384238f610620e00ad6e528",
     "src/rasterizer.c": "6405fc8d4d8f20d61be50f249b37a05d836e7f62c0e6f29870ce65537bd7b46d",
-    "src/scene_visibility.c": "c21c8d1eba02185996c76c50997000041d7eb963434fc7174eae3d23d260546a",
+    "src/scene_visibility.c": "bfe0e01121f59355332963e48d53ea8d6e5141d47669a09f94deb5d0e07ea742",
     "src/simd.h": "c639184db1b8a3c79b0aa07ad4fbe0a96b8c79e16536b3d98abef0b72d74e150",
     "src/state.c": "04f4a8355c1fc37c3521001719dae9a55a1e9b7a34c2f1a70c53990a0d26fb38",
     "src/texture.c": "9c4d999c73b68a7431bd1f0e88c2d3d2e7e1931670ad166ffee535f8d5764c45",
@@ -58,29 +115,20 @@
   },
   "productionWrapperSha256": "28b5483cc332226d5e2a4771c0adc9b52b236c155e0a10ac0e7a956baaa3e430",
   "filesSha256": {
-    "browser-smoke.json": "6b562ec203e29780b3a6fb8f81e260d7f69cb4c95babcf323c8224ae88c1d662",
-    "browser-smoke.txt": "5d193d885d4724ca6610a4d97c65d6c660fa54d7d508f2f1e10b6dfb241e3bcd",
-    "build.txt": "a1d8a0e3369d19cd97c63614f9afbb281c2df4d64fdf6c1403879ec92e33bcab",
-    "configure.txt": "1f0228f9ac460b891c06d4150eb9367789751f946c03a06540cbc7d349f54b8d",
-    "isa-override-build.txt": "50960279cf86e9f1f8b8f0153895dbf387608b228f8852f43a4a29834d59d6dd",
-    "isa-override.json": "ac4c367be6e48413bfa0320b27ee1338f9e064963e7169349f25802c4ae3548b",
-    "isa.json": "894178cee9407d7bf47aa2df614f69d80ee8028728c174c868a5f03592df248a",
-    "live-artifacts.json": "7b85a4270f6cfbbef9db995d0beb489dd6501fd611ff874ff276319cce84b026",
-    "native-build.txt": "995835efeec77400635fde9cf3ae339003097487ad44ae90b446e57947afb48b",
-    "native-contract.txt": "c00c7f19846471fb9c73d304e9d58981d8d10270353474530f5624be8a0536d8",
-    "native-tests.txt": "d434f307b248f744bc4f2f3cce8e7a866b80d20933a0ee300354dea2c77b4830",
-    "quality.json": "81e700fbadb4f53cdca0cd2849c447b3a4ee386cf6afd4ed219875859165ad6a",
+    "browser-smoke.json": "5e7b33010e9e43ebe7926edb86278ddb66ade2766303a193a3d1e6669b4763e6",
+    "browser-smoke.txt": "814c0046697bc5a14db61900efbd9b1fe87445ad6fd189e7dd6fe85978d6d1ed",
+    "isa-production.json": "05fb0c038ca195b0a28e3806333e4ef6888688cc2e49fe941276d99c0eff91f8",
+    "live-artifacts.json": "4fee945b758ae55c0a6266537156616618a776767bb210b4328f983264eb4b61",
+    "native-build.txt": "1b14596a0ce27709e488db0b8f41cd095b62ca32f8a7fa79e2a283c8bdda4dae",
+    "native-tests.txt": "07d0f4fb9e4fc50b3fa9dbdac27aae3e202afb555569c2829eaecad3612747a6",
+    "quality.json": "6e40917b8a82e8853503066b29d4bda66d825ffe3b667d99e4b3c26fdba9bd23",
     "quality.txt": "91b062b758d8871e6b7ebd8d5874ab01b75345e51add1e1302f21b8bbccd573e",
-    "resident-quality.json": "005d711eb5b2a5abfdf6cf53aac9cee427c1d27f8a5506916aeb0d013eb97ea5",
+    "receipt.json": "5a8fac61ce777cf0307033009ec70f03fce6debe9f0fbc411e3a20392c5930a6",
+    "resident-quality.json": "093d5224a4a05d8d3cf3e9ba0e23fa2301785731b6cda7635da53f749c10b7c3",
     "resident-quality.txt": "ea7e18ff170a2b38d77770aee2cdb20353196ec5c52ab468d928cbed7c1a3bcd",
-    "sanitize.txt": "8dc8ddb0c06e4397639d483897888e43f9b1f2697144766f6951d753d45a6bac",
-    "wasm-build.txt": "3e89f5c5023eb0c45e6c483edf6aeb00060b1e0e66003f83e390a11944c25c0d",
-    "wasm-contract.txt": "928ca1d1ada42e02b017d773ea20f0b1236e9a3a94da46fe86c4d876d21cb065"
-  },
-  "currentComparison": {
-    "path": "experiments/glimpsw-mesa-comparison/current-native-simd128",
-    "acceptedRuns": 72,
-    "rejectedRuns": 6,
-    "summarySha256": "b97d24ea5932b3a9ecda649bf3342e463607e12df7822cef80edaa55e37cb221"
+    "sanitize.txt": "28cd59c1e9758509d2c3b3bf1530b97b6de5271c386d5de52c568a068f81203e",
+    "summary.json": "a8f2a99ad72d14cf891ee03b2d91b70d7d83ab29cec51ffb1920695bdbd657cf",
+    "wasm-baseline.txt": "79ae7a644043011b96683e1457f512c8555e1c1057b2d7a386536b89ecccdbf6",
+    "wasm-build.txt": "2cb5f950271de6cef53100359152871faa81205067f0036d91ed6512a20befe2"
   }
 }

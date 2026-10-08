@@ -1,0 +1,44 @@
+{
+  "status": "Promising initial OFF screen; independent three-block all-mode validation running; private prototype",
+  "baseline": "da8ab07",
+  "width": 640,
+  "height": 360,
+  "threads": 4,
+  "exactNativeFullPlaneViews": 36,
+  "nativeIndependentContractFrames": 216,
+  "rollbacks": 16,
+  "wasmContractFrames": 216,
+  "wasmHeapBytes": 268435456,
+  "packetBytes": 160,
+  "trianglesPerPacket": 4,
+  "extraBytesPerPrimitive": 40,
+  "auditCounts": {
+    "producedTriangles": 2156,
+    "packets": 580,
+    "calls": 7080,
+    "directLanes": 5406,
+    "fallbackLanes": 5406,
+    "partialCalls": 6846,
+    "fullMaskCalls": 234
+  },
+  "filesSha256": {
+    "audit-first-build.txt": "521c38250a64c44c225f45a002e8a4e23e9f3e5b7ae2199b6afcfa554dc12088",
+    "audit.txt": "aead0ea1e0d98100150828d7a0c1d5fb1ae7556b6f6971d94f231126e2d2f28c",
+    "build.txt": "7806be43de8d7b82ae412d71efc263b4adeea82d8099da0954bafcb6ada2a92f",
+    "isa.json": "8cc0f070b3c849ccbf18dfdaffab164e45a616a3ea9b2ffdbb5512fbaaedcdfd",
+    "quality.json": "cafbcc50beb132bbd655b338f7a726c241b5f1b0cc420b9ccf3ffdc2123f0c2d",
+    "quality.txt": "2b37ab873ee77bd31236c9434ccd795d02f74c785c8b9f98cf5e61417c2ff676",
+    "quantized-baseline.txt": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+    "quantized.txt": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+    "receipt.json": "0a38c9663688466b57039b5c19821f0e907aada4820c54885dbaed3733416281",
+    "summary.json": "dd296d03bfd44f2a1545591939302ff49c5e90ed71e28be9f0e64b347eb74e87",
+    "wasm.txt": "895f94e4c188bde42b40285d2d07a437e64530f7840467a7d15b233b84fc8fb3"
+  },
+  "initialScreen": {
+    "bmw": -4.676410433597711,
+    "t80": -4.830267717462188,
+    "sponza": -6.959981911247636,
+    "bistro": -7.23773885702651
+  },
+  "initialAcceptedRuns": 16
+}
