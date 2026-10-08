@@ -472,6 +472,11 @@ static void scene_shade_packet(struct sg_scene_visibility *f, scene_material *m,
     sg_f32x4 primary[4], encoded_half[3], tex[4][4];
     for (int k = 0; k < 4; k++) primary[k] = scene_gather_lerp(tri,-1,k,w0,w1,w2,inverse);
     for (int k = 0; k < 3; k++) encoded_half[k] = scene_gather_lerp(tri,1,k,w0,w1,w2,inverse);
+    /* Canonical programs must preserve identical UV0/UV2; geometry validation
+     * restores the scene if any program violates that contract. */
+    int shared_uv = tri[0]->primitive && tri[1]->primitive && tri[2]->primitive && tri[3]->primitive;
+    int have_uv = 0;
+    sg_f32x4 shared_x, shared_y;
     for (int u = 0; u < 4; u++) {
         if (u == 1) continue;
         const sg_tex_unit_tri *unit = &m->texture.unit[u];
@@ -479,8 +484,14 @@ static void scene_shade_packet(struct sg_scene_visibility *f, scene_material *m,
             for (int k = 0; k < 4; k++) tex[u][k] = sg_f32x4_splat(unit->constant_color[k]);
             continue;
         }
-        sg_f32x4 x = scene_gather_lerp(tri,u,0,w0,w1,w2,inverse);
-        sg_f32x4 y = scene_gather_lerp(tri,u,1,w0,w1,w2,inverse);
+        sg_f32x4 x, y;
+        if (u == 2 && have_uv) {
+            x = shared_x; y = shared_y;
+        } else {
+            x = scene_gather_lerp(tri,u,0,w0,w1,w2,inverse);
+            y = scene_gather_lerp(tri,u,1,w0,w1,w2,inverse);
+            if (u == 0 && shared_uv) { shared_x = x; shared_y = y; have_uv = 1; }
+        }
         if (unit->active_slot == SG_TEX_TARGET_CUBE) {
             sg_f32x4 z = scene_gather_lerp(tri,u,2,w0,w1,w2,inverse);
             sg_packet_sample_cube_target(unit,x,y,z,live,tex[u]);

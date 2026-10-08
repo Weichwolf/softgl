@@ -1,0 +1,1 @@
+The new fixture first failed to compile because GL_MIRRORED_REPEAT is not declared by this project header. It was corrected to use the supported GL_CLAMP_TO_EDGE versus GL_REPEAT modes. No renderer, API or tolerance change was made for that failure. Both baseline/candidate fixture runs and sanitizer runs then passed.

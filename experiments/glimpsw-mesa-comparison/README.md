@@ -1,6 +1,6 @@
 # GLimpSW / Mesa / libsoftgl with four common scenes
 
-Status: accepted opt-in SIMD32 visibility renderer f1df73f beats Mesa in all
+Last direct comparison: opt-in SIMD32 visibility renderer f1df73f beats Mesa in all
 four scenes at 640×360/off, with 61.5–76.9% less complete-frame time. GLimpSW
 remains 4.29–6.46× faster with its different rendering pipeline.
 [Current summary](current-quantized-visibility/summary.json),
@@ -223,3 +223,9 @@ pass; image changes are quantified rather than hidden by tolerance changes.
 Isolated native AB/BA gains and approximation quality belong to the
 [optimization experiment](../scene-quantized-visibility/README.md). This
 comparison updates the backend gap; GLimpSW still remains faster.
+
+
+The later [canonical material UV reuse](../scene-shared-material-uv/README.md)
+is accepted with isolated off-mode gains of 1.9/3.1/3.7/2.8% on the same four
+scenes. The direct three-backend table above still measures f1df73f; its values
+are not relabeled as new measurements of that later renderer.
