@@ -1,0 +1,59 @@
+[
+  {
+    "asset": "bistro",
+    "variant": "candidate",
+    "samples": 4,
+    "width": 640,
+    "height": 360,
+    "threads": 4,
+    "warmup": 60,
+    "frames": 120,
+    "camera": [
+      -0.2645781988686565,
+      -0.0701259774896742,
+      -0.030798770463549046,
+      106.61614456367424,
+      1.8303149246194799,
+      35.98339890412515,
+      0.0008674848072185219,
+      8.674848072185219
+    ],
+    "packSha256": "4c862bcd28ef6833a89b0a058832c051098f5cf5869590999859b86f1cc993f3",
+    "binarySha256": "bb62ca61a8e014f5b32a47d93cb5837f7138c6a839df25216d669c4d0df65e71",
+    "command": [
+      "perf",
+      "record",
+      "-e",
+      "cycles:u",
+      "-F",
+      "499",
+      "-p",
+      "3562409",
+      "-o",
+      "/home/cosmo/Git/softgl/tmp/scene-msaa-visibility/adaptive-v1-bistro-profiles/bistro-candidate-msaa4.perf.data"
+    ],
+    "request": "4 60 120 160 -",
+    "driverResult": {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 640502,
+      "frames": 120,
+      "ms": 81.846732417,
+      "submitMs": 80.321711075,
+      "finishReadbackMs": 1.524955509,
+      "angle": 160,
+      "rgba": "09d51d64734e2b1d",
+      "depth": "0dc679bb855f0e5e",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "72ecacd2a4bb729a",
+      "sampleStencil": "009b538b2455c383"
+    },
+    "dataSha256": "63149da63f5302690aa342a245b345c08ea24a1f366233b61831f9256542d0ea",
+    "reportSha256": "a3e511a7e66a02ab4185a6c302edaf24277b3db084865ead6c9f1dd37aa562da",
+    "measuredWithProfiler": true,
+    "performanceAcceptance": false
+  }
+]

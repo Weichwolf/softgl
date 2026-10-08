@@ -1,0 +1,10 @@
+{
+  "expectedFailure": true,
+  "exitCode": 1,
+  "stdout": "Mixed captured alpha/opaque state: 18 legacy/deferred full sample-plane pairs PASS\nAdaptive 2\u00d7/4\u00d7 hint: exact density boundary, no allocation on rejection PASS\nMSAA sample rollback/admission, tiny and mixed-state controls PASS\n",
+  "stderr": "line 118: !memcmp(a->fb.depth,b->fb.depth,pixels*sizeof(float))\n",
+  "binarySha256": "1f7cd4b0ca4ba5ceccbc276a73f8de81e4c88f0e27a870ea2400a618fcee0342",
+  "originalSourceSha256": "313744ac2a08605a58218efe746545e48a718d195be3837b40d7efdb7e0d030a",
+  "mutatedSourceSha256": "c8e9f7e35cb5af27572f22dc28bdb4eaffee9e3586d1e180b5fbf8e189628cee",
+  "note": "Missing invalidation changes actual subsequent ordinary-render depth; no implementation-state assertions."
+}

@@ -8,6 +8,7 @@
 #include "frag_packet.h"
 #include "raster_store.h"
 #include "multisample.h"
+#include "raster_hz.h"
 #include <stdio.h>
 
 #define SCENE_MATERIALS 4096
@@ -215,6 +216,13 @@ static uint32_t scene_triangle_record(struct sg_scene_visibility *f, int bin,
 }
 
 #ifdef SOFTGL_MSAA_VISIBILITY_AUDIT
+static atomic_ullong scene_msaa_hz_counts[3];
+void sg_scene_msaa_hz_count(unsigned index) {
+    atomic_fetch_add_explicit(&scene_msaa_hz_counts[index],1,memory_order_relaxed);
+}
+unsigned long long softgl_scene_msaa_hz_audit(unsigned index) {
+    return index < 3 ? atomic_load_explicit(&scene_msaa_hz_counts[index],memory_order_relaxed) : 0;
+}
 static atomic_ullong scene_msaa_audit[8];
 unsigned long long softgl_scene_msaa_audit(unsigned index) {
     return index < 8 ? atomic_load_explicit(&scene_msaa_audit[index],memory_order_relaxed) : 0;
@@ -287,6 +295,12 @@ void sg_scene_visibility_msaa_packet(softgl_ctx *c,
             f->bins[bin].depth_passes++;
             SCENE_MSAA_AUDIT(2,1);
         }
+        /* Alpha was already accepted and every covered sample has been
+         * committed. Updating a bound earlier could discard visible holes. */
+        sg_hz_record_pixel(c,packet->x[l],packet->y[l],coverage,packet->depths[l]);
+#ifdef SOFTGL_MSAA_VISIBILITY_AUDIT
+        sg_scene_msaa_hz_count(0);
+#endif
     }
 }
 
@@ -929,6 +943,14 @@ static void scene_restore(struct sg_scene_visibility *f) {
         memcpy(c->fb.sample_color,f->backup_color,units*4);
         memcpy(c->fb.depth,f->backup_depth+units,pixels*sizeof(float));
         memcpy(c->fb.color,f->backup_color+units*4,pixels*4);
+        /* Restored depths may be farther away. Invalidate all old summaries;
+         * a subsequent ordinary draw must rebuild them from real writes. */
+        sg_hz_state *hz = sg_hz_state_from_ctx(c);
+        if (hz && hz->tiles)
+            memset(hz->tiles,0,(size_t)(c->fb.w/4)*hz->rows*sizeof(sg_hz_tile));
+#ifdef SOFTGL_MSAA_VISIBILITY_AUDIT
+        sg_scene_msaa_hz_count(2);
+#endif
     } else {
         memcpy(c->fb.depth,f->backup_depth,pixels*sizeof(float));
         memcpy(c->fb.color,f->backup_color,pixels*4);

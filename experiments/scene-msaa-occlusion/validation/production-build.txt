@@ -1,0 +1,881 @@
+[  0%] Built target bench_case_showcase
+[  0%] Built target sg_compare
+[  0%] Building C object tests/CMakeFiles/msaa_edge_instrumented.dir/__/libsoftgl/src/rasterizer.c.o
+[  0%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/state.c.o
+[  0%] Built target bench_case_shadow
+[  0%] Built target bench_case_particles
+[  0%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/matrix.c.o
+[  0%] Built target bench_case_city
+[  1%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/buffers.c.o
+[  1%] Built target bench_case_sphere_lit
+[  1%] Built target harness_mesa
+[  1%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/texture.c.o
+[  2%] Built target tank_image_scene
+[  2%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/pipeline.c.o
+[  2%] Built target model_image_scene
+[  2%] Built target model_softgl_scene
+[  2%] Built target ref_bmw_view_0
+[  3%] Built target ref_bmw_view_120
+[  3%] Built target ref_bmw_view_240
+[  3%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/clip.c.o
+[  3%] Built target ref_02_clear_red
+[  3%] Built target ref_01_clear_black
+[  3%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/multisample.c.o
+[  3%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/fragment_write.c.o
+[  3%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/fragment_combine.c.o
+[  3%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/rasterizer.c.o
+[  3%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/lines.c.o
+[  4%] Built target ref_03_scissor_clear
+[  4%] Built target ref_04_partial_viewport_clear
+[  4%] Built target ref_05_multi_clear_stripes
+[  4%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/fragment.c.o
+[  4%] Built target ref_06_get_viewport
+[  4%] Built target ref_07_matrix_identity
+[  4%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/framebuffer.c.o
+[  5%] Built target ref_08_matrix_translate
+[  5%] Built target ref_09_matrix_stack
+[  5%] Built target ref_10_ortho_projection
+[  6%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/lighting.c.o
+[  6%] Built target ref_11_triangle_ccw
+[  6%] Built target ref_12_triangle_cw_culled
+[  6%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/api.c.o
+[  6%] Built target ref_13_triangle_depth
+[  6%] Built target ref_14_triangle_frustum
+[  6%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/immediate.c.o
+[  6%] Built target ref_15_two_tris_depth
+[  6%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/dlist.c.o
+[  6%] Built target ref_16_flat_shaded
+[  6%] Built target ref_17_gouraud_rgb
+[  6%] Built target ref_18_fullscreen_quad
+[  6%] Built target ref_19_degenerate_triangle
+[  6%] Built target ref_20_triangle_at_edges
+[  6%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/pixels.c.o
+[  6%] Built target ref_21_clip_left
+[  6%] Built target ref_22_clip_right
+[  6%] Built target ref_23_clip_top
+[  6%] Built target ref_24_clip_bottom
+[  7%] Built target ref_25_clip_near
+[  7%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/evaluators.c.o
+[  7%] Built target ref_26_clip_far
+[  7%] Built target ref_27_clip_all_planes
+[  7%] Built target ref_28_clip_offscreen_but_visible
+[  7%] Built target ref_29_clip_quad_seam
+[  7%] Built target ref_30_clip_many_triangles
+[  8%] Built target ref_31_translate
+[  8%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/workers.c.o
+[  8%] Building C object libsoftgl/CMakeFiles/softgl.dir/src/scene_visibility.c.o
+[  8%] Built target msaa_edge_instrumented
+[  8%] Built target ref_32_rotate_x
+[  8%] Built target ref_33_rotate_y
+[  8%] Built target ref_34_rotate_z
+[  8%] Built target ref_35_scale_nonuniform
+[  9%] Built target ref_36_rotate_translate
+[  9%] Built target ref_37_orbit
+[  9%] Built target ref_39_aspect_correction
+[  9%] Built target ref_38_perspective_60fov
+[  9%] Built target ref_41_tex_checkerboard
+[  9%] Built target ref_40_hierarchical_transform
+[  9%] Built target ref_43_tex_repeat
+[ 10%] Built target ref_42_tex_gradient_bilinear
+[ 10%] Built target ref_44_tex_clamp
+[ 10%] Built target ref_45_tex_many_repeats
+[ 10%] Built target ref_46_tex_alpha_cutout
+[ 11%] Built target ref_47_tex_modulate
+[ 11%] Built target ref_48_tex_replace
+[ 11%] Built target ref_49_tex_decal
+[ 11%] Built target ref_51_directional_light
+[ 11%] Built target ref_50_multitexture
+[ 11%] Built target ref_52_ambient_only
+[ 12%] Built target ref_53_diffuse_lambert
+[ 12%] Built target ref_54_specular_blinn
+[ 12%] Built target ref_56_multi_lights
+[ 12%] Built target ref_55_point_light_attenuation
+[ 12%] Built target ref_57_icosphere_lit
+[ 13%] Built target ref_58_colored_material
+[ 13%] Built target ref_59_emission
+[ 13%] Built target ref_60_normalize
+[ 13%] Built target ref_62_icosphere_subdiv
+[ 13%] Built target ref_61_tessellated_grid
+[ 14%] Built target ref_63_uv_sphere
+[ 14%] Built target ref_64_cylinder
+[ 14%] Built target ref_66_bezier_patch
+[ 14%] Built target ref_65_torus
+[ 14%] Built target ref_67_extrusion
+[ 14%] Built target ref_68_loft
+[ 15%] Built target ref_69_superquadric
+[ 15%] Built target ref_70_heightfield
+[ 15%] Built target ref_71_fog_exp2
+[ 15%] Built target ref_72_fog_linear
+[ 15%] Built target ref_73_fog_exp
+[ 16%] Built target ref_74_fog_colored
+[ 16%] Built target ref_75_alpha_blend
+[ 16%] Built target ref_77_alpha_test_edge
+[ 16%] Built target ref_76_additive_blend
+[ 16%] Built target ref_79_premult_alpha
+[ 16%] Built target ref_78_transparent_stack
+[ 17%] Built target ref_80_blend_depth
+[ 17%] Built target ref_81_vbo_simple
+[ 17%] Built target ref_82_vbo_interleaved_pc
+[ 17%] Built target ref_83_vbo_interleaved_pnct
+[ 17%] Built target ref_84_indexed_draw
+[ 18%] Built target ref_85_multi_vbos
+[ 18%] Built target ref_86_buffer_subdata
+[ 18%] Built target ref_87_large_mesh
+[ 18%] Built target ref_88_instanced_manual
+[ 18%] Built target ref_89_dynamic_vbo
+[ 18%] Built target ref_90_multi_drawarrays
+[ 19%] Built target ref_91_dot3_baseline
+[ 19%] Built target ref_92_normalmap_pattern
+[ 19%] Built target ref_94_lit_textured_sphere
+[ 19%] Built target ref_93_normalmap_depth
+[ 20%] Built target ref_96_building_cube
+[ 20%] Built target ref_95_scene_sphere_ground
+[ 20%] Built target ref_98_city_block
+[ 20%] Built target ref_97_multiple_buildings
+[ 20%] Built target ref_99_moving_camera
+[ 20%] Built target ref_100_showcase
+[ 20%] Built target ref_101_begin_triangles
+[ 20%] Built target ref_102_vertex_variants
+[ 20%] Built target ref_104_triangle_fan
+[ 21%] Built target ref_103_triangle_strip
+[ 21%] Built target ref_105_quads_one
+[ 21%] Built target ref_106_quads_two
+[ 21%] Built target ref_107_quad_strip
+[ 21%] Built target ref_108_polygon_hexagon
+[ 21%] Built target ref_110_textured_quad
+[ 21%] Built target ref_111_multitexture_imm
+[ 22%] Built target ref_109_lit_triangle
+[ 22%] Built target ref_112_rectf
+[ 22%] Built target ref_114_array_element
+[ 23%] Built target ref_113_type_conversion
+[ 23%] Built target ref_115_lit_polygon
+[ 23%] Built target ref_116_dlist_empty
+[ 23%] Built target ref_117_dlist_triangle
+[ 23%] Built target ref_120_call_lists_byte
+[ 23%] Built target ref_118_dlist_transform
+[ 24%] Built target ref_119_dlist_compile_and_execute
+[ 24%] Built target ref_122_dlist_lit
+[ 24%] Built target ref_121_nested_lists
+[ 24%] Built target ref_124_dlist_vbo_draw
+[ 25%] Built target ref_123_dlist_texture
+[ 25%] Built target ref_126_dlist_color_order
+[ 25%] Built target ref_125_dlist_vbo_alloc
+[ 25%] Built target ref_127_dlist_matrix_stack
+[ 25%] Linking C static library libsoftgl.a
+[ 26%] Built target ref_129_dlist_id_recycle
+[ 26%] Built target ref_128_dlist_repeat_outer_mv
+[ 26%] Built target ref_130_call_lists_2bytes
+[ 26%] Built target ref_131_lines_basic
+[ 26%] Built target ref_132_line_strip
+[ 27%] Built target ref_133_line_loop
+[ 27%] Built target ref_135_points_grid
+[ 27%] Built target ref_134_line_width
+[ 27%] Built target softgl
+[ 27%] Built target ref_136_point_size
+[ 27%] Built target ref_137_polygon_mode_line
+[ 27%] Built target ref_138_polygon_mode_point
+[ 28%] Built target ref_139_polygon_mode_two_faces
+[ 28%] Built target ref_140_polygon_offset
+[ 28%] Built target ref_142_line_perspective_depth
+[ 28%] Built target ref_141_line_color_gradient
+[ 29%] Built target ref_143_line_clip
+[ 29%] Built target ref_144_edge_flag_polygon
+[ 29%] Built target ref_145_mixed_primitives
+[ 29%] Built target ref_146_stencil_clear
+[ 29%] Built target ref_147_stencil_mask_basic
+[ 30%] Built target ref_148_stencil_incr_overlap
+[ 30%] Built target ref_150_stencil_zfail_shadow
+[ 30%] Built target ref_149_stencil_invert_xor
+[ 30%] Built target ref_151_stencil_write_mask
+[ 30%] Built target ref_152_stencil_value_mask
+[ 31%] Built target ref_153_stencil_dpfail_incr
+[ 31%] Built target ref_154_stencil_portal
+[ 31%] Built target ref_156_tex1d_gradient
+[ 31%] Built target ref_155_stencil_mirror
+[ 31%] Built target ref_157_tex1d_lookup
+[ 32%] Built target ref_158_tex3d_corners
+[ 32%] Built target ref_160_cubemap_skybox
+[ 32%] Built target ref_159_tex3d_slices
+[ 32%] Built target ref_161_cubemap_reflect
+[ 33%] Built target ref_163_copy_tex_image_2d
+[ 33%] Built target ref_164_copy_tex_sub_image_2d
+[ 33%] Built target ref_162_cubemap_faces
+[ 33%] Built target ref_165_tex_sub_image_2d
+[ 34%] Built target ref_168_tex3d_trilinear
+[ 34%] Built target ref_167_cubemap_lit
+[ 34%] Built target ref_166_tex_sub_image_3d
+[ 34%] Built target ref_169_cube_and_2d
+[ 34%] Built target ref_170_all_targets
+[ 34%] Built target ref_171_clip_plane_y
+[ 35%] Built target ref_173_clip_plane_two
+[ 35%] Built target ref_172_clip_plane_diagonal
+[ 35%] Built target ref_174_color_material_diffuse
+[ 35%] Built target ref_175_light_model_local_viewer
+[ 35%] Built target ref_176_light_model_two_side
+[ 35%] Built target ref_177_color_mask
+[ 36%] Built target ref_178_logic_op_xor
+[ 36%] Built target ref_179_logic_op_invert
+[ 36%] Built target ref_180_hint_and_index_mask
+[ 37%] Built target ref_182_drawpixels_luminance
+[ 37%] Built target ref_181_drawpixels_rgba
+[ 37%] Built target ref_184_readpixels_echo
+[ 37%] Built target ref_183_drawpixels_rgb_float
+[ 37%] Built target ref_185_copypixels
+[ 37%] Built target ref_186_pixelzoom_2x
+[ 37%] Built target ref_190_rasterpos_clipped
+[ 37%] Built target ref_189_unpack_rowlength_skip
+[ 37%] Built target ref_187_pixelzoom_flip
+[ 38%] Built target ref_188_unpack_alignment
+[ 38%] Built target ref_193_combine_add_signed_scale
+[ 38%] Built target ref_191_combine_interpolate
+[ 39%] Built target ref_192_combine_subtract
+[ 39%] Built target ref_194_combine_split_alpha
+[ 39%] Built target ref_197_occlusion_any
+[ 39%] Built target ref_196_occlusion_samples
+[ 39%] Built target ref_195_combine_dot3_rgba
+[ 40%] Built target ref_198_map_buffer
+[ 40%] Built target ref_199_evaluators_patch
+[ 40%] Built target ref_200_accum_jitter
+[ 40%] Built target ref_201_stipple
+[ 40%] Built target ref_203_bump_brick
+[ 40%] Built target ref_204_lightmap_corridor
+[ 41%] Built target ref_202_shadow_volume
+[ 41%] Built target ref_205_chrome_sphere
+[ 41%] Built target ref_206_spot_projector
+[ 42%] Built target ref_208_terrain_blend
+[ 42%] Built target ref_207_glass_window
+[ 42%] Built target ref_209_particles_additive
+[ 42%] Built target ref_210_portal_rooms
+[ 43%] Built target ref_212_skybox_sun
+[ 43%] Built target ref_211_billboard_trees
+[ 43%] Built target ref_213_lens_flare
+[ 43%] Built target ref_215_crt_emissive
+[ 43%] Built target ref_214_decal_stencil
+[ 43%] Built target ref_216_water_surface
+[ 43%] Built target ref_217_dot3_multipass_fog
+[ 44%] Built target ref_218_worker_single_triangle
+[ 44%] Built target ref_219_normal_matrix_batches
+[ 44%] Built target ref_221_texture_state_batches
+[ 44%] Built target ref_220_texture_linear_fog
+[ 45%] Built target ref_222_worker_quad_boundaries
+[ 45%] Built target ref_223_parallel_vertex_projection
+[ 45%] Built target ref_224_parallel_occlusion_queries
+[ 45%] Built target ref_225_transformed_bin_lifetime
+[ 45%] Built target ref_226_parallel_pool_queries
+[ 45%] Built target ref_229_scalar_early_depth
+[ 46%] Built target ref_227_simd_color_rounding
+[ 46%] Built target ref_228_texture_repeat_coordinates
+[ 46%] Built target ref_230_combiner_sampling_dependencies
+[ 46%] Built target ref_231_order_sensitive_sorting
+[ 47%] Built target ref_232_combiner_operand_channels
+[ 47%] Built target ref_233_large_query_handoffs
+[ 47%] Built target ref_234_multisample_state
+[ 47%] Built target ref_tank_view_0
+[ 47%] Built target ref_tank_view_120
+[ 47%] Built target ref_tank_view_240
+[ 47%] Building C object tests/CMakeFiles/index_range_contract.dir/index_range.c.o
+[ 47%] Building C object tests/CMakeFiles/scene_visibility_contract.dir/scene_visibility.c.o
+[ 47%] Building C object tests/CMakeFiles/scene_msaa_contract.dir/scene_msaa.c.o
+[ 47%] Building C object tests/CMakeFiles/scene_positions_contract.dir/scene_positions.c.o
+[ 47%] Linking C executable scene_visibility_contract
+[ 48%] Linking C executable index_range_contract
+[ 48%] Built target index_range_contract
+[ 48%] Built target scene_visibility_contract
+[ 49%] Building C object tests/CMakeFiles/scene_coverage_contract.dir/scene_coverage.c.o
+[ 49%] Building C object tests/CMakeFiles/scene_bins_contract.dir/scene_bins.c.o
+[ 49%] Linking C executable scene_positions_contract
+[ 49%] Built target scene_positions_contract
+[ 49%] Linking C executable scene_msaa_contract
+[ 49%] Building C object tests/CMakeFiles/transparent_material_contract.dir/transparent_material.c.o
+[ 49%] Linking C executable scene_bins_contract
+[ 49%] Built target scene_msaa_contract
+[ 49%] Building C object tests/CMakeFiles/scene_quantized_contract.dir/scene_quantized.c.o
+[ 49%] Built target scene_bins_contract
+[ 49%] Building C object tests/CMakeFiles/scene_uv_contract.dir/scene_uv.c.o
+[ 49%] Linking C executable scene_coverage_contract
+[ 49%] Linking C executable transparent_material_contract
+[ 49%] Built target scene_coverage_contract
+[ 49%] Linking C executable scene_quantized_contract
+[ 50%] Linking C executable scene_uv_contract
+[ 50%] Building C object tests/CMakeFiles/scene_native_wide_contract.dir/scene_native_wide.c.o
+[ 50%] Built target transparent_material_contract
+[ 50%] Building C object tests/CMakeFiles/worker_pool.dir/worker_pool.c.o
+[ 50%] Built target scene_quantized_contract
+[ 50%] Built target scene_uv_contract
+[ 50%] Building C object tests/CMakeFiles/vertex_attributes_contract.dir/vertex_attributes.c.o
+[ 50%] Building C object tests/CMakeFiles/fused_material_contract.dir/fused_material.c.o
+[ 51%] Linking C executable worker_pool
+[ 51%] Linking C executable vertex_attributes_contract
+[ 51%] Linking C executable scene_native_wide_contract
+[ 51%] Built target worker_pool
+[ 51%] Built target vertex_attributes_contract
+[ 51%] Building C object tests/CMakeFiles/multisample_contract.dir/multisample.c.o
+[ 51%] Building C object tests/CMakeFiles/static_cluster_contract.dir/static_cluster_culling.c.o
+[ 51%] Built target scene_native_wide_contract
+[ 51%] Linking C executable fused_material_contract
+[ 51%] Building C object tests/CMakeFiles/msaa_store_contract.dir/msaa_store.c.o
+[ 51%] Linking C executable static_cluster_contract
+[ 51%] Built target fused_material_contract
+[ 51%] Building C object tests/CMakeFiles/hierarchical_depth_contract.dir/hierarchical_depth.c.o
+[ 51%] Built target static_cluster_contract
+[ 51%] Building C object tests/CMakeFiles/msaa_edge_contract.dir/msaa_edges.c.o
+[ 51%] Linking C executable multisample_contract
+[ 52%] Linking C executable msaa_store_contract
+[ 52%] Built target multisample_contract
+[ 52%] Linking C executable msaa_edge_contract
+[ 52%] Building C object tests/CMakeFiles/dot3_chain_contract.dir/dot3_chain.c.o
+[ 52%] Built target msaa_store_contract
+[ 52%] Building C object tests/CMakeFiles/constant_texture_contract.dir/constant_texture.c.o
+[ 52%] Built target msaa_edge_contract
+[ 52%] Linking C executable hierarchical_depth_contract
+[ 53%] Building C object tests/CMakeFiles/pixel_packet_contract.dir/__/libsoftgl/src/fragment.c.o
+[ 53%] Linking C executable constant_texture_contract
+[ 53%] Built target hierarchical_depth_contract
+[ 53%] Built target constant_texture_contract
+[ 53%] Building C object tests/CMakeFiles/cube_packet_contract.dir/__/libsoftgl/src/fragment.c.o
+[ 54%] Building C object tests/CMakeFiles/geometry_cache_contract.dir/geometry_cache.c.o
+[ 54%] Linking C executable dot3_chain_contract
+[ 54%] Building C object tests/CMakeFiles/pixel_packet_contract.dir/__/libsoftgl/src/fragment_combine.c.o
+[ 54%] Built target dot3_chain_contract
+[ 54%] Building C object tests/CMakeFiles/pixel_packet_contract.dir/__/libsoftgl/src/rasterizer.c.o
+[ 54%] Building C object tests/CMakeFiles/cube_packet_contract.dir/__/libsoftgl/src/fragment_combine.c.o
+[ 54%] Linking C executable geometry_cache_contract
+[ 54%] Building C object tests/CMakeFiles/async_raster_contract.dir/async_raster.c.o
+[ 54%] Building C object tests/CMakeFiles/cube_packet_contract.dir/__/libsoftgl/src/rasterizer.c.o
+[ 54%] Built target geometry_cache_contract
+[ 54%] Building C object tests/CMakeFiles/pixel_packet_contract.dir/pixel_packet.c.o
+[ 54%] Linking C executable async_raster_contract
+[ 54%] Built target async_raster_contract
+[ 54%] Building C object tests/CMakeFiles/raster_vertex_pack_contract.dir/raster_vertex_pack.c.o
+[ 54%] Linking C executable raster_vertex_pack_contract
+[ 54%] Built target raster_vertex_pack_contract
+[ 54%] Building C object tests/CMakeFiles/packed_queue_admission_contract.dir/packed_queue_admission.c.o
+[ 55%] Building C object tests/CMakeFiles/cube_packet_contract.dir/cube_packet.c.o
+[ 55%] Building C object tests/CMakeFiles/packed_stream_contract.dir/packed_stream.c.o
+[ 55%] Linking C executable packed_queue_admission_contract
+[ 55%] Linking C executable packed_stream_contract
+[ 55%] Built target packed_queue_admission_contract
+[ 55%] Building C object tests/CMakeFiles/simd_clamp_contract.dir/simd_clamp.c.o
+[ 55%] Built target packed_stream_contract
+[ 55%] Building C object tests/CMakeFiles/ordered_draw_queue_contract.dir/ordered_draw_queue.c.o
+[ 55%] Linking C executable ordered_draw_queue_contract
+[ 55%] Linking C executable simd_clamp_contract
+[ 55%] Built target ordered_draw_queue_contract
+[ 55%] Building C object tests/CMakeFiles/msaa_additive_contract.dir/msaa_additive.c.o
+[ 55%] Built target simd_clamp_contract
+[ 55%] Building C object tests/CMakeFiles/triangle_stage_contract.dir/triangle_stage.c.o
+[ 55%] Linking C executable msaa_additive_contract
+[ 55%] Linking C executable triangle_stage_contract
+[ 55%] Built target msaa_additive_contract
+[ 55%] Building C object tests/CMakeFiles/msaa_scanline_contract.dir/msaa_scanline.c.o
+[ 55%] Built target triangle_stage_contract
+[ 55%] Building C object tests/CMakeFiles/cube_filter_contract.dir/__/libsoftgl/src/fragment.c.o
+[ 55%] Linking C executable msaa_scanline_contract
+[ 55%] Built target msaa_scanline_contract
+[ 55%] Building C object tests/CMakeFiles/cache_coverage_contract.dir/cache_coverage.c.o
+[ 55%] Building C object tests/CMakeFiles/cube_filter_contract.dir/__/libsoftgl/src/fragment_combine.c.o
+[ 55%] Building C object tests/CMakeFiles/cube_filter_contract.dir/cube_filter.c.o
+[ 55%] Linking C executable cache_coverage_contract
+[ 55%] Linking C executable cube_filter_contract
+[ 55%] Built target cache_coverage_contract
+[ 55%] Building C object tests/CMakeFiles/depth_replay_contract.dir/depth_replay.c.o
+[ 55%] Built target cube_filter_contract
+[ 55%] Building C object tests/CMakeFiles/position_cache_contract.dir/position_cache.c.o
+[ 55%] Linking C executable position_cache_contract
+[ 55%] Built target position_cache_contract
+[ 55%] Building C object tests/CMakeFiles/vertex_inputs_contract.dir/vertex_inputs.c.o
+[ 55%] Linking C executable vertex_inputs_contract
+[ 55%] Built target vertex_inputs_contract
+[ 55%] Linking C executable depth_replay_contract
+[ 55%] Linking C executable ../bench/bench_raster
+[ 55%] Built target bench_raster
+[ 56%] Linking C executable ../bench/bench_scenes
+[ 56%] Built target depth_replay_contract
+[ 56%] Linking C executable ../bench/bench_tank
+[ 56%] Built target bench_scenes
+[ 56%] Built target bench_tank
+[ 56%] Built target harness_softgl
+[ 56%] Linking C executable ../tests_sgl/sgl_01_clear_black
+[ 56%] Linking C executable ../tests_sgl/sgl_02_clear_red
+[ 56%] Built target sgl_01_clear_black
+[ 57%] Linking C executable ../tests_sgl/sgl_03_scissor_clear
+[ 57%] Built target sgl_02_clear_red
+[ 57%] Linking C executable ../tests_sgl/sgl_04_partial_viewport_clear
+[ 57%] Built target sgl_03_scissor_clear
+[ 57%] Linking C executable ../tests_sgl/sgl_05_multi_clear_stripes
+[ 57%] Built target sgl_04_partial_viewport_clear
+[ 57%] Linking C executable ../tests_sgl/sgl_06_get_viewport
+[ 57%] Built target sgl_05_multi_clear_stripes
+[ 57%] Linking C executable ../tests_sgl/sgl_07_matrix_identity
+[ 57%] Built target sgl_06_get_viewport
+[ 57%] Linking C executable ../tests_sgl/sgl_08_matrix_translate
+[ 57%] Built target sgl_07_matrix_identity
+[ 57%] Linking C executable ../tests_sgl/sgl_09_matrix_stack
+[ 57%] Built target sgl_08_matrix_translate
+[ 58%] Built target sgl_09_matrix_stack
+[ 58%] Linking C executable ../tests_sgl/sgl_10_ortho_projection
+[ 58%] Linking C executable ../tests_sgl/sgl_11_triangle_ccw
+[ 59%] Built target sgl_10_ortho_projection
+[ 59%] Linking C executable ../tests_sgl/sgl_12_triangle_cw_culled
+[ 60%] Built target sgl_11_triangle_ccw
+[ 60%] Linking C executable ../tests_sgl/sgl_13_triangle_depth
+[ 60%] Built target sgl_12_triangle_cw_culled
+[ 60%] Built target sgl_13_triangle_depth
+[ 60%] Linking C executable ../tests_sgl/sgl_14_triangle_frustum
+[ 60%] Linking C executable ../tests_sgl/sgl_15_two_tris_depth
+[ 60%] Built target sgl_14_triangle_frustum
+[ 60%] Built target sgl_15_two_tris_depth
+[ 60%] Linking C executable ../tests_sgl/sgl_16_flat_shaded
+[ 60%] Linking C executable ../tests_sgl/sgl_17_gouraud_rgb
+[ 60%] Built target sgl_16_flat_shaded
+[ 60%] Built target sgl_17_gouraud_rgb
+[ 60%] Linking C executable ../tests_sgl/sgl_18_fullscreen_quad
+[ 60%] Linking C executable ../tests_sgl/sgl_19_degenerate_triangle
+[ 60%] Linking C executable pixel_packet_contract
+[ 60%] Built target sgl_19_degenerate_triangle
+[ 60%] Built target sgl_18_fullscreen_quad
+[ 60%] Linking C executable ../tests_sgl/sgl_21_clip_left
+[ 60%] Linking C executable ../tests_sgl/sgl_20_triangle_at_edges
+[ 60%] Linking C executable cube_packet_contract
+[ 60%] Built target pixel_packet_contract
+[ 60%] Built target sgl_20_triangle_at_edges
+[ 60%] Linking C executable ../tests_sgl/sgl_22_clip_right
+[ 60%] Built target sgl_21_clip_left
+[ 60%] Built target cube_packet_contract
+[ 60%] Linking C executable ../tests_sgl/sgl_23_clip_top
+[ 60%] Linking C executable ../tests_sgl/sgl_24_clip_bottom
+[ 60%] Linking C executable ../tests_sgl/sgl_25_clip_near
+[ 60%] Built target sgl_22_clip_right
+[ 60%] Built target sgl_25_clip_near
+[ 61%] Built target sgl_23_clip_top
+[ 61%] Linking C executable ../tests_sgl/sgl_26_clip_far
+[ 61%] Built target sgl_24_clip_bottom
+[ 61%] Linking C executable ../tests_sgl/sgl_27_clip_all_planes
+[ 61%] Linking C executable ../tests_sgl/sgl_28_clip_offscreen_but_visible
+[ 61%] Linking C executable ../tests_sgl/sgl_29_clip_quad_seam
+[ 61%] Built target sgl_27_clip_all_planes
+[ 61%] Built target sgl_26_clip_far
+[ 61%] Built target sgl_29_clip_quad_seam
+[ 61%] Linking C executable ../tests_sgl/sgl_30_clip_many_triangles
+[ 61%] Linking C executable ../tests_sgl/sgl_31_translate
+[ 61%] Built target sgl_28_clip_offscreen_but_visible
+[ 61%] Linking C executable ../tests_sgl/sgl_32_rotate_x
+[ 61%] Linking C executable ../tests_sgl/sgl_33_rotate_y
+[ 61%] Built target sgl_30_clip_many_triangles
+[ 62%] Built target sgl_32_rotate_x
+[ 62%] Built target sgl_33_rotate_y
+[ 62%] Linking C executable ../tests_sgl/sgl_34_rotate_z
+[ 62%] Built target sgl_31_translate
+[ 62%] Linking C executable ../tests_sgl/sgl_35_scale_nonuniform
+[ 62%] Linking C executable ../tests_sgl/sgl_36_rotate_translate
+[ 62%] Linking C executable ../tests_sgl/sgl_37_orbit
+[ 62%] Built target sgl_35_scale_nonuniform
+[ 62%] Built target sgl_34_rotate_z
+[ 63%] Built target sgl_37_orbit
+[ 63%] Linking C executable ../tests_sgl/sgl_38_perspective_60fov
+[ 63%] Built target sgl_36_rotate_translate
+[ 63%] Linking C executable ../tests_sgl/sgl_39_aspect_correction
+[ 63%] Linking C executable ../tests_sgl/sgl_40_hierarchical_transform
+[ 63%] Linking C executable ../tests_sgl/sgl_41_tex_checkerboard
+[ 63%] Built target sgl_38_perspective_60fov
+[ 63%] Built target sgl_39_aspect_correction
+[ 63%] Linking C executable ../tests_sgl/sgl_43_tex_repeat
+[ 64%] Linking C executable ../tests_sgl/sgl_42_tex_gradient_bilinear
+[ 64%] Built target sgl_41_tex_checkerboard
+[ 64%] Built target sgl_40_hierarchical_transform
+[ 64%] Linking C executable ../tests_sgl/sgl_44_tex_clamp
+[ 64%] Linking C executable ../tests_sgl/sgl_45_tex_many_repeats
+[ 64%] Built target sgl_42_tex_gradient_bilinear
+[ 64%] Built target sgl_43_tex_repeat
+[ 64%] Linking C executable ../tests_sgl/sgl_47_tex_modulate
+[ 64%] Linking C executable ../tests_sgl/sgl_46_tex_alpha_cutout
+[ 64%] Built target sgl_44_tex_clamp
+[ 64%] Built target sgl_45_tex_many_repeats
+[ 64%] Linking C executable ../tests_sgl/sgl_49_tex_decal
+[ 64%] Linking C executable ../tests_sgl/sgl_48_tex_replace
+[ 64%] Built target sgl_47_tex_modulate
+[ 64%] Built target sgl_46_tex_alpha_cutout
+[ 64%] Linking C executable ../tests_sgl/sgl_50_multitexture
+[ 64%] Linking C executable ../tests_sgl/sgl_51_directional_light
+[ 64%] Built target sgl_49_tex_decal
+[ 64%] Linking C executable ../tests_sgl/sgl_52_ambient_only
+[ 65%] Built target sgl_48_tex_replace
+[ 66%] Linking C executable ../tests_sgl/sgl_53_diffuse_lambert
+[ 66%] Built target sgl_50_multitexture
+[ 66%] Built target sgl_51_directional_light
+[ 66%] Built target sgl_52_ambient_only
+[ 66%] Linking C executable ../tests_sgl/sgl_54_specular_blinn
+[ 66%] Linking C executable ../tests_sgl/sgl_55_point_light_attenuation
+[ 66%] Linking C executable ../tests_sgl/sgl_56_multi_lights
+[ 66%] Built target sgl_54_specular_blinn
+[ 66%] Built target sgl_53_diffuse_lambert
+[ 66%] Built target sgl_55_point_light_attenuation
+[ 66%] Built target sgl_56_multi_lights
+[ 66%] Linking C executable ../tests_sgl/sgl_58_colored_material
+[ 66%] Linking C executable ../tests_sgl/sgl_57_icosphere_lit
+[ 66%] Linking C executable ../tests_sgl/sgl_59_emission
+[ 66%] Linking C executable ../tests_sgl/sgl_60_normalize
+[ 67%] Built target sgl_59_emission
+[ 67%] Built target sgl_58_colored_material
+[ 67%] Linking C executable ../tests_sgl/sgl_61_tessellated_grid
+[ 67%] Built target sgl_57_icosphere_lit
+[ 67%] Built target sgl_60_normalize
+[ 67%] Linking C executable ../tests_sgl/sgl_62_icosphere_subdiv
+[ 67%] Linking C executable ../tests_sgl/sgl_63_uv_sphere
+[ 68%] Linking C executable ../tests_sgl/sgl_64_cylinder
+[ 68%] Built target sgl_61_tessellated_grid
+[ 68%] Built target sgl_62_icosphere_subdiv
+[ 68%] Linking C executable ../tests_sgl/sgl_65_torus
+[ 68%] Built target sgl_63_uv_sphere
+[ 68%] Built target sgl_64_cylinder
+[ 68%] Linking C executable ../tests_sgl/sgl_66_bezier_patch
+[ 68%] Linking C executable ../tests_sgl/sgl_67_extrusion
+[ 68%] Linking C executable ../tests_sgl/sgl_68_loft
+[ 68%] Built target sgl_65_torus
+[ 68%] Linking C executable ../tests_sgl/sgl_69_superquadric
+[ 68%] Built target sgl_66_bezier_patch
+[ 68%] Built target sgl_68_loft
+[ 68%] Built target sgl_67_extrusion
+[ 68%] Linking C executable ../tests_sgl/sgl_70_heightfield
+[ 68%] Linking C executable ../tests_sgl/sgl_72_fog_linear
+[ 68%] Linking C executable ../tests_sgl/sgl_71_fog_exp2
+[ 68%] Built target sgl_69_superquadric
+[ 68%] Linking C executable ../tests_sgl/sgl_73_fog_exp
+[ 68%] Built target sgl_72_fog_linear
+[ 69%] Built target sgl_70_heightfield
+[ 69%] Built target sgl_71_fog_exp2
+[ 69%] Linking C executable ../tests_sgl/sgl_74_fog_colored
+[ 70%] Linking C executable ../tests_sgl/sgl_75_alpha_blend
+[ 70%] Linking C executable ../tests_sgl/sgl_76_additive_blend
+[ 70%] Built target sgl_73_fog_exp
+[ 70%] Built target sgl_74_fog_colored
+[ 70%] Linking C executable ../tests_sgl/sgl_77_alpha_test_edge
+[ 70%] Built target sgl_75_alpha_blend
+[ 70%] Built target sgl_76_additive_blend
+[ 70%] Linking C executable ../tests_sgl/sgl_78_transparent_stack
+[ 70%] Linking C executable ../tests_sgl/sgl_79_premult_alpha
+[ 71%] Linking C executable ../tests_sgl/sgl_80_blend_depth
+[ 71%] Built target sgl_77_alpha_test_edge
+[ 71%] Built target sgl_78_transparent_stack
+[ 71%] Built target sgl_80_blend_depth
+[ 71%] Linking C executable ../tests_sgl/sgl_81_vbo_simple
+[ 71%] Built target sgl_79_premult_alpha
+[ 71%] Linking C executable ../tests_sgl/sgl_82_vbo_interleaved_pc
+[ 71%] Linking C executable ../tests_sgl/sgl_83_vbo_interleaved_pnct
+[ 71%] Linking C executable ../tests_sgl/sgl_84_indexed_draw
+[ 71%] Built target sgl_81_vbo_simple
+[ 71%] Built target sgl_82_vbo_interleaved_pc
+[ 71%] Linking C executable ../tests_sgl/sgl_85_multi_vbos
+[ 71%] Linking C executable ../tests_sgl/sgl_86_buffer_subdata
+[ 71%] Built target sgl_83_vbo_interleaved_pnct
+[ 71%] Built target sgl_84_indexed_draw
+[ 71%] Linking C executable ../tests_sgl/sgl_87_large_mesh
+[ 71%] Linking C executable ../tests_sgl/sgl_88_instanced_manual
+[ 71%] Built target sgl_85_multi_vbos
+[ 71%] Linking C executable ../tests_sgl/sgl_89_dynamic_vbo
+[ 71%] Built target sgl_87_large_mesh
+[ 72%] Built target sgl_86_buffer_subdata
+[ 72%] Linking C executable ../tests_sgl/sgl_90_multi_drawarrays
+[ 72%] Built target sgl_88_instanced_manual
+[ 73%] Linking C executable ../tests_sgl/sgl_91_dot3_baseline
+[ 73%] Linking C executable ../tests_sgl/sgl_92_normalmap_pattern
+[ 73%] Built target sgl_89_dynamic_vbo
+[ 73%] Built target sgl_90_multi_drawarrays
+[ 73%] Built target sgl_91_dot3_baseline
+[ 73%] Linking C executable ../tests_sgl/sgl_93_normalmap_depth
+[ 73%] Linking C executable ../tests_sgl/sgl_94_lit_textured_sphere
+[ 73%] Linking C executable ../tests_sgl/sgl_95_scene_sphere_ground
+[ 73%] Built target sgl_92_normalmap_pattern
+[ 73%] Linking C executable ../tests_sgl/sgl_96_building_cube
+[ 73%] Built target sgl_93_normalmap_depth
+[ 73%] Built target sgl_94_lit_textured_sphere
+[ 73%] Built target sgl_95_scene_sphere_ground
+[ 73%] Built target sgl_96_building_cube
+[ 73%] Linking C executable ../tests_sgl/sgl_97_multiple_buildings
+[ 73%] Linking C executable ../tests_sgl/sgl_98_city_block
+[ 73%] Linking C executable ../tests_sgl/sgl_99_moving_camera
+[ 73%] Linking C executable ../tests_sgl/sgl_100_showcase
+[ 74%] Built target sgl_97_multiple_buildings
+[ 74%] Built target sgl_99_moving_camera
+[ 74%] Linking C executable ../tests_sgl/sgl_101_begin_triangles
+[ 74%] Built target sgl_98_city_block
+[ 74%] Linking C executable ../tests_sgl/sgl_102_vertex_variants
+[ 74%] Built target sgl_100_showcase
+[ 74%] Linking C executable ../tests_sgl/sgl_103_triangle_strip
+[ 75%] Linking C executable ../tests_sgl/sgl_104_triangle_fan
+[ 75%] Built target sgl_101_begin_triangles
+[ 75%] Built target sgl_102_vertex_variants
+[ 75%] Linking C executable ../tests_sgl/sgl_105_quads_one
+[ 75%] Built target sgl_103_triangle_strip
+[ 75%] Linking C executable ../tests_sgl/sgl_106_quads_two
+[ 75%] Built target sgl_104_triangle_fan
+[ 75%] Linking C executable ../tests_sgl/sgl_107_quad_strip
+[ 75%] Linking C executable ../tests_sgl/sgl_108_polygon_hexagon
+[ 75%] Built target sgl_106_quads_two
+[ 75%] Built target sgl_105_quads_one
+[ 75%] Linking C executable ../tests_sgl/sgl_109_lit_triangle
+[ 75%] Built target sgl_107_quad_strip
+[ 75%] Linking C executable ../tests_sgl/sgl_110_textured_quad
+[ 75%] Linking C executable ../tests_sgl/sgl_111_multitexture_imm
+[ 75%] Built target sgl_108_polygon_hexagon
+[ 75%] Built target sgl_109_lit_triangle
+[ 75%] Linking C executable ../tests_sgl/sgl_112_rectf
+[ 75%] Built target sgl_110_textured_quad
+[ 75%] Linking C executable ../tests_sgl/sgl_113_type_conversion
+[ 75%] Built target sgl_111_multitexture_imm
+[ 76%] Linking C executable ../tests_sgl/sgl_114_array_element
+[ 76%] Linking C executable ../tests_sgl/sgl_115_lit_polygon
+[ 76%] Built target sgl_112_rectf
+[ 76%] Built target sgl_113_type_conversion
+[ 76%] Linking C executable ../tests_sgl/sgl_116_dlist_empty
+[ 76%] Built target sgl_114_array_element
+[ 76%] Built target sgl_115_lit_polygon
+[ 76%] Linking C executable ../tests_sgl/sgl_117_dlist_triangle
+[ 76%] Linking C executable ../tests_sgl/sgl_118_dlist_transform
+[ 76%] Linking C executable ../tests_sgl/sgl_119_dlist_compile_and_execute
+[ 76%] Built target sgl_116_dlist_empty
+[ 76%] Built target sgl_117_dlist_triangle
+[ 76%] Linking C executable ../tests_sgl/sgl_120_call_lists_byte
+[ 76%] Built target sgl_118_dlist_transform
+[ 76%] Built target sgl_119_dlist_compile_and_execute
+[ 76%] Linking C executable ../tests_sgl/sgl_122_dlist_lit
+[ 76%] Linking C executable ../tests_sgl/sgl_121_nested_lists
+[ 76%] Linking C executable ../tests_sgl/sgl_123_dlist_texture
+[ 76%] Built target sgl_120_call_lists_byte
+[ 76%] Linking C executable ../tests_sgl/sgl_124_dlist_vbo_draw
+[ 76%] Built target sgl_122_dlist_lit
+[ 76%] Built target sgl_121_nested_lists
+[ 76%] Built target sgl_123_dlist_texture
+[ 76%] Linking C executable ../tests_sgl/sgl_125_dlist_vbo_alloc
+[ 76%] Linking C executable ../tests_sgl/sgl_126_dlist_color_order
+[ 76%] Linking C executable ../tests_sgl/sgl_127_dlist_matrix_stack
+[ 77%] Built target sgl_124_dlist_vbo_draw
+[ 77%] Linking C executable ../tests_sgl/sgl_128_dlist_repeat_outer_mv
+[ 77%] Built target sgl_125_dlist_vbo_alloc
+[ 77%] Built target sgl_126_dlist_color_order
+[ 77%] Built target sgl_127_dlist_matrix_stack
+[ 78%] Linking C executable ../tests_sgl/sgl_129_dlist_id_recycle
+[ 78%] Linking C executable ../tests_sgl/sgl_130_call_lists_2bytes
+[ 78%] Linking C executable ../tests_sgl/sgl_131_lines_basic
+[ 78%] Built target sgl_128_dlist_repeat_outer_mv
+[ 78%] Built target sgl_129_dlist_id_recycle
+[ 78%] Linking C executable ../tests_sgl/sgl_132_line_strip
+[ 78%] Linking C executable ../tests_sgl/sgl_133_line_loop
+[ 78%] Built target sgl_130_call_lists_2bytes
+[ 78%] Built target sgl_131_lines_basic
+[ 78%] Linking C executable ../tests_sgl/sgl_134_line_width
+[ 78%] Built target sgl_132_line_strip
+[ 78%] Linking C executable ../tests_sgl/sgl_135_points_grid
+[ 78%] Linking C executable ../tests_sgl/sgl_136_point_size
+[ 78%] Built target sgl_133_line_loop
+[ 79%] Built target sgl_134_line_width
+[ 79%] Linking C executable ../tests_sgl/sgl_137_polygon_mode_line
+[ 79%] Built target sgl_135_points_grid
+[ 79%] Built target sgl_136_point_size
+[ 79%] Linking C executable ../tests_sgl/sgl_138_polygon_mode_point
+[ 80%] Linking C executable ../tests_sgl/sgl_139_polygon_mode_two_faces
+[ 80%] Linking C executable ../tests_sgl/sgl_140_polygon_offset
+[ 80%] Built target sgl_137_polygon_mode_line
+[ 80%] Built target sgl_138_polygon_mode_point
+[ 80%] Linking C executable ../tests_sgl/sgl_141_line_color_gradient
+[ 80%] Built target sgl_139_polygon_mode_two_faces
+[ 80%] Linking C executable ../tests_sgl/sgl_142_line_perspective_depth
+[ 80%] Built target sgl_140_polygon_offset
+[ 80%] Linking C executable ../tests_sgl/sgl_143_line_clip
+[ 80%] Linking C executable ../tests_sgl/sgl_144_edge_flag_polygon
+[ 80%] Built target sgl_141_line_color_gradient
+[ 80%] Built target sgl_142_line_perspective_depth
+[ 80%] Linking C executable ../tests_sgl/sgl_145_mixed_primitives
+[ 80%] Built target sgl_143_line_clip
+[ 80%] Linking C executable ../tests_sgl/sgl_146_stencil_clear
+[ 81%] Built target sgl_144_edge_flag_polygon
+[ 81%] Linking C executable ../tests_sgl/sgl_147_stencil_mask_basic
+[ 81%] Linking C executable ../tests_sgl/sgl_148_stencil_incr_overlap
+[ 81%] Built target sgl_145_mixed_primitives
+[ 81%] Built target sgl_146_stencil_clear
+[ 82%] Linking C executable ../tests_sgl/sgl_149_stencil_invert_xor
+[ 82%] Linking C executable ../tests_sgl/sgl_150_stencil_zfail_shadow
+[ 82%] Built target sgl_147_stencil_mask_basic
+[ 82%] Built target sgl_148_stencil_incr_overlap
+[ 82%] Linking C executable ../tests_sgl/sgl_151_stencil_write_mask
+[ 82%] Linking C executable ../tests_sgl/sgl_152_stencil_value_mask
+[ 82%] Built target sgl_150_stencil_zfail_shadow
+[ 82%] Built target sgl_149_stencil_invert_xor
+[ 82%] Linking C executable ../tests_sgl/sgl_153_stencil_dpfail_incr
+[ 82%] Linking C executable ../tests_sgl/sgl_154_stencil_portal
+[ 82%] Built target sgl_151_stencil_write_mask
+[ 82%] Built target sgl_152_stencil_value_mask
+[ 82%] Linking C executable ../tests_sgl/sgl_156_tex1d_gradient
+[ 82%] Linking C executable ../tests_sgl/sgl_155_stencil_mirror
+[ 83%] Built target sgl_154_stencil_portal
+[ 83%] Built target sgl_153_stencil_dpfail_incr
+[ 83%] Linking C executable ../tests_sgl/sgl_157_tex1d_lookup
+[ 83%] Linking C executable ../tests_sgl/sgl_158_tex3d_corners
+[ 83%] Built target sgl_156_tex1d_gradient
+[ 83%] Built target sgl_155_stencil_mirror
+[ 84%] Linking C executable ../tests_sgl/sgl_159_tex3d_slices
+[ 84%] Built target sgl_157_tex1d_lookup
+[ 84%] Linking C executable ../tests_sgl/sgl_160_cubemap_skybox
+[ 84%] Built target sgl_158_tex3d_corners
+[ 84%] Linking C executable ../tests_sgl/sgl_161_cubemap_reflect
+[ 84%] Linking C executable ../tests_sgl/sgl_162_cubemap_faces
+[ 84%] Built target sgl_160_cubemap_skybox
+[ 84%] Built target sgl_159_tex3d_slices
+[ 84%] Built target sgl_161_cubemap_reflect
+[ 85%] Linking C executable ../tests_sgl/sgl_163_copy_tex_image_2d
+[ 85%] Built target sgl_162_cubemap_faces
+[ 85%] Linking C executable ../tests_sgl/sgl_165_tex_sub_image_2d
+[ 85%] Linking C executable ../tests_sgl/sgl_164_copy_tex_sub_image_2d
+[ 85%] Linking C executable ../tests_sgl/sgl_166_tex_sub_image_3d
+[ 85%] Built target sgl_163_copy_tex_image_2d
+[ 85%] Built target sgl_164_copy_tex_sub_image_2d
+[ 85%] Built target sgl_165_tex_sub_image_2d
+[ 85%] Linking C executable ../tests_sgl/sgl_167_cubemap_lit
+[ 85%] Linking C executable ../tests_sgl/sgl_168_tex3d_trilinear
+[ 85%] Linking C executable ../tests_sgl/sgl_169_cube_and_2d
+[ 85%] Built target sgl_166_tex_sub_image_3d
+[ 85%] Built target sgl_167_cubemap_lit
+[ 86%] Built target sgl_169_cube_and_2d
+[ 86%] Linking C executable ../tests_sgl/sgl_170_all_targets
+[ 86%] Built target sgl_168_tex3d_trilinear
+[ 86%] Linking C executable ../tests_sgl/sgl_171_clip_plane_y
+[ 86%] Linking C executable ../tests_sgl/sgl_172_clip_plane_diagonal
+[ 87%] Linking C executable ../tests_sgl/sgl_173_clip_plane_two
+[ 87%] Built target sgl_170_all_targets
+[ 87%] Linking C executable ../tests_sgl/sgl_174_color_material_diffuse
+[ 87%] Built target sgl_171_clip_plane_y
+[ 87%] Built target sgl_172_clip_plane_diagonal
+[ 87%] Linking C executable ../tests_sgl/sgl_175_light_model_local_viewer
+[ 87%] Linking C executable ../tests_sgl/sgl_176_light_model_two_side
+[ 87%] Built target sgl_173_clip_plane_two
+[ 87%] Built target sgl_174_color_material_diffuse
+[ 87%] Linking C executable ../tests_sgl/sgl_178_logic_op_xor
+[ 87%] Linking C executable ../tests_sgl/sgl_177_color_mask
+[ 87%] Built target sgl_175_light_model_local_viewer
+[ 87%] Built target sgl_176_light_model_two_side
+[ 87%] Built target sgl_178_logic_op_xor
+[ 87%] Linking C executable ../tests_sgl/sgl_180_hint_and_index_mask
+[ 87%] Linking C executable ../tests_sgl/sgl_179_logic_op_invert
+[ 87%] Linking C executable ../tests_sgl/sgl_181_drawpixels_rgba
+[ 87%] Built target sgl_177_color_mask
+[ 87%] Linking C executable ../tests_sgl/sgl_182_drawpixels_luminance
+[ 87%] Built target sgl_180_hint_and_index_mask
+[ 88%] Built target sgl_179_logic_op_invert
+[ 88%] Built target sgl_181_drawpixels_rgba
+[ 89%] Linking C executable ../tests_sgl/sgl_183_drawpixels_rgb_float
+[ 89%] Linking C executable ../tests_sgl/sgl_184_readpixels_echo
+[ 89%] Linking C executable ../tests_sgl/sgl_185_copypixels
+[ 89%] Built target sgl_182_drawpixels_luminance
+[ 89%] Built target sgl_183_drawpixels_rgb_float
+[ 89%] Built target sgl_184_readpixels_echo
+[ 89%] Linking C executable ../tests_sgl/sgl_186_pixelzoom_2x
+[ 89%] Built target sgl_185_copypixels
+[ 89%] Linking C executable ../tests_sgl/sgl_188_unpack_alignment
+[ 89%] Linking C executable ../tests_sgl/sgl_187_pixelzoom_flip
+[ 89%] Linking C executable ../tests_sgl/sgl_189_unpack_rowlength_skip
+[ 89%] Built target sgl_188_unpack_alignment
+[ 89%] Built target sgl_187_pixelzoom_flip
+[ 89%] Built target sgl_186_pixelzoom_2x
+[ 89%] Linking C executable ../tests_sgl/sgl_190_rasterpos_clipped
+[ 89%] Linking C executable ../tests_sgl/sgl_191_combine_interpolate
+[ 89%] Linking C executable ../tests_sgl/sgl_192_combine_subtract
+[ 90%] Built target sgl_189_unpack_rowlength_skip
+[ 91%] Linking C executable ../tests_sgl/sgl_193_combine_add_signed_scale
+[ 91%] Built target sgl_192_combine_subtract
+[ 91%] Built target sgl_190_rasterpos_clipped
+[ 91%] Built target sgl_191_combine_interpolate
+[ 91%] Linking C executable ../tests_sgl/sgl_194_combine_split_alpha
+[ 91%] Linking C executable ../tests_sgl/sgl_196_occlusion_samples
+[ 91%] Linking C executable ../tests_sgl/sgl_195_combine_dot3_rgba
+[ 91%] Built target sgl_193_combine_add_signed_scale
+[ 91%] Linking C executable ../tests_sgl/sgl_197_occlusion_any
+[ 91%] Built target sgl_194_combine_split_alpha
+[ 91%] Built target sgl_195_combine_dot3_rgba
+[ 91%] Linking C executable ../tests_sgl/sgl_198_map_buffer
+[ 91%] Built target sgl_196_occlusion_samples
+[ 91%] Linking C executable ../tests_sgl/sgl_199_evaluators_patch
+[ 91%] Linking C executable ../tests_sgl/sgl_200_accum_jitter
+[ 91%] Built target sgl_197_occlusion_any
+[ 91%] Built target sgl_198_map_buffer
+[ 91%] Linking C executable ../tests_sgl/sgl_201_stipple
+[ 91%] Linking C executable ../tests_sgl/sgl_202_shadow_volume
+[ 92%] Built target sgl_199_evaluators_patch
+[ 92%] Built target sgl_200_accum_jitter
+[ 92%] Linking C executable ../tests_sgl/sgl_203_bump_brick
+[ 92%] Built target sgl_202_shadow_volume
+[ 92%] Linking C executable ../tests_sgl/sgl_204_lightmap_corridor
+[ 92%] Built target sgl_201_stipple
+[ 92%] Linking C executable ../tests_sgl/sgl_205_chrome_sphere
+[ 92%] Linking C executable ../tests_sgl/sgl_206_spot_projector
+[ 93%] Built target sgl_203_bump_brick
+[ 93%] Linking C executable ../tests_sgl/sgl_207_glass_window
+[ 93%] Built target sgl_204_lightmap_corridor
+[ 93%] Built target sgl_206_spot_projector
+[ 93%] Built target sgl_205_chrome_sphere
+[ 94%] Linking C executable ../tests_sgl/sgl_208_terrain_blend
+[ 94%] Linking C executable ../tests_sgl/sgl_210_portal_rooms
+[ 94%] Built target sgl_207_glass_window
+[ 94%] Linking C executable ../tests_sgl/sgl_209_particles_additive
+[ 94%] Linking C executable ../tests_sgl/sgl_211_billboard_trees
+[ 94%] Built target sgl_210_portal_rooms
+[ 94%] Built target sgl_208_terrain_blend
+[ 94%] Built target sgl_209_particles_additive
+[ 94%] Linking C executable ../tests_sgl/sgl_212_skybox_sun
+[ 94%] Built target sgl_211_billboard_trees
+[ 94%] Linking C executable ../tests_sgl/sgl_213_lens_flare
+[ 94%] Linking C executable ../tests_sgl/sgl_214_decal_stencil
+[ 94%] Linking C executable ../tests_sgl/sgl_215_crt_emissive
+[ 94%] Built target sgl_212_skybox_sun
+[ 94%] Built target sgl_215_crt_emissive
+[ 95%] Built target sgl_213_lens_flare
+[ 95%] Linking C executable ../tests_sgl/sgl_216_water_surface
+[ 95%] Built target sgl_214_decal_stencil
+[ 96%] Linking C executable ../tests_sgl/sgl_218_worker_single_triangle
+[ 96%] Linking C executable ../tests_sgl/sgl_217_dot3_multipass_fog
+[ 96%] Linking C executable ../tests_sgl/sgl_219_normal_matrix_batches
+[ 96%] Built target sgl_216_water_surface
+[ 96%] Built target sgl_218_worker_single_triangle
+[ 96%] Linking C executable ../tests_sgl/sgl_220_texture_linear_fog
+[ 96%] Built target sgl_219_normal_matrix_batches
+[ 96%] Linking C executable ../tests_sgl/sgl_221_texture_state_batches
+[ 96%] Built target sgl_217_dot3_multipass_fog
+[ 96%] Linking C executable ../tests_sgl/sgl_222_worker_quad_boundaries
+[ 96%] Built target sgl_220_texture_linear_fog
+[ 96%] Linking C executable ../tests_sgl/sgl_223_parallel_vertex_projection
+[ 96%] Linking C executable ../tests_sgl/sgl_224_parallel_occlusion_queries
+[ 96%] Built target sgl_221_texture_state_batches
+[ 96%] Linking C executable ../tests_sgl/sgl_225_transformed_bin_lifetime
+[ 96%] Built target sgl_222_worker_quad_boundaries
+[ 97%] Built target sgl_223_parallel_vertex_projection
+[ 97%] Linking C executable ../tests_sgl/sgl_227_simd_color_rounding
+[ 97%] Linking C executable ../tests_sgl/sgl_226_parallel_pool_queries
+[ 97%] Built target sgl_224_parallel_occlusion_queries
+[ 98%] Linking C executable ../tests_sgl/sgl_228_texture_repeat_coordinates
+[ 98%] Built target sgl_225_transformed_bin_lifetime
+[ 98%] Linking C executable ../tests_sgl/sgl_229_scalar_early_depth
+[ 98%] Built target sgl_227_simd_color_rounding
+[ 98%] Built target sgl_226_parallel_pool_queries
+[ 98%] Linking C executable ../tests_sgl/sgl_230_combiner_sampling_dependencies
+[ 98%] Linking C executable ../tests_sgl/sgl_231_order_sensitive_sorting
+[ 98%] Built target sgl_228_texture_repeat_coordinates
+[ 98%] Built target sgl_229_scalar_early_depth
+[ 98%] Linking C executable ../tests_sgl/sgl_232_combiner_operand_channels
+[ 98%] Built target sgl_231_order_sensitive_sorting
+[ 98%] Linking C executable ../tests_sgl/sgl_233_large_query_handoffs
+[ 98%] Linking C executable ../tests_sgl/sgl_234_multisample_state
+[ 98%] Built target sgl_230_combiner_sampling_dependencies
+[ 98%] Built target sgl_232_combiner_operand_channels
+[ 98%] Linking C executable sgl_tank_view_0
+[ 99%] Built target sgl_233_large_query_handoffs
+[ 99%] Built target sgl_234_multisample_state
+[ 99%] Linking C executable sgl_tank_view_120
+[ 99%] Linking C executable sgl_tank_view_240
+[ 99%] Linking C executable sgl_bmw_view_0
+[ 99%] Built target sgl_tank_view_0
+[ 99%] Linking C executable sgl_bmw_view_120
+[ 99%] Built target sgl_tank_view_120
+[ 99%] Built target sgl_tank_view_240
+[100%] Linking C executable sgl_bmw_view_240
+[100%] Built target sgl_bmw_view_120
+[100%] Built target sgl_bmw_view_0
+[100%] Built target sgl_bmw_view_240

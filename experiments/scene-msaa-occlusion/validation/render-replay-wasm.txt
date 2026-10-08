@@ -1,0 +1,5 @@
+emcc: warning: -pthread + ALLOW_MEMORY_GROWTH may run non-wasm code slowly, see https://github.com/WebAssembly/design/issues/1271 [-Wpthreads-mem-growth]
+Adaptive 2×/4× hint: exact density boundary, no allocation on rejection PASS
+MSAA sample rollback/admission, tiny and mixed-state controls PASS
+WASM pointerBytes=4 heapBytes=268435456
+Near occluder rollback followed by farther ordinary draw: 6 full sample-plane pairs PASS

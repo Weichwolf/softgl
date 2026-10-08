@@ -170,3 +170,4 @@
 | [scene-msaa-visibility](scene-msaa-visibility/README.md) | Accepted adaptive variant | Three AB/BA blocks: Bistro 2× FPS +76%, 4× +59%; other controls -2.4…+1.2% frame time; exact coverage, 757 tests, sanitizer and 12 live WASM cases pass (2.65 GiB). |
 | [glimpsw-resource-audit](glimpsw-resource-audit/README.md) | Diagnostic / research | Resources mapped to actual implementation: hierarchy/LUT/cache work remains; user-only perf works in WSL, PCM lacks a required reference counter. |
 | [msaa-scaled-coverage](msaa-scaled-coverage/README.md) | Validated / no adoption | Exact native/WASM hashes and 108 asset views; 4× -0.6/-4.9/-3.3/-1.0% screen but OFF controls regress, no broad gain. |
+| [scene-msaa-occlusion](scene-msaa-occlusion/README.md) | Accepted | Current-frame MSAA occlusion: Bistro2/4 frame time -7.6/-7.0% vs accepted deferred; 144 runs, 108 exact views, 757 tests, sanitizer/WASM/browser and rollback mutation pass. |

@@ -209,7 +209,19 @@ and WASM exactly match local build bytes; COOP/COEP headers are present.
 The Emscripten pthread+memory-growth configuration notice is unchanged;
 no C compiler warnings or sanitizer errors were found.
 
-## Current hardware profiles
+## Accepted Bistro4 profile
+
+The accepted adaptive-v1 candidate was profiled separately after asset import,
+with 60 warm-up/120 orbit frames, 640×360 and four threads. User-only perf
+records approximately 25K samples and zero lost samples. Sampled cycle shares:
+MSAA raster 35.11%, sample capture 10.07%, scene resolve 19.19%, position
+preparation 4.75%, geometry append 4.62%, scene end 3.86%. These are CPU cycle
+shares across threads, not wall-time fractions or performance acceptance.
+The new [current-frame MSAA occlusion experiment](../scene-msaa-occlusion/README.md)
+therefore tests eliminating already-hidden triangle work before sample coverage.
+[Profile receipts](validation/adaptive-v1/profiles/).
+
+## Earlier hardware profiles
 
 Debian perf works without sudo using explicit user-only events. Eight 4×
 recordings profile the production baseline and packed-dense candidate over

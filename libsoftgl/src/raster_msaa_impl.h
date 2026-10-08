@@ -31,7 +31,12 @@ int SG_MSAA_FUNCTION(softgl_ctx *c,
     if (hz) return hz == 2 ? 2 : -1;
 #else
     if (SG_MSAA_HZ_OCCLUDED(c, ix0, iy0, ix1, iy1,
-        v0->ndc.z, v1->ndc.z, v2->ndc.z, z_offset)) return -1;
+        v0->ndc.z, v1->ndc.z, v2->ndc.z, z_offset)) {
+#ifdef SOFTGL_MSAA_VISIBILITY_AUDIT
+        if (c->scene_visibility) sg_scene_msaa_hz_count(1);
+#endif
+        return -1;
+    }
 #endif
     int32_t vx[3] = {sg_fp_screen_from_float(v0->ndc.x),
                      sg_fp_screen_from_float(v1->ndc.x),

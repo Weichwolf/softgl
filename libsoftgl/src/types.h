@@ -484,6 +484,9 @@ void sg_scene_visibility_msaa_packet(softgl_ctx *c,
     const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
     const sg_tex_tri_ctx *texture, const sg_pixel_packet *packet,
     float inverse_area, uint32_t *record);
+#ifdef SOFTGL_MSAA_VISIBILITY_AUDIT
+void sg_scene_msaa_hz_count(unsigned index);
+#endif
 void sg_scene_visibility_destroy(void *storage);
 int sg_scene_visibility_triangle(softgl_ctx *c, const sg_vert *v0,
     const sg_vert *v1, const sg_vert *v2, int ix0, int ix1);
