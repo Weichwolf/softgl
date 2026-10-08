@@ -34,6 +34,17 @@ endif()
 add_test(NAME hierarchical_depth_contract COMMAND hierarchical_depth_contract)
 set_tests_properties(hierarchical_depth_contract PROPERTIES TIMEOUT 90)
 
+# Exercise cache maxima, IEEE invalidation and recovery with fast-math enabled.
+add_executable(hierarchical_depth_fast_contract hierarchical_depth_fast.c)
+target_include_directories(hierarchical_depth_fast_contract PRIVATE
+    ${CMAKE_SOURCE_DIR}/libsoftgl/src ${CMAKE_SOURCE_DIR}/libsoftgl/include)
+if(CMAKE_C_COMPILER_ID MATCHES "GNU|Clang")
+    target_compile_options(hierarchical_depth_fast_contract PRIVATE
+        -O2 -ffast-math -msse4.1 -Werror)
+endif()
+add_test(NAME hierarchical_depth_fast_contract COMMAND hierarchical_depth_fast_contract)
+set_tests_properties(hierarchical_depth_fast_contract PROPERTIES TIMEOUT 30)
+
 # Observe actual sample coefficients with production renderer flags.
 add_library(msaa_edge_instrumented OBJECT ${CMAKE_SOURCE_DIR}/libsoftgl/src/rasterizer.c)
 target_include_directories(msaa_edge_instrumented PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/include ${CMAKE_SOURCE_DIR}/libsoftgl/src)
