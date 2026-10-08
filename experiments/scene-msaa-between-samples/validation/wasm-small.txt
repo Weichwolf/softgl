@@ -1,0 +1,9 @@
+emcc: warning: -pthread + ALLOW_MEMORY_GROWTH may run non-wasm code slowly, see https://github.com/WebAssembly/design/issues/1271 [-Wpthreads-mem-growth]
+{"samples":4,"helpers":8,"extent":7,"placement":2,"alpha":1,"overlap":0,"planes":"f589c9066dd47ec7"}
+{"samples":4,"helpers":8,"extent":7,"placement":2,"alpha":1,"overlap":1,"planes":"7b5d798c71cb5a27"}
+576 small/boundary/clipped/overlapping/large/alpha MSAA plane hashes PASS
+emcc: warning: -pthread + ALLOW_MEMORY_GROWTH may run non-wasm code slowly, see https://github.com/WebAssembly/design/issues/1271 [-Wpthreads-mem-growth]
+{"samples":4,"helpers":8,"extent":7,"placement":2,"alpha":1,"overlap":1,"planes":"7b5d798c71cb5a27"}
+Local small MSAA: triangles=828 testedPixels=7074 passingSamples=11046 PASS
+576 small/boundary/clipped/overlapping/large/alpha MSAA plane hashes PASS
+Actual WASM: 576 independent small/clip/overlap/alpha/fallback hashes exact PASS

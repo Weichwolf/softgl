@@ -992,6 +992,16 @@ static void scene_packet_draw(softgl_ctx *c, scene_geometry_task *task,
     }
 }
 
+#ifdef SOFTGL_MSAA_BETWEEN_AUDIT
+static atomic_ullong scene_between_counts[4];
+unsigned long long softgl_scene_msaa_between_audit(unsigned index) {
+    return index < 4 ? atomic_load_explicit(&scene_between_counts[index],memory_order_relaxed) : 0;
+}
+#define SCENE_BETWEEN_AUDIT(i,n) atomic_fetch_add_explicit(&scene_between_counts[i],(n),memory_order_relaxed)
+#else
+#define SCENE_BETWEEN_AUDIT(i,n) ((void)0)
+#endif
+
 #include "geometry.inc"
 
 static sg_f32x4 scene_gather_lerp(const scene_triangle *t[4], int field, int channel,

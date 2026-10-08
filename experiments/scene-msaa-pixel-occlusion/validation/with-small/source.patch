@@ -1,0 +1,144 @@
+--- a/libsoftgl/src/raster_msaa_impl.h
++++ b/libsoftgl/src/raster_msaa_impl.h
+@@ -37,6 +37,23 @@
+ #endif
+         return -1;
+     }
++#endif
++#ifdef SOFTGL_MSAA_PIXEL_AUDIT
++    /* Only untimed builds call the shared counters. */
++#endif
++#if SG_MSAA_SAMPLES == 4 && !SG_MSAA_DEPTH_CAPTURE
++    /* Exact conservative depth bound already used by the current-frame HZ.
++     * This predicate is restricted to an admitted canonical scene. */
++    int early_scene = c->scene_visibility && c->depth_test && !c->stencil_test &&
++        c->depth_func == GL_LESS && !c->polygon_offset_fill && z_offset == 0.f &&
++        v0->ndc.z >= 0.f && v0->ndc.z <= 1.f &&
++        v1->ndc.z >= 0.f && v1->ndc.z <= 1.f &&
++        v2->ndc.z >= 0.f && v2->ndc.z <= 1.f;
++    float near = v0->ndc.z < v1->ndc.z ? v0->ndc.z : v1->ndc.z;
++    if (v2->ndc.z < near) near = v2->ndc.z;
++    float lower = near-2e-6f;
++    if (lower < 0.f) lower = 0.f;
++    sg_f32x4 early_lower = sg_f32x4_splat(lower);
+ #endif
+     int32_t vx[3] = {sg_fp_screen_from_float(v0->ndc.x),
+                      sg_fp_screen_from_float(v1->ndc.x),
+@@ -157,6 +174,28 @@
+                           row[1]+dx[1]*256*(first_x-ix0),
+                           row[2]+dx[2]*256*(first_x-ix0)};
+         for (int x = first_x; x < end_x; x++) {
++#if SG_MSAA_SAMPLES == 4 && !SG_MSAA_DEPTH_CAPTURE
++            sg_f32x4 early_old = sg_f32x4_splat(1.f);
++            if (early_scene) {
++#ifdef SOFTGL_MSAA_PIXEL_AUDIT
++                sg_scene_msaa_pixel_audit(0,1);
++#endif
++                size_t early_base = ((size_t)y*c->fb.w+x)*4;
++                early_old = _mm_loadu_ps(c->fb.sample_depth+early_base);
++                /* Every covered depth is >= lower. Equality fails GL_LESS.
++                 * An unordered comparison cannot manufacture a rejection. */
++                if (sg_mask4_live(sg_f32x4_ge(early_lower,early_old)) == 15u) {
++#ifdef SOFTGL_MSAA_PIXEL_AUDIT
++                    sg_scene_msaa_pixel_audit(1,1);
++#endif
++                    /* Preserve a conservative return classification without
++                     * claiming the skipped pixel has proven empty coverage. */
++                    coverage_seen = 1;
++                    for (int e = 0; e < 3; e++) edge[e] += dx[e]*256;
++                    continue;
++                }
++            }
++#endif
+             unsigned coverage = 0;
+             float depths[4];
+ #if SG_MSAA_SAMPLES == 4
+@@ -250,8 +289,13 @@
+                     }
+                     coverage = passed;
+ #else
++#if SG_MSAA_SAMPLES == 4 && !SG_MSAA_DEPTH_CAPTURE
++                    sg_f32x4 old_depth = early_scene ? early_old : _mm_loadu_ps(&c->fb.sample_depth[idx]);
++                    coverage &= sg_mask4_live(sg_depth_test_simd(c->depth_func,z,old_depth));
++#else
+                     coverage &= sg_mask4_live(sg_depth_test_simd(c->depth_func, z,
+                         _mm_loadu_ps(&c->fb.sample_depth[idx])));
++#endif
+ #endif
+                 }
+             } else if (coverage) {
+--- a/libsoftgl/src/scene_visibility.c
++++ b/libsoftgl/src/scene_visibility.c
+@@ -306,6 +306,16 @@
+ #endif
+     }
+ }
++
++#ifdef SOFTGL_MSAA_PIXEL_AUDIT
++static atomic_ullong scene_pixel_counts[2];
++void sg_scene_msaa_pixel_audit(unsigned index, unsigned count) {
++    atomic_fetch_add_explicit(&scene_pixel_counts[index],count,memory_order_relaxed);
++}
++unsigned long long softgl_scene_msaa_pixel_audit(unsigned index) {
++    return index < 2 ? atomic_load_explicit(&scene_pixel_counts[index],memory_order_relaxed) : 0;
++}
++#endif
+ 
+ void softgl_scene_quantized_visibility(GLboolean enabled) {
+     softgl_ctx *c = sg_current();
+@@ -548,6 +558,12 @@
+         coverage_offset[e] = sg_i32x4_set(offsets[0][e]+bias[e],offsets[1][e]+bias[e],
+             offsets[2][e]+bias[e],offsets[3][e]+bias[e]);
+     }
++    int early_small = v0->ndc.z >= 0.f && v0->ndc.z <= 1.f &&
++        v1->ndc.z >= 0.f && v1->ndc.z <= 1.f && v2->ndc.z >= 0.f && v2->ndc.z <= 1.f;
++    float near = v0->ndc.z < v1->ndc.z ? v0->ndc.z : v1->ndc.z;
++    if (v2->ndc.z < near) near = v2->ndc.z;
++    float lower = near-2e-6f; if (lower < 0.f) lower = 0.f;
++    sg_f32x4 early_lower = sg_f32x4_splat(lower);
+     float inverse = 1.f/(float)area;
+     sg_f32x4 inverse4 = sg_f32x4_splat(inverse);
+     sg_f32x4 z0 = sg_f32x4_splat(v0->ndc.z), z1 = sg_f32x4_splat(v1->ndc.z), z2 = sg_f32x4_splat(v2->ndc.z);
+@@ -557,6 +573,20 @@
+     for (int y = bottom; y < top; y++) {
+         int32_t edge[3] = {row[0],row[1],row[2]};
+         for (int x = left; x < right; x++) {
++            size_t base = ((size_t)y*c->fb.w+x)*4;
++            sg_f32x4 old_depth = _mm_loadu_ps(c->fb.sample_depth+base);
++            if (early_small) {
++#ifdef SOFTGL_MSAA_PIXEL_AUDIT
++                sg_scene_msaa_pixel_audit(0,1);
++#endif
++                if (sg_mask4_live(sg_f32x4_ge(early_lower,old_depth)) == 15u) {
++#ifdef SOFTGL_MSAA_PIXEL_AUDIT
++                    sg_scene_msaa_pixel_audit(1,1);
++#endif
++                    for (int e = 0; e < 3; e++) edge[e] += dx[e]*256;
++                    continue;
++                }
++            }
+             sg_i32x4 e0 = sg_i32x4_add(sg_i32x4_splat(edge[0]),coverage_offset[0]);
+             sg_i32x4 e1 = sg_i32x4_add(sg_i32x4_splat(edge[1]),coverage_offset[1]);
+             sg_i32x4 e2 = sg_i32x4_add(sg_i32x4_splat(edge[2]),coverage_offset[2]);
+@@ -570,8 +600,7 @@
+                     sg_f32x4_mul(b1,z1)),sg_f32x4_mul(b2,z2)),sg_f32x4_splat(0.f));
+                 z = sg_f32x4_select(sg_f32x4_lt(z,sg_f32x4_splat(0.f)),sg_f32x4_splat(0.f),z);
+                 z = sg_f32x4_select(sg_f32x4_gt(z,sg_f32x4_splat(1.f)),sg_f32x4_splat(1.f),z);
+-                size_t base = ((size_t)y*c->fb.w+x)*4;
+-                coverage &= sg_mask4_live(sg_f32x4_lt(z,_mm_loadu_ps(c->fb.sample_depth+base)));
++                coverage &= sg_mask4_live(sg_f32x4_lt(z,old_depth));
+                 if (coverage) {
+                     SCENE_SMALL_AUDIT(2,__builtin_popcount(coverage));
+                     int l = packet.count++, first = __builtin_ctz(coverage);
+--- a/libsoftgl/src/types.h
++++ b/libsoftgl/src/types.h
+@@ -480,6 +480,9 @@
+     int64_t edge0[4], edge1[4];
+     float depths[4][4];
+ } sg_pixel_packet;
++#ifdef SOFTGL_MSAA_PIXEL_AUDIT
++void sg_scene_msaa_pixel_audit(unsigned index, unsigned count);
++#endif
+ void sg_scene_visibility_msaa_packet(softgl_ctx *c,
+     const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
+     const sg_tex_tri_ctx *texture, const sg_pixel_packet *packet,
