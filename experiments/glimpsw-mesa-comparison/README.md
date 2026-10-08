@@ -238,3 +238,8 @@ contains 72 accepted balanced runs with verified `da8ab07` source hashes.
 The subsequent [triangle-packet gain](../scene-triangle-packets/README.md) has
 separate isolated evidence; these three-renderer times retain their original source. Older dated evidence
 below retains its original source and warm-up scope.
+
+The [current triangle-packet comparison](current-triangle-packets/README.md)
+now directly measures renderer `8085056` against the same Mesa/GLimpSW inputs:
+72 accepted balanced runs. This is the current backend gap; previous tables
+retain their dated renderer provenance.

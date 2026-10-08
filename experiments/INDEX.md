@@ -116,7 +116,7 @@
 | [wasm-phase-conversion](wasm-phase-conversion/README.md) | Held | Native WASM proposal conversion remained correct but did not reproduce a BMW gain. |
 | [wasm-pseudo-clamps](wasm-pseudo-clamps/README.md) | Accepted | Uses direct WASM pseudo-min/max for the validated clamp path. |
 | [whole-pipeline-static-kernels](whole-pipeline-static-kernels/README.md) | Proposed | Bounded C11 kernels specialize complete hot draw pipelines beyond rejected eligibility/DOT3 helpers; no measured gain. |
-| [glimpsw-mesa-comparison](glimpsw-mesa-comparison/README.md) | Latest full comparison before packet gain | SIMD128 baseline da8ab07, 640×360/off: SG −61.6…−77.0% versus Mesa, 4.2–6.7× GLimpSW; 72 accepted balanced runs, six rejected attempts retained. |
+| [glimpsw-mesa-comparison](glimpsw-mesa-comparison/README.md) | Current packet renderer | SIMD128 8085056, 640×360/OFF: SG −63.8…−78.6% versus Mesa, still 4.1–6.4× GLimpSW; 72 balanced runs with exact source/asset/budget provenance. |
 | [visible-vertex-attributes](visible-vertex-attributes/README.md) | Accepted | Worker attributes after culling: Bistro -11–12%, other scenes -3–8%, all twelve images identical. |
 | [bounded-queue-wakeup](bounded-queue-wakeup/README.md) | Accepted | Bounded generation/queue polling: BMW/Bistro -5–7%, T-80 -3–4%, Sponza -1.5%; all images identical. |
 | [packed-queue-admission](packed-queue-admission/README.md) | Accepted | Sponza -12–15%, T-80 -6.5–10.3%, Bistro -3.5–5%, BMW mixed within 0.25%; all images identical. |
