@@ -1,0 +1,90 @@
+diff --git a/libsoftgl/src/scene_visibility.c b/libsoftgl/src/scene_visibility.c
+index d6ca0af..3930aea 100644
+--- a/libsoftgl/src/scene_visibility.c
++++ b/libsoftgl/src/scene_visibility.c
+@@ -41,8 +41,15 @@ typedef struct {
+     uint64_t depth_passes;
+     uint8_t *visible;
+     uint32_t visible_capacity;
++    const scene_primitive *current_primitive;
++    /* Separate all fields written by adjacent bin owners for cache lines
++     * up to 128 bytes, even with ordinary malloc alignment. */
++    uint8_t cache_padding[128];
+ } scene_bin;
+ 
++_Static_assert(sizeof(scene_bin)-offsetof(scene_bin,cache_padding) >= 128,
++    "Bin mutable fields need a full cache-line gap");
++
+ typedef struct { uint32_t material, first, count; } scene_task;
+ 
+ struct sg_scene_visibility {
+@@ -57,7 +64,6 @@ struct sg_scene_visibility {
+     int material_count, task_count;
+     scene_bin bins[SG_MAX_BINS];
+     scene_geometry *geometry;
+-    const scene_primitive *current_primitive[SG_MAX_BINS];
+     uint32_t mesh_vertices;
+     int quantized;
+     int deferred_meshes;
+@@ -149,11 +155,11 @@ int softgl_scene_visibility_begin(void) {
+     }
+     for (int i = 0; i < SG_MAX_BINS; i++) {
+         f->bins[i].count = 0; f->bins[i].depth_passes = 0;
++        f->bins[i].current_primitive = NULL;
+     }
+     atomic_store_explicit(&f->failed, 0, memory_order_relaxed);
+     f->quantized = 0;
+     f->context = c; f->material_count = 0; f->task_count = 0;
+-    memset(f->current_primitive, 0, sizeof(f->current_primitive));
+     f->deferred_meshes = 0; f->mesh_vertices = 0;
+     c->scene_material = -1; c->scene_visibility = f;
+     return 1;
+@@ -205,7 +211,7 @@ static uint32_t scene_triangle_record(struct sg_scene_visibility *f, int bin,
+     }
+     uint32_t index = b->count++;
+     scene_triangle *t = &b->triangles[index];
+-    t->primitive = f->current_primitive[bin];
++    t->primitive = f->bins[bin].current_primitive;
+     const sg_vert *vertices[3] = {v0,v1,v2};
+     for (int i = 0; i < 3; i++) {
+         t->inverse_w[i] = vertices[i]->ndc.w;
+@@ -654,7 +660,7 @@ int sg_scene_visibility_triangle(softgl_ctx *c, const sg_vert *v0,
+     sg_worker_pool *pool = c->workers;
+     int bin = pool->column_bin[tile_ix0];
+     scene_bin *b = &f->bins[bin];
+-    if (f->quantized && f->current_primitive[bin] &&
++    if (f->quantized && f->bins[bin].current_primitive &&
+         v0->ndc.x >= -1.f && v0->ndc.x <= 641.f && v0->ndc.y >= -1.f && v0->ndc.y <= 361.f &&
+         v1->ndc.x >= -1.f && v1->ndc.x <= 641.f && v1->ndc.y >= -1.f && v1->ndc.y <= 361.f &&
+         v2->ndc.x >= -1.f && v2->ndc.x <= 641.f && v2->ndc.y >= -1.f && v2->ndc.y <= 361.f)
+@@ -985,7 +991,7 @@ static void scene_packet_fallback(softgl_ctx *c, const scene_primitive *p, int b
+             v[j].uv[2] = (sg_vec4){uv[0],uv[1],0.f,1.f};
+         }
+     }
+-    f->current_primitive[bin] = p; c->scene_material = (int)p->material;
++    f->bins[bin].current_primitive = p; c->scene_material = (int)p->material;
+     sg_scene_visibility_triangle(c,v,v+1,v+2,pool->bins[bin].ix0,pool->bins[bin].ix1);
+ }
+ 
+@@ -1034,7 +1040,7 @@ static void scene_packet_draw(softgl_ctx *c, scene_geometry_task *task,
+         }
+         SCENE_TRI_PACKET_AUDIT(3,1);
+         if (areas[lane] <= 0 || left[lane] >= right[lane] || bottom[lane] >= top[lane]) continue;
+-        f->current_primitive[bin] = p; c->scene_material = (int)p->material;
++        f->bins[bin].current_primitive = p; c->scene_material = (int)p->material;
+         scene_packet_triangle(c,p,packet,lane,x,y,areas[lane],left[lane],right[lane],bottom[lane],top[lane],bin);
+     }
+ }
+diff --git a/libsoftgl/src/geometry.inc b/libsoftgl/src/geometry.inc
+index 9e213e1..58dcf16 100644
+--- a/libsoftgl/src/geometry.inc
++++ b/libsoftgl/src/geometry.inc
+@@ -379,7 +379,7 @@ static void scene_geometry_raster(void *data) {
+                     scene_packet_draw(&local,task,first+offset,live,bin);
+             }
+         }
+-        f->current_primitive[bin] = NULL;
++        f->bins[bin].current_primitive = NULL;
+     }
+ }
+ 

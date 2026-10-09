@@ -379,7 +379,7 @@ static void scene_geometry_raster(void *data) {
                     scene_packet_draw(&local,task,first+offset,live,bin);
             }
         }
-        f->current_primitive[bin] = NULL;
+        f->bins[bin].current_primitive = NULL;
     }
 }
 

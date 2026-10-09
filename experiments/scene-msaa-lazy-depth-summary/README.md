@@ -1,6 +1,7 @@
 # Demand-driven exact MSAA depth summaries
 
-Status: own prepared hypothesis; unbuilt, unmeasured and not adopted.
+Status: not adopted after a slower first Bistro screen; native independent
+correctness and direct counted-helper controls pass.
 
 Current [raster_hz.h](../../libsoftgl/src/raster_hz.h) tracks the sample holding
 the maximum depth of each fully written 4×4 cell. Reducing that sample rescans
@@ -41,3 +42,28 @@ lazy dirty marker and demand-driven refresh are our own proposal. Related
 [MSAA occlusion](../scene-msaa-occlusion/README.md) and
 [packet occlusion](../scene-msaa-packet-occlusion/README.md) are already adopted;
 this experiment changes refresh timing rather than adding those tests again.
+
+Built with Clang22/SIMD128 against `7d67a8e`: independent 216 original and
+576 small/boundary/clip/cutout/overlap sample-plane hashes exact; 162 canonical
+legacy/deferred comparisons and admission/rollback/later ordinary-draw controls
+pass. ISA: 66,949 XMM references, no AVX/YMM/ZMM.
+
+Direct private-helper fixture writes actual cell depths and tests dirty queries,
+stale-bound rejection, incomplete cells, LEQUAL, nonmonotonic invalidation and
+resumption of an ordinary writer. For sixteen maximum-reducing pixel writes,
+the original reducer scans sixteen times; the candidate scans zero times until
+the next necessary query, then once. Real sample depths and query outcomes are
+exact. This is fixture evidence, not a Bistro scan census or an FPS prediction.
+The fixture uses a test-only active-scene token without worker/GL dispatch;
+real renderer fixtures independently exercise actual scene objects. Only the
+fixture header adds a reducer counter; timed libraries are uninstrumented.
+The first fixture build rejected an incompatible token-pointer assignment;
+the explicit void-pointer conversion fixes it, and both binaries pass.
+
+Balanced Bistro screen, four total threads, 640×360, 60 warmup/30 orbit frames:
+OFF +0.56%, 2× +2.01% controls; 4× 59.630168 → 60.458704 ms (+1.39% time).
+All final angle-160 RGB images are byte-identical. The algorithm remains
+unchanged for OFF/2×, but header code/layout can affect controls. No broad
+all-model repetition, sanitizer, actual-WASM or production/browser adoption
+was pursued without a performance case. [Validation](validation/) retains
+sources, digests, native logs, the initial compile failure and timing records.

@@ -1,0 +1,423 @@
+{
+  "baselineRevision": "7d67a8e10e2b7f447dc352a850c0a32b2c7e55ec",
+  "productionAdopted": false,
+  "built": true,
+  "measured": true,
+  "variant": "inlined-v1",
+  "rawArtifacts": [
+    {
+      "source": "/tmp/softgl-quantized-msaa-CMake-v1.txt",
+      "originalSha256": "abfafc2d019e756f6eee353f35c40b1f165acf6674076011caa9f50cb67d34b9",
+      "archived": "softgl-quantized-msaa-CMake-v1.txt",
+      "archiveSha256": "abfafc2d019e756f6eee353f35c40b1f165acf6674076011caa9f50cb67d34b9",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-build.txt",
+      "originalSha256": "a9a59cff41cb8cbf906ddf2dd38ecfd3f2758482245ea0509bcd5e6bfddd1ca9",
+      "archived": "softgl-quantized-msaa-build.txt",
+      "archiveSha256": "a9a59cff41cb8cbf906ddf2dd38ecfd3f2758482245ea0509bcd5e6bfddd1ca9",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-configure.txt",
+      "originalSha256": "84a3e80a6276f450b75f0d037a431273fa7d033376ac08cd766fba174d2d7b1c",
+      "archived": "softgl-quantized-msaa-configure.txt",
+      "archiveSha256": "84a3e80a6276f450b75f0d037a431273fa7d033376ac08cd766fba174d2d7b1c",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-confirmation-v1.txt",
+      "originalSha256": "701660c109faa55c04c224a3e5faaceb3982c171ef1c63eaa10f475047c6aa19",
+      "archived": "softgl-quantized-msaa-confirmation-v1.txt",
+      "archiveSha256": "701660c109faa55c04c224a3e5faaceb3982c171ef1c63eaa10f475047c6aa19",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-control-recheck-v1.txt",
+      "originalSha256": "4212d2a117157c2a7f88d45ff65e3148ec44828b458a8bfe8eb168bdaf4af636",
+      "archived": "softgl-quantized-msaa-control-recheck-v1.txt",
+      "archiveSha256": "4212d2a117157c2a7f88d45ff65e3148ec44828b458a8bfe8eb168bdaf4af636",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-default-hz.txt",
+      "originalSha256": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+      "archived": "softgl-quantized-msaa-default-hz.txt",
+      "archiveSha256": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-default-positions-baseline.txt",
+      "originalSha256": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+      "archived": "softgl-quantized-msaa-default-positions-baseline.txt",
+      "archiveSha256": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-default-positions-candidate.txt",
+      "originalSha256": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+      "archived": "softgl-quantized-msaa-default-positions-candidate.txt",
+      "archiveSha256": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-default-quantized-baseline.txt",
+      "originalSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "archived": "softgl-quantized-msaa-default-quantized-baseline.txt",
+      "archiveSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-default-quantized-candidate.txt",
+      "originalSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "archived": "softgl-quantized-msaa-default-quantized-candidate.txt",
+      "archiveSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-default-small-baseline.txt",
+      "originalSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "archived": "softgl-quantized-msaa-default-small-baseline.txt",
+      "archiveSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-default-small-candidate.txt",
+      "originalSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "archived": "softgl-quantized-msaa-default-small-candidate.txt",
+      "archiveSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-enabled-quantized_msaa-candidate-stderr.txt",
+      "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archived": "softgl-quantized-msaa-enabled-quantized_msaa-candidate-stderr.txt",
+      "archiveSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-enabled-quantized_msaa-candidate.txt",
+      "originalSha256": "8dae3f7c56a8a1ff7ebd700967d42d6d9efd6dd4505b956a2fd4dd52657ceed8",
+      "archived": "softgl-quantized-msaa-enabled-quantized_msaa-candidate.txt",
+      "archiveSha256": "8dae3f7c56a8a1ff7ebd700967d42d6d9efd6dd4505b956a2fd4dd52657ceed8",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-enabled-quantized_msaa-reference-stderr.txt",
+      "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archived": "softgl-quantized-msaa-enabled-quantized_msaa-reference-stderr.txt",
+      "archiveSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-enabled-quantized_msaa-reference.txt",
+      "originalSha256": "8dae3f7c56a8a1ff7ebd700967d42d6d9efd6dd4505b956a2fd4dd52657ceed8",
+      "archived": "softgl-quantized-msaa-enabled-quantized_msaa-reference.txt",
+      "archiveSha256": "8dae3f7c56a8a1ff7ebd700967d42d6d9efd6dd4505b956a2fd4dd52657ceed8",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-enabled-small_msaa-reference-stderr.txt",
+      "originalSha256": "fe5112002d621bb87079847258e88a4ee750eb95429c80f76be7393c452600fb",
+      "archived": "softgl-quantized-msaa-enabled-small_msaa-reference-stderr.txt",
+      "archiveSha256": "fe5112002d621bb87079847258e88a4ee750eb95429c80f76be7393c452600fb",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-enabled-small_msaa-reference.txt",
+      "originalSha256": "8db5cbeca8ab60e30d919a6ce747d57f1f98a34e63b61b83de1128bea94fd26f",
+      "archived": "softgl-quantized-msaa-enabled-small_msaa-reference.txt",
+      "archiveSha256": "8db5cbeca8ab60e30d919a6ce747d57f1f98a34e63b61b83de1128bea94fd26f",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-policy-build.txt",
+      "originalSha256": "252462712f15d386729230a0d97b1c2e016cf7fb4b51f95d35ec5bb55d0608aa",
+      "archived": "softgl-quantized-msaa-policy-build.txt",
+      "archiveSha256": "252462712f15d386729230a0d97b1c2e016cf7fb4b51f95d35ec5bb55d0608aa",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-policy-configure.txt",
+      "originalSha256": "60ef1edd61b9a0c81e2d35bd6ecbacbcac7e9aa3a1341b58bcdc96fecc3e9c06",
+      "archived": "softgl-quantized-msaa-policy-configure.txt",
+      "archiveSha256": "60ef1edd61b9a0c81e2d35bd6ecbacbcac7e9aa3a1341b58bcdc96fecc3e9c06",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-policy-small-candidate.txt",
+      "originalSha256": "cf9ec1ab88fdc61d7ba2cf800058e69af925e7e14e904860182239effed0ef0e",
+      "archived": "softgl-quantized-msaa-policy-small-candidate.txt",
+      "archiveSha256": "cf9ec1ab88fdc61d7ba2cf800058e69af925e7e14e904860182239effed0ef0e",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-policy-small-reference.txt",
+      "originalSha256": "cf9ec1ab88fdc61d7ba2cf800058e69af925e7e14e904860182239effed0ef0e",
+      "archived": "softgl-quantized-msaa-policy-small-reference.txt",
+      "archiveSha256": "cf9ec1ab88fdc61d7ba2cf800058e69af925e7e14e904860182239effed0ef0e",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-prepare.txt",
+      "originalSha256": "0601be0bb2dfdd84749e3578322c1d17dc1ea54c0ed0004a6ddd892c5e44abe8",
+      "archived": "softgl-quantized-msaa-prepare.txt",
+      "archiveSha256": "0601be0bb2dfdd84749e3578322c1d17dc1ea54c0ed0004a6ddd892c5e44abe8",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-quality-reference.txt",
+      "originalSha256": "c7fc0d04bc2c157b8b54dceeea48bc238c1512de668ee0f0512cc6852af672ed",
+      "archived": "softgl-quantized-msaa-quality-reference.txt",
+      "archiveSha256": "c7fc0d04bc2c157b8b54dceeea48bc238c1512de668ee0f0512cc6852af672ed",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-quality.txt",
+      "originalSha256": "45b2a0234de177dd3149e5a039175780781494db4e8a2b1d8d446caa96f33828",
+      "archived": "softgl-quantized-msaa-quality.txt",
+      "archiveSha256": "45b2a0234de177dd3149e5a039175780781494db4e8a2b1d8d446caa96f33828",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-reproduction.txt",
+      "originalSha256": "b71838d1121ee2b1c044a794c0bb85dcf4a8a4f189dc1f41394165c627688598",
+      "archived": "softgl-quantized-msaa-reproduction.txt",
+      "archiveSha256": "b71838d1121ee2b1c044a794c0bb85dcf4a8a4f189dc1f41394165c627688598",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-resident-quality.txt",
+      "originalSha256": "ea7e18ff170a2b38d77770aee2cdb20353196ec5c52ab468d928cbed7c1a3bcd",
+      "archived": "softgl-quantized-msaa-resident-quality.txt",
+      "archiveSha256": "ea7e18ff170a2b38d77770aee2cdb20353196ec5c52ab468d928cbed7c1a3bcd",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-sanitize-build.txt",
+      "originalSha256": "6235b4d1705dc97c307a90ca795a0a896c54ed10fbe7c100f6307649588ef2da",
+      "archived": "softgl-quantized-msaa-sanitize-build.txt",
+      "archiveSha256": "6235b4d1705dc97c307a90ca795a0a896c54ed10fbe7c100f6307649588ef2da",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-sanitize-configure.txt",
+      "originalSha256": "856e04eab6694f0477918c539a25d955b8b47861f9e623bd6bc394f101ce4803",
+      "archived": "softgl-quantized-msaa-sanitize-configure.txt",
+      "archiveSha256": "856e04eab6694f0477918c539a25d955b8b47861f9e623bd6bc394f101ce4803",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-sanitize-hz_contract.txt",
+      "originalSha256": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+      "archived": "softgl-quantized-msaa-sanitize-hz_contract.txt",
+      "archiveSha256": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-sanitize-quantized_candidate.txt",
+      "originalSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "archived": "softgl-quantized-msaa-sanitize-quantized_candidate.txt",
+      "archiveSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-sanitize-quantized_msaa_candidate.txt",
+      "originalSha256": "8dae3f7c56a8a1ff7ebd700967d42d6d9efd6dd4505b956a2fd4dd52657ceed8",
+      "archived": "softgl-quantized-msaa-sanitize-quantized_msaa_candidate.txt",
+      "archiveSha256": "8dae3f7c56a8a1ff7ebd700967d42d6d9efd6dd4505b956a2fd4dd52657ceed8",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-sanitize-small_candidate.txt",
+      "originalSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "archived": "softgl-quantized-msaa-sanitize-small_candidate.txt",
+      "archiveSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-sanitize-small_msaa_candidate.txt",
+      "originalSha256": "cf9ec1ab88fdc61d7ba2cf800058e69af925e7e14e904860182239effed0ef0e",
+      "archived": "softgl-quantized-msaa-sanitize-small_msaa_candidate.txt",
+      "archiveSha256": "cf9ec1ab88fdc61d7ba2cf800058e69af925e7e14e904860182239effed0ef0e",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-screen.txt",
+      "originalSha256": "9ce9fddd9c09568da4d2d01ea7df39a78ef76c4aa9d216c5ea80982aaa410d58",
+      "archived": "softgl-quantized-msaa-screen.txt",
+      "archiveSha256": "9ce9fddd9c09568da4d2d01ea7df39a78ef76c4aa9d216c5ea80982aaa410d58",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "/tmp/softgl-quantized-msaa-wasm-enabled.txt",
+      "originalSha256": "1d7b32ad7d7dec467739ab9a4f776a5d58ac11c1906c93ef42d50e446e6ebe1f",
+      "archived": "softgl-quantized-msaa-wasm-enabled.txt",
+      "archiveSha256": "1d7b32ad7d7dec467739ab9a4f776a5d58ac11c1906c93ef42d50e446e6ebe1f",
+      "eofNormalization": "trim trailing whitespace; retain failed/first logs"
+    },
+    {
+      "source": "build/scene-msaa-quantized-packets/wasm-quantized-audit/small_msaa_policy_v2-candidate.txt",
+      "originalSha256": "cf9ec1ab88fdc61d7ba2cf800058e69af925e7e14e904860182239effed0ef0e",
+      "archived": "wasm-small_msaa_policy_v2-candidate.txt",
+      "archiveSha256": "cf9ec1ab88fdc61d7ba2cf800058e69af925e7e14e904860182239effed0ef0e"
+    },
+    {
+      "source": "build/scene-msaa-quantized-packets/wasm-quantized-audit/quantized_msaa-candidate.txt",
+      "originalSha256": "381ea195b26608860dcd681f612ccfe81e7cfe2d65bfb58c27f9cc300b1096b7",
+      "archived": "wasm-quantized_msaa-candidate.txt",
+      "archiveSha256": "381ea195b26608860dcd681f612ccfe81e7cfe2d65bfb58c27f9cc300b1096b7"
+    },
+    {
+      "source": "build/scene-msaa-quantized-packets/wasm-quantized-audit/quantized_msaa-reference.txt",
+      "originalSha256": "381ea195b26608860dcd681f612ccfe81e7cfe2d65bfb58c27f9cc300b1096b7",
+      "archived": "wasm-quantized_msaa-reference.txt",
+      "archiveSha256": "381ea195b26608860dcd681f612ccfe81e7cfe2d65bfb58c27f9cc300b1096b7"
+    },
+    {
+      "source": "build/scene-msaa-quantized-packets/wasm-quantized-audit/small_msaa_policy_v2-reference.txt",
+      "originalSha256": "cf9ec1ab88fdc61d7ba2cf800058e69af925e7e14e904860182239effed0ef0e",
+      "archived": "wasm-small_msaa_policy_v2-reference.txt",
+      "archiveSha256": "cf9ec1ab88fdc61d7ba2cf800058e69af925e7e14e904860182239effed0ef0e"
+    }
+  ],
+  "sourceSha256": {
+    "CMakeLists.txt": "41a69b787380c1ec562b95a8f02c6bd9d7cd7624f23439454b893a17992a1fb7",
+    "include/GL/softgl.h": "615018c0bdb784ba476c9a0dd886dafcef77f44ebfaa46fa1a2cdb7538e8ea8d",
+    "src/api.c": "9c373504af364d620c212afdfc9046bcc899bd61af198a6558fdda81f01691e1",
+    "src/buffers.c": "a0363363f060dc9cbd99a64703496e1e702c2cf82beb42b16a54337b524be2ff",
+    "src/clip.c": "f5c0b940f54a4aa52a2d55785de31d72c168d381b53012e408179f81381de3cc",
+    "src/cluster_cull.h": "b639ef7e507d28512549feda7e272e0bef855acf6fd1c8e8cad96cae6ad228d9",
+    "src/dlist.c": "e7446f33b3972e4384c103c2547869dfffad43c900e1f55bf6f8c38eaf36eae8",
+    "src/dlist.h": "4bc8e0e5966f5b226c8e086ead9a635fd6158eed18b0c55e4b4c2ed0bdbda033",
+    "src/evaluators.c": "69281ca9f25e0f7d5cc1f76f31fb17502c83b60ea6168bbbae238e65227344ba",
+    "src/frag_combine_hot.h": "e801062d6fe0ce8ade5f12730ba4cb1441689ba6bd39a331a308bc99e29f72cc",
+    "src/frag_hot.h": "e0e1cba7afec1b2c13a53a8198207d868fa0636a84ee98e059f238d131dca52e",
+    "src/frag_packet.h": "f06d0fa6a43404fbdbc2ca391d96162dcafb8e53dcfaca45afc46ebb7ff6b6de",
+    "src/fragment.c": "d1883401993e1576f565710c6ad9e3066d401684ac698928940f72fd582ef1d2",
+    "src/fragment_combine.c": "b7af7972265bf0ac384379fcba6885e93707cdd8a0de956f691ad28ed1dd7153",
+    "src/fragment_write.c": "6c806d57d87ff4ed31ecdf502be6f77772497696a607633edf71c9971da66f1d",
+    "src/framebuffer.c": "7c82e1f52d5b2c2e7d9752d155f379109a8791c41b147713cfb14f2788e1a974",
+    "src/geometry.inc": "43a6ecfdc7c783ebcc17d146df24366adf70df94d8a1ab43aac53178fcf93ac1",
+    "src/geometry_types.inc": "7ef7af9f69ee68ee53dae5d8d3f3e2c1b07b9e8140d5820926a0a2ba796d5417",
+    "src/immediate.c": "80b520a3c3c14e675eeca5d3083c5dbe423e9684a69b868446f85e99ef86534c",
+    "src/index_range.h": "4d0456bd563031b7b4ff1184bfb6fa513908ae4047bd5f6f83dc8a7f57d8bb03",
+    "src/lighting.c": "1e6db9b4f59e2a54b1f6b89e6bc129d206dc816aaa08f099d80e6f8f2f42e338",
+    "src/lines.c": "b08fef911685977a08d6f2b29265aa28721aa0497a1a208c492403bdde0bbe87",
+    "src/matrix.c": "fd5bff0e263cd87d1032fad4fa75f966f76b2cc605b746d47e3d4eeabde6d793",
+    "src/msaa_additive.h": "6fab4198defe4db18a83f1562034807e71957ba07db0c0bd51f2e26c90d4778f",
+    "src/multisample.c": "2ba7fe2df9c8afed9acf1daa5ea48df6fbe8b5c0cceeac11bd61c3804423ea1d",
+    "src/multisample.h": "cdbe1e0aa51827f13789ce7f46e3acc961e0b87c5d034e1c7ba22fe54c611315",
+    "src/pipeline.c": "fb559aa949d0e4211044451c9456f22e928982fb03c6f9132c199b316a2edfe3",
+    "src/pixels.c": "8e366864ac1418564d2342bd3c120ad5e8057998af21ff31ccb5663134ddfc92",
+    "src/raster_hz.h": "1cc4a6fe6f5a425607cb3b8a57d15cb19d5de537794c638b673f0bd4a14b4ed6",
+    "src/raster_msaa_impl.h": "1c5ace8d35a4413d5628ebf5c397c58d633758a3dd93145932d2973b3a61ae0f",
+    "src/raster_store.h": "251cbe4d9765edfc26b4428d7d5906ab17722689feae08eac432db59a7b22934",
+    "src/raster_triangle_impl.h": "51b5cf82bdd1298bcb42722a4af5cac0edbebe8442b4703a1cf0fbde35487915",
+    "src/raster_types.h": "0b050bdbf31f6c398366112c84a6041390a50398d1e18acafe4c7440a0700f45",
+    "src/raster_vertex_pack.h": "956a8084b973144a9d8ee28c0d485214e3e8551a7384238f610620e00ad6e528",
+    "src/rasterizer.c": "8cfc012004b794e6a83eeb8eb33b2dea674ba199a32c1a65baf691106cc596bc",
+    "src/scene_visibility.c": "750464d2a3ae17661f08392dc78e20ad344842dd5cbcbc0f918d7b6aa42794cd",
+    "src/simd.h": "c639184db1b8a3c79b0aa07ad4fbe0a96b8c79e16536b3d98abef0b72d74e150",
+    "src/state.c": "04f4a8355c1fc37c3521001719dae9a55a1e9b7a34c2f1a70c53990a0d26fb38",
+    "src/texture.c": "9c4d999c73b68a7431bd1f0e88c2d3d2e7e1931670ad166ffee535f8d5764c45",
+    "src/types.h": "9eb99eb4dc29359b7edeb4dc817a7dfa8a108f32b84fa97e190a95f3e73a8cfe",
+    "src/vertex_inputs.h": "fb774a51f4627b91dd6d58fc2cb918df04ef224d45cd898dfa1ed5dd9a0b0db5",
+    "src/workers.c": "47c2bb16e01d1f17ce552ce3baa13e15a13f3d125a3c2ee0d6f30ebce8c63e21",
+    "src/workers.h": "3a74a68a42b0e1fc80b426cd3236e329ee70b145a5afe687520575599e709c5a",
+    "src/workers_queue_raw.inc": "ddec9df98f32ce5f428467f97b3a772506019cd4eca90e004afe956a6b9527b3"
+  },
+  "wrapperSha256": "9297d5263fe397804dc7235e3da2affa608df5f9b09db3b6751c5d1e52c93b56",
+  "librarySha256": "bd16e3e2a0302dc5c070ded9ed6fc0425b7d4b32ad64dd80ad965a9062328fe0",
+  "nativeDefaultExactPairs": [
+    216,
+    576
+  ],
+  "nativeRoundedReferenceExactPairs": [
+    216,
+    576
+  ],
+  "actualWasmRoundedReferenceExactPairs": [
+    216,
+    576
+  ],
+  "qualityOriginalPairs": 108,
+  "qualityRoundedReferencePairs": 36,
+  "residentFreshPairs": 288,
+  "sanitizerFixtures": [
+    "quantized_msaa_candidate",
+    "small_msaa_candidate",
+    "quantized_candidate",
+    "small_candidate",
+    "hz_contract"
+  ],
+  "screenBistro4TimePercent": -5.573423218,
+  "confirmationBistro4TimePercent": -2.9355937106980923,
+  "controlT80OffTimePercent": [
+    4.8091754284,
+    10.7288428119
+  ],
+  "decision": "Hold/reject inlined variant: Bistro4 ~3% time gain but T80 OFF regression reproduced; outlined variant requires separate gates",
+  "firstSmallFixtureFailure": "Legacy exact-coverage assertion fails with explicitly quantized .18-pixel triangle. Original tests unchanged; separate strict analytic policy V2 plus rounded int64 reference used.",
+  "wasmSha256": {
+    "small_msaa_policy_v2-reference.wasm": "59ef626f6ad7e99f40a336b70fd68ff3ef8a7d3886b819ad1d44cd408114cecf",
+    "quantized_msaa-candidate.wasm": "c557200ca39a8bae7af717997e442fb8404b558994d4104b0f9213e58d0d4eb0",
+    "small_msaa_policy_v2-candidate.wasm": "ac89db0601bf1e11926bd412c2ebd09e113249008250acd1d8435a839abac380",
+    "quantized_msaa-reference.wasm": "be506497e7186c838c82d9367b1ab12cd00d6a4db1327b9a28ce379f3301c8d0"
+  },
+  "artifactsSha256": {
+    "confirmation-v1-receipt.json": "423809829ad4d526301fc9d58e67f2debe637b9bfa7067c2d62d8ad32b1e07d3",
+    "confirmation-v1-summary.json": "52aace7d6d3d09d5d664bbf405a529d04bbd4aa34a1be33e4cdf3f4f5dad77a8",
+    "control-recheck-v1-receipt.json": "0770a210378e963c190392ade29d213b2a79a11e7ae9f91413136a959a4cda34",
+    "control-recheck-v1-summary.json": "bfe17fab30dc334100148bc8295f7e0404c225c5917bf64643dad2cbdd09fa61",
+    "isa.json": "f70134f86d842967a334517a6f294e4c298587925c36bbb0bd57a815d8d274a1",
+    "quality-reference.json": "bbe4ffbfa1b2d066ff076b4188eabc1745a9c417f460a13d79adc069129ddebc",
+    "quality.json": "3f431e8b44162c4022d1838613bc1939a2944c920da5fcb16891415382f0c913",
+    "resident-quality.json": "8d3c292029964774fb158ee82f6a8cfb4e68ec33e862af4bb5acfeb4e588439a",
+    "screen-receipt.json": "462c425899dbd01227bd520f9d606ac43bd7f3c683bbd63c8838914623bf0c3f",
+    "screen-summary.json": "ced608e04826ec314959b8e6dbc19a26b16002803724f9ca2dcf940cc6a3eb5d",
+    "softgl-quantized-msaa-CMake-v1.txt": "abfafc2d019e756f6eee353f35c40b1f165acf6674076011caa9f50cb67d34b9",
+    "softgl-quantized-msaa-build.txt": "a9a59cff41cb8cbf906ddf2dd38ecfd3f2758482245ea0509bcd5e6bfddd1ca9",
+    "softgl-quantized-msaa-configure.txt": "84a3e80a6276f450b75f0d037a431273fa7d033376ac08cd766fba174d2d7b1c",
+    "softgl-quantized-msaa-confirmation-v1.txt": "701660c109faa55c04c224a3e5faaceb3982c171ef1c63eaa10f475047c6aa19",
+    "softgl-quantized-msaa-control-recheck-v1.txt": "4212d2a117157c2a7f88d45ff65e3148ec44828b458a8bfe8eb168bdaf4af636",
+    "softgl-quantized-msaa-default-hz.txt": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+    "softgl-quantized-msaa-default-positions-baseline.txt": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+    "softgl-quantized-msaa-default-positions-candidate.txt": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+    "softgl-quantized-msaa-default-quantized-baseline.txt": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+    "softgl-quantized-msaa-default-quantized-candidate.txt": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+    "softgl-quantized-msaa-default-small-baseline.txt": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+    "softgl-quantized-msaa-default-small-candidate.txt": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+    "softgl-quantized-msaa-enabled-quantized_msaa-candidate-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "softgl-quantized-msaa-enabled-quantized_msaa-candidate.txt": "8dae3f7c56a8a1ff7ebd700967d42d6d9efd6dd4505b956a2fd4dd52657ceed8",
+    "softgl-quantized-msaa-enabled-quantized_msaa-reference-stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "softgl-quantized-msaa-enabled-quantized_msaa-reference.txt": "8dae3f7c56a8a1ff7ebd700967d42d6d9efd6dd4505b956a2fd4dd52657ceed8",
+    "softgl-quantized-msaa-enabled-small_msaa-reference-stderr.txt": "fe5112002d621bb87079847258e88a4ee750eb95429c80f76be7393c452600fb",
+    "softgl-quantized-msaa-enabled-small_msaa-reference.txt": "8db5cbeca8ab60e30d919a6ce747d57f1f98a34e63b61b83de1128bea94fd26f",
+    "softgl-quantized-msaa-policy-build.txt": "252462712f15d386729230a0d97b1c2e016cf7fb4b51f95d35ec5bb55d0608aa",
+    "softgl-quantized-msaa-policy-configure.txt": "60ef1edd61b9a0c81e2d35bd6ecbacbcac7e9aa3a1341b58bcdc96fecc3e9c06",
+    "softgl-quantized-msaa-policy-small-candidate.txt": "cf9ec1ab88fdc61d7ba2cf800058e69af925e7e14e904860182239effed0ef0e",
+    "softgl-quantized-msaa-policy-small-reference.txt": "cf9ec1ab88fdc61d7ba2cf800058e69af925e7e14e904860182239effed0ef0e",
+    "softgl-quantized-msaa-prepare.txt": "0601be0bb2dfdd84749e3578322c1d17dc1ea54c0ed0004a6ddd892c5e44abe8",
+    "softgl-quantized-msaa-quality-reference.txt": "c7fc0d04bc2c157b8b54dceeea48bc238c1512de668ee0f0512cc6852af672ed",
+    "softgl-quantized-msaa-quality.txt": "45b2a0234de177dd3149e5a039175780781494db4e8a2b1d8d446caa96f33828",
+    "softgl-quantized-msaa-reproduction.txt": "b71838d1121ee2b1c044a794c0bb85dcf4a8a4f189dc1f41394165c627688598",
+    "softgl-quantized-msaa-resident-quality.txt": "ea7e18ff170a2b38d77770aee2cdb20353196ec5c52ab468d928cbed7c1a3bcd",
+    "softgl-quantized-msaa-sanitize-build.txt": "6235b4d1705dc97c307a90ca795a0a896c54ed10fbe7c100f6307649588ef2da",
+    "softgl-quantized-msaa-sanitize-configure.txt": "856e04eab6694f0477918c539a25d955b8b47861f9e623bd6bc394f101ce4803",
+    "softgl-quantized-msaa-sanitize-hz_contract.txt": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+    "softgl-quantized-msaa-sanitize-quantized_candidate.txt": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+    "softgl-quantized-msaa-sanitize-quantized_msaa_candidate.txt": "8dae3f7c56a8a1ff7ebd700967d42d6d9efd6dd4505b956a2fd4dd52657ceed8",
+    "softgl-quantized-msaa-sanitize-small_candidate.txt": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+    "softgl-quantized-msaa-sanitize-small_msaa_candidate.txt": "cf9ec1ab88fdc61d7ba2cf800058e69af925e7e14e904860182239effed0ef0e",
+    "softgl-quantized-msaa-screen.txt": "9ce9fddd9c09568da4d2d01ea7df39a78ef76c4aa9d216c5ea80982aaa410d58",
+    "softgl-quantized-msaa-wasm-enabled.txt": "1d7b32ad7d7dec467739ab9a4f776a5d58ac11c1906c93ef42d50e446e6ebe1f",
+    "source.patch": "a014daccf7c85ff3e30b632c95c8b8074fe099d5ce0316abaf411161f513db5a",
+    "visual-review.json": "4fcb65c1d1123b25bc2156df0d01039aae436b2f3f411b203772594b63df376d",
+    "wasm-quantized_msaa-candidate.txt": "381ea195b26608860dcd681f612ccfe81e7cfe2d65bfb58c27f9cc300b1096b7",
+    "wasm-quantized_msaa-reference.txt": "381ea195b26608860dcd681f612ccfe81e7cfe2d65bfb58c27f9cc300b1096b7",
+    "wasm-small_msaa_policy_v2-candidate.txt": "cf9ec1ab88fdc61d7ba2cf800058e69af925e7e14e904860182239effed0ef0e",
+    "wasm-small_msaa_policy_v2-reference.txt": "cf9ec1ab88fdc61d7ba2cf800058e69af925e7e14e904860182239effed0ef0e"
+  }
+}

@@ -65,4 +65,9 @@ for name,source in [('hz_contract.c',repo/'tests/scene_msaa.c'),
     (root/'source'/name).write_bytes(source.read_bytes())
 (root/'source/quantized_fixture.inc').write_text((repo/'tests/scene_quantized.c').read_text().replace('int main(void) {','int previous_quantized_main(void) {'))
 (root/'variant.txt').write_text(f'baseline={revision}\nscene_msaa4_lazy_exact_maximum=true\n')
+for variant in ('source','baseline-source'):
+    header = (root/variant/'libsoftgl/src/raster_hz.h').read_text()
+    anchor = 'SG_INLINE void sg_hz_refresh4(const softgl_ctx *c, int x, int y, sg_hz_tile *tile) {'
+    assert header.count(anchor) == 1
+    (root/variant/'lazy_fixture_hz.h').write_text(header.replace(anchor,anchor+'\n    SG_LAZY_FIXTURE_SCAN();'))
 print(root/'source')

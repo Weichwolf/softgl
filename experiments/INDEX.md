@@ -188,4 +188,7 @@
 | [scene-compact-attributes](scene-compact-attributes/README.md) | Not adopted screen | Exact 320→80B shared records: combined Bistro OFF -1.95%, 2× +0.34%, 4× +0.17% time; initial MSAA gain not retained. |
 | [scene-packet-coordinate-decode](scene-packet-coordinate-decode/README.md) | Not adopted | 9.757M native/WASM numeric checks and 216/576 render hashes exact; full repeat Bistro4 +0.21%, Sponza OFF +1.84% time, no broad gain. |
 | [cpu-rasterizer-msaa-audit](cpu-rasterizer-msaa-audit/README.md) | Research | Pinned local CPU-Rasterizer and SIGGRAPH 2011 sources reviewed; pixel-frequency MSAA reuse already implemented, no new gain. |
-| [scene-msaa-lazy-depth-summary](scene-msaa-lazy-depth-summary/README.md) | Prepared hypothesis | Own monotonic upper-bound marker defers 64-sample rescans until needed; unbuilt, no FPS claim. |
+| [scene-msaa-lazy-depth-summary](scene-msaa-lazy-depth-summary/README.md) | Not adopted screen | Exact 216/576 hashes; fixture scans 16→1 but Bistro4 +1.39% time, 2× +2.01% control cost; no production change. |
+| [scene-msaa-quantized-packets](scene-msaa-quantized-packets/README.md) | Held prototype | Bistro4 −2.94% time but T-80 OFF repeat cost +10.73%; guarded variants only −1.50/−1.46% screening time, no adoption. |
+| [scene-msaa-reconstructed-depth](scene-msaa-reconstructed-depth/README.md) | Research | Own DCAA/AGAA-inspired uniform depth-plane reconstruction; retain four genuine samples, unimplemented and unmeasured. |
+| [scene-bin-private-state](scene-bin-private-state/README.md) | Adopted | Exact bin state separation: Bistro OFF/2×/4× +5.31/+4.79/+6.37% FPS, all OFF modes improve; Sponza2 −1.05%, SIMD128/sample planes unchanged. |
