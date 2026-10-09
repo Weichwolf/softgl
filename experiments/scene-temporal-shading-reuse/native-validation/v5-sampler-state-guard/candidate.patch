@@ -1,0 +1,485 @@
+--- a/libsoftgl/include/GL/softgl.h
++++ b/libsoftgl/include/GL/softgl.h
+@@ -971,6 +971,8 @@
+ int softgl_scene_native_wide(GLboolean enabled);
+ void softgl_scene_visibility_material(void);
+ int softgl_scene_visibility_end(void);
++int softgl_scene_material_cache(GLuint mode);
++GLuint64 softgl_scene_material_cache_hits(void);
+ /* Experimental canonical mesh path: positions are float XYZ; coordinates
+  * are float UV with the same byte stride. Inputs remain immutable through
+  * scene end. The copied pure program must preserve UV0/UV2 and alpha one,
+--- /dev/null
++++ b/libsoftgl/src/scene_cache_kernels.inc
+@@ -0,0 +1,107 @@
++static void scene_cache_shade_packet(struct sg_scene_visibility *f, scene_material *m,
++    const uint32_t pixels[4], unsigned live, scene_cache_slot *slot) {
++    softgl_ctx *c = f->context;
++    const scene_triangle *tri[4];
++    float bary[3][4];
++    for (int l = 0; l < 4; l++) {
++        tri[l] = scene_triangle_at(f,f->winner[pixels[l]]);
++        uint32_t pixel = c->fb.samples ? pixels[l]/(unsigned)c->fb.samples : pixels[l];
++        int x = (int)(pixel % (unsigned)c->fb.w), y = (int)(pixel / (unsigned)c->fb.w);
++        const scene_triangle *t = tri[l];
++        int sx = 128, sy = 128;
++        if (c->fb.samples && f->sample_point[pixels[l]] != 4)
++            sg_sample_position(c->fb.samples,f->sample_point[pixels[l]],&sx,&sy);
++        int64_t e0 = t->edge[0][0]+t->edge[0][1]*x+t->edge[0][2]*y;
++        int64_t e1 = t->edge[1][0]+t->edge[1][1]*x+t->edge[1][2]*y;
++        if (c->fb.samples) {
++            e0 += (t->edge[0][1]/256)*(sx-128)+(t->edge[0][2]/256)*(sy-128);
++            e1 += (t->edge[1][1]/256)*(sx-128)+(t->edge[1][2]/256)*(sy-128);
++        }
++        bary[0][l] = (float)e0*t->inverse_area;
++        bary[1][l] = (float)e1*t->inverse_area;
++        bary[2][l] = 1.f-bary[0][l]-bary[1][l];
++        for (int v = 0; v < 3; v++) bary[v][l] *= t->inverse_w[v];
++    }
++    sg_f32x4 w0 = sg_f32x4_load(bary[0]), w1 = sg_f32x4_load(bary[1]), w2 = sg_f32x4_load(bary[2]);
++    sg_f32x4 inverse = sg_f32x4_div(sg_f32x4_splat(1.f),sg_f32x4_add(sg_f32x4_add(w0,w1),w2));
++    sg_f32x4 primary[4], encoded_half[3], tex[4][4];
++    for (int k = 0; k < 4; k++) primary[k] = scene_gather_lerp(tri,-1,k,w0,w1,w2,inverse);
++    for (int k = 0; k < 3; k++) encoded_half[k] = scene_gather_lerp(tri,1,k,w0,w1,w2,inverse);
++    /* Canonical programs must preserve identical UV0/UV2; geometry validation
++     * restores the scene if any program violates that contract. */
++    int shared_uv = tri[0]->primitive && tri[1]->primitive && tri[2]->primitive && tri[3]->primitive;
++    int have_uv = 0;
++    sg_f32x4 shared_x, shared_y;
++    for (int u = 0; u < 4; u++) {
++        if (u == 1) continue;
++        const sg_tex_unit_tri *unit = &m->texture.unit[u];
++        if (unit->constant_color_valid) {
++            for (int k = 0; k < 4; k++) tex[u][k] = sg_f32x4_splat(unit->constant_color[k]);
++            continue;
++        }
++        sg_f32x4 x, y;
++        if (u == 2 && have_uv) {
++            x = shared_x; y = shared_y;
++        } else {
++            x = scene_gather_lerp(tri,u,0,w0,w1,w2,inverse);
++            y = scene_gather_lerp(tri,u,1,w0,w1,w2,inverse);
++            if (u == 0 && shared_uv) { shared_x = x; shared_y = y; have_uv = 1; }
++        }
++        if (unit->active_slot == SG_TEX_TARGET_CUBE) {
++            sg_f32x4 z = scene_gather_lerp(tri,u,2,w0,w1,w2,inverse);
++            sg_packet_sample_cube_target(unit,x,y,z,live,tex[u]);
++        } else if (u == 0 || u == 2) scene_cache_sample(f,slot,unit,x,y,live,tex[u]);
++        else sg_packet_sample_2d(unit,x,y,live,0,tex[u]);
++    }
++    sg_f32x4 dot[3], spec[3], half = sg_f32x4_splat(.5f);
++    for (int k = 0; k < 3; k++) {
++        sg_f32x4 n = sg_f32x4_sub(tex[0][k],half);
++        dot[k] = sg_f32x4_mul(n,sg_f32x4_sub(primary[k],half));
++        spec[k] = sg_f32x4_mul(n,sg_f32x4_sub(encoded_half[k],half));
++    }
++    sg_f32x4 d = sg_chain_clamp(sg_f32x4_mul(sg_f32x4_splat(4.f),sg_f32x4_add(sg_f32x4_add(dot[0],dot[1]),dot[2])));
++    sg_f32x4 s = sg_chain_clamp(sg_f32x4_mul(sg_f32x4_splat(4.f),sg_f32x4_add(sg_f32x4_add(spec[0],spec[1]),spec[2])));
++    s = sg_f32x4_mul(s,s);
++    if (m->texture.combine_kind == 5) s = sg_f32x4_mul(s,s);
++    sg_f32x4 color[4];
++    for (int k = 0; k < 3; k++) {
++        sg_f32x4 diffuse = sg_chain_clamp(sg_f32x4_add(d,sg_f32x4_splat(m->ambient[k])));
++        diffuse = sg_chain_clamp(sg_f32x4_mul(diffuse,tex[2][k]));
++        diffuse = sg_chain_clamp(sg_f32x4_add(diffuse,tex[3][k]));
++        sg_f32x4 tinted = sg_chain_clamp(sg_f32x4_mul(s,sg_f32x4_splat(m->tint[k])));
++        color[k] = sg_chain_clamp(sg_f32x4_add(diffuse,sg_f32x4_mul(tinted,sg_f32x4_splat(sg_clampf(m->tint[3],0.f,1.f)))));
++    }
++    color[3] = sg_chain_clamp(sg_f32x4_mul(primary[3],tex[2][3]));
++    _MM_TRANSPOSE4_PS(color[0],color[1],color[2],color[3]);
++    for (int l = 0; l < 4; l++) if (live & (1u << l)) {
++        float rgba[4]; sg_f32x4_store(rgba,color[l]);
++        uint32_t packed = sg_store_quantize_rgba(rgba);
++        if (c->fb.samples) {
++            size_t base = (size_t)(pixels[l]/(unsigned)c->fb.samples)*c->fb.samples;
++            for (int s = 0; s < c->fb.samples; s++) if (f->shade_mask[pixels[l]] & (1u << s))
++                { memcpy(c->fb.sample_color+(base+s)*4,&packed,sizeof(packed)); SCENE_MSAA_AUDIT(6,1); }
++            SCENE_MSAA_AUDIT(5,1);
++        } else memcpy(c->fb.color+(size_t)pixels[l]*4,&packed,sizeof(packed));
++    }
++}
++
++static void scene_cache_resolve(void *data) {
++    struct sg_scene_visibility *f = data;
++    scene_cache_slot *slot = scene_cache_acquire(f);
++    for (;;) {
++        int task = atomic_fetch_add_explicit(&f->next_task,1,memory_order_relaxed);
++        if (task >= f->task_count) break;
++        scene_task *t = &f->tasks[task];
++        scene_material *m = &f->materials[t->material];
++        for (uint32_t first = t->first; first < t->first+t->count; first += 4) {
++            uint32_t pixels[4]; unsigned live = 0;
++            for (int l = 0; l < 4; l++) {
++                uint32_t at = first+(unsigned)l;
++                pixels[l] = f->pixels[at < t->first+t->count ? at : first];
++                if (at < t->first+t->count) live |= 1u << l;
++            }
++            scene_cache_shade_packet(f,m,pixels,live,slot);
++        }
++    }
++}
++
+--- /dev/null
++++ b/libsoftgl/src/scene_cache_sample.inc
+@@ -0,0 +1,93 @@
++/* Shared by two-dimensional normal and albedo sampling only. Dynamic light,
++ * half vectors, environment sampling, alpha tests and MSAA coverage are fresh. */
++static void scene_cache_prepare(struct sg_scene_visibility *f, unsigned mode) {
++    softgl_ctx *c = f->context;
++    scene_cache_storage *cache = &f->cache;
++    if (cache->epoch != c->scene_texture_epoch || cache->previous_mode != mode) {
++        for (unsigned i = 0; i < SCENE_CACHE_SLOTS; i++) if (cache->slots[i].entries)
++            memset(cache->slots[i].entries, 0, SCENE_CACHE_ENTRIES*sizeof(scene_cache_entry));
++        cache->epoch = c->scene_texture_epoch;
++    }
++    cache->previous_mode = cache->mode = mode; cache->active = 0;
++    for (unsigned i = 0; i < SCENE_CACHE_SLOTS; i++) cache->slots[i].lookups = cache->slots[i].hits = 0;
++}
++
++int softgl_scene_material_cache(GLuint mode) {
++    softgl_ctx *c = sg_current();
++    if (!c || !c->scene_visibility || mode > 4) return 0;
++    scene_cache_prepare(c->scene_visibility, mode);
++    return 1;
++}
++
++static scene_cache_slot *scene_cache_acquire(struct sg_scene_visibility *f) {
++    scene_cache_storage *cache = &f->cache;
++    pthread_t self = pthread_self();
++    unsigned selected = SCENE_CACHE_SLOTS;
++    pthread_mutex_lock(&f->allocation_mutex);
++    for (unsigned i = 0; i < SCENE_CACHE_SLOTS; i++)
++        if (!(cache->active & (1u << i)) && cache->slots[i].occupied &&
++            pthread_equal(cache->slots[i].owner, self)) { selected = i; break; }
++    if (selected == SCENE_CACHE_SLOTS) for (unsigned i = 0; i < SCENE_CACHE_SLOTS; i++)
++        if (!(cache->active & (1u << i))) { selected = i; break; }
++    if (selected != SCENE_CACHE_SLOTS) {
++        cache->active |= 1u << selected;
++        scene_cache_slot *slot = &cache->slots[selected];
++        slot->owner = self; slot->occupied = 1;
++        if (!slot->entries) slot->entries = calloc(SCENE_CACHE_ENTRIES, sizeof(scene_cache_entry));
++    }
++    pthread_mutex_unlock(&f->allocation_mutex);
++    return selected == SCENE_CACHE_SLOTS ? NULL : &cache->slots[selected];
++}
++
++static void scene_cache_sample(struct sg_scene_visibility *f, scene_cache_slot *slot,
++    const sg_tex_unit_tri *unit, sg_f32x4 x, sg_f32x4 y, unsigned live, sg_f32x4 out[4]) {
++    if (!slot || !slot->entries || !unit->data0 || unit->active_slot != SG_TEX_TARGET_2D ||
++        unit->tw <= 0 || unit->th <= 0 || unit->tw > 65536 || unit->th > 65536) {
++        sg_packet_sample_2d(unit, x, y, live, 0, out); return;
++    }
++    SG_ALIGN16 uint32_t xx[4], yy[4];
++    if (f->cache.mode == 4) {
++        _mm_store_si128((sg_i32x4 *)xx, _mm_castps_si128(x));
++        _mm_store_si128((sg_i32x4 *)yy, _mm_castps_si128(y));
++    } else {
++        float bins = f->cache.mode == 1 ? 8.f : f->cache.mode == 2 ? 2.f : .25f;
++        sg_f32x4 qx = _mm_floor_ps(sg_f32x4_mul(sg_packet_wrap(x, unit->wrap_s), sg_f32x4_splat(unit->tw*bins)));
++        sg_f32x4 qy = _mm_floor_ps(sg_f32x4_mul(sg_packet_wrap(y, unit->wrap_t), sg_f32x4_splat(unit->th*bins)));
++        _mm_store_si128((sg_i32x4 *)xx, sg_f32x4_trunc_i32(qx));
++        _mm_store_si128((sg_i32x4 *)yy, sg_f32x4_trunc_i32(qy));
++    }
++    uint64_t texture = (uint64_t)(uintptr_t)unit->data0, cells[4];
++    /* Captured draws can use different filters/wraps on the same storage.
++     * Tag the eight effective two-dimensional sampler states in aligned
++     * storage addresses; unaligned storage retains ordinary sampling. */
++    if (texture & 7u) { sg_packet_sample_2d(unit,x,y,live,0,out); return; }
++    unsigned sampler = unit->filter_mag != GL_NEAREST;
++    sampler |= (unsigned)(unit->wrap_s == GL_CLAMP || unit->wrap_s == GL_CLAMP_TO_EDGE) << 1;
++    sampler |= (unsigned)(unit->wrap_t == GL_CLAMP || unit->wrap_t == GL_CLAMP_TO_EDGE) << 2;
++    texture |= sampler;
++    uint32_t indices[4]; unsigned misses = 0;
++    float values[4][4] = {{0}};
++    for (unsigned l = 0; l < 4; l++) if (live & (1u << l)) {
++        cells[l] = ((uint64_t)xx[l] << 32) | yy[l];
++        uint64_t mixed = cells[l]^((cells[l] >> 32)*UINT64_C(0x9e3779b185ebca87))^(texture >> 5);
++        mixed ^= mixed >> 33;
++        indices[l] = (uint32_t)mixed & (SCENE_CACHE_ENTRIES-1);
++        scene_cache_entry *entry = &slot->entries[indices[l]];
++        slot->lookups++;
++        if (entry->texture == texture && entry->cell == cells[l]) {
++            for (unsigned k = 0; k < 4; k++) values[k][l] = entry->rgba[k];
++            slot->hits++;
++        } else misses |= 1u << l;
++    }
++    if (misses) {
++        sg_f32x4 sampled[4]; float rgba[4][4];
++        sg_packet_sample_2d(unit, x, y, misses, 0, sampled);
++        for (unsigned k = 0; k < 4; k++) sg_f32x4_store(rgba[k], sampled[k]);
++        for (unsigned l = 0; l < 4; l++) if (misses & (1u << l)) {
++            scene_cache_entry *entry = &slot->entries[indices[l]];
++            entry->texture = texture; entry->cell = cells[l];
++            for (unsigned k = 0; k < 4; k++) entry->rgba[k] = values[k][l] = rgba[k][l];
++        }
++    }
++    for (unsigned k = 0; k < 4; k++) out[k] = sg_f32x4_load(values[k]);
++}
+--- /dev/null
++++ b/libsoftgl/src/scene_cache_types.h
+@@ -0,0 +1,27 @@
++/* Bounded, optional filtered-material memoization; no final RGB history. */
++#define SCENE_CACHE_SLOTS (SG_MAX_TILES+1)
++#define SCENE_CACHE_ENTRIES 131072u
++typedef struct {
++    uint64_t texture, cell;
++    float rgba[4];
++} scene_cache_entry;
++_Static_assert(sizeof(scene_cache_entry) == 32, "bounded material-cache entry");
++typedef union {
++    struct {
++        scene_cache_entry *entries;
++        pthread_t owner;
++        int occupied;
++        uint64_t lookups, hits;
++    };
++    unsigned char padding[128];
++} scene_cache_slot;
++_Static_assert(sizeof(scene_cache_slot) == 128, "separate worker cache counters");
++typedef struct {
++    scene_cache_slot slots[SCENE_CACHE_SLOTS];
++    uint64_t epoch;
++    unsigned mode, previous_mode, active;
++} scene_cache_storage;
++
++static void scene_cache_destroy(scene_cache_storage *cache) {
++    for (unsigned i = 0; i < SCENE_CACHE_SLOTS; i++) free(cache->slots[i].entries);
++}
+--- a/libsoftgl/src/scene_visibility.c
++++ b/libsoftgl/src/scene_visibility.c
+@@ -17,6 +17,7 @@
+ #define SCENE_INDEX_MASK ((UINT32_C(1) << SCENE_INDEX_BITS)-1)
+ 
+ #include "geometry_types.inc"
++#include "scene_cache_types.h"
+ 
+ typedef struct {
+     scene_mesh mesh;
+@@ -74,6 +75,7 @@
+     uint32_t *group_counts;
+     atomic_int failed, next_task;
+     pthread_mutex_t allocation_mutex;
++    scene_cache_storage cache;
+ };
+ 
+ static void scene_order_storage_destroy(struct sg_scene_visibility *f);
+@@ -84,6 +86,7 @@
+     for (int i = 0; i < SG_MAX_BINS; i++) { free(f->bins[i].triangles); free(f->bins[i].visible); }
+     free(f->winner); free(f->pixels); free(f->pixel_material); free(f->backup_depth); free(f->backup_color);
+     free(f->group_counts); free(f->materials); free(f->tasks); free(f->sample_point); free(f->shade_mask);
++    scene_cache_destroy(&f->cache);
+     scene_geometry_destroy(f->geometry);
+     scene_order_storage_destroy(f);
+     pthread_mutex_destroy(&f->allocation_mutex);
+@@ -164,6 +167,7 @@
+         f->bins[i].current_primitive = NULL;
+     }
+     atomic_store_explicit(&f->failed, 0, memory_order_relaxed);
++    f->cache.mode = 0;
+     f->quantized = 0;
+     f->context = c; f->material_count = 0; f->task_count = 0;
+     f->deferred_meshes = 0; f->mesh_vertices = 0;
+@@ -1170,6 +1174,8 @@
+         sg_f32x4_mul(sg_f32x4_load(value[1]),w1)),sg_f32x4_mul(sg_f32x4_load(value[2]),w2)),inverse);
+ }
+ 
++#include "scene_cache_sample.inc"
++
+ static void scene_shade_packet(struct sg_scene_visibility *f, scene_material *m,
+     const uint32_t pixels[4], unsigned live) {
+     softgl_ctx *c = f->context;
+@@ -1281,6 +1287,8 @@
+         }
+     }
+ }
++
++#include "scene_cache_kernels.inc"
+ 
+ static void scene_restore(struct sg_scene_visibility *f) {
+     softgl_ctx *c = f->context;
+@@ -1499,7 +1507,17 @@
+             f->tasks[f->task_count++] = (scene_task){(uint32_t)i,m->first+at,m->count-at < 256 ? m->count-at : 256};
+     }
+     atomic_store_explicit(&f->next_task,0,memory_order_relaxed);
+-    sg_workers_run_callback(c,scene_resolve,f);
++    if (f->cache.mode) scene_cache_prepare(f,f->cache.mode);
++    sg_workers_run_callback(c,f->cache.mode ? scene_cache_resolve : scene_resolve,f);
++    if (getenv("SOFTGL_CACHE_STATS")) {
++        uint64_t lookups = 0, hits = 0; size_t bytes = 0;
++        for (unsigned i = 0; i < SCENE_CACHE_SLOTS; i++) {
++            lookups += f->cache.slots[i].lookups; hits += f->cache.slots[i].hits;
++            if (f->cache.slots[i].entries) bytes += SCENE_CACHE_ENTRIES*sizeof(scene_cache_entry);
++        }
++        fprintf(stderr,"CACHE {\"mode\":%u,\"lookups\":%llu,\"hits\":%llu,\"bytes\":%zu}\n",
++            f->cache.mode,(unsigned long long)lookups,(unsigned long long)hits,bytes);
++    }
+     if (getenv("SOFTGL_SCENE_STATS")) {
+         uint64_t stored = 0, depth = 0;
+         for (int i = 0; i < SG_MAX_BINS; i++) { stored += f->bins[i].count; depth += f->bins[i].depth_passes; }
+@@ -1527,3 +1545,12 @@
+     if (started) softgl_scene_depth_order(mode);
+     return started;
+ }
++
++GLuint64 softgl_scene_material_cache_hits(void) {
++    softgl_ctx *c = sg_current();
++    if (!c || !c->scene_storage) return 0;
++    struct sg_scene_visibility *f = c->scene_storage;
++    GLuint64 hits = 0;
++    for (unsigned i = 0; i < SCENE_CACHE_SLOTS; i++) hits += f->cache.slots[i].hits;
++    return hits;
++}
+--- a/libsoftgl/src/texture.c
++++ b/libsoftgl/src/texture.c
+@@ -141,6 +141,9 @@
+ }
+ 
+ void glDeleteTextures(GLsizei n, const GLuint *ids) {
++    softgl_ctx *cache_context = sg_current();
++    if (cache_context) cache_context->scene_texture_epoch++;
++
+     softgl_ctx *c = sg_current(); if (!c || !ids) return;
+     sg_workers_flush(c);
+     for (GLsizei i = 0; i < n; i++) {
+@@ -210,6 +213,9 @@
+ 
+ void _sg_tex_image_1d_real(GLenum target, GLint level, GLint ifmt, GLsizei w,
+                            GLint border, GLenum format, GLenum type, const void *pixels) {
++    softgl_ctx *cache_context = sg_current();
++    if (cache_context) cache_context->scene_texture_epoch++;
++
+     (void)ifmt; (void)border;
+     softgl_ctx *c = sg_current(); if (!c) return;
+     sg_workers_flush(c);
+@@ -234,6 +240,9 @@
+ 
+ void _sg_tex_image_2d_real(GLenum target, GLint level, GLint ifmt, GLsizei w, GLsizei h,
+                            GLint border, GLenum format, GLenum type, const void *pixels) {
++    softgl_ctx *cache_context = sg_current();
++    if (cache_context) cache_context->scene_texture_epoch++;
++
+     (void)ifmt; (void)border;
+     softgl_ctx *c = sg_current(); if (!c) return;
+     sg_workers_flush(c);
+@@ -282,6 +291,9 @@
+ void _sg_tex_image_3d_real(GLenum target, GLint level, GLint ifmt, GLsizei w, GLsizei h,
+                            GLsizei d, GLint border, GLenum format, GLenum type,
+                            const void *pixels) {
++    softgl_ctx *cache_context = sg_current();
++    if (cache_context) cache_context->scene_texture_epoch++;
++
+     (void)ifmt; (void)border;
+     softgl_ctx *c = sg_current(); if (!c) return;
+     sg_workers_flush(c);
+@@ -306,6 +318,9 @@
+ 
+ void _sg_tex_sub_image_1d_real(GLenum target, GLint level, GLint xoff, GLsizei w,
+                                GLenum format, GLenum type, const void *pixels) {
++    softgl_ctx *cache_context = sg_current();
++    if (cache_context) cache_context->scene_texture_epoch++;
++
+     softgl_ctx *c = sg_current(); if (!c) return;
+     sg_workers_flush(c);
+     if (target != GL_TEXTURE_1D) { sg_set_error(GL_INVALID_ENUM); return; }
+@@ -323,6 +338,9 @@
+ void _sg_tex_sub_image_2d_real(GLenum target, GLint level, GLint xoff, GLint yoff,
+                                GLsizei w, GLsizei h, GLenum format, GLenum type,
+                                const void *pixels) {
++    softgl_ctx *cache_context = sg_current();
++    if (cache_context) cache_context->scene_texture_epoch++;
++
+     softgl_ctx *c = sg_current(); if (!c) return;
+     sg_workers_flush(c);
+     int face = sg_cube_face_index(target);
+@@ -381,6 +399,9 @@
+ 
+ void _sg_copy_tex_image_1d_real(GLenum target, GLint level, GLenum ifmt,
+                                 GLint x, GLint y, GLsizei w, GLint border) {
++    softgl_ctx *cache_context = sg_current();
++    if (cache_context) cache_context->scene_texture_epoch++;
++
+     (void)ifmt; (void)border;
+     softgl_ctx *c = sg_current(); if (!c) return;
+     if (target != GL_TEXTURE_1D) { sg_set_error(GL_INVALID_ENUM); return; }
+@@ -401,6 +422,9 @@
+ 
+ void _sg_copy_tex_image_2d_real(GLenum target, GLint level, GLenum ifmt,
+                                 GLint x, GLint y, GLsizei w, GLsizei h, GLint border) {
++    softgl_ctx *cache_context = sg_current();
++    if (cache_context) cache_context->scene_texture_epoch++;
++
+     (void)ifmt; (void)border;
+     softgl_ctx *c = sg_current(); if (!c) return;
+     int face = sg_cube_face_index(target);
+@@ -439,6 +463,9 @@
+ 
+ void _sg_copy_tex_sub_image_1d_real(GLenum target, GLint level, GLint xoff,
+                                     GLint x, GLint y, GLsizei w) {
++    softgl_ctx *cache_context = sg_current();
++    if (cache_context) cache_context->scene_texture_epoch++;
++
+     softgl_ctx *c = sg_current(); if (!c) return;
+     if (target != GL_TEXTURE_1D) { sg_set_error(GL_INVALID_ENUM); return; }
+     sg_texture *t = sg_active_tex_for_target(c, SG_TEX_TARGET_1D);
+@@ -454,6 +481,9 @@
+ 
+ void _sg_copy_tex_sub_image_2d_real(GLenum target, GLint level, GLint xoff, GLint yoff,
+                                     GLint x, GLint y, GLsizei w, GLsizei h) {
++    softgl_ctx *cache_context = sg_current();
++    if (cache_context) cache_context->scene_texture_epoch++;
++
+     softgl_ctx *c = sg_current(); if (!c) return;
+     int face = sg_cube_face_index(target);
+     sg_texture *t = NULL;
+@@ -489,6 +519,9 @@
+ }
+ 
+ void _sg_tex_parameter_i_real(GLenum target, GLenum pname, GLint param) {
++    softgl_ctx *cache_context = sg_current();
++    if (cache_context) cache_context->scene_texture_epoch++;
++
+     softgl_ctx *c = sg_current(); if (!c) return;
+     int slot = sg_target_to_slot(target);
+     if (slot < 0) { sg_set_error(GL_INVALID_ENUM); return; }
+@@ -506,6 +539,9 @@
+ }
+ 
+ void _sg_tex_parameter_f_real(GLenum target, GLenum pname, GLfloat param) {
++    softgl_ctx *cache_context = sg_current();
++    if (cache_context) cache_context->scene_texture_epoch++;
++
+     _sg_tex_parameter_i_real(target, pname, (GLint)param);
+ }
+ 
+@@ -675,6 +711,9 @@
+ void _sg_tex_sub_image_3d_real(GLenum target, GLint level, GLint xoff, GLint yoff, GLint zoff,
+                                GLsizei w, GLsizei h, GLsizei d, GLenum format, GLenum type,
+                                const void *pixels) {
++    softgl_ctx *cache_context = sg_current();
++    if (cache_context) cache_context->scene_texture_epoch++;
++
+     softgl_ctx *c = sg_current(); if (!c) return;
+     sg_workers_flush(c);
+     if (target != GL_TEXTURE_3D) { sg_set_error(GL_INVALID_ENUM); return; }
+--- a/libsoftgl/src/types.h
++++ b/libsoftgl/src/types.h
+@@ -304,6 +304,7 @@
+     softgl_vertex_attributes_full_fn vertex_attributes_full;
+     int fused_dot3_enabled, fused_dot3_quartic;
+     float fused_dot3_tint[4];
++    uint64_t scene_texture_epoch; /* private material-history invalidation */
+     void *vertex_attribute_data;
+     GLuint vertex_attribute_unit;
+ 
+--- a/wasm/model_wrap.c
++++ b/wasm/model_wrap.c
+@@ -460,6 +460,9 @@
+     glDisable(GL_BLEND);
+ #ifdef SOFTGL_MODEL_SCENE_VISIBILITY
+     int scene_visibility = softgl_scene_visibility_begin_adaptive(G.triangles,2);
++#ifdef SOFTGL_MODEL_MATERIAL_CACHE
++    if (scene_visibility) softgl_scene_material_cache(SOFTGL_MODEL_MATERIAL_CACHE);
++#endif
+ #ifdef SOFTGL_MODEL_QUANTIZED_VISIBILITY
+     if (scene_visibility) softgl_scene_quantized_visibility(GL_TRUE);
+ #endif
