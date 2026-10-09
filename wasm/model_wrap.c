@@ -459,7 +459,7 @@ void sg_model_render(float angle, int w, int h) {
     unsigned transparent = 0;
     glDisable(GL_BLEND);
 #ifdef SOFTGL_MODEL_SCENE_VISIBILITY
-    int scene_visibility = softgl_scene_visibility_begin_hint_ordered(G.triangles,2);
+    int scene_visibility = softgl_scene_visibility_begin_adaptive(G.triangles,2);
 #ifdef SOFTGL_MODEL_QUANTIZED_VISIBILITY
     if (scene_visibility) softgl_scene_quantized_visibility(GL_TRUE);
 #endif

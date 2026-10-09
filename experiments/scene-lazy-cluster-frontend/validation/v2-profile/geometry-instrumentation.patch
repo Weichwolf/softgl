@@ -1,0 +1,78 @@
+--- a/libsoftgl/src/geometry.inc
++++ b/libsoftgl/src/geometry.inc
+@@ -680,6 +680,14 @@
+     return 1;
+ }
+ 
++#include <time.h>
++static atomic_ullong scene_lazy_profile_counts[6];
++static unsigned long long scene_lazy_ns(void) {
++    struct timespec t; clock_gettime(CLOCK_MONOTONIC,&t);
++    return (unsigned long long)t.tv_sec*1000000000ull+(unsigned long long)t.tv_nsec;
++}
++unsigned long long softgl_scene_lazy_profile(unsigned i) { return atomic_load(&scene_lazy_profile_counts[i]); }
++#define LAZY_PROFILE(i,start) atomic_fetch_add(&scene_lazy_profile_counts[i],scene_lazy_ns()-(start))
+ /* Optional immutable object-space bounds precede all vertex/triangle setup.
+  * Only an owning bin's actual current-frame sample depth can reject a group. */
+ #ifdef SOFTGL_LAZY_AUDIT
+@@ -792,8 +800,9 @@
+     unsigned char empty = 0;
+     if (!atomic_compare_exchange_strong_explicit(&lazy->position_ready[at],&empty,1,
+         memory_order_acquire,memory_order_relaxed)) {
++        unsigned long long waited = scene_lazy_ns();
+         while (atomic_load_explicit(&lazy->position_ready[at],memory_order_acquire) != 2) { }
+-        return;
++        LAZY_PROFILE(5,waited); return;
+     }
+     const float *p = (const float *)((const uint8_t *)mesh->positions+(size_t)index*mesh->stride);
+     sg_vec4 clip;
+@@ -824,9 +833,11 @@
+     unsigned char empty = 0;
+     if (!atomic_compare_exchange_strong_explicit(&lazy->task_ready[id],&empty,1,
+         memory_order_acquire,memory_order_relaxed)) {
++        unsigned long long waited = scene_lazy_ns();
+         while (atomic_load_explicit(&lazy->task_ready[id],memory_order_acquire) != 2) { }
+-        return;
+-    }
++        LAZY_PROFILE(4,waited); return;
++    }
++    unsigned long long prepared = scene_lazy_ns();
+     scene_geometry_task *task = &f->geometry->tasks[id];
+     const scene_mesh *mesh = &f->materials[task->material].mesh;
+     if (!task->capacity) {
+@@ -883,6 +894,7 @@
+     }
+     scene_geometry_make_packets(f,task); scene_geometry_occlusion_packets(f,task);
+ complete:
++    LAZY_PROFILE(3,prepared);
+     atomic_store_explicit(&lazy->task_ready[id],2,memory_order_release);
+ }
+ 
+@@ -947,6 +959,7 @@
+         groups += (mesh->count/3+desc->group_triangles-1)/desc->group_triangles;
+         if (groups > SCENE_GEOMETRY_TASKS) return 0;
+     }
++    unsigned long long initial = scene_lazy_ns();
+     if (!scene_geometry_allocate(f)) return -1;
+     scene_geometry *g = f->geometry;
+     if (!lazy->bounds) lazy->bounds = malloc(SCENE_GEOMETRY_TASKS*sizeof(*lazy->bounds));
+@@ -965,6 +978,8 @@
+         atomic_store_explicit(&lazy->position_ready[i],0,memory_order_relaxed);
+         atomic_store_explicit(&g->ready[i],0,memory_order_relaxed);
+     }
++    LAZY_PROFILE(0,initial);
++    unsigned long long projected = scene_lazy_ns();
+     g->task_count = 0;
+     for (int bin = 0; bin < SG_MAX_BINS; bin++) g->bins[bin].count = 0;
+     for (int material = 0; material < f->material_count; material++) {
+@@ -1026,7 +1041,10 @@
+             SCENE_LAZY_COUNT(7,1);
+         }
+     }
++    LAZY_PROFILE(1,projected);
++    unsigned long long rasterized = scene_lazy_ns();
+     atomic_store_explicit(&g->next_task,0,memory_order_relaxed);
+     sg_workers_run_callback(f->context,scene_lazy_worker,f);
++    LAZY_PROFILE(2,rasterized);
+     return atomic_load_explicit(&f->failed,memory_order_relaxed) ? -1 : 1;
+ }

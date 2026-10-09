@@ -1,0 +1,11 @@
+--- a/libsoftgl/src/scene_visibility.c
++++ b/libsoftgl/src/scene_visibility.c
+@@ -106,7 +106,7 @@
+  * scenes stay on forward rendering before allocating or copying any buffers. */
+ int softgl_scene_visibility_begin_hint(GLuint triangles) {
+     softgl_ctx *c = sg_current();
+-    if (c && c->fb.samples && (uint64_t)triangles < (uint64_t)c->fb.w*c->fb.h*2u)
++    if (c && c->fb.samples && (uint64_t)triangles < (uint64_t)c->fb.w*c->fb.h)
+         return 0;
+     return softgl_scene_visibility_begin();
+ }

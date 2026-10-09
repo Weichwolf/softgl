@@ -20,6 +20,7 @@ add_library(softgl STATIC
     src/evaluators.c
     src/workers.c
     src/scene_visibility.c
+    src/scene_density_hint.c
 )
 
 target_include_directories(softgl

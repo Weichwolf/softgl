@@ -1,0 +1,106 @@
+--- a/libsoftgl/src/scene_visibility.c
++++ b/libsoftgl/src/scene_visibility.c
+@@ -10,6 +10,17 @@
+ #include "multisample.h"
+ #include "raster_hz.h"
+ #include <stdio.h>
++#include <time.h>
++/* Diagnostic clocks live in caller TLS; preserve every engine layout. */
++static _Thread_local double scene_phase[12], scene_phase_mark;
++static _Thread_local int scene_phase_complete;
++static double scene_phase_now(void) {
++    struct timespec t; clock_gettime(CLOCK_MONOTONIC,&t);
++    return t.tv_sec+t.tv_nsec*1e-9;
++}
++static void scene_phase_checkpoint(unsigned phase) {
++    double now = scene_phase_now(); scene_phase[phase] = now-scene_phase_mark; scene_phase_mark = now;
++}
+ 
+ #define SCENE_MATERIALS 4096
+ #define SCENE_TRIANGLE_BYTES (128u * 1024u * 1024u)
+@@ -112,6 +123,8 @@
+ }
+ 
+ int softgl_scene_visibility_begin(void) {
++    memset(scene_phase,0,sizeof(scene_phase)); scene_phase_complete = 0;
++    scene_phase_mark = scene_phase_now();
+     softgl_ctx *c = sg_current();
+     if (!c || c->scene_visibility || !scene_state_supported(c) ||
+         !c->workers || !((sg_worker_pool *)c->workers)->column_bin || !sg_thread_count(c)) return 0;
+@@ -168,6 +181,7 @@
+     f->context = c; f->material_count = 0; f->task_count = 0;
+     f->deferred_meshes = 0; f->mesh_vertices = 0;
+     c->scene_material = -1; c->scene_visibility = f;
++    scene_phase_checkpoint(0);
+     return 1;
+ }
+ 
+@@ -1454,6 +1468,7 @@
+     if (!c || !c->scene_visibility) return 0;
+     struct sg_scene_visibility *f = c->scene_visibility;
+     sg_workers_flush(c);
++    scene_phase_checkpoint(1);
+     if (f->deferred_meshes && !atomic_load_explicit(&f->failed,memory_order_relaxed))
+         scene_geometry_build(f);
+     c->scene_visibility = NULL; f->bins[SG_MAX_BINS-1].order_storage.mode = 0;
+@@ -1483,6 +1498,7 @@
+             scene_restore(f); return 0;
+         }
+     }
++    scene_phase_checkpoint(9);
+     uint32_t first = 0;
+     for (int i = 0; i < f->material_count; i++) {
+         scene_material *m = &f->materials[i]; m->first = m->cursor = first;
+@@ -1499,7 +1515,9 @@
+             f->tasks[f->task_count++] = (scene_task){(uint32_t)i,m->first+at,m->count-at < 256 ? m->count-at : 256};
+     }
+     atomic_store_explicit(&f->next_task,0,memory_order_relaxed);
++    scene_phase_checkpoint(10);
+     sg_workers_run_callback(c,scene_resolve,f);
++    scene_phase_checkpoint(11); scene_phase_complete = 1;
+     if (getenv("SOFTGL_SCENE_STATS")) {
+         uint64_t stored = 0, depth = 0;
+         for (int i = 0; i < SG_MAX_BINS; i++) { stored += f->bins[i].count; depth += f->bins[i].depth_passes; }
+@@ -1527,3 +1545,8 @@
+     if (started) softgl_scene_depth_order(mode);
+     return started;
+ }
++
++int softgl_scene_phase_read(GLdouble phases[12]) {
++    if (!scene_phase_complete) return 0;
++    memcpy(phases,scene_phase,sizeof(scene_phase)); return 1;
++}
+--- a/libsoftgl/src/geometry.inc
++++ b/libsoftgl/src/geometry.inc
+@@ -458,11 +458,14 @@
+ static void scene_geometry_build(struct sg_scene_visibility *f) {
+     if (!scene_geometry_allocate(f)) { scene_geometry_fail(f); return; }
+     scene_geometry *g = f->geometry;
++    scene_phase_checkpoint(2);
+     atomic_store_explicit(&g->next_task,0,memory_order_relaxed);
+     sg_workers_run_callback(f->context,scene_geometry_positions,f);
++    scene_phase_checkpoint(3);
+     if (atomic_load_explicit(&f->failed,memory_order_relaxed)) return;
+     atomic_store_explicit(&g->next_task,0,memory_order_relaxed);
+     sg_workers_run_callback(f->context,scene_geometry_triangles,f);
++    scene_phase_checkpoint(4);
+     if (atomic_load_explicit(&f->failed,memory_order_relaxed)) return;
+     /* Prefixes assign each geometry task a disjoint, original-order segment
+      * in every bin. Only task totals are visited by the caller. */
+@@ -488,12 +491,16 @@
+         }
+     }
+     atomic_store_explicit(&g->next_task,0,memory_order_relaxed);
++    scene_phase_checkpoint(5);
+     sg_workers_run_callback(f->context,scene_geometry_references,f);
++    scene_phase_checkpoint(6);
+     if (f->bins[SG_MAX_BINS-1].order_storage.mode && !scene_geometry_order_stage(f)) {
+         scene_geometry_fail(f); return;
+     }
+     atomic_store_explicit(&g->next_task,0,memory_order_relaxed);
++    scene_phase_checkpoint(7);
+     sg_workers_run_callback(f->context,scene_geometry_raster,f);
++    scene_phase_checkpoint(8);
+ }
+ 
+ static scene_attribute *scene_geometry_attribute(struct sg_scene_visibility *f, const scene_mesh *m, uint32_t index) {

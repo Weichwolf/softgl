@@ -962,6 +962,10 @@ void softgl_scene_quantized_visibility(GLboolean enabled);
  * Four-sample only. May change equal-depth winners and alpha/shading points. */
 void softgl_scene_depth_order(GLuint mode);
 int softgl_scene_visibility_begin_hint_ordered(GLuint triangles, GLuint mode);
+/* Opt-in scene cost hint: one input triangle per pixel for MSAA; order mode
+ * has the same meaning as softgl_scene_depth_order. Legacy hints retain their
+ * existing thresholds. No geometry or physical samples are removed. */
+int softgl_scene_visibility_begin_adaptive(GLuint triangles, GLuint mode);
 /* Compatibility entry point for the removed native-wide backend.
  * Always returns zero; native and WASM rendering use SIMD128 exclusively. */
 int softgl_scene_native_wide(GLboolean enabled);

@@ -878,6 +878,14 @@ target_link_libraries(scene_msaa_contract PRIVATE softgl)
 add_test(NAME scene_msaa_contract COMMAND scene_msaa_contract)
 set_tests_properties(scene_msaa_contract PROPERTIES TIMEOUT 90)
 
+# Opt-in density policy boundaries, ordering modes and legacy-safe rejection.
+add_executable(scene_density_hint_contract scene_density_hint.c)
+target_include_directories(scene_density_hint_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_compile_options(scene_density_hint_contract PRIVATE -msse4.1)
+target_link_libraries(scene_density_hint_contract PRIVATE softgl)
+add_test(NAME scene_density_hint_contract COMMAND scene_density_hint_contract)
+set_tests_properties(scene_density_hint_contract PROPERTIES TIMEOUT 90)
+
 add_executable(scene_coverage_contract scene_coverage.c)
 target_include_directories(scene_coverage_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
 target_compile_options(scene_coverage_contract PRIVATE -msse4.1)
