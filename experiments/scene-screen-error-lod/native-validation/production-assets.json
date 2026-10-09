@@ -1,0 +1,148 @@
+{
+  "command": [
+    "/home/cosmo/.local/bin/clang++-22",
+    "-std=c++17",
+    "-O3",
+    "-msse4.1",
+    "-mno-avx",
+    "-mno-avx2",
+    "-mno-avx512f",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-I/home/cosmo/Git/softgl/tools/third_party/meshoptimizer",
+    "/home/cosmo/Git/softgl/experiments/scene-screen-error-lod/build_cluster_lod.cpp",
+    "/home/cosmo/Git/softgl/tools/third_party/meshoptimizer/simplifier.cpp",
+    "/home/cosmo/Git/softgl/tools/third_party/meshoptimizer/allocator.cpp",
+    "/home/cosmo/Git/softgl/tools/third_party/meshoptimizer/clusterizer.cpp",
+    "/home/cosmo/Git/softgl/tools/third_party/meshoptimizer/meshletutils.cpp",
+    "/home/cosmo/Git/softgl/tools/third_party/meshoptimizer/spatialorder.cpp",
+    "/home/cosmo/Git/softgl/tools/third_party/meshoptimizer/partition.cpp",
+    "/home/cosmo/Git/softgl/tools/third_party/meshoptimizer/indexgenerator.cpp",
+    "/home/cosmo/Git/softgl/tools/third_party/meshoptimizer/quantization.cpp",
+    "/home/cosmo/Git/softgl/tools/third_party/meshoptimizer/vcacheoptimizer.cpp",
+    "-o",
+    "/home/cosmo/Git/softgl/build/tools/model-lod/build_lod"
+  ],
+  "originalPacksReplaced": false,
+  "sourcesSha256": {
+    "experiments/scene-screen-error-lod/build_cluster_lod.cpp": "6660faf1a5d35fedc110e6b5b1e6871c014fb98bf5b5868b846b5b8a06705dfc",
+    "experiments/scene-screen-error-lod/build_lod.cpp": "8df4ef6d64e48cc990619c4b9d9ef42fae9dc8098a88506663eeb654b8878f51",
+    "tools/third_party/meshoptimizer/meshoptimizer.h": "e3688ef553f603391747895a5c221ef1528574cc7f8173782417a96cb531f61b",
+    "tools/third_party/meshoptimizer/simplifier.cpp": "719303b6970398631e30724e8eebc6cd2e7e08b67fe8ab7cbf7eecafdaa08616",
+    "tools/third_party/meshoptimizer/allocator.cpp": "d2cc48691fe2f4c6d097bf7a766389cfb7f83ca14a5f747e3944332656d02254",
+    "tools/third_party/meshoptimizer/clusterizer.cpp": "a2775edf77d86a9a5f0ca82f4635ce6ce741bbda79fd9a652ffc8c5dd61d3b0e",
+    "tools/third_party/meshoptimizer/meshletutils.cpp": "4813a0c9e8648c6de53f317322fa17c9486ff024f186aa9d631e7c60ba96c33e",
+    "tools/third_party/meshoptimizer/spatialorder.cpp": "9005ee0069ed8c56797606de80c0cd951ab55ffb608bc3af83c4e5b2517371b1",
+    "tools/third_party/meshoptimizer/partition.cpp": "cf34f00dd7a550c7b18b31c35d683ac2efb9e1d711bcec411649d311477d4b2d",
+    "tools/third_party/meshoptimizer/indexgenerator.cpp": "f362cdcd8af10016333bf699347a9364335987f413f061e5b7e8cafe3b498948",
+    "tools/third_party/meshoptimizer/quantization.cpp": "28282f555d42a118a6735f161b1ba78fcbe0d1810a6a337a399bd8471f79105e",
+    "tools/third_party/meshoptimizer/vcacheoptimizer.cpp": "618429ef4db8ab9b16fde4e73dcf425d89452acbf103085478bc8b1761fa6689"
+  },
+  "records": [
+    {
+      "asset": "bmw",
+      "command": [
+        "/home/cosmo/Git/softgl/build/tools/model-lod/build_lod",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack.lod.tmp"
+      ],
+      "seconds": 0.20385881094262004,
+      "packSha256": "76cda2c57b81e10b3c92a269537b17e4e1c5f36c653bfd1af43fcb2218473cef",
+      "cacheSha256": "0cfda2efe080877e8c87b1f0607d3d7c3264fe5c9a65e4b595a6e208d2feb1dc",
+      "originalTriangles": 63009,
+      "opaqueTriangles": 56029,
+      "levelTriangles": [
+        28522,
+        27702,
+        27720
+      ],
+      "newVertices": 51663,
+      "newParts": 82,
+      "extraIndices": 167673,
+      "fineTriangleMultisetAndCornersExact": true,
+      "geometryIdentity": "ae6f0505d9078250",
+      "metadataBytes": 3913888,
+      "emptyLevelFallbacks": 0,
+      "supportLevelFallbacks": 9
+    },
+    {
+      "asset": "t80",
+      "command": [
+        "/home/cosmo/Git/softgl/build/tools/model-lod/build_lod",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack.lod.tmp"
+      ],
+      "seconds": 0.2195554580539465,
+      "packSha256": "cb9146d7352f52600015c499c394566acc604b43fb5760a17d133c20c5a700f4",
+      "cacheSha256": "a3e7cf523818bbcdfec4e926201a0c3fca4eab280ec3c81c6dc1655c6d55ff5c",
+      "originalTriangles": 44513,
+      "opaqueTriangles": 44513,
+      "levelTriangles": [
+        21175,
+        20697,
+        20799
+      ],
+      "newVertices": 54029,
+      "newParts": 51,
+      "extraIndices": 102504,
+      "fineTriangleMultisetAndCornersExact": true,
+      "geometryIdentity": "2bcd084acb7c1f83",
+      "metadataBytes": 3542100,
+      "emptyLevelFallbacks": 0,
+      "supportLevelFallbacks": 30
+    },
+    {
+      "asset": "sponza",
+      "command": [
+        "/home/cosmo/Git/softgl/build/tools/model-lod/build_lod",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack.lod.tmp"
+      ],
+      "seconds": 0.8738064189674333,
+      "packSha256": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+      "cacheSha256": "7d6cac11ae0591de857d3cff1815a70e5c41009a357a88c14447ea0672c53495",
+      "originalTriangles": 262267,
+      "opaqueTriangles": 227327,
+      "levelTriangles": [
+        102186,
+        89556,
+        90640
+      ],
+      "newVertices": 200074,
+      "newParts": 187,
+      "extraIndices": 353856,
+      "fineTriangleMultisetAndCornersExact": true,
+      "geometryIdentity": "c0433a068de9ed3e",
+      "metadataBytes": 14182684,
+      "emptyLevelFallbacks": 0,
+      "supportLevelFallbacks": 43
+    },
+    {
+      "asset": "bistro",
+      "command": [
+        "/home/cosmo/Git/softgl/build/tools/model-lod/build_lod",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack.lod.tmp"
+      ],
+      "seconds": 2.822934872005135,
+      "packSha256": "4c862bcd28ef6833a89b0a058832c051098f5cf5869590999859b86f1cc993f3",
+      "cacheSha256": "c04676484ecc7021b8938c6e0f9ba4d89717a71aedecb5be79bd42558872d8ad",
+      "originalTriangles": 640502,
+      "opaqueTriangles": 490807,
+      "levelTriangles": [
+        446502,
+        470380,
+        475174
+      ],
+      "newVertices": 824678,
+      "newParts": 686,
+      "extraIndices": 863178,
+      "fineTriangleMultisetAndCornersExact": true,
+      "geometryIdentity": "7fd0e6f5d1f93dbe",
+      "metadataBytes": 50783696,
+      "emptyLevelFallbacks": 0,
+      "supportLevelFallbacks": 761
+    }
+  ]
+}

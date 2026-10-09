@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/cosmo/Git/softgl/experiments/scene-screen-error-lod/prepare_lod.py", line 123, in <module>
+    result.check_returncode()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.13/subprocess.py", line 508, in check_returncode
+    raise CalledProcessError(self.returncode, self.args, self.stdout,
+                             self.stderr)
+subprocess.CalledProcessError: Command '['/home/cosmo/Git/softgl/build/scene-screen-error-lod/v1-permissive/build_lod', '/home/cosmo/Git/softgl/build/assets/bistro.pack', '/home/cosmo/Git/softgl/build/scene-screen-error-lod/v1-permissive/lod/bistro.pack.lod']' returned non-zero exit status 1.

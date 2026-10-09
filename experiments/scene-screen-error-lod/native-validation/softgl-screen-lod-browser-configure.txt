@@ -1,0 +1,4 @@
+configure: cmake -S build/scene-screen-error-lod/browser-v1/wasm -B build/scene-screen-error-lod/browser-v1/wasm-build -DCMAKE_TOOLCHAIN_FILE=/usr/share/emscripten/cmake/Modules/Platform/Emscripten.cmake -DCMAKE_CROSSCOMPILING_EMULATOR=/usr/bin/node
+-- Configuring done (4.7s)
+-- Generating done (0.6s)
+-- Build files have been written to: /home/cosmo/Git/softgl/build/scene-screen-error-lod/browser-v1/wasm-build

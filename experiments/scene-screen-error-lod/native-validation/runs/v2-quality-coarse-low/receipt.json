@@ -1,0 +1,1818 @@
+{
+  "width": 640,
+  "height": 360,
+  "threads": 4,
+  "binarySha256": {
+    "baseline": "7a938046e11fbaa4c79658a3b72518579c9f80edb08ba6900f0fa325c2bcc391",
+    "candidate": "5460a7a03a84e2609db74fdd5622b08d8ff707739b13dfb847c381d5d3f50501"
+  },
+  "runnerSha256": "29fa8045f4e162d5447099768efbbb806061523cc93f1bed8bc37557f8f011f3",
+  "driverSha256": "1ea0a423b32418fb635fd59d83da565010c7b32167e3dc10ece00d4b8631f352",
+  "imagePolicy": "Measure order-dependent RGBA and actual depth/sample coverage; no exactness assumed",
+  "records": [
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "angle": 0,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.000625,
+      "maxChannelError": 45,
+      "pixelFractionOver8": 2.604166666666667e-05,
+      "pixelFractionOver32": 4.340277777777778e-06,
+      "imageSha256": {
+        "baseline": "cf9ffb97ea6d4f59fbf433b8c6a02d4e417995ebdbca534a2055644e9f9c13d7",
+        "candidate": "0b3bbbfcc3bbf7d02658e79140b8bb4fb259fe915eb3fe8852f062f2d0652507"
+      },
+      "resolvedDepth": {
+        "byteIdentical": true,
+        "maxAbsoluteError": 0.0,
+        "maxUlps": 0,
+        "changedFraction": 0.0,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.0
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "angle": 45,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0017230902777777778,
+      "maxChannelError": 95,
+      "pixelFractionOver8": 2.604166666666667e-05,
+      "pixelFractionOver32": 2.604166666666667e-05,
+      "imageSha256": {
+        "baseline": "fd02537bd0cba0ab151a7cfe64c828b1a8944fc8450cfd7f156b1175a5c052a2",
+        "candidate": "b3d2cfbe7b1da51feb4fe311c8d2765b890e2633d5758c5aeae6edc39990853c"
+      },
+      "resolvedDepth": {
+        "byteIdentical": true,
+        "maxAbsoluteError": 0.0,
+        "maxUlps": 0,
+        "changedFraction": 0.0,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.0
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "angle": 90,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.15417824074074074,
+      "maxChannelError": 223,
+      "pixelFractionOver8": 0.0033550347222222224,
+      "pixelFractionOver32": 0.0019140625,
+      "imageSha256": {
+        "baseline": "4fa18fb80120c78e78fcf7da06eeaa8bfbe493b3c64fe2cea30804810346bf49",
+        "candidate": "43e893356e531c1e7472bbbc1a912c0500738fc94806b0b5cdaca8fcf179e64e"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.0029658079147338867,
+        "maxUlps": 49758,
+        "changedFraction": 0.007065972222222223,
+        "removedCoverage": 5,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.0054991319444444445
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "angle": 135,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.1788208912037037,
+      "maxChannelError": 215,
+      "pixelFractionOver8": 0.004348958333333333,
+      "pixelFractionOver32": 0.002287326388888889,
+      "imageSha256": {
+        "baseline": "fd02537bd0cba0ab151a7cfe64c828b1a8944fc8450cfd7f156b1175a5c052a2",
+        "candidate": "0b161f02b5e98f4e761e2a193953b08abc9f6c6306206004e2be012f37e9f5f6"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.002923250198364258,
+        "maxUlps": 49044,
+        "changedFraction": 0.008177083333333333,
+        "removedCoverage": 3,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.005855034722222222
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "angle": 160,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.19207899305555556,
+      "maxChannelError": 206,
+      "pixelFractionOver8": 0.004470486111111111,
+      "pixelFractionOver32": 0.0024522569444444444,
+      "imageSha256": {
+        "baseline": "efa6e492ef94ac3e82ede76805167efbe7d223546dee2c4e303c5934c85ae9ed",
+        "candidate": "37a0ed60573cd66f7075f095017e44635dda7b30f64ca2620ce451e02cb754c6"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.002920687198638916,
+        "maxUlps": 49001,
+        "changedFraction": 0.008159722222222223,
+        "removedCoverage": 4,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.005811631944444445
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "angle": 180,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.35693287037037036,
+      "maxChannelError": 235,
+      "pixelFractionOver8": 0.007361111111111111,
+      "pixelFractionOver32": 0.003949652777777778,
+      "imageSha256": {
+        "baseline": "cf9ffb97ea6d4f59fbf433b8c6a02d4e417995ebdbca534a2055644e9f9c13d7",
+        "candidate": "42ea552808b40150b255bcc1104c9a6a475022063d12d830cdef94b3372a584d"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.0029674768447875977,
+        "maxUlps": 49786,
+        "changedFraction": 0.012092013888888888,
+        "removedCoverage": 5,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.008936631944444445
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "angle": 225,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.3471267361111111,
+      "maxChannelError": 251,
+      "pixelFractionOver8": 0.008103298611111111,
+      "pixelFractionOver32": 0.003949652777777778,
+      "imageSha256": {
+        "baseline": "52f3c915b595a6b98ec0a4d5d08e0671a0bf7787f2d021ba8aaf128f32dc1818",
+        "candidate": "a3008238dd0e17e0e588694d4596d31ef9d7236417ef01978cf1592963d92a20"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.003226935863494873,
+        "maxUlps": 54139,
+        "changedFraction": 0.01365451388888889,
+        "removedCoverage": 6,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.009769965277777778
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "angle": 270,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.42803096064814816,
+      "maxChannelError": 243,
+      "pixelFractionOver8": 0.012278645833333334,
+      "pixelFractionOver32": 0.004509548611111111,
+      "imageSha256": {
+        "baseline": "bcb7a3d26fbc4a9bccda806c711004379e5aa0f5dcff018b8bbc2f05e88127cb",
+        "candidate": "36c63369513ecc392f63fe788d791c44e542c417d1771e77b7f57a165b28a528"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.004393339157104492,
+        "maxUlps": 73708,
+        "changedFraction": 0.04049913194444445,
+        "removedCoverage": 5,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.027890625
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "angle": 315,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.6403370949074074,
+      "maxChannelError": 251,
+      "pixelFractionOver8": 0.018489583333333334,
+      "pixelFractionOver32": 0.005646701388888889,
+      "imageSha256": {
+        "baseline": "52f3c915b595a6b98ec0a4d5d08e0671a0bf7787f2d021ba8aaf128f32dc1818",
+        "candidate": "42f071cbeea206abc04d5573e096bfb9fe76a4a166f135ecec0417125da78388"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.004392862319946289,
+        "maxUlps": 73700,
+        "changedFraction": 0.08131076388888889,
+        "removedCoverage": 6,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.031080729166666668
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "angle": 0,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.012106481481481482,
+      "maxChannelError": 50,
+      "pixelFractionOver8": 0.00029947916666666664,
+      "pixelFractionOver32": 1.3020833333333334e-05,
+      "imageSha256": {
+        "baseline": "2b30433ee644f74c9537550bbc5de389d684347d785d3c629a8151bcff5bed96",
+        "candidate": "2a9bf408fd2c4af981a5ad4ecbcdb4863e2c257c61db6941949a70568228ce51"
+      },
+      "resolvedDepth": {
+        "byteIdentical": true,
+        "maxAbsoluteError": 0.0,
+        "maxUlps": 0,
+        "changedFraction": 0.0,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.0
+      },
+      "sampleDepth": {
+        "byteIdentical": true,
+        "maxAbsoluteError": 0.0,
+        "maxUlps": 0,
+        "changedFraction": 0.0,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.0
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "angle": 45,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.010959201388888888,
+      "maxChannelError": 34,
+      "pixelFractionOver8": 0.0003385416666666667,
+      "pixelFractionOver32": 4.340277777777778e-06,
+      "imageSha256": {
+        "baseline": "1cddd794f15b0cb9c40daa4904926aa0130b844ee763cf12e88eb283489277da",
+        "candidate": "9d7bcb42b9e6d3d19184109000bff77e5da8483ae3aebbb3478ab752158b0ba6"
+      },
+      "resolvedDepth": {
+        "byteIdentical": true,
+        "maxAbsoluteError": 0.0,
+        "maxUlps": 0,
+        "changedFraction": 0.0,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.0
+      },
+      "sampleDepth": {
+        "byteIdentical": true,
+        "maxAbsoluteError": 0.0,
+        "maxUlps": 0,
+        "changedFraction": 0.0,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.0
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "angle": 90,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.1545138888888889,
+      "maxChannelError": 201,
+      "pixelFractionOver8": 0.005269097222222222,
+      "pixelFractionOver32": 0.0021397569444444446,
+      "imageSha256": {
+        "baseline": "a5454b76987a7380e6eb524f876272a505bde5f2484498dc78b5299c8312c6f3",
+        "candidate": "1a8ef83fc944bfd9c2a3b8289ccfb3d23ad717a2e219258c4a157ef86f715d2b"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.0029817819595336914,
+        "maxUlps": 50026,
+        "changedFraction": 0.0073046875,
+        "removedCoverage": 6,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.005542534722222222
+      },
+      "sampleDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.0029817819595336914,
+        "maxUlps": 50026,
+        "changedFraction": 0.007291666666666667,
+        "removedCoverage": 6,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.0054752604166666665
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "angle": 135,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.1846831597222222,
+      "maxChannelError": 202,
+      "pixelFractionOver8": 0.00609375,
+      "pixelFractionOver32": 0.0023828125,
+      "imageSha256": {
+        "baseline": "1cddd794f15b0cb9c40daa4904926aa0130b844ee763cf12e88eb283489277da",
+        "candidate": "9e10758c79b844ec39099c3abc7a37cf795fdf3060494203b6d98f3a6bed404d"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.002926051616668701,
+        "maxUlps": 49091,
+        "changedFraction": 0.0078125,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.005434027777777778
+      },
+      "sampleDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.002931833267211914,
+        "maxUlps": 49188,
+        "changedFraction": 0.008042534722222222,
+        "removedCoverage": 3,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.005681423611111111
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "angle": 160,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.20585503472222222,
+      "maxChannelError": 197,
+      "pixelFractionOver8": 0.006536458333333333,
+      "pixelFractionOver32": 0.002599826388888889,
+      "imageSha256": {
+        "baseline": "eb82b939191bd2377fc2c725a9ae0be57a53eab30d2bd80887d209861e4577e2",
+        "candidate": "d74a44f62784a91b310774047d968db89dc45c22e23422ffd6cd3af75945efe0"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.002921164035797119,
+        "maxUlps": 49009,
+        "changedFraction": 0.008233506944444444,
+        "removedCoverage": 1,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.005950520833333334
+      },
+      "sampleDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.002921164035797119,
+        "maxUlps": 49009,
+        "changedFraction": 0.008253038194444444,
+        "removedCoverage": 6,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.005863715277777778
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "angle": 180,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.3261935763888889,
+      "maxChannelError": 217,
+      "pixelFractionOver8": 0.00959201388888889,
+      "pixelFractionOver32": 0.0037413194444444442,
+      "imageSha256": {
+        "baseline": "2b30433ee644f74c9537550bbc5de389d684347d785d3c629a8151bcff5bed96",
+        "candidate": "daca91c95320782c4b88ccbb2364c87d60aac9f9acc62306fb0b2478326c990f"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.00296860933303833,
+        "maxUlps": 49805,
+        "changedFraction": 0.011458333333333333,
+        "removedCoverage": 4,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.008368055555555556
+      },
+      "sampleDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.00296860933303833,
+        "maxUlps": 49805,
+        "changedFraction": 0.0116015625,
+        "removedCoverage": 4,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.008528645833333333
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "angle": 225,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.33165364583333334,
+      "maxChannelError": 227,
+      "pixelFractionOver8": 0.01072482638888889,
+      "pixelFractionOver32": 0.00359375,
+      "imageSha256": {
+        "baseline": "c602892d005ed7fe611af4e8fc4e513749b0ed204c2ba648b14b1f7b89ad7701",
+        "candidate": "d01f824beac7830c67dc1282ba18d1f5e7263a8ee702cdda93469db83b8c0cfe"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.003222167491912842,
+        "maxUlps": 54059,
+        "changedFraction": 0.013667534722222222,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.009674479166666666
+      },
+      "sampleDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.0032259225845336914,
+        "maxUlps": 54122,
+        "changedFraction": 0.013778211805555555,
+        "removedCoverage": 4,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.009720052083333333
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "angle": 270,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.4090769675925926,
+      "maxChannelError": 218,
+      "pixelFractionOver8": 0.015568576388888889,
+      "pixelFractionOver32": 0.0034418402777777776,
+      "imageSha256": {
+        "baseline": "8536bad238de7d6511ba0ebd756b0a3aac188559c8ece64554120694e0785237",
+        "candidate": "3278b6b9df91b0387443e8fe61b56d22506aaf65980616f37d2cfb4f5b176039"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.004260599613189697,
+        "maxUlps": 71481,
+        "changedFraction": 0.04087239583333333,
+        "removedCoverage": 6,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.028359375
+      },
+      "sampleDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.0043045878410339355,
+        "maxUlps": 72219,
+        "changedFraction": 0.04064453125,
+        "removedCoverage": 6,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.028070746527777777
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "angle": 315,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.5643185763888889,
+      "maxChannelError": 227,
+      "pixelFractionOver8": 0.020985243055555554,
+      "pixelFractionOver32": 0.004609375,
+      "imageSha256": {
+        "baseline": "c602892d005ed7fe611af4e8fc4e513749b0ed204c2ba648b14b1f7b89ad7701",
+        "candidate": "0279ca564262df643058e847225e9994ff80bdacd5c0d93c71e2cf4495b892a3"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.004241585731506348,
+        "maxUlps": 71162,
+        "changedFraction": 0.07142795138888888,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.02935329861111111
+      },
+      "sampleDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.004287123680114746,
+        "maxUlps": 71926,
+        "changedFraction": 0.07147352430555555,
+        "removedCoverage": 4,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.02948784722222222
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "angle": 0,
+      "rgbaByteIdentical": true,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "b343d572f7033b9f56c23d4ca18998544d262fa0b0267005f0e1c4903d9d929d",
+        "candidate": "b343d572f7033b9f56c23d4ca18998544d262fa0b0267005f0e1c4903d9d929d"
+      },
+      "resolvedDepth": {
+        "byteIdentical": true,
+        "maxAbsoluteError": 0.0,
+        "maxUlps": 0,
+        "changedFraction": 0.0,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.0
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "angle": 45,
+      "rgbaByteIdentical": true,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "2a6a59bdcd1b24219fec187e7ce11d655db8d1a04fee27f9f36c4c218ba9c2c8",
+        "candidate": "2a6a59bdcd1b24219fec187e7ce11d655db8d1a04fee27f9f36c4c218ba9c2c8"
+      },
+      "resolvedDepth": {
+        "byteIdentical": true,
+        "maxAbsoluteError": 0.0,
+        "maxUlps": 0,
+        "changedFraction": 0.0,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.0
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "angle": 90,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.6096903935185185,
+      "maxChannelError": 114,
+      "pixelFractionOver8": 0.0308984375,
+      "pixelFractionOver32": 0.003376736111111111,
+      "imageSha256": {
+        "baseline": "100982ad3ec3bec666a8b0a166947d9ac74ca119a033c4c6bb3dcdcb9ee8d7d5",
+        "candidate": "35adea3c6c4fab52422d843e4eb1f79b04786f94ae4e08697bfb1a9b41c13b28"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.013386130332946777,
+        "maxUlps": 224582,
+        "changedFraction": 0.1120095486111111,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.0895486111111111
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "angle": 135,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.8877763310185185,
+      "maxChannelError": 115,
+      "pixelFractionOver8": 0.04369357638888889,
+      "pixelFractionOver32": 0.004366319444444444,
+      "imageSha256": {
+        "baseline": "2a6a59bdcd1b24219fec187e7ce11d655db8d1a04fee27f9f36c4c218ba9c2c8",
+        "candidate": "b57592db3c9a8e732f46f07841ecb1b73d1414b0b98740dc4eaad36bede3ab1d"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.010532617568969727,
+        "maxUlps": 176708,
+        "changedFraction": 0.18769097222222222,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.15737847222222223
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "angle": 160,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.8640335648148149,
+      "maxChannelError": 116,
+      "pixelFractionOver8": 0.041180555555555554,
+      "pixelFractionOver32": 0.004470486111111111,
+      "imageSha256": {
+        "baseline": "352c8de01ce79bd9cd47bab0afe08e6e38935eb2c51c4d952de2015748bf6413",
+        "candidate": "1cd21a0f164c675fb7c5b75d41c2a64ea7fe5cb501c00fe204d425e5c5ea9c57"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.009844183921813965,
+        "maxUlps": 165158,
+        "changedFraction": 0.19182291666666668,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.16190972222222222
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "angle": 180,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.7401302083333333,
+      "maxChannelError": 114,
+      "pixelFractionOver8": 0.036467013888888886,
+      "pixelFractionOver32": 0.0052734375,
+      "imageSha256": {
+        "baseline": "b343d572f7033b9f56c23d4ca18998544d262fa0b0267005f0e1c4903d9d929d",
+        "candidate": "36d0ff877c4c09338b85a7d132b65aa6423bdb3202bf07ab30a57d8b14aa10af"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.0133247971534729,
+        "maxUlps": 223553,
+        "changedFraction": 0.13588107638888888,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.10846354166666666
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "angle": 225,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.7539930555555555,
+      "maxChannelError": 118,
+      "pixelFractionOver8": 0.03572048611111111,
+      "pixelFractionOver32": 0.005590277777777777,
+      "imageSha256": {
+        "baseline": "d2e0fb3dfd2104307b5245a391f90295e05c977dac05f3f655bc2f8898923c22",
+        "candidate": "bdbaf4a2eaf7655ec0abef356c3dd64713697f28d3d6f072c39d12a1b212e1ac"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.014490008354187012,
+        "maxUlps": 243102,
+        "changedFraction": 0.14344618055555555,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.114375
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "angle": 270,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.8480251736111111,
+      "maxChannelError": 104,
+      "pixelFractionOver8": 0.04275173611111111,
+      "pixelFractionOver32": 0.007734375,
+      "imageSha256": {
+        "baseline": "d095c808f23edee695a2fee0088ff21f07fa21faab21b596e141d0fe939d01ae",
+        "candidate": "c548279429813b38e127f7d54e3db0c2263351fd8ecf95e627df65491906b930"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.014898359775543213,
+        "maxUlps": 249953,
+        "changedFraction": 0.14091579861111111,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.11253038194444444
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "angle": 315,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.9046166087962964,
+      "maxChannelError": 120,
+      "pixelFractionOver8": 0.043997395833333335,
+      "pixelFractionOver32": 0.008133680555555555,
+      "imageSha256": {
+        "baseline": "d2e0fb3dfd2104307b5245a391f90295e05c977dac05f3f655bc2f8898923c22",
+        "candidate": "142aab0f038e747e3d9074eaa69fe668ba596b7c9cdd2e00c5d9cd874d7f1491"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.014490008354187012,
+        "maxUlps": 243102,
+        "changedFraction": 0.147890625,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.11809895833333334
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "angle": 0,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.002931134259259259,
+      "maxChannelError": 22,
+      "pixelFractionOver8": 0.00010850694444444444,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "0a9aa86b8aa48e8c00d72f9cfb1d88fb84f297f1b8580bfa41db3cf0eaa30a59",
+        "candidate": "a626e118038f76f78a3719819fa2eeb1542f1a197d1af8e917a7fd0b362f9884"
+      },
+      "resolvedDepth": {
+        "byteIdentical": true,
+        "maxAbsoluteError": 0.0,
+        "maxUlps": 0,
+        "changedFraction": 0.0,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.0
+      },
+      "sampleDepth": {
+        "byteIdentical": true,
+        "maxAbsoluteError": 0.0,
+        "maxUlps": 0,
+        "changedFraction": 0.0,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.0
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "angle": 45,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.004194155092592592,
+      "maxChannelError": 32,
+      "pixelFractionOver8": 0.00016059027777777778,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "0fca872f5bcc5b60a16b8dcc0c514dcbb98acec0e133d8a82b646a740f83eb09",
+        "candidate": "d2c0c9e218edf56f3dbd3590bd7ffd14885a9830ddb3a1451ad228105a05c738"
+      },
+      "resolvedDepth": {
+        "byteIdentical": true,
+        "maxAbsoluteError": 0.0,
+        "maxUlps": 0,
+        "changedFraction": 0.0,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.0
+      },
+      "sampleDepth": {
+        "byteIdentical": true,
+        "maxAbsoluteError": 0.0,
+        "maxUlps": 0,
+        "changedFraction": 0.0,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.0
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "angle": 90,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.5556206597222222,
+      "maxChannelError": 94,
+      "pixelFractionOver8": 0.029526909722222223,
+      "pixelFractionOver32": 0.002026909722222222,
+      "imageSha256": {
+        "baseline": "8771ea1b6086f6b98bbecbbf2bd2b3fb8a2a7a62978086731308edfa287459a1",
+        "candidate": "f4ae378f88cca1c38d83b6d1be2b70062ebe8ae4ab84415242491d48db1c55c8"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.015089213848114014,
+        "maxUlps": 253155,
+        "changedFraction": 0.1120876736111111,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.08861979166666667
+      },
+      "sampleDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.015089213848114014,
+        "maxUlps": 253155,
+        "changedFraction": 0.11200737847222222,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.08907335069444444
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "angle": 135,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.808125,
+      "maxChannelError": 100,
+      "pixelFractionOver8": 0.04029079861111111,
+      "pixelFractionOver32": 0.002634548611111111,
+      "imageSha256": {
+        "baseline": "0fca872f5bcc5b60a16b8dcc0c514dcbb98acec0e133d8a82b646a740f83eb09",
+        "candidate": "3280e3b3e8b0a0c2620bcba42ea1155f2de3d1a02e4c8d6a190ab691af774ff2"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.012214839458465576,
+        "maxUlps": 204931,
+        "changedFraction": 0.18674913194444445,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.1553515625
+      },
+      "sampleDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.013735055923461914,
+        "maxUlps": 230436,
+        "changedFraction": 0.18704644097222223,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.15559461805555555
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "angle": 160,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.786863425925926,
+      "maxChannelError": 103,
+      "pixelFractionOver8": 0.0379296875,
+      "pixelFractionOver32": 0.002777777777777778,
+      "imageSha256": {
+        "baseline": "6edb38bc2d9ba8b3281d8c371864ffe85ebb0322f9e6bd0992fe1912d0637a0f",
+        "candidate": "2d377a165b2045ced1ee28d17bfa97c8e5bf5465ad054a3d68459a51f3cde42a"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.011657953262329102,
+        "maxUlps": 195588,
+        "changedFraction": 0.19117621527777778,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.15965277777777778
+      },
+      "sampleDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.011820614337921143,
+        "maxUlps": 198317,
+        "changedFraction": 0.191171875,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.16024088541666667
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "angle": 180,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.6848813657407408,
+      "maxChannelError": 111,
+      "pixelFractionOver8": 0.035247395833333334,
+      "pixelFractionOver32": 0.003576388888888889,
+      "imageSha256": {
+        "baseline": "0a9aa86b8aa48e8c00d72f9cfb1d88fb84f297f1b8580bfa41db3cf0eaa30a59",
+        "candidate": "b102cb7c943615240894f82a67f572647bbcbecacdf0ccec801f8ae4822f2d25"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.01329946517944336,
+        "maxUlps": 223128,
+        "changedFraction": 0.13569878472222222,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.10703559027777777
+      },
+      "sampleDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.013371944427490234,
+        "maxUlps": 224344,
+        "changedFraction": 0.13569010416666666,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.10714626736111112
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "angle": 225,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.6894024884259259,
+      "maxChannelError": 101,
+      "pixelFractionOver8": 0.034266493055555555,
+      "pixelFractionOver32": 0.0035243055555555557,
+      "imageSha256": {
+        "baseline": "800f13a9af229d8ecee220abbb52b539081dadd0f5b74826e61d22590e4880ff",
+        "candidate": "c30ab9521fdf5c6e60334952a134286ee14bc6f677267f252302d243ed211880"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.014738023281097412,
+        "maxUlps": 247263,
+        "changedFraction": 0.14343315972222223,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.11384114583333334
+      },
+      "sampleDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.014738023281097412,
+        "maxUlps": 247263,
+        "changedFraction": 0.14326822916666668,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.11341362847222222
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "angle": 270,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.7790538194444444,
+      "maxChannelError": 109,
+      "pixelFractionOver8": 0.04142361111111111,
+      "pixelFractionOver32": 0.005108506944444444,
+      "imageSha256": {
+        "baseline": "928d89b9fc14ec78bd8d07467a46ab915d01e95997ef92d1aee252183b7d8d3d",
+        "candidate": "7a8fabce6d85bf8dbce6e5e1ed60b426b22aafd2ec473c263982d4f07332a4f2"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.012907683849334717,
+        "maxUlps": 216555,
+        "changedFraction": 0.1400954861111111,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.11151041666666667
+      },
+      "sampleDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.014910995960235596,
+        "maxUlps": 250165,
+        "changedFraction": 0.14018880208333334,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.11120659722222222
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "angle": 315,
+      "rgbaByteIdentical": false,
+      "stencilAndSampleStencilByteIdentical": true,
+      "meanAbsoluteChannelError": 0.8262905092592593,
+      "maxChannelError": 120,
+      "pixelFractionOver8": 0.042673611111111114,
+      "pixelFractionOver32": 0.005464409722222222,
+      "imageSha256": {
+        "baseline": "800f13a9af229d8ecee220abbb52b539081dadd0f5b74826e61d22590e4880ff",
+        "candidate": "d5a36b937c995d1d1bd909fa8db1107cb9b6137a5bbfef72002e918368ebd58e"
+      },
+      "resolvedDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.014738023281097412,
+        "maxUlps": 247263,
+        "changedFraction": 0.14769965277777777,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.11698350694444444
+      },
+      "sampleDepth": {
+        "byteIdentical": false,
+        "maxAbsoluteError": 0.014738023281097412,
+        "maxUlps": 247263,
+        "changedFraction": 0.14749782986111112,
+        "removedCoverage": 0,
+        "addedCoverage": 0,
+        "errorOver2e6Fraction": 0.11657986111111111
+      }
+    }
+  ],
+  "runs": [
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "variant": "baseline",
+      "command": [
+        "build/scene-screen-error-lod/v2-nonempty/quality-coarse-root/native/quality_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "0",
+        "tmp/scene-screen-error-lod/v2-quality-coarse-low/bistro-ms0-baseline"
+      ],
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "packSha256": "4c862bcd28ef6833a89b0a058832c051098f5cf5869590999859b86f1cc993f3",
+      "frames": [
+        {
+          "angle": 0,
+          "rgba": "234b628f8b3e0d3c",
+          "depth": "a45ade83eb744445",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 45,
+          "rgba": "5f72e7a425460215",
+          "depth": "108b61eb1c8c6ba2",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 90,
+          "rgba": "409dc3f7505d14b5",
+          "depth": "58bfcda4c385d183",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 135,
+          "rgba": "5f72e7a425460215",
+          "depth": "108b61eb1c8c6ba2",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 160,
+          "rgba": "da43e53785e82836",
+          "depth": "c62790a9c067e97b",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 180,
+          "rgba": "234b628f8b3e0d3c",
+          "depth": "a45ade83eb744445",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 225,
+          "rgba": "09749c608ab09206",
+          "depth": "ad67ffb8c81e36cd",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 270,
+          "rgba": "c0190335490e758a",
+          "depth": "439d3cd4ab2714d5",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 315,
+          "rgba": "09749c608ab09206",
+          "depth": "ad67ffb8c81e36cd",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        }
+      ]
+    },
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "variant": "candidate",
+      "command": [
+        "build/scene-screen-error-lod/v2-nonempty/quality-coarse-root/native/quality_candidate",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "0",
+        "tmp/scene-screen-error-lod/v2-quality-coarse-low/bistro-ms0-candidate"
+      ],
+      "stderr": "LOD {\"submittedOpaque\":490807,\"changedParts\":0}\nLOD {\"submittedOpaque\":490807,\"changedParts\":0}\nLOD {\"submittedOpaque\":409797,\"changedParts\":148}\nLOD {\"submittedOpaque\":397900,\"changedParts\":17}\nLOD {\"submittedOpaque\":397900,\"changedParts\":0}\nLOD {\"submittedOpaque\":386563,\"changedParts\":18}\nLOD {\"submittedOpaque\":371362,\"changedParts\":20}\nLOD {\"submittedOpaque\":364086,\"changedParts\":18}\nLOD {\"submittedOpaque\":342230,\"changedParts\":41}\n",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "packSha256": "4c862bcd28ef6833a89b0a058832c051098f5cf5869590999859b86f1cc993f3",
+      "frames": [
+        {
+          "angle": 0,
+          "rgba": "f8c0d6ce14a8e0d8",
+          "depth": "a45ade83eb744445",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 45,
+          "rgba": "94bc38aadd92aa3d",
+          "depth": "108b61eb1c8c6ba2",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 90,
+          "rgba": "e9e407513b34a5b4",
+          "depth": "d39f2352e594b86d",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 135,
+          "rgba": "02192bc4abe6ae19",
+          "depth": "9127913d832d23bd",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 160,
+          "rgba": "4e3e215f5b2296f3",
+          "depth": "139941deb8c7a908",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 180,
+          "rgba": "27517e97b9548b55",
+          "depth": "444c5350926efac2",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 225,
+          "rgba": "5595906511b5c1c5",
+          "depth": "770836e3c37798f1",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 270,
+          "rgba": "1aefcd15a4371f21",
+          "depth": "85e833ecfb556d51",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 315,
+          "rgba": "4fa6be2f0f81720b",
+          "depth": "3f0671222cf19028",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        }
+      ]
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "variant": "baseline",
+      "command": [
+        "build/scene-screen-error-lod/v2-nonempty/quality-coarse-root/native/quality_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "2",
+        "tmp/scene-screen-error-lod/v2-quality-coarse-low/bistro-ms2-baseline"
+      ],
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "packSha256": "4c862bcd28ef6833a89b0a058832c051098f5cf5869590999859b86f1cc993f3",
+      "frames": [
+        {
+          "angle": 0,
+          "rgba": "6b393154f5df3290",
+          "depth": "cd43f8609680493b",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "cb2c52188f413b43",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 45,
+          "rgba": "82f737b90b530585",
+          "depth": "9eb027c2bd090959",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "101a2d5a02ec6e1d",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 90,
+          "rgba": "b49315600485edfb",
+          "depth": "f94793cd7a55b5b1",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "b2e10f408ad1cc0d",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 135,
+          "rgba": "82f737b90b530585",
+          "depth": "9eb027c2bd090959",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "101a2d5a02ec6e1d",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 160,
+          "rgba": "d574fef069e32bbe",
+          "depth": "3147510cbc87a599",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "f73fe223e9257487",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 180,
+          "rgba": "6b393154f5df3290",
+          "depth": "cd43f8609680493b",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "cb2c52188f413b43",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 225,
+          "rgba": "9f42332e9d9091be",
+          "depth": "0f92468ace3ddab5",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "b2ea4e4f9ae7ee49",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 270,
+          "rgba": "ffb505fd30eaebfd",
+          "depth": "b5fee35266844211",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "d611e32eae1c67b8",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 315,
+          "rgba": "9f42332e9d9091be",
+          "depth": "0f92468ace3ddab5",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "b2ea4e4f9ae7ee49",
+          "sampleStencil": "1a5bcfc145f96383"
+        }
+      ]
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "variant": "candidate",
+      "command": [
+        "build/scene-screen-error-lod/v2-nonempty/quality-coarse-root/native/quality_candidate",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "2",
+        "tmp/scene-screen-error-lod/v2-quality-coarse-low/bistro-ms2-candidate"
+      ],
+      "stderr": "LOD {\"submittedOpaque\":490807,\"changedParts\":0}\nLOD {\"submittedOpaque\":490807,\"changedParts\":0}\nLOD {\"submittedOpaque\":409797,\"changedParts\":148}\nLOD {\"submittedOpaque\":397900,\"changedParts\":17}\nLOD {\"submittedOpaque\":397900,\"changedParts\":0}\nLOD {\"submittedOpaque\":386563,\"changedParts\":18}\nLOD {\"submittedOpaque\":371362,\"changedParts\":20}\nLOD {\"submittedOpaque\":364086,\"changedParts\":18}\nLOD {\"submittedOpaque\":342230,\"changedParts\":41}\n",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "packSha256": "4c862bcd28ef6833a89b0a058832c051098f5cf5869590999859b86f1cc993f3",
+      "frames": [
+        {
+          "angle": 0,
+          "rgba": "662c00be0b45ffbd",
+          "depth": "cd43f8609680493b",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "cb2c52188f413b43",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 45,
+          "rgba": "125985f5c71f5f48",
+          "depth": "9eb027c2bd090959",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "101a2d5a02ec6e1d",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 90,
+          "rgba": "a822ecb569f3951c",
+          "depth": "86be3967f2ed1f16",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "c8da0c1399f06aac",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 135,
+          "rgba": "041bc4ec7403967f",
+          "depth": "053151adf2779f66",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "292c4544798eace9",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 160,
+          "rgba": "9b6e09d50be0884f",
+          "depth": "3119bdffd566bc78",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "1aa464d45a2807c1",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 180,
+          "rgba": "a8101eb9dde11c09",
+          "depth": "b5806fb0e9e1df9d",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0a5e3acb8a7e3d33",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 225,
+          "rgba": "884992b65f6efe3a",
+          "depth": "a1ae295a2371c23a",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "a8357ef3cbcfbeee",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 270,
+          "rgba": "89280d5a4de9ae92",
+          "depth": "8a7d126b1c450d0f",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "be2719eb06fc74ca",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 315,
+          "rgba": "b233295541e2b68e",
+          "depth": "b688d6b6400faff6",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "65eaf291cde1d43e",
+          "sampleStencil": "1a5bcfc145f96383"
+        }
+      ]
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "variant": "baseline",
+      "command": [
+        "build/scene-screen-error-lod/v2-nonempty/quality-coarse-root/native/quality_baseline",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "0",
+        "tmp/scene-screen-error-lod/v2-quality-coarse-low/sponza-ms0-baseline"
+      ],
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "packSha256": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+      "frames": [
+        {
+          "angle": 0,
+          "rgba": "d1ed1b6d37372b00",
+          "depth": "cb0fcd174f34597d",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 45,
+          "rgba": "f29cd14e2c332fc6",
+          "depth": "81898d4b34a5307b",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 90,
+          "rgba": "1c07db53db8aee76",
+          "depth": "e7aaef990ce10445",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 135,
+          "rgba": "f29cd14e2c332fc6",
+          "depth": "81898d4b34a5307b",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 160,
+          "rgba": "c4d91c45e26aff6f",
+          "depth": "9b69df84db431822",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 180,
+          "rgba": "d1ed1b6d37372b00",
+          "depth": "cb0fcd174f34597d",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 225,
+          "rgba": "f95867b4fc39703e",
+          "depth": "6c63dd598340ece9",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 270,
+          "rgba": "0fb250c87bfb6916",
+          "depth": "e54261b93adf34c1",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 315,
+          "rgba": "f95867b4fc39703e",
+          "depth": "6c63dd598340ece9",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        }
+      ]
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "variant": "candidate",
+      "command": [
+        "build/scene-screen-error-lod/v2-nonempty/quality-coarse-root/native/quality_candidate",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "0",
+        "tmp/scene-screen-error-lod/v2-quality-coarse-low/sponza-ms0-candidate"
+      ],
+      "stderr": "LOD {\"submittedOpaque\":227327,\"changedParts\":0}\nLOD {\"submittedOpaque\":227327,\"changedParts\":0}\nLOD {\"submittedOpaque\":150327,\"changedParts\":69}\nLOD {\"submittedOpaque\":137833,\"changedParts\":12}\nLOD {\"submittedOpaque\":137833,\"changedParts\":0}\nLOD {\"submittedOpaque\":132461,\"changedParts\":7}\nLOD {\"submittedOpaque\":131969,\"changedParts\":10}\nLOD {\"submittedOpaque\":128883,\"changedParts\":10}\nLOD {\"submittedOpaque\":121413,\"changedParts\":8}\n",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "packSha256": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+      "frames": [
+        {
+          "angle": 0,
+          "rgba": "d1ed1b6d37372b00",
+          "depth": "cb0fcd174f34597d",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 45,
+          "rgba": "f29cd14e2c332fc6",
+          "depth": "81898d4b34a5307b",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 90,
+          "rgba": "4e59cbd1dfcea8e9",
+          "depth": "a744b7a7e9599093",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 135,
+          "rgba": "6eee27694aed1d27",
+          "depth": "e20bb2ea3678f17c",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 160,
+          "rgba": "9b12e0172b7a702c",
+          "depth": "9cb85b438d4054c7",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 180,
+          "rgba": "f9f951652d562321",
+          "depth": "5ddf67ef64f2fb79",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 225,
+          "rgba": "4f9cbc51cee1f81b",
+          "depth": "c9292278c3859d0f",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 270,
+          "rgba": "6db63da7ca30f153",
+          "depth": "077a4176227a919a",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        },
+        {
+          "angle": 315,
+          "rgba": "230264e212a18589",
+          "depth": "3bf416c51ba0c293",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "0000000000000000",
+          "sampleStencil": "0000000000000000"
+        }
+      ]
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "variant": "baseline",
+      "command": [
+        "build/scene-screen-error-lod/v2-nonempty/quality-coarse-root/native/quality_baseline",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "2",
+        "tmp/scene-screen-error-lod/v2-quality-coarse-low/sponza-ms2-baseline"
+      ],
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "packSha256": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+      "frames": [
+        {
+          "angle": 0,
+          "rgba": "beba190e26ef5c11",
+          "depth": "08c97c9ef4d8631a",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "1213e192e3bb5e06",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 45,
+          "rgba": "828c808cf19b1e55",
+          "depth": "2eccfe2e47fa080e",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "176ade7d39723b35",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 90,
+          "rgba": "8df65ef80e00f1fa",
+          "depth": "48299ccdf5690e3f",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "21cfe86f39f53143",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 135,
+          "rgba": "828c808cf19b1e55",
+          "depth": "2eccfe2e47fa080e",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "176ade7d39723b35",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 160,
+          "rgba": "b597f5438d45eed2",
+          "depth": "3cfb3da67bd41870",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "8bea110d451aefd0",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 180,
+          "rgba": "beba190e26ef5c11",
+          "depth": "08c97c9ef4d8631a",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "1213e192e3bb5e06",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 225,
+          "rgba": "9bb965747e9082c3",
+          "depth": "26a381243863793d",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "2253d41f820db9fd",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 270,
+          "rgba": "93794e3221eb551c",
+          "depth": "4464aec254c7f7a4",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "2c804e180e9c5254",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 315,
+          "rgba": "9bb965747e9082c3",
+          "depth": "26a381243863793d",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "2253d41f820db9fd",
+          "sampleStencil": "1a5bcfc145f96383"
+        }
+      ]
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "variant": "candidate",
+      "command": [
+        "build/scene-screen-error-lod/v2-nonempty/quality-coarse-root/native/quality_candidate",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "2",
+        "tmp/scene-screen-error-lod/v2-quality-coarse-low/sponza-ms2-candidate"
+      ],
+      "stderr": "LOD {\"submittedOpaque\":227327,\"changedParts\":0}\nLOD {\"submittedOpaque\":227327,\"changedParts\":0}\nLOD {\"submittedOpaque\":150327,\"changedParts\":69}\nLOD {\"submittedOpaque\":137833,\"changedParts\":12}\nLOD {\"submittedOpaque\":137833,\"changedParts\":0}\nLOD {\"submittedOpaque\":132461,\"changedParts\":7}\nLOD {\"submittedOpaque\":131969,\"changedParts\":10}\nLOD {\"submittedOpaque\":128883,\"changedParts\":10}\nLOD {\"submittedOpaque\":121413,\"changedParts\":8}\n",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "packSha256": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+      "frames": [
+        {
+          "angle": 0,
+          "rgba": "14e15605871986cb",
+          "depth": "08c97c9ef4d8631a",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "1213e192e3bb5e06",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 45,
+          "rgba": "45df752af18d2b9c",
+          "depth": "2eccfe2e47fa080e",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "176ade7d39723b35",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 90,
+          "rgba": "7878be57eb0c23f2",
+          "depth": "ac571709eab04ee7",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "6ccb7b25d339b419",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 135,
+          "rgba": "c93de4f13af73f64",
+          "depth": "6efc9f949169dbfa",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "40095b7c14efeac4",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 160,
+          "rgba": "47b13868d1cf9ae1",
+          "depth": "1fb9610ec8ea8bda",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "261edff7f3cdf5eb",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 180,
+          "rgba": "80045c64841d5114",
+          "depth": "cd624549818ec9c6",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "23f0f3a502dd6af5",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 225,
+          "rgba": "86c25129531f8b88",
+          "depth": "187163e7380c2ab5",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "88b7700fc6ead974",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 270,
+          "rgba": "deee67c6e6ad5da4",
+          "depth": "a7ec1fe98ab62dd0",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "be110046089ff7bc",
+          "sampleStencil": "1a5bcfc145f96383"
+        },
+        {
+          "angle": 315,
+          "rgba": "49eb231fe16d9135",
+          "depth": "4e348c9b3ca880f0",
+          "stencil": "97422459bb4b3383",
+          "sampleDepth": "26b6e5d8b1ded899",
+          "sampleStencil": "1a5bcfc145f96383"
+        }
+      ]
+    }
+  ]
+}

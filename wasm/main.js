@@ -46,6 +46,7 @@
   const sStatsMs      = document.getElementById('s-ms');
   const sStatsP       = document.getElementById('s-p');
   const msaaSelect = document.getElementById('msaa');
+  const meshSelect = document.getElementById('mesh-detail');
   const createContext = (samples = 0) => {
     const c = Mod._softgl_create_multisample(W, H, samples);
     if (!c) throw new Error('Could not create render context');
@@ -85,6 +86,7 @@
     printErr: (...a) => console.warn('[wasm]', ...a),
   });
   console.log('[main] module ready, calling sg_viewer_create');
+  meshSelect.disabled = !Mod._sg_model_lod_load;
 
   /* Worker threads actually spawned — 0 when SAB is missing or
    * -pthread was off in the build. Matches sg_thread_count() on a
@@ -241,6 +243,20 @@
       Mod._free(ptr);
     }
   }
+  async function loadMeshLod(name) {
+    if (meshSelect.value !== 'automatic') return;
+    if (!Mod._sg_model_lod_load) throw new Error('Reload the updated WASM viewer for automatic meshes');
+    const file = `${name}.pack.lod`;
+    const response = await fetch(file);
+    if (!response.ok) throw new Error(`${file}: HTTP ${response.status}`);
+    const bytes = new Uint8Array(await response.arrayBuffer());
+    const ptr = Mod._malloc(bytes.length);
+    if (!ptr) throw new Error('Mesh LOD allocation failed');
+    try {
+      Mod.HEAPU8.set(bytes, ptr);
+      if (!Mod._sg_model_lod_load(ptr, bytes.length)) throw new Error('Mesh LOD does not match this asset');
+    } finally { Mod._free(ptr); }
+  }
   let tankCtx = 0;
   let tankFrameId = 0;
   let tankAngle = 0;
@@ -272,6 +288,7 @@
     Mod._free(ptr);
     if (!ok) throw new Error(`${asset.prefix}_load returned 0 (bad pack?)`);
     await loadOriginalTextures(selectedAsset);
+    await loadMeshLod(selectedAsset);
 
     const tris = Mod.ccall(`${asset.prefix}_tri_count`, 'number', [], []);
     const mats = Mod.ccall(`${asset.prefix}_mat_count`, 'number', [], []);
@@ -306,6 +323,8 @@
     const ms = t1 - t0;
     timingEl.textContent = `render: ${ms.toFixed(2)} ms   ·   ${(1000/ms).toFixed(0)} fps theoretical (capped @ 30)`;
     recordFrameMs(ms);
+    if (meshSelect.value === 'automatic')
+      nameEl.textContent = `${Mod._sg_model_active_tri_count().toLocaleString()} selected triangles · ${Mod._sg_model_mat_count()} materials · automatic meshes (approximate)`;
     /* steady angle bar instead of test progress */
     progEl.style.transition = 'none';
     progEl.style.width = `${(tankAngle / 360) * 100}%`;
@@ -325,8 +344,8 @@
   }
 
   function setControlsBusy(busy) {
-    for (const button of [bmwBtn, ...modelButtons, testsBtn, prevBtn, nextBtn, pauseBtn, benchBtn, msaaSelect])
-      if (button) button.disabled = busy;
+    for (const button of [bmwBtn, ...modelButtons, testsBtn, prevBtn, nextBtn, pauseBtn, benchBtn, msaaSelect, meshSelect])
+      if (button) button.disabled = busy || (button === meshSelect && !Mod._sg_model_lod_load);
   }
 
   async function startTank() {
@@ -420,6 +439,7 @@
     if (button) button.onclick = () => startAsset(button.id).catch(reportError);
   }
   if (testsBtn) testsBtn.onclick = () => startTests().catch(reportError);
+  meshSelect.onchange = () => msaaSelect.onchange().catch(reportError);
   msaaSelect.onchange = async () => {
     if (transitioning || benching) return;
     if (mode === 'tank') {
@@ -446,6 +466,7 @@
     const log = text => { benchOut.textContent += text + '\n'; benchOut.scrollTop = benchOut.scrollHeight; };
     const previousSamples = msaaSelect.value;
     log(`# scenes WASM benchmark @ ${W}x${H} — SIMD=${simdOK}, reported processors=${hwThreads}`);
+    log(`# meshes=${meshSelect.value}; models retain original textures and 640x360 render resolution`);
     log(`# userAgent: ${navigator.userAgent}`);
     log('# 3 runs of 20 frames per scene; warm-up excluded; min reported.');
     log('# Browser yields between frames; each timed frame includes worker completion.');
@@ -486,6 +507,7 @@
                 Mod._free(modelPtr);
                 modelPtr = 0;
                 await loadOriginalTextures(benchmarkAsset);
+                await loadMeshLod(benchmarkAsset);
                 nameEl.textContent = `Benchmark: ${tag}`;
                 const camera = modelMetadata?.[benchmarkAsset]?.camera;
                 if (camera) Mod.ccall('sg_model_set_camera', null, camera.map(() => 'number'), camera);

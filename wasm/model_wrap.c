@@ -1,3 +1,4 @@
+#include <stdio.h>
 /* Static glTF-prepared SGLM viewer: GL fragment combiners and VBO geometry.
  * SoftGL can opt into worker attribute preparation; Mesa uses eager arrays. */
 #include <GL/softgl.h>
@@ -65,7 +66,10 @@ static GLuint texture2d(unsigned w, unsigned h, const void *pixels) {
     return id;
 }
 
+#include "lod.inc"
+
 void sg_model_unload(void) {
+    model_lod_unload();
     /* GL objects belong to the scene context, destroyed by the caller. */
     free(G.part);
     free(G.order);
@@ -328,6 +332,8 @@ static void combiner(GLenum function, GLenum a, GLenum b) {
 }
 
 static void draw_part(const model_part *part, int specular) {
+    model_part proxy;
+    part = model_lod_choose(part, &proxy, model_lod.width, model_lod.height);
     const model_material *m = &G.material[part->material];
     if (m->double_sided) glDisable(GL_CULL_FACE); else glEnable(GL_CULL_FACE);
     /* OPAQUE materials have alpha one. Avoid testing it so covered pixels
@@ -450,6 +456,7 @@ void sg_model_render(float angle, int w, int h) {
         glTranslatef(0.f, -.035f, -2.3f); glRotatef(14.f, 1.f, 0.f, 0.f); glRotatef(angle, 0.f, 1.f, 0.f);
     }
     float matrix[16]; glGetFloatv(GL_MODELVIEW_MATRIX, matrix);
+    model_lod_begin(w,h);
 #ifdef SOFTGL_MODEL_VERTEX_ATTRIBUTES
     prepare_attribute_program(matrix);
 #else
@@ -502,4 +509,16 @@ void sg_model_render(float angle, int w, int h) {
     }
     glDepthMask(GL_TRUE); glDisable(GL_BLEND); glDisable(GL_ALPHA_TEST);
     glActiveTexture(GL_TEXTURE0); glClientActiveTexture(GL_TEXTURE0);
+    if (getenv("SOFTGL_LOD_STATS")) fprintf(stderr,"LOD {\"submittedOpaque\":%llu,\"changedParts\":%llu}\n",
+        model_lod.submitted,model_lod.changed);
+}
+
+unsigned sg_model_active_tri_count(void) {
+    if (!model_lod.records) return G.triangles;
+    unsigned triangles = 0;
+    for (unsigned i = 0; i < G.parts; i++) {
+        unsigned level = model_lod.selected[i];
+        triangles += (level ? model_lod.records[i].lod[level-1].count : G.part[i].count)/3;
+    }
+    return triangles;
 }
