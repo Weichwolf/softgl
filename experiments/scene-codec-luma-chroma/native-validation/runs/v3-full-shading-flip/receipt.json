@@ -1,0 +1,387 @@
+{
+  "qualityOnly": true,
+  "rendererImplementation": true,
+  "speedupMeasured": false,
+  "width": 640,
+  "height": 360,
+  "ppd": 60,
+  "colorPolicy": "Assume displayed RGB8 is sRGB; convert to linear RGB for LDR-FLIP",
+  "qualityReceiptSha256": "ddf92bef9ade2f4ecc149be330543ab682bb523e21c7b2c34f650ceb4f2a5265",
+  "metricBinarySha256": "e42d3ca1ce916bafae47b2ace7a69beeb9ea669e38e95d2d6bd79b857b6afb82",
+  "metricReceiptSha256": "53ba581f3dec6c80856d2d32644025c95d24ced05d72ac1163c8e3e96a2ee48e",
+  "runnerSha256": "27f5a1ea3cacb477f36a7f258fc5bdb7017cbe78d9c369937742275566087c83",
+  "records": [
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "efa6e492ef94ac3e82ede76805167efbe7d223546dee2c4e303c5934c85ae9ed",
+        "candidate": "4b666e6d12d7e0f87746ea119536c744775e20ca1672f9ff41b89d3ccb6b9263"
+      },
+      "meanAbsoluteChannelError": 7.021371527777778,
+      "maxChannelError": 197,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.09980633750844002,
+        "upstreamFloatMean": 0.0998065099,
+        "p95NearestRank": 0.261240542,
+        "p99NearestRank": 0.37537834,
+        "max": 0.728996634
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/bistro-ms0-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/bistro-ms0-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/bistro-ms0-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.099806337508440021,\"upstreamFloatMean\":0.0998065099,\"p95NearestRank\":0.261240542,\"p99NearestRank\":0.37537834,\"max\":0.728996634}\n",
+      "stderr": "",
+      "errorMapSha256": "2535a78f9b8b6289abdb81a61339987c381327994d1ca0b39cff8d47a03fadbb"
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "eb82b939191bd2377fc2c725a9ae0be57a53eab30d2bd80887d209861e4577e2",
+        "candidate": "d50a5b0039be93685522c115522e60326f35bc3f39e71973a881a9e032c7061d"
+      },
+      "meanAbsoluteChannelError": 7.798859953703704,
+      "maxChannelError": 188,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.10701521917853568,
+        "upstreamFloatMean": 0.107014537,
+        "p95NearestRank": 0.272792608,
+        "p99NearestRank": 0.387389123,
+        "max": 0.742210448
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/bistro-ms2-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/bistro-ms2-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/bistro-ms2-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.10701521917853568,\"upstreamFloatMean\":0.107014537,\"p95NearestRank\":0.272792608,\"p99NearestRank\":0.387389123,\"max\":0.742210448}\n",
+      "stderr": "",
+      "errorMapSha256": "ebcd1cd08a37ae7d0699fd703318ea1a04611095560cbda1de071a4c1ced7c31"
+    },
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "1e7c838ebfaa03546a3ea73f6fd563f46e637ae6978ff73560b59124a0e02d1d",
+        "candidate": "7424d085abca5832ceec3178ca7fedd98c9b3b2bd4d4b269922553b9219f4cd3"
+      },
+      "meanAbsoluteChannelError": 7.9517621527777775,
+      "maxChannelError": 188,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.10808378655402724,
+        "upstreamFloatMean": 0.108084418,
+        "p95NearestRank": 0.27562657,
+        "p99NearestRank": 0.392049879,
+        "max": 0.895984054
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/bistro-ms4-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/bistro-ms4-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/bistro-ms4-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.10808378655402724,\"upstreamFloatMean\":0.108084418,\"p95NearestRank\":0.27562657,\"p99NearestRank\":0.392049879,\"max\":0.895984054}\n",
+      "stderr": "",
+      "errorMapSha256": "6a4242bf65c46b18877689aea3e5b22fee6763ee58e626cf2e63918ab4a458fc"
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "352c8de01ce79bd9cd47bab0afe08e6e38935eb2c51c4d952de2015748bf6413",
+        "candidate": "7bff64637859eb54b5a322d0c4c57371e1b39d85e3d0837e733a78ca657bb61d"
+      },
+      "meanAbsoluteChannelError": 4.403955439814815,
+      "maxChannelError": 125,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.06437874822366123,
+        "upstreamFloatMean": 0.0643789023,
+        "p95NearestRank": 0.17270869,
+        "p99NearestRank": 0.266937613,
+        "max": 0.580763638
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/sponza-ms0-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/sponza-ms0-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/sponza-ms0-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.064378748223661228,\"upstreamFloatMean\":0.0643789023,\"p95NearestRank\":0.17270869,\"p99NearestRank\":0.266937613,\"max\":0.580763638}\n",
+      "stderr": "",
+      "errorMapSha256": "0f720fcb7dfbbcaf2d6f26bd68f2b0ffdc1ea87fe2564672ad80cb2101c85174"
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "6edb38bc2d9ba8b3281d8c371864ffe85ebb0322f9e6bd0992fe1912d0637a0f",
+        "candidate": "73fa9e03ac541f03792bc5d29eebabedf95f86c17f03d408bbb5e022c747bc20"
+      },
+      "meanAbsoluteChannelError": 4.732052951388889,
+      "maxChannelError": 133,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.06768894866117914,
+        "upstreamFloatMean": 0.0676892772,
+        "p95NearestRank": 0.183745831,
+        "p99NearestRank": 0.29005,
+        "max": 0.639066041
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/sponza-ms2-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/sponza-ms2-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/sponza-ms2-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.067688948661179138,\"upstreamFloatMean\":0.0676892772,\"p95NearestRank\":0.183745831,\"p99NearestRank\":0.29005,\"max\":0.639066041}\n",
+      "stderr": "",
+      "errorMapSha256": "514bae24be33a0ece4c82d5065c3e1059e31f078ccb992f962d52fb4ad74c8bf"
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "833e920cd0d620d2329406b9fc78ad5c368592852193a2b3f5226d40b2373748",
+        "candidate": "6ddf0a44d716b7354b5c38a05512483a51d13956a8b5ff810651156f86909db0"
+      },
+      "meanAbsoluteChannelError": 4.7334982638888885,
+      "maxChannelError": 119,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.06778737090498667,
+        "upstreamFloatMean": 0.0677870885,
+        "p95NearestRank": 0.184914812,
+        "p99NearestRank": 0.289110959,
+        "max": 0.630448818
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/sponza-ms4-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/sponza-ms4-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/sponza-ms4-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.067787370904986669,\"upstreamFloatMean\":0.0677870885,\"p95NearestRank\":0.184914812,\"p99NearestRank\":0.289110959,\"max\":0.630448818}\n",
+      "stderr": "",
+      "errorMapSha256": "8fb030f2ab9222b088e99b02377610243362a1447c4d1bfbc85f0042c3308710"
+    },
+    {
+      "asset": "bmw",
+      "samples": 0,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "d955bc7e27202a35767fd1096a327cc655155dd9cff2d183d5870b4f300cb330",
+        "candidate": "f7391394f05bdb7cadcd7e82516d7ed3b84e4cf31f0610b0164f4b0be12508df"
+      },
+      "meanAbsoluteChannelError": 0.9089482060185186,
+      "maxChannelError": 250,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.017118949174647353,
+        "upstreamFloatMean": 0.0171187464,
+        "p95NearestRank": 0.103291437,
+        "p99NearestRank": 0.299422681,
+        "max": 0.943715572
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/bmw-ms0-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/bmw-ms0-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/bmw-ms0-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.017118949174647353,\"upstreamFloatMean\":0.0171187464,\"p95NearestRank\":0.103291437,\"p99NearestRank\":0.299422681,\"max\":0.943715572}\n",
+      "stderr": "",
+      "errorMapSha256": "7d74eb8bad6f4dcdf2404c32db0782617bcaf3824ccd1ce6d4e5c465c07bbfee"
+    },
+    {
+      "asset": "bmw",
+      "samples": 2,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "a162f42827e4df4f7c47ee30ad0c25f377c6c91160d25e2a76b999e2e2597a35",
+        "candidate": "7948d6ae1385bfcbdcb176d80572cab382b251f01918ba3d5f1c10ed9dfbae44"
+      },
+      "meanAbsoluteChannelError": 1.126048900462963,
+      "maxChannelError": 250,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.01981906402924955,
+        "upstreamFloatMean": 0.0198187772,
+        "p95NearestRank": 0.126561761,
+        "p99NearestRank": 0.344089568,
+        "max": 0.971196651
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/bmw-ms2-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/bmw-ms2-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/bmw-ms2-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.019819064029249552,\"upstreamFloatMean\":0.0198187772,\"p95NearestRank\":0.126561761,\"p99NearestRank\":0.344089568,\"max\":0.971196651}\n",
+      "stderr": "",
+      "errorMapSha256": "55f1ff99ad76fae3c38aeca7ad5a49348fa55b53c0b1e9f02ecc0490cf6bbe6d"
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "0678474b998ad8d2a4ee42d5dc4da563071c521cc51214ec3764efd9681ceff3",
+        "candidate": "ffbfbda95f84da0126ed5b8dbdca4cdf8156131aac4b789047310ef017d30f2b"
+      },
+      "meanAbsoluteChannelError": 1.1986675347222222,
+      "maxChannelError": 249,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.020256267339517176,
+        "upstreamFloatMean": 0.0202558152,
+        "p95NearestRank": 0.128101915,
+        "p99NearestRank": 0.346886933,
+        "max": 0.968379557
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/bmw-ms4-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/bmw-ms4-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/bmw-ms4-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.020256267339517176,\"upstreamFloatMean\":0.0202558152,\"p95NearestRank\":0.128101915,\"p99NearestRank\":0.346886933,\"max\":0.968379557}\n",
+      "stderr": "",
+      "errorMapSha256": "d43ebec346d3649b49452cc6218d8718ca960a9ebf780a1fafd54c85d4631299"
+    },
+    {
+      "asset": "t80",
+      "samples": 0,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "b523bb48fe208b82e23c9222305890e1a55eb98a198222779822b01a3975ed30",
+        "candidate": "fe96d0364bbea52053723ffcafce3e6e9d40ecd09ec4813ffcb983df0537593c"
+      },
+      "meanAbsoluteChannelError": 0.4265060763888889,
+      "maxChannelError": 118,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.008688086335893425,
+        "upstreamFloatMean": 0.00868803263,
+        "p95NearestRank": 0.06023008,
+        "p99NearestRank": 0.141006097,
+        "max": 0.607756853
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/t80-ms0-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/t80-ms0-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/t80-ms0-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.0086880863358934253,\"upstreamFloatMean\":0.00868803263,\"p95NearestRank\":0.06023008,\"p99NearestRank\":0.141006097,\"max\":0.607756853}\n",
+      "stderr": "",
+      "errorMapSha256": "41d2885f483bc7b7f9c5479d0bad0ea92d2c40b9b78cfc3b62c227da44665737"
+    },
+    {
+      "asset": "t80",
+      "samples": 2,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "0b666147fa2be0ea06d642761c3d52bb4c25c54d9ce590d7ffe5fa91eaa2bc66",
+        "candidate": "c10b3318449a00881ed303c5d6aea32ef3aeb8548568d96dea3e7f8989aba49c"
+      },
+      "meanAbsoluteChannelError": 0.49843605324074075,
+      "maxChannelError": 118,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.009594125492937861,
+        "upstreamFloatMean": 0.00959397759,
+        "p95NearestRank": 0.0673551038,
+        "p99NearestRank": 0.155010268,
+        "max": 0.60506475
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/t80-ms2-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/t80-ms2-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/t80-ms2-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.0095941254929378609,\"upstreamFloatMean\":0.00959397759,\"p95NearestRank\":0.0673551038,\"p99NearestRank\":0.155010268,\"max\":0.60506475}\n",
+      "stderr": "",
+      "errorMapSha256": "3027320a730926a27d157fff13748c828cb0b603e96e70becebe88a6021637ca"
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "0b6637b1f3c372a14aac424bacf76bd4c3635fc698a188e383890ccd77820f85",
+        "candidate": "9953b3a7e38ebb5227f3f69631919bee1918714e9b49c639d8b950b14682e4ac"
+      },
+      "meanAbsoluteChannelError": 0.5191478587962963,
+      "maxChannelError": 118,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.009901454761962802,
+        "upstreamFloatMean": 0.00990131311,
+        "p95NearestRank": 0.0690211281,
+        "p99NearestRank": 0.159541443,
+        "max": 0.605450392
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/t80-ms4-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/t80-ms4-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-flip/t80-ms4-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.0099014547619628024,\"upstreamFloatMean\":0.00990131311,\"p95NearestRank\":0.0690211281,\"p99NearestRank\":0.159541443,\"max\":0.605450392}\n",
+      "stderr": "",
+      "errorMapSha256": "eb7c930fdade71f7661b8bad7022fb784e09c98396f1d1b6bb5a09a9c0736932"
+    }
+  ]
+}

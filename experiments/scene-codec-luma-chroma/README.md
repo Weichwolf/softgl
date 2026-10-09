@@ -1,7 +1,7 @@
 # Codec-like luma/chroma and multi-rate material shading
 
-Status: priority prototype; architecture specified, offline quality proxy
-evaluated, renderer integration and speedup unmeasured. Optional scene mode; ordinary GL
+Status: private native prototypes measured; coarse full shading has repeated
+Bistro/Sponza gains, but is visibly blocky and not adopted. Optional scene mode; ordinary GL
 tests retain the default renderer. C11/SIMD128 in native and WASM, four total
 threads, original packs/cameras, 640×360 only.
 
@@ -129,3 +129,108 @@ with `python3 experiments/scene-codec-luma-chroma/verify_archive.py`.
 Related experiments: [perceptual budget](../scene-perceptual-frequency-budget/README.md),
 [temporal reconstruction](../scene-temporal-sample-reconstruction/README.md),
 [motion/focus budget](../scene-shutter-budget/README.md).
+
+## Actual renderer prototypes
+
+These are C11 renderer implementations, separate from the offline filtered
+images above. They retain current geometry, alpha rejection, depth and genuine
+OFF/2×/4× sample coverage. There is no temporal reuse or fine-luma/coarse-chroma
+renderer yet. Representatives are chosen in 2×2 cells inside owned worker
+stripes, compacted into four-lane packets, then joined before reconstruction.
+The prototype has a 64-MiB scratch cap and allocation fallback before raster
+writes; the latest 640×360 4× scratch is 28.125 MiB.
+
+- V1: coarse normal-dependent lighting/environment, fine albedo/RGB/alpha;
+  reuse requires the same primitive.
+- V2: also reuse across primitives of the same material whose normalized
+  depths differ by at most 0.002. This is a heuristic, not proof of surface
+  continuity. Diagnostic mode 3 selects every group independently, and mode 0
+  disables the experiment.
+- V3: coarse complete shading, copying representative final RGBA into the
+  current fine groups. Final alpha is also approximated; the existing fine
+  alpha-test coverage remains unchanged.
+- V4: the same choices with dedicated coarse/fine/copy kernels and callbacks.
+  The ordinary packet shader and resolver are unchanged in source, avoiding
+  a mode/phase branch in each ordinary packet. This is not a guarantee that
+  the entire linked binary has unchanged performance.
+
+V1/V2 screens do not support adoption: Bistro 4× frame time rises 1.77/2.72%,
+Sponza 4× rises 13.42/17.89%. Fewer expensive lighting groups do not compensate
+for fine-stage interpolation, scheduling, cache accesses and reconstruction.
+V2's representatives are about 21.8% of Bistro's original 4× shading groups
+and 18.9% of Sponza's, aggregated over nine poses. These are work counts, not
+elapsed-time fractions. V3's first screen improves Bistro 4× by 11.26% and
+Sponza 4× by 13.66%, but regresses BMW 4× by 5.57%.
+
+V4 repeats use native clang 22.1.8, SSE4.1 only, the unchanged original packs
+and cameras, 640×360, caller plus three helpers, 60 warm-up and 30 orbit
+frames per request. Three complete AB/BA blocks per scene/mode yield 144
+selected runs; 28 rejected runs remain in the receipt. Entire blocks with
+foreign CPU load above 0.1 cores are rejected, never individual fast/slow runs.
+This monitoring does not eliminate hypervisor/frequency drift: Sponza OFF
+baseline requests range from 19.7 to 29.3 ms. Per-block results are retained.
+
+| Scene | OFF frame-time change | 2× change | 4× baseline → candidate, ms | 4× change |
+| --- | ---: | ---: | ---: | ---: |
+| Bistro | −12.58% | −11.68% | 54.699 → 49.279 | −9.91% |
+| Sponza | −7.43% | −9.53% | 37.728 → 33.118 | −12.22% |
+| BMW F31 | −2.25% | −1.02% | 17.299 → 17.847 | +3.16% |
+| T-80 | −14.63% | −10.62% | 14.297 → 12.582 | −12.00% |
+
+Bistro and Sponza improve in each of their three 4× blocks; BMW 4× regresses
+in each. The T-80 OFF direction is mixed across blocks. Negative percentages
+mean lower frame time; these are not FPS percentages. The candidate remains
+far from GLimpSW performance; no new three-renderer comparison or accepted
+production gain is claimed.
+
+## Native quality and execution checks
+
+Across V1–V4, 810 paired model views compare RGBA, resolved/sample depth and
+stencils. All measured depth/stencil planes remain byte-identical. V4 has 108
+coarse, 108 disabled-control and 54 complex-scene lighting pairs; its disabled
+control is RGBA-exact in every view. V4's coarse images exactly reproduce
+V3's, and its Bistro/Sponza lighting images exactly reproduce V2's.
+The model driver does not dump sample color. V2's no-reuse identity diagnostic
+is RGBA-exact in 72 of 108 model pairs; forcing deferred rendering for BMW/T-80
+MSAA accounts for small changes in the other views and is explicitly distinct
+from representative reuse.
+
+Actual native images were evaluated with LDR-FLIP at 60 pixels/degree for
+angle160 in all scenes/modes. Bistro/Sponza 4× mean FLIP is 0.02380/0.01173
+for V1, 0.06483/0.03232 for V2 and 0.10808/0.06779 for V3/V4.
+These are whole-frame static metrics, not invisibility bounds. Visual
+inspection of Bistro 4× shows blocky masonry, lettering and foliage. The
+nearest representative is visibly different from the smooth offline
+box/bilinear proxy. A softer reconstruction, prefiltered material evaluation
+and moving-image validation remain outstanding; a one-byte maximum is not an
+acceptance requirement for this optional perceptual path.
+
+V4's enabled fixture checks 540 paired frames across all five choices,
+OFF/2×/4× and one/three helpers, including clipping, culling, alpha tests,
+mode reset and rollback. It runs both with ASan/UBSan and as an actual
+SIMD128 pthread WASM module. Depth/stencils and disabled-mode color/sample
+color are exact against its full-shading control. Sanitizers use Debian
+clang 19; the first clang 22 link failed because its ASan runtime archives
+are absent, and that diagnostic is retained. Performance remains clang 22.
+WASM fixtures do not validate full-model browser memory, motion quality or
+browser performance. The optional path is not deployed in the viewer.
+
+Frozen recipes, reconstructible patches and receipts are in
+[native-validation](native-validation/artifacts.json). Full images and maps
+remain in ignored `tmp/`. Reproduce V4 into a fresh root:
+
+```sh
+build/python/bin/python experiments/scene-codec-luma-chroma/prepare_renderer.py \
+  --output-root build/scene-codec-luma-chroma/new-specialized
+cmake -S experiments/scene-codec-luma-chroma \
+  -B build/scene-codec-luma-chroma/new-specialized/native \
+  -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER="$HOME/.local/bin/clang-22" \
+  -DSCENE_TRIAL_ROOT="$PWD/build/scene-codec-luma-chroma/new-specialized"
+cmake --build build/scene-codec-luma-chroma/new-specialized/native -j4
+```
+
+Use the retained `resident_diagnostic.py` command in the timing receipt for
+AB/BA measurements. `contract.py --root <root> --output <fresh-directory>`
+accepts `--cc /usr/bin/clang-19` for sanitizers or `--wasm` for SIMD128 WASM.
+Verify retained bytes and reconstructed candidates using
+`python3 experiments/scene-codec-luma-chroma/verify_native.py`.

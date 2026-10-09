@@ -1,0 +1,387 @@
+{
+  "qualityOnly": true,
+  "rendererImplementation": true,
+  "speedupMeasured": false,
+  "width": 640,
+  "height": 360,
+  "ppd": 60,
+  "colorPolicy": "Assume displayed RGB8 is sRGB; convert to linear RGB for LDR-FLIP",
+  "qualityReceiptSha256": "d7e2417f7e9f5b5bd1a54b3544d218a978182639b67d31ebe27a03a452ae7aa9",
+  "metricBinarySha256": "e42d3ca1ce916bafae47b2ace7a69beeb9ea669e38e95d2d6bd79b857b6afb82",
+  "metricReceiptSha256": "53ba581f3dec6c80856d2d32644025c95d24ced05d72ac1163c8e3e96a2ee48e",
+  "runnerSha256": "27f5a1ea3cacb477f36a7f258fc5bdb7017cbe78d9c369937742275566087c83",
+  "records": [
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "efa6e492ef94ac3e82ede76805167efbe7d223546dee2c4e303c5934c85ae9ed",
+        "candidate": "2d31aa2e327942dcc68404b6e44ff39de93e0122fa7a7b6a4628d009f62e8a5e"
+      },
+      "meanAbsoluteChannelError": 0.7370616319444444,
+      "maxChannelError": 132,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.02091701961815665,
+        "upstreamFloatMean": 0.0209168326,
+        "p95NearestRank": 0.0838581398,
+        "p99NearestRank": 0.17363663,
+        "max": 0.582788706
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/bistro-ms0-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/bistro-ms0-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/bistro-ms0-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.020917019618156649,\"upstreamFloatMean\":0.0209168326,\"p95NearestRank\":0.0838581398,\"p99NearestRank\":0.17363663,\"max\":0.582788706}\n",
+      "stderr": "",
+      "errorMapSha256": "a2606b524c27184aa22292727fa8cf863105ae32c64fac7f8561c8afbef45599"
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "eb82b939191bd2377fc2c725a9ae0be57a53eab30d2bd80887d209861e4577e2",
+        "candidate": "543f153a971f51bc6188632e600fad6ab295fffe95aaf592cd8fe43496355d42"
+      },
+      "meanAbsoluteChannelError": 0.8118995949074074,
+      "maxChannelError": 122,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.022288230898946968,
+        "upstreamFloatMean": 0.0222879723,
+        "p95NearestRank": 0.0868385583,
+        "p99NearestRank": 0.165880799,
+        "max": 0.398476452
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/bistro-ms2-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/bistro-ms2-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/bistro-ms2-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.022288230898946968,\"upstreamFloatMean\":0.0222879723,\"p95NearestRank\":0.0868385583,\"p99NearestRank\":0.165880799,\"max\":0.398476452}\n",
+      "stderr": "",
+      "errorMapSha256": "8b481a6ddd339f30abb8639bbcc6ca5e7c742f8e17335dc9454ffff4732d9e0e"
+    },
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "1e7c838ebfaa03546a3ea73f6fd563f46e637ae6978ff73560b59124a0e02d1d",
+        "candidate": "64425e2faffd3463331f04fe33a2f99e046fade9c22d829a3e91e734a70a0478"
+      },
+      "meanAbsoluteChannelError": 0.8862065972222222,
+      "maxChannelError": 122,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.023804224874872982,
+        "upstreamFloatMean": 0.0238040145,
+        "p95NearestRank": 0.0907092318,
+        "p99NearestRank": 0.17091389,
+        "max": 0.424221933
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/bistro-ms4-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/bistro-ms4-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/bistro-ms4-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.023804224874872982,\"upstreamFloatMean\":0.0238040145,\"p95NearestRank\":0.0907092318,\"p99NearestRank\":0.17091389,\"max\":0.424221933}\n",
+      "stderr": "",
+      "errorMapSha256": "6c796c2cddbddbdf95330088db79c8c9d38390cc754fb6c630db671aab05e627"
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "352c8de01ce79bd9cd47bab0afe08e6e38935eb2c51c4d952de2015748bf6413",
+        "candidate": "590835a87816afa4e65386342bd97f8e4d38151b34cef9c995d333fcc12a6626"
+      },
+      "meanAbsoluteChannelError": 0.24138888888888888,
+      "maxChannelError": 101,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.010500674953975771,
+        "upstreamFloatMean": 0.01050069,
+        "p95NearestRank": 0.0324102938,
+        "p99NearestRank": 0.059647128,
+        "max": 0.318247259
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/sponza-ms0-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/sponza-ms0-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/sponza-ms0-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.010500674953975771,\"upstreamFloatMean\":0.01050069,\"p95NearestRank\":0.0324102938,\"p99NearestRank\":0.059647128,\"max\":0.318247259}\n",
+      "stderr": "",
+      "errorMapSha256": "f58cdcf70aa5d7cc5af7f5596fee40723ebd531f087312330c119832d70a818f"
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "6edb38bc2d9ba8b3281d8c371864ffe85ebb0322f9e6bd0992fe1912d0637a0f",
+        "candidate": "3ea26904d758e6038557a45b120982293716c819b22447ff20d7ac155113598d"
+      },
+      "meanAbsoluteChannelError": 0.2673828125,
+      "maxChannelError": 67,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.010999895240483379,
+        "upstreamFloatMean": 0.0109998938,
+        "p95NearestRank": 0.0332469307,
+        "p99NearestRank": 0.0586922616,
+        "max": 0.312802821
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/sponza-ms2-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/sponza-ms2-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/sponza-ms2-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.010999895240483379,\"upstreamFloatMean\":0.0109998938,\"p95NearestRank\":0.0332469307,\"p99NearestRank\":0.0586922616,\"max\":0.312802821}\n",
+      "stderr": "",
+      "errorMapSha256": "bab8decf03c2b712538734aa76d98c9b3fd807150d3b72d9baf960043790a36d"
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "833e920cd0d620d2329406b9fc78ad5c368592852193a2b3f5226d40b2373748",
+        "candidate": "9d35f093f00a462dc8e774f486655af24ac0cd50895283282b12ef998b60b80b"
+      },
+      "meanAbsoluteChannelError": 0.2955729166666667,
+      "maxChannelError": 60,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.011726659906412633,
+        "upstreamFloatMean": 0.0117265955,
+        "p95NearestRank": 0.0355131403,
+        "p99NearestRank": 0.0626469925,
+        "max": 0.28568244
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/sponza-ms4-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/sponza-ms4-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/sponza-ms4-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.011726659906412633,\"upstreamFloatMean\":0.0117265955,\"p95NearestRank\":0.0355131403,\"p99NearestRank\":0.0626469925,\"max\":0.28568244}\n",
+      "stderr": "",
+      "errorMapSha256": "1a1ad507c5a14981c9d5bcb42ee49b3372eaa49be170174504bbc5191392749b"
+    },
+    {
+      "asset": "bmw",
+      "samples": 0,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "d955bc7e27202a35767fd1096a327cc655155dd9cff2d183d5870b4f300cb330",
+        "candidate": "d51293945fe56f70fca5f3f70c9ba4d01f03a68a0ffc890e1212c1287ea60bd3"
+      },
+      "meanAbsoluteChannelError": 0.20142650462962963,
+      "maxChannelError": 231,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.006432425249028024,
+        "upstreamFloatMean": 0.0064322832,
+        "p95NearestRank": 0.0326742418,
+        "p99NearestRank": 0.100215673,
+        "max": 0.781575322
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/bmw-ms0-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/bmw-ms0-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/bmw-ms0-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.0064324252490280242,\"upstreamFloatMean\":0.0064322832,\"p95NearestRank\":0.0326742418,\"p99NearestRank\":0.100215673,\"max\":0.781575322}\n",
+      "stderr": "",
+      "errorMapSha256": "481257c52698fb6994decb50d836fed6c54951205e3e8510774e46cd080e0856"
+    },
+    {
+      "asset": "bmw",
+      "samples": 2,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "a162f42827e4df4f7c47ee30ad0c25f377c6c91160d25e2a76b999e2e2597a35",
+        "candidate": "4db988371f9fb2cdec874594987fa067b8482ca8f050ed07ed7a7d7b237daeef"
+      },
+      "meanAbsoluteChannelError": 0.23059895833333333,
+      "maxChannelError": 219,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.006848191730443802,
+        "upstreamFloatMean": 0.00684803259,
+        "p95NearestRank": 0.0355076455,
+        "p99NearestRank": 0.105365865,
+        "max": 0.760437429
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/bmw-ms2-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/bmw-ms2-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/bmw-ms2-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.0068481917304438018,\"upstreamFloatMean\":0.00684803259,\"p95NearestRank\":0.0355076455,\"p99NearestRank\":0.105365865,\"max\":0.760437429}\n",
+      "stderr": "",
+      "errorMapSha256": "91df696a4e88d9730796b3bbff90530ff0e4653870245d0c3c0b563196b0df10"
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "0678474b998ad8d2a4ee42d5dc4da563071c521cc51214ec3764efd9681ceff3",
+        "candidate": "3995ad825cf1ae83f1495dcf731595551db7fcc182973d6b959e1e4ffc96c4e3"
+      },
+      "meanAbsoluteChannelError": 0.2610575810185185,
+      "maxChannelError": 205,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.00734538286605985,
+        "upstreamFloatMean": 0.00734525081,
+        "p95NearestRank": 0.0386770964,
+        "p99NearestRank": 0.112625398,
+        "max": 0.784457505
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/bmw-ms4-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/bmw-ms4-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/bmw-ms4-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.0073453828660598498,\"upstreamFloatMean\":0.00734525081,\"p95NearestRank\":0.0386770964,\"p99NearestRank\":0.112625398,\"max\":0.784457505}\n",
+      "stderr": "",
+      "errorMapSha256": "d4130d9cea2e517e8876bc71f652c361c9fe15f3bc3902db2cc19c2cd0bc02cc"
+    },
+    {
+      "asset": "t80",
+      "samples": 0,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "b523bb48fe208b82e23c9222305890e1a55eb98a198222779822b01a3975ed30",
+        "candidate": "ef4eabc85d6843695e9a156039e23b034005d71219930c65772884ab6d0a6d99"
+      },
+      "meanAbsoluteChannelError": 0.04384548611111111,
+      "maxChannelError": 32,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.001982774555278894,
+        "upstreamFloatMean": 0.00198275666,
+        "p95NearestRank": 0.0139087252,
+        "p99NearestRank": 0.0388334058,
+        "max": 0.12078958
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/t80-ms0-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/t80-ms0-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/t80-ms0-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.0019827745552788941,\"upstreamFloatMean\":0.00198275666,\"p95NearestRank\":0.0139087252,\"p99NearestRank\":0.0388334058,\"max\":0.12078958}\n",
+      "stderr": "",
+      "errorMapSha256": "a2d168cab4c35022ea0334d6adbc0379ce5c992d4e119d165e82197fca192dde"
+    },
+    {
+      "asset": "t80",
+      "samples": 2,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "0b666147fa2be0ea06d642761c3d52bb4c25c54d9ce590d7ffe5fa91eaa2bc66",
+        "candidate": "0bd5a1bc3830255e4ed331195d037335ca556df2f52ea669176103816cefa982"
+      },
+      "meanAbsoluteChannelError": 0.047744502314814814,
+      "maxChannelError": 17,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.0020411021678904775,
+        "upstreamFloatMean": 0.00204107305,
+        "p95NearestRank": 0.0147736045,
+        "p99NearestRank": 0.0386684202,
+        "max": 0.100867003
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/t80-ms2-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/t80-ms2-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/t80-ms2-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.0020411021678904775,\"upstreamFloatMean\":0.00204107305,\"p95NearestRank\":0.0147736045,\"p99NearestRank\":0.0386684202,\"max\":0.100867003}\n",
+      "stderr": "",
+      "errorMapSha256": "e02b36830a036637b7f13464870a3a7313729158f4f4398d7021a5faa63c0393"
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "angle": 160,
+      "imageSha256": {
+        "baseline": "0b6637b1f3c372a14aac424bacf76bd4c3635fc698a188e383890ccd77820f85",
+        "candidate": "20c4366e809b54a94d9b23ce3571e871ff348929c46726bd5530a96b5f930786"
+      },
+      "meanAbsoluteChannelError": 0.05393952546296296,
+      "maxChannelError": 85,
+      "flip": {
+        "ppd": 60,
+        "mean": 0.002208330231874942,
+        "upstreamFloatMean": 0.0022083025,
+        "p95NearestRank": 0.0157722719,
+        "p99NearestRank": 0.0399284102,
+        "max": 0.271153659
+      },
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17/flip_probe",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/t80-ms4-angle160-baseline.rgb",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/t80-ms4-angle160-candidate.rgb",
+        "640",
+        "360",
+        "60",
+        "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-lighting-flip-strict/t80-ms4-angle160.flip"
+      ],
+      "stdout": "{\"ppd\":60,\"mean\":0.0022083302318749421,\"upstreamFloatMean\":0.0022083025,\"p95NearestRank\":0.0157722719,\"p99NearestRank\":0.0399284102,\"max\":0.271153659}\n",
+      "stderr": "",
+      "errorMapSha256": "c637f081c9a47199c6e02c22649cf83227cb6b1d45a9dedc9f1a51c492016f37"
+    }
+  ]
+}

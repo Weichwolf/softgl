@@ -1,0 +1,3201 @@
+{
+  "screeningOnly": true,
+  "width": 640,
+  "height": 360,
+  "arguments": {
+    "baseline": "build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+    "candidate": "build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+    "output": "tmp/scene-codec-luma-chroma/v3-full-shading-screen",
+    "pairs": 1,
+    "frames": 30,
+    "warmup": 60,
+    "samples": "0,2,4",
+    "assets": "bistro,sponza,bmw,t80",
+    "baseline_source": "build/scene-codec-luma-chroma/v3-full-shading/baseline-source/libsoftgl",
+    "baseline_wrapper": "build/scene-codec-luma-chroma/v3-full-shading/baseline-source/model_wrap.c",
+    "candidate_source": "build/scene-codec-luma-chroma/v3-full-shading/source/libsoftgl",
+    "candidate_wrapper": "build/scene-codec-luma-chroma/v3-full-shading/source/model_wrap.c"
+  },
+  "baselineSha256": "664b13af53c150bda01f055ea6ac7b1e1f20e673e8d0642c13f9d1c1bff1ee5c",
+  "candidateSha256": "36099d87496b9169832c13916051270af9d6d2c531667a902aa0a04897f6ccb4",
+  "gitHead": "549ae30ceba39948a0be4c4395eb97cfbf009f82",
+  "packsSha256": {
+    "bistro": "4c862bcd28ef6833a89b0a058832c051098f5cf5869590999859b86f1cc993f3",
+    "sponza": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+    "bmw": "76cda2c57b81e10b3c92a269537b17e4e1c5f36c653bfd1af43fcb2218473cef",
+    "t80": "cb9146d7352f52600015c499c394566acc604b43fb5760a17d133c20c5a700f4"
+  },
+  "records": [
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 35.454410299,
+      "submitMs": 34.731091508,
+      "finishReadbackMs": 0.723182123,
+      "angle": 160,
+      "rgba": "da43e53785e82836",
+      "depth": "c62790a9c067e97b",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "bistro",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bistro-msaa0-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "efa6e492ef94ac3e82ede76805167efbe7d223546dee2c4e303c5934c85ae9ed",
+      "foreignCpuCores": 0.07879489334438478,
+      "requestElapsedSeconds": 3.4266180020058528,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.2772838972497813,
+          "minorFaults": 21436,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2871279616,
+          "rssAfterBytes": 2959011840
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2871377920,
+          "rssAfterBytes": 2871377920
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 355529,
+        "cpu.full": 0,
+        "memory.some": 7778,
+        "memory.full": 1821,
+        "io.some": 11942,
+        "io.full": 2596
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 30.776972863,
+      "submitMs": 30.167607773,
+      "finishReadbackMs": 0.609211756,
+      "angle": 160,
+      "rgba": "e9d4690b4113b755",
+      "depth": "c62790a9c067e97b",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "bistro",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bistro-msaa0-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "4b666e6d12d7e0f87746ea119536c744775e20ca1672f9ff41b89d3ccb6b9263",
+      "foreignCpuCores": 0.05407173377419297,
+      "requestElapsedSeconds": 3.143971686018631,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2959011840,
+          "rssAfterBytes": 2959011840
+        },
+        "candidate": {
+          "cpuCores": 3.2697495482276686,
+          "minorFaults": 22871,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2871377920,
+          "rssAfterBytes": 2964926464
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 156901,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 1733,
+        "io.full": 1699
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 30.754789466,
+      "submitMs": 30.104560816,
+      "finishReadbackMs": 0.649998647,
+      "angle": 160,
+      "rgba": "e9d4690b4113b755",
+      "depth": "c62790a9c067e97b",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "bistro",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bistro-msaa0-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "4b666e6d12d7e0f87746ea119536c744775e20ca1672f9ff41b89d3ccb6b9263",
+      "foreignCpuCores": 0.04253738762874377,
+      "requestElapsedSeconds": 2.8210477109532803,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2959011840,
+          "rssAfterBytes": 2959011840
+        },
+        "candidate": {
+          "cpuCores": 3.307281888134828,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2964926464,
+          "rssAfterBytes": 2964926464
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 153121,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 34.671847499,
+      "submitMs": 33.953281962,
+      "finishReadbackMs": 0.71844887,
+      "angle": 160,
+      "rgba": "da43e53785e82836",
+      "depth": "c62790a9c067e97b",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "bistro",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bistro-msaa0-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "efa6e492ef94ac3e82ede76805167efbe7d223546dee2c4e303c5934c85ae9ed",
+      "foreignCpuCores": 0.04395006797505187,
+      "requestElapsedSeconds": 3.185433070990257,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.421826720914752,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2959011840,
+          "rssAfterBytes": 2959011840
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2964926464,
+          "rssAfterBytes": 2964926464
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 171428,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 3569,
+        "io.full": 244
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 52.099356467,
+      "submitMs": 50.749359171,
+      "finishReadbackMs": 1.349913961,
+      "angle": 160,
+      "rgba": "d574fef069e32bbe",
+      "depth": "3147510cbc87a599",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "f73fe223e9257487",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "bistro",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bistro-msaa2-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "eb82b939191bd2377fc2c725a9ae0be57a53eab30d2bd80887d209861e4577e2",
+      "foreignCpuCores": 0.039718297199044315,
+      "requestElapsedSeconds": 4.783689468051307,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.65826421570145,
+          "minorFaults": 7808,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2959011840,
+          "rssAfterBytes": 2990862336
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2964926464,
+          "rssAfterBytes": 2964926464
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 457238,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 46.401506701,
+      "submitMs": 45.301976653,
+      "finishReadbackMs": 1.099446715,
+      "angle": 160,
+      "rgba": "c71097c53616c8ba",
+      "depth": "3147510cbc87a599",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "f73fe223e9257487",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "bistro",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bistro-msaa2-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "d50a5b0039be93685522c115522e60326f35bc3f39e71973a881a9e032c7061d",
+      "foreignCpuCores": 0.035486483998353975,
+      "requestElapsedSeconds": 4.226961454027332,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2990862336,
+          "rssAfterBytes": 2990862336
+        },
+        "candidate": {
+          "cpuCores": 3.56520875903463,
+          "minorFaults": 9923,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2964926464,
+          "rssAfterBytes": 3003854848
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 362966,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 4279,
+        "io.full": 45
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 45.989572067,
+      "submitMs": 44.878882104,
+      "finishReadbackMs": 1.110596629,
+      "angle": 160,
+      "rgba": "c71097c53616c8ba",
+      "depth": "3147510cbc87a599",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "f73fe223e9257487",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "bistro",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bistro-msaa2-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "d50a5b0039be93685522c115522e60326f35bc3f39e71973a881a9e032c7061d",
+      "foreignCpuCores": 0.035582630641677326,
+      "requestElapsedSeconds": 4.215539922006428,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2990862336,
+          "rssAfterBytes": 2990862336
+        },
+        "candidate": {
+          "cpuCores": 3.563007414919957,
+          "minorFaults": 6,
+          "majorFaults": 0,
+          "rssBeforeBytes": 3003854848,
+          "rssAfterBytes": 3003854848
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 346305,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 3396,
+        "io.full": 33
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 52.294650666,
+      "submitMs": 51.041546899,
+      "finishReadbackMs": 1.252993767,
+      "angle": 160,
+      "rgba": "d574fef069e32bbe",
+      "depth": "3147510cbc87a599",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "f73fe223e9257487",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "bistro",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bistro-msaa2-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "eb82b939191bd2377fc2c725a9ae0be57a53eab30d2bd80887d209861e4577e2",
+      "foreignCpuCores": 0.03780487325836274,
+      "requestElapsedSeconds": 4.761290925904177,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.6733735182709126,
+          "minorFaults": 6,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2990862336,
+          "rssAfterBytes": 2990862336
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 3003854848,
+          "rssAfterBytes": 3003854848
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 455881,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 58.826266769,
+      "submitMs": 57.367129131,
+      "finishReadbackMs": 1.459037641,
+      "angle": 160,
+      "rgba": "64e96bf1d14019bb",
+      "depth": "7c0bcde239c25207",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "8a97e8fa78d0c60e",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "bistro",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bistro-msaa4-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "1e7c838ebfaa03546a3ea73f6fd563f46e637ae6978ff73560b59124a0e02d1d",
+      "foreignCpuCores": 0.048369506132651625,
+      "requestElapsedSeconds": 5.375287464936264,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.638875153671791,
+          "minorFaults": 4627,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2990862336,
+          "rssAfterBytes": 3009605632
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 3003854848,
+          "rssAfterBytes": 3003854848
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 499022,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 3107,
+        "io.full": 1383
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 52.043756396,
+      "submitMs": 50.679145715,
+      "finishReadbackMs": 1.364520681,
+      "angle": 160,
+      "rgba": "3bf0935bb7ee16e5",
+      "depth": "7c0bcde239c25207",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "8a97e8fa78d0c60e",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "bistro",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bistro-msaa4-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "7424d085abca5832ceec3178ca7fedd98c9b3b2bd4d4b269922553b9219f4cd3",
+      "foreignCpuCores": 0.046647403685355256,
+      "requestElapsedSeconds": 4.716232472099364,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 3009605632,
+          "rssAfterBytes": 3009605632
+        },
+        "candidate": {
+          "cpuCores": 3.4943146033393395,
+          "minorFaults": 10710,
+          "majorFaults": 0,
+          "rssBeforeBytes": 3003854848,
+          "rssAfterBytes": 3045797888
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 331468,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 4027,
+        "io.full": 812
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 52.024376,
+      "submitMs": 50.568108292,
+      "finishReadbackMs": 1.456157708,
+      "angle": 160,
+      "rgba": "3bf0935bb7ee16e5",
+      "depth": "7c0bcde239c25207",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "8a97e8fa78d0c60e",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "bistro",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bistro-msaa4-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "7424d085abca5832ceec3178ca7fedd98c9b3b2bd4d4b269922553b9219f4cd3",
+      "foreignCpuCores": 0.05693277669117653,
+      "requestElapsedSeconds": 4.74243512598332,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 3009605632,
+          "rssAfterBytes": 3009605632
+        },
+        "candidate": {
+          "cpuCores": 3.4813338635974986,
+          "minorFaults": 6,
+          "majorFaults": 0,
+          "rssBeforeBytes": 3045797888,
+          "rssAfterBytes": 3045797888
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 341902,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 58.442002034,
+      "submitMs": 57.036524468,
+      "finishReadbackMs": 1.405370899,
+      "angle": 160,
+      "rgba": "64e96bf1d14019bb",
+      "depth": "7c0bcde239c25207",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "8a97e8fa78d0c60e",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "bistro",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bistro-msaa4-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "1e7c838ebfaa03546a3ea73f6fd563f46e637ae6978ff73560b59124a0e02d1d",
+      "foreignCpuCores": 0.04486998689687028,
+      "requestElapsedSeconds": 5.348786941962317,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.6569039320949277,
+          "minorFaults": 6,
+          "majorFaults": 0,
+          "rssBeforeBytes": 3009605632,
+          "rssAfterBytes": 3009605632
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 3045797888,
+          "rssAfterBytes": 3045797888
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 398086,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 3318,
+        "io.full": 152
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 28.745276299,
+      "submitMs": 28.654026139,
+      "finishReadbackMs": 0.091196826,
+      "angle": 160,
+      "rgba": "c4d91c45e26aff6f",
+      "depth": "9b69df84db431822",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "sponza",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/sponza-msaa0-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "352c8de01ce79bd9cd47bab0afe08e6e38935eb2c51c4d952de2015748bf6413",
+      "foreignCpuCores": 0.04508952850400961,
+      "requestElapsedSeconds": 2.4395908240694553,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.1070784187308442,
+          "minorFaults": 13176,
+          "majorFaults": 0,
+          "rssBeforeBytes": 156389376,
+          "rssAfterBytes": 210325504
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 156631040,
+          "rssAfterBytes": 156631040
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 148434,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 26.184418635,
+      "submitMs": 26.10592839,
+      "finishReadbackMs": 0.078416911,
+      "angle": 160,
+      "rgba": "be33165418054fd9",
+      "depth": "9b69df84db431822",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "sponza",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/sponza-msaa0-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "7bff64637859eb54b5a322d0c4c57371e1b39d85e3d0837e733a78ca657bb61d",
+      "foreignCpuCores": 0.053615398058455485,
+      "requestElapsedSeconds": 2.4246765800053254,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 210325504,
+          "rssAfterBytes": 210325504
+        },
+        "candidate": {
+          "cpuCores": 2.957095415993275,
+          "minorFaults": 15150,
+          "majorFaults": 0,
+          "rssBeforeBytes": 156631040,
+          "rssAfterBytes": 216723456
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 124495,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 2140,
+        "io.full": 2125
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 25.945281532,
+      "submitMs": 25.86943473,
+      "finishReadbackMs": 0.075720134,
+      "angle": 160,
+      "rgba": "be33165418054fd9",
+      "depth": "9b69df84db431822",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "sponza",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/sponza-msaa0-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "7bff64637859eb54b5a322d0c4c57371e1b39d85e3d0837e733a78ca657bb61d",
+      "foreignCpuCores": 0.054132733901140435,
+      "requestElapsedSeconds": 2.4015044249827042,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 210325504,
+          "rssAfterBytes": 210325504
+        },
+        "candidate": {
+          "cpuCores": 2.977300364562724,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 216723456,
+          "rssAfterBytes": 216723456
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 111870,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 22.326660634,
+      "submitMs": 22.237500378,
+      "finishReadbackMs": 0.089070255,
+      "angle": 160,
+      "rgba": "c4d91c45e26aff6f",
+      "depth": "9b69df84db431822",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "sponza",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/sponza-msaa0-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "352c8de01ce79bd9cd47bab0afe08e6e38935eb2c51c4d952de2015748bf6413",
+      "foreignCpuCores": 0.05898983069701316,
+      "requestElapsedSeconds": 2.542811163002625,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.209046789917516,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 210325504,
+          "rssAfterBytes": 210325504
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 216723456,
+          "rssAfterBytes": 216723456
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 185304,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 2204,
+        "io.full": 1141
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 50.180578666,
+      "submitMs": 48.932771594,
+      "finishReadbackMs": 1.247707071,
+      "angle": 160,
+      "rgba": "b597f5438d45eed2",
+      "depth": "3cfb3da67bd41870",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "8bea110d451aefd0",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "sponza",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/sponza-msaa2-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "6edb38bc2d9ba8b3281d8c371864ffe85ebb0322f9e6bd0992fe1912d0637a0f",
+      "foreignCpuCores": 0.07546707485780622,
+      "requestElapsedSeconds": 4.637784102000296,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.6181071888971106,
+          "minorFaults": 8511,
+          "majorFaults": 0,
+          "rssBeforeBytes": 210325504,
+          "rssAfterBytes": 243486720
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 216723456,
+          "rssAfterBytes": 216723456
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 512276,
+        "cpu.full": 0,
+        "memory.some": 2772,
+        "memory.full": 477,
+        "io.some": 37212,
+        "io.full": 4218
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 34.586206133,
+      "submitMs": 33.496942728,
+      "finishReadbackMs": 1.089170075,
+      "angle": 160,
+      "rgba": "a640f86d380f155c",
+      "depth": "3cfb3da67bd41870",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "8bea110d451aefd0",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "sponza",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/sponza-msaa2-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "73fa9e03ac541f03792bc5d29eebabedf95f86c17f03d408bbb5e022c747bc20",
+      "foreignCpuCores": 0.07310889958748354,
+      "requestElapsedSeconds": 3.28277407202404,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 243486720,
+          "rssAfterBytes": 243486720
+        },
+        "candidate": {
+          "cpuCores": 3.4818113428539035,
+          "minorFaults": 12046,
+          "majorFaults": 0,
+          "rssBeforeBytes": 216723456,
+          "rssAfterBytes": 257609728
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 227566,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 3953,
+        "io.full": 510
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 35.576212499,
+      "submitMs": 34.51139923,
+      "finishReadbackMs": 1.064716602,
+      "angle": 160,
+      "rgba": "a640f86d380f155c",
+      "depth": "3cfb3da67bd41870",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "8bea110d451aefd0",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "sponza",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/sponza-msaa2-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "73fa9e03ac541f03792bc5d29eebabedf95f86c17f03d408bbb5e022c747bc20",
+      "foreignCpuCores": 0.09931656349598329,
+      "requestElapsedSeconds": 3.6247730220202357,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 243486720,
+          "rssAfterBytes": 243486720
+        },
+        "candidate": {
+          "cpuCores": 3.4705621354985277,
+          "minorFaults": 6,
+          "majorFaults": 0,
+          "rssBeforeBytes": 257609728,
+          "rssAfterBytes": 257609728
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 305535,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 11493,
+        "io.full": 3678
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 39.292598101,
+      "submitMs": 38.164014796,
+      "finishReadbackMs": 1.128493304,
+      "angle": 160,
+      "rgba": "b597f5438d45eed2",
+      "depth": "3cfb3da67bd41870",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "8bea110d451aefd0",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "sponza",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/sponza-msaa2-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "6edb38bc2d9ba8b3281d8c371864ffe85ebb0322f9e6bd0992fe1912d0637a0f",
+      "foreignCpuCores": 0.04779625217084691,
+      "requestElapsedSeconds": 3.5567642289679497,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.666253695928492,
+          "minorFaults": 6,
+          "majorFaults": 0,
+          "rssBeforeBytes": 243486720,
+          "rssAfterBytes": 243486720
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 257609728,
+          "rssAfterBytes": 257609728
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 180496,
+        "cpu.full": 0,
+        "memory.some": 222,
+        "memory.full": 222,
+        "io.some": 208,
+        "io.full": 209
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 41.21659057,
+      "submitMs": 39.99079346,
+      "finishReadbackMs": 1.22571378,
+      "angle": 160,
+      "rgba": "e98447ba7b23ce02",
+      "depth": "1ac5a242dff2b42c",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "9ab44a68c51d3aec",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "sponza",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/sponza-msaa4-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "833e920cd0d620d2329406b9fc78ad5c368592852193a2b3f5226d40b2373748",
+      "foreignCpuCores": 0.05857548118392153,
+      "requestElapsedSeconds": 3.7558376910164952,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.597067049067181,
+          "minorFaults": 4904,
+          "majorFaults": 0,
+          "rssBeforeBytes": 243486720,
+          "rssAfterBytes": 263671808
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 257609728,
+          "rssAfterBytes": 257609728
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 325556,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 3339,
+        "io.full": 121
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 35.249699699,
+      "submitMs": 34.145223058,
+      "finishReadbackMs": 1.104343306,
+      "angle": 160,
+      "rgba": "ad60a0c30df89f5c",
+      "depth": "1ac5a242dff2b42c",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "9ab44a68c51d3aec",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "sponza",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/sponza-msaa4-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "6ddf0a44d716b7354b5c38a05512483a51d13956a8b5ff810651156f86909db0",
+      "foreignCpuCores": 0.055247689223014415,
+      "requestElapsedSeconds": 3.2580548169789836,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 263671808,
+          "rssAfterBytes": 263671808
+        },
+        "candidate": {
+          "cpuCores": 3.428426047894839,
+          "minorFaults": 10605,
+          "majorFaults": 0,
+          "rssBeforeBytes": 257609728,
+          "rssAfterBytes": 288534528
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 164308,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 2402,
+        "io.full": 2390
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 34.582424335,
+      "submitMs": 33.422180905,
+      "finishReadbackMs": 1.160143432,
+      "angle": 160,
+      "rgba": "ad60a0c30df89f5c",
+      "depth": "1ac5a242dff2b42c",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "9ab44a68c51d3aec",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "sponza",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/sponza-msaa4-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "6ddf0a44d716b7354b5c38a05512483a51d13956a8b5ff810651156f86909db0",
+      "foreignCpuCores": 0.05275338825234334,
+      "requestElapsedSeconds": 3.2225418239831924,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 263671808,
+          "rssAfterBytes": 263671808
+        },
+        "candidate": {
+          "cpuCores": 3.4258670959168844,
+          "minorFaults": 6,
+          "majorFaults": 0,
+          "rssBeforeBytes": 288534528,
+          "rssAfterBytes": 288534528
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 144392,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 39.662409469,
+      "submitMs": 38.584509515,
+      "finishReadbackMs": 1.077809953,
+      "angle": 160,
+      "rgba": "e98447ba7b23ce02",
+      "depth": "1ac5a242dff2b42c",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "9ab44a68c51d3aec",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "sponza",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/sponza-msaa4-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "833e920cd0d620d2329406b9fc78ad5c368592852193a2b3f5226d40b2373748",
+      "foreignCpuCores": 0.05169440542931793,
+      "requestElapsedSeconds": 3.675446084002033,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.6022838309693124,
+          "minorFaults": 6,
+          "majorFaults": 0,
+          "rssBeforeBytes": 263671808,
+          "rssAfterBytes": 263671808
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 288534528,
+          "rssAfterBytes": 288534528
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 206313,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 3538,
+        "io.full": 79
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 10.038990201,
+      "submitMs": 9.653578931,
+      "finishReadbackMs": 0.385334607,
+      "angle": 160,
+      "rgba": "e5c16fb28cc19256",
+      "depth": "7238c3c473eda397",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "bmw",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bmw-msaa0-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "d955bc7e27202a35767fd1096a327cc655155dd9cff2d183d5870b4f300cb330",
+      "foreignCpuCores": 0.042413630925792895,
+      "requestElapsedSeconds": 0.943093036999926,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 2.8735234952224684,
+          "minorFaults": 6559,
+          "majorFaults": 0,
+          "rssBeforeBytes": 45068288,
+          "rssAfterBytes": 71774208
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 44916736,
+          "rssAfterBytes": 44916736
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 29054,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 10.402657965,
+      "submitMs": 9.880166423,
+      "finishReadbackMs": 0.522378207,
+      "angle": 160,
+      "rgba": "b87e39e43c15f90b",
+      "depth": "7238c3c473eda397",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "bmw",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bmw-msaa0-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "f7391394f05bdb7cadcd7e82516d7ed3b84e4cf31f0610b0164f4b0be12508df",
+      "foreignCpuCores": 0.08351513690672645,
+      "requestElapsedSeconds": 0.9579101820709184,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 71774208,
+          "rssAfterBytes": 71774208
+        },
+        "candidate": {
+          "cpuCores": 2.7455601258086317,
+          "minorFaults": 7926,
+          "majorFaults": 0,
+          "rssBeforeBytes": 44916736,
+          "rssAfterBytes": 76746752
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 32996,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 10.083246999,
+      "submitMs": 9.632355526,
+      "finishReadbackMs": 0.450784806,
+      "angle": 160,
+      "rgba": "b87e39e43c15f90b",
+      "depth": "7238c3c473eda397",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "bmw",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bmw-msaa0-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "f7391394f05bdb7cadcd7e82516d7ed3b84e4cf31f0610b0164f4b0be12508df",
+      "foreignCpuCores": 0.042850762270194895,
+      "requestElapsedSeconds": 0.9334723090287298,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 71774208,
+          "rssAfterBytes": 71774208
+        },
+        "candidate": {
+          "cpuCores": 2.7960122381302166,
+          "minorFaults": 50,
+          "majorFaults": 0,
+          "rssBeforeBytes": 76746752,
+          "rssAfterBytes": 77008896
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 27994,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 10.241234167,
+      "submitMs": 9.66265254,
+      "finishReadbackMs": 0.578468293,
+      "angle": 160,
+      "rgba": "e5c16fb28cc19256",
+      "depth": "7238c3c473eda397",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "bmw",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bmw-msaa0-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "d955bc7e27202a35767fd1096a327cc655155dd9cff2d183d5870b4f300cb330",
+      "foreignCpuCores": 0.07435548937299155,
+      "requestElapsedSeconds": 0.9414234320865944,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 2.8467530217088193,
+          "minorFaults": 62,
+          "majorFaults": 0,
+          "rssBeforeBytes": 71774208,
+          "rssAfterBytes": 72036352
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 77008896,
+          "rssAfterBytes": 77008896
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 37996,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 91,
+        "io.full": 88
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 16.791647199,
+      "submitMs": 15.880867707,
+      "finishReadbackMs": 0.910632825,
+      "angle": 160,
+      "rgba": "3d6414a90ea015cb",
+      "depth": "8c251eea5452b25b",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "97f92b529925329e",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "bmw",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bmw-msaa2-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "a162f42827e4df4f7c47ee30ad0c25f377c6c91160d25e2a76b999e2e2597a35",
+      "foreignCpuCores": 0.05872965754248177,
+      "requestElapsedSeconds": 1.532445509918034,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.2562332348553786,
+          "minorFaults": 4102,
+          "majorFaults": 0,
+          "rssBeforeBytes": 72036352,
+          "rssAfterBytes": 89108480
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 77008896,
+          "rssAfterBytes": 77008896
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 69414,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 4237,
+        "io.full": 952
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 17.0278479,
+      "submitMs": 16.097178601,
+      "finishReadbackMs": 0.930575964,
+      "angle": 160,
+      "rgba": "7b6787f7628085b8",
+      "depth": "8c251eea5452b25b",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "97f92b529925329e",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "bmw",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bmw-msaa2-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "7948d6ae1385bfcbdcb176d80572cab382b251f01918ba3d5f1c10ed9dfbae44",
+      "foreignCpuCores": 0.051012339298198366,
+      "requestElapsedSeconds": 1.5682480180403218,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 89108480,
+          "rssAfterBytes": 89108480
+        },
+        "candidate": {
+          "cpuCores": 3.1117526971901,
+          "minorFaults": 7118,
+          "majorFaults": 0,
+          "rssBeforeBytes": 77008896,
+          "rssAfterBytes": 105582592
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 64059,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 16.600139967,
+      "submitMs": 15.763687513,
+      "finishReadbackMs": 0.83634912,
+      "angle": 160,
+      "rgba": "7b6787f7628085b8",
+      "depth": "8c251eea5452b25b",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "97f92b529925329e",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "bmw",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bmw-msaa2-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "7948d6ae1385bfcbdcb176d80572cab382b251f01918ba3d5f1c10ed9dfbae44",
+      "foreignCpuCores": 0.06520627153745769,
+      "requestElapsedSeconds": 1.533594815991819,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 89108480,
+          "rssAfterBytes": 89108480
+        },
+        "candidate": {
+          "cpuCores": 3.1494629152592064,
+          "minorFaults": 28,
+          "majorFaults": 0,
+          "rssBeforeBytes": 105582592,
+          "rssAfterBytes": 105713664
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 62011,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 16.449062833,
+      "submitMs": 15.555646697,
+      "finishReadbackMs": 0.893286134,
+      "angle": 160,
+      "rgba": "3d6414a90ea015cb",
+      "depth": "8c251eea5452b25b",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "97f92b529925329e",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "bmw",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bmw-msaa2-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "a162f42827e4df4f7c47ee30ad0c25f377c6c91160d25e2a76b999e2e2597a35",
+      "foreignCpuCores": 0.04628225392039754,
+      "requestElapsedSeconds": 1.5124587519094348,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.2595930261079977,
+          "minorFaults": 12,
+          "majorFaults": 0,
+          "rssBeforeBytes": 89108480,
+          "rssAfterBytes": 89108480
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 105713664,
+          "rssAfterBytes": 105713664
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 79227,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 17.983204134,
+      "submitMs": 16.850987422,
+      "finishReadbackMs": 1.132106711,
+      "angle": 160,
+      "rgba": "a6a2703bd33ff951",
+      "depth": "b0f37ca6630a33b6",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "dc2f9662c4e4c224",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "bmw",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bmw-msaa4-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "0678474b998ad8d2a4ee42d5dc4da563071c521cc51214ec3764efd9681ceff3",
+      "foreignCpuCores": 0.05395537178278185,
+      "requestElapsedSeconds": 1.6680452200816944,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.225332224348515,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 89108480,
+          "rssAfterBytes": 89108480
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 105713664,
+          "rssAfterBytes": 105713664
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 72021,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 2827,
+        "io.full": 224
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 19.36666827,
+      "submitMs": 18.117830988,
+      "finishReadbackMs": 1.248727281,
+      "angle": 160,
+      "rgba": "97c67cdcd73668ca",
+      "depth": "b0f37ca6630a33b6",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "dc2f9662c4e4c224",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "bmw",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bmw-msaa4-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "ffbfbda95f84da0126ed5b8dbdca4cdf8156131aac4b789047310ef017d30f2b",
+      "foreignCpuCores": 0.05658568477177879,
+      "requestElapsedSeconds": 1.7672314191004261,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 89108480,
+          "rssAfterBytes": 89108480
+        },
+        "candidate": {
+          "cpuCores": 3.0160169983358096,
+          "minorFaults": 6824,
+          "majorFaults": 0,
+          "rssBeforeBytes": 105713664,
+          "rssAfterBytes": 132845568
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 88193,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 19.044667436,
+      "submitMs": 17.793140328,
+      "finishReadbackMs": 1.251407107,
+      "angle": 160,
+      "rgba": "97c67cdcd73668ca",
+      "depth": "b0f37ca6630a33b6",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "dc2f9662c4e4c224",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "bmw",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bmw-msaa4-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "ffbfbda95f84da0126ed5b8dbdca4cdf8156131aac4b789047310ef017d30f2b",
+      "foreignCpuCores": 0.05645105638196521,
+      "requestElapsedSeconds": 1.7714460350107402,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 89108480,
+          "rssAfterBytes": 89108480
+        },
+        "candidate": {
+          "cpuCores": 3.0427119389879245,
+          "minorFaults": 17,
+          "majorFaults": 0,
+          "rssBeforeBytes": 132845568,
+          "rssAfterBytes": 132976640
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 73297,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 224,
+        "io.full": 218
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 18.401265765,
+      "submitMs": 17.201935364,
+      "finishReadbackMs": 1.199197067,
+      "angle": 160,
+      "rgba": "a6a2703bd33ff951",
+      "depth": "b0f37ca6630a33b6",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "dc2f9662c4e4c224",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "bmw",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/bmw-msaa4-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "0678474b998ad8d2a4ee42d5dc4da563071c521cc51214ec3764efd9681ceff3",
+      "foreignCpuCores": 0.058924833542296086,
+      "requestElapsedSeconds": 1.6970773439388722,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.199618461346677,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 89108480,
+          "rssAfterBytes": 89108480
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 132976640,
+          "rssAfterBytes": 132976640
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 81783,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 1741,
+        "io.full": 1709
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 6.679150233,
+      "submitMs": 6.572479894,
+      "finishReadbackMs": 0.106570338,
+      "angle": 160,
+      "rgba": "8bbccd1a0bfc123c",
+      "depth": "4921157b93bcc627",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "t80",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/t80-msaa0-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "b523bb48fe208b82e23c9222305890e1a55eb98a198222779822b01a3975ed30",
+      "foreignCpuCores": 0.04922299476826809,
+      "requestElapsedSeconds": 0.609471246949397,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.035418010709866,
+          "minorFaults": 4129,
+          "majorFaults": 0,
+          "rssBeforeBytes": 55193600,
+          "rssAfterBytes": 72286208
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 55291904,
+          "rssAfterBytes": 55291904
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 16489,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 6.765493836,
+      "submitMs": 6.678156865,
+      "finishReadbackMs": 0.08726697,
+      "angle": 160,
+      "rgba": "e4812beec910eaab",
+      "depth": "4921157b93bcc627",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "t80",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/t80-msaa0-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "fe96d0364bbea52053723ffcafce3e6e9d40ecd09ec4813ffcb983df0537593c",
+      "foreignCpuCores": 0.08340670107701474,
+      "requestElapsedSeconds": 0.5994722169125453,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 72286208,
+          "rssAfterBytes": 72286208
+        },
+        "candidate": {
+          "cpuCores": 2.869190517049307,
+          "minorFaults": 5283,
+          "majorFaults": 0,
+          "rssBeforeBytes": 55291904,
+          "rssAfterBytes": 76308480
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 16094,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 6.846490766,
+      "submitMs": 6.765800575,
+      "finishReadbackMs": 0.080610195,
+      "angle": 160,
+      "rgba": "e4812beec910eaab",
+      "depth": "4921157b93bcc627",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "t80",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/t80-msaa0-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "fe96d0364bbea52053723ffcafce3e6e9d40ecd09ec4813ffcb983df0537593c",
+      "foreignCpuCores": 0.04932152941777232,
+      "requestElapsedSeconds": 0.6082536440808326,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 72286208,
+          "rssAfterBytes": 72286208
+        },
+        "candidate": {
+          "cpuCores": 2.8442081964248707,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 76308480,
+          "rssAfterBytes": 76308480
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 18313,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 6.856557467,
+      "submitMs": 6.776607242,
+      "finishReadbackMs": 0.079850228,
+      "angle": 160,
+      "rgba": "8bbccd1a0bfc123c",
+      "depth": "4921157b93bcc627",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "t80",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/t80-msaa0-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "b523bb48fe208b82e23c9222305890e1a55eb98a198222779822b01a3975ed30",
+      "foreignCpuCores": 0.047905522799222784,
+      "requestElapsedSeconds": 0.626232597976923,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 2.954173905952072,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 72286208,
+          "rssAfterBytes": 72286208
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 76308480,
+          "rssAfterBytes": 76308480
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 14400,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 14.9730054,
+      "submitMs": 12.788785528,
+      "finishReadbackMs": 2.184106538,
+      "angle": 160,
+      "rgba": "d19b47cf7fb989c3",
+      "depth": "811bfe54d3120454",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "81d4726c0b6419b6",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "t80",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/t80-msaa2-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "0b666147fa2be0ea06d642761c3d52bb4c25c54d9ce590d7ffe5fa91eaa2bc66",
+      "foreignCpuCores": 0.05418870503543229,
+      "requestElapsedSeconds": 1.2917821150040254,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.135203648478582,
+          "minorFaults": 5583,
+          "majorFaults": 0,
+          "rssBeforeBytes": 72286208,
+          "rssAfterBytes": 94961664
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 76308480,
+          "rssAfterBytes": 76308480
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 46215,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 11.983959637,
+      "submitMs": 10.937893034,
+      "finishReadbackMs": 1.045979936,
+      "angle": 160,
+      "rgba": "dbd6f6a1642d4528",
+      "depth": "811bfe54d3120454",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "81d4726c0b6419b6",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "t80",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/t80-msaa2-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "c10b3318449a00881ed303c5d6aea32ef3aeb8548568d96dea3e7f8989aba49c",
+      "foreignCpuCores": 0.07655305980165307,
+      "requestElapsedSeconds": 1.175655163009651,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 94961664,
+          "rssAfterBytes": 94961664
+        },
+        "candidate": {
+          "cpuCores": 3.0961459742001907,
+          "minorFaults": 5737,
+          "majorFaults": 0,
+          "rssBeforeBytes": 76308480,
+          "rssAfterBytes": 98852864
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 52023,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 1649,
+        "io.full": 1617
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 11.868925936,
+      "submitMs": 10.921076336,
+      "finishReadbackMs": 0.947766266,
+      "angle": 160,
+      "rgba": "dbd6f6a1642d4528",
+      "depth": "811bfe54d3120454",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "81d4726c0b6419b6",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "t80",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/t80-msaa2-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "c10b3318449a00881ed303c5d6aea32ef3aeb8548568d96dea3e7f8989aba49c",
+      "foreignCpuCores": 0.045603772521693696,
+      "requestElapsedSeconds": 1.0964005220448598,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 94961664,
+          "rssAfterBytes": 94961664
+        },
+        "candidate": {
+          "cpuCores": 3.1010565314751712,
+          "minorFaults": 6,
+          "majorFaults": 0,
+          "rssBeforeBytes": 98852864,
+          "rssAfterBytes": 98852864
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 48979,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 13.665607932,
+      "submitMs": 11.677148562,
+      "finishReadbackMs": 1.988346037,
+      "angle": 160,
+      "rgba": "d19b47cf7fb989c3",
+      "depth": "811bfe54d3120454",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "81d4726c0b6419b6",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "t80",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/t80-msaa2-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "0b666147fa2be0ea06d642761c3d52bb4c25c54d9ce590d7ffe5fa91eaa2bc66",
+      "foreignCpuCores": 0.064012542821946,
+      "requestElapsedSeconds": 1.2497550710104406,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.1366145982753544,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 94961664,
+          "rssAfterBytes": 94961664
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 98852864,
+          "rssAfterBytes": 98852864
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 46309,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 15.339482937,
+      "submitMs": 12.811762032,
+      "finishReadbackMs": 2.527604237,
+      "angle": 160,
+      "rgba": "0752feeb1b19ed04",
+      "depth": "2c7ee74c33dd5311",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "b6bcf146709d53c0",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "t80",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/t80-msaa4-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "0b6637b1f3c372a14aac424bacf76bd4c3635fc698a188e383890ccd77820f85",
+      "foreignCpuCores": 0.04932245104224578,
+      "requestElapsedSeconds": 1.4192319830181077,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.072084093488451,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 94961664,
+          "rssAfterBytes": 94961664
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 98852864,
+          "rssAfterBytes": 98852864
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 50157,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 13.401617102,
+      "submitMs": 12.404000596,
+      "finishReadbackMs": 0.997546505,
+      "angle": 160,
+      "rgba": "ccea4c6256fbedb9",
+      "depth": "2c7ee74c33dd5311",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "b6bcf146709d53c0",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "t80",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/t80-msaa4-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "9953b3a7e38ebb5227f3f69631919bee1918714e9b49c639d8b950b14682e4ac",
+      "foreignCpuCores": 0.06442583170369004,
+      "requestElapsedSeconds": 1.2417379471007735,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 94961664,
+          "rssAfterBytes": 94961664
+        },
+        "candidate": {
+          "cpuCores": 2.979694716295665,
+          "minorFaults": 5940,
+          "majorFaults": 0,
+          "rssBeforeBytes": 98852864,
+          "rssAfterBytes": 122707968
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 41424,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 2146,
+        "io.full": 2134
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 13.568250967,
+      "submitMs": 12.357250512,
+      "finishReadbackMs": 1.210937121,
+      "angle": 160,
+      "rgba": "ccea4c6256fbedb9",
+      "depth": "2c7ee74c33dd5311",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "b6bcf146709d53c0",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "t80",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_coarse",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/t80-msaa4-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "9953b3a7e38ebb5227f3f69631919bee1918714e9b49c639d8b950b14682e4ac",
+      "foreignCpuCores": 0.05678103812427611,
+      "requestElapsedSeconds": 1.2328059209976345,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 94961664,
+          "rssAfterBytes": 94961664
+        },
+        "candidate": {
+          "cpuCores": 2.9688371362121506,
+          "minorFaults": 6,
+          "majorFaults": 0,
+          "rssBeforeBytes": 122707968,
+          "rssAfterBytes": 122707968
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 44508,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 400,
+        "io.full": 396
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 15.186525835,
+      "submitMs": 12.806215331,
+      "finishReadbackMs": 2.380193836,
+      "angle": 160,
+      "rgba": "0752feeb1b19ed04",
+      "depth": "2c7ee74c33dd5311",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "b6bcf146709d53c0",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "t80",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-codec-luma-chroma/v3-full-shading/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v3-full-shading-screen/t80-msaa4-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "0b6637b1f3c372a14aac424bacf76bd4c3635fc698a188e383890ccd77820f85",
+      "foreignCpuCores": 0.04966770341001856,
+      "requestElapsedSeconds": 1.4093665539985523,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.0652068390182885,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 94961664,
+          "rssAfterBytes": 94961664
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 122707968,
+          "rssAfterBytes": 122707968
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 51913,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    }
+  ],
+  "candidateSourcesSha256": {
+    "CMakeLists.txt": "7b997884fabeaa751c27d9cbce85dd2aa4d29c32730f2a4f9ab842470a33c908",
+    "include/GL/softgl.h": "dd7dca35d54eea5f57489f7a2a039bb76212a5341a2d73ce74d27a65be6a7f74",
+    "src/api.c": "9c373504af364d620c212afdfc9046bcc899bd61af198a6558fdda81f01691e1",
+    "src/buffers.c": "a0363363f060dc9cbd99a64703496e1e702c2cf82beb42b16a54337b524be2ff",
+    "src/clip.c": "f5c0b940f54a4aa52a2d55785de31d72c168d381b53012e408179f81381de3cc",
+    "src/cluster_cull.h": "b639ef7e507d28512549feda7e272e0bef855acf6fd1c8e8cad96cae6ad228d9",
+    "src/dlist.c": "e7446f33b3972e4384c103c2547869dfffad43c900e1f55bf6f8c38eaf36eae8",
+    "src/dlist.h": "4bc8e0e5966f5b226c8e086ead9a635fd6158eed18b0c55e4b4c2ed0bdbda033",
+    "src/evaluators.c": "69281ca9f25e0f7d5cc1f76f31fb17502c83b60ea6168bbbae238e65227344ba",
+    "src/frag_combine_hot.h": "e801062d6fe0ce8ade5f12730ba4cb1441689ba6bd39a331a308bc99e29f72cc",
+    "src/frag_hot.h": "e0e1cba7afec1b2c13a53a8198207d868fa0636a84ee98e059f238d131dca52e",
+    "src/frag_packet.h": "f06d0fa6a43404fbdbc2ca391d96162dcafb8e53dcfaca45afc46ebb7ff6b6de",
+    "src/fragment.c": "d1883401993e1576f565710c6ad9e3066d401684ac698928940f72fd582ef1d2",
+    "src/fragment_combine.c": "b7af7972265bf0ac384379fcba6885e93707cdd8a0de956f691ad28ed1dd7153",
+    "src/fragment_write.c": "6c806d57d87ff4ed31ecdf502be6f77772497696a607633edf71c9971da66f1d",
+    "src/framebuffer.c": "7c82e1f52d5b2c2e7d9752d155f379109a8791c41b147713cfb14f2788e1a974",
+    "src/geometry.inc": "007aec3ec9501b74efa98c4291bf0dc14a30bbaf60198cd05ae12e803a9c1ed5",
+    "src/geometry_types.inc": "543196c405d363f69c5542eb01a769ef61da6e1dc946299c8c2b4ac998718efc",
+    "src/immediate.c": "80b520a3c3c14e675eeca5d3083c5dbe423e9684a69b868446f85e99ef86534c",
+    "src/index_range.h": "4d0456bd563031b7b4ff1184bfb6fa513908ae4047bd5f6f83dc8a7f57d8bb03",
+    "src/lighting.c": "1e6db9b4f59e2a54b1f6b89e6bc129d206dc816aaa08f099d80e6f8f2f42e338",
+    "src/lines.c": "b08fef911685977a08d6f2b29265aa28721aa0497a1a208c492403bdde0bbe87",
+    "src/matrix.c": "fd5bff0e263cd87d1032fad4fa75f966f76b2cc605b746d47e3d4eeabde6d793",
+    "src/msaa_additive.h": "6fab4198defe4db18a83f1562034807e71957ba07db0c0bd51f2e26c90d4778f",
+    "src/multisample.c": "2ba7fe2df9c8afed9acf1daa5ea48df6fbe8b5c0cceeac11bd61c3804423ea1d",
+    "src/multisample.h": "cdbe1e0aa51827f13789ce7f46e3acc961e0b87c5d034e1c7ba22fe54c611315",
+    "src/pipeline.c": "fb559aa949d0e4211044451c9456f22e928982fb03c6f9132c199b316a2edfe3",
+    "src/pixels.c": "8e366864ac1418564d2342bd3c120ad5e8057998af21ff31ccb5663134ddfc92",
+    "src/raster_hz.h": "1cc4a6fe6f5a425607cb3b8a57d15cb19d5de537794c638b673f0bd4a14b4ed6",
+    "src/raster_msaa_impl.h": "1c5ace8d35a4413d5628ebf5c397c58d633758a3dd93145932d2973b3a61ae0f",
+    "src/raster_store.h": "251cbe4d9765edfc26b4428d7d5906ab17722689feae08eac432db59a7b22934",
+    "src/raster_triangle_impl.h": "51b5cf82bdd1298bcb42722a4af5cac0edbebe8442b4703a1cf0fbde35487915",
+    "src/raster_types.h": "0b050bdbf31f6c398366112c84a6041390a50398d1e18acafe4c7440a0700f45",
+    "src/raster_vertex_pack.h": "956a8084b973144a9d8ee28c0d485214e3e8551a7384238f610620e00ad6e528",
+    "src/rasterizer.c": "8cfc012004b794e6a83eeb8eb33b2dea674ba199a32c1a65baf691106cc596bc",
+    "src/scene_codec_bary.inc": "1bb2b8d8be68a6bb887370d908d2c0c2d523dfd25ff1370fc7366a15ae326efb",
+    "src/scene_codec_fine.inc": "e639d2bcd86869b1428debebb1267a45c355bc569a6f70776003d7c6d70c8d20",
+    "src/scene_codec_select.inc": "e2ba23c8eba887ecc74c6f0460a8103e05db4ac822617afca65719a615bf7b5c",
+    "src/scene_codec_types.h": "8e47deaa8d5fd0cef3feb8303f2c6f336a298dda937ebe8e87b440d6088bc94e",
+    "src/scene_density_hint.c": "ec41d3417def1ff6e087656ae6935e34aab51822a30821fb315ca6f23991a669",
+    "src/scene_visibility.c": "e031fb975a2c61c1aabb8252c6ed7d3b201b1bff83f815d9804166d811c217ce",
+    "src/simd.h": "c639184db1b8a3c79b0aa07ad4fbe0a96b8c79e16536b3d98abef0b72d74e150",
+    "src/state.c": "04f4a8355c1fc37c3521001719dae9a55a1e9b7a34c2f1a70c53990a0d26fb38",
+    "src/texture.c": "9c4d999c73b68a7431bd1f0e88c2d3d2e7e1931670ad166ffee535f8d5764c45",
+    "src/types.h": "9eb99eb4dc29359b7edeb4dc817a7dfa8a108f32b84fa97e190a95f3e73a8cfe",
+    "src/vertex_inputs.h": "fb774a51f4627b91dd6d58fc2cb918df04ef224d45cd898dfa1ed5dd9a0b0db5",
+    "src/workers.c": "47c2bb16e01d1f17ce552ce3baa13e15a13f3d125a3c2ee0d6f30ebce8c63e21",
+    "src/workers.h": "3a74a68a42b0e1fc80b426cd3236e329ee70b145a5afe687520575599e709c5a",
+    "src/workers_queue_raw.inc": "ddec9df98f32ce5f428467f97b3a772506019cd4eca90e004afe956a6b9527b3"
+  },
+  "baselineWrapperSha256": "740bdb6a3f44e100bed8c5a31e6bebec94dfb4d938aff7791dfc772eeb0b603d",
+  "candidateWrapperSha256": "babfed67a5f5e57dd9a6fcdb80983b24bff02d7527a48b1ab0cb2e83d4775606",
+  "baselineSourcesSha256": {
+    "CMakeLists.txt": "5e525d0039f98e279c6ebca1ac7926d49bfaa88dc19faac5a80ece4ddcab3b87",
+    "include/GL/softgl.h": "bd89fbaeadb27b8ff4fe6cbab7960abb9e07fddd690db60aa45789936c6fb0cc",
+    "src/api.c": "9c373504af364d620c212afdfc9046bcc899bd61af198a6558fdda81f01691e1",
+    "src/buffers.c": "a0363363f060dc9cbd99a64703496e1e702c2cf82beb42b16a54337b524be2ff",
+    "src/clip.c": "f5c0b940f54a4aa52a2d55785de31d72c168d381b53012e408179f81381de3cc",
+    "src/cluster_cull.h": "b639ef7e507d28512549feda7e272e0bef855acf6fd1c8e8cad96cae6ad228d9",
+    "src/dlist.c": "e7446f33b3972e4384c103c2547869dfffad43c900e1f55bf6f8c38eaf36eae8",
+    "src/dlist.h": "4bc8e0e5966f5b226c8e086ead9a635fd6158eed18b0c55e4b4c2ed0bdbda033",
+    "src/evaluators.c": "69281ca9f25e0f7d5cc1f76f31fb17502c83b60ea6168bbbae238e65227344ba",
+    "src/frag_combine_hot.h": "e801062d6fe0ce8ade5f12730ba4cb1441689ba6bd39a331a308bc99e29f72cc",
+    "src/frag_hot.h": "e0e1cba7afec1b2c13a53a8198207d868fa0636a84ee98e059f238d131dca52e",
+    "src/frag_packet.h": "f06d0fa6a43404fbdbc2ca391d96162dcafb8e53dcfaca45afc46ebb7ff6b6de",
+    "src/fragment.c": "d1883401993e1576f565710c6ad9e3066d401684ac698928940f72fd582ef1d2",
+    "src/fragment_combine.c": "b7af7972265bf0ac384379fcba6885e93707cdd8a0de956f691ad28ed1dd7153",
+    "src/fragment_write.c": "6c806d57d87ff4ed31ecdf502be6f77772497696a607633edf71c9971da66f1d",
+    "src/framebuffer.c": "7c82e1f52d5b2c2e7d9752d155f379109a8791c41b147713cfb14f2788e1a974",
+    "src/geometry.inc": "007aec3ec9501b74efa98c4291bf0dc14a30bbaf60198cd05ae12e803a9c1ed5",
+    "src/geometry_types.inc": "543196c405d363f69c5542eb01a769ef61da6e1dc946299c8c2b4ac998718efc",
+    "src/immediate.c": "80b520a3c3c14e675eeca5d3083c5dbe423e9684a69b868446f85e99ef86534c",
+    "src/index_range.h": "4d0456bd563031b7b4ff1184bfb6fa513908ae4047bd5f6f83dc8a7f57d8bb03",
+    "src/lighting.c": "1e6db9b4f59e2a54b1f6b89e6bc129d206dc816aaa08f099d80e6f8f2f42e338",
+    "src/lines.c": "b08fef911685977a08d6f2b29265aa28721aa0497a1a208c492403bdde0bbe87",
+    "src/matrix.c": "fd5bff0e263cd87d1032fad4fa75f966f76b2cc605b746d47e3d4eeabde6d793",
+    "src/msaa_additive.h": "6fab4198defe4db18a83f1562034807e71957ba07db0c0bd51f2e26c90d4778f",
+    "src/multisample.c": "2ba7fe2df9c8afed9acf1daa5ea48df6fbe8b5c0cceeac11bd61c3804423ea1d",
+    "src/multisample.h": "cdbe1e0aa51827f13789ce7f46e3acc961e0b87c5d034e1c7ba22fe54c611315",
+    "src/pipeline.c": "fb559aa949d0e4211044451c9456f22e928982fb03c6f9132c199b316a2edfe3",
+    "src/pixels.c": "8e366864ac1418564d2342bd3c120ad5e8057998af21ff31ccb5663134ddfc92",
+    "src/raster_hz.h": "1cc4a6fe6f5a425607cb3b8a57d15cb19d5de537794c638b673f0bd4a14b4ed6",
+    "src/raster_msaa_impl.h": "1c5ace8d35a4413d5628ebf5c397c58d633758a3dd93145932d2973b3a61ae0f",
+    "src/raster_store.h": "251cbe4d9765edfc26b4428d7d5906ab17722689feae08eac432db59a7b22934",
+    "src/raster_triangle_impl.h": "51b5cf82bdd1298bcb42722a4af5cac0edbebe8442b4703a1cf0fbde35487915",
+    "src/raster_types.h": "0b050bdbf31f6c398366112c84a6041390a50398d1e18acafe4c7440a0700f45",
+    "src/raster_vertex_pack.h": "956a8084b973144a9d8ee28c0d485214e3e8551a7384238f610620e00ad6e528",
+    "src/rasterizer.c": "8cfc012004b794e6a83eeb8eb33b2dea674ba199a32c1a65baf691106cc596bc",
+    "src/scene_density_hint.c": "ec41d3417def1ff6e087656ae6935e34aab51822a30821fb315ca6f23991a669",
+    "src/scene_visibility.c": "797c20af16b0598df89f9d54a9a7fb03198c381c9880258d6402db7c5808841e",
+    "src/simd.h": "c639184db1b8a3c79b0aa07ad4fbe0a96b8c79e16536b3d98abef0b72d74e150",
+    "src/state.c": "04f4a8355c1fc37c3521001719dae9a55a1e9b7a34c2f1a70c53990a0d26fb38",
+    "src/texture.c": "9c4d999c73b68a7431bd1f0e88c2d3d2e7e1931670ad166ffee535f8d5764c45",
+    "src/types.h": "9eb99eb4dc29359b7edeb4dc817a7dfa8a108f32b84fa97e190a95f3e73a8cfe",
+    "src/vertex_inputs.h": "fb774a51f4627b91dd6d58fc2cb918df04ef224d45cd898dfa1ed5dd9a0b0db5",
+    "src/workers.c": "47c2bb16e01d1f17ce552ce3baa13e15a13f3d125a3c2ee0d6f30ebce8c63e21",
+    "src/workers.h": "3a74a68a42b0e1fc80b426cd3236e329ee70b145a5afe687520575599e709c5a",
+    "src/workers_queue_raw.inc": "ddec9df98f32ce5f428467f97b3a772506019cd4eca90e004afe956a6b9527b3"
+  },
+  "driverSha256": "4029b38308668a43bc057cc1678d0e9daba42dbe4a3c7be64974667a9fc2e85c",
+  "runnerSha256": "407bc7a18325a71be22064e815dbd2e7c0bff40611d4605c32aad4f20e08a624",
+  "residentAssets": true,
+  "coldAssetLoadSeconds": {
+    "bistro": {
+      "baseline": 6.1012476100586355,
+      "candidate": 6.340847886051051
+    },
+    "sponza": {
+      "baseline": 0.3029839090304449,
+      "candidate": 0.2982481949729845
+    },
+    "bmw": {
+      "baseline": 0.05820497509557754,
+      "candidate": 0.05918537802062929
+    },
+    "t80": {
+      "baseline": 0.07918454008176923,
+      "candidate": 0.07894983899313956
+    }
+  },
+  "cmakeCacheSha256": "eb1564ba62c9b78731a1bc987daf9e585190ef7869f52b0931cf82ab9b433d19",
+  "baselineCmakeCacheSha256": "eb1564ba62c9b78731a1bc987daf9e585190ef7869f52b0931cf82ab9b433d19"
+}
