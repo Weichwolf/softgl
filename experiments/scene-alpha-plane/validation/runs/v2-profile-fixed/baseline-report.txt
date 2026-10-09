@@ -1,0 +1,46 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 12K of event 'cycles:u'
+# Event count (approx.): 56212738860
+#
+# Overhead  Symbol                                   IPC   [IPC Coverage]
+# ........  .......................................  ....................
+#
+    25.97%  [.] scene_resolve                        -      -            
+    13.53%  [.] sg_raster_triangle_msaa4             -      -            
+     9.53%  [.] scene_small_msaa4                    -      -            
+     7.49%  [.] scene_geometry_append                -      -            
+     6.20%  [.] scene_geometry_positions             -      -            
+     5.42%  [.] sg_scene_visibility_msaa_packet      -      -            
+     4.18%  [.] sg_sample_tex_cube                   -      -            
+     3.42%  [.] scene_msaa_store_pixel               -      -            
+     3.28%  [.] scene_geometry_triangles             -      -            
+     2.99%  [.] scene_geometry_attribute_bins        -      -            
+     2.53%  [.] sg_packet_sample_cube_coherent       -      -            
+     2.51%  [.] scene_msaa_group_bins                -      -            
+     2.17%  [.] scene_packet_fallback                -      -            
+     2.11%  [.] scene_geometry_raster                -      -            
+     1.77%  [.] scene_msaa_list_bins                 -      -            
+     1.14%  [.] generate_fused_attributes            -      -            
+     0.88%  [.] scene_geometry_references            -      -            
+     0.51%  [.] sg_workers_run_callback              -      -            
+     0.45%  [.] __memmove_evex_unaligned_erms        -      -            
+     0.39%  [.] sg_shade_transparent_packet          -      -            
+     0.39%  [.] scene_triangle_record                -      -            
+     0.35%  [.] _sg_clear_real                       -      -            
+     0.33%  [.] scene_geometry_order_bin             -      -            
+     0.33%  [.] sg_msaa_resolve                      -      -            
+     0.32%  [.] sg_raster_triangle_tile_prepared     -      -            
+     0.29%  [.] sg_packet_sample_cube_target         -      -            
+     0.27%  [.] sg_scene_visibility_triangle         -      -            
+     0.26%  [.] sg_worker_main                       -      -            
+     0.26%  [.] sg_index_range                       -      -            
+     0.11%  [.] sg_store_blend_msaa4_post_depth      -      -            
+
+
+#
+# (Tip: Show current config key-value pairs: perf config --list)
+#
