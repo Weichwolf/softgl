@@ -223,3 +223,6 @@
 | [scene-msaa-pixel-depth-bound](scene-msaa-pixel-depth-bound/README.md) | Not adopted | Per-pixel conservative 4× depth bound: no useful screen gain; 108 exact views. |
 | [scene-constant-cube-footprints](scene-constant-cube-footprints/README.md) | Not adopted | Exact constant-tap shortcut: both BMW screens regress; logical cell census and 108 exact views retained. |
 | [scene-msaa-material-pixel-merge](scene-msaa-material-pixel-merge/README.md) | Accepted V6 | 640×360/4× MSAA FPS: Sponza +14.23%, BMW +3.91%, T-80 +24.49%, Bistro within noise; original samples/depth, approximate intrapixel RGB, V4/V5 alpha faults rejected. |
+| [scene-msaa-rgb-alpha-split](scene-msaa-rgb-alpha-split/README.md) | Held native V2 | Exact sample alpha with shared pixel RGB: Bistro 4× −2.08% time, extra RGB approximation; nine Bistro views only, no sanitizer/WASM adoption. |
+| [scene-msaa-bounded-spans](scene-msaa-bounded-spans/README.md) | Rejected screen | Extend small 4× kernel to 64 pixels: BMW +0.22%, Bistro −0.12%, Sponza +20.22%, T-80 +3.19% time; no useful gain. |
+| [scene-msaa-rebased-edges](scene-msaa-rebased-edges/README.md) | Accepted V3 | Exact sample-edge recurrences: 4× FPS Bistro +2.63%, Sponza +2.01%, BMW +2.41%, T-80 noise; 108 native + 108 browser views identical, 760 tests, SIMD128/WASM. |

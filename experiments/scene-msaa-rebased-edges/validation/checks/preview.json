@@ -1,0 +1,23 @@
+{
+  "url": "http://127.0.0.1:8000/",
+  "browser": "154.0.8037.92",
+  "benchmark": "# scenes WASM benchmark @ 640x360 — SIMD=true, reported processors=9\n# Models use original meshes and textures at 640x360 render resolution.\n# userAgent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36\n# 3 runs of 20 frames per scene; warm-up excluded; min reported.\n# Browser yields between frames; each timed frame includes worker completion.\n\n# MSAA=off\nscene=showcase   ms=3.885 fps=257.4\nscene=shadow     ms=1.587 fps=630.2\nscene=particles  ms=2.598 fps=384.9\nscene=city       ms=2.604 fps=384.0\nscene=sphere_lit ms=0.554 fps=1804.2\nscene=bmw        ms=11.132 fps=89.8\n\n# MSAA=2x\nscene=showcase   ms=6.807 fps=146.9\nscene=shadow     ms=3.214 fps=311.2\nscene=particles  ms=3.068 fps=325.9\nscene=city       ms=3.004 fps=332.9\nscene=sphere_lit ms=1.486 fps=672.9\nscene=bmw        ms=19.737 fps=50.7\n\n# MSAA=4x\nscene=showcase   ms=7.585 fps=131.8\nscene=shadow     ms=4.427 fps=225.9\nscene=particles  ms=3.769 fps=265.3\nscene=city       ms=3.903 fps=256.2\nscene=sphere_lit ms=2.075 fps=481.9\nscene=bmw        ms=19.734 fps=50.7\n\n\n# done. Select a model or \"Tests\" to resume.\n",
+  "heartbeat": 1310,
+  "reportedProcessors": 9,
+  "threads": "4 (3 workers + main thread)",
+  "isolated": true,
+  "heartbeatDuringBenchmark": 995,
+  "displayedTests": 234,
+  "renderWorkers": 3,
+  "bmwScene": true,
+  "cancelledBenchmark": true,
+  "offlineGeometry": true,
+  "multisampleModes": [
+    0,
+    2,
+    4
+  ],
+  "wasmSha256": "aecc4d312cce37ef22bd180a12548e95d8c41b6ad5c59a201bd8b935008ece48",
+  "errors": [],
+  "passed": true
+}

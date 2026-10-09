@@ -6,3 +6,6 @@ experiments/scene-full-msaa-control/validation/profile-*/*.txt -whitespace
 experiments/scene-layered-keyframe-cache/validation/*/cmake-cache.txt -whitespace
 experiments/scene-layered-keyframe-cache/validation/*/flags/*.txt -whitespace
 experiments/scene-layered-keyframe-cache/validation/*/*.patch -whitespace
+experiments/scene-msaa-rgb-alpha-split/validation/profile-*/*.txt -whitespace
+# The extracted arithmetic fixture is retained byte-for-byte with its tested hash.
+experiments/scene-msaa-rebased-edges/validation/checks/*/recipe/arithmetic_helper.inc whitespace=-blank-at-eof

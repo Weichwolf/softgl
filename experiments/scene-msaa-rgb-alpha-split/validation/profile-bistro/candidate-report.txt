@@ -1,0 +1,48 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 12K of event 'cycles:u'
+# Event count (approx.): 56104951949
+#
+# Overhead  Symbol                                   IPC   [IPC Coverage]
+# ........  .......................................  ....................
+#
+    26.14%  [.] scene_resolve                        -      -            
+    13.98%  [.] sg_raster_triangle_msaa4             -      -            
+     9.45%  [.] scene_small_msaa4                    -      -            
+     7.78%  [.] scene_geometry_append                -      -            
+     5.95%  [.] scene_geometry_positions             -      -            
+     5.42%  [.] sg_scene_visibility_msaa_packet      -      -            
+     3.95%  [.] sg_sample_tex_cube                   -      -            
+     3.41%  [.] scene_msaa_group_bins                -      -            
+     3.29%  [.] scene_msaa_store_pixel               -      -            
+     2.91%  [.] scene_geometry_triangles             -      -            
+     2.84%  [.] scene_geometry_attribute_bins        -      -            
+     2.43%  [.] sg_packet_sample_cube_coherent       -      -            
+     1.90%  [.] scene_geometry_raster                -      -            
+     1.89%  [.] scene_packet_fallback                -      -            
+     1.59%  [.] scene_msaa_list_bins                 -      -            
+     1.27%  [.] generate_fused_attributes            -      -            
+     0.84%  [.] scene_geometry_references            -      -            
+     0.54%  [.] sg_workers_run_callback              -      -            
+     0.48%  [.] __memmove_evex_unaligned_erms        -      -            
+     0.39%  [.] scene_triangle_record                -      -            
+     0.34%  [.] sg_raster_triangle_tile_prepared     -      -            
+     0.34%  [.] scene_geometry_order_bin             -      -            
+     0.33%  [.] sg_msaa_resolve                      -      -            
+     0.30%  [.] _sg_clear_real                       -      -            
+     0.29%  [.] sg_shade_transparent_packet          -      -            
+     0.28%  [.] sg_index_range                       -      -            
+     0.27%  [.] sg_worker_main                       -      -            
+     0.25%  [.] sg_scene_visibility_triangle         -      -            
+     0.21%  [.] sg_packet_sample_cube_target         -      -            
+     0.14%  [.] sg_store_blend_msaa4_post_depth      -      -            
+     0.13%  [.] sg_transform_range                   -      -            
+     0.11%  [.] __memset_evex_unaligned_erms         -      -            
+
+
+#
+# (Tip: Show user configuration overrides: perf config --user --list)
+#

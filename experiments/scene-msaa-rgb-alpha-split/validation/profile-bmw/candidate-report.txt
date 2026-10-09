@@ -1,0 +1,57 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 3K of event 'cycles:u'
+# Event count (approx.): 13958335514
+#
+# Overhead  Symbol                                   IPC   [IPC Coverage]
+# ........  .......................................  ....................
+#
+    21.89%  [.] sg_raster_triangle_msaa4             -      -            
+    10.37%  [.] scene_small_msaa4                    -      -            
+     9.27%  [.] scene_resolve                        -      -            
+     6.38%  [.] scene_msaa_group_bins                -      -            
+     5.45%  [.] scene_geometry_append                -      -            
+     4.52%  [.] scene_msaa_store_pixel               -      -            
+     4.51%  [.] sg_scene_visibility_msaa_packet      -      -            
+     3.03%  [.] scene_geometry_raster                -      -            
+     2.88%  [.] scene_geometry_attribute_bins        -      -            
+     2.54%  [.] sg_sample_tex_cube                   -      -            
+     2.52%  [.] sg_packet_sample_cube_coherent       -      -            
+     2.31%  [.] scene_msaa_list_bins                 -      -            
+     2.21%  [.] __memmove_evex_unaligned_erms        -      -            
+     2.16%  [.] sg_raster_triangle_msaa4_capture     -      -            
+     1.96%  [.] scene_packet_fallback                -      -            
+     1.82%  [.] sg_worker_main                       -      -            
+     1.54%  [.] scene_geometry_triangles             -      -            
+     1.34%  [.] sg_msaa_resolve                      -      -            
+     1.33%  [.] _sg_clear_real                       -      -            
+     1.23%  [.] generate_fused_attributes            -      -            
+     1.22%  [.] scene_geometry_references            -      -            
+     1.12%  [.] scene_geometry_positions             -      -            
+     1.09%  [.] sg_raster_triangle_tile_prepared     -      -            
+     1.01%  [.] sg_workers_run_callback              -      -            
+     0.75%  [.] sg_store_blend_msaa4_post_depth      -      -            
+     0.71%  [.] sg_shade_transparent_packet          -      -            
+     0.63%  [.] scene_triangle_record                -      -            
+     0.55%  [.] scene_geometry_order_bin             -      -            
+     0.46%  [.] sg_scene_visibility_triangle         -      -            
+     0.32%  [.] sg_process_vertex                    -      -            
+     0.29%  [.] sg_workers_bin_transformed_tri       -      -            
+     0.20%  [.] __memset_evex_unaligned_erms         -      -            
+     0.19%  [.] sg_packet_sample_cube_target         -      -            
+     0.18%  [.] main                                 -      -            
+     0.16%  [.] sg_finish_stream                     -      -            
+     0.16%  [.] _sg_draw_elements_real               -      -            
+     0.16%  [.] sg_queue_help                        -      -            
+     0.15%  [.] sg_queue_render                      -      -            
+     0.13%  [.] sg_mat4_mul_vec4                     -      -            
+     0.13%  [.] sg_transform_range                   -      -            
+     0.12%  [.] sg_index_range                       -      -            
+
+
+#
+# (Tip: Use --symfs <dir> if your symbol files are in non-standard locations)
+#
