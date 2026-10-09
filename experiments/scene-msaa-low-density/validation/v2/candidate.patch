@@ -1,0 +1,52 @@
+--- a/libsoftgl/CMakeLists.txt
++++ b/libsoftgl/CMakeLists.txt
+@@ -21,6 +21,7 @@
+     src/workers.c
+     src/scene_visibility.c
+     src/scene_density_hint.c
++    src/scene_cost_hint.c
+ )
+ 
+ target_include_directories(softgl
+--- a/libsoftgl/include/GL/softgl.h
++++ b/libsoftgl/include/GL/softgl.h
+@@ -966,6 +966,9 @@
+  * has the same meaning as softgl_scene_depth_order. Legacy hints retain their
+  * existing thresholds. No geometry or physical samples are removed. */
+ int softgl_scene_visibility_begin_adaptive(GLuint triangles, GLuint mode);
++/* Lower-density opt-in: retain original hints; decline below one input
++ * triangle per eight pixels with MSAA. Preserve the requested order mode. */
++int softgl_scene_visibility_begin_cost_hint(GLuint triangles, GLuint mode);
+ /* Compatibility entry point for the removed native-wide backend.
+  * Always returns zero; native and WASM rendering use SIMD128 exclusively. */
+ int softgl_scene_native_wide(GLboolean enabled);
+--- /dev/null
++++ b/libsoftgl/src/scene_cost_hint.c
+@@ -0,0 +1,16 @@
++/* Preserve existing selector code and keep new policy after ordinary text. */
++#include "types.h"
++
++#if !defined(__EMSCRIPTEN__) && (defined(__GNUC__) || defined(__clang__))
++__attribute__((section(".text.softgl_scene_cost_hint")))
++#endif
++int softgl_scene_visibility_begin_cost_hint(GLuint triangles, GLuint mode) {
++    softgl_ctx *c = sg_current();
++    if (!c || !c->fb.samples || (uint64_t)triangles >= (uint64_t)c->fb.w*c->fb.h)
++        return softgl_scene_visibility_begin_adaptive(triangles, mode);
++    if ((uint64_t)triangles*8u < (uint64_t)c->fb.w*c->fb.h)
++        return 0;
++    int started = softgl_scene_visibility_begin();
++    if (started) softgl_scene_depth_order(mode);
++    return started;
++}
+--- a/wasm/model_wrap.c
++++ b/wasm/model_wrap.c
+@@ -459,7 +459,7 @@
+     unsigned transparent = 0;
+     glDisable(GL_BLEND);
+ #ifdef SOFTGL_MODEL_SCENE_VISIBILITY
+-    int scene_visibility = softgl_scene_visibility_begin_adaptive(G.triangles,2);
++    int scene_visibility = softgl_scene_visibility_begin_cost_hint(G.triangles,2);
+ #ifdef SOFTGL_MODEL_QUANTIZED_VISIBILITY
+     if (scene_visibility) softgl_scene_quantized_visibility(GL_TRUE);
+ #endif

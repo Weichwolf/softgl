@@ -109,14 +109,14 @@
 | [texture-tiles4](texture-tiles4/README.md) | Rejected | BMW off regresses in all six pairs; BMW4 slows in both audits; doubled eligible storage and costly updates. |
 | [transient-depth-visibility](transient-depth-visibility/README.md) | Diagnostic / superseded trials | Identifies strictly hidden replay references and preserves the initial timing limitations. |
 | [triangle-size-histogram](triangle-size-histogram/README.md) | Diagnostic | Separates full triangle area from actual visited work; no timing gain is claimed. |
-| [validation-protocol](validation-protocol/README.md) | Protocol | Current agreement: all four scenes at 640x360, documented approximations allowed, native AB/BA off/2x/4x, update live WASM on adoption. |
+| [validation-protocol](validation-protocol/README.md) | Protocol | Bistro > Sponza > BMW F31 > T-80; double-digit complex-scene gains can justify ~2% BMW cost; 640×360 native AB/BA OFF/2×/4×, SIMD128/WASM and live updates. |
 | [visibility-buffer-architecture](visibility-buffer-architecture/README.md) | Held / research | Primary GitHub/HPG sources reviewed; four previous opaque-deferred prototypes already regressed BMW, so ordinary retry is superseded. |
 | [visibility-byte-select](visibility-byte-select/README.md) | Rejected | Byte-group visibility selection regresses BMW off; small 4x gains do not justify it. |
 | [wasm-four-contexts](wasm-four-contexts/README.md) | Applied configuration | Defaults to at most three helpers plus the computing caller; no speed claim. |
 | [wasm-phase-conversion](wasm-phase-conversion/README.md) | Held | Native WASM proposal conversion remained correct but did not reproduce a BMW gain. |
 | [wasm-pseudo-clamps](wasm-pseudo-clamps/README.md) | Accepted | Uses direct WASM pseudo-min/max for the validated clamp path. |
 | [whole-pipeline-static-kernels](whole-pipeline-static-kernels/README.md) | Proposed | Bounded C11 kernels specialize complete hot draw pipelines beyond rejected eligibility/DOT3 helpers; no measured gain. |
-| [glimpsw-mesa-comparison](glimpsw-mesa-comparison/README.md) | Current packet renderer | SIMD128 8085056, 640×360/OFF: SG −63.8…−78.6% versus Mesa, still 4.1–6.4× GLimpSW; 72 balanced runs with exact source/asset/budget provenance. |
+| [glimpsw-mesa-comparison](glimpsw-mesa-comparison/README.md) | Historical packet comparison | SIMD128 8085056, 640×360/OFF: SG −63.8…−78.6% versus Mesa, still 4.1–6.4× GLimpSW; 72 balanced runs with exact source/asset/budget provenance. |
 | [visible-vertex-attributes](visible-vertex-attributes/README.md) | Accepted | Worker attributes after culling: Bistro -11–12%, other scenes -3–8%, all twelve images identical. |
 | [bounded-queue-wakeup](bounded-queue-wakeup/README.md) | Accepted | Bounded generation/queue polling: BMW/Bistro -5–7%, T-80 -3–4%, Sponza -1.5%; all images identical. |
 | [packed-queue-admission](packed-queue-admission/README.md) | Accepted | Sponza -12–15%, T-80 -6.5–10.3%, Bistro -3.5–5%, BMW mixed within 0.25%; all images identical. |
@@ -199,3 +199,5 @@
 | [scene-lazy-cluster-frontend](scene-lazy-cluster-frontend/README.md) | Rejected screens | Lazy cluster V2–V6 Bistro4 time +10…+22%; 48% fewer prepared triangles, exact all-bin oracle planes, enabled sanitizer/SIMD128 WASM pass; no adoption. |
 | [scene-msaa-current-phase-accounting](scene-msaa-current-phase-accounting/README.md) | Diagnostic complete | Current SIMD128: Bistro4 visibility/shading 35.92/30.53%, setup 15.94%; 360 measured frames, 12 exact original images; other models use forward MSAA. |
 | [scene-msaa-density-hint](scene-msaa-density-hint/README.md) | Adopted V2 | Isolated general cost hint: Sponza2/4 FPS +35…37/+45…47%; 288 quiet runs, 108 quantified views, 759 tests, actual SIMD128 WASM and 12 live browser cases pass; Bistro4 time +0.8%. |
+| [scene-msaa-low-density](scene-msaa-low-density/README.md) | Private screen | Current lower-density deferred MSAA: T-80 ~12% FPS gain, BMW ~1–2% cost; 72 quality pairs preserve depths/stencil; identical-binary controls expose large OFF noise; final gates pending. |
+| [renderer-current-msaa-comparison](renderer-current-msaa-comparison/README.md) | Measured 6e5ed5c | 144 selected/60 rejected native runs: libsoftgl 4× is 4.20–7.02× Mesa4 FPS; OFF still 3.59–5.91× GLimpSW time; Mesa2 rounds to four and is excluded. |

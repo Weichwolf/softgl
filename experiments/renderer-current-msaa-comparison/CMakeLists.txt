@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 3.20)
+project(RendererCurrentMsaaComparison LANGUAGES C)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_FLAGS_RELEASE "-O3 -DNDEBUG")
+add_compile_options(-O3 -fno-strict-aliasing -ffast-math -fno-associative-math
+    -fsigned-zeros -fno-finite-math-only -msse4.1 -mno-avx -mno-avx2 -mno-avx512f)
+get_filename_component(repo "${CMAKE_CURRENT_SOURCE_DIR}/../.." ABSOLUTE)
+set(SCENE_TRIAL_ROOT "${repo}/build/renderer-current-msaa-comparison/v1" CACHE PATH "Frozen production comparison")
+set(source ${SCENE_TRIAL_ROOT}/source)
+add_subdirectory(${source}/libsoftgl library)
+add_executable(softgl_current ${source}/softgl_driver.c ${source}/model_wrap.c)
+target_compile_definitions(softgl_current PRIVATE SOFTGL_MODEL_VERTEX_ATTRIBUTES
+    SOFTGL_MODEL_SCENE_VISIBILITY SOFTGL_MODEL_SCENE_POSITIONS
+    SOFTGL_MODEL_TRANSPARENT_FUSION SOFTGL_MODEL_QUANTIZED_VISIBILITY)
+target_include_directories(softgl_current PRIVATE ${source}/libsoftgl/src)
+target_link_libraries(softgl_current PRIVATE softgl pthread m)
+add_executable(mesa ${source}/mesa_driver.c ${source}/model_wrap.c)
+target_include_directories(mesa PRIVATE ${source}/libsoftgl/include)
+target_link_libraries(mesa PRIVATE OSMesa m)
+add_executable(mesa_probe ${source}/mesa_probe.c)
+target_link_libraries(mesa_probe PRIVATE OSMesa m)

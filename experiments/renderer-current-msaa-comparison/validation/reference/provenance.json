@@ -1,0 +1,5469 @@
+{
+  "files": {
+    "CMakeLists.txt": "990f01f875cfca2ea53f487930a68c7f65771d833592ec4b094c463f84f907a2",
+    "glimpsw_bmw.cpp": "ec3259846fb1642d2be42e21bc38fb829ca95dee4af4a8db3e920debd4f10ad0",
+    "softgl_bmw.c": "07ea888ed1f23184a77d37c40d4cff693b9e23b8427c6f8085a643da52cebca8",
+    "mesa_scene.c": "e082e7645de6ac133bac863f84ad2895791a8a946ad7c632ed59becaca9c6694",
+    "compare.py": "5fc392fd6e31a7cd6229e80b04e46fed6f77e9f5b195bff8b31f98bf5186193c",
+    "repair_compare.py": "4a2fd5ce3873495d5d84557be19ad8923954ee13739fe4e6196bb98d80a9eda8",
+    "export_bmw.py": "acae499e668550d4e561305a6c1327d2d5e127d2eb5723977c0610e637ea6f26",
+    "build-clang22/glimpsw_bmw": "a9f51a3ad3c4774b946a55395d66590b9131bc348a9d6d3d80847766ce069490",
+    "build-clang22/mesa_bmw": "37dd219340c7c8fab25e67bebc8b25029925b285a9e6d58d8f585e4ff7323471",
+    "build-clang22/softgl_bmw": "ca5f0900172afd62419ab7733dbb2e80ab7ebec5c70f00c191bd8a72926ef670",
+    "build-clang22/libsoftgl/libsoftgl.a": "53a65d286ac5b94fbaa91ff63c7a7864296e0f60b75a59ea6ef3024ed796a253"
+  },
+  "softglSourceHead": "47e517d1feb5944f57e079beeabe6d8bebe71694",
+  "glimpswSourceHead": "2f915606d50b70fef8859ef29adc9d53f9aee887",
+  "glimpswSourceStatus": "",
+  "models": {
+    "bmw": {
+      "title": "2014 BMW 3 Series (F31)",
+      "archive": "assets/bmw/source.zip",
+      "targetVertices": 50000,
+      "maxTextureSize": 0,
+      "onlyBaseTextures": true,
+      "credit": "DisneyCars",
+      "source": "https://sketchfab.com/3d-models/2014-bmw-3-series-f31-71746440f98d48ca9ea41ceeaa3504c7",
+      "license": "CC-BY-4.0"
+    },
+    "t80": {
+      "title": "T-80 MBT",
+      "archive": "assets/t80/source.zip",
+      "targetVertices": 0,
+      "maxTextureSize": 0,
+      "onlyBaseTextures": true,
+      "credit": "Muhamad Mirza Arrafi",
+      "source": "https://sketchfab.com/3d-models/t-80-mbt-main-battle-tank-2daa7c41afbb4778af59d74acb26356c",
+      "license": "CC-BY-4.0"
+    },
+    "sponza": {
+      "title": "Sponza",
+      "archive": "assets/sponza/source.zip",
+      "targetVertices": 0,
+      "maxTextureSize": 0,
+      "onlyBaseTextures": true,
+      "credit": "Crytek; Khronos glTF conversion",
+      "source": "https://github.com/KhronosGroup/glTF-Sample-Assets/tree/edc7c9e67c639d230715049ee31f9a96a6babbbe/Models/Sponza",
+      "license": "LicenseRef-CRYENGINE-Agreement (model); CC-BY-4.0 (metadata)",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ]
+    },
+    "bistro": {
+      "title": "Amazon Lumberyard Bistro",
+      "archive": "assets/bistro/source.zip",
+      "targetVertices": 750000,
+      "maxTextureSize": 2048,
+      "onlyBaseTextures": true,
+      "credit": "Amazon Lumberyard; NVIDIA ORCA; Arseny Kapoulkine glTF conversion",
+      "source": "https://github.com/zeux/niagara_bistro/tree/2bdb6a410f8ebd475d3737e7c8e038ed2b00b02e",
+      "license": "CC-BY-4.0",
+      "staticPose": true,
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "browserPack": "bistro-browser.pack",
+      "textureManifest": "bistro-textures.json",
+      "maxSimplificationError": 0.005
+    }
+  },
+  "sceneWrapperSha256": "56af7c1417d0af4fadc3f580abc6e18ac9962bed3ebc1aaf3150035e7da60cda",
+  "assets": {
+    "bmw": {
+      "packSha256": "76cda2c57b81e10b3c92a269537b17e4e1c5f36c653bfd1af43fcb2218473cef",
+      "export": {
+        "source": "/home/cosmo/Git/softgl/build/assets/bmw.pack",
+        "sourceSha256": "76cda2c57b81e10b3c92a269537b17e4e1c5f36c653bfd1af43fcb2218473cef",
+        "vertices": 48462,
+        "triangles": 63009,
+        "parts": 41,
+        "geometrySha256": "66cb4423da3a298008525344d7973aa25c22ba8c2aa1fb11e206a87fd575777a",
+        "geometryByteExact": true,
+        "materials": [
+          {
+            "name": "f31_chrome",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "f31_body",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 1.0
+          },
+          {
+            "name": "f31_gum",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              128,
+              128
+            ],
+            "exportDimensions": [
+              128,
+              128
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "f31_glass",
+            "alphaMode": "BLEND",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "f31_black",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "f31_silver",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "f31_r_glass",
+            "alphaMode": "BLEND",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 1.0
+          },
+          {
+            "name": "f31_leather",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              128,
+              128
+            ],
+            "exportDimensions": [
+              128,
+              128
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "f31_interior2",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              512
+            ],
+            "sourceNormalDimensions": [
+              256,
+              128
+            ],
+            "exportDimensions": [
+              1024,
+              512
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "f31_interior1",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              512,
+              256
+            ],
+            "sourceNormalDimensions": [
+              256,
+              128
+            ],
+            "exportDimensions": [
+              512,
+              256
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "f31_interior3",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              256
+            ],
+            "sourceNormalDimensions": [
+              256,
+              64
+            ],
+            "exportDimensions": [
+              1024,
+              256
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "f31_black_m",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              128,
+              128
+            ],
+            "exportDimensions": [
+              128,
+              128
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "f31_d_glass",
+            "alphaMode": "BLEND",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "f31_mirror",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "f31_plate",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              512
+            ],
+            "sourceNormalDimensions": [
+              256,
+              128
+            ],
+            "exportDimensions": [
+              1024,
+              512
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "Material_4",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              256,
+              256
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              256,
+              256
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "Material_2",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              256,
+              256
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              256,
+              256
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "Material_3",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              256,
+              256
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              256,
+              256
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "f31_w_glass",
+            "alphaMode": "BLEND",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "Material_5",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              256,
+              256
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              256,
+              256
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "Material_7",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              256,
+              256
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              256,
+              256
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "Material_6",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              256,
+              256
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              256,
+              256
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "Material_8",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              256,
+              256
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              256,
+              256
+            ],
+            "clearcoatNotImported": 0.0
+          }
+        ],
+        "limitations": [
+          "GLimpSW imports BLEND as alpha cutout",
+          "GLimpSW quantizes normals/tangents and UVs during meshlet construction",
+          "Normal maps resized to shared base/MR texture dimensions",
+          "SoftGL per-material prefiltered studio cubemaps and clearcoat are not imported"
+        ]
+      }
+    },
+    "t80": {
+      "packSha256": "cb9146d7352f52600015c499c394566acc604b43fb5760a17d133c20c5a700f4",
+      "export": {
+        "source": "/home/cosmo/Git/softgl/build/assets/t80.pack",
+        "sourceSha256": "cb9146d7352f52600015c499c394566acc604b43fb5760a17d133c20c5a700f4",
+        "vertices": 51330,
+        "triangles": 44513,
+        "parts": 7,
+        "geometrySha256": "d68a4767208be732619a70fe47e751d7b5948081b7008e6f0b2592d48ed933e0",
+        "geometryByteExact": true,
+        "materials": [
+          {
+            "name": "Cannon_362",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              512
+            ],
+            "sourceNormalDimensions": [
+              256,
+              128
+            ],
+            "exportDimensions": [
+              1024,
+              512
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "Gear_349",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "Hull_669",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              512
+            ],
+            "sourceNormalDimensions": [
+              256,
+              128
+            ],
+            "exportDimensions": [
+              1024,
+              512
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "SideSkirts_909",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              512
+            ],
+            "sourceNormalDimensions": [
+              256,
+              128
+            ],
+            "exportDimensions": [
+              1024,
+              512
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "Tracks_576",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              512,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              128,
+              256
+            ],
+            "exportDimensions": [
+              512,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "Turret_976",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "Wheels_482",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          }
+        ],
+        "limitations": [
+          "GLimpSW imports BLEND as alpha cutout",
+          "GLimpSW quantizes normals/tangents and UVs during meshlet construction",
+          "Normal maps resized to shared base/MR texture dimensions",
+          "SoftGL per-material prefiltered studio cubemaps and clearcoat are not imported"
+        ]
+      }
+    },
+    "sponza": {
+      "packSha256": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+      "export": {
+        "source": "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "sourceSha256": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+        "vertices": 192474,
+        "triangles": 262267,
+        "parts": 25,
+        "geometrySha256": "d2572f8058578423529c6ee3a0ace334a9c75e665042698182cad490bd87062e",
+        "geometryByteExact": true,
+        "materials": [
+          {
+            "name": "material",
+            "alphaMode": "MASK",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              4,
+              4
+            ],
+            "sourceNormalDimensions": [
+              4,
+              4
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "MASK",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "MASK",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "material",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          }
+        ],
+        "limitations": [
+          "GLimpSW imports BLEND as alpha cutout",
+          "GLimpSW quantizes normals/tangents and UVs during meshlet construction",
+          "Normal maps resized to shared base/MR texture dimensions",
+          "SoftGL per-material prefiltered studio cubemaps and clearcoat are not imported"
+        ]
+      }
+    },
+    "bistro": {
+      "packSha256": "4c862bcd28ef6833a89b0a058832c051098f5cf5869590999859b86f1cc993f3",
+      "export": {
+        "source": "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "sourceSha256": "4c862bcd28ef6833a89b0a058832c051098f5cf5869590999859b86f1cc993f3",
+        "vertices": 807747,
+        "triangles": 640502,
+        "parts": 254,
+        "geometrySha256": "d1bec9eedf5bfeeca7a9e79a393d53dace1f9c9de7578d008f9ab4c82f49ac35",
+        "geometryByteExact": true,
+        "materials": [
+          {
+            "name": "LMBR_0000002_Mesh",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000003_noname",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000007_Fabric",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000006_Beams",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000000b_Plaster",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000000a_Concrete",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000010_concrete",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000000f_trims",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000000e_ornament",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000011_blue_wood",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000020_glass_clean_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000015_concrete_smooth_03",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000001a_wood_painted_green",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000001b_roofing_shingle_gr",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000001c_metal_grain_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000001e_forge_windows_01",
+            "alphaMode": "MASK",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000001f_concrete_smooth_02",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000027_curtains_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000002b_awning_fabric_cian",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000030_doors",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000040_black_metal",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              128,
+              128
+            ],
+            "exportDimensions": [
+              128,
+              128
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000017_concrete_grooved_0",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000023_brick_large_white_",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000044_Concrete_Smooth",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000045_Concrete_Striped",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000043_Concrete",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000046_Metal",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000063_Plastic_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000057_Grain_Metal_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000004b_Concrete_Yellow",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000004c_Concrete_Grooved_0",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000050_Glass_Dirty_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000004a_Concrete_Smooth_03",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000056_Roofing_Shingle_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000049_Concrete_Plaster",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000004d_Roofing_Shingle_03",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000055_Wood_Painted_Flat_",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000054_Trim_Cornice",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000004e_Wood_painted_02",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000005e_Concrete_02",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000005c_Forge_Metal",
+            "alphaMode": "MASK",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000004f_Wiindows_Curtains_",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000005f_Decals",
+            "alphaMode": "BLEND",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000060_Decal_Bottomdirt",
+            "alphaMode": "BLEND",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000061_Decal_Crack",
+            "alphaMode": "BLEND",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000062_Metal_Pipe",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000058_Wood_Polished_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000068_focus",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000074_Metal",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000069_glass_focus",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000067_focus_ornament",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000006c_bistro_main_door",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000070_concrete_grooved",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000006f_Glass_Interior",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000006e_Glass_Exterior",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000006b_bulb_light",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000066_wood_painted_02",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000071_wood_painted_03",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000072_Painted_wood",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000006d_concrete_a",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              128
+            ],
+            "exportDimensions": [
+              2048,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000073_Side_Letters",
+            "alphaMode": "MASK",
+            "sourceBaseDimensions": [
+              2048,
+              512
+            ],
+            "sourceNormalDimensions": [
+              256,
+              64
+            ],
+            "exportDimensions": [
+              2048,
+              512
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000024_brick_large_beige_",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000022_brick_small_red_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000019_glass_dirty_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000038_room_interior",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              512
+            ],
+            "sourceNormalDimensions": [
+              256,
+              128
+            ],
+            "exportDimensions": [
+              1024,
+              512
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000014_concrete_plaster_g",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000001d_wood_brown_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000026_wood_painted_grey_",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000029_roofing_metal_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000002c_awning_beams_10",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000031_buildings_boulange",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000033_awning_fabric_red",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000036_frosted_glass",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000021_metal_clean_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000002a_wood_painted_cian_",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000032_buildings_details",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000037_edge_decals",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              128
+            ],
+            "exportDimensions": [
+              2048,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000039_roofing_shingle_03",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000003e_details_dark",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000002f_bronze_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000003f_concrete_white",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000002d_wood_painted_red_0",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000034_wood_painted_red_b",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000035_books_covers",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000003c_Concrete_smooth_bl",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000003d_Wood_painted_green",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000003b_Brick_Large_blend_",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000003a_Brick_Large_blend_",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000082_Mesh",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              512,
+              512
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              512,
+              512
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000085_Mesh",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000088_NapkinHolder_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000008d_Paris_LiquorBottle",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              64,
+              64
+            ],
+            "sourceNormalDimensions": [
+              64,
+              64
+            ],
+            "exportDimensions": [
+              64,
+              64
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000008b_Paris_LiquorBottle",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              512,
+              512
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              512,
+              512
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000008c_Paris_LiquorBottle",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000094_Mesh",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              128
+            ],
+            "exportDimensions": [
+              2048,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000097_mesh",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000009a_mesh",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000009d_mesh",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000009e_Glass",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000a1_Mesh",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000a4_branches",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              512,
+              512
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              512,
+              512
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000a5_leaf_a",
+            "alphaMode": "MASK",
+            "sourceBaseDimensions": [
+              256,
+              256
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              256,
+              256
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000a6_leaf_b",
+            "alphaMode": "MASK",
+            "sourceBaseDimensions": [
+              256,
+              256
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              256,
+              256
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000aa_Leaves",
+            "alphaMode": "MASK",
+            "sourceBaseDimensions": [
+              512,
+              512
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              512,
+              512
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000a9_Bark",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              256,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              64,
+              256
+            ],
+            "exportDimensions": [
+              256,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000ad_Trunk",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000b0_Branches",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000ae_Green_Leaves",
+            "alphaMode": "MASK",
+            "sourceBaseDimensions": [
+              512,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              128,
+              256
+            ],
+            "exportDimensions": [
+              512,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000af_Orange_Leaves",
+            "alphaMode": "MASK",
+            "sourceBaseDimensions": [
+              512,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              128,
+              256
+            ],
+            "exportDimensions": [
+              512,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000b2_Paris_flowers",
+            "alphaMode": "MASK",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000b3_Foliage",
+            "alphaMode": "MASK",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000b6_Mesh",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000b9_mesh",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000bc_mesh",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000bf_Mesh",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000c2_vespa",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000c7_wheel_rim",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000c6_tire",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000c3_headlight",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000c4_odometer",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              512,
+              256
+            ],
+            "sourceNormalDimensions": [
+              256,
+              128
+            ],
+            "exportDimensions": [
+              512,
+              256
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000c5_odometer_glass",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000c9_paris_doormat_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              128
+            ],
+            "exportDimensions": [
+              2048,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000028_brick_small_red_02",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000cb_glass_ornament",
+            "alphaMode": "MASK",
+            "sourceBaseDimensions": [
+              512,
+              512
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              512,
+              512
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000ce_fixtures",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              256,
+              128
+            ],
+            "sourceNormalDimensions": [
+              256,
+              128
+            ],
+            "exportDimensions": [
+              256,
+              128
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000d7_ElectricBox_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000db_Plastic_blue",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000da_Metal",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000dc_Plastic_Dark",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000e0_main",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000e2_emissive",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000e1_glass",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000e3_metal",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000e6_mesh",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000e9_mesh",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              128
+            ],
+            "exportDimensions": [
+              2048,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000dd_Plastic",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000ee_Paris_LiquorBottle",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              64,
+              64
+            ],
+            "sourceNormalDimensions": [
+              64,
+              64
+            ],
+            "exportDimensions": [
+              64,
+              64
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000ec_Paris_LiquorBottle",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              512,
+              512
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              512,
+              512
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000ed_Paris_LiquorBottle",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000ef_Paris_LiquorBottle",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              64,
+              64
+            ],
+            "sourceNormalDimensions": [
+              64,
+              64
+            ],
+            "exportDimensions": [
+              64,
+              64
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000f2_Paris_LiquorBottle",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              64,
+              64
+            ],
+            "sourceNormalDimensions": [
+              64,
+              64
+            ],
+            "exportDimensions": [
+              64,
+              64
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000f0_Paris_LiquorBottle",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              64,
+              64
+            ],
+            "sourceNormalDimensions": [
+              64,
+              64
+            ],
+            "exportDimensions": [
+              64,
+              64
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000f1_Paris_LiquorBottle",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              64,
+              64
+            ],
+            "sourceNormalDimensions": [
+              64,
+              64
+            ],
+            "exportDimensions": [
+              64,
+              64
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000f5_Metal_Worn_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000fe_Label",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000fb_Glass",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000fc_Metal",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00000fd_Toffee",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000102_Paris_Paintings_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000101_Paris_Painting_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000106_Ceramic",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000107_Details",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              512,
+              256
+            ],
+            "sourceNormalDimensions": [
+              256,
+              128
+            ],
+            "exportDimensions": [
+              512,
+              256
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000010a_NapkinHolder_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000010d_Paris_LiquorBottle",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000110_chrome",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000111_details",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              512
+            ],
+            "sourceNormalDimensions": [
+              256,
+              128
+            ],
+            "exportDimensions": [
+              1024,
+              512
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000114_Mesh",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000117_Mesh",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000011a_paris_beer_tap_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000103_Paris_Glass_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000011d_Mesh",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              128
+            ],
+            "exportDimensions": [
+              2048,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000120_Paris_cashregister",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000121_Paris_cashregister",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              512,
+              512
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              512,
+              512
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000122_Glass",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000125_Metal_Worn_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000126_Wood_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000127_Plastic_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000012b_Paris_Glass_Detail",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000012e_Paris_Glass_Detail",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000012c_Paris_Glass_Detail",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000012d_Paris_Glass_Detail",
+            "alphaMode": "MASK",
+            "sourceBaseDimensions": [
+              512,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              128,
+              256
+            ],
+            "exportDimensions": [
+              512,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000131_Paris_Coasters_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              256,
+              256
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              256,
+              256
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000134_Paris_Table_cloth_",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000137_Rubber_Bar_Mat_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000138_Plastic_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000013b_Mesh",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000013e_Metal_Chrome_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000142_Mesh",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000146_Metal_Chrome",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000148_Plastic_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000149_Wheels_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              128
+            ],
+            "exportDimensions": [
+              2048,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000147_Wood_Painted",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000014d_Glass",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000150_Labels",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000014e_Metal",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000014f_Cookies",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              128
+            ],
+            "exportDimensions": [
+              2048,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000153_Metal_Base_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000154_plants",
+            "alphaMode": "MASK",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000157_mesh",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              512,
+              512
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              512,
+              512
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000158_Metal_Bronze_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000159_Light_Bulb",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000015c_main",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000015d_scarf",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000162_Paris_Curbstones_0",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000016c_Cobblestone_Small_",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000016b_Cobblestone_Big_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000161_Pavement_Brick_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000016d_Pavement_Cobblesto",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000165_Ground_Wet_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000167_Manhole_Cover",
+            "alphaMode": "MASK",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000163_Cobblestone_02_Wet",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000168_Cobblestone_Wet_Le",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000016a_Cobble_01_Leaves",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000160_Pavement_Cobblesto",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000016e_bricks_red_small",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000016f_concrete",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000172_Paris_Streetpivot",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              512
+            ],
+            "sourceNormalDimensions": [
+              256,
+              128
+            ],
+            "exportDimensions": [
+              1024,
+              512
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000017b_leaf",
+            "alphaMode": "MASK",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000017d_Paris_flowers",
+            "alphaMode": "MASK",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000180_leaf",
+            "alphaMode": "MASK",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000017e_Foliage",
+            "alphaMode": "MASK",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000181_stone",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000184_Paris_Wall_Light_I",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000185_Paris_Wall_Bulb_Li",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000189_glass",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000188_metal",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              128
+            ],
+            "exportDimensions": [
+              2048,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000018b_bulb",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              256,
+              256
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              256,
+              256
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000018c_support_bulb",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              64,
+              64
+            ],
+            "sourceNormalDimensions": [
+              64,
+              64
+            ],
+            "exportDimensions": [
+              64,
+              64
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000018a_chains",
+            "alphaMode": "MASK",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000190_metal",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000192_bakery",
+            "alphaMode": "MASK",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000196_fixtures",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              256,
+              128
+            ],
+            "sourceNormalDimensions": [
+              256,
+              128
+            ],
+            "exportDimensions": [
+              256,
+              128
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000019c_Paris_StringLights",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              64,
+              64
+            ],
+            "sourceNormalDimensions": [
+              64,
+              64
+            ],
+            "exportDimensions": [
+              64,
+              64
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000019a_Paris_StringLights",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              64,
+              64
+            ],
+            "sourceNormalDimensions": [
+              64,
+              64
+            ],
+            "exportDimensions": [
+              64,
+              64
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000197_Paris_StringLights",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              64,
+              64
+            ],
+            "sourceNormalDimensions": [
+              64,
+              64
+            ],
+            "exportDimensions": [
+              64,
+              64
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000199_Paris_StringLights",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              64,
+              64
+            ],
+            "sourceNormalDimensions": [
+              64,
+              64
+            ],
+            "exportDimensions": [
+              64,
+              64
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000019b_Paris_StringLights",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              64,
+              64
+            ],
+            "sourceNormalDimensions": [
+              64,
+              64
+            ],
+            "exportDimensions": [
+              64,
+              64
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000198_Paris_StringLights",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              64,
+              64
+            ],
+            "sourceNormalDimensions": [
+              64,
+              64
+            ],
+            "exportDimensions": [
+              64,
+              64
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000019f_Mesh",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              512,
+              512
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              512,
+              512
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00001a2_Mesh",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000193_ties_shop",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00001a5_Paris_Ceiling_Lamp",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00001a8_Main",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00001a9_letters",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              64,
+              64
+            ],
+            "sourceNormalDimensions": [
+              64,
+              64
+            ],
+            "exportDimensions": [
+              64,
+              64
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00001aa_Metal",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_0000191_book_store",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00001af_Plaster",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00001ae_Wood",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00001b3_Wooden_stuco",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00001b4_Plaster_Red",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00001b5_Wood_painted_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00001b9_Grid",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              64,
+              64
+            ],
+            "sourceNormalDimensions": [
+              64,
+              64
+            ],
+            "exportDimensions": [
+              64,
+              64
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00001ad_Brushed_Metal",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00001bd_Frozen_Glass",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00001b0_Floor_Tile_Hexagon",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00001b2_Glass",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1,
+              1
+            ],
+            "sourceNormalDimensions": [
+              1,
+              1
+            ],
+            "exportDimensions": [
+              4,
+              4
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00001b7_Paris_courtain_01a",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00001b6_Paris_courtain_01b",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00001b1_Paris_Bartrim_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00001b8_White_Plastic",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              64,
+              64
+            ],
+            "sourceNormalDimensions": [
+              64,
+              64
+            ],
+            "exportDimensions": [
+              64,
+              64
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00001ba_Paris_MenuSign_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00001bb_Paris_Lantern_01",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              512,
+              512
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              512,
+              512
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_00001bc_Ceiling_Color",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              2048,
+              2048
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              2048,
+              2048
+            ],
+            "clearcoatNotImported": 0.0
+          },
+          {
+            "name": "LMBR_000018f_pharmacy_cross",
+            "alphaMode": "OPAQUE",
+            "sourceBaseDimensions": [
+              1024,
+              1024
+            ],
+            "sourceNormalDimensions": [
+              256,
+              256
+            ],
+            "exportDimensions": [
+              1024,
+              1024
+            ],
+            "clearcoatNotImported": 0.0
+          }
+        ],
+        "limitations": [
+          "GLimpSW imports BLEND as alpha cutout",
+          "GLimpSW quantizes normals/tangents and UVs during meshlet construction",
+          "Normal maps resized to shared base/MR texture dimensions",
+          "SoftGL per-material prefiltered studio cubemaps and clearcoat are not imported"
+        ]
+      }
+    }
+  },
+  "imageCopyCompilerBarrier": true,
+  "supersedes": "pre-copy-barrier: SoftGL frame-loop memcpy optimized away; earlier timings diagnostic only",
+  "softglSourceFiles": {
+    "libsoftgl/CMakeLists.txt": "03de392d67f33b5183e43bdc2a5b26e04bec31823e36a4def7ec2b4c9de8afbd",
+    "libsoftgl/include/GL/softgl.h": "da4f96a7659b61240745dbe1d92f84715bf44fca46348ff861d40f73f0168376",
+    "libsoftgl/src/api.c": "76578a3b458c8943efbd94910bdffb3060dadf40c6942ce65adda97f3f45d5db",
+    "libsoftgl/src/buffers.c": "a0363363f060dc9cbd99a64703496e1e702c2cf82beb42b16a54337b524be2ff",
+    "libsoftgl/src/clip.c": "f5c0b940f54a4aa52a2d55785de31d72c168d381b53012e408179f81381de3cc",
+    "libsoftgl/src/dlist.c": "e7446f33b3972e4384c103c2547869dfffad43c900e1f55bf6f8c38eaf36eae8",
+    "libsoftgl/src/dlist.h": "4bc8e0e5966f5b226c8e086ead9a635fd6158eed18b0c55e4b4c2ed0bdbda033",
+    "libsoftgl/src/evaluators.c": "69281ca9f25e0f7d5cc1f76f31fb17502c83b60ea6168bbbae238e65227344ba",
+    "libsoftgl/src/frag_combine_hot.h": "e801062d6fe0ce8ade5f12730ba4cb1441689ba6bd39a331a308bc99e29f72cc",
+    "libsoftgl/src/frag_hot.h": "e0e1cba7afec1b2c13a53a8198207d868fa0636a84ee98e059f238d131dca52e",
+    "libsoftgl/src/frag_packet.h": "217cd6bfcae38b7c2428077bc4c1e772ca178d82498a21d963c0cc86061c4dc6",
+    "libsoftgl/src/fragment.c": "01d88705e22b03c3cf3d8b16abfca9a70e97f35b5206023376daca9ba2a9881c",
+    "libsoftgl/src/fragment_combine.c": "b7af7972265bf0ac384379fcba6885e93707cdd8a0de956f691ad28ed1dd7153",
+    "libsoftgl/src/fragment_write.c": "6c806d57d87ff4ed31ecdf502be6f77772497696a607633edf71c9971da66f1d",
+    "libsoftgl/src/framebuffer.c": "7c82e1f52d5b2c2e7d9752d155f379109a8791c41b147713cfb14f2788e1a974",
+    "libsoftgl/src/immediate.c": "80b520a3c3c14e675eeca5d3083c5dbe423e9684a69b868446f85e99ef86534c",
+    "libsoftgl/src/index_range.h": "4d0456bd563031b7b4ff1184bfb6fa513908ae4047bd5f6f83dc8a7f57d8bb03",
+    "libsoftgl/src/lighting.c": "1e6db9b4f59e2a54b1f6b89e6bc129d206dc816aaa08f099d80e6f8f2f42e338",
+    "libsoftgl/src/lines.c": "b08fef911685977a08d6f2b29265aa28721aa0497a1a208c492403bdde0bbe87",
+    "libsoftgl/src/matrix.c": "fd5bff0e263cd87d1032fad4fa75f966f76b2cc605b746d47e3d4eeabde6d793",
+    "libsoftgl/src/msaa_additive.h": "6fab4198defe4db18a83f1562034807e71957ba07db0c0bd51f2e26c90d4778f",
+    "libsoftgl/src/multisample.c": "2ba7fe2df9c8afed9acf1daa5ea48df6fbe8b5c0cceeac11bd61c3804423ea1d",
+    "libsoftgl/src/multisample.h": "cdbe1e0aa51827f13789ce7f46e3acc961e0b87c5d034e1c7ba22fe54c611315",
+    "libsoftgl/src/pipeline.c": "f8c7d253586b14d4d2aaabff7703ea1df44ce6ff937d9c2c22b1a3e573290228",
+    "libsoftgl/src/pixels.c": "8e366864ac1418564d2342bd3c120ad5e8057998af21ff31ccb5663134ddfc92",
+    "libsoftgl/src/raster_hz.h": "1cc4a6fe6f5a425607cb3b8a57d15cb19d5de537794c638b673f0bd4a14b4ed6",
+    "libsoftgl/src/raster_msaa_impl.h": "a9048bd2e89e96d87f407d17471e50c48d35c187aa20719b5e6af3d1d026eeec",
+    "libsoftgl/src/raster_store.h": "251cbe4d9765edfc26b4428d7d5906ab17722689feae08eac432db59a7b22934",
+    "libsoftgl/src/raster_triangle_impl.h": "2a78075d138dd00d6d95c92adc922de9e11bc316cb5a3b03f3739974492ca24f",
+    "libsoftgl/src/raster_types.h": "0b050bdbf31f6c398366112c84a6041390a50398d1e18acafe4c7440a0700f45",
+    "libsoftgl/src/raster_vertex_pack.h": "956a8084b973144a9d8ee28c0d485214e3e8551a7384238f610620e00ad6e528",
+    "libsoftgl/src/rasterizer.c": "c3d77d9b13e06cb5bc35a1639a81146f5ad252aaffc8f3d290b7723d06235700",
+    "libsoftgl/src/simd.h": "44b532f4427f3e76886228dfe96024adf3ba1c1c748c7031d2fff2413db9c608",
+    "libsoftgl/src/state.c": "bffa3243dffdbef27ddc90c7ad6f2394d393f0dc47bf1d3797b2b5b63e8a875c",
+    "libsoftgl/src/texture.c": "9c4d999c73b68a7431bd1f0e88c2d3d2e7e1931670ad166ffee535f8d5764c45",
+    "libsoftgl/src/types.h": "c90361869e5600b1e3164ca31ba87c6af31a659e2f888456d90d6de6bea52fe1",
+    "libsoftgl/src/vertex_inputs.h": "fb774a51f4627b91dd6d58fc2cb918df04ef224d45cd898dfa1ed5dd9a0b0db5",
+    "libsoftgl/src/workers.c": "958a3bb4425b91c544da8f4fc2116fc46f04ee9a784909d8e69909479c773417",
+    "libsoftgl/src/workers.h": "c8001b8eceae3191ab3e94e962e95eab8f28e7bef86ce4455e97e49541a0313b",
+    "libsoftgl/src/workers_queue_raw.inc": "a8150d0d9498ba164b0606945f7cb216749536c5a0b53dfe1ff03bec0e0bbbfe"
+  },
+  "measurementComparatorGitHead": "47e517d1feb5944f57e079beeabe6d8bebe71694",
+  "selectedResolutions": [
+    "640x360"
+  ],
+  "resolutionPolicy": "User stopped mixed-resolution job; all 72 completed 640x360 records were retained and accepted. Higher resolutions excluded."
+}

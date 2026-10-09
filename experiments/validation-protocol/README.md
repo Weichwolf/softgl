@@ -12,6 +12,14 @@ and browser images. Use repeatable AB/BA measurements across BMW, T-80, Sponza
 and Bistro with MSAA off/2x/4x; report per-scene/mode costs. Commit and push each
 adopted gain, then rebuild and verify the live WASM viewer.
 
+User clarification (2026-10-09): prioritize measured gains in this order:
+**Bistro > Sponza > BMW F31 > T-80**. A reproducible double-digit gain in
+Sponza or Bistro can justify an approximately 2% BMW cost; variation of that
+size is not a veto. Report the tradeoff and the measurement uncertainty rather
+than requiring every scene to improve. Correct rendering and native/WASM
+SIMD128 compatibility remain required. The historical BMW-priority rule below
+does not govern current adoption decisions.
+
 The previous exact-renderer protocol follows as historical guidance for changes
 that claim unchanged behavior.
 

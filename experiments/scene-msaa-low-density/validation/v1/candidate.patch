@@ -1,0 +1,22 @@
+--- a/libsoftgl/include/GL/softgl.h
++++ b/libsoftgl/include/GL/softgl.h
+@@ -962,7 +962,7 @@
+  * Four-sample only. May change equal-depth winners and alpha/shading points. */
+ void softgl_scene_depth_order(GLuint mode);
+ int softgl_scene_visibility_begin_hint_ordered(GLuint triangles, GLuint mode);
+-/* Opt-in scene cost hint: one input triangle per pixel for MSAA; order mode
++/* Opt-in scene cost hint: one input triangle per eight pixels for MSAA; order mode
+  * has the same meaning as softgl_scene_depth_order. Legacy hints retain their
+  * existing thresholds. No geometry or physical samples are removed. */
+ int softgl_scene_visibility_begin_adaptive(GLuint triangles, GLuint mode);
+--- a/libsoftgl/src/scene_density_hint.c
++++ b/libsoftgl/src/scene_density_hint.c
+@@ -4,7 +4,7 @@
+ 
+ int softgl_scene_visibility_begin_adaptive(GLuint triangles, GLuint mode) {
+     softgl_ctx *c = sg_current();
+-    if (c && c->fb.samples && (uint64_t)triangles < (uint64_t)c->fb.w*c->fb.h)
++    if (c && c->fb.samples && (uint64_t)triangles*8u < (uint64_t)c->fb.w*c->fb.h)
+         return 0;
+     int started = softgl_scene_visibility_begin();
+     if (started) softgl_scene_depth_order(mode);
