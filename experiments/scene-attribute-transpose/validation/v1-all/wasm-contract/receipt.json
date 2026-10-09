@@ -1,0 +1,41 @@
+{
+  "passed": true,
+  "nativeOutputExact": true,
+  "actualSimd128Wasm": true,
+  "command": [
+    "emcc",
+    "-std=gnu11",
+    "-O2",
+    "-msimd128",
+    "-msse",
+    "-msse2",
+    "-msse3",
+    "-mssse3",
+    "-msse4.1",
+    "-I/home/cosmo/Git/softgl/build/scene-attribute-transpose/v1-all/source/libsoftgl/include",
+    "-I/home/cosmo/Git/softgl/build/scene-attribute-transpose/v1-all/source/libsoftgl/src",
+    "-I/home/cosmo/Git/softgl/build/scene-attribute-transpose/v1-all/fixtures",
+    "/home/cosmo/Git/softgl/experiments/scene-attribute-transpose/attribute_contract.c",
+    "-sENVIRONMENT=node",
+    "-sWASM_ASYNC_COMPILATION=0",
+    "-sEXIT_RUNTIME=1",
+    "-sALLOW_MEMORY_GROWTH=1",
+    "-sINITIAL_MEMORY=67108864",
+    "-sMAXIMUM_MEMORY=4294967296",
+    "-sSTACK_SIZE=8388608",
+    "-o",
+    "/home/cosmo/Git/softgl/build/scene-attribute-transpose/v1-all/wasm-contract/attribute_contract.js"
+  ],
+  "exitCode": 0,
+  "memoryDeclaration": "(memory $0 1024 65536)",
+  "maximumMemoryBytes": 4294967296,
+  "wasmSha256": "26bad8fe23dd4aa0f825f77cb5c9082b4dfc1382509b9e304bf5467d98bde9d8",
+  "fixtureSha256": "f44c9854b693230ccf6d7a28f3ab9ef09745739a086d865438901bcb323853d1",
+  "runnerSha256": "5b288925a16944e5e321abd9ab9be65dd92758cffa0d14082c31c2fc2b35b740",
+  "referenceAndCandidateSha256": {
+    "fixtures/original_gather.h": "cfcec6bab3d27d7bbff93a241a88ffc81a24565395833f2c25b2a8285a1aa4ba",
+    "fixtures/triangle_layout.h": "7c04839eb3a97c490ba4f8c49d9df00d2fe57512ddf14dadc239167ff5f52242",
+    "source/libsoftgl/src/scene_attribute_packet.h": "835084e0a00e49451a338c1b5893f4ea80cb05047dab846da51eff88cfc08df0"
+  },
+  "scope": "Single-thread numeric shader helper; no linked renderer, model, pthread or browser gate"
+}

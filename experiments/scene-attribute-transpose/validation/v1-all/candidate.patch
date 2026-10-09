@@ -1,0 +1,80 @@
+--- /dev/null
++++ b/libsoftgl/src/scene_attribute_packet.h
+@@ -0,0 +1,23 @@
++#ifndef SOFTGL_SCENE_ATTRIBUTE_PACKET_H
++#define SOFTGL_SCENE_ATTRIBUTE_PACKET_H
++
++/* Load complete aligned vec4 records once, then transpose lanes to components.
++ * Keep the existing interpolation grouping and four-wide arithmetic. */
++SG_INLINE void scene_gather_lerp4(const scene_triangle *t[4], int field, int channels,
++    sg_f32x4 w0, sg_f32x4 w1, sg_f32x4 w2, sg_f32x4 inverse, sg_f32x4 out[4]) {
++    sg_f32x4 value[3][4];
++    for (int v = 0; v < 3; v++) {
++        for (int lane = 0; lane < 4; lane++) {
++            const sg_vec4 *a = field < 0 ? &t[lane]->color[v] : &t[lane]->uv[field][v];
++            value[v][lane] = sg_f32x4_load(&a->x);
++        }
++        _MM_TRANSPOSE4_PS(value[v][0], value[v][1], value[v][2], value[v][3]);
++    }
++    for (int channel = 0; channel < channels; channel++) {
++        out[channel] = sg_f32x4_mul(sg_f32x4_add(sg_f32x4_add(
++            sg_f32x4_mul(value[0][channel], w0), sg_f32x4_mul(value[1][channel], w1)),
++            sg_f32x4_mul(value[2][channel], w2)), inverse);
++    }
++}
++
++#endif
+--- a/libsoftgl/src/scene_visibility.c
++++ b/libsoftgl/src/scene_visibility.c
+@@ -1159,16 +1159,7 @@
+ 
+ #include "geometry.inc"
+ 
+-static sg_f32x4 scene_gather_lerp(const scene_triangle *t[4], int field, int channel,
+-    sg_f32x4 w0, sg_f32x4 w1, sg_f32x4 w2, sg_f32x4 inverse) {
+-    float value[3][4];
+-    for (int v = 0; v < 3; v++) for (int l = 0; l < 4; l++) {
+-        sg_vec4 a = field < 0 ? t[l]->color[v] : t[l]->uv[field][v];
+-        value[v][l] = channel == 0 ? a.x : channel == 1 ? a.y : channel == 2 ? a.z : a.w;
+-    }
+-    return sg_f32x4_mul(sg_f32x4_add(sg_f32x4_add(sg_f32x4_mul(sg_f32x4_load(value[0]),w0),
+-        sg_f32x4_mul(sg_f32x4_load(value[1]),w1)),sg_f32x4_mul(sg_f32x4_load(value[2]),w2)),inverse);
+-}
++#include "scene_attribute_packet.h"
+ 
+ static void scene_shade_packet(struct sg_scene_visibility *f, scene_material *m,
+     const uint32_t pixels[4], unsigned live) {
+@@ -1197,8 +1188,8 @@
+     sg_f32x4 w0 = sg_f32x4_load(bary[0]), w1 = sg_f32x4_load(bary[1]), w2 = sg_f32x4_load(bary[2]);
+     sg_f32x4 inverse = sg_f32x4_div(sg_f32x4_splat(1.f),sg_f32x4_add(sg_f32x4_add(w0,w1),w2));
+     sg_f32x4 primary[4], encoded_half[3], tex[4][4];
+-    for (int k = 0; k < 4; k++) primary[k] = scene_gather_lerp(tri,-1,k,w0,w1,w2,inverse);
+-    for (int k = 0; k < 3; k++) encoded_half[k] = scene_gather_lerp(tri,1,k,w0,w1,w2,inverse);
++    scene_gather_lerp4(tri,-1,4,w0,w1,w2,inverse,primary);
++    scene_gather_lerp4(tri,1,3,w0,w1,w2,inverse,encoded_half);
+     /* Canonical programs must preserve identical UV0/UV2; geometry validation
+      * restores the scene if any program violates that contract. */
+     int shared_uv = tri[0]->primitive && tri[1]->primitive && tri[2]->primitive && tri[3]->primitive;
+@@ -1211,16 +1202,18 @@
+             for (int k = 0; k < 4; k++) tex[u][k] = sg_f32x4_splat(unit->constant_color[k]);
+             continue;
+         }
+-        sg_f32x4 x, y;
++        sg_f32x4 x, y, coordinates[4];
+         if (u == 2 && have_uv) {
+             x = shared_x; y = shared_y;
++            coordinates[2] = sg_f32x4_splat(0.f);
+         } else {
+-            x = scene_gather_lerp(tri,u,0,w0,w1,w2,inverse);
+-            y = scene_gather_lerp(tri,u,1,w0,w1,w2,inverse);
++            scene_gather_lerp4(tri,u,unit->active_slot == SG_TEX_TARGET_CUBE ? 3 : 2,
++                w0,w1,w2,inverse,coordinates);
++            x = coordinates[0]; y = coordinates[1];
+             if (u == 0 && shared_uv) { shared_x = x; shared_y = y; have_uv = 1; }
+         }
+         if (unit->active_slot == SG_TEX_TARGET_CUBE) {
+-            sg_f32x4 z = scene_gather_lerp(tri,u,2,w0,w1,w2,inverse);
++            sg_f32x4 z = coordinates[2];
+             sg_packet_sample_cube_target(unit,x,y,z,live,tex[u]);
+         } else sg_packet_sample_2d(unit,x,y,live,0,tex[u]);
+     }
