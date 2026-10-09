@@ -1,0 +1,28 @@
+emcc: warning: -pthread + ALLOW_MEMORY_GROWTH may run non-wasm code slowly, see https://github.com/WebAssembly/design/issues/1271 [-Wpthreads-mem-growth]
+{"enabled":1,"helpers":8,"samples":4,"variant":17,"planes":"773b10a2f3b26325"}
+Quantized visibility: 216 paired exact full-plane frames, 16 rollbacks PASS
+emcc: warning: -pthread + ALLOW_MEMORY_GROWTH may run non-wasm code slowly, see https://github.com/WebAssembly/design/issues/1271 [-Wpthreads-mem-growth]
+{"enabled":1,"helpers":8,"samples":4,"variant":17,"planes":"773b10a2f3b26325"}
+Quantized visibility: 216 paired exact full-plane frames, 16 rollbacks PASS
+emcc: warning: -pthread + ALLOW_MEMORY_GROWTH may run non-wasm code slowly, see https://github.com/WebAssembly/design/issues/1271 [-Wpthreads-mem-growth]
+{"samples":4,"helpers":8,"extent":7,"placement":2,"alpha":1,"overlap":1,"planes":"7b5d798c71cb5a27"}
+576 small/boundary/clipped/overlapping/large/alpha MSAA plane hashes PASS
+emcc: warning: -pthread + ALLOW_MEMORY_GROWTH may run non-wasm code slowly, see https://github.com/WebAssembly/design/issues/1271 [-Wpthreads-mem-growth]
+{"samples":4,"helpers":8,"extent":7,"placement":2,"alpha":1,"overlap":1,"planes":"7b5d798c71cb5a27"}
+576 small/boundary/clipped/overlapping/large/alpha MSAA plane hashes PASS
+emcc: warning: -pthread + ALLOW_MEMORY_GROWTH may run non-wasm code slowly, see https://github.com/WebAssembly/design/issues/1271 [-Wpthreads-mem-growth]
+WASM pointerBytes=4 heapBytes=268435456
+Near occluder rollback followed by farther ordinary draw: 6 full sample-plane pairs PASS
+emcc: warning: -pthread + ALLOW_MEMORY_GROWTH may run non-wasm code slowly, see https://github.com/WebAssembly/design/issues/1271 [-Wpthreads-mem-growth]
+WASM pointerBytes=4 heapBytes=268435456
+Near occluder rollback followed by farther ordinary draw: 6 full sample-plane pairs PASS
+emcc: warning: -pthread + ALLOW_MEMORY_GROWTH may run non-wasm code slowly, see https://github.com/WebAssembly/design/issues/1271 [-Wpthreads-mem-growth]
+Enabled near/opaque-first: 108 far-first opaque/clip/rollback and immutable mixed-cutout full-plane pairs PASS
+Actual bin order dispatch: bins=903 movedReferences=3348 PASS
+emcc: warning: -pthread + ALLOW_MEMORY_GROWTH may run non-wasm code slowly, see https://github.com/WebAssembly/design/issues/1271 [-Wpthreads-mem-growth]
+Enabled near/opaque-first: 108 far-first opaque/clip/rollback and immutable mixed-cutout full-plane pairs PASS
+Actual bin order dispatch: bins=903 movedReferences=3348 PASS
+Order scratch budget: three forced failures restore every sample plane PASS
+Actual WASM: 216 quantized independent full-plane hashes exact PASS
+Actual WASM: 576 small independent full-plane hashes exact PASS
+Actual WASM: admission, mixed states and full-sample rollback/replay exact PASS

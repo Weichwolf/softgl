@@ -958,6 +958,10 @@ int softgl_scene_visibility_begin_hint(GLuint triangles);
  * Call after a successful begin; each new begin restores full precision.
  * Legacy draws and MSAA keep their existing renderer. */
 void softgl_scene_quantized_visibility(GLboolean enabled);
+/* Private scene order trial: 0 original, 1 near-first, 2 opaque then near-first.
+ * Four-sample only. May change equal-depth winners and alpha/shading points. */
+void softgl_scene_depth_order(GLuint mode);
+int softgl_scene_visibility_begin_hint_ordered(GLuint triangles, GLuint mode);
 /* Compatibility entry point for the removed native-wide backend.
  * Always returns zero; native and WASM rendering use SIMD128 exclusively. */
 int softgl_scene_native_wide(GLboolean enabled);

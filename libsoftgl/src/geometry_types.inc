@@ -72,4 +72,8 @@ typedef struct {
     atomic_int next_task;
 } scene_geometry;
 
+#define SOFTGL_SCENE_ORDER_SEPARATE_STAGE 1
+typedef struct { uint64_t reference; float depth; uint32_t key; } scene_order_reference;
+typedef struct { scene_order_reference *data; uint32_t capacity, mode; } scene_order_storage;
+_Static_assert(sizeof(scene_order_storage) <= 128, "sort cache fits unused bin padding");
 static void scene_geometry_destroy(scene_geometry *g);

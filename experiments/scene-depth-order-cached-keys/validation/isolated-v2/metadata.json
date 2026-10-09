@@ -1,0 +1,353 @@
+{
+  "baselineRevision": "47572f4935fd821d552234f73ccde641fd6c253e",
+  "variant": "isolated-v2",
+  "productionAdopted": false,
+  "built": true,
+  "measured": true,
+  "performanceAccepted": false,
+  "actualWasmPending": true,
+  "sanitizersPending": true,
+  "residentReusePending": true,
+  "variantManifest": "baseline=47572f4935fd821d552234f73ccde641fd6c253e\nopaque_first=True\nisolate_order=True\nsamples=4\nkey_source=existing_eligible_occlusion_packets\n",
+  "sourceSha256": {
+    "CMakeLists.txt": "41a69b787380c1ec562b95a8f02c6bd9d7cd7624f23439454b893a17992a1fb7",
+    "include/GL/softgl.h": "5b78fd53d9087563c8a77beca5dc5e2abe186b934ee3d236731703b52cadc2f8",
+    "src/api.c": "9c373504af364d620c212afdfc9046bcc899bd61af198a6558fdda81f01691e1",
+    "src/buffers.c": "a0363363f060dc9cbd99a64703496e1e702c2cf82beb42b16a54337b524be2ff",
+    "src/clip.c": "f5c0b940f54a4aa52a2d55785de31d72c168d381b53012e408179f81381de3cc",
+    "src/cluster_cull.h": "b639ef7e507d28512549feda7e272e0bef855acf6fd1c8e8cad96cae6ad228d9",
+    "src/dlist.c": "e7446f33b3972e4384c103c2547869dfffad43c900e1f55bf6f8c38eaf36eae8",
+    "src/dlist.h": "4bc8e0e5966f5b226c8e086ead9a635fd6158eed18b0c55e4b4c2ed0bdbda033",
+    "src/evaluators.c": "69281ca9f25e0f7d5cc1f76f31fb17502c83b60ea6168bbbae238e65227344ba",
+    "src/frag_combine_hot.h": "e801062d6fe0ce8ade5f12730ba4cb1441689ba6bd39a331a308bc99e29f72cc",
+    "src/frag_hot.h": "e0e1cba7afec1b2c13a53a8198207d868fa0636a84ee98e059f238d131dca52e",
+    "src/frag_packet.h": "f06d0fa6a43404fbdbc2ca391d96162dcafb8e53dcfaca45afc46ebb7ff6b6de",
+    "src/fragment.c": "d1883401993e1576f565710c6ad9e3066d401684ac698928940f72fd582ef1d2",
+    "src/fragment_combine.c": "b7af7972265bf0ac384379fcba6885e93707cdd8a0de956f691ad28ed1dd7153",
+    "src/fragment_write.c": "6c806d57d87ff4ed31ecdf502be6f77772497696a607633edf71c9971da66f1d",
+    "src/framebuffer.c": "7c82e1f52d5b2c2e7d9752d155f379109a8791c41b147713cfb14f2788e1a974",
+    "src/geometry.inc": "50f3ab9180ba65e5133f472767e7e7e192728949fd7786b6a7f973cf57b98a5c",
+    "src/geometry_types.inc": "6c7c61be00fe3e0ec30ccecb81b641339cf913a751b461304eff13f9e3b4a338",
+    "src/immediate.c": "80b520a3c3c14e675eeca5d3083c5dbe423e9684a69b868446f85e99ef86534c",
+    "src/index_range.h": "4d0456bd563031b7b4ff1184bfb6fa513908ae4047bd5f6f83dc8a7f57d8bb03",
+    "src/lighting.c": "1e6db9b4f59e2a54b1f6b89e6bc129d206dc816aaa08f099d80e6f8f2f42e338",
+    "src/lines.c": "b08fef911685977a08d6f2b29265aa28721aa0497a1a208c492403bdde0bbe87",
+    "src/matrix.c": "fd5bff0e263cd87d1032fad4fa75f966f76b2cc605b746d47e3d4eeabde6d793",
+    "src/msaa_additive.h": "6fab4198defe4db18a83f1562034807e71957ba07db0c0bd51f2e26c90d4778f",
+    "src/multisample.c": "2ba7fe2df9c8afed9acf1daa5ea48df6fbe8b5c0cceeac11bd61c3804423ea1d",
+    "src/multisample.h": "cdbe1e0aa51827f13789ce7f46e3acc961e0b87c5d034e1c7ba22fe54c611315",
+    "src/pipeline.c": "fb559aa949d0e4211044451c9456f22e928982fb03c6f9132c199b316a2edfe3",
+    "src/pixels.c": "8e366864ac1418564d2342bd3c120ad5e8057998af21ff31ccb5663134ddfc92",
+    "src/raster_hz.h": "1cc4a6fe6f5a425607cb3b8a57d15cb19d5de537794c638b673f0bd4a14b4ed6",
+    "src/raster_msaa_impl.h": "1c5ace8d35a4413d5628ebf5c397c58d633758a3dd93145932d2973b3a61ae0f",
+    "src/raster_store.h": "251cbe4d9765edfc26b4428d7d5906ab17722689feae08eac432db59a7b22934",
+    "src/raster_triangle_impl.h": "51b5cf82bdd1298bcb42722a4af5cac0edbebe8442b4703a1cf0fbde35487915",
+    "src/raster_types.h": "0b050bdbf31f6c398366112c84a6041390a50398d1e18acafe4c7440a0700f45",
+    "src/raster_vertex_pack.h": "956a8084b973144a9d8ee28c0d485214e3e8551a7384238f610620e00ad6e528",
+    "src/rasterizer.c": "8cfc012004b794e6a83eeb8eb33b2dea674ba199a32c1a65baf691106cc596bc",
+    "src/scene_visibility.c": "84224277b250e111af288c9996ef8c24217c1d1053b9795dd1245fac14aa50f7",
+    "src/simd.h": "c639184db1b8a3c79b0aa07ad4fbe0a96b8c79e16536b3d98abef0b72d74e150",
+    "src/state.c": "04f4a8355c1fc37c3521001719dae9a55a1e9b7a34c2f1a70c53990a0d26fb38",
+    "src/texture.c": "9c4d999c73b68a7431bd1f0e88c2d3d2e7e1931670ad166ffee535f8d5764c45",
+    "src/types.h": "9eb99eb4dc29359b7edeb4dc817a7dfa8a108f32b84fa97e190a95f3e73a8cfe",
+    "src/vertex_inputs.h": "fb774a51f4627b91dd6d58fc2cb918df04ef224d45cd898dfa1ed5dd9a0b0db5",
+    "src/workers.c": "47c2bb16e01d1f17ce552ce3baa13e15a13f3d125a3c2ee0d6f30ebce8c63e21",
+    "src/workers.h": "3a74a68a42b0e1fc80b426cd3236e329ee70b145a5afe687520575599e709c5a",
+    "src/workers_queue_raw.inc": "ddec9df98f32ce5f428467f97b3a772506019cd4eca90e004afe956a6b9527b3"
+  },
+  "wrapperSha256": "3e14cef42357dfa01d237af423ebd5c59625f481bc24b0322f7355de908797b4",
+  "librarySha256": "7ff87f18f80642c993dd7d42405e329eda3ff8b4e3dc31d9941ab49aea3840f5",
+  "baselineLibrarySha256": "d27e01b5541f28650293b433b253e8311a785c0d15b584b2cf36a56ac11aa4b7",
+  "currentGeneratorSha256": "59bd7a85d97907398470007c502271e1bad8e2a7c4a6382bf3dd61a80cc463e6",
+  "generatorReproductionByteExact": false,
+  "nativeFullPlaneHashes": [
+    216,
+    576
+  ],
+  "nativePositionPairs": 162,
+  "nativeHzRollbackPass": true,
+  "nativeOrderPairs": 108,
+  "laterResetAndScratchBudgetPairs": 108,
+  "forcedScratchBudgetRollbacks": 3,
+  "rawArtifacts": [
+    {
+      "source": "/tmp/softgl-order-cached-isolated-budget.txt",
+      "originalSha256": "c5004082ae9a382960cdb07071b3ccce0ed214ed614804c438596b4df97a0e19",
+      "archived": "softgl-order-cached-isolated-budget.txt",
+      "archiveSha256": "c5004082ae9a382960cdb07071b3ccce0ed214ed614804c438596b4df97a0e19",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-isolated-build.txt",
+      "originalSha256": "400a945a20139cf130ba3b3f1b7f9a59c074021f0851558a3c74e2f5f8c444da",
+      "archived": "softgl-order-cached-isolated-build.txt",
+      "archiveSha256": "400a945a20139cf130ba3b3f1b7f9a59c074021f0851558a3c74e2f5f8c444da",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-isolated-configure.txt",
+      "originalSha256": "4edad91772f617467e2a57a2d36d149009738187cb45a66a03dc4007bae80cdb",
+      "archived": "softgl-order-cached-isolated-configure.txt",
+      "archiveSha256": "4edad91772f617467e2a57a2d36d149009738187cb45a66a03dc4007bae80cdb",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-isolated-hz.txt",
+      "originalSha256": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+      "archived": "softgl-order-cached-isolated-hz.txt",
+      "archiveSha256": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-isolated-isa.txt",
+      "originalSha256": "aada7832ed83ee35ca220211697ba9db3012a1f4840108cd4a2e27c74b2904d0",
+      "archived": "softgl-order-cached-isolated-isa.txt",
+      "archiveSha256": "aada7832ed83ee35ca220211697ba9db3012a1f4840108cd4a2e27c74b2904d0",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-isolated-positions.txt",
+      "originalSha256": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+      "archived": "softgl-order-cached-isolated-positions.txt",
+      "archiveSha256": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-isolated-prepare.txt",
+      "originalSha256": "107b2db6c5b6bde5d2145c60d60c88cbaa7f2df90929bb7c39db8b11440cad9c",
+      "archived": "softgl-order-cached-isolated-prepare.txt",
+      "archiveSha256": "107b2db6c5b6bde5d2145c60d60c88cbaa7f2df90929bb7c39db8b11440cad9c",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-isolated-quality4.txt",
+      "originalSha256": "08055a8edd581695530bddf2e5891678e434a39ce314b17ff340613c6a293d72",
+      "archived": "softgl-order-cached-isolated-quality4.txt",
+      "archiveSha256": "08055a8edd581695530bddf2e5891678e434a39ce314b17ff340613c6a293d72",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-isolated-quantized.txt",
+      "originalSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "archived": "softgl-order-cached-isolated-quantized.txt",
+      "archiveSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-isolated-screen-v2.txt",
+      "originalSha256": "71349ed683bded54d9c8161014db6c8ef259d98bc95c88402a1072bc51818492",
+      "archived": "softgl-order-cached-isolated-screen-v2.txt",
+      "archiveSha256": "71349ed683bded54d9c8161014db6c8ef259d98bc95c88402a1072bc51818492",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-isolated-small.txt",
+      "originalSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "archived": "softgl-order-cached-isolated-small.txt",
+      "archiveSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "eofNormalization": "trim EOF whitespace only"
+    }
+  ],
+  "trials": [
+    {
+      "name": "isolated-screen-v2",
+      "selectedAcceptedRuns": 32,
+      "discardedRuns": 0,
+      "completeModeSummaries": 8,
+      "screeningOnly": true,
+      "summary": [
+        {
+          "asset": "bmw",
+          "samples": 0,
+          "mediansMs": {
+            "baseline": 9.751160965499999,
+            "candidate": 9.822112833
+          },
+          "rawMs": {
+            "baseline": [
+              9.645465598,
+              9.856856333
+            ],
+            "candidate": [
+              9.974689933,
+              9.669535733
+            ]
+          },
+          "frameTimeChangePercent": 0.7276248207883418,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "bmw",
+          "samples": 4,
+          "mediansMs": {
+            "baseline": 17.235581817499998,
+            "candidate": 17.4841909175
+          },
+          "rawMs": {
+            "baseline": [
+              17.3433555,
+              17.127808135
+            ],
+            "candidate": [
+              17.492892634,
+              17.475489201
+            ]
+          },
+          "frameTimeChangePercent": 1.4424177995986165,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "t80",
+          "samples": 0,
+          "mediansMs": {
+            "baseline": 6.0473381505,
+            "candidate": 6.299528917
+          },
+          "rawMs": {
+            "baseline": [
+              6.417615933,
+              5.677060368
+            ],
+            "candidate": [
+              5.912334435,
+              6.686723399
+            ]
+          },
+          "frameTimeChangePercent": 4.170277239733133,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "t80",
+          "samples": 4,
+          "mediansMs": {
+            "baseline": 13.9606569,
+            "candidate": 14.394958216
+          },
+          "rawMs": {
+            "baseline": [
+              13.9273718,
+              13.993942
+            ],
+            "candidate": [
+              14.143239132,
+              14.6466773
+            ]
+          },
+          "frameTimeChangePercent": 3.110894559696531,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "sponza",
+          "samples": 0,
+          "mediansMs": {
+            "baseline": 20.460788166500002,
+            "candidate": 21.0933967165
+          },
+          "rawMs": {
+            "baseline": [
+              19.655102433,
+              21.2664739
+            ],
+            "candidate": [
+              19.411528334,
+              22.775265099
+            ]
+          },
+          "frameTimeChangePercent": 3.09180929323023,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "sponza",
+          "samples": 4,
+          "mediansMs": {
+            "baseline": 55.6649303995,
+            "candidate": 54.861768066500005
+          },
+          "rawMs": {
+            "baseline": [
+              55.402812932,
+              55.927047867
+            ],
+            "candidate": [
+              54.0025155,
+              55.721020633
+            ]
+          },
+          "frameTimeChangePercent": -1.4428515893863625,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "bistro",
+          "samples": 0,
+          "mediansMs": {
+            "baseline": 32.9194387335,
+            "candidate": 32.450472300499996
+          },
+          "rawMs": {
+            "baseline": [
+              33.6707176,
+              32.168159867
+            ],
+            "candidate": [
+              32.462250633,
+              32.438693968
+            ]
+          },
+          "frameTimeChangePercent": -1.4245881796361548,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "bistro",
+          "samples": 4,
+          "mediansMs": {
+            "baseline": 57.6016411,
+            "candidate": 55.0199449995
+          },
+          "rawMs": {
+            "baseline": [
+              57.205075,
+              57.9982072
+            ],
+            "candidate": [
+              55.075531932,
+              54.964358067
+            ]
+          },
+          "frameTimeChangePercent": -4.481983587964134,
+          "angle160RgbByteIdentical": false
+        }
+      ]
+    }
+  ],
+  "qualityReceipts": [
+    {
+      "name": "isolated-quality4",
+      "pairedViews": 9
+    }
+  ],
+  "allModeQualityComplete": false,
+  "decision": "Held: promising Bistro four-sample ordering; OFF control costs remain, no production adoption.",
+  "currentDiagnosticFixtureSha256": {
+    "order_contract.c": "25a0996cbc0b58b404d8c4a63292f86fe2a89c1ed25fea8c33f35f9374d8a9cd",
+    "order_budget_contract.c": "98f3fdb11dd8bdbaf03f3b797f3ba734efdb48be1e4aebcf36f0e9856b27f6d1"
+  },
+  "diagnosticProvenance": "Initial near/opaque native fixture had 99 pairs; reset and white-box budget checks were added later. Current diagnostic hashes describe the current recipe, not historical initial fixture binaries.",
+  "artifactsSha256": {
+    "isa.json": "589dbfab044f5817a0cb6380ed904e4a06e16a8939f7adf190cc11c569d84626",
+    "isolated-quality4.json": "5d136bc584e88812be7379e671527a72b4a50e5417eab7eba5e4ce034c292dc5",
+    "isolated-screen-v2-receipt.json": "04dd733859b74ecaf151e09ff37401b525ab5ccd29c54d8e896e0f441acb7fd4",
+    "isolated-screen-v2-summary.json": "2ce40a234d6a813f79a46e4f42822f5fc11a3f681abb7a2ec629c2dd9d64cec6",
+    "softgl-order-cached-isolated-budget.txt": "c5004082ae9a382960cdb07071b3ccce0ed214ed614804c438596b4df97a0e19",
+    "softgl-order-cached-isolated-build.txt": "400a945a20139cf130ba3b3f1b7f9a59c074021f0851558a3c74e2f5f8c444da",
+    "softgl-order-cached-isolated-configure.txt": "4edad91772f617467e2a57a2d36d149009738187cb45a66a03dc4007bae80cdb",
+    "softgl-order-cached-isolated-hz.txt": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+    "softgl-order-cached-isolated-isa.txt": "aada7832ed83ee35ca220211697ba9db3012a1f4840108cd4a2e27c74b2904d0",
+    "softgl-order-cached-isolated-positions.txt": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+    "softgl-order-cached-isolated-prepare.txt": "107b2db6c5b6bde5d2145c60d60c88cbaa7f2df90929bb7c39db8b11440cad9c",
+    "softgl-order-cached-isolated-quality4.txt": "08055a8edd581695530bddf2e5891678e434a39ce314b17ff340613c6a293d72",
+    "softgl-order-cached-isolated-quantized.txt": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+    "softgl-order-cached-isolated-screen-v2.txt": "71349ed683bded54d9c8161014db6c8ef259d98bc95c88402a1072bc51818492",
+    "softgl-order-cached-isolated-small.txt": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+    "source.patch": "34bba613587b444e0d254ae7f71ffb5a85e2f328798fe3df6a8bbe3383e8130b"
+  }
+}

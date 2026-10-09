@@ -1,0 +1,234 @@
+{
+  "baselineRevision": "47572f4935fd821d552234f73ccde641fd6c253e",
+  "variant": "combined-v1",
+  "productionAdopted": false,
+  "built": true,
+  "measured": true,
+  "confirmationPending": true,
+  "actualWasmPending": true,
+  "sanitizersPending": true,
+  "fullQualityPending": true,
+  "sourceSha256": {
+    "CMakeLists.txt": "41a69b787380c1ec562b95a8f02c6bd9d7cd7624f23439454b893a17992a1fb7",
+    "include/GL/softgl.h": "708d12068fcaf7203706aa5d9e2bacf10a3256765ec0addbe87d701ed7973c43",
+    "src/api.c": "9c373504af364d620c212afdfc9046bcc899bd61af198a6558fdda81f01691e1",
+    "src/buffers.c": "a0363363f060dc9cbd99a64703496e1e702c2cf82beb42b16a54337b524be2ff",
+    "src/clip.c": "f5c0b940f54a4aa52a2d55785de31d72c168d381b53012e408179f81381de3cc",
+    "src/cluster_cull.h": "b639ef7e507d28512549feda7e272e0bef855acf6fd1c8e8cad96cae6ad228d9",
+    "src/dlist.c": "e7446f33b3972e4384c103c2547869dfffad43c900e1f55bf6f8c38eaf36eae8",
+    "src/dlist.h": "4bc8e0e5966f5b226c8e086ead9a635fd6158eed18b0c55e4b4c2ed0bdbda033",
+    "src/evaluators.c": "69281ca9f25e0f7d5cc1f76f31fb17502c83b60ea6168bbbae238e65227344ba",
+    "src/frag_combine_hot.h": "e801062d6fe0ce8ade5f12730ba4cb1441689ba6bd39a331a308bc99e29f72cc",
+    "src/frag_hot.h": "e0e1cba7afec1b2c13a53a8198207d868fa0636a84ee98e059f238d131dca52e",
+    "src/frag_packet.h": "f06d0fa6a43404fbdbc2ca391d96162dcafb8e53dcfaca45afc46ebb7ff6b6de",
+    "src/fragment.c": "d1883401993e1576f565710c6ad9e3066d401684ac698928940f72fd582ef1d2",
+    "src/fragment_combine.c": "b7af7972265bf0ac384379fcba6885e93707cdd8a0de956f691ad28ed1dd7153",
+    "src/fragment_write.c": "6c806d57d87ff4ed31ecdf502be6f77772497696a607633edf71c9971da66f1d",
+    "src/framebuffer.c": "7c82e1f52d5b2c2e7d9752d155f379109a8791c41b147713cfb14f2788e1a974",
+    "src/geometry.inc": "73b47eddd854a99ef57169d6564fee2fd461b024abb88264580b99d213e66445",
+    "src/geometry_types.inc": "7ef7af9f69ee68ee53dae5d8d3f3e2c1b07b9e8140d5820926a0a2ba796d5417",
+    "src/immediate.c": "80b520a3c3c14e675eeca5d3083c5dbe423e9684a69b868446f85e99ef86534c",
+    "src/index_range.h": "4d0456bd563031b7b4ff1184bfb6fa513908ae4047bd5f6f83dc8a7f57d8bb03",
+    "src/lighting.c": "1e6db9b4f59e2a54b1f6b89e6bc129d206dc816aaa08f099d80e6f8f2f42e338",
+    "src/lines.c": "b08fef911685977a08d6f2b29265aa28721aa0497a1a208c492403bdde0bbe87",
+    "src/matrix.c": "fd5bff0e263cd87d1032fad4fa75f966f76b2cc605b746d47e3d4eeabde6d793",
+    "src/msaa_additive.h": "6fab4198defe4db18a83f1562034807e71957ba07db0c0bd51f2e26c90d4778f",
+    "src/multisample.c": "2ba7fe2df9c8afed9acf1daa5ea48df6fbe8b5c0cceeac11bd61c3804423ea1d",
+    "src/multisample.h": "cdbe1e0aa51827f13789ce7f46e3acc961e0b87c5d034e1c7ba22fe54c611315",
+    "src/pipeline.c": "fb559aa949d0e4211044451c9456f22e928982fb03c6f9132c199b316a2edfe3",
+    "src/pixels.c": "8e366864ac1418564d2342bd3c120ad5e8057998af21ff31ccb5663134ddfc92",
+    "src/raster_hz.h": "1cc4a6fe6f5a425607cb3b8a57d15cb19d5de537794c638b673f0bd4a14b4ed6",
+    "src/raster_msaa_impl.h": "1c5ace8d35a4413d5628ebf5c397c58d633758a3dd93145932d2973b3a61ae0f",
+    "src/raster_store.h": "251cbe4d9765edfc26b4428d7d5906ab17722689feae08eac432db59a7b22934",
+    "src/raster_triangle_impl.h": "51b5cf82bdd1298bcb42722a4af5cac0edbebe8442b4703a1cf0fbde35487915",
+    "src/raster_types.h": "0b050bdbf31f6c398366112c84a6041390a50398d1e18acafe4c7440a0700f45",
+    "src/raster_vertex_pack.h": "956a8084b973144a9d8ee28c0d485214e3e8551a7384238f610620e00ad6e528",
+    "src/rasterizer.c": "8cfc012004b794e6a83eeb8eb33b2dea674ba199a32c1a65baf691106cc596bc",
+    "src/scene_visibility.c": "0e372196bd8f68d5b897eed949c4f60aa00867beacbed4b9e06c71a31571c02b",
+    "src/simd.h": "c639184db1b8a3c79b0aa07ad4fbe0a96b8c79e16536b3d98abef0b72d74e150",
+    "src/state.c": "82fd987405b4b7c7fd88594f80d830f86020f0a3fc24ff7339d593e12864fb75",
+    "src/texture.c": "9c4d999c73b68a7431bd1f0e88c2d3d2e7e1931670ad166ffee535f8d5764c45",
+    "src/types.h": "9eb99eb4dc29359b7edeb4dc817a7dfa8a108f32b84fa97e190a95f3e73a8cfe",
+    "src/vertex_inputs.h": "fb774a51f4627b91dd6d58fc2cb918df04ef224d45cd898dfa1ed5dd9a0b0db5",
+    "src/workers.c": "d2b46c7bd05b6144e9f963ed95b44a4182d676fd169b431b2f9a1bbc8ec4512a",
+    "src/workers.h": "3a74a68a42b0e1fc80b426cd3236e329ee70b145a5afe687520575599e709c5a",
+    "src/workers_queue_raw.inc": "ddec9df98f32ce5f428467f97b3a772506019cd4eca90e004afe956a6b9527b3"
+  },
+  "wrapperSha256": "57c0ef5caf7474a1fbc02501d980a70b30229cca235dc8f39102430b45c55aa9",
+  "librarySha256": "a151c48539a1d5b36527c933e4b46abb28fead73b0e17b66bf2501e5e8021dd0",
+  "nativeFullPlaneHashes": [
+    216,
+    576
+  ],
+  "nativePositionPairs": 162,
+  "nativeBinPairs": 54,
+  "nativeHzRollbackPass": true,
+  "nativePartitionShapes": 108,
+  "generatorReproductionByteExact": true,
+  "rawArtifacts": [
+    {
+      "source": "/tmp/softgl-aligned-stripes-alignment.txt",
+      "originalSha256": "efc9a67a7ac6478850ffccdb479361e969e5c5b79ab2aaf799d13a462373c9e5",
+      "archived": "softgl-aligned-stripes-alignment.txt",
+      "archiveSha256": "efc9a67a7ac6478850ffccdb479361e969e5c5b79ab2aaf799d13a462373c9e5",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-aligned-stripes-bins-baseline.txt",
+      "originalSha256": "7361fba77b4c480cde235e018f3def24b8f6afedd80637663ab5ce8662803781",
+      "archived": "softgl-aligned-stripes-bins-baseline.txt",
+      "archiveSha256": "7361fba77b4c480cde235e018f3def24b8f6afedd80637663ab5ce8662803781",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-aligned-stripes-bins-candidate.txt",
+      "originalSha256": "7361fba77b4c480cde235e018f3def24b8f6afedd80637663ab5ce8662803781",
+      "archived": "softgl-aligned-stripes-bins-candidate.txt",
+      "archiveSha256": "7361fba77b4c480cde235e018f3def24b8f6afedd80637663ab5ce8662803781",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-aligned-stripes-build-v2.txt",
+      "originalSha256": "30a5e79ce983812315d75f9d8b925b918c814c1325454e512b948f0df1935fc4",
+      "archived": "softgl-aligned-stripes-build-v2.txt",
+      "archiveSha256": "30a5e79ce983812315d75f9d8b925b918c814c1325454e512b948f0df1935fc4",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-aligned-stripes-build.txt",
+      "originalSha256": "ec567dfd1a217dee129c4a568dbdf4e2fdb43b9d1fa54acead779ad948697017",
+      "archived": "softgl-aligned-stripes-build.txt",
+      "archiveSha256": "ec567dfd1a217dee129c4a568dbdf4e2fdb43b9d1fa54acead779ad948697017",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-aligned-stripes-configure-v2.txt",
+      "originalSha256": "e98291674b3db540a552db6260d49c95408142cb6c15fdf359fedd6758c58ee0",
+      "archived": "softgl-aligned-stripes-configure-v2.txt",
+      "archiveSha256": "e98291674b3db540a552db6260d49c95408142cb6c15fdf359fedd6758c58ee0",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-aligned-stripes-configure.txt",
+      "originalSha256": "d0c4a7df7c0cfa4d621ffe2753f1faae40945a56d73c7a4f751f68f679a21fc6",
+      "archived": "softgl-aligned-stripes-configure.txt",
+      "archiveSha256": "d0c4a7df7c0cfa4d621ffe2753f1faae40945a56d73c7a4f751f68f679a21fc6",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-aligned-stripes-hz-baseline.txt",
+      "originalSha256": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+      "archived": "softgl-aligned-stripes-hz-baseline.txt",
+      "archiveSha256": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-aligned-stripes-hz-candidate.txt",
+      "originalSha256": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+      "archived": "softgl-aligned-stripes-hz-candidate.txt",
+      "archiveSha256": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-aligned-stripes-isa.txt",
+      "originalSha256": "bf6ff7ac931203d743ae27374e9a230f73bf95550b9d59e261e9e0e6f1ed1512",
+      "archived": "softgl-aligned-stripes-isa.txt",
+      "archiveSha256": "bf6ff7ac931203d743ae27374e9a230f73bf95550b9d59e261e9e0e6f1ed1512",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-aligned-stripes-positions-baseline.txt",
+      "originalSha256": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+      "archived": "softgl-aligned-stripes-positions-baseline.txt",
+      "archiveSha256": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-aligned-stripes-positions-candidate.txt",
+      "originalSha256": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+      "archived": "softgl-aligned-stripes-positions-candidate.txt",
+      "archiveSha256": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-aligned-stripes-prepare.txt",
+      "originalSha256": "55618ee5da1bc3369fdf996fde554224385e7574ca9e618ef943ce43762b5d27",
+      "archived": "softgl-aligned-stripes-prepare.txt",
+      "archiveSha256": "55618ee5da1bc3369fdf996fde554224385e7574ca9e618ef943ce43762b5d27",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-aligned-stripes-quality4.txt",
+      "originalSha256": "c5919f5114966ab0bf54c39aef45ef2c3d4a8a0362d210190e9c2678d1f807a3",
+      "archived": "softgl-aligned-stripes-quality4.txt",
+      "archiveSha256": "c5919f5114966ab0bf54c39aef45ef2c3d4a8a0362d210190e9c2678d1f807a3",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-aligned-stripes-quantized-baseline.txt",
+      "originalSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "archived": "softgl-aligned-stripes-quantized-baseline.txt",
+      "archiveSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-aligned-stripes-quantized-candidate.txt",
+      "originalSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "archived": "softgl-aligned-stripes-quantized-candidate.txt",
+      "archiveSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-aligned-stripes-screen4.txt",
+      "originalSha256": "7437378dc416621e46d2338fdf8b9c147c650ce9f051431ea12359e8afb75ebf",
+      "archived": "softgl-aligned-stripes-screen4.txt",
+      "archiveSha256": "7437378dc416621e46d2338fdf8b9c147c650ce9f051431ea12359e8afb75ebf",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-aligned-stripes-small-baseline.txt",
+      "originalSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "archived": "softgl-aligned-stripes-small-baseline.txt",
+      "archiveSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-aligned-stripes-small-candidate.txt",
+      "originalSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "archived": "softgl-aligned-stripes-small-candidate.txt",
+      "archiveSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "eofNormalization": "trim EOF whitespace only"
+    }
+  ],
+  "decision": "Not adopted: first screen has no consistent Bistro4 signal; combined boundaries regress BMW/T80/Sponza, alignment-only does not establish a gain.",
+  "originalFourSampleModelPairs": 36,
+  "acceptedScreenRuns": 16,
+  "rejectedScreenRuns": 0,
+  "artifactsSha256": {
+    "isa.json": "aae2ef27bb6452362035619ca64c52dda893f1c475c5ffcff865f8bc8fa176de",
+    "quality4.json": "3e59fd87560c249f5e04e17c5dab2c7af2efc02e9ddc635da514b6c3df3a657a",
+    "reproduction.txt": "ec86035029c2a6894f3c544607c1a8a40fc7cbe5b8b6c83fa9fad9ace8611688",
+    "screen-receipt.json": "c7e1a0260116732d4f65dc522f388b3de5396c3e14075365b01f7296e3a830b5",
+    "screen-summary.json": "780df59c47fa9191215d293d4719f73b9d734b53cbc2e76efd6c3c782ccdf590",
+    "softgl-aligned-stripes-alignment.txt": "efc9a67a7ac6478850ffccdb479361e969e5c5b79ab2aaf799d13a462373c9e5",
+    "softgl-aligned-stripes-bins-baseline.txt": "7361fba77b4c480cde235e018f3def24b8f6afedd80637663ab5ce8662803781",
+    "softgl-aligned-stripes-bins-candidate.txt": "7361fba77b4c480cde235e018f3def24b8f6afedd80637663ab5ce8662803781",
+    "softgl-aligned-stripes-build-v2.txt": "30a5e79ce983812315d75f9d8b925b918c814c1325454e512b948f0df1935fc4",
+    "softgl-aligned-stripes-build.txt": "ec567dfd1a217dee129c4a568dbdf4e2fdb43b9d1fa54acead779ad948697017",
+    "softgl-aligned-stripes-configure-v2.txt": "e98291674b3db540a552db6260d49c95408142cb6c15fdf359fedd6758c58ee0",
+    "softgl-aligned-stripes-configure.txt": "d0c4a7df7c0cfa4d621ffe2753f1faae40945a56d73c7a4f751f68f679a21fc6",
+    "softgl-aligned-stripes-hz-baseline.txt": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+    "softgl-aligned-stripes-hz-candidate.txt": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+    "softgl-aligned-stripes-isa.txt": "bf6ff7ac931203d743ae27374e9a230f73bf95550b9d59e261e9e0e6f1ed1512",
+    "softgl-aligned-stripes-positions-baseline.txt": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+    "softgl-aligned-stripes-positions-candidate.txt": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+    "softgl-aligned-stripes-prepare.txt": "55618ee5da1bc3369fdf996fde554224385e7574ca9e618ef943ce43762b5d27",
+    "softgl-aligned-stripes-quality4.txt": "c5919f5114966ab0bf54c39aef45ef2c3d4a8a0362d210190e9c2678d1f807a3",
+    "softgl-aligned-stripes-quantized-baseline.txt": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+    "softgl-aligned-stripes-quantized-candidate.txt": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+    "softgl-aligned-stripes-screen4.txt": "7437378dc416621e46d2338fdf8b9c147c650ce9f051431ea12359e8afb75ebf",
+    "softgl-aligned-stripes-small-baseline.txt": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+    "softgl-aligned-stripes-small-candidate.txt": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+    "source.patch": "db28efc4bfc8c6d04ca22dee87232c4370591df40c2d63b36e13c4651ba67551"
+  }
+}

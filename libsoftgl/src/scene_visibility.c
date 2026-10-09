@@ -44,7 +44,10 @@ typedef struct {
     const scene_primitive *current_primitive;
     /* Separate all fields written by adjacent bin owners for cache lines
      * up to 128 bytes, even with ordinary malloc alignment. */
-    uint8_t cache_padding[128];
+    union {
+        uint8_t cache_padding[128];
+        scene_order_storage order_storage;
+    };
 } scene_bin;
 
 _Static_assert(sizeof(scene_bin)-offsetof(scene_bin,cache_padding) >= 128,
@@ -73,6 +76,8 @@ struct sg_scene_visibility {
     pthread_mutex_t allocation_mutex;
 };
 
+static void scene_order_storage_destroy(struct sg_scene_visibility *f);
+
 void sg_scene_visibility_destroy(void *storage) {
     struct sg_scene_visibility *f = storage;
     if (!f) return;
@@ -80,6 +85,7 @@ void sg_scene_visibility_destroy(void *storage) {
     free(f->winner); free(f->pixels); free(f->pixel_material); free(f->backup_depth); free(f->backup_color);
     free(f->group_counts); free(f->materials); free(f->tasks); free(f->sample_point); free(f->shade_mask);
     scene_geometry_destroy(f->geometry);
+    scene_order_storage_destroy(f);
     pthread_mutex_destroy(&f->allocation_mutex);
     free(f);
 }
@@ -1450,7 +1456,7 @@ int softgl_scene_visibility_end(void) {
     sg_workers_flush(c);
     if (f->deferred_meshes && !atomic_load_explicit(&f->failed,memory_order_relaxed))
         scene_geometry_build(f);
-    c->scene_visibility = NULL;
+    c->scene_visibility = NULL; f->bins[SG_MAX_BINS-1].order_storage.mode = 0;
     size_t pixels = (size_t)c->fb.w*c->fb.h;
     if (atomic_load_explicit(&f->failed,memory_order_relaxed)) {
         scene_restore(f);
@@ -1502,4 +1508,22 @@ int softgl_scene_visibility_end(void) {
             visible,packets,packets ? visible*100.0/(packets*4) : 0.0);
     }
     return 1;
+}
+
+void softgl_scene_depth_order(GLuint mode) {
+    softgl_ctx *c = sg_current();
+    if (c && c->scene_visibility)
+        ((struct sg_scene_visibility *)c->scene_visibility)->bins[SG_MAX_BINS-1].order_storage.mode =
+            c->fb.samples == 4 && mode <= 2 ? mode : 0;
+}
+
+static __attribute__((noinline,cold)) void scene_order_storage_destroy(struct sg_scene_visibility *f) {
+    sg_aligned_free(f->bins[SG_MAX_BINS-1].order_storage.data);
+}
+
+/* Integrate the opt-in without a second API call/branch in model submission. */
+int softgl_scene_visibility_begin_hint_ordered(GLuint triangles, GLuint mode) {
+    int started = softgl_scene_visibility_begin_hint(triangles);
+    if (started) softgl_scene_depth_order(mode);
+    return started;
 }

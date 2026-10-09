@@ -1,0 +1,968 @@
+{
+  "baselineRevision": "47572f4935fd821d552234f73ccde641fd6c253e",
+  "variant": "stage-v7",
+  "productionAdopted": true,
+  "built": true,
+  "measured": true,
+  "performanceAccepted": true,
+  "actualWasmPending": false,
+  "sanitizersPending": false,
+  "residentReusePending": false,
+  "variantManifest": "baseline=47572f4935fd821d552234f73ccde641fd6c253e\nopaque_first=True\nisolate_order=False\nisolate_entry=False\nisolate_cleanup=False\nseparate_stage=True\ncombined_hint=True\nsamples=4\nkey_source=existing_eligible_occlusion_packets\n",
+  "sourceSha256": {
+    "CMakeLists.txt": "41a69b787380c1ec562b95a8f02c6bd9d7cd7624f23439454b893a17992a1fb7",
+    "include/GL/softgl.h": "211436b5139853793ac877be9038a9d6e31aab52dfc4e788f79d98f801ceac43",
+    "src/api.c": "9c373504af364d620c212afdfc9046bcc899bd61af198a6558fdda81f01691e1",
+    "src/buffers.c": "a0363363f060dc9cbd99a64703496e1e702c2cf82beb42b16a54337b524be2ff",
+    "src/clip.c": "f5c0b940f54a4aa52a2d55785de31d72c168d381b53012e408179f81381de3cc",
+    "src/cluster_cull.h": "b639ef7e507d28512549feda7e272e0bef855acf6fd1c8e8cad96cae6ad228d9",
+    "src/dlist.c": "e7446f33b3972e4384c103c2547869dfffad43c900e1f55bf6f8c38eaf36eae8",
+    "src/dlist.h": "4bc8e0e5966f5b226c8e086ead9a635fd6158eed18b0c55e4b4c2ed0bdbda033",
+    "src/evaluators.c": "69281ca9f25e0f7d5cc1f76f31fb17502c83b60ea6168bbbae238e65227344ba",
+    "src/frag_combine_hot.h": "e801062d6fe0ce8ade5f12730ba4cb1441689ba6bd39a331a308bc99e29f72cc",
+    "src/frag_hot.h": "e0e1cba7afec1b2c13a53a8198207d868fa0636a84ee98e059f238d131dca52e",
+    "src/frag_packet.h": "f06d0fa6a43404fbdbc2ca391d96162dcafb8e53dcfaca45afc46ebb7ff6b6de",
+    "src/fragment.c": "d1883401993e1576f565710c6ad9e3066d401684ac698928940f72fd582ef1d2",
+    "src/fragment_combine.c": "b7af7972265bf0ac384379fcba6885e93707cdd8a0de956f691ad28ed1dd7153",
+    "src/fragment_write.c": "6c806d57d87ff4ed31ecdf502be6f77772497696a607633edf71c9971da66f1d",
+    "src/framebuffer.c": "7c82e1f52d5b2c2e7d9752d155f379109a8791c41b147713cfb14f2788e1a974",
+    "src/geometry.inc": "007aec3ec9501b74efa98c4291bf0dc14a30bbaf60198cd05ae12e803a9c1ed5",
+    "src/geometry_types.inc": "543196c405d363f69c5542eb01a769ef61da6e1dc946299c8c2b4ac998718efc",
+    "src/immediate.c": "80b520a3c3c14e675eeca5d3083c5dbe423e9684a69b868446f85e99ef86534c",
+    "src/index_range.h": "4d0456bd563031b7b4ff1184bfb6fa513908ae4047bd5f6f83dc8a7f57d8bb03",
+    "src/lighting.c": "1e6db9b4f59e2a54b1f6b89e6bc129d206dc816aaa08f099d80e6f8f2f42e338",
+    "src/lines.c": "b08fef911685977a08d6f2b29265aa28721aa0497a1a208c492403bdde0bbe87",
+    "src/matrix.c": "fd5bff0e263cd87d1032fad4fa75f966f76b2cc605b746d47e3d4eeabde6d793",
+    "src/msaa_additive.h": "6fab4198defe4db18a83f1562034807e71957ba07db0c0bd51f2e26c90d4778f",
+    "src/multisample.c": "2ba7fe2df9c8afed9acf1daa5ea48df6fbe8b5c0cceeac11bd61c3804423ea1d",
+    "src/multisample.h": "cdbe1e0aa51827f13789ce7f46e3acc961e0b87c5d034e1c7ba22fe54c611315",
+    "src/pipeline.c": "fb559aa949d0e4211044451c9456f22e928982fb03c6f9132c199b316a2edfe3",
+    "src/pixels.c": "8e366864ac1418564d2342bd3c120ad5e8057998af21ff31ccb5663134ddfc92",
+    "src/raster_hz.h": "1cc4a6fe6f5a425607cb3b8a57d15cb19d5de537794c638b673f0bd4a14b4ed6",
+    "src/raster_msaa_impl.h": "1c5ace8d35a4413d5628ebf5c397c58d633758a3dd93145932d2973b3a61ae0f",
+    "src/raster_store.h": "251cbe4d9765edfc26b4428d7d5906ab17722689feae08eac432db59a7b22934",
+    "src/raster_triangle_impl.h": "51b5cf82bdd1298bcb42722a4af5cac0edbebe8442b4703a1cf0fbde35487915",
+    "src/raster_types.h": "0b050bdbf31f6c398366112c84a6041390a50398d1e18acafe4c7440a0700f45",
+    "src/raster_vertex_pack.h": "956a8084b973144a9d8ee28c0d485214e3e8551a7384238f610620e00ad6e528",
+    "src/rasterizer.c": "8cfc012004b794e6a83eeb8eb33b2dea674ba199a32c1a65baf691106cc596bc",
+    "src/scene_visibility.c": "797c20af16b0598df89f9d54a9a7fb03198c381c9880258d6402db7c5808841e",
+    "src/simd.h": "c639184db1b8a3c79b0aa07ad4fbe0a96b8c79e16536b3d98abef0b72d74e150",
+    "src/state.c": "04f4a8355c1fc37c3521001719dae9a55a1e9b7a34c2f1a70c53990a0d26fb38",
+    "src/texture.c": "9c4d999c73b68a7431bd1f0e88c2d3d2e7e1931670ad166ffee535f8d5764c45",
+    "src/types.h": "9eb99eb4dc29359b7edeb4dc817a7dfa8a108f32b84fa97e190a95f3e73a8cfe",
+    "src/vertex_inputs.h": "fb774a51f4627b91dd6d58fc2cb918df04ef224d45cd898dfa1ed5dd9a0b0db5",
+    "src/workers.c": "47c2bb16e01d1f17ce552ce3baa13e15a13f3d125a3c2ee0d6f30ebce8c63e21",
+    "src/workers.h": "3a74a68a42b0e1fc80b426cd3236e329ee70b145a5afe687520575599e709c5a",
+    "src/workers_queue_raw.inc": "ddec9df98f32ce5f428467f97b3a772506019cd4eca90e004afe956a6b9527b3"
+  },
+  "wrapperSha256": "df3da65efe8eefcf0d0d5c3c3dc53e1b94a3421d43435e89f35d02acf9d6fb20",
+  "librarySha256": "b3195a594c0b1295423884ece09d6cb23e31141ef4696744dce375575c77dc0b",
+  "baselineLibrarySha256": "d27e01b5541f28650293b433b253e8311a785c0d15b584b2cf36a56ac11aa4b7",
+  "currentGeneratorSha256": "59bd7a85d97907398470007c502271e1bad8e2a7c4a6382bf3dd61a80cc463e6",
+  "generatorReproductionByteExact": true,
+  "nativeFullPlaneHashes": [
+    216,
+    576
+  ],
+  "nativePositionPairs": 162,
+  "nativeHzRollbackPass": true,
+  "nativeOrderPairs": 108,
+  "laterResetAndScratchBudgetPairs": 108,
+  "forcedScratchBudgetRollbacks": 3,
+  "rawArtifacts": [
+    {
+      "source": "/tmp/softgl-order-cached-v7-build.txt",
+      "originalSha256": "08256570b983b263f93936877069289d3c3fe3c07c52bd2c64c938f84f764fe8",
+      "archived": "softgl-order-cached-v7-build.txt",
+      "archiveSha256": "08256570b983b263f93936877069289d3c3fe3c07c52bd2c64c938f84f764fe8",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-configure.txt",
+      "originalSha256": "8213c775dee18d5cd385800cbb9395ef12d47d2d030df1a79062abb3459a5592",
+      "archived": "softgl-order-cached-v7-configure.txt",
+      "archiveSha256": "8213c775dee18d5cd385800cbb9395ef12d47d2d030df1a79062abb3459a5592",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-confirm-diag.txt",
+      "originalSha256": "2c6ac9215f00f54c95a93ce922fb0dc5294616233822402bbd9d6e91e08260ab",
+      "archived": "softgl-order-cached-v7-confirm-diag.txt",
+      "archiveSha256": "2c6ac9215f00f54c95a93ce922fb0dc5294616233822402bbd9d6e91e08260ab",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-fresh-confirm-diag.txt",
+      "originalSha256": "706ada04e6e91debd5fbd11ae1add4035d28a4dd6730331d4ad1b1fc1f763f04",
+      "archived": "softgl-order-cached-v7-fresh-confirm-diag.txt",
+      "archiveSha256": "706ada04e6e91debd5fbd11ae1add4035d28a4dd6730331d4ad1b1fc1f763f04",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-hz.txt",
+      "originalSha256": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+      "archived": "softgl-order-cached-v7-hz.txt",
+      "archiveSha256": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-native-hint-build.txt",
+      "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archived": "softgl-order-cached-v7-native-hint-build.txt",
+      "archiveSha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-native-hint.txt",
+      "originalSha256": "f817a178f18da23c755822ce9b5726928b97a327f7e401a3b0cfa2636d0a8cac",
+      "archived": "softgl-order-cached-v7-native-hint.txt",
+      "archiveSha256": "f817a178f18da23c755822ce9b5726928b97a327f7e401a3b0cfa2636d0a8cac",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-order_budget_contract.txt",
+      "originalSha256": "c5004082ae9a382960cdb07071b3ccce0ed214ed614804c438596b4df97a0e19",
+      "archived": "softgl-order-cached-v7-order_budget_contract.txt",
+      "archiveSha256": "c5004082ae9a382960cdb07071b3ccce0ed214ed614804c438596b4df97a0e19",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-order_contract.txt",
+      "originalSha256": "f817a178f18da23c755822ce9b5726928b97a327f7e401a3b0cfa2636d0a8cac",
+      "archived": "softgl-order-cached-v7-order_contract.txt",
+      "archiveSha256": "f817a178f18da23c755822ce9b5726928b97a327f7e401a3b0cfa2636d0a8cac",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-positions.txt",
+      "originalSha256": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+      "archived": "softgl-order-cached-v7-positions.txt",
+      "archiveSha256": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-prepare.txt",
+      "originalSha256": "0c6c99ecfaf8cce47f3b04bcb7d0162b9930711c2f364b224ffb496272435354",
+      "archived": "softgl-order-cached-v7-prepare.txt",
+      "archiveSha256": "0c6c99ecfaf8cce47f3b04bcb7d0162b9930711c2f364b224ffb496272435354",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-production-browser.txt",
+      "originalSha256": "48e513257bfae553dacc58f5675ed280685ddc0c6e7b3f7abbec49ec66e3cbc1",
+      "archived": "softgl-order-cached-v7-production-browser.txt",
+      "archiveSha256": "48e513257bfae553dacc58f5675ed280685ddc0c6e7b3f7abbec49ec66e3cbc1",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-production-ctest.txt",
+      "originalSha256": "1c59194106dd385ca660202e407cf38a8129654b11f09bdf8310037c1967884c",
+      "archived": "softgl-order-cached-v7-production-ctest.txt",
+      "archiveSha256": "1c59194106dd385ca660202e407cf38a8129654b11f09bdf8310037c1967884c",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-production-native-build.txt",
+      "originalSha256": "2cd76ebc508e3649ec7b23d0798a1022fe048890911628a5159192d3bf5d15aa",
+      "archived": "softgl-order-cached-v7-production-native-build.txt",
+      "archiveSha256": "2cd76ebc508e3649ec7b23d0798a1022fe048890911628a5159192d3bf5d15aa",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-production-wasm-build.txt",
+      "originalSha256": "a74042879dec0cdd697c25bd593f6fdf7c95a5085b265be6fc72086d04508a5a",
+      "archived": "softgl-order-cached-v7-production-wasm-build.txt",
+      "archiveSha256": "a74042879dec0cdd697c25bd593f6fdf7c95a5085b265be6fc72086d04508a5a",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-quality-all.txt",
+      "originalSha256": "feaa691266e85722601be8d5857062c15f17cca1735fb749fe20a65b37f930a3",
+      "archived": "softgl-order-cached-v7-quality-all.txt",
+      "archiveSha256": "feaa691266e85722601be8d5857062c15f17cca1735fb749fe20a65b37f930a3",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-quantized.txt",
+      "originalSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "archived": "softgl-order-cached-v7-quantized.txt",
+      "archiveSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-resident-v2.txt",
+      "originalSha256": "ea7e18ff170a2b38d77770aee2cdb20353196ec5c52ab468d928cbed7c1a3bcd",
+      "archived": "softgl-order-cached-v7-resident-v2.txt",
+      "archiveSha256": "ea7e18ff170a2b38d77770aee2cdb20353196ec5c52ab468d928cbed7c1a3bcd",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-resident.txt",
+      "originalSha256": "ea7e18ff170a2b38d77770aee2cdb20353196ec5c52ab468d928cbed7c1a3bcd",
+      "archived": "softgl-order-cached-v7-resident.txt",
+      "archiveSha256": "ea7e18ff170a2b38d77770aee2cdb20353196ec5c52ab468d928cbed7c1a3bcd",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-sanitize-build.txt",
+      "originalSha256": "76dc03fa751de35f24795584af7d84a3176c0a3ecad3f7c6f87f452a23a5af03",
+      "archived": "softgl-order-cached-v7-sanitize-build.txt",
+      "archiveSha256": "76dc03fa751de35f24795584af7d84a3176c0a3ecad3f7c6f87f452a23a5af03",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-sanitize-configure.txt",
+      "originalSha256": "982566556d0c3b2fd67fc2eb2228b0f9c8d7cd61e58291d5b24b2b9edb7ab1ec",
+      "archived": "softgl-order-cached-v7-sanitize-configure.txt",
+      "archiveSha256": "982566556d0c3b2fd67fc2eb2228b0f9c8d7cd61e58291d5b24b2b9edb7ab1ec",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-sanitize-hint-build.txt",
+      "originalSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archived": "softgl-order-cached-v7-sanitize-hint-build.txt",
+      "archiveSha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-sanitize-hint.txt",
+      "originalSha256": "f817a178f18da23c755822ce9b5726928b97a327f7e401a3b0cfa2636d0a8cac",
+      "archived": "softgl-order-cached-v7-sanitize-hint.txt",
+      "archiveSha256": "f817a178f18da23c755822ce9b5726928b97a327f7e401a3b0cfa2636d0a8cac",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-sanitize-hz_candidate.txt",
+      "originalSha256": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+      "archived": "softgl-order-cached-v7-sanitize-hz_candidate.txt",
+      "archiveSha256": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-sanitize-order_budget_contract.txt",
+      "originalSha256": "c5004082ae9a382960cdb07071b3ccce0ed214ed614804c438596b4df97a0e19",
+      "archived": "softgl-order-cached-v7-sanitize-order_budget_contract.txt",
+      "archiveSha256": "c5004082ae9a382960cdb07071b3ccce0ed214ed614804c438596b4df97a0e19",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-sanitize-positions_candidate.txt",
+      "originalSha256": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+      "archived": "softgl-order-cached-v7-sanitize-positions_candidate.txt",
+      "archiveSha256": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-sanitize-quantized_candidate.txt",
+      "originalSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "archived": "softgl-order-cached-v7-sanitize-quantized_candidate.txt",
+      "archiveSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-sanitize-small_candidate.txt",
+      "originalSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "archived": "softgl-order-cached-v7-sanitize-small_candidate.txt",
+      "archiveSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-small.txt",
+      "originalSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "archived": "softgl-order-cached-v7-small.txt",
+      "archiveSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v7-wasm.txt",
+      "originalSha256": "e68747b600f357828b66d46cb0f2c2bb59e46fa8abfe291850101080645a7c6d",
+      "archived": "softgl-order-cached-v7-wasm.txt",
+      "archiveSha256": "e68747b600f357828b66d46cb0f2c2bb59e46fa8abfe291850101080645a7c6d",
+      "eofNormalization": "trim EOF whitespace only"
+    }
+  ],
+  "trials": [
+    {
+      "name": "v7-confirm-diag",
+      "selectedAcceptedRuns": 144,
+      "discardedRuns": 16,
+      "completeModeSummaries": 12,
+      "screeningOnly": false,
+      "summary": [
+        {
+          "asset": "bmw",
+          "samples": 0,
+          "mediansMs": {
+            "baseline": 9.6047921985,
+            "candidate": 9.6213255835
+          },
+          "rawMs": {
+            "baseline": [
+              9.597472165,
+              9.581332134,
+              9.3998316,
+              9.612112232,
+              9.673299033,
+              9.6818491
+            ],
+            "candidate": [
+              10.700588865,
+              9.474208468,
+              9.751166,
+              9.668702401,
+              9.573948766,
+              9.507398567
+            ]
+          },
+          "frameTimeChangePercent": 0.1721368318887917,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "bmw",
+          "samples": 2,
+          "mediansMs": {
+            "baseline": 15.8121910005,
+            "candidate": 15.8091011345
+          },
+          "rawMs": {
+            "baseline": [
+              16.253749033,
+              15.925524832,
+              15.811264468,
+              15.560626799,
+              15.377399566,
+              15.813117533
+            ],
+            "candidate": [
+              15.416316634,
+              15.776801034,
+              15.841401235,
+              16.026704867,
+              15.435783099,
+              15.960994667
+            ]
+          },
+          "frameTimeChangePercent": -0.01954103640603444,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "bmw",
+          "samples": 4,
+          "mediansMs": {
+            "baseline": 17.321788716500002,
+            "candidate": 17.257125216
+          },
+          "rawMs": {
+            "baseline": [
+              17.551709434,
+              17.328938766,
+              17.380278899,
+              17.278615265,
+              17.139061502,
+              17.314638667
+            ],
+            "candidate": [
+              17.214511766,
+              17.157651567,
+              17.4884359,
+              17.299738666,
+              17.364488833,
+              17.204398367
+            ]
+          },
+          "frameTimeChangePercent": -0.37330729267242013,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "t80",
+          "samples": 0,
+          "mediansMs": {
+            "baseline": 6.384872517,
+            "candidate": 5.9105378155
+          },
+          "rawMs": {
+            "baseline": [
+              6.543749666,
+              5.807777467,
+              6.5783931,
+              6.225995368,
+              5.953517999,
+              6.787973832
+            ],
+            "candidate": [
+              5.804777434,
+              5.813354133,
+              5.957984565,
+              6.618119933,
+              6.536416399,
+              5.863091066
+            ]
+          },
+          "frameTimeChangePercent": -7.4290395029354634,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "t80",
+          "samples": 2,
+          "mediansMs": {
+            "baseline": 12.7844102175,
+            "candidate": 12.6564915505
+          },
+          "rawMs": {
+            "baseline": [
+              12.806718701,
+              12.5962614,
+              12.762101734,
+              12.847055367,
+              12.597947998,
+              12.869335467
+            ],
+            "candidate": [
+              12.7352285,
+              12.560134633,
+              12.974162468,
+              12.555971134,
+              12.577754601,
+              12.845268733
+            ]
+          },
+          "frameTimeChangePercent": -1.0005832480633137,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "t80",
+          "samples": 4,
+          "mediansMs": {
+            "baseline": 14.3349431335,
+            "candidate": 14.0450406005
+          },
+          "rawMs": {
+            "baseline": [
+              14.382763366,
+              14.357553133,
+              14.290629568,
+              14.367396466,
+              14.233019566,
+              14.312333134
+            ],
+            "candidate": [
+              13.803634965,
+              14.145079133,
+              14.175059235,
+              13.991778701,
+              14.0983025,
+              13.905755267
+            ]
+          },
+          "frameTimeChangePercent": -2.022348678332131,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "sponza",
+          "samples": 0,
+          "mediansMs": {
+            "baseline": 20.561756066500003,
+            "candidate": 20.3653079005
+          },
+          "rawMs": {
+            "baseline": [
+              20.671588966,
+              20.451923167,
+              20.439111833,
+              21.764108735,
+              19.433371734,
+              21.650758267
+            ],
+            "candidate": [
+              20.484746601,
+              19.495043566,
+              20.2458692,
+              20.9948631,
+              19.460998468,
+              22.374333765
+            ]
+          },
+          "frameTimeChangePercent": -0.9554055858101762,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "sponza",
+          "samples": 2,
+          "mediansMs": {
+            "baseline": 48.9899503495,
+            "candidate": 48.9045066835
+          },
+          "rawMs": {
+            "baseline": [
+              48.765942967,
+              48.6919861,
+              49.213957732,
+              49.243774568,
+              48.019967168,
+              50.216030467
+            ],
+            "candidate": [
+              50.215070701,
+              48.287954899,
+              48.233628133,
+              48.935596967,
+              48.8734164,
+              49.052300667
+            ]
+          },
+          "frameTimeChangePercent": -0.17441059929726999,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "sponza",
+          "samples": 4,
+          "mediansMs": {
+            "baseline": 54.5726938335,
+            "candidate": 54.696025885
+          },
+          "rawMs": {
+            "baseline": [
+              55.147398401,
+              54.108422533,
+              54.599977166,
+              54.545410501,
+              54.074805467,
+              55.372316301
+            ],
+            "candidate": [
+              54.113175898,
+              54.584127302,
+              54.807924468,
+              55.0070817,
+              54.468863599,
+              55.161032333
+            ]
+          },
+          "frameTimeChangePercent": 0.22599590167984296,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "bistro",
+          "samples": 0,
+          "mediansMs": {
+            "baseline": 32.294505182500004,
+            "candidate": 32.470220749
+          },
+          "rawMs": {
+            "baseline": [
+              34.218389399,
+              31.910625601,
+              32.428570532,
+              32.701601367,
+              32.081186267,
+              32.160439833
+            ],
+            "candidate": [
+              31.655355033,
+              33.380173335,
+              32.886045199,
+              32.242150065,
+              32.698291433,
+              31.530157933
+            ]
+          },
+          "frameTimeChangePercent": 0.5441036037152625,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "bistro",
+          "samples": 2,
+          "mediansMs": {
+            "baseline": 48.120552218,
+            "candidate": 47.9061570005
+          },
+          "rawMs": {
+            "baseline": [
+              47.170024866,
+              50.254990599,
+              47.238511701,
+              47.955063502,
+              48.286040934,
+              48.553915366
+            ],
+            "candidate": [
+              47.844026901,
+              47.9682871,
+              46.9810943,
+              46.940717132,
+              48.922116267,
+              48.423121565
+            ]
+          },
+          "frameTimeChangePercent": -0.44553773308486644,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "bistro",
+          "samples": 4,
+          "mediansMs": {
+            "baseline": 57.4245003825,
+            "candidate": 53.861719900500006
+          },
+          "rawMs": {
+            "baseline": [
+              57.438615333,
+              59.883396399,
+              57.410385432,
+              57.611486267,
+              57.337035299,
+              57.3255932
+            ],
+            "candidate": [
+              53.803581434,
+              53.482077168,
+              54.339276202,
+              53.919858367,
+              53.993945301,
+              52.673299401
+            ]
+          },
+          "frameTimeChangePercent": -6.204286425251593,
+          "angle160RgbByteIdentical": false
+        }
+      ]
+    },
+    {
+      "name": "v7-fresh-confirm-diag",
+      "selectedAcceptedRuns": 96,
+      "discardedRuns": 8,
+      "completeModeSummaries": 8,
+      "screeningOnly": false,
+      "summary": [
+        {
+          "asset": "bmw",
+          "samples": 0,
+          "mediansMs": {
+            "baseline": 9.6407622005,
+            "candidate": 9.6679023
+          },
+          "rawMs": {
+            "baseline": [
+              9.584858701,
+              9.602158734,
+              9.756805866,
+              9.6734056,
+              9.608118801,
+              9.846362834
+            ],
+            "candidate": [
+              9.6964957,
+              9.629598834,
+              9.590198701,
+              9.7926993,
+              9.6393089,
+              9.947159799
+            ]
+          },
+          "frameTimeChangePercent": 0.28151404355345466,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "bmw",
+          "samples": 4,
+          "mediansMs": {
+            "baseline": 17.457782332500003,
+            "candidate": 17.5714560495
+          },
+          "rawMs": {
+            "baseline": [
+              17.532995865,
+              17.286501833,
+              17.294308534,
+              17.6389629,
+              17.3825688,
+              17.621606167
+            ],
+            "candidate": [
+              17.6173561,
+              17.477362366,
+              17.172598166,
+              17.594449432,
+              17.741423232,
+              17.548462667
+            ]
+          },
+          "frameTimeChangePercent": 0.6511349198596639,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "t80",
+          "samples": 0,
+          "mediansMs": {
+            "baseline": 6.037244784,
+            "candidate": 6.042104782999999
+          },
+          "rawMs": {
+            "baseline": [
+              5.962597899,
+              6.096251633,
+              5.978237935,
+              5.906731034,
+              6.777193667,
+              6.131065068
+            ],
+            "candidate": [
+              6.7331402,
+              5.8224808,
+              6.1699885,
+              5.914221066,
+              6.404172567,
+              5.8184908
+            ]
+          },
+          "frameTimeChangePercent": 0.08050028073864901,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "t80",
+          "samples": 4,
+          "mediansMs": {
+            "baseline": 14.326842599999999,
+            "candidate": 14.183012532500001
+          },
+          "rawMs": {
+            "baseline": [
+              14.479546767,
+              14.388989667,
+              14.452652767,
+              14.264695533,
+              14.252845499,
+              14.127569033
+            ],
+            "candidate": [
+              14.267122802,
+              14.136125733,
+              13.934801234,
+              14.1007984,
+              14.360579167,
+              14.229899332
+            ]
+          },
+          "frameTimeChangePercent": -1.0039202043023665,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "sponza",
+          "samples": 0,
+          "mediansMs": {
+            "baseline": 20.419271166999998,
+            "candidate": 20.794002300499997
+          },
+          "rawMs": {
+            "baseline": [
+              20.2907275,
+              22.088879432,
+              20.9675961,
+              20.547814834,
+              19.791299299,
+              20.112226799
+            ],
+            "candidate": [
+              20.726072134,
+              21.006932932,
+              20.861932467,
+              21.256943699,
+              19.286891135,
+              19.506928466
+            ]
+          },
+          "frameTimeChangePercent": 1.8351836871906002,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "sponza",
+          "samples": 4,
+          "mediansMs": {
+            "baseline": 55.145892165999996,
+            "candidate": 54.690049217500004
+          },
+          "rawMs": {
+            "baseline": [
+              55.386152233,
+              53.589256632,
+              55.386182633,
+              54.967504833,
+              54.8236045,
+              55.324279499
+            ],
+            "candidate": [
+              54.719437401,
+              54.805367599,
+              54.177609001,
+              54.265109467,
+              54.660661034,
+              56.417252967
+            ]
+          },
+          "frameTimeChangePercent": -0.8266127005939317,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "bistro",
+          "samples": 0,
+          "mediansMs": {
+            "baseline": 32.480299033,
+            "candidate": 32.968592216
+          },
+          "rawMs": {
+            "baseline": [
+              35.171655533,
+              32.574760867,
+              33.119132733,
+              32.385837199,
+              32.290733567,
+              31.5816147
+            ],
+            "candidate": [
+              33.057845832,
+              33.631434034,
+              32.8793386,
+              32.614154534,
+              32.200526632,
+              33.185849533
+            ]
+          },
+          "frameTimeChangePercent": 1.503351870325731,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "bistro",
+          "samples": 4,
+          "mediansMs": {
+            "baseline": 59.675621566000004,
+            "candidate": 55.104289733
+          },
+          "rawMs": {
+            "baseline": [
+              59.690674132,
+              59.920147067,
+              57.883987232,
+              59.660569,
+              58.706472801,
+              61.607391467
+            ],
+            "candidate": [
+              55.077903499,
+              54.7459714,
+              55.130675967,
+              54.8294445,
+              55.592469367,
+              57.3503413
+            ]
+          },
+          "frameTimeChangePercent": -7.6603003253920114,
+          "angle160RgbByteIdentical": false
+        }
+      ]
+    }
+  ],
+  "qualityReceipts": [
+    {
+      "name": "v7-quality-all",
+      "pairedViews": 108
+    }
+  ],
+  "allModeQualityComplete": true,
+  "decision": "Adopted V7: Bistro4 +6.615%/+8.296% FPS in 144-run all-mode and fresh 96-run OFF/4x repetitions; BistroOFF +0.544%/+1.503% time tradeoff retained. Original variants held.",
+  "actualWasmFullPlaneHashes": [
+    216,
+    576
+  ],
+  "actualWasmOrderPairs": 108,
+  "actualWasmBudgetPairs": 108,
+  "actualWasmHintPairs": 108,
+  "actualWasmScratchBudgetRollbacks": 3,
+  "nativeSanitizedFixtures": [
+    "quantized",
+    "small",
+    "positions",
+    "hz",
+    "order_budget"
+  ],
+  "nativeAndSanitizedHintPairs": 108,
+  "residentFreshPairs": 288,
+  "actualWasmBinarySha256": {
+    "wasm-audit/hz-baseline.wasm": "7ccbae7bab90f12dac10e155180f3a08c0242b4d219918b2ab801fb3b6869356",
+    "wasm-audit/hz-candidate.wasm": "5035d162f3541aae9af8c6c7f21648071c11456affa93cc07c56b96129f04587",
+    "wasm-audit/order-budget-candidate.wasm": "aa2f8dfc6ce48e8e64323b8d3d6e0e4cd067c1aec1b1a5c6663c697756fd9b7c",
+    "wasm-audit/order-candidate.wasm": "f55ac63aef1528bd253e940ed9459b010f4ee18e96b1a0c7b4d30e55df079d08",
+    "wasm-audit/quantized-baseline.wasm": "71e0b7eadd7285ec93f8432edc362d56cf9ef264192c4864ecb22319e7ea4394",
+    "wasm-audit/quantized-candidate.wasm": "c19ea004473a0798be0720b678748faa1bbf01162a9b6d254c8a659277aa2dda",
+    "wasm-audit/small-baseline.wasm": "12f5e8cec073b359c2c5a00fdf85fe706b12b70910a7a597fc651f4b8df49a8d",
+    "wasm-audit/small-candidate.wasm": "7bfbfebd3098c02433f29b97de4f9d00a121477de6c2c8a2b84e81df080f61a3",
+    "wasm-audit-v2/hint-candidate.wasm": "598a19629613d775b794645029c6e08fa2f364a0a9c5284125df99bc14e8876c"
+  },
+  "productionCTestCases": 758,
+  "browserChecks": 12,
+  "nativePlatform": "Linux OSMesa",
+  "nativeCompiler": "Clang 22.1.8",
+  "sanitizerCompiler": "Clang 19",
+  "wasmCompiler": "Emscripten 3.1.69",
+  "softwareMetricLimit": "Proc CPU/fault/RSS and PSI deltas cover whole requests including warmup and image write; they are not hardware counters or measured-frame metrics.",
+  "currentDiagnosticFixtureSha256": {
+    "order_contract.c": "25a0996cbc0b58b404d8c4a63292f86fe2a89c1ed25fea8c33f35f9374d8a9cd",
+    "order_budget_contract.c": "98f3fdb11dd8bdbaf03f3b797f3ba734efdb48be1e4aebcf36f0e9856b27f6d1"
+  },
+  "diagnosticProvenance": "Initial near/opaque native fixture had 99 pairs; reset and white-box budget checks were added later. Current diagnostic hashes describe the current recipe, not historical initial fixture binaries.",
+  "artifactsSha256": {
+    "equivalence.json": "7a356706d539f3e20de2b14be4b995e34b113d75cebee838dbb60ccaaaf0f314",
+    "gate-status.json": "9a78311bb886ab8781435f53d1ae8075380fa0f31de743dfe4d39af10288e4c8",
+    "isa.json": "bfc670f0d7a350e517a0957c8ad8f896e50d837e3c512d2cc69cfdfa84ebb016",
+    "production-browser.json": "198d659aa68d8d959eaa80f7d47f2d2a5b34e9593e23e4d805a2c1f49215f394",
+    "production-isa.json": "b29821745e7f3001b65e5212efe0b59e0b440886bece40ebc50e55493858de64",
+    "production-live.json": "a7a0c44be533d6edd65c961552aa8edaf3c8384ba0273f565b4a315df893de58",
+    "receipt.json": "fea736122956304ca39e78740b9fd6d116b2b3b83738c9938276b67d774d620c",
+    "softgl-order-cached-v7-build.txt": "08256570b983b263f93936877069289d3c3fe3c07c52bd2c64c938f84f764fe8",
+    "softgl-order-cached-v7-configure.txt": "8213c775dee18d5cd385800cbb9395ef12d47d2d030df1a79062abb3459a5592",
+    "softgl-order-cached-v7-confirm-diag.txt": "2c6ac9215f00f54c95a93ce922fb0dc5294616233822402bbd9d6e91e08260ab",
+    "softgl-order-cached-v7-fresh-confirm-diag.txt": "706ada04e6e91debd5fbd11ae1add4035d28a4dd6730331d4ad1b1fc1f763f04",
+    "softgl-order-cached-v7-hz.txt": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+    "softgl-order-cached-v7-native-hint-build.txt": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "softgl-order-cached-v7-native-hint.txt": "f817a178f18da23c755822ce9b5726928b97a327f7e401a3b0cfa2636d0a8cac",
+    "softgl-order-cached-v7-order_budget_contract.txt": "c5004082ae9a382960cdb07071b3ccce0ed214ed614804c438596b4df97a0e19",
+    "softgl-order-cached-v7-order_contract.txt": "f817a178f18da23c755822ce9b5726928b97a327f7e401a3b0cfa2636d0a8cac",
+    "softgl-order-cached-v7-positions.txt": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+    "softgl-order-cached-v7-prepare.txt": "0c6c99ecfaf8cce47f3b04bcb7d0162b9930711c2f364b224ffb496272435354",
+    "softgl-order-cached-v7-production-browser.txt": "48e513257bfae553dacc58f5675ed280685ddc0c6e7b3f7abbec49ec66e3cbc1",
+    "softgl-order-cached-v7-production-ctest.txt": "1c59194106dd385ca660202e407cf38a8129654b11f09bdf8310037c1967884c",
+    "softgl-order-cached-v7-production-native-build.txt": "2cd76ebc508e3649ec7b23d0798a1022fe048890911628a5159192d3bf5d15aa",
+    "softgl-order-cached-v7-production-wasm-build.txt": "a74042879dec0cdd697c25bd593f6fdf7c95a5085b265be6fc72086d04508a5a",
+    "softgl-order-cached-v7-quality-all.txt": "feaa691266e85722601be8d5857062c15f17cca1735fb749fe20a65b37f930a3",
+    "softgl-order-cached-v7-quantized.txt": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+    "softgl-order-cached-v7-resident-v2.txt": "ea7e18ff170a2b38d77770aee2cdb20353196ec5c52ab468d928cbed7c1a3bcd",
+    "softgl-order-cached-v7-resident.txt": "ea7e18ff170a2b38d77770aee2cdb20353196ec5c52ab468d928cbed7c1a3bcd",
+    "softgl-order-cached-v7-sanitize-build.txt": "76dc03fa751de35f24795584af7d84a3176c0a3ecad3f7c6f87f452a23a5af03",
+    "softgl-order-cached-v7-sanitize-configure.txt": "982566556d0c3b2fd67fc2eb2228b0f9c8d7cd61e58291d5b24b2b9edb7ab1ec",
+    "softgl-order-cached-v7-sanitize-hint-build.txt": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "softgl-order-cached-v7-sanitize-hint.txt": "f817a178f18da23c755822ce9b5726928b97a327f7e401a3b0cfa2636d0a8cac",
+    "softgl-order-cached-v7-sanitize-hz_candidate.txt": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+    "softgl-order-cached-v7-sanitize-order_budget_contract.txt": "c5004082ae9a382960cdb07071b3ccce0ed214ed614804c438596b4df97a0e19",
+    "softgl-order-cached-v7-sanitize-positions_candidate.txt": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+    "softgl-order-cached-v7-sanitize-quantized_candidate.txt": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+    "softgl-order-cached-v7-sanitize-small_candidate.txt": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+    "softgl-order-cached-v7-small.txt": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+    "softgl-order-cached-v7-wasm.txt": "e68747b600f357828b66d46cb0f2c2bb59e46fa8abfe291850101080645a7c6d",
+    "source-reproduction.json": "44c938e1b12dee6af07e723637dd8947a3192713d3a1717500a200594f3e0537",
+    "source.patch": "27021214052e6cf0aa1b952dc1ec959de71fe5bda4a133ed1675d90b62b90ba1",
+    "v7-confirm-diag-receipt.json": "05c40399518afe720f1e365e803764f3d0dcfb723516624c6e72e65351fa6394",
+    "v7-confirm-diag-summary.json": "805e1f333175ae203a43f39b7933e356eabd92a9a0392d5cbb3ac37c039a4dcc",
+    "v7-fresh-confirm-diag-receipt.json": "b43c4c1f632424546a53ac1475127b934e97e4b7f2fae4b62c0b7535dee2a5fc",
+    "v7-fresh-confirm-diag-summary.json": "2c3a4c8df59a227e82cbd7258c75d2258d98f901517c8a6472a03ea70b3f4f6c",
+    "v7-quality-all.json": "4612665101188d0f07a0df4a90ba081d312dc2a3428b0cf3ce90a78c4aaece8a",
+    "wasm-v2-hint-build.txt": "6158350957e588940e95bc1712cc4e0d1618d0d92a3bcabf6518ac7f5ecca570",
+    "wasm-v2-hint-candidate.txt": "f817a178f18da23c755822ce9b5726928b97a327f7e401a3b0cfa2636d0a8cac",
+    "wasm-v2-hz-baseline.txt": "5caa0898b620ac489b0e2b22cf1a0537977f8a3020ac5439433e4862acb28bd5",
+    "wasm-v2-hz-candidate.txt": "5caa0898b620ac489b0e2b22cf1a0537977f8a3020ac5439433e4862acb28bd5",
+    "wasm-v2-order-budget-candidate.txt": "6f748d27d7e3e0b7f98bba49aff6f7f6e968486124edc2225b524a98474341cc",
+    "wasm-v2-order-candidate.txt": "a79f1d2fa39bbf07c43bf0fda116cdc59b59fd1a4fe68e5e9a8d2a9b0bfc1567",
+    "wasm-v2-quantized-baseline.txt": "5d2b4f0e17b0c536f4fae60265eada43cf0ccccb3420aeb8e44806304951366c",
+    "wasm-v2-quantized-candidate.txt": "5d2b4f0e17b0c536f4fae60265eada43cf0ccccb3420aeb8e44806304951366c",
+    "wasm-v2-small-baseline.txt": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+    "wasm-v2-small-candidate.txt": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9"
+  }
+}

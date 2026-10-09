@@ -1,0 +1,176 @@
+--- a/libsoftgl/include/GL/softgl.h
++++ b/libsoftgl/include/GL/softgl.h
+@@ -958,6 +958,9 @@
+  * Call after a successful begin; each new begin restores full precision.
+  * Legacy draws and MSAA keep their existing renderer. */
+ void softgl_scene_quantized_visibility(GLboolean enabled);
++/* Private scene order trial: 0 original, 1 near-first, 2 opaque then near-first.
++ * Four-sample only. May change equal-depth winners and alpha/shading points. */
++void softgl_scene_depth_order(GLuint mode);
+ /* Compatibility entry point for the removed native-wide backend.
+  * Always returns zero; native and WASM rendering use SIMD128 exclusively. */
+ int softgl_scene_native_wide(GLboolean enabled);
+--- a/libsoftgl/src/geometry_types.inc
++++ b/libsoftgl/src/geometry_types.inc
+@@ -56,7 +56,12 @@
+     scene_clipped_primitive *clipped;
+     uint32_t clipped_count, clipped_capacity;
+ } scene_geometry_task;
+-typedef struct { uint64_t *references; uint32_t count, capacity; } scene_geometry_bin;
++typedef struct { uint64_t reference; float depth; uint32_t key; } scene_order_reference;
++typedef struct {
++    uint64_t *references;
++    scene_order_reference *order;
++    uint32_t count, capacity, order_capacity;
++} scene_geometry_bin;
+ 
+ typedef struct {
+     scene_position *positions;
+--- a/libsoftgl/src/geometry.inc
++++ b/libsoftgl/src/geometry.inc
+@@ -23,7 +23,9 @@
+         free(g->tasks[i].primitives); free(g->tasks[i].clipped); free(g->tasks[i].packets);
+         free(g->tasks[i].occlusion_packets);
+     }
+-    for (int i = 0; i < SG_MAX_BINS; i++) free(g->bins[i].references);
++    for (int i = 0; i < SG_MAX_BINS; i++) {
++        free(g->bins[i].references); free(g->bins[i].order);
++    }
+     free(g->positions); free(g->attributes); free(g->outcodes); free(g->ready);
+     free(g->position_tasks); free(g->tasks); free(g);
+ }
+@@ -360,6 +362,63 @@
+     }
+ }
+ 
++/* Stable 256-bucket near-first order of existing 16-triangle packet references.
++ * Partitioning precedes rasterization on each owned bin. No previous frame's
++ * visibility is reused, and no geometry is removed by this ordering step. */
++#ifdef SOFTGL_SCENE_ORDER_AUDIT
++static atomic_ullong scene_order_counts[2];
++unsigned long long softgl_scene_order_audit(unsigned index) {
++    return index < 2 ? atomic_load_explicit(&scene_order_counts[index],memory_order_relaxed) : 0;
++}
++#endif
++static void scene_geometry_order_bin(struct sg_scene_visibility *f, scene_geometry_bin *bin) {
++    if (bin->count < 2) return;
++    uint32_t counts[512] = {0}, cursors[512];
++    float nearest = 1.f, farthest = 0.f;
++    scene_geometry *g = f->geometry;
++    for (uint32_t i = 0; i < bin->count; i++) {
++        uint64_t reference = bin->references[i];
++        unsigned mask = (unsigned)reference & 65535u;
++        uint32_t base = (uint32_t)(reference >> 16);
++        scene_geometry_task *task = &g->tasks[base >> SCENE_PRIMITIVE_BITS];
++        unsigned first = base & SCENE_PRIMITIVE_MASK;
++        float depth = 1.f;
++        /* A reference has up to four existing four-triangle summaries.
++         * Ignore groups absent from this bin. Ineligible packets sort first;
++         * their near field is deliberately uninitialized in production. */
++        for (unsigned offset = 0; offset < 16; offset += 4) {
++            if (!((mask >> offset)&15u)) continue;
++            const scene_occlusion_packet *packet =
++                &task->occlusion_packets[(first+offset)/SCENE_OCCLUSION_PACKET_TRIANGLES];
++            float z = packet->eligible ? packet->near : 0.f;
++            if (z < depth) depth = z;
++        }
++        if (depth < nearest) nearest = depth;
++        if (depth > farthest) farthest = depth;
++        bin->order[i].reference = reference;
++        bin->order[i].depth = depth;
++        bin->order[i].key = f->depth_order == 2 && f->materials[task->material].alpha_test ? 256u : 0u;
++    }
++    float inverse = farthest > nearest ? 255.f/(farthest-nearest) : 0.f;
++    if (!isfinite(inverse)) inverse = 0.f;
++    for (uint32_t i = 0; i < bin->count; i++) {
++        float scaled = (bin->order[i].depth-nearest)*inverse;
++        unsigned depth_key = scaled < 0.f ? 0u : scaled > 255.f ? 255u : (unsigned)scaled;
++        bin->order[i].key += depth_key;
++        counts[bin->order[i].key]++;
++    }
++    uint32_t first = 0;
++    for (int i = 0; i < 512; i++) { cursors[i] = first; first += counts[i]; }
++    for (uint32_t i = 0; i < bin->count; i++)
++        bin->references[cursors[bin->order[i].key]++] = bin->order[i].reference;
++#ifdef SOFTGL_SCENE_ORDER_AUDIT
++    unsigned moved = 0;
++    for (uint32_t i = 0; i < bin->count; i++) moved += bin->references[i] != bin->order[i].reference;
++    atomic_fetch_add_explicit(&scene_order_counts[0],1,memory_order_relaxed);
++    atomic_fetch_add_explicit(&scene_order_counts[1],moved,memory_order_relaxed);
++#endif
++}
++
+ static void scene_geometry_raster(void *data) {
+     struct sg_scene_visibility *f = data; scene_geometry *g = f->geometry;
+     softgl_ctx local = *f->context; sg_worker_pool *pool = local.workers;
+@@ -367,6 +426,7 @@
+         int bin = atomic_fetch_add_explicit(&g->next_task,1,memory_order_relaxed);
+         if (bin >= pool->nbins || atomic_load_explicit(&f->failed,memory_order_relaxed)) break;
+         scene_geometry_bin *list = &g->bins[bin];
++        if (f->depth_order) scene_geometry_order_bin(f,list);
+         for (uint32_t i = 0; i < list->count; i++) {
+             uint64_t reference = list->references[i];
+             unsigned mask = (unsigned)reference & 65535u;
+@@ -485,6 +545,17 @@
+             b->references = next; b->capacity = capacity; g->reference_bytes += delta;
+         }
+     }
++    if (f->depth_order) for (int bin = 0; bin < SG_MAX_BINS; bin++) {
++        scene_geometry_bin *b = &g->bins[bin];
++        if (b->count > b->order_capacity) {
++            uint32_t capacity = b->capacity;
++            size_t delta = (size_t)(capacity-b->order_capacity)*sizeof(*b->order);
++            if (delta > SCENE_REFERENCE_BYTES-g->reference_bytes) { scene_geometry_fail(f); return; }
++            scene_order_reference *next = realloc(b->order,(size_t)capacity*sizeof(*next));
++            if (!next) { scene_geometry_fail(f); return; }
++            b->order = next; b->order_capacity = capacity; g->reference_bytes += delta;
++        }
++    }
+     atomic_store_explicit(&g->next_task,0,memory_order_relaxed);
+     sg_workers_run_callback(f->context,scene_geometry_references,f);
+     atomic_store_explicit(&g->next_task,0,memory_order_relaxed);
+--- a/libsoftgl/src/scene_visibility.c
++++ b/libsoftgl/src/scene_visibility.c
+@@ -65,7 +65,7 @@
+     scene_bin bins[SG_MAX_BINS];
+     scene_geometry *geometry;
+     uint32_t mesh_vertices;
+-    int quantized;
++    int quantized, depth_order;
+     int deferred_meshes;
+     uint8_t *sample_point, *shade_mask;
+     uint32_t *group_counts;
+@@ -158,7 +158,7 @@
+         f->bins[i].current_primitive = NULL;
+     }
+     atomic_store_explicit(&f->failed, 0, memory_order_relaxed);
+-    f->quantized = 0;
++    f->quantized = 0; f->depth_order = 0;
+     f->context = c; f->material_count = 0; f->task_count = 0;
+     f->deferred_meshes = 0; f->mesh_vertices = 0;
+     c->scene_material = -1; c->scene_visibility = f;
+@@ -364,6 +364,14 @@
+         sg_scene_msaa_hz_count(0);
+ #endif
+     }
++}
++
++/* Explicitly permit scene reordering. Ordinary OpenGL and legacy captures
++ * keep their existing order; each scene begin resets this option. */
++void softgl_scene_depth_order(GLuint mode) {
++    softgl_ctx *c = sg_current();
++    if (c && c->scene_visibility)
++        ((struct sg_scene_visibility *)c->scene_visibility)->depth_order = c->fb.samples == 4 && mode <= 2 ? (int)mode : 0;
+ }
+ 
+ void softgl_scene_quantized_visibility(GLboolean enabled) {
+--- a/model_wrap.c
++++ b/model_wrap.c
+@@ -460,6 +460,7 @@
+     glDisable(GL_BLEND);
+ #ifdef SOFTGL_MODEL_SCENE_VISIBILITY
+     int scene_visibility = softgl_scene_visibility_begin_hint(G.triangles);
++    if (scene_visibility) softgl_scene_depth_order(1);
+ #ifdef SOFTGL_MODEL_QUANTIZED_VISIBILITY
+     if (scene_visibility) softgl_scene_quantized_visibility(GL_TRUE);
+ #endif

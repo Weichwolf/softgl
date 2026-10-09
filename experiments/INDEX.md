@@ -192,3 +192,7 @@
 | [scene-msaa-quantized-packets](scene-msaa-quantized-packets/README.md) | Held prototype | Bistro4 −2.94% time but T-80 OFF repeat cost +10.73%; guarded variants only −1.50/−1.46% screening time, no adoption. |
 | [scene-msaa-reconstructed-depth](scene-msaa-reconstructed-depth/README.md) | Research | Own DCAA/AGAA-inspired uniform depth-plane reconstruction; retain four genuine samples, unimplemented and unmeasured. |
 | [scene-bin-private-state](scene-bin-private-state/README.md) | Adopted | Exact bin state separation: Bistro OFF/2×/4× +5.31/+4.79/+6.37% FPS, all OFF modes improve; Sponza2 −1.05%, SIMD128/sample planes unchanged. |
+| [scene-cache-aligned-stripes](scene-cache-aligned-stripes/README.md) | Not adopted screen | Exact ownership/planes, but 4× BMW/T-80/Sponza +1.50/+2.72/+1.95% time; Bistro4 −0.66% mixed, alignment-only control also unconfirmed. |
+| [scene-msaa-opaque-commit](scene-msaa-opaque-commit/README.md) | Held screen | Exact native sample/rollback and 36 model pairs; Bistro4 −1.55% time with mixed directions, T-80 OFF +5.00% control cost; no adoption. |
+| [scene-msaa-local-setup](scene-msaa-local-setup/README.md) | Not adopted screen | Exact native/forced-fallback planes and 36 model pairs; Bistro4 +2.26% time in both directions, cache does not pay off. |
+| [scene-depth-order-cached-keys](scene-depth-order-cached-keys/README.md) | Adopted V7 | Opaque/near-first parallel order: Bistro4 FPS +6.61/+8.30%, OFF time +0.54/+1.50% tradeoff; 758 tests, actual SIMD128 WASM and 12 live browser cases pass. |

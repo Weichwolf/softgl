@@ -1,0 +1,709 @@
+{
+  "baselineRevision": "47572f4935fd821d552234f73ccde641fd6c253e",
+  "variant": "stage-v6",
+  "productionAdopted": false,
+  "built": true,
+  "measured": true,
+  "performanceAccepted": false,
+  "actualWasmPending": true,
+  "sanitizersPending": true,
+  "residentReusePending": true,
+  "variantManifest": "baseline=47572f4935fd821d552234f73ccde641fd6c253e\nopaque_first=True\nisolate_order=False\nisolate_entry=False\nisolate_cleanup=False\nseparate_stage=True\nsamples=4\nkey_source=existing_eligible_occlusion_packets\n",
+  "sourceSha256": {
+    "CMakeLists.txt": "41a69b787380c1ec562b95a8f02c6bd9d7cd7624f23439454b893a17992a1fb7",
+    "include/GL/softgl.h": "5b78fd53d9087563c8a77beca5dc5e2abe186b934ee3d236731703b52cadc2f8",
+    "src/api.c": "9c373504af364d620c212afdfc9046bcc899bd61af198a6558fdda81f01691e1",
+    "src/buffers.c": "a0363363f060dc9cbd99a64703496e1e702c2cf82beb42b16a54337b524be2ff",
+    "src/clip.c": "f5c0b940f54a4aa52a2d55785de31d72c168d381b53012e408179f81381de3cc",
+    "src/cluster_cull.h": "b639ef7e507d28512549feda7e272e0bef855acf6fd1c8e8cad96cae6ad228d9",
+    "src/dlist.c": "e7446f33b3972e4384c103c2547869dfffad43c900e1f55bf6f8c38eaf36eae8",
+    "src/dlist.h": "4bc8e0e5966f5b226c8e086ead9a635fd6158eed18b0c55e4b4c2ed0bdbda033",
+    "src/evaluators.c": "69281ca9f25e0f7d5cc1f76f31fb17502c83b60ea6168bbbae238e65227344ba",
+    "src/frag_combine_hot.h": "e801062d6fe0ce8ade5f12730ba4cb1441689ba6bd39a331a308bc99e29f72cc",
+    "src/frag_hot.h": "e0e1cba7afec1b2c13a53a8198207d868fa0636a84ee98e059f238d131dca52e",
+    "src/frag_packet.h": "f06d0fa6a43404fbdbc2ca391d96162dcafb8e53dcfaca45afc46ebb7ff6b6de",
+    "src/fragment.c": "d1883401993e1576f565710c6ad9e3066d401684ac698928940f72fd582ef1d2",
+    "src/fragment_combine.c": "b7af7972265bf0ac384379fcba6885e93707cdd8a0de956f691ad28ed1dd7153",
+    "src/fragment_write.c": "6c806d57d87ff4ed31ecdf502be6f77772497696a607633edf71c9971da66f1d",
+    "src/framebuffer.c": "7c82e1f52d5b2c2e7d9752d155f379109a8791c41b147713cfb14f2788e1a974",
+    "src/geometry.inc": "007aec3ec9501b74efa98c4291bf0dc14a30bbaf60198cd05ae12e803a9c1ed5",
+    "src/geometry_types.inc": "543196c405d363f69c5542eb01a769ef61da6e1dc946299c8c2b4ac998718efc",
+    "src/immediate.c": "80b520a3c3c14e675eeca5d3083c5dbe423e9684a69b868446f85e99ef86534c",
+    "src/index_range.h": "4d0456bd563031b7b4ff1184bfb6fa513908ae4047bd5f6f83dc8a7f57d8bb03",
+    "src/lighting.c": "1e6db9b4f59e2a54b1f6b89e6bc129d206dc816aaa08f099d80e6f8f2f42e338",
+    "src/lines.c": "b08fef911685977a08d6f2b29265aa28721aa0497a1a208c492403bdde0bbe87",
+    "src/matrix.c": "fd5bff0e263cd87d1032fad4fa75f966f76b2cc605b746d47e3d4eeabde6d793",
+    "src/msaa_additive.h": "6fab4198defe4db18a83f1562034807e71957ba07db0c0bd51f2e26c90d4778f",
+    "src/multisample.c": "2ba7fe2df9c8afed9acf1daa5ea48df6fbe8b5c0cceeac11bd61c3804423ea1d",
+    "src/multisample.h": "cdbe1e0aa51827f13789ce7f46e3acc961e0b87c5d034e1c7ba22fe54c611315",
+    "src/pipeline.c": "fb559aa949d0e4211044451c9456f22e928982fb03c6f9132c199b316a2edfe3",
+    "src/pixels.c": "8e366864ac1418564d2342bd3c120ad5e8057998af21ff31ccb5663134ddfc92",
+    "src/raster_hz.h": "1cc4a6fe6f5a425607cb3b8a57d15cb19d5de537794c638b673f0bd4a14b4ed6",
+    "src/raster_msaa_impl.h": "1c5ace8d35a4413d5628ebf5c397c58d633758a3dd93145932d2973b3a61ae0f",
+    "src/raster_store.h": "251cbe4d9765edfc26b4428d7d5906ab17722689feae08eac432db59a7b22934",
+    "src/raster_triangle_impl.h": "51b5cf82bdd1298bcb42722a4af5cac0edbebe8442b4703a1cf0fbde35487915",
+    "src/raster_types.h": "0b050bdbf31f6c398366112c84a6041390a50398d1e18acafe4c7440a0700f45",
+    "src/raster_vertex_pack.h": "956a8084b973144a9d8ee28c0d485214e3e8551a7384238f610620e00ad6e528",
+    "src/rasterizer.c": "8cfc012004b794e6a83eeb8eb33b2dea674ba199a32c1a65baf691106cc596bc",
+    "src/scene_visibility.c": "d0c6c846ceb4edf8972e5a6989508bb32b8c0ee7516db3892f3498728c72b1b0",
+    "src/simd.h": "c639184db1b8a3c79b0aa07ad4fbe0a96b8c79e16536b3d98abef0b72d74e150",
+    "src/state.c": "04f4a8355c1fc37c3521001719dae9a55a1e9b7a34c2f1a70c53990a0d26fb38",
+    "src/texture.c": "9c4d999c73b68a7431bd1f0e88c2d3d2e7e1931670ad166ffee535f8d5764c45",
+    "src/types.h": "9eb99eb4dc29359b7edeb4dc817a7dfa8a108f32b84fa97e190a95f3e73a8cfe",
+    "src/vertex_inputs.h": "fb774a51f4627b91dd6d58fc2cb918df04ef224d45cd898dfa1ed5dd9a0b0db5",
+    "src/workers.c": "47c2bb16e01d1f17ce552ce3baa13e15a13f3d125a3c2ee0d6f30ebce8c63e21",
+    "src/workers.h": "3a74a68a42b0e1fc80b426cd3236e329ee70b145a5afe687520575599e709c5a",
+    "src/workers_queue_raw.inc": "ddec9df98f32ce5f428467f97b3a772506019cd4eca90e004afe956a6b9527b3"
+  },
+  "wrapperSha256": "3e14cef42357dfa01d237af423ebd5c59625f481bc24b0322f7355de908797b4",
+  "librarySha256": "20f8fc3f1aa8eda9d6d5b47e780e7ee41b745839682e7632ff193bae1c35484f",
+  "baselineLibrarySha256": "d27e01b5541f28650293b433b253e8311a785c0d15b584b2cf36a56ac11aa4b7",
+  "currentGeneratorSha256": "59bd7a85d97907398470007c502271e1bad8e2a7c4a6382bf3dd61a80cc463e6",
+  "generatorReproductionByteExact": false,
+  "nativeFullPlaneHashes": [
+    216,
+    576
+  ],
+  "nativePositionPairs": 162,
+  "nativeHzRollbackPass": true,
+  "nativeOrderPairs": 108,
+  "laterResetAndScratchBudgetPairs": 108,
+  "forcedScratchBudgetRollbacks": 3,
+  "rawArtifacts": [
+    {
+      "source": "/tmp/softgl-order-cached-v6-budget.txt",
+      "originalSha256": "c5004082ae9a382960cdb07071b3ccce0ed214ed614804c438596b4df97a0e19",
+      "archived": "softgl-order-cached-v6-budget.txt",
+      "archiveSha256": "c5004082ae9a382960cdb07071b3ccce0ed214ed614804c438596b4df97a0e19",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v6-build.txt",
+      "originalSha256": "963b7ed31af05028dc6d37ea02b08fe7f72fb1855bbdc6f80c2c765357d3a87e",
+      "archived": "softgl-order-cached-v6-build.txt",
+      "archiveSha256": "963b7ed31af05028dc6d37ea02b08fe7f72fb1855bbdc6f80c2c765357d3a87e",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v6-configure.txt",
+      "originalSha256": "39fd393faa9721b48895696f9ee5d56a726eb44b35dcc3d0d2549be542f86e37",
+      "archived": "softgl-order-cached-v6-configure.txt",
+      "archiveSha256": "39fd393faa9721b48895696f9ee5d56a726eb44b35dcc3d0d2549be542f86e37",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v6-confirm-diag.txt",
+      "originalSha256": "d8c5d702e8885c82fee8a639f3aca1409f174e2f1a36ef74829f0dc1f716f51e",
+      "archived": "softgl-order-cached-v6-confirm-diag.txt",
+      "archiveSha256": "d8c5d702e8885c82fee8a639f3aca1409f174e2f1a36ef74829f0dc1f716f51e",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v6-hz.txt",
+      "originalSha256": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+      "archived": "softgl-order-cached-v6-hz.txt",
+      "archiveSha256": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v6-isa.txt",
+      "originalSha256": "87f8a6af9d45cc6dbab36f1e72cfbd72c7b58579a24fd46333055187be98867d",
+      "archived": "softgl-order-cached-v6-isa.txt",
+      "archiveSha256": "87f8a6af9d45cc6dbab36f1e72cfbd72c7b58579a24fd46333055187be98867d",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v6-positions.txt",
+      "originalSha256": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+      "archived": "softgl-order-cached-v6-positions.txt",
+      "archiveSha256": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v6-prepare.txt",
+      "originalSha256": "864c465bfe478a11450e0cf09b8544d25070817446d29501a091caaf002c968d",
+      "archived": "softgl-order-cached-v6-prepare.txt",
+      "archiveSha256": "864c465bfe478a11450e0cf09b8544d25070817446d29501a091caaf002c968d",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v6-quality-all.txt",
+      "originalSha256": "feaa691266e85722601be8d5857062c15f17cca1735fb749fe20a65b37f930a3",
+      "archived": "softgl-order-cached-v6-quality-all.txt",
+      "archiveSha256": "feaa691266e85722601be8d5857062c15f17cca1735fb749fe20a65b37f930a3",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v6-quantized.txt",
+      "originalSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "archived": "softgl-order-cached-v6-quantized.txt",
+      "archiveSha256": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v6-screen-diag.txt",
+      "originalSha256": "fcdbdc9af4cbd83828bb583b1024eb26d7b26c74229fa82e3ff731009c9d90ba",
+      "archived": "softgl-order-cached-v6-screen-diag.txt",
+      "archiveSha256": "fcdbdc9af4cbd83828bb583b1024eb26d7b26c74229fa82e3ff731009c9d90ba",
+      "eofNormalization": "trim EOF whitespace only"
+    },
+    {
+      "source": "/tmp/softgl-order-cached-v6-small.txt",
+      "originalSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "archived": "softgl-order-cached-v6-small.txt",
+      "archiveSha256": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+      "eofNormalization": "trim EOF whitespace only"
+    }
+  ],
+  "trials": [
+    {
+      "name": "v6-screen-diag",
+      "selectedAcceptedRuns": 32,
+      "discardedRuns": 0,
+      "completeModeSummaries": 8,
+      "screeningOnly": true,
+      "summary": [
+        {
+          "asset": "bmw",
+          "samples": 0,
+          "mediansMs": {
+            "baseline": 9.749335884,
+            "candidate": 9.606435467
+          },
+          "rawMs": {
+            "baseline": [
+              9.8068594,
+              9.691812368
+            ],
+            "candidate": [
+              9.644208901,
+              9.568662033
+            ]
+          },
+          "frameTimeChangePercent": -1.465745141005137,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "bmw",
+          "samples": 4,
+          "mediansMs": {
+            "baseline": 17.2732384175,
+            "candidate": 17.274921749999997
+          },
+          "rawMs": {
+            "baseline": [
+              17.473182334,
+              17.073294501
+            ],
+            "candidate": [
+              17.310838533,
+              17.239004967
+            ]
+          },
+          "frameTimeChangePercent": 0.00974532082120838,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "t80",
+          "samples": 0,
+          "mediansMs": {
+            "baseline": 5.9554361835,
+            "candidate": 5.875665934000001
+          },
+          "rawMs": {
+            "baseline": [
+              6.033294733,
+              5.877577634
+            ],
+            "candidate": [
+              5.876540934,
+              5.874790934
+            ]
+          },
+          "frameTimeChangePercent": -1.3394526788988004,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "t80",
+          "samples": 4,
+          "mediansMs": {
+            "baseline": 14.0496088005,
+            "candidate": 14.0195437165
+          },
+          "rawMs": {
+            "baseline": [
+              13.952318501,
+              14.1468991
+            ],
+            "candidate": [
+              14.083945565,
+              13.955141868
+            ]
+          },
+          "frameTimeChangePercent": -0.21399232125901557,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "sponza",
+          "samples": 0,
+          "mediansMs": {
+            "baseline": 19.5129501495,
+            "candidate": 19.963858166999998
+          },
+          "rawMs": {
+            "baseline": [
+              19.533148532,
+              19.492751767
+            ],
+            "candidate": [
+              20.151160399,
+              19.776555935
+            ]
+          },
+          "frameTimeChangePercent": 2.3108141723590325,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "sponza",
+          "samples": 4,
+          "mediansMs": {
+            "baseline": 54.2944211505,
+            "candidate": 54.202365884
+          },
+          "rawMs": {
+            "baseline": [
+              53.983318567,
+              54.605523734
+            ],
+            "candidate": [
+              54.961408168,
+              53.4433236
+            ]
+          },
+          "frameTimeChangePercent": -0.16954829713503594,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "bistro",
+          "samples": 0,
+          "mediansMs": {
+            "baseline": 33.118206017,
+            "candidate": 32.005410983
+          },
+          "rawMs": {
+            "baseline": [
+              33.753964567,
+              32.482447467
+            ],
+            "candidate": [
+              31.815698766,
+              32.1951232
+            ]
+          },
+          "frameTimeChangePercent": -3.360070389769265,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "bistro",
+          "samples": 4,
+          "mediansMs": {
+            "baseline": 57.412535099500005,
+            "candidate": 53.706149250500005
+          },
+          "rawMs": {
+            "baseline": [
+              57.204194966,
+              57.620875233
+            ],
+            "candidate": [
+              53.350673368,
+              54.061625133
+            ]
+          },
+          "frameTimeChangePercent": -6.455708396392135,
+          "angle160RgbByteIdentical": false
+        }
+      ]
+    },
+    {
+      "name": "v6-confirm-diag",
+      "selectedAcceptedRuns": 144,
+      "discardedRuns": 0,
+      "completeModeSummaries": 12,
+      "screeningOnly": false,
+      "summary": [
+        {
+          "asset": "bmw",
+          "samples": 0,
+          "mediansMs": {
+            "baseline": 9.725969184,
+            "candidate": 9.6743957015
+          },
+          "rawMs": {
+            "baseline": [
+              9.732545868,
+              9.770482666,
+              9.7193925,
+              9.941813165,
+              9.625005534,
+              9.709269101
+            ],
+            "candidate": [
+              9.968473266,
+              9.546398633,
+              9.707912467,
+              9.618928867,
+              9.677275701,
+              9.671515702
+            ]
+          },
+          "frameTimeChangePercent": -0.5302657403525646,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "bmw",
+          "samples": 2,
+          "mediansMs": {
+            "baseline": 15.8041908005,
+            "candidate": 15.6511004005
+          },
+          "rawMs": {
+            "baseline": [
+              15.764980635,
+              16.019754834,
+              15.843400966,
+              15.4353201,
+              15.653157432,
+              16.2722493
+            ],
+            "candidate": [
+              15.506823301,
+              15.651737066,
+              15.650463735,
+              16.080018732,
+              15.544737101,
+              15.779544465
+            ]
+          },
+          "frameTimeChangePercent": -0.9686696518189097,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "bmw",
+          "samples": 4,
+          "mediansMs": {
+            "baseline": 17.334992301,
+            "candidate": 17.147466682999998
+          },
+          "rawMs": {
+            "baseline": [
+              17.458009233,
+              17.319618835,
+              17.354335801,
+              17.045324833,
+              17.350365767,
+              17.156108368
+            ],
+            "candidate": [
+              17.0730481,
+              17.324142199,
+              17.1069982,
+              17.234622099,
+              17.097588334,
+              17.187935166
+            ]
+          },
+          "frameTimeChangePercent": -1.0817750290502581,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "t80",
+          "samples": 0,
+          "mediansMs": {
+            "baseline": 5.896911067,
+            "candidate": 6.450949399500001
+          },
+          "rawMs": {
+            "baseline": [
+              5.849624301,
+              5.882687733,
+              6.055508232,
+              6.373689232,
+              5.788550701,
+              5.911134401
+            ],
+            "candidate": [
+              5.855270999,
+              6.169885267,
+              6.651800035,
+              6.497926265,
+              6.403972534,
+              6.7422702
+            ]
+          },
+          "frameTimeChangePercent": 9.395399153982197,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "t80",
+          "samples": 2,
+          "mediansMs": {
+            "baseline": 12.793643467,
+            "candidate": 12.519535915999999
+          },
+          "rawMs": {
+            "baseline": [
+              13.070215867,
+              12.9645489,
+              12.723408234,
+              12.657248033,
+              12.8638787,
+              12.686564799
+            ],
+            "candidate": [
+              12.510120834,
+              12.688648068,
+              12.3634971,
+              12.393427233,
+              13.107456067,
+              12.528950998
+            ]
+          },
+          "frameTimeChangePercent": -2.1425292310750743,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "t80",
+          "samples": 4,
+          "mediansMs": {
+            "baseline": 14.205932717,
+            "candidate": 14.014130501
+          },
+          "rawMs": {
+            "baseline": [
+              14.0498156,
+              14.235416134,
+              14.1764493,
+              14.256492899,
+              14.136325867,
+              14.335293166
+            ],
+            "candidate": [
+              14.159615901,
+              13.968195334,
+              14.003262133,
+              14.024998869,
+              13.932505265,
+              14.071832366
+            ]
+          },
+          "frameTimeChangePercent": -1.3501557400062314,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "sponza",
+          "samples": 0,
+          "mediansMs": {
+            "baseline": 20.0287901835,
+            "candidate": 20.485201567
+          },
+          "rawMs": {
+            "baseline": [
+              20.035500233,
+              19.412718399,
+              20.022080134,
+              20.2642042,
+              22.0415029,
+              19.596235569
+            ],
+            "candidate": [
+              20.491694967,
+              20.9655164,
+              19.895953066,
+              20.478708167,
+              20.8798861,
+              19.900483134
+            ]
+          },
+          "frameTimeChangePercent": 2.278776597679877,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "sponza",
+          "samples": 2,
+          "mediansMs": {
+            "baseline": 47.896403983,
+            "candidate": 48.559105984
+          },
+          "rawMs": {
+            "baseline": [
+              50.373374601,
+              47.502519332,
+              47.656313099,
+              47.861080366,
+              47.9317276,
+              48.551062566
+            ],
+            "candidate": [
+              49.154450935,
+              47.731386633,
+              48.030380967,
+              48.5732262,
+              48.544985768,
+              49.175417666
+            ]
+          },
+          "frameTimeChangePercent": 1.3836153570844667,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "sponza",
+          "samples": 4,
+          "mediansMs": {
+            "baseline": 54.881551350500004,
+            "candidate": 55.315150850500004
+          },
+          "rawMs": {
+            "baseline": [
+              54.963781801,
+              54.224429534,
+              55.968884567,
+              55.579566767,
+              54.7993209,
+              54.354852834
+            ],
+            "candidate": [
+              55.566273568,
+              55.833431035,
+              55.7704604,
+              55.064028133,
+              53.5849973,
+              54.531866766
+            ]
+          },
+          "frameTimeChangePercent": 0.7900642189045071,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "bistro",
+          "samples": 0,
+          "mediansMs": {
+            "baseline": 31.948030533500003,
+            "candidate": 31.890640167500003
+          },
+          "rawMs": {
+            "baseline": [
+              33.617720066,
+              31.663611599,
+              31.715164167,
+              32.139919068,
+              32.011088768,
+              31.884972299
+            ],
+            "candidate": [
+              32.058726135,
+              32.518827467,
+              31.7225542,
+              31.387943567,
+              32.861505233,
+              31.488394433
+            ]
+          },
+          "frameTimeChangePercent": -0.17963663187257062,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "bistro",
+          "samples": 2,
+          "mediansMs": {
+            "baseline": 47.8950336165,
+            "candidate": 48.429065283
+          },
+          "rawMs": {
+            "baseline": [
+              47.869810099,
+              48.230401801,
+              47.502252533,
+              47.920257134,
+              48.404175233,
+              47.702496433
+            ],
+            "candidate": [
+              48.2109778,
+              48.457385367,
+              49.243534999,
+              48.782349667,
+              48.400745199,
+              48.3463217
+            ]
+          },
+          "frameTimeChangePercent": 1.1150042628136347,
+          "angle160RgbByteIdentical": true
+        },
+        {
+          "asset": "bistro",
+          "samples": 4,
+          "mediansMs": {
+            "baseline": 57.5712558995,
+            "candidate": 54.1807608175
+          },
+          "rawMs": {
+            "baseline": [
+              57.587782666,
+              56.765576933,
+              58.685562566,
+              57.554729133,
+              56.952024034,
+              58.186614533
+            ],
+            "candidate": [
+              54.199582534,
+              53.666057667,
+              54.161939101,
+              54.0802552,
+              55.091598432,
+              54.321006167
+            ]
+          },
+          "frameTimeChangePercent": -5.889215076215571,
+          "angle160RgbByteIdentical": false
+        }
+      ]
+    }
+  ],
+  "qualityReceipts": [
+    {
+      "name": "v6-quality-all",
+      "pairedViews": 108
+    }
+  ],
+  "allModeQualityComplete": true,
+  "decision": "Held: separate parallel sort preserves original engine layouts and repeats Bistro4 +6.258% FPS, but T80 OFF loses 8.588% FPS in the full control repetition.",
+  "softwareMetricLimit": "Proc CPU/fault/RSS and PSI deltas cover whole requests including warmup and image write; they are not hardware counters or measured-frame metrics.",
+  "currentDiagnosticFixtureSha256": {
+    "order_contract.c": "25a0996cbc0b58b404d8c4a63292f86fe2a89c1ed25fea8c33f35f9374d8a9cd",
+    "order_budget_contract.c": "98f3fdb11dd8bdbaf03f3b797f3ba734efdb48be1e4aebcf36f0e9856b27f6d1"
+  },
+  "diagnosticProvenance": "Initial near/opaque native fixture had 99 pairs; reset and white-box budget checks were added later. Current diagnostic hashes describe the current recipe, not historical initial fixture binaries.",
+  "artifactsSha256": {
+    "isa.json": "eec20bed3bb0fb222e2f43ba1f1766bfc8335082d7c9178dcc8d497ee7f970aa",
+    "softgl-order-cached-v6-budget.txt": "c5004082ae9a382960cdb07071b3ccce0ed214ed614804c438596b4df97a0e19",
+    "softgl-order-cached-v6-build.txt": "963b7ed31af05028dc6d37ea02b08fe7f72fb1855bbdc6f80c2c765357d3a87e",
+    "softgl-order-cached-v6-configure.txt": "39fd393faa9721b48895696f9ee5d56a726eb44b35dcc3d0d2549be542f86e37",
+    "softgl-order-cached-v6-confirm-diag.txt": "d8c5d702e8885c82fee8a639f3aca1409f174e2f1a36ef74829f0dc1f716f51e",
+    "softgl-order-cached-v6-hz.txt": "f1dd0abc19dbdf5b0bb0d5c00bbce19fc78f5b7fc2157d0611ebc16f4fc46bcc",
+    "softgl-order-cached-v6-isa.txt": "87f8a6af9d45cc6dbab36f1e72cfbd72c7b58579a24fd46333055187be98867d",
+    "softgl-order-cached-v6-positions.txt": "5a42229fa360bf0edf0294e9e7f2a5d23a7cfc7cf02d3f3d8204f65aa869d765",
+    "softgl-order-cached-v6-prepare.txt": "864c465bfe478a11450e0cf09b8544d25070817446d29501a091caaf002c968d",
+    "softgl-order-cached-v6-quality-all.txt": "feaa691266e85722601be8d5857062c15f17cca1735fb749fe20a65b37f930a3",
+    "softgl-order-cached-v6-quantized.txt": "1b90adad137c273ca25983c0de5d6d725175a3bb97c205af80725b50bac7c5e8",
+    "softgl-order-cached-v6-screen-diag.txt": "fcdbdc9af4cbd83828bb583b1024eb26d7b26c74229fa82e3ff731009c9d90ba",
+    "softgl-order-cached-v6-small.txt": "fe5f116419b0563fc10dd7289cf81ac8ac7ded30320760007590a9f15bfbf7b9",
+    "source.patch": "2c234eca6181e5b3a452eb0500d34091e739c71d2ea93f92586e1d893d0b7838",
+    "v6-confirm-diag-receipt.json": "9ff6b870421862cb1c2d909212f251ee7ebabe192562a6ee33bcee2baf6c35b0",
+    "v6-confirm-diag-summary.json": "ab5228c26cdf5a79d6cec31801b7966b2d458eea7eecf736c9a71ea3c00c5d59",
+    "v6-quality-all.json": "7ba3e33eab13dae67824a7f2c2a9a3fa00f6fd7e20ccfa2ef36dc5da8c8dcfd0",
+    "v6-screen-diag-receipt.json": "df5d48d20509a78f4741eb1fa1b286f0dede876ec4730219af785f10fe68e66f",
+    "v6-screen-diag-summary.json": "1f2d383dfef5518935fb50846286783b6e1f2fac7cc7f2abe9ef8239c68d3945"
+  }
+}

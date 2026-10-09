@@ -1,0 +1,28 @@
+{
+  "initialShellSessions": {
+    "wasm": {
+      "status": 143,
+      "completeSuccessLog": true
+    },
+    "resident": {
+      "status": 143,
+      "complete288PairLog": true
+    }
+  },
+  "resolution": "Retain initial anomalous statuses; repeat individual actual node executables and resident validation under a Python subprocess parent checking every return code. Corrected parents exited0. No OOM or cause claimed.",
+  "actualNodeExecutablesExit0": [
+    "quantized-baseline",
+    "quantized-candidate",
+    "small-baseline",
+    "small-candidate",
+    "hz-baseline",
+    "hz-candidate",
+    "order-candidate",
+    "order-budget-candidate",
+    "hint-candidate"
+  ],
+  "sanitizerParentExit0": true,
+  "nativeAndSanitizedHintParentExit0": true,
+  "residentCorrectedParentExit0": true,
+  "residentFreshPairs": 288
+}

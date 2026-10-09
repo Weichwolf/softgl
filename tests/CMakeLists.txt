@@ -908,6 +908,13 @@ target_link_libraries(scene_quantized_contract PRIVATE softgl)
 add_test(NAME scene_quantized_contract COMMAND scene_quantized_contract)
 set_tests_properties(scene_quantized_contract PROPERTIES TIMEOUT 90)
 
+add_executable(scene_depth_order_contract scene_depth_order.c)
+target_include_directories(scene_depth_order_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_compile_options(scene_depth_order_contract PRIVATE -msse4.1)
+target_link_libraries(scene_depth_order_contract PRIVATE softgl)
+add_test(NAME scene_depth_order_contract COMMAND scene_depth_order_contract)
+set_tests_properties(scene_depth_order_contract PROPERTIES TIMEOUT 90)
+
 add_executable(scene_uv_contract scene_uv.c)
 target_include_directories(scene_uv_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
 target_compile_options(scene_uv_contract PRIVATE -msse4.1)
