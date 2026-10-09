@@ -1,0 +1,25 @@
+cmake_minimum_required(VERSION 3.20)
+project(ProductionKeyCache C)
+set(CMAKE_C_STANDARD 11)
+add_compile_options(-O3 -fno-strict-aliasing -ffast-math -fno-associative-math
+    -fsigned-zeros -fno-finite-math-only -msse4.1 -mno-avx -mno-avx2 -mno-avx512f)
+add_subdirectory(${SCENE_TRIAL_ROOT}/source/libsoftgl library)
+foreach(kind resident quality)
+    if(kind STREQUAL "resident")
+        set(driver ${SCENE_REPO}/experiments/scene-material-visibility/resident_trial.c)
+    else()
+        set(driver ${SCENE_REPO}/experiments/scene-depth-order-cached-keys/quality_frames.c)
+    endif()
+    foreach(variant control candidate)
+        add_executable(${kind}_${variant} ${driver} ${SCENE_TRIAL_ROOT}/source/model_wrap.c)
+        target_include_directories(${kind}_${variant} PRIVATE ${SCENE_TRIAL_ROOT}/source/libsoftgl/src)
+        target_compile_definitions(${kind}_${variant} PRIVATE SOFTGL_MODEL_VERTEX_ATTRIBUTES
+            SOFTGL_MODEL_SCENE_VISIBILITY SOFTGL_MODEL_SCENE_POSITIONS
+            SOFTGL_MODEL_TRANSPARENT_FUSION SOFTGL_MODEL_QUANTIZED_VISIBILITY
+            SOFTGL_MODEL_COARSE_DEFAULT=0)
+        if(variant STREQUAL "candidate")
+            target_compile_definitions(${kind}_${variant} PRIVATE SOFTGL_MODEL_KEY_DEFAULT=1)
+        endif()
+        target_link_libraries(${kind}_${variant} PRIVATE softgl m)
+    endforeach()
+endforeach()

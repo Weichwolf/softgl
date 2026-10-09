@@ -1,6 +1,6 @@
 # Stronger automatic LOD with projected-error selection
 
-Status: adopted as an optional automatic mesh path; original remains default.
+Status: removed from the product on 2026-10-09 at the user's request. The optional selector, runtime LOD loader and rendering path are gone. Sources and historical validation remain here.
 
 This extends the conservative [geometry proxy experiment](../scene-temporal-geometry-proxies/README.md).
 Original packs, textures, materials, cameras and render resolution remain the

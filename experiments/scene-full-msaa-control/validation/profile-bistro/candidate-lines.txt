@@ -1,0 +1,91 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 12K of event 'cycles:u'
+# Event count (approx.): 56248705490
+#
+# Overhead  Symbol                                   Source:Line                       IPC   [IPC Coverage]
+# ........  .......................................  ................................  ....................
+#
+     7.90%  [.] scene_resolve                        frag_packet.h:77                  -      -            
+     3.12%  [.] scene_resolve                        frag_packet.h:78                  -      -            
+     1.97%  [.] scene_geometry_append                geometry.inc:0                    -      -            
+     1.69%  [.] scene_geometry_positions             geometry.inc:86                   -      -            
+     1.68%  [.] sg_sample_tex_cube                   fragment.c:423                    -      -            
+     1.67%  [.] scene_resolve                        scene_visibility.c:0              -      -            
+     1.64%  [.] sg_raster_triangle_msaa4             raster_msaa_impl.h:0              -      -            
+     1.54%  [.] scene_resolve                        scene_visibility.c:1252           -      -            
+     1.41%  [.] scene_packet_fallback                scene_visibility.c:992            -      -            
+     1.26%  [.] scene_resolve                        scene_visibility.c:1167           -      -            
+     1.17%  [.] scene_resolve                        scene_visibility.c:1186           -      -            
+     1.06%  [.] scene_resolve                        scene_visibility.c:799            -      -            
+     1.05%  [.] sg_raster_triangle_msaa4             rasterizer.c:0                    -      -            
+     1.03%  [.] scene_small_msaa4                    scene_visibility.c:0              -      -            
+     0.98%  [.] sg_raster_triangle_msaa4             simd.h:51                         -      -            
+     0.94%  [.] scene_geometry_append                geometry.inc:195                  -      -            
+     0.93%  [.] scene_msaa_list_bins                 scene_visibility.c:1434           -      -            
+     0.88%  [.] scene_geometry_attribute_bins        geometry.inc:502                  -      -            
+     0.84%  [.] scene_geometry_positions             geometry.inc:132                  -      -            
+     0.81%  [.] sg_raster_triangle_msaa4             simd.h:103                        -      -            
+     0.77%  [.] scene_geometry_triangles             geometry.inc:330                  -      -            
+     0.74%  [.] scene_geometry_append                geometry.inc:307                  -      -            
+     0.71%  [.] scene_msaa_store_pixel               scene_visibility.c:279            -      -            
+     0.68%  [.] scene_msaa_list_bins                 scene_visibility.c:1433           -      -            
+     0.66%  [.] scene_geometry_positions             geometry.inc:127                  -      -            
+     0.62%  [.] sg_raster_triangle_msaa4             simd.h:37                         -      -            
+     0.62%  [.] scene_resolve                        simd.h:103                        -      -            
+     0.61%  [.] sg_raster_triangle_msaa4             simd.h:30                         -      -            
+     0.59%  [.] scene_small_msaa4                    scene_visibility.c:605            -      -            
+     0.59%  [.] sg_sample_tex_cube                   fragment.c:0                      -      -            
+     0.58%  [.] scene_small_msaa4                    frag_packet.h:63                  -      -            
+     0.56%  [.] scene_geometry_attribute_bins        geometry.inc:505                  -      -            
+     0.56%  [.] sg_raster_triangle_msaa4             simd.h:58                         -      -            
+     0.56%  [.] sg_raster_triangle_msaa4             raster_msaa_impl.h:309            -      -            
+     0.53%  [.] sg_workers_run_callback              workers.c:1301                    -      -            
+     0.51%  [.] sg_scene_visibility_msaa_packet      scene_visibility.c:0              -      -            
+     0.51%  [.] scene_geometry_triangles             geometry.inc:0                    -      -            
+     0.50%  [.] __memmove_evex_unaligned_erms        memmove-vec-unaligned-erms.S:660  -      -            
+     0.49%  [.] scene_geometry_attribute_bins        geometry.inc:543                  -      -            
+     0.48%  [.] sg_scene_visibility_msaa_packet      frag_packet.h:77                  -      -            
+     0.47%  [.] scene_geometry_positions             geometry.inc:130                  -      -            
+     0.47%  [.] scene_geometry_append                geometry.inc:210                  -      -            
+     0.46%  [.] sg_raster_triangle_msaa4             simd.h:134                        -      -            
+     0.46%  [.] scene_resolve                        simd.h:60                         -      -            
+     0.43%  [.] scene_msaa_group_bins                scene_visibility.c:1382           -      -            
+     0.42%  [.] scene_small_msaa4                    raster_hz.h:0                     -      -            
+     0.41%  [.] scene_resolve                        scene_visibility.c:1253           -      -            
+     0.41%  [.] sg_raster_triangle_msaa4             raster_msaa_impl.h:174            -      -            
+     0.41%  [.] sg_raster_triangle_msaa4             raster_msaa_impl.h:286            -      -            
+     0.41%  [.] sg_raster_triangle_msaa4             simd.h:57                         -      -            
+     0.41%  [.] scene_geometry_positions             geometry.inc:115                  -      -            
+     0.40%  [.] scene_geometry_positions             geometry.inc:0                    -      -            
+     0.38%  [.] scene_resolve                        simd.h:0                          -      -            
+     0.37%  [.] scene_small_msaa4                    simd.h:60                         -      -            
+     0.37%  [.] scene_msaa_group_bins                scene_visibility.c:1371           -      -            
+     0.36%  [.] scene_resolve                        simd.h:58                         -      -            
+     0.36%  [.] scene_packet_fallback                scene_visibility.c:988            -      -            
+     0.35%  [.] scene_small_msaa4                    simd.h:36                         -      -            
+     0.35%  [.] sg_scene_visibility_msaa_packet      simd.h:103                        -      -            
+     0.34%  [.] scene_geometry_append                geometry.inc:276                  -      -            
+     0.34%  [.] scene_geometry_triangles             geometry.inc:324                  -      -            
+     0.34%  [.] scene_msaa_group_bins                scene_visibility.c:1378           -      -            
+     0.33%  [.] scene_msaa_group_bins                scene_visibility.c:1380           -      -            
+     0.33%  [.] scene_small_msaa4                    simd.h:31                         -      -            
+     0.33%  [.] scene_resolve                        scene_visibility.c:1184           -      -            
+     0.33%  [.] scene_geometry_attribute_bins        geometry.inc:0                    -      -            
+     0.32%  [.] scene_msaa_store_pixel               scene_visibility.c:290            -      -            
+     0.32%  [.] sg_raster_triangle_msaa4             raster_msaa_impl.h:208            -      -            
+     0.32%  [.] sg_scene_visibility_msaa_packet      raster_hz.h:21                    -      -            
+     0.32%  [.] sg_scene_visibility_msaa_packet      raster_hz.h:96                    -      -            
+     0.32%  [.] scene_resolve                        raster_store.h:59                 -      -            
+     0.31%  [.] sg_raster_triangle_msaa4             raster_msaa_impl.h:287            -      -            
+     0.31%  [.] scene_geometry_positions             geometry.inc:114                  -      -            
+     0.30%  [.] sg_raster_triangle_msaa4             simd.h:31                         -      -            
+     0.30%  [.] scene_geometry_attribute_bins        geometry.inc:545                  -      -            
+
+
+#
+# (Tip: To browse sample contexts use perf report --sample 10 and select in context menu)
+#

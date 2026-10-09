@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "parentRevision": "7b494487a7dc47bd543072767dbe1f2932d42e3d",
+  "nativeTestsPassed": 759,
+  "nativeTestsFailed": 0,
+  "removedFeatureTest": "scene_coarse_contract",
+  "regularTolerancesChanged": false,
+  "browserControlsRemoved": [
+    "shading",
+    "mesh-detail"
+  ],
+  "browserModelPairsExact": 108,
+  "browserTestsNavigated": 234,
+  "peakWasmHeapBytes": 2845114368,
+  "totalRenderThreads": 4,
+  "renderHelpers": 3,
+  "optionalCoarseAndLodProductPathsRemoved": true,
+  "materialCacheIntegrationWithdrawn": true,
+  "nativeTimingsPending": false,
+  "performanceGainClaimed": false,
+  "failedGateCauses": [
+    "Preview checker expected old worker-only label; actual UI reports four total threads.",
+    "New model checker intercepted an unbound Emscripten lazy export; first export call replaced the observer."
+  ],
+  "productSourceSha256": {
+    "libsoftgl/include/GL/softgl.h": "bd89fbaeadb27b8ff4fe6cbab7960abb9e07fddd690db60aa45789936c6fb0cc",
+    "libsoftgl/src/scene_visibility.c": "797c20af16b0598df89f9d54a9a7fb03198c381c9880258d6402db7c5808841e",
+    "tests/CMakeLists.txt": "56bdb0b1444cdedb7734cf93122ec368a710641b480beceb32347544732b0c0f",
+    "tests/scene_positions.c": "a5df5e741f6157b674b24b8340934985318c9fe0ef1820b9e29fc73e4679d71c",
+    "wasm/CMakeLists.txt": "dceb89f1d782de0a17dc2d1182223b4cafc1a4e1adbe78be49383a4bf3f01168",
+    "wasm/index.html": "6e6185649f3066e349aa7d91b47bf0e5461d052c3da380abc6075302c9e31737",
+    "wasm/main.js": "65fd8f433373753cd72322c93ee9327ead27457c3c5ecabe30a945ed4404043d",
+    "wasm/model_wrap.c": "4d48c4f98356621ac4c81bc6c2aea5aca38f30cab50dc00143f0c1f86e4ad085"
+  },
+  "nativeModelPairsExact": 108,
+  "selectedNativeTimings": 144,
+  "profileScope": "CPU user-cycle samples; includes 120 orbit frames and worker restart; no wall-time or FPS gain claim",
+  "fullNativeMsaa4Fps": {
+    "bistro": 18.35803540591683,
+    "sponza": 26.337132322634716,
+    "bmw": 57.530853875678886,
+    "t80": 69.27516136539225
+  }
+}

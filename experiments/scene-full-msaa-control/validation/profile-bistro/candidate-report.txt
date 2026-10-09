@@ -1,0 +1,47 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 12K of event 'cycles:u'
+# Event count (approx.): 56248705490
+#
+# Overhead  Symbol                                   IPC   [IPC Coverage]
+# ........  .......................................  ....................
+#
+    26.36%  [.] scene_resolve                        -      -            
+    13.91%  [.] sg_raster_triangle_msaa4             -      -            
+     8.86%  [.] scene_small_msaa4                    -      -            
+     7.63%  [.] scene_geometry_append                -      -            
+     6.27%  [.] scene_geometry_positions             -      -            
+     5.30%  [.] sg_scene_visibility_msaa_packet      -      -            
+     4.22%  [.] sg_sample_tex_cube                   -      -            
+     3.28%  [.] scene_geometry_attribute_bins        -      -            
+     3.25%  [.] scene_msaa_store_pixel               -      -            
+     3.20%  [.] scene_geometry_triangles             -      -            
+     2.58%  [.] scene_msaa_group_bins                -      -            
+     2.37%  [.] sg_packet_sample_cube_coherent       -      -            
+     2.29%  [.] scene_packet_fallback                -      -            
+     2.07%  [.] scene_geometry_raster                -      -            
+     1.63%  [.] scene_msaa_list_bins                 -      -            
+     0.98%  [.] generate_fused_attributes            -      -            
+     0.68%  [.] scene_geometry_references            -      -            
+     0.55%  [.] sg_workers_run_callback              -      -            
+     0.53%  [.] __memmove_evex_unaligned_erms        -      -            
+     0.37%  [.] sg_msaa_resolve                      -      -            
+     0.37%  [.] scene_geometry_order_bin             -      -            
+     0.36%  [.] scene_triangle_record                -      -            
+     0.35%  [.] sg_scene_visibility_triangle         -      -            
+     0.34%  [.] sg_raster_triangle_tile_prepared     -      -            
+     0.32%  [.] sg_shade_transparent_packet          -      -            
+     0.31%  [.] sg_packet_sample_cube_target         -      -            
+     0.29%  [.] sg_index_range                       -      -            
+     0.27%  [.] sg_worker_main                       -      -            
+     0.24%  [.] _sg_clear_real                       -      -            
+     0.13%  [.] sg_store_blend_msaa4_post_depth      -      -            
+     0.12%  [.] sg_transform_range                   -      -            
+
+
+#
+# (Tip: Print event counts in machine readable CSV format with: perf stat -x\;)
+#

@@ -1,0 +1,9 @@
+page.evaluate: RuntimeError: memory access out of bounds
+    at http://127.0.0.1:8000/softgl.wasm:wasm-function[527]:0x6cc0f
+    at http://127.0.0.1:8000/softgl.wasm:wasm-function[461]:0x65efc
+    at eval (eval at evaluate (:311:30), <anonymous>:6:44)
+    at UtilityScript.evaluate (<anonymous>:313:16)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+    at main (/home/cosmo/Git/softgl/tools/wasm_full_model_check.cjs:63:43) {
+  log: []
+}

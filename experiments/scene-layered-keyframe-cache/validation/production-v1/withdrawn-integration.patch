@@ -1,0 +1,359 @@
+diff --git a/libsoftgl/src/scene_visibility.c b/libsoftgl/src/scene_visibility.c
+index 7a7dc6f..f10d2f6 100644
+--- a/libsoftgl/src/scene_visibility.c
++++ b/libsoftgl/src/scene_visibility.c
+@@ -1552,3 +1552,10 @@ int softgl_scene_visibility_begin_hint_ordered(GLuint triangles, GLuint mode) {
+     if (started) softgl_scene_depth_order(mode);
+     return started;
+ }
++
++/* Optional canonical-model material reconstruction. Ordinary GL batches keep
++ * their existing current-frame path. */
++#include "scene_key_cache.h"
++#include "scene_key_capture.inc"
++#include "scene_key_compact.inc"
++#include "scene_key_reconstruct.inc"
+diff --git a/tests/CMakeLists.txt b/tests/CMakeLists.txt
+index 002d67f..d65a853 100644
+--- a/tests/CMakeLists.txt
++++ b/tests/CMakeLists.txt
+@@ -811,7 +811,7 @@ if(EXISTS "${SG_MODEL_PACK}")
+     add_library(model_image_scene OBJECT ${CMAKE_SOURCE_DIR}/wasm/model_wrap.c)
+     target_include_directories(model_image_scene PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/include)
+     add_library(model_softgl_scene OBJECT ${CMAKE_SOURCE_DIR}/wasm/model_wrap.c)
+-    target_include_directories(model_softgl_scene PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/include)
++    target_include_directories(model_softgl_scene PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/include ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+     target_compile_definitions(model_softgl_scene PRIVATE SOFTGL_MODEL_VERTEX_ATTRIBUTES SOFTGL_MODEL_SCENE_VISIBILITY SOFTGL_MODEL_SCENE_POSITIONS)
+     foreach(angle 0 120 240)
+         set(case_name bmw_view_${angle})
+diff --git a/wasm/CMakeLists.txt b/wasm/CMakeLists.txt
+index b1c3542..f438766 100644
+--- a/wasm/CMakeLists.txt
++++ b/wasm/CMakeLists.txt
+@@ -86,6 +86,7 @@ endforeach()
+ configure_file(${SRC}/assets/models.json ${CMAKE_CURRENT_BINARY_DIR}/models.json COPYONLY)
+ target_include_directories(softgl PRIVATE
+     ${SRC}/libsoftgl/include
++    ${SRC}/libsoftgl/src
+     ${SRC}/tests/harness)
+ # sdl_viewer.c needs Emscripten's SDL2 port headers at compile time; the
+ # same -sUSE_SDL=2 is also on the link line below so SDL_* symbols resolve.
+@@ -93,5 +94,5 @@ target_compile_options(softgl PRIVATE -sUSE_SDL=2)
+ set_target_properties(softgl PROPERTIES
+     OUTPUT_NAME softgl
+     SUFFIX ".js"
+-    LINK_FLAGS "-O2 -msimd128 -pthread -sUSE_SDL=2 -sPTHREAD_POOL_SIZE=8 -sEXPORTED_FUNCTIONS=_softgl_create,_softgl_create_multisample,_softgl_destroy,_softgl_make_current,_softgl_read_rgba8,_sg_test_count,_sg_test_name,_sg_test_run,_sg_bench_slot_count,_sg_bench_slot_tag,_sg_bench_slot_test_index,_sg_bench_run_idx,_sg_bench_run_slot,_sg_tank_load,_sg_tank_render,_sg_tank_tri_count,_sg_tank_mat_count,_sg_tank_unload,_sg_model_load,_sg_model_set_coarse,_sg_model_lod_load,_sg_model_active_tri_count,_sg_model_set_camera,_sg_model_upload_albedo,_sg_model_share_albedo,_sg_model_render,_sg_model_unload,_sg_model_tri_count,_sg_model_mat_count,_sg_thread_count,_sg_hwthreads,_sg_viewer_create,_sg_viewer_present,_sg_viewer_destroy,_malloc,_free -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,HEAPU8,UTF8ToString -sMODULARIZE=1 -sEXPORT_NAME=createSoftGL -sALLOW_MEMORY_GROWTH=1 -sMAXIMUM_MEMORY=4GB -sINITIAL_MEMORY=67108864 -sSTACK_SIZE=8388608"
++    LINK_FLAGS "-O2 -msimd128 -pthread -sUSE_SDL=2 -sPTHREAD_POOL_SIZE=8 -sEXPORTED_FUNCTIONS=_softgl_create,_softgl_create_multisample,_softgl_destroy,_softgl_make_current,_softgl_read_rgba8,_sg_test_count,_sg_test_name,_sg_test_run,_sg_bench_slot_count,_sg_bench_slot_tag,_sg_bench_slot_test_index,_sg_bench_run_idx,_sg_bench_run_slot,_sg_tank_load,_sg_tank_render,_sg_tank_tri_count,_sg_tank_mat_count,_sg_tank_unload,_sg_model_load,_sg_model_set_coarse,_sg_model_set_cache,_sg_model_cache_status,_sg_model_lod_load,_sg_model_active_tri_count,_sg_model_set_camera,_sg_model_upload_albedo,_sg_model_share_albedo,_sg_model_render,_sg_model_unload,_sg_model_tri_count,_sg_model_mat_count,_sg_thread_count,_sg_hwthreads,_sg_viewer_create,_sg_viewer_present,_sg_viewer_destroy,_malloc,_free -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,HEAPU8,UTF8ToString -sMODULARIZE=1 -sEXPORT_NAME=createSoftGL -sALLOW_MEMORY_GROWTH=1 -sMAXIMUM_MEMORY=4GB -sINITIAL_MEMORY=67108864 -sSTACK_SIZE=8388608"
+ )
+diff --git a/wasm/index.html b/wasm/index.html
+index afc4895..b3f6fc5 100644
+--- a/wasm/index.html
++++ b/wasm/index.html
+@@ -77,9 +77,10 @@
+           <option value="4">4×</option>
+         </select>
+         <label for="shading">Shading</label>
+-        <select id="shading" title="Coarse shading shares color within 2x2 pixels and changes fine material details. Geometry and MSAA coverage stay at full resolution.">
++        <select id="shading" title="Full renders fresh samples. Material cache reuses surface details at the pixel scale, with fresh lighting and approximate intermediate images.">
+           <option value="full">Full</option>
+           <option value="coarse">Coarse 2×2 (approximate)</option>
++          <option value="cache">Material cache (experimental)</option>
+         </select>
+         <label for="mesh-detail">Meshes</label>
+         <select id="mesh-detail" title="Automatic mesh simplification can change fine shapes and details.">
+@@ -87,6 +88,7 @@
+           <option value="automatic">Automatic (approximate)</option>
+         </select>
+       </div>
++      <p id="shading-note" hidden>Material cache reconstructs individual pixels from MSAA keyframes. Best suited to static scenery and camera rotation; moving views use Full. Initial cache creation takes longer.</p>
+       <div id="stats" class="stats">
+         <div><span class="k">WASM SIMD</span><span class="v" id="s-simd">–</span></div>
+         <div><span class="k">SharedArrayBuffer</span><span class="v" id="s-sab">–</span></div>
+diff --git a/wasm/main.js b/wasm/main.js
+index 7a2f1b6..a37ff03 100644
+--- a/wasm/main.js
++++ b/wasm/main.js
+@@ -48,6 +48,12 @@
+   const msaaSelect = document.getElementById('msaa');
+   const meshSelect = document.getElementById('mesh-detail');
+   const shadingSelect = document.getElementById('shading');
++  const shadingNote = document.getElementById('shading-note');
++  function applyModelShading() {
++    if (Mod._sg_model_set_coarse) Mod._sg_model_set_coarse(shadingSelect.value === 'coarse');
++    if (Mod._sg_model_set_cache) Mod._sg_model_set_cache(shadingSelect.value === 'cache');
++    shadingNote.hidden = shadingSelect.value !== 'cache';
++  }
+   const createContext = (samples = 0) => {
+     const c = Mod._softgl_create_multisample(W, H, samples);
+     if (!c) throw new Error('Could not create render context');
+@@ -291,7 +297,7 @@
+     if (!ok) throw new Error(`${asset.prefix}_load returned 0 (bad pack?)`);
+     await loadOriginalTextures(selectedAsset);
+     await loadMeshLod(selectedAsset);
+-    if (Mod._sg_model_set_coarse) Mod._sg_model_set_coarse(shadingSelect.value === 'coarse');
++    applyModelShading();
+ 
+     const tris = Mod.ccall(`${asset.prefix}_tri_count`, 'number', [], []);
+     const mats = Mod.ccall(`${asset.prefix}_mat_count`, 'number', [], []);
+@@ -328,6 +334,13 @@
+     recordFrameMs(ms);
+     if (meshSelect.value === 'automatic')
+       nameEl.textContent = `${Mod._sg_model_active_tri_count().toLocaleString()} selected triangles · ${Mod._sg_model_mat_count()} materials · automatic meshes (approximate)`;
++    else if (shadingSelect.value === 'cache') {
++      const status = Mod._sg_model_cache_status?.();
++      const samples = Number(msaaSelect.value);
++      const keys = samples ? `${samples}× MSAA keys` : 'Single-sample keys';
++      const label = status === 2 ? `${keys} · material reuse (approximate)` : 'Full rendering';
++      nameEl.textContent = `${Mod._sg_model_tri_count().toLocaleString()} source triangles · ${Mod._sg_model_mat_count()} materials · ${label}`;
++    }
+     /* steady angle bar instead of test progress */
+     progEl.style.transition = 'none';
+     progEl.style.width = `${(tankAngle / 360) * 100}%`;
+@@ -444,7 +457,7 @@
+   }
+   if (testsBtn) testsBtn.onclick = () => startTests().catch(reportError);
+   shadingSelect.onchange = () => {
+-    if (Mod._sg_model_set_coarse) Mod._sg_model_set_coarse(shadingSelect.value === 'coarse');
++    applyModelShading();
+     if (mode === 'tank' && paused) {
+       Mod._softgl_make_current(tankCtx);
+       Mod._sg_model_render(tankAngle, W, H);
+@@ -479,6 +492,7 @@
+     const previousSamples = msaaSelect.value;
+     log(`# scenes WASM benchmark @ ${W}x${H} — SIMD=${simdOK}, reported processors=${hwThreads}`);
+     log(`# shading=${shadingSelect.value}`);
++    if (shadingSelect.value === 'cache') log('# approximate material reuse from MSAA keys; intermediate samples are reconstructed');
+     log(`# meshes=${meshSelect.value}; models retain original textures and 640x360 render resolution`);
+     log(`# userAgent: ${navigator.userAgent}`);
+     log('# 3 runs of 20 frames per scene; warm-up excluded; min reported.');
+@@ -521,7 +535,7 @@
+                 modelPtr = 0;
+                 await loadOriginalTextures(benchmarkAsset);
+                 await loadMeshLod(benchmarkAsset);
+-                if (Mod._sg_model_set_coarse) Mod._sg_model_set_coarse(shadingSelect.value === 'coarse');
++                applyModelShading();
+                 nameEl.textContent = `Benchmark: ${tag}`;
+                 const camera = modelMetadata?.[benchmarkAsset]?.camera;
+                 if (camera) Mod.ccall('sg_model_set_camera', null, camera.map(() => 'number'), camera);
+diff --git a/wasm/model_wrap.c b/wasm/model_wrap.c
+index 67308f7..375c3df 100644
+--- a/wasm/model_wrap.c
++++ b/wasm/model_wrap.c
+@@ -1,3 +1,19 @@
++#if defined(SOFTGL_MODEL_VERTEX_ATTRIBUTES) && defined(SOFTGL_MODEL_SCENE_VISIBILITY) && defined(SOFTGL_MODEL_SCENE_POSITIONS)
++#define SOFTGL_MODEL_KEY_CACHE 1
++#include "scene_key_cache.h"
++#include "workers.h"
++static void model_key_reset(void);
++static int sg_key_capture_active;
++static int model_key_camera_cooldown;
++static float sg_key_projection_scale = 1.f, sg_key_yaw_offset = 0.f;
++#else
++static void model_key_reset(void) {}
++#define sg_key_capture_active 0
++#define sg_key_projection_scale 1.f
++#define sg_key_yaw_offset 0.f
++void sg_model_set_cache(int enabled) { (void)enabled; }
++int sg_model_cache_status(void) { return 0; }
++#endif
+ #include <stdio.h>
+ /* Static glTF-prepared SGLM viewer: GL fragment combiners and VBO geometry.
+  * SoftGL can opt into worker attribute preparation; Mesa uses eager arrays. */
+@@ -41,6 +57,14 @@ static struct {
+ void sg_model_set_camera(float x, float y, float z, float yaw, float pitch,
+                          float fov, float near_plane, float far_plane) {
+     if (!(fov > 0.f && fov < 179.f && near_plane > 0.f && far_plane > near_plane)) return;
++#ifdef SOFTGL_MODEL_KEY_CACHE
++    int moved = camera.enabled && (camera.eye[0] != x || camera.eye[1] != y || camera.eye[2] != z);
++    if (!camera.enabled || moved || camera.fov != fov ||
++        camera.near_plane != near_plane || camera.far_plane != far_plane) {
++        model_key_reset();
++        if (moved) model_key_camera_cooldown = 3;
++    }
++#endif
+     camera.enabled = 1;
+     camera.eye[0] = x; camera.eye[1] = y; camera.eye[2] = z;
+     camera.yaw = yaw; camera.pitch = pitch; camera.fov = fov;
+@@ -75,6 +99,7 @@ static GLuint texture2d(unsigned w, unsigned h, const void *pixels) {
+ #include "lod.inc"
+ 
+ void sg_model_unload(void) {
++    model_key_reset();
+     model_lod_unload();
+     /* GL objects belong to the scene context, destroyed by the caller. */
+     free(G.part);
+@@ -193,6 +218,7 @@ int sg_model_load(const uint8_t *bytes, unsigned size) {
+ }
+ 
+ int sg_model_upload_albedo(unsigned material, unsigned w, unsigned h, const uint8_t *pixels) {
++    model_key_reset();
+     if (material >= G.materials || !pixels || !w || !h || w > 4096 || h > 4096) return 0;
+     model_material *m = &G.material[material];
+     m->albedo = texture2d(w, h, pixels);
+@@ -202,6 +228,7 @@ int sg_model_upload_albedo(unsigned material, unsigned w, unsigned h, const uint
+ }
+ 
+ int sg_model_share_albedo(unsigned material, unsigned source) {
++    model_key_reset();
+     if (material >= G.materials || source >= G.materials) return 0;
+     G.material[material].albedo = G.material[source].albedo;
+     return 1;
+@@ -440,8 +467,7 @@ static void draw_part(const model_part *part, int specular) {
+ #endif
+ }
+ 
+-void sg_model_render(float angle, int w, int h) {
+-    if (!G.part) return;
++static void model_key_setup_view(float angle, int w, int h) {
+     glViewport(0, 0, w, h);
+     glClearColor(.10f, .12f, .15f, 1.f);
+     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+@@ -450,17 +476,23 @@ void sg_model_render(float angle, int w, int h) {
+     glMatrixMode(GL_PROJECTION); glLoadIdentity();
+     float aspect = (float)w/(float)h;
+     if (camera.enabled) {
+-        float half = camera.near_plane*tanf(camera.fov*0.008726646259971648f);
++        float half = camera.near_plane*tanf(camera.fov*0.008726646259971648f)/sg_key_projection_scale;
+         glFrustum(-half*aspect, half*aspect, -half, half, camera.near_plane, camera.far_plane);
+-    } else glFrustum(-.16f*aspect, .16f*aspect, -.16f, .16f, 1., 20.);
++    } else glFrustum(-.16f*aspect/sg_key_projection_scale, .16f*aspect/sg_key_projection_scale,
++        -.16f/sg_key_projection_scale, .16f/sg_key_projection_scale, 1., 20.);
+     glMatrixMode(GL_MODELVIEW); glLoadIdentity();
+     if (camera.enabled) {
+         glRotatef(camera.pitch, 1.f, 0.f, 0.f);
+-        glRotatef(camera.yaw+20.f*sinf(angle*0.017453292519943295f), 0.f, 1.f, 0.f);
++        glRotatef(camera.yaw+sg_key_yaw_offset+20.f*sinf(angle*0.017453292519943295f), 0.f, 1.f, 0.f);
+         glTranslatef(-camera.eye[0], -camera.eye[1], -camera.eye[2]);
+     } else {
+-        glTranslatef(0.f, -.035f, -2.3f); glRotatef(14.f, 1.f, 0.f, 0.f); glRotatef(angle, 0.f, 1.f, 0.f);
++        glTranslatef(0.f, -.035f, -2.3f); glRotatef(14.f, 1.f, 0.f, 0.f); glRotatef(angle+sg_key_yaw_offset, 0.f, 1.f, 0.f);
+     }
++}
++
++static void sg_model_render_full(float angle, int w, int h) {
++    if (!G.part) return;
++    model_key_setup_view(angle,w,h);
+     float matrix[16]; glGetFloatv(GL_MODELVIEW_MATRIX, matrix);
+     model_lod_begin(w,h);
+ #ifdef SOFTGL_MODEL_VERTEX_ATTRIBUTES
+@@ -472,7 +504,7 @@ void sg_model_render(float angle, int w, int h) {
+     unsigned transparent = 0;
+     glDisable(GL_BLEND);
+ #ifdef SOFTGL_MODEL_SCENE_VISIBILITY
+-    int scene_visibility = coarse_shading ? softgl_scene_visibility_begin() :
++    int scene_visibility = (sg_key_capture_active || coarse_shading) ? softgl_scene_visibility_begin() :
+         softgl_scene_visibility_begin_adaptive(G.triangles,2);
+     if (scene_visibility && coarse_shading) {
+         softgl_scene_depth_order(2);
+@@ -533,3 +565,111 @@ unsigned sg_model_active_tri_count(void) {
+     }
+     return triangles;
+ }
++
++#ifdef SOFTGL_MODEL_KEY_CACHE
++/* Optional immutable canonical-model profile. This owner resets borrowed
++ * material storage before any model texture, camera or mesh replacement. */
++static sg_key_atlas model_key_views[3];
++static softgl_ctx *model_key_context;
++static int model_key_samples = -1;
++static int model_key_last_cached;
++#ifndef SOFTGL_MODEL_KEY_DEFAULT
++#define SOFTGL_MODEL_KEY_DEFAULT 0
++#endif
++static int model_key_enabled = SOFTGL_MODEL_KEY_DEFAULT;
++
++static void model_key_reset(void) {
++    for (int i = 0; i < 3; i++) sg_key_destroy(&model_key_views[i]);
++    model_key_context = NULL; model_key_samples = -1; model_key_last_cached = 0;
++    model_key_camera_cooldown = 0;
++}
++
++void sg_model_set_cache(int enabled) {
++    if (model_key_enabled == (enabled != 0)) return;
++    model_key_reset(); model_key_enabled = enabled != 0;
++}
++
++int sg_model_cache_status(void) {
++    return model_key_enabled ? (model_key_last_cached ? 2 : 1) : 0;
++}
++
++void sg_model_render(float angle, int w, int h) {
++    model_key_last_cached = 0;
++    if (!G.part) return;
++    softgl_ctx *c = sg_current();
++    /* This model wrapper's movable default view rotates the model around the
++     * camera, changing its object-space origin. Retain its ordinary path. */
++    if (!model_key_enabled || coarse_shading || model_lod.records || !camera.enabled ||
++        !c || c->scissor_enabled || w != c->fb.w || h != c->fb.h) {
++        sg_model_render_full(angle,w,h); return;
++    }
++    if (model_key_camera_cooldown) {
++        model_key_camera_cooldown--; sg_model_render_full(angle,w,h); return;
++    }
++    if (model_key_context != c || model_key_samples != c->fb.samples ||
++        model_key_views[0].width != w || model_key_views[0].height != h) model_key_reset();
++    if (!model_key_views[0].surface && !model_key_views[0].sample) {
++        int saved_coarse = coarse_shading; coarse_shading = 0;
++        sg_key_capture_active = 1;
++        int okay = 1;
++        for (int i = 0; i < 3; i++) {
++            sg_key_projection_scale = .97f; sg_key_yaw_offset = i == 0 ? 0.f : i == 1 ? 20.f : -20.f;
++            /* The owned camera path sweeps around camera.yaw. Center the bank
++             * there so enabling the profile midway through its sweep does not
++             * continually evict the opposite end of the same static view. */
++            sg_model_render_full(0.f,w,h); softgl_read_rgba8(c);
++            if (!sg_key_capture(c,&model_key_views[i]) || !sg_key_finalize(c,&model_key_views[i])) { okay = 0; break; }
++            if (!getenv("SOFTGL_KEY_KEEP_FLOAT")) sg_key_compact(c,&model_key_views[i]);
++        }
++        sg_key_capture_active = 0;
++        sg_key_projection_scale = 1.f; sg_key_yaw_offset = 0.f; coarse_shading = saved_coarse;
++        if (!okay) { model_key_reset(); sg_model_render_full(angle,w,h); return; }
++        model_key_context = c; model_key_samples = c->fb.samples;
++        size_t bytes = 0;
++        for (int i = 0; i < 3; i++) bytes += (size_t)w*h*(model_key_views[i].sample ? sizeof(sg_key_sample) : sizeof(sg_key_surface));
++        if (getenv("SOFTGL_KEY_STATS")) fprintf(stderr,"KEY {\"generated\":3,\"samples\":%d,\"surfaceBytes\":%zu}\n",
++            c->fb.samples,bytes);
++    }
++    model_key_setup_view(angle,w,h);
++    const sg_key_atlas *views[3] = {&model_key_views[0],&model_key_views[1],&model_key_views[2]};
++    sg_key_result result = {0};
++    int valid = sg_key_reconstruct_many(c,views,3,NULL,1,(uint32_t *)c->fb.color,NULL,c->fb.depth,&result);
++    if (getenv("SOFTGL_KEY_STATS") && result.consensus_background_pixels)
++        fprintf(stderr,"KEY {\"backgroundConsensus\":%llu,\"angle\":%.6f}\n",
++            (unsigned long long)result.consensus_background_pixels,angle);
++    if (getenv("SOFTGL_KEY_STATS") && result.approximate_distance_pixels)
++        fprintf(stderr,"KEY {\"approximateDistance\":%llu,\"angle\":%.6f}\n",
++            (unsigned long long)result.approximate_distance_pixels,angle);
++    if (!valid || result.outside_pixels) {
++        if (getenv("SOFTGL_KEY_STATS")) fprintf(stderr,"KEY {\"fallback\":true,\"outside\":%llu,\"frustum\":%llu,\"geometry\":%llu}\n",
++            (unsigned long long)result.outside_pixels,(unsigned long long)result.frustum_pixels,
++            (unsigned long long)result.invalid_geometry_pixels);
++        if (valid && result.outside_pixels <= 64 && !result.frustum_pixels && !c->scissor_enabled) {
++            int x0 = w, y0 = h, x1 = 0, y1 = 0;
++            for (int y = 0; y < h; y++) for (int x = 0; x < w; x++)
++                if (c->fb.depth[(size_t)y*w+x] > 1.f) {
++                    if (x < x0) x0 = x; if (x+1 > x1) x1 = x+1;
++                    if (y < y0) y0 = y; if (y+1 > y1) y1 = y+1;
++                }
++            if (x1 > x0 && y1 > y0 && (uint64_t)(x1-x0)*(y1-y0) <= (uint64_t)w*h/16) {
++                sg_key_present(c);
++                int saved_scissor[4]; memcpy(saved_scissor,c->scissor,sizeof(saved_scissor));
++                glEnable(GL_SCISSOR_TEST); glScissor(x0,y0,x1-x0,y1-y0);
++                sg_model_render_full(angle,w,h); sg_workers_flush(c);
++                glDisable(GL_SCISSOR_TEST);
++                glScissor(saved_scissor[0],saved_scissor[1],saved_scissor[2],saved_scissor[3]);
++                if (getenv("SOFTGL_KEY_STATS")) fprintf(stderr,"KEY {\"repairArea\":%d}\n",(x1-x0)*(y1-y0));
++                model_key_last_cached = 1; return;
++            }
++        }
++        /* A complete fresh frame repairs isolated uncertain rays. It does not
++         * invalidate otherwise sound material samples. Refresh the atlas when
++         * the camera leaves its useful angular region instead. */
++        if (!valid || result.frustum_pixels > (uint64_t)w*h/100) model_key_reset();
++        sg_model_render_full(angle,w,h); return;
++    }
++    sg_key_present(c); model_key_last_cached = 1;
++}
++#else
++void sg_model_render(float angle, int w, int h) { sg_model_render_full(angle,w,h); }
++#endif

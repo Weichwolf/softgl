@@ -1,6 +1,6 @@
 # Representative-only coarse shading stream
 
-Status: V3 adopted inside the optional Coarse 2×2 path. Full remains the default. The shader and the accepted approximation remain unchanged; this is a reduction in group/list/copy work, not additional color sharing.
+Status: removed from the product on 2026-10-09 with the Coarse 2×2 path at the user's request. V3 was historically adopted; its frozen sources and validation remain here. The measured change reduced group/list/copy work without adding color sharing.
 
 The adopted [2×2 coarse shader](../scene-coarse-direct-scatter/README.md) previously material-sorted every fine shading group, compacted a smaller representative list, shaded that list and copied colors through the fine material lists. The new path constructs physical MSAA masks and representatives together, counts and material-sorts only representatives, and copies colors through disjoint screen stripes. Selection joins before attributes and prefix/list construction; shading joins before the copy. The representative order, material/depth rule, physical coverage and current-frame lighting remain the same.
 

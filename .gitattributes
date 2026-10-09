@@ -1,0 +1,8 @@
+# These tool outputs and patch contexts are retained with exact content hashes.
+experiments/scene-full-msaa-control/validation/*.patch -whitespace
+experiments/scene-full-msaa-control/validation/native-cmake-cache.txt -whitespace
+experiments/scene-full-msaa-control/validation/native-flags/*.txt -whitespace
+experiments/scene-full-msaa-control/validation/profile-*/*.txt -whitespace
+experiments/scene-layered-keyframe-cache/validation/*/cmake-cache.txt -whitespace
+experiments/scene-layered-keyframe-cache/validation/*/flags/*.txt -whitespace
+experiments/scene-layered-keyframe-cache/validation/*/*.patch -whitespace

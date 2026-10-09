@@ -1,6 +1,6 @@
 # Optional 2×2 coarse material shading
 
-Status: V5 adopted as an optional native/WASM render path; ordinary shading remains the default. The original direct-scatter candidates were slower than the previous coarse reference and were discarded.
+Status: removed from the product on 2026-10-09 at the user's request. The selector, public opt-in and coarse rendering implementation are gone. V5 was historically adopted; its sources and measurements remain here. The original direct-scatter candidates were slower than the previous coarse reference and were discarded.
 
 At 640×360, the final path selects representatives within each current-frame 2×2 cell, shares their complete material color, prepares vertex attributes only for representative triangles, and copies colors back into the original physical sample layout. Selection joins before attribute preparation; shading joins before copying. Four-sample full-pixel stores use SIMD128. This is current-frame reuse: no old-frame colors, motion vectors or temporal reconstruction are implemented. Every frame computes current lighting.
 

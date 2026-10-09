@@ -1,0 +1,48 @@
+# To display the perf.data header info, please use --header/--header-only options.
+#
+#
+# Total Lost Samples: 0
+#
+# Samples: 3K of event 'cycles:u'
+# Event count (approx.): 15279867949
+#
+# Overhead  Symbol                                   IPC   [IPC Coverage]
+# ........  .......................................  ....................
+#
+    48.51%  [.] sg_raster_triangle_msaa4_capture     -      -            
+     6.22%  [.] sg_sample_tex_cube                   -      -            
+     6.10%  [.] sg_packet_sample_cube_coherent       -      -            
+     4.86%  [.] sg_queue_render_packed               -      -            
+     4.34%  [.] sg_raster_triangle_msaa4             -      -            
+     3.47%  [.] sg_prepare_triangle_slice            -      -            
+     3.13%  [.] sg_process_vertex                    -      -            
+     3.00%  [.] sg_raster_triangle_tile_prepared     -      -            
+     2.63%  [.] generate_fused_attributes            -      -            
+     1.95%  [.] sg_worker_main                       -      -            
+     1.70%  [.] sg_queue_submit                      -      -            
+     1.37%  [.] sg_msaa_resolve                      -      -            
+     1.26%  [.] _sg_clear_real                       -      -            
+     1.24%  [.] sg_transform_slice                   -      -            
+     1.12%  [.] sg_queue_render                      -      -            
+     1.06%  [.] sg_sample_tex2d                      -      -            
+     0.87%  [.] sg_store_blend_msaa4_post_depth      -      -            
+     0.81%  [.] sg_workers_bin_prepared_tri          -      -            
+     0.77%  [.] sg_tex_tri_sample_units              -      -            
+     0.69%  [.] sg_process_vertex_prepared           -      -            
+     0.62%  [.] __memmove_evex_unaligned_erms        -      -            
+     0.54%  [.] _sg_draw_elements_real               -      -            
+     0.44%  [.] sg_workers_bin_transformed_tri       -      -            
+     0.40%  [.] sg_shade_transparent_packet          -      -            
+     0.35%  [.] sg_queue_help                        -      -            
+     0.30%  [.] sg_packet_sample_cube_target         -      -            
+     0.24%  [.] sg_mat4_mul_vec4                     -      -            
+     0.23%  [.] pthread_mutex_lock@@GLIBC_2.2.5      -      -            
+     0.18%  [.] sg_workers_bin_tri                   -      -            
+     0.17%  [.] main                                 -      -            
+     0.15%  [.] sg_fetch_attrib                      -      -            
+     0.12%  [.] sg_process_triangle                  -      -            
+
+
+#
+# (Tip: To show information about system the samples were collected on use perf report --header)
+#
