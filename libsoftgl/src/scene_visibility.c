@@ -1472,21 +1472,23 @@ int softgl_scene_visibility_end(void) {
         scene_restore(f); return 0;
     }
     uint32_t visible = 0;
-    if (c->fb.samples) visible = scene_msaa_groups(f);
-    else for (size_t p = 0; p < pixels; p++) if (f->pixel_material[p] != UINT16_MAX) {
-        f->materials[f->pixel_material[p]].count++; visible++;
-        if (f->deferred_meshes) {
-            uint32_t id = f->winner[p];
-            f->bins[id >> SCENE_INDEX_BITS].visible[id & SCENE_INDEX_MASK] = 1;
-        }
-    }
-    if (atomic_load_explicit(&f->failed,memory_order_relaxed)) {
-        scene_restore(f); return 0;
-    }
     if (f->coarse.enabled && f->deferred_meshes) {
         atomic_store_explicit(&f->next_task, 0, memory_order_relaxed);
         sg_workers_run_callback(c, scene_coarse_select, f);
         if (atomic_load_explicit(&f->failed, memory_order_relaxed)) {
+            scene_restore(f); return 0;
+        }
+        visible = scene_coarse_group_count(f);
+    } else {
+        if (c->fb.samples) visible = scene_msaa_groups(f);
+        else for (size_t p = 0; p < pixels; p++) if (f->pixel_material[p] != UINT16_MAX) {
+            f->materials[f->pixel_material[p]].count++; visible++;
+            if (f->deferred_meshes) {
+                uint32_t id = f->winner[p];
+                f->bins[id >> SCENE_INDEX_BITS].visible[id & SCENE_INDEX_MASK] = 1;
+            }
+        }
+        if (atomic_load_explicit(&f->failed,memory_order_relaxed)) {
             scene_restore(f); return 0;
         }
     }
@@ -1496,12 +1498,14 @@ int softgl_scene_visibility_end(void) {
             scene_restore(f); return 0;
         }
     }
+    if (f->coarse.enabled && f->deferred_meshes) scene_coarse_counts(f);
     uint32_t first = 0;
     for (int i = 0; i < f->material_count; i++) {
         scene_material *m = &f->materials[i]; m->first = m->cursor = first;
         first += m->count;
     }
-    if (c->fb.samples) scene_msaa_list(f);
+    if (f->coarse.enabled && f->deferred_meshes) scene_coarse_list(f);
+    else if (c->fb.samples) scene_msaa_list(f);
     else for (uint32_t p = 0; p < pixels; p++) if (f->pixel_material[p] != UINT16_MAX) {
         scene_material *m = &f->materials[f->pixel_material[p]]; f->pixels[m->cursor++] = p;
     }
@@ -1513,12 +1517,10 @@ int softgl_scene_visibility_end(void) {
     }
     atomic_store_explicit(&f->next_task,0,memory_order_relaxed);
     if (f->coarse.enabled && f->deferred_meshes) {
-        scene_coarse_tasks(f, 1);
         atomic_store_explicit(&f->next_task, 0, memory_order_relaxed);
         sg_workers_run_callback(c, scene_coarse_resolve, f);
-        scene_coarse_tasks(f, 0);
         atomic_store_explicit(&f->next_task, 0, memory_order_relaxed);
-        sg_workers_run_callback(c, scene_coarse_copy, f);
+        sg_workers_run_callback(c, scene_coarse_copy_bins, f);
     } else sg_workers_run_callback(c,scene_resolve,f);
     if (getenv("SOFTGL_SCENE_STATS")) {
         fprintf(stderr, "COARSE {\"enabled\":%d,\"groups\":%u,\"representatives\":%u,\"scratchBytes\":%zu}\n",
@@ -1527,7 +1529,8 @@ int softgl_scene_visibility_end(void) {
         for (int i = 0; i < SG_MAX_BINS; i++) { stored += f->bins[i].count; depth += f->bins[i].depth_passes; }
         fprintf(stderr,"SCENE {\"materials\":%d,\"trianglesStored\":%llu,\"triangleBytes\":%zu,\"depthPasses\":%llu,\"visiblePixels\":%u,\"shadePackets\":%u,\"activeShadeLanesPercent\":%.6f}\n",
             f->material_count,(unsigned long long)stored,f->triangle_bytes,(unsigned long long)depth,
-            visible,packets,packets ? visible*100.0/(packets*4) : 0.0);
+            visible,packets,packets ? (f->coarse.enabled && f->deferred_meshes ?
+                f->coarse.representatives : visible)*100.0/(packets*4) : 0.0);
     }
     return 1;
 }

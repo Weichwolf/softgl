@@ -1,0 +1,59 @@
+{
+  "passed": true,
+  "binaries": {
+    "native/baseline-library/libbaseline_softgl.a": {
+      "sha256": "e1f1e799911c47dd57408c23bef6d025ce0e5eb26f12e4f7a886f5457d3d8572",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 67238
+    },
+    "native/candidate-library/libsoftgl.a": {
+      "sha256": "2d9927f1d3982d4279516af2ae4e8957c76d06d108b5df8e6a78d285c77e7ded",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 67263
+    },
+    "native/resident_baseline": {
+      "sha256": "a6401853457da4beb37903278010f8d8348b21a20bd7bcde57fdd5dabfc5ee18",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 66944
+    },
+    "native/resident_candidate": {
+      "sha256": "1403af7edac4df15ae60876b06f09e9da7504a8d5c2173576ff72d03f2d96598",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 66969
+    },
+    "native/resident_control": {
+      "sha256": "e6aa645e9588b164307e07873f0aa598b192411cc67b1b9580211c918b8cabd3",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 66969
+    },
+    "native/quality_baseline": {
+      "sha256": "0a4765ef1a0a63c96fe3b6745423b3a0141be35ae79b58361d196e12d3eca284",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 66791
+    },
+    "native/quality_candidate": {
+      "sha256": "ab5043ce90e126fe0d2c083238336f2708aa582caef6cd376a6bae42c11b2cdb",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 66816
+    },
+    "native/quality_control": {
+      "sha256": "d72ebad861fa7ce5efd1b4b59ef414f618287008b1d772d1f61ff8f485012713",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 66816
+    },
+    "native/coarse_contract": {
+      "sha256": "5622c78f62806d59c26bc939088da0740923a8fda5df1fa7dd2371d23b3bae73",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 65684
+    }
+  }
+}

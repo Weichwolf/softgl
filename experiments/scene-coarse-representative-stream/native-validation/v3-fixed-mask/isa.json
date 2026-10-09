@@ -1,0 +1,71 @@
+{
+  "passed": true,
+  "binaries": {
+    "native/baseline-library/libbaseline_softgl.a": {
+      "sha256": "e1f1e799911c47dd57408c23bef6d025ce0e5eb26f12e4f7a886f5457d3d8572",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 67238
+    },
+    "native/candidate-library/libsoftgl.a": {
+      "sha256": "4413ae6cf92b34e1e9aff26a8fde12fc8fd414e70a1dde94fa0a664cae7b808b",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 67306
+    },
+    "native/resident_baseline": {
+      "sha256": "a6401853457da4beb37903278010f8d8348b21a20bd7bcde57fdd5dabfc5ee18",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 66944
+    },
+    "native/resident_baseline_control": {
+      "sha256": "fe3dc81a4a122421bef3f547bfe65c3718299e162be12aae6e7ce653f73cc96e",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 66944
+    },
+    "native/resident_candidate": {
+      "sha256": "e5140953ee3a83c98092bebc1108cb997f67bcce82749d9ea3813c17dc376d67",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 67012
+    },
+    "native/resident_control": {
+      "sha256": "d23065667eeb45c42b4aa731d810df21155fd6680c23eaaa542f9345f79fcbfa",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 67012
+    },
+    "native/quality_baseline": {
+      "sha256": "0a4765ef1a0a63c96fe3b6745423b3a0141be35ae79b58361d196e12d3eca284",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 66791
+    },
+    "native/quality_baseline_control": {
+      "sha256": "6d92d9838d13178c47cb9042ba8d0f12a29f1cc73e5ac124f6ed4309a8ae6984",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 66791
+    },
+    "native/quality_candidate": {
+      "sha256": "9b5d69d0b0189e18894d72773a0251f77991349da5d14945ada064823c4909ae",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 66859
+    },
+    "native/quality_control": {
+      "sha256": "25cbaf2bf4a619bf4dfd2ac5c8d29c1bd631b45b8b808e465e91b3727f8a79be",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 66859
+    },
+    "native/coarse_contract": {
+      "sha256": "d2da1a7582ec493a88d63ebdc7918f2636cce6332ee4ba77fd876a9f8350cad0",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 65727
+    }
+  }
+}

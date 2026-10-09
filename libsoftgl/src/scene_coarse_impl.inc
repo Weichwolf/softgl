@@ -88,6 +88,10 @@ int softgl_scene_coarse_shading(GLboolean enabled) {
     if (!enabled) return 1;
     size_t units = (size_t)c->fb.w*c->fb.h*(c->fb.samples ? (unsigned)c->fb.samples : 1u);
     if (units > (64u*1024u*1024u)/(3*sizeof(uint32_t))) return 0;
+    if (!f->group_counts) {
+        f->group_counts = calloc((size_t)SG_MAX_BINS*SCENE_MATERIALS, sizeof(uint32_t));
+        if (!f->group_counts) return 0;
+    }
     if (units > f->coarse.capacity) {
         uint32_t *source = malloc(units*sizeof(uint32_t));
         uint32_t *pixels = malloc(units*sizeof(uint32_t));
@@ -105,6 +109,8 @@ int softgl_scene_coarse_shading(GLboolean enabled) {
 
 /* Selection joins before attributes/shading. The canonical mesh contract
  * requires a pure program that preserves UV0/UV2 and alpha for every vertex. */
+/* Produce the accepted physical masks directly inside each 2x2 selection cell.
+ * This preserves dy/dx/sample representative order and uniform sample tags. */
 static void scene_coarse_select(void *data) {
     struct sg_scene_visibility *f = data;
     softgl_ctx *c = f->context;
@@ -114,21 +120,44 @@ static void scene_coarse_select(void *data) {
     for (;;) {
         int bin = atomic_fetch_add_explicit(&f->next_task, 1, memory_order_relaxed);
         if (bin >= pool->nbins) break;
+        uint32_t *counts = f->group_counts+(size_t)bin*SCENE_MATERIALS;
+        memset(counts, 0, (size_t)f->material_count*sizeof(*counts));
         if (f->bins[bin].count) memset(f->bins[bin].visible, 0, f->bins[bin].count);
+        uint32_t fine_groups = 0;
         for (int y = 0; y < c->fb.h; y += 2) {
             for (int x = pool->bins[bin].ix0; x < pool->bins[bin].ix1; x += 2) {
                 uint32_t group[16]; unsigned count = 0;
                 for (int dy = 0; dy < 2 && y+dy < c->fb.h; dy++)
-                    for (int dx = 0; dx < 2 && x+dx < pool->bins[bin].ix1; dx++)
-                        for (unsigned sample = 0; sample < n; sample++) {
-                            uint32_t p = ((uint32_t)(y+dy)*(unsigned)c->fb.w+(unsigned)(x+dx))*n+sample;
-                            if (f->pixel_material[p] != UINT16_MAX && (!c->fb.samples || f->shade_mask[p]))
-                                group[count++] = p;
+                    for (int dx = 0; dx < 2 && x+dx < pool->bins[bin].ix1; dx++) {
+                        uint32_t base = ((uint32_t)(y+dy)*(unsigned)c->fb.w+(unsigned)(x+dx))*n;
+                        if (!c->fb.samples) {
+                            if (f->pixel_material[base] != UINT16_MAX) group[count++] = base;
+                            continue;
                         }
+                        int uniform = n == 4 && f->shade_mask[base] == 0x80;
+                        uint32_t zero = 0;
+                        if (n == 4) memcpy(f->shade_mask+base, &zero, 4);
+                        else if (n == 2) memcpy(f->shade_mask+base, &zero, 2);
+                        else memset(f->shade_mask+base, 0, n);
+                        unsigned seen = 0;
+                        for (unsigned sample = 0; sample < n; sample++) {
+                            uint32_t p = base+sample;
+                            if ((seen & (1u << sample)) || f->pixel_material[p] == UINT16_MAX) continue;
+                            unsigned mask = uniform ? (1u << n)-1u : 1u << sample;
+                            if (!uniform) for (unsigned k = sample+1; k < n; k++)
+                                if (f->pixel_material[base+k] != UINT16_MAX &&
+                                    f->winner[base+k] == f->winner[p] &&
+                                    f->sample_point[base+k] == f->sample_point[p]) mask |= 1u << k;
+                            f->shade_mask[p] = (uint8_t)mask; seen |= mask;
+                            group[count++] = p;
+                        }
+                    }
+                fine_groups += count;
                 unsigned assigned = 0;
                 for (unsigned i = 0; i < count; i++) if (!(assigned & (1u << i))) {
                     uint32_t p = group[i], id = f->winner[p];
                     f->coarse.source[p] = p; assigned |= 1u << i;
+                    counts[f->pixel_material[p]]++;
                     if ((id >> SCENE_INDEX_BITS) != (unsigned)bin)
                         atomic_store_explicit(&f->failed, 1, memory_order_relaxed);
                     else f->bins[bin].visible[id & SCENE_INDEX_MASK] = 1;
@@ -141,27 +170,15 @@ static void scene_coarse_select(void *data) {
                 }
             }
         }
+        f->coarse.fine_groups[bin] = fine_groups;
     }
 }
 
-static void scene_coarse_tasks(struct sg_scene_visibility *f, int coarse) {
-    f->task_count = 0;
-    uint32_t representatives = 0;
-    for (int i = 0; i < f->material_count; i++) {
-        scene_material *m = &f->materials[i];
-        uint32_t count = m->count;
-        if (coarse) {
-            count = 0;
-            for (uint32_t at = m->first; at < m->first+m->count; at++) {
-                uint32_t p = f->pixels[at];
-                if (f->coarse.source[p] == p) f->coarse.pixels[m->first+count++] = p;
-            }
-            representatives += count;
-        }
-        for (uint32_t at = 0; at < count; at += 256)
-            f->tasks[f->task_count++] = (scene_task){(uint32_t)i, m->first+at, count-at < 256 ? count-at : 256};
-    }
-    if (coarse) f->coarse.representatives = representatives;
+static uint32_t scene_coarse_group_count(struct sg_scene_visibility *f) {
+    sg_worker_pool *pool = f->context->workers;
+    uint32_t groups = 0;
+    for (int bin = 0; bin < pool->nbins; bin++) groups += f->coarse.fine_groups[bin];
+    return groups;
 }
 
 static void scene_coarse_resolve(void *data) {
@@ -183,27 +200,83 @@ static void scene_coarse_resolve(void *data) {
     }
 }
 
-static void scene_coarse_copy(void *data) {
+/* Joined representative histograms describe disjoint per-material lists. */
+static void scene_coarse_list_bins(void *data) {
     struct sg_scene_visibility *f = data;
     softgl_ctx *c = f->context;
+    sg_worker_pool *pool = c->workers;
+    unsigned n = c->fb.samples ? (unsigned)c->fb.samples : 1u;
     for (;;) {
-        int task = atomic_fetch_add_explicit(&f->next_task, 1, memory_order_relaxed);
-        if (task >= f->task_count) break;
-        const scene_task *t = &f->tasks[task];
-        for (uint32_t first = t->first; first < t->first+t->count; first++) {
-            uint32_t p = f->pixels[first];
-            uint32_t color = f->coarse.color[f->coarse.source[p]];
-            if (c->fb.samples) {
-                size_t base = (size_t)(p/(unsigned)c->fb.samples)*c->fb.samples;
-                unsigned mask = f->shade_mask[p];
-                if (c->fb.samples == 4 && mask == 15) {
-                    _mm_storeu_si128((__m128i *)(c->fb.sample_color+base*4), _mm_set1_epi32((int)color));
-                } else if (c->fb.samples == 2 && mask == 3) {
-                    uint64_t pair = (uint64_t)color | ((uint64_t)color << 32);
-                    memcpy(c->fb.sample_color+base*4, &pair, sizeof(pair));
-                } else for (int sample = 0; sample < c->fb.samples; sample++)
-                    if (mask & (1u << sample)) memcpy(c->fb.sample_color+(base+sample)*4, &color, sizeof(color));
-            } else memcpy(c->fb.color+(size_t)p*4, &color, sizeof(color));
+        int bin = atomic_fetch_add_explicit(&f->next_task, 1, memory_order_relaxed);
+        if (bin >= pool->nbins) break;
+        uint32_t *cursor = f->group_counts+(size_t)bin*SCENE_MATERIALS;
+        for (int y = 0; y < c->fb.h; y++) {
+            uint32_t first = ((unsigned)y*(unsigned)c->fb.w+(unsigned)pool->bins[bin].ix0)*n;
+            uint32_t end = ((unsigned)y*(unsigned)c->fb.w+(unsigned)pool->bins[bin].ix1)*n;
+            for (uint32_t p = first; p < end; p++) {
+                int live = c->fb.samples ? f->shade_mask[p] != 0 : f->pixel_material[p] != UINT16_MAX;
+                if (live && f->coarse.source[p] == p)
+                    f->coarse.pixels[cursor[f->pixel_material[p]]++] = p;
+            }
+        }
+    }
+}
+
+static uint32_t scene_coarse_counts(struct sg_scene_visibility *f) {
+    sg_worker_pool *pool = f->context->workers;
+    uint32_t total = 0;
+    for (int m = 0; m < f->material_count; m++) {
+        uint32_t count = 0;
+        for (int bin = 0; bin < pool->nbins; bin++)
+            count += f->group_counts[(size_t)bin*SCENE_MATERIALS+m];
+        f->materials[m].count = count; total += count;
+    }
+    f->coarse.representatives = total;
+    return total;
+}
+
+static void scene_coarse_list(struct sg_scene_visibility *f) {
+    sg_worker_pool *pool = f->context->workers;
+    for (int m = 0; m < f->material_count; m++) {
+        uint32_t first = f->materials[m].first;
+        for (int bin = 0; bin < pool->nbins; bin++) {
+            uint32_t *cursor = f->group_counts+(size_t)bin*SCENE_MATERIALS+m;
+            uint32_t count = *cursor; *cursor = first; first += count;
+        }
+    }
+    atomic_store_explicit(&f->next_task, 0, memory_order_relaxed);
+    sg_workers_run_callback(f->context, scene_coarse_list_bins, f);
+}
+
+/* Read current-frame source maps in screen order. Each stripe owns its writes;
+ * different representatives may share a shader task but not a physical sample. */
+static void scene_coarse_copy_bins(void *data) {
+    struct sg_scene_visibility *f = data;
+    softgl_ctx *c = f->context;
+    sg_worker_pool *pool = c->workers;
+    unsigned n = c->fb.samples ? (unsigned)c->fb.samples : 1u;
+    for (;;) {
+        int bin = atomic_fetch_add_explicit(&f->next_task, 1, memory_order_relaxed);
+        if (bin >= pool->nbins) break;
+        for (int y = 0; y < c->fb.h; y++) {
+            uint32_t first = ((unsigned)y*(unsigned)c->fb.w+(unsigned)pool->bins[bin].ix0)*n;
+            uint32_t end = ((unsigned)y*(unsigned)c->fb.w+(unsigned)pool->bins[bin].ix1)*n;
+            for (uint32_t p = first; p < end; p++) {
+                int live = c->fb.samples ? f->shade_mask[p] != 0 : f->pixel_material[p] != UINT16_MAX;
+                if (!live) continue;
+                uint32_t color = f->coarse.color[f->coarse.source[p]];
+                if (c->fb.samples) {
+                    size_t base = (size_t)(p/(unsigned)c->fb.samples)*c->fb.samples;
+                    unsigned mask = f->shade_mask[p];
+                    if (c->fb.samples == 4 && mask == 15) {
+                        _mm_storeu_si128((__m128i *)(c->fb.sample_color+base*4), _mm_set1_epi32((int)color));
+                    } else if (c->fb.samples == 2 && mask == 3) {
+                        uint64_t pair = (uint64_t)color | ((uint64_t)color << 32);
+                        memcpy(c->fb.sample_color+base*4, &pair, sizeof(pair));
+                    } else for (int sample = 0; sample < c->fb.samples; sample++)
+                        if (mask & (1u << sample)) memcpy(c->fb.sample_color+(base+sample)*4, &color, sizeof(color));
+                } else memcpy(c->fb.color+(size_t)p*4, &color, sizeof(color));
+            }
         }
     }
 }

@@ -1,0 +1,207 @@
+--- a/libsoftgl/src/scene_coarse_impl.inc
++++ b/libsoftgl/src/scene_coarse_impl.inc
+@@ -88,6 +88,10 @@
+     if (!enabled) return 1;
+     size_t units = (size_t)c->fb.w*c->fb.h*(c->fb.samples ? (unsigned)c->fb.samples : 1u);
+     if (units > (64u*1024u*1024u)/(3*sizeof(uint32_t))) return 0;
++    if (!f->group_counts) {
++        f->group_counts = calloc((size_t)SG_MAX_BINS*SCENE_MATERIALS, sizeof(uint32_t));
++        if (!f->group_counts) return 0;
++    }
+     if (units > f->coarse.capacity) {
+         uint32_t *source = malloc(units*sizeof(uint32_t));
+         uint32_t *pixels = malloc(units*sizeof(uint32_t));
+@@ -114,6 +118,8 @@
+     for (;;) {
+         int bin = atomic_fetch_add_explicit(&f->next_task, 1, memory_order_relaxed);
+         if (bin >= pool->nbins) break;
++        uint32_t *counts = f->group_counts+(size_t)bin*SCENE_MATERIALS;
++        memset(counts, 0, (size_t)f->material_count*sizeof(*counts));
+         if (f->bins[bin].count) memset(f->bins[bin].visible, 0, f->bins[bin].count);
+         for (int y = 0; y < c->fb.h; y += 2) {
+             for (int x = pool->bins[bin].ix0; x < pool->bins[bin].ix1; x += 2) {
+@@ -129,6 +135,7 @@
+                 for (unsigned i = 0; i < count; i++) if (!(assigned & (1u << i))) {
+                     uint32_t p = group[i], id = f->winner[p];
+                     f->coarse.source[p] = p; assigned |= 1u << i;
++                    counts[f->pixel_material[p]]++;
+                     if ((id >> SCENE_INDEX_BITS) != (unsigned)bin)
+                         atomic_store_explicit(&f->failed, 1, memory_order_relaxed);
+                     else f->bins[bin].visible[id & SCENE_INDEX_MASK] = 1;
+@@ -144,26 +151,6 @@
+     }
+ }
+ 
+-static void scene_coarse_tasks(struct sg_scene_visibility *f, int coarse) {
+-    f->task_count = 0;
+-    uint32_t representatives = 0;
+-    for (int i = 0; i < f->material_count; i++) {
+-        scene_material *m = &f->materials[i];
+-        uint32_t count = m->count;
+-        if (coarse) {
+-            count = 0;
+-            for (uint32_t at = m->first; at < m->first+m->count; at++) {
+-                uint32_t p = f->pixels[at];
+-                if (f->coarse.source[p] == p) f->coarse.pixels[m->first+count++] = p;
+-            }
+-            representatives += count;
+-        }
+-        for (uint32_t at = 0; at < count; at += 256)
+-            f->tasks[f->task_count++] = (scene_task){(uint32_t)i, m->first+at, count-at < 256 ? count-at : 256};
+-    }
+-    if (coarse) f->coarse.representatives = representatives;
+-}
+-
+ static void scene_coarse_resolve(void *data) {
+     struct sg_scene_visibility *f = data;
+     for (;;) {
+@@ -183,27 +170,83 @@
+     }
+ }
+ 
+-static void scene_coarse_copy(void *data) {
+-    struct sg_scene_visibility *f = data;
+-    softgl_ctx *c = f->context;
+-    for (;;) {
+-        int task = atomic_fetch_add_explicit(&f->next_task, 1, memory_order_relaxed);
+-        if (task >= f->task_count) break;
+-        const scene_task *t = &f->tasks[task];
+-        for (uint32_t first = t->first; first < t->first+t->count; first++) {
+-            uint32_t p = f->pixels[first];
+-            uint32_t color = f->coarse.color[f->coarse.source[p]];
+-            if (c->fb.samples) {
+-                size_t base = (size_t)(p/(unsigned)c->fb.samples)*c->fb.samples;
+-                unsigned mask = f->shade_mask[p];
+-                if (c->fb.samples == 4 && mask == 15) {
+-                    _mm_storeu_si128((__m128i *)(c->fb.sample_color+base*4), _mm_set1_epi32((int)color));
+-                } else if (c->fb.samples == 2 && mask == 3) {
+-                    uint64_t pair = (uint64_t)color | ((uint64_t)color << 32);
+-                    memcpy(c->fb.sample_color+base*4, &pair, sizeof(pair));
+-                } else for (int sample = 0; sample < c->fb.samples; sample++)
+-                    if (mask & (1u << sample)) memcpy(c->fb.sample_color+(base+sample)*4, &color, sizeof(color));
+-            } else memcpy(c->fb.color+(size_t)p*4, &color, sizeof(color));
+-        }
+-    }
+-}
++/* Joined representative histograms describe disjoint per-material lists. */
++static void scene_coarse_list_bins(void *data) {
++    struct sg_scene_visibility *f = data;
++    softgl_ctx *c = f->context;
++    sg_worker_pool *pool = c->workers;
++    unsigned n = c->fb.samples ? (unsigned)c->fb.samples : 1u;
++    for (;;) {
++        int bin = atomic_fetch_add_explicit(&f->next_task, 1, memory_order_relaxed);
++        if (bin >= pool->nbins) break;
++        uint32_t *cursor = f->group_counts+(size_t)bin*SCENE_MATERIALS;
++        for (int y = 0; y < c->fb.h; y++) {
++            uint32_t first = ((unsigned)y*(unsigned)c->fb.w+(unsigned)pool->bins[bin].ix0)*n;
++            uint32_t end = ((unsigned)y*(unsigned)c->fb.w+(unsigned)pool->bins[bin].ix1)*n;
++            for (uint32_t p = first; p < end; p++) {
++                int live = c->fb.samples ? f->shade_mask[p] != 0 : f->pixel_material[p] != UINT16_MAX;
++                if (live && f->coarse.source[p] == p)
++                    f->coarse.pixels[cursor[f->pixel_material[p]]++] = p;
++            }
++        }
++    }
++}
++
++static uint32_t scene_coarse_counts(struct sg_scene_visibility *f) {
++    sg_worker_pool *pool = f->context->workers;
++    uint32_t total = 0;
++    for (int m = 0; m < f->material_count; m++) {
++        uint32_t count = 0;
++        for (int bin = 0; bin < pool->nbins; bin++)
++            count += f->group_counts[(size_t)bin*SCENE_MATERIALS+m];
++        f->materials[m].count = count; total += count;
++    }
++    f->coarse.representatives = total;
++    return total;
++}
++
++static void scene_coarse_list(struct sg_scene_visibility *f) {
++    sg_worker_pool *pool = f->context->workers;
++    for (int m = 0; m < f->material_count; m++) {
++        uint32_t first = f->materials[m].first;
++        for (int bin = 0; bin < pool->nbins; bin++) {
++            uint32_t *cursor = f->group_counts+(size_t)bin*SCENE_MATERIALS+m;
++            uint32_t count = *cursor; *cursor = first; first += count;
++        }
++    }
++    atomic_store_explicit(&f->next_task, 0, memory_order_relaxed);
++    sg_workers_run_callback(f->context, scene_coarse_list_bins, f);
++}
++
++/* Read current-frame source maps in screen order. Each stripe owns its writes;
++ * different representatives may share a shader task but not a physical sample. */
++static void scene_coarse_copy_bins(void *data) {
++    struct sg_scene_visibility *f = data;
++    softgl_ctx *c = f->context;
++    sg_worker_pool *pool = c->workers;
++    unsigned n = c->fb.samples ? (unsigned)c->fb.samples : 1u;
++    for (;;) {
++        int bin = atomic_fetch_add_explicit(&f->next_task, 1, memory_order_relaxed);
++        if (bin >= pool->nbins) break;
++        for (int y = 0; y < c->fb.h; y++) {
++            uint32_t first = ((unsigned)y*(unsigned)c->fb.w+(unsigned)pool->bins[bin].ix0)*n;
++            uint32_t end = ((unsigned)y*(unsigned)c->fb.w+(unsigned)pool->bins[bin].ix1)*n;
++            for (uint32_t p = first; p < end; p++) {
++                int live = c->fb.samples ? f->shade_mask[p] != 0 : f->pixel_material[p] != UINT16_MAX;
++                if (!live) continue;
++                uint32_t color = f->coarse.color[f->coarse.source[p]];
++                if (c->fb.samples) {
++                    size_t base = (size_t)(p/(unsigned)c->fb.samples)*c->fb.samples;
++                    unsigned mask = f->shade_mask[p];
++                    if (c->fb.samples == 4 && mask == 15) {
++                        _mm_storeu_si128((__m128i *)(c->fb.sample_color+base*4), _mm_set1_epi32((int)color));
++                    } else if (c->fb.samples == 2 && mask == 3) {
++                        uint64_t pair = (uint64_t)color | ((uint64_t)color << 32);
++                        memcpy(c->fb.sample_color+base*4, &pair, sizeof(pair));
++                    } else for (int sample = 0; sample < c->fb.samples; sample++)
++                        if (mask & (1u << sample)) memcpy(c->fb.sample_color+(base+sample)*4, &color, sizeof(color));
++                } else memcpy(c->fb.color+(size_t)p*4, &color, sizeof(color));
++            }
++        }
++    }
++}
+--- a/libsoftgl/src/scene_visibility.c
++++ b/libsoftgl/src/scene_visibility.c
+@@ -1496,12 +1496,14 @@
+             scene_restore(f); return 0;
+         }
+     }
++    if (f->coarse.enabled && f->deferred_meshes) scene_coarse_counts(f);
+     uint32_t first = 0;
+     for (int i = 0; i < f->material_count; i++) {
+         scene_material *m = &f->materials[i]; m->first = m->cursor = first;
+         first += m->count;
+     }
+-    if (c->fb.samples) scene_msaa_list(f);
++    if (f->coarse.enabled && f->deferred_meshes) scene_coarse_list(f);
++    else if (c->fb.samples) scene_msaa_list(f);
+     else for (uint32_t p = 0; p < pixels; p++) if (f->pixel_material[p] != UINT16_MAX) {
+         scene_material *m = &f->materials[f->pixel_material[p]]; f->pixels[m->cursor++] = p;
+     }
+@@ -1513,12 +1515,10 @@
+     }
+     atomic_store_explicit(&f->next_task,0,memory_order_relaxed);
+     if (f->coarse.enabled && f->deferred_meshes) {
+-        scene_coarse_tasks(f, 1);
+         atomic_store_explicit(&f->next_task, 0, memory_order_relaxed);
+         sg_workers_run_callback(c, scene_coarse_resolve, f);
+-        scene_coarse_tasks(f, 0);
+         atomic_store_explicit(&f->next_task, 0, memory_order_relaxed);
+-        sg_workers_run_callback(c, scene_coarse_copy, f);
++        sg_workers_run_callback(c, scene_coarse_copy_bins, f);
+     } else sg_workers_run_callback(c,scene_resolve,f);
+     if (getenv("SOFTGL_SCENE_STATS")) {
+         fprintf(stderr, "COARSE {\"enabled\":%d,\"groups\":%u,\"representatives\":%u,\"scratchBytes\":%zu}\n",
+@@ -1527,7 +1527,8 @@
+         for (int i = 0; i < SG_MAX_BINS; i++) { stored += f->bins[i].count; depth += f->bins[i].depth_passes; }
+         fprintf(stderr,"SCENE {\"materials\":%d,\"trianglesStored\":%llu,\"triangleBytes\":%zu,\"depthPasses\":%llu,\"visiblePixels\":%u,\"shadePackets\":%u,\"activeShadeLanesPercent\":%.6f}\n",
+             f->material_count,(unsigned long long)stored,f->triangle_bytes,(unsigned long long)depth,
+-            visible,packets,packets ? visible*100.0/(packets*4) : 0.0);
++            visible,packets,packets ? (f->coarse.enabled && f->deferred_meshes ?
++                f->coarse.representatives : visible)*100.0/(packets*4) : 0.0);
+     }
+     return 1;
+ }
