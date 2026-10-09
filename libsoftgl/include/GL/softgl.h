@@ -971,6 +971,11 @@ int softgl_scene_visibility_begin_adaptive(GLuint triangles, GLuint mode);
 int softgl_scene_native_wide(GLboolean enabled);
 void softgl_scene_visibility_material(void);
 int softgl_scene_visibility_end(void);
+/* Approximate 2x2 color sharing for canonical opaque scene meshes. Original
+ * physical coverage, alpha rejection and depth remain; fine material details
+ * may change. Call after begin; each new begin disables it. Returns zero on
+ * allocation failure or outside an active batch, retaining ordinary shading. */
+int softgl_scene_coarse_shading(GLboolean enabled);
 /* Experimental canonical mesh path: positions are float XYZ; coordinates
  * are float UV with the same byte stride. Inputs remain immutable through
  * scene end. The copied pure program must preserve UV0/UV2 and alpha one,

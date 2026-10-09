@@ -936,3 +936,11 @@ target_compile_options(scene_native_wide_contract PRIVATE -msse4.1)
 target_link_libraries(scene_native_wide_contract PRIVATE softgl)
 add_test(NAME scene_native_wide_contract COMMAND scene_native_wide_contract)
 set_tests_properties(scene_native_wide_contract PROPERTIES TIMEOUT 90)
+
+# Optional color sharing retains physical sample depth/coverage and rolls back.
+add_executable(scene_coarse_contract scene_coarse.c)
+target_include_directories(scene_coarse_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_compile_options(scene_coarse_contract PRIVATE -msse4.1 -mno-avx -mno-avx2 -mno-avx512f)
+target_link_libraries(scene_coarse_contract PRIVATE softgl)
+add_test(NAME scene_coarse_contract COMMAND scene_coarse_contract)
+set_tests_properties(scene_coarse_contract PROPERTIES TIMEOUT 120)

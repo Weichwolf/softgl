@@ -12,6 +12,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--git-tree', choices=('index','HEAD'))
 args = parser.parse_args()
 base = 'experiments/scene-screen-error-lod/'
+production_revision = '622bfe1'
 
 
 def content(name):
@@ -22,6 +23,12 @@ def content(name):
 
 def digest(data):
     return hashlib.sha256(data).hexdigest()
+
+
+def production_content(name):
+    # Adoption evidence describes the original published module. Subsequent
+    # renderer/UI improvements must not rewrite its captured source hashes.
+    return subprocess.check_output(['git', 'show', production_revision+':'+name], cwd=repo)
 
 
 def read(name):
@@ -92,12 +99,12 @@ production = read('production-adoption.json')
 assert production['optionalOnly'] and production['defaultOriginal'] and production['budgetPixels'] == 4
 assert production['productionWasmSha256'] == read('gates/production-browser/receipt.json')['wasmSha256']
 for name, expected in production['sourcesSha256'].items():
-    assert digest(content(name)) == expected, name
+    assert digest(production_content(name)) == expected, name
 prototype = content(base+'native-validation/v5-cost-packing/source/model_wrap.c')
-assert content('wasm/model_wrap.c').startswith(prototype)
+assert production_content('wasm/model_wrap.c').startswith(prototype)
 guard = b'#ifndef SOFTGL_MODEL_LOD_BUDGET\n#define SOFTGL_MODEL_LOD_BUDGET 0.f\n#endif\n'
-assert content('wasm/lod.inc').replace(guard,b'',1) == content(base+'native-validation/v5-cost-packing/source/lod.inc')
-assert content('wasm/cluster_load.inc') == content(base+'native-validation/v5-cost-packing/source/cluster_load.inc')
+assert production_content('wasm/lod.inc').replace(guard,b'',1) == content(base+'native-validation/v5-cost-packing/source/lod.inc')
+assert production_content('wasm/cluster_load.inc') == content(base+'native-validation/v5-cost-packing/source/cluster_load.inc')
 expected = {r['asset']:r['metadataSha256'] for r in read('v5-cost-packing/lod-receipt.json')['records']}
 assert {r['asset']:r['cacheSha256'] for r in read('production-assets.json')['records']} == expected
-print('144 selected native trials, 108 native pairs, exact packing, sanitizer/WASM contracts and 48 browser configurations verified;',args.git_tree or 'worktree')
+print('144 selected native trials, 108 native pairs, exact packing, sanitizer/WASM contracts and 48 browser configurations verified; historical adoption',production_revision,';',args.git_tree or 'worktree')

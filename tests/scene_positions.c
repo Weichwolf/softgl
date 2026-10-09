@@ -89,6 +89,9 @@ static void frame(softgl_ctx *c, int deferred, int variant) {
     glFrontFace(variant%4 ? GL_CCW : GL_CW);
     if (variant&1) { glEnable(GL_ALPHA_TEST); glAlphaFunc(GL_GREATER,.4f); } else glDisable(GL_ALPHA_TEST);
     int begun = softgl_scene_visibility_begin();
+#ifdef SOFTGL_COARSE_CONTRACT
+    if (begun) CHECK(softgl_scene_coarse_shading(coarse_test_enabled));
+#endif
     for (int part = 0; part < 3; part++) {
         const float tint[4] = {.1f+part*.1f,.2f,.3f,.5f};
         softgl_set_fused_dot3_material(tint,variant&1);
@@ -134,6 +137,9 @@ static void rollback(softgl_ctx *c) {
     size_t pixels = (size_t)640*360; uint8_t *color = malloc(pixels*4); float *depth = malloc(pixels*sizeof(float));
     CHECK(color && depth); memcpy(color,c->fb.color,pixels*4); memcpy(depth,c->fb.depth,pixels*sizeof(float));
     CHECK(softgl_scene_visibility_begin());
+#ifdef SOFTGL_COARSE_CONTRACT
+    CHECK(softgl_scene_coarse_shading(GL_TRUE));
+#endif
     const float tint[4] = {.1f,.2f,.3f,.5f}; softgl_set_fused_dot3_material(tint,0);
     softgl_scene_visibility_material(); program_data data = {1.f};
     CHECK(softgl_scene_visibility_positions(vertices[0].p,vertices[0].uv,sizeof(vertex),VERTICES,indices,96,attributes,&data,sizeof(data)));
@@ -144,7 +150,11 @@ static void rollback(softgl_ctx *c) {
     CHECK(!memcmp(color,c->fb.color,pixels*4)); CHECK(!memcmp(depth,c->fb.depth,pixels*sizeof(float)));
     CHECK(!softgl_scene_visibility_positions(vertices[0].p,vertices[0].uv,sizeof(vertex),VERTICES,indices,96,attributes,&data,sizeof(data)));
     restored++;
-    CHECK(softgl_scene_visibility_begin()); softgl_scene_visibility_material();
+    CHECK(softgl_scene_visibility_begin());
+#ifdef SOFTGL_COARSE_CONTRACT
+    CHECK(softgl_scene_coarse_shading(GL_TRUE));
+#endif
+    softgl_scene_visibility_material();
     CHECK(!softgl_scene_visibility_positions(vertices[0].p,vertices[0].uv,13,VERTICES,indices,96,attributes,&data,sizeof(data)));
     CHECK(!softgl_scene_visibility_positions(vertices[0].p,vertices[0].uv,sizeof(vertex),VERTICES,indices,2,attributes,&data,sizeof(data)));
     CHECK(softgl_scene_visibility_positions(vertices[0].p,vertices[0].uv,sizeof(vertex),VERTICES,indices,96,invalid_attributes,&data,sizeof(data)));

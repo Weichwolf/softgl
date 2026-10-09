@@ -1,0 +1,689 @@
+--- a/libsoftgl/include/GL/softgl.h
++++ b/libsoftgl/include/GL/softgl.h
+@@ -971,6 +971,9 @@
+ int softgl_scene_native_wide(GLboolean enabled);
+ void softgl_scene_visibility_material(void);
+ int softgl_scene_visibility_end(void);
++/* Private trial: 0 ordinary, 1 primitive lighting, 2 material/depth lighting,
++ * 3 diagnostic no reuse, 4 coarse full shading, 5 direct coarse scatter. */
++int softgl_scene_codec_shading(GLuint mode);
+ /* Experimental canonical mesh path: positions are float XYZ; coordinates
+  * are float UV with the same byte stride. Inputs remain immutable through
+  * scene end. The copied pure program must preserve UV0/UV2 and alpha one,
+--- /dev/null
++++ b/libsoftgl/src/scene_codec_bary.inc
+@@ -0,0 +1,27 @@
++static inline void scene_codec_bary(struct sg_scene_visibility *f,
++    const uint32_t pixels[4], const scene_triangle *tri[4],
++    sg_f32x4 *w0, sg_f32x4 *w1, sg_f32x4 *w2, sg_f32x4 *inverse) {
++    softgl_ctx *c = f->context;
++    float bary[3][4];
++    for (int l = 0; l < 4; l++) {
++        tri[l] = scene_triangle_at(f,f->winner[pixels[l]]);
++        uint32_t pixel = c->fb.samples ? pixels[l]/(unsigned)c->fb.samples : pixels[l];
++        int x = (int)(pixel % (unsigned)c->fb.w), y = (int)(pixel / (unsigned)c->fb.w);
++        const scene_triangle *t = tri[l];
++        int sx = 128, sy = 128;
++        if (c->fb.samples && f->sample_point[pixels[l]] != 4)
++            sg_sample_position(c->fb.samples,f->sample_point[pixels[l]],&sx,&sy);
++        int64_t e0 = t->edge[0][0]+t->edge[0][1]*x+t->edge[0][2]*y;
++        int64_t e1 = t->edge[1][0]+t->edge[1][1]*x+t->edge[1][2]*y;
++        if (c->fb.samples) {
++            e0 += (t->edge[0][1]/256)*(sx-128)+(t->edge[0][2]/256)*(sy-128);
++            e1 += (t->edge[1][1]/256)*(sx-128)+(t->edge[1][2]/256)*(sy-128);
++        }
++        bary[0][l] = (float)e0*t->inverse_area;
++        bary[1][l] = (float)e1*t->inverse_area;
++        bary[2][l] = 1.f-bary[0][l]-bary[1][l];
++        for (int v = 0; v < 3; v++) bary[v][l] *= t->inverse_w[v];
++    }
++    *w0 = sg_f32x4_load(bary[0]); *w1 = sg_f32x4_load(bary[1]); *w2 = sg_f32x4_load(bary[2]);
++    *inverse = sg_f32x4_div(sg_f32x4_splat(1.f),sg_f32x4_add(sg_f32x4_add(*w0,*w1),*w2));
++}
+--- /dev/null
++++ b/libsoftgl/src/scene_codec_fine.inc
+@@ -0,0 +1,62 @@
++/* Full-rate albedo/alpha and RGB; normal/lighting/environment come from an
++ * actually shaded representative. This trial does not subsample chroma. */
++static void scene_codec_fine(struct sg_scene_visibility *f, scene_material *m,
++    const uint32_t pixels[4], unsigned live) {
++    softgl_ctx *c = f->context;
++    const scene_triangle *tri[4];
++    sg_f32x4 w0,w1,w2,inverse;
++    scene_codec_bary(f,pixels,tri,&w0,&w1,&w2,&inverse);
++    sg_f32x4 alpha = scene_gather_lerp(tri,-1,3,w0,w1,w2,inverse);
++    const sg_tex_unit_tri *unit = &m->texture.unit[2];
++    sg_f32x4 albedo[4];
++    if (unit->constant_color_valid) {
++        for (int k = 0; k < 4; k++) albedo[k] = sg_f32x4_splat(unit->constant_color[k]);
++    } else {
++        sg_f32x4 x = scene_gather_lerp(tri,2,0,w0,w1,w2,inverse);
++        sg_f32x4 y = scene_gather_lerp(tri,2,1,w0,w1,w2,inverse);
++        sg_packet_sample_2d(unit,x,y,live,0,albedo);
++    }
++    float diffuse[4],specular[4],environment[3][4];
++    for (int l = 0; l < 4; l++) {
++        const scene_codec_value *value = &f->codec.value[f->codec.source[pixels[l]]];
++        diffuse[l] = value->diffuse; specular[l] = value->specular;
++        for (int k = 0; k < 3; k++) environment[k][l] = value->environment[k];
++    }
++    sg_f32x4 d = sg_f32x4_load(diffuse), s = sg_f32x4_load(specular), color[4];
++    for (int k = 0; k < 3; k++) {
++        sg_f32x4 lit = sg_chain_clamp(sg_f32x4_add(d,sg_f32x4_splat(m->ambient[k])));
++        lit = sg_chain_clamp(sg_f32x4_mul(lit,albedo[k]));
++        lit = sg_chain_clamp(sg_f32x4_add(lit,sg_f32x4_load(environment[k])));
++        sg_f32x4 tinted = sg_chain_clamp(sg_f32x4_mul(s,sg_f32x4_splat(m->tint[k])));
++        color[k] = sg_chain_clamp(sg_f32x4_add(lit,sg_f32x4_mul(tinted,
++            sg_f32x4_splat(sg_clampf(m->tint[3],0.f,1.f)))));
++    }
++    color[3] = sg_chain_clamp(sg_f32x4_mul(alpha,albedo[3]));
++    _MM_TRANSPOSE4_PS(color[0],color[1],color[2],color[3]);
++    for (int l = 0; l < 4; l++) if (live & (1u << l)) {
++        float rgba[4]; sg_f32x4_store(rgba,color[l]);
++        uint32_t packed = sg_store_quantize_rgba(rgba);
++        if (c->fb.samples) {
++            size_t base = (size_t)(pixels[l]/(unsigned)c->fb.samples)*c->fb.samples;
++            for (int sample = 0; sample < c->fb.samples; sample++)
++                if (f->shade_mask[pixels[l]] & (1u << sample))
++                    memcpy(c->fb.sample_color+(base+sample)*4,&packed,sizeof(packed));
++        } else memcpy(c->fb.color+(size_t)pixels[l]*4,&packed,sizeof(packed));
++    }
++}
++
++/* Coarse full shading is an explicitly lower-detail alternative. Coverage and
++ * cutoff are still current; final albedo detail and alpha are approximated. */
++static void scene_codec_copy(struct sg_scene_visibility *f,
++    const uint32_t pixels[4], unsigned live) {
++    softgl_ctx *c = f->context;
++    for (int l = 0; l < 4; l++) if (live & (1u << l)) {
++        uint32_t packed = f->codec.color[f->codec.source[pixels[l]]];
++        if (c->fb.samples) {
++            size_t base = (size_t)(pixels[l]/(unsigned)c->fb.samples)*c->fb.samples;
++            for (int sample = 0; sample < c->fb.samples; sample++)
++                if (f->shade_mask[pixels[l]] & (1u << sample))
++                    memcpy(c->fb.sample_color+(base+sample)*4,&packed,sizeof(packed));
++        } else memcpy(c->fb.color+(size_t)pixels[l]*4,&packed,sizeof(packed));
++    }
++}
+--- /dev/null
++++ b/libsoftgl/src/scene_codec_kernels.inc
+@@ -0,0 +1,237 @@
++static void scene_codec_full_packet(struct sg_scene_visibility *f, scene_material *m,
++    const uint32_t pixels[4], unsigned live) {
++    softgl_ctx *c = f->context;
++    const scene_triangle *tri[4];
++    float bary[3][4];
++    for (int l = 0; l < 4; l++) {
++        tri[l] = scene_triangle_at(f,f->winner[pixels[l]]);
++        uint32_t pixel = c->fb.samples ? pixels[l]/(unsigned)c->fb.samples : pixels[l];
++        int x = (int)(pixel % (unsigned)c->fb.w), y = (int)(pixel / (unsigned)c->fb.w);
++        const scene_triangle *t = tri[l];
++        int sx = 128, sy = 128;
++        if (c->fb.samples && f->sample_point[pixels[l]] != 4)
++            sg_sample_position(c->fb.samples,f->sample_point[pixels[l]],&sx,&sy);
++        int64_t e0 = t->edge[0][0]+t->edge[0][1]*x+t->edge[0][2]*y;
++        int64_t e1 = t->edge[1][0]+t->edge[1][1]*x+t->edge[1][2]*y;
++        if (c->fb.samples) {
++            e0 += (t->edge[0][1]/256)*(sx-128)+(t->edge[0][2]/256)*(sy-128);
++            e1 += (t->edge[1][1]/256)*(sx-128)+(t->edge[1][2]/256)*(sy-128);
++        }
++        bary[0][l] = (float)e0*t->inverse_area;
++        bary[1][l] = (float)e1*t->inverse_area;
++        bary[2][l] = 1.f-bary[0][l]-bary[1][l];
++        for (int v = 0; v < 3; v++) bary[v][l] *= t->inverse_w[v];
++    }
++    sg_f32x4 w0 = sg_f32x4_load(bary[0]), w1 = sg_f32x4_load(bary[1]), w2 = sg_f32x4_load(bary[2]);
++    sg_f32x4 inverse = sg_f32x4_div(sg_f32x4_splat(1.f),sg_f32x4_add(sg_f32x4_add(w0,w1),w2));
++    sg_f32x4 primary[4], encoded_half[3], tex[4][4];
++    for (int k = 0; k < 4; k++) primary[k] = scene_gather_lerp(tri,-1,k,w0,w1,w2,inverse);
++    for (int k = 0; k < 3; k++) encoded_half[k] = scene_gather_lerp(tri,1,k,w0,w1,w2,inverse);
++    /* Canonical programs must preserve identical UV0/UV2; geometry validation
++     * restores the scene if any program violates that contract. */
++    int shared_uv = tri[0]->primitive && tri[1]->primitive && tri[2]->primitive && tri[3]->primitive;
++    int have_uv = 0;
++    sg_f32x4 shared_x, shared_y;
++    for (int u = 0; u < 4; u++) {
++        if (u == 1) continue;
++        const sg_tex_unit_tri *unit = &m->texture.unit[u];
++        if (unit->constant_color_valid) {
++            for (int k = 0; k < 4; k++) tex[u][k] = sg_f32x4_splat(unit->constant_color[k]);
++            continue;
++        }
++        sg_f32x4 x, y;
++        if (u == 2 && have_uv) {
++            x = shared_x; y = shared_y;
++        } else {
++            x = scene_gather_lerp(tri,u,0,w0,w1,w2,inverse);
++            y = scene_gather_lerp(tri,u,1,w0,w1,w2,inverse);
++            if (u == 0 && shared_uv) { shared_x = x; shared_y = y; have_uv = 1; }
++        }
++        if (unit->active_slot == SG_TEX_TARGET_CUBE) {
++            sg_f32x4 z = scene_gather_lerp(tri,u,2,w0,w1,w2,inverse);
++            sg_packet_sample_cube_target(unit,x,y,z,live,tex[u]);
++        } else sg_packet_sample_2d(unit,x,y,live,0,tex[u]);
++    }
++    sg_f32x4 dot[3], spec[3], half = sg_f32x4_splat(.5f);
++    for (int k = 0; k < 3; k++) {
++        sg_f32x4 n = sg_f32x4_sub(tex[0][k],half);
++        dot[k] = sg_f32x4_mul(n,sg_f32x4_sub(primary[k],half));
++        spec[k] = sg_f32x4_mul(n,sg_f32x4_sub(encoded_half[k],half));
++    }
++    sg_f32x4 d = sg_chain_clamp(sg_f32x4_mul(sg_f32x4_splat(4.f),sg_f32x4_add(sg_f32x4_add(dot[0],dot[1]),dot[2])));
++    sg_f32x4 s = sg_chain_clamp(sg_f32x4_mul(sg_f32x4_splat(4.f),sg_f32x4_add(sg_f32x4_add(spec[0],spec[1]),spec[2])));
++    s = sg_f32x4_mul(s,s);
++    if (m->texture.combine_kind == 5) s = sg_f32x4_mul(s,s);
++    sg_f32x4 color[4];
++    for (int k = 0; k < 3; k++) {
++        sg_f32x4 diffuse = sg_chain_clamp(sg_f32x4_add(d,sg_f32x4_splat(m->ambient[k])));
++        diffuse = sg_chain_clamp(sg_f32x4_mul(diffuse,tex[2][k]));
++        diffuse = sg_chain_clamp(sg_f32x4_add(diffuse,tex[3][k]));
++        sg_f32x4 tinted = sg_chain_clamp(sg_f32x4_mul(s,sg_f32x4_splat(m->tint[k])));
++        color[k] = sg_chain_clamp(sg_f32x4_add(diffuse,sg_f32x4_mul(tinted,sg_f32x4_splat(sg_clampf(m->tint[3],0.f,1.f)))));
++    }
++    color[3] = sg_chain_clamp(sg_f32x4_mul(primary[3],tex[2][3]));
++    _MM_TRANSPOSE4_PS(color[0],color[1],color[2],color[3]);
++    for (int l = 0; l < 4; l++) if (live & (1u << l)) {
++        float rgba[4]; sg_f32x4_store(rgba,color[l]);
++        uint32_t packed = sg_store_quantize_rgba(rgba);
++        f->codec.color[pixels[l]] = packed;
++    }
++}
++
++static void scene_codec_scatter_packet(struct sg_scene_visibility *f, scene_material *m,
++    const uint32_t pixels[4], unsigned live) {
++    softgl_ctx *c = f->context;
++    const scene_triangle *tri[4];
++    float bary[3][4];
++    for (int l = 0; l < 4; l++) {
++        tri[l] = scene_triangle_at(f,f->winner[pixels[l]]);
++        uint32_t pixel = c->fb.samples ? pixels[l]/(unsigned)c->fb.samples : pixels[l];
++        int x = (int)(pixel % (unsigned)c->fb.w), y = (int)(pixel / (unsigned)c->fb.w);
++        const scene_triangle *t = tri[l];
++        int sx = 128, sy = 128;
++        if (c->fb.samples && f->sample_point[pixels[l]] != 4)
++            sg_sample_position(c->fb.samples,f->sample_point[pixels[l]],&sx,&sy);
++        int64_t e0 = t->edge[0][0]+t->edge[0][1]*x+t->edge[0][2]*y;
++        int64_t e1 = t->edge[1][0]+t->edge[1][1]*x+t->edge[1][2]*y;
++        if (c->fb.samples) {
++            e0 += (t->edge[0][1]/256)*(sx-128)+(t->edge[0][2]/256)*(sy-128);
++            e1 += (t->edge[1][1]/256)*(sx-128)+(t->edge[1][2]/256)*(sy-128);
++        }
++        bary[0][l] = (float)e0*t->inverse_area;
++        bary[1][l] = (float)e1*t->inverse_area;
++        bary[2][l] = 1.f-bary[0][l]-bary[1][l];
++        for (int v = 0; v < 3; v++) bary[v][l] *= t->inverse_w[v];
++    }
++    sg_f32x4 w0 = sg_f32x4_load(bary[0]), w1 = sg_f32x4_load(bary[1]), w2 = sg_f32x4_load(bary[2]);
++    sg_f32x4 inverse = sg_f32x4_div(sg_f32x4_splat(1.f),sg_f32x4_add(sg_f32x4_add(w0,w1),w2));
++    sg_f32x4 primary[4], encoded_half[3], tex[4][4];
++    for (int k = 0; k < 4; k++) primary[k] = scene_gather_lerp(tri,-1,k,w0,w1,w2,inverse);
++    for (int k = 0; k < 3; k++) encoded_half[k] = scene_gather_lerp(tri,1,k,w0,w1,w2,inverse);
++    /* Canonical programs must preserve identical UV0/UV2; geometry validation
++     * restores the scene if any program violates that contract. */
++    int shared_uv = tri[0]->primitive && tri[1]->primitive && tri[2]->primitive && tri[3]->primitive;
++    int have_uv = 0;
++    sg_f32x4 shared_x, shared_y;
++    for (int u = 0; u < 4; u++) {
++        if (u == 1) continue;
++        const sg_tex_unit_tri *unit = &m->texture.unit[u];
++        if (unit->constant_color_valid) {
++            for (int k = 0; k < 4; k++) tex[u][k] = sg_f32x4_splat(unit->constant_color[k]);
++            continue;
++        }
++        sg_f32x4 x, y;
++        if (u == 2 && have_uv) {
++            x = shared_x; y = shared_y;
++        } else {
++            x = scene_gather_lerp(tri,u,0,w0,w1,w2,inverse);
++            y = scene_gather_lerp(tri,u,1,w0,w1,w2,inverse);
++            if (u == 0 && shared_uv) { shared_x = x; shared_y = y; have_uv = 1; }
++        }
++        if (unit->active_slot == SG_TEX_TARGET_CUBE) {
++            sg_f32x4 z = scene_gather_lerp(tri,u,2,w0,w1,w2,inverse);
++            sg_packet_sample_cube_target(unit,x,y,z,live,tex[u]);
++        } else sg_packet_sample_2d(unit,x,y,live,0,tex[u]);
++    }
++    sg_f32x4 dot[3], spec[3], half = sg_f32x4_splat(.5f);
++    for (int k = 0; k < 3; k++) {
++        sg_f32x4 n = sg_f32x4_sub(tex[0][k],half);
++        dot[k] = sg_f32x4_mul(n,sg_f32x4_sub(primary[k],half));
++        spec[k] = sg_f32x4_mul(n,sg_f32x4_sub(encoded_half[k],half));
++    }
++    sg_f32x4 d = sg_chain_clamp(sg_f32x4_mul(sg_f32x4_splat(4.f),sg_f32x4_add(sg_f32x4_add(dot[0],dot[1]),dot[2])));
++    sg_f32x4 s = sg_chain_clamp(sg_f32x4_mul(sg_f32x4_splat(4.f),sg_f32x4_add(sg_f32x4_add(spec[0],spec[1]),spec[2])));
++    s = sg_f32x4_mul(s,s);
++    if (m->texture.combine_kind == 5) s = sg_f32x4_mul(s,s);
++    sg_f32x4 color[4];
++    for (int k = 0; k < 3; k++) {
++        sg_f32x4 diffuse = sg_chain_clamp(sg_f32x4_add(d,sg_f32x4_splat(m->ambient[k])));
++        diffuse = sg_chain_clamp(sg_f32x4_mul(diffuse,tex[2][k]));
++        diffuse = sg_chain_clamp(sg_f32x4_add(diffuse,tex[3][k]));
++        sg_f32x4 tinted = sg_chain_clamp(sg_f32x4_mul(s,sg_f32x4_splat(m->tint[k])));
++        color[k] = sg_chain_clamp(sg_f32x4_add(diffuse,sg_f32x4_mul(tinted,sg_f32x4_splat(sg_clampf(m->tint[3],0.f,1.f)))));
++    }
++    color[3] = sg_chain_clamp(sg_f32x4_mul(primary[3],tex[2][3]));
++    _MM_TRANSPOSE4_PS(color[0],color[1],color[2],color[3]);
++    for (int l = 0; l < 4; l++) if (live & (1u << l)) {
++        float rgba[4]; sg_f32x4_store(rgba,color[l]);
++        uint32_t packed = sg_store_quantize_rgba(rgba);
++        scene_codec_scatter_store(f, pixels[l], packed);
++    }
++}
++
++static void scene_codec_lighting_packet(struct sg_scene_visibility *f, scene_material *m,
++    const uint32_t pixels[4], unsigned live) {
++    softgl_ctx *c = f->context;
++    const scene_triangle *tri[4];
++    float bary[3][4];
++    for (int l = 0; l < 4; l++) {
++        tri[l] = scene_triangle_at(f,f->winner[pixels[l]]);
++        uint32_t pixel = c->fb.samples ? pixels[l]/(unsigned)c->fb.samples : pixels[l];
++        int x = (int)(pixel % (unsigned)c->fb.w), y = (int)(pixel / (unsigned)c->fb.w);
++        const scene_triangle *t = tri[l];
++        int sx = 128, sy = 128;
++        if (c->fb.samples && f->sample_point[pixels[l]] != 4)
++            sg_sample_position(c->fb.samples,f->sample_point[pixels[l]],&sx,&sy);
++        int64_t e0 = t->edge[0][0]+t->edge[0][1]*x+t->edge[0][2]*y;
++        int64_t e1 = t->edge[1][0]+t->edge[1][1]*x+t->edge[1][2]*y;
++        if (c->fb.samples) {
++            e0 += (t->edge[0][1]/256)*(sx-128)+(t->edge[0][2]/256)*(sy-128);
++            e1 += (t->edge[1][1]/256)*(sx-128)+(t->edge[1][2]/256)*(sy-128);
++        }
++        bary[0][l] = (float)e0*t->inverse_area;
++        bary[1][l] = (float)e1*t->inverse_area;
++        bary[2][l] = 1.f-bary[0][l]-bary[1][l];
++        for (int v = 0; v < 3; v++) bary[v][l] *= t->inverse_w[v];
++    }
++    sg_f32x4 w0 = sg_f32x4_load(bary[0]), w1 = sg_f32x4_load(bary[1]), w2 = sg_f32x4_load(bary[2]);
++    sg_f32x4 inverse = sg_f32x4_div(sg_f32x4_splat(1.f),sg_f32x4_add(sg_f32x4_add(w0,w1),w2));
++    sg_f32x4 primary[4], encoded_half[3], tex[4][4];
++    for (int k = 0; k < 4; k++) primary[k] = scene_gather_lerp(tri,-1,k,w0,w1,w2,inverse);
++    for (int k = 0; k < 3; k++) encoded_half[k] = scene_gather_lerp(tri,1,k,w0,w1,w2,inverse);
++    /* Canonical programs must preserve identical UV0/UV2; geometry validation
++     * restores the scene if any program violates that contract. */
++    int shared_uv = tri[0]->primitive && tri[1]->primitive && tri[2]->primitive && tri[3]->primitive;
++    int have_uv = 0;
++    sg_f32x4 shared_x, shared_y;
++    for (int u = 0; u < 4; u++) {
++        if (u == 1 || u == 2) continue;
++        const sg_tex_unit_tri *unit = &m->texture.unit[u];
++        if (unit->constant_color_valid) {
++            for (int k = 0; k < 4; k++) tex[u][k] = sg_f32x4_splat(unit->constant_color[k]);
++            continue;
++        }
++        sg_f32x4 x, y;
++        if (u == 2 && have_uv) {
++            x = shared_x; y = shared_y;
++        } else {
++            x = scene_gather_lerp(tri,u,0,w0,w1,w2,inverse);
++            y = scene_gather_lerp(tri,u,1,w0,w1,w2,inverse);
++            if (u == 0 && shared_uv) { shared_x = x; shared_y = y; have_uv = 1; }
++        }
++        if (unit->active_slot == SG_TEX_TARGET_CUBE) {
++            sg_f32x4 z = scene_gather_lerp(tri,u,2,w0,w1,w2,inverse);
++            sg_packet_sample_cube_target(unit,x,y,z,live,tex[u]);
++        } else sg_packet_sample_2d(unit,x,y,live,0,tex[u]);
++    }
++    sg_f32x4 dot[3], spec[3], half = sg_f32x4_splat(.5f);
++    for (int k = 0; k < 3; k++) {
++        sg_f32x4 n = sg_f32x4_sub(tex[0][k],half);
++        dot[k] = sg_f32x4_mul(n,sg_f32x4_sub(primary[k],half));
++        spec[k] = sg_f32x4_mul(n,sg_f32x4_sub(encoded_half[k],half));
++    }
++    sg_f32x4 d = sg_chain_clamp(sg_f32x4_mul(sg_f32x4_splat(4.f),sg_f32x4_add(sg_f32x4_add(dot[0],dot[1]),dot[2])));
++    sg_f32x4 s = sg_chain_clamp(sg_f32x4_mul(sg_f32x4_splat(4.f),sg_f32x4_add(sg_f32x4_add(spec[0],spec[1]),spec[2])));
++    s = sg_f32x4_mul(s,s);
++    if (m->texture.combine_kind == 5) s = sg_f32x4_mul(s,s);
++
++        float diffuse[4],specular[4],environment[3][4];
++        sg_f32x4_store(diffuse,d); sg_f32x4_store(specular,s);
++        for (int k = 0; k < 3; k++) sg_f32x4_store(environment[k],tex[3][k]);
++        for (int l = 0; l < 4; l++) if (live & (1u << l)) {
++            scene_codec_value *value = &f->codec.value[pixels[l]];
++            value->diffuse = diffuse[l]; value->specular = specular[l];
++            for (int k = 0; k < 3; k++) value->environment[k] = environment[k][l];
++        }
++}
++
+--- /dev/null
++++ b/libsoftgl/src/scene_codec_scatter.inc
+@@ -0,0 +1,16 @@
++/* Every selected group belongs to exactly one representative. The lists are
++ * immutable after selection joins. No scratch color or fine copy phase. */
++static void scene_codec_scatter_store(struct sg_scene_visibility *f,
++    uint32_t representative, uint32_t packed) {
++    softgl_ctx *c = f->context;
++    uint32_t at = representative;
++    do {
++        if (c->fb.samples) {
++            size_t base = (size_t)(at/(unsigned)c->fb.samples)*c->fb.samples;
++            for (int sample = 0; sample < c->fb.samples; sample++)
++                if (f->shade_mask[at] & (1u << sample))
++                    memcpy(c->fb.sample_color+(base+sample)*4, &packed, sizeof(packed));
++        } else memcpy(c->fb.color+(size_t)at*4, &packed, sizeof(packed));
++        at = f->codec.next[at];
++    } while (at != UINT32_MAX);
++}
+--- /dev/null
++++ b/libsoftgl/src/scene_codec_select.inc
+@@ -0,0 +1,103 @@
++/* Allocate before geometry writes. A failed request keeps ordinary shading. */
++/* Mode 5 owns links instead of intermediate colors. Switching modes makes
++ * all required arrays available together, before any scene geometry writes. */
++/* Full coarse shading needs only RGBA, not the five cached lighting floats. */
++int softgl_scene_codec_shading(GLuint mode) {
++    softgl_ctx *c = sg_current();
++    if (!c || !c->scene_visibility || mode > 5) return 0;
++    struct sg_scene_visibility *f = c->scene_visibility;
++    f->codec.mode = 0;
++    if (!mode) return 1;
++    size_t units = (size_t)c->fb.w*c->fb.h*(c->fb.samples ? (unsigned)c->fb.samples : 1u);
++    size_t per_unit = 2*sizeof(uint32_t)+(mode >= 4 ? sizeof(uint32_t) : sizeof(scene_codec_value));
++    if (units > (64u*1024u*1024u)/per_unit) return 0;
++    int missing = mode == 5 ? !f->codec.next : mode == 4 ? !f->codec.color : !f->codec.value;
++    if (units > f->codec.capacity || missing) {
++        uint32_t *source = malloc(units*sizeof(uint32_t));
++        uint32_t *pixels = malloc(units*sizeof(uint32_t));
++        uint32_t *next = mode == 5 ? malloc(units*sizeof(uint32_t)) : NULL;
++        uint32_t *color = mode == 4 ? malloc(units*sizeof(uint32_t)) : NULL;
++        scene_codec_value *value = mode < 4 ? malloc(units*sizeof(scene_codec_value)) : NULL;
++        if (!source || !pixels || (mode == 5 ? !next : mode == 4 ? !color : !value)) {
++            free(source); free(pixels); free(next); free(color); free(value); return 0;
++        }
++        scene_codec_destroy(&f->codec);
++        f->codec.source = source; f->codec.pixels = pixels; f->codec.next = next;
++        f->codec.color = color; f->codec.value = value; f->codec.capacity = units;
++    }
++    f->codec.mode = mode;
++    return 1;
++}
++
++
++/* Disjoint existing stripes; cache mapping is published only after the join.
++ * Every group maps directly to a representative, never through a chain. */
++static void scene_codec_select(void *data) {
++    struct sg_scene_visibility *f = data;
++    softgl_ctx *c = f->context;
++    sg_worker_pool *pool = c->workers;
++    unsigned n = c->fb.samples ? (unsigned)c->fb.samples : 1u;
++    const float *depth = c->fb.samples ? c->fb.sample_depth : c->fb.depth;
++    for (;;) {
++        int bin = atomic_fetch_add_explicit(&f->next_task,1,memory_order_relaxed);
++        if (bin >= pool->nbins) break;
++        if (f->codec.mode == 4 && f->deferred_meshes && f->bins[bin].count)
++            memset(f->bins[bin].visible, 0, f->bins[bin].count);
++        for (int y = 0; y < c->fb.h; y += 2) {
++            for (int x = pool->bins[bin].ix0; x < pool->bins[bin].ix1; x += 2) {
++                uint32_t group[16]; unsigned count = 0;
++                for (int dy = 0; dy < 2 && y+dy < c->fb.h; dy++)
++                    for (int dx = 0; dx < 2 && x+dx < pool->bins[bin].ix1; dx++)
++                        for (unsigned s = 0; s < n; s++) {
++                            uint32_t p = ((uint32_t)(y+dy)*(unsigned)c->fb.w+(unsigned)(x+dx))*n+s;
++                            if (f->pixel_material[p] != UINT16_MAX && (!c->fb.samples || f->shade_mask[p]))
++                                group[count++] = p;
++                        }
++                unsigned assigned = 0;
++                for (unsigned i = 0; i < count; i++) if (!(assigned & (1u << i))) {
++                    uint32_t p = group[i];
++                    f->codec.source[p] = p; assigned |= 1u << i;
++                    if (f->codec.mode == 4 && f->deferred_meshes) {
++                        uint32_t id = f->winner[p];
++                        if ((id >> SCENE_INDEX_BITS) != (unsigned)bin)
++                            atomic_store_explicit(&f->failed, 1, memory_order_relaxed);
++                        else f->bins[bin].visible[id & SCENE_INDEX_MASK] = 1;
++                    }
++                    if (f->codec.mode == 5) f->codec.next[p] = UINT32_MAX;
++                    for (unsigned j = i+1; j < count; j++) if (!(assigned & (1u << j))) {
++                        uint32_t q = group[j];
++                        int same = f->codec.mode == 1 ? f->winner[p] == f->winner[q] :
++                            (f->codec.mode == 2 || f->codec.mode == 4 || f->codec.mode == 5) && f->pixel_material[p] == f->pixel_material[q] &&
++                            fabsf(depth[p]-depth[q]) <= .002f;
++                        if (same) {
++                            f->codec.source[q] = p; assigned |= 1u << j;
++                            if (f->codec.mode == 5) {
++                                f->codec.next[q] = f->codec.next[p]; f->codec.next[p] = q;
++                            }
++                        }
++                    }
++                }
++            }
++        }
++    }
++}
++
++static void scene_codec_tasks(struct sg_scene_visibility *f, int coarse) {
++    f->task_count = 0;
++    uint32_t representatives = 0;
++    for (int i = 0; i < f->material_count; i++) {
++        scene_material *m = &f->materials[i];
++        uint32_t count = m->count;
++        if (coarse) {
++            count = 0;
++            for (uint32_t at = m->first; at < m->first+m->count; at++) {
++                uint32_t p = f->pixels[at];
++                if (f->codec.source[p] == p) f->codec.pixels[m->first+count++] = p;
++            }
++            representatives += count;
++        }
++        for (uint32_t at = 0; at < count; at += 256)
++            f->tasks[f->task_count++] = (scene_task){(uint32_t)i,m->first+at,count-at < 256 ? count-at : 256};
++    }
++    if (coarse) f->codec.representatives = representatives;
++}
+--- /dev/null
++++ b/libsoftgl/src/scene_codec_types.h
+@@ -0,0 +1,23 @@
++/* Private C11/SIMD128 spatial lighting trial. No temporal history. */
++#ifndef SG_SCENE_CODEC_TYPES_H
++#define SG_SCENE_CODEC_TYPES_H
++
++typedef struct {
++    float diffuse, specular, environment[3];
++    uint32_t rgba;
++} scene_codec_value;
++
++typedef struct {
++    uint32_t *source, *pixels, *next, *color;
++    scene_codec_value *value;
++    size_t capacity;
++    unsigned mode, phase;
++    uint32_t representatives;
++} scene_codec_storage;
++
++static void scene_codec_destroy(scene_codec_storage *codec) {
++    free(codec->color); free(codec->next); free(codec->source); free(codec->pixels); free(codec->value);
++    memset(codec,0,sizeof(*codec));
++}
++
++#endif
+--- /dev/null
++++ b/libsoftgl/src/scene_codec_workers.inc
+@@ -0,0 +1,100 @@
++static void scene_codec_lighting_resolve(void *data) {
++    struct sg_scene_visibility *f = data;
++    for (;;) {
++        int task = atomic_fetch_add_explicit(&f->next_task,1,memory_order_relaxed);
++        if (task >= f->task_count) break;
++        scene_task *t = &f->tasks[task];
++        scene_material *m = &f->materials[t->material];
++        (void)m;
++        for (uint32_t first = t->first; first < t->first+t->count; first += 4) {
++            uint32_t pixels[4]; unsigned live = 0;
++            for (int l = 0; l < 4; l++) {
++                uint32_t at = first+(unsigned)l;
++                pixels[l] = (f->codec.pixels)[at < t->first+t->count ? at : first];
++                if (at < t->first+t->count) live |= 1u << l;
++            }
++            scene_codec_lighting_packet(f,m,pixels,live);
++        }
++    }
++}
++
++static void scene_codec_full_resolve(void *data) {
++    struct sg_scene_visibility *f = data;
++    for (;;) {
++        int task = atomic_fetch_add_explicit(&f->next_task,1,memory_order_relaxed);
++        if (task >= f->task_count) break;
++        scene_task *t = &f->tasks[task];
++        scene_material *m = &f->materials[t->material];
++        (void)m;
++        for (uint32_t first = t->first; first < t->first+t->count; first += 4) {
++            uint32_t pixels[4]; unsigned live = 0;
++            for (int l = 0; l < 4; l++) {
++                uint32_t at = first+(unsigned)l;
++                pixels[l] = (f->codec.pixels)[at < t->first+t->count ? at : first];
++                if (at < t->first+t->count) live |= 1u << l;
++            }
++            scene_codec_full_packet(f,m,pixels,live);
++        }
++    }
++}
++
++static void scene_codec_fine_resolve(void *data) {
++    struct sg_scene_visibility *f = data;
++    for (;;) {
++        int task = atomic_fetch_add_explicit(&f->next_task,1,memory_order_relaxed);
++        if (task >= f->task_count) break;
++        scene_task *t = &f->tasks[task];
++        scene_material *m = &f->materials[t->material];
++        (void)m;
++        for (uint32_t first = t->first; first < t->first+t->count; first += 4) {
++            uint32_t pixels[4]; unsigned live = 0;
++            for (int l = 0; l < 4; l++) {
++                uint32_t at = first+(unsigned)l;
++                pixels[l] = (f->pixels)[at < t->first+t->count ? at : first];
++                if (at < t->first+t->count) live |= 1u << l;
++            }
++            scene_codec_fine(f,m,pixels,live);
++        }
++    }
++}
++
++static void scene_codec_copy_resolve(void *data) {
++    struct sg_scene_visibility *f = data;
++    for (;;) {
++        int task = atomic_fetch_add_explicit(&f->next_task,1,memory_order_relaxed);
++        if (task >= f->task_count) break;
++        scene_task *t = &f->tasks[task];
++        scene_material *m = &f->materials[t->material];
++        (void)m;
++        for (uint32_t first = t->first; first < t->first+t->count; first += 4) {
++            uint32_t pixels[4]; unsigned live = 0;
++            for (int l = 0; l < 4; l++) {
++                uint32_t at = first+(unsigned)l;
++                pixels[l] = (f->pixels)[at < t->first+t->count ? at : first];
++                if (at < t->first+t->count) live |= 1u << l;
++            }
++            scene_codec_copy(f,pixels,live);
++        }
++    }
++}
++
++static void scene_codec_scatter_resolve(void *data) {
++    struct sg_scene_visibility *f = data;
++    for (;;) {
++        int task = atomic_fetch_add_explicit(&f->next_task,1,memory_order_relaxed);
++        if (task >= f->task_count) break;
++        scene_task *t = &f->tasks[task];
++        scene_material *m = &f->materials[t->material];
++        (void)m;
++        for (uint32_t first = t->first; first < t->first+t->count; first += 4) {
++            uint32_t pixels[4]; unsigned live = 0;
++            for (int l = 0; l < 4; l++) {
++                uint32_t at = first+(unsigned)l;
++                pixels[l] = (f->codec.pixels)[at < t->first+t->count ? at : first];
++                if (at < t->first+t->count) live |= 1u << l;
++            }
++            scene_codec_scatter_packet(f,m,pixels,live);
++        }
++    }
++}
++
+--- a/libsoftgl/src/scene_visibility.c
++++ b/libsoftgl/src/scene_visibility.c
+@@ -17,6 +17,7 @@
+ #define SCENE_INDEX_MASK ((UINT32_C(1) << SCENE_INDEX_BITS)-1)
+ 
+ #include "geometry_types.inc"
++#include "scene_codec_types.h"
+ 
+ typedef struct {
+     scene_mesh mesh;
+@@ -74,6 +75,7 @@
+     uint32_t *group_counts;
+     atomic_int failed, next_task;
+     pthread_mutex_t allocation_mutex;
++    scene_codec_storage codec;
+ };
+ 
+ static void scene_order_storage_destroy(struct sg_scene_visibility *f);
+@@ -84,6 +86,7 @@
+     for (int i = 0; i < SG_MAX_BINS; i++) { free(f->bins[i].triangles); free(f->bins[i].visible); }
+     free(f->winner); free(f->pixels); free(f->pixel_material); free(f->backup_depth); free(f->backup_color);
+     free(f->group_counts); free(f->materials); free(f->tasks); free(f->sample_point); free(f->shade_mask);
++    scene_codec_destroy(&f->codec);
+     scene_geometry_destroy(f->geometry);
+     scene_order_storage_destroy(f);
+     pthread_mutex_destroy(&f->allocation_mutex);
+@@ -164,6 +167,7 @@
+         f->bins[i].current_primitive = NULL;
+     }
+     atomic_store_explicit(&f->failed, 0, memory_order_relaxed);
++    f->codec.mode = f->codec.phase = f->codec.representatives = 0;
+     f->quantized = 0;
+     f->context = c; f->material_count = 0; f->task_count = 0;
+     f->deferred_meshes = 0; f->mesh_vertices = 0;
+@@ -1263,6 +1267,13 @@
+     return 0;
+ }
+ 
++#include "scene_codec_bary.inc"
++#include "scene_codec_scatter.inc"
++#include "scene_codec_kernels.inc"
++#include "scene_codec_fine.inc"
++#include "scene_codec_select.inc"
++#include "scene_codec_workers.inc"
++
+ static void scene_resolve(void *data) {
+     struct sg_scene_visibility *f = data;
+     for (;;) {
+@@ -1477,6 +1488,13 @@
+     if (atomic_load_explicit(&f->failed,memory_order_relaxed)) {
+         scene_restore(f); return 0;
+     }
++    if (f->codec.mode == 4 && f->deferred_meshes) {
++        atomic_store_explicit(&f->next_task, 0, memory_order_relaxed);
++        sg_workers_run_callback(c, scene_codec_select, f);
++        if (atomic_load_explicit(&f->failed, memory_order_relaxed)) {
++            scene_restore(f); return 0;
++        }
++    }
+     if (f->deferred_meshes) {
+         scene_geometry_attributes(f);
+         if (atomic_load_explicit(&f->failed,memory_order_relaxed)) {
+@@ -1499,8 +1517,24 @@
+             f->tasks[f->task_count++] = (scene_task){(uint32_t)i,m->first+at,m->count-at < 256 ? m->count-at : 256};
+     }
+     atomic_store_explicit(&f->next_task,0,memory_order_relaxed);
+-    sg_workers_run_callback(c,scene_resolve,f);
++    if (f->codec.mode && f->deferred_meshes) {
++        atomic_store_explicit(&f->next_task,0,memory_order_relaxed);
++        if (f->codec.mode != 4) sg_workers_run_callback(c,scene_codec_select,f);
++        scene_codec_tasks(f,1); f->codec.phase = 1;
++        atomic_store_explicit(&f->next_task,0,memory_order_relaxed);
++        sg_workers_run_callback(c,f->codec.mode == 5 ? scene_codec_scatter_resolve :
++            f->codec.mode == 4 ? scene_codec_full_resolve : scene_codec_lighting_resolve,f);
++        if (f->codec.mode != 5) {
++            scene_codec_tasks(f,0); f->codec.phase = 2;
++            atomic_store_explicit(&f->next_task,0,memory_order_relaxed);
++            sg_workers_run_callback(c,f->codec.mode == 4 ? scene_codec_copy_resolve : scene_codec_fine_resolve,f);
++        }
++        f->codec.phase = 0;
++    } else sg_workers_run_callback(c,scene_resolve,f);
+     if (getenv("SOFTGL_SCENE_STATS")) {
++        fprintf(stderr,"CODEC {\"mode\":%u,\"groups\":%u,\"representatives\":%u,\"scratchBytes\":%zu}\n",
++            f->codec.mode,visible,f->codec.representatives,
++            f->codec.capacity*(2*sizeof(uint32_t)+(f->codec.next ? sizeof(uint32_t) : 0)+(f->codec.value ? sizeof(scene_codec_value) : 0)+(f->codec.color ? sizeof(uint32_t) : 0)));
+         uint64_t stored = 0, depth = 0;
+         for (int i = 0; i < SG_MAX_BINS; i++) { stored += f->bins[i].count; depth += f->bins[i].depth_passes; }
+         fprintf(stderr,"SCENE {\"materials\":%d,\"trianglesStored\":%llu,\"triangleBytes\":%zu,\"depthPasses\":%llu,\"visiblePixels\":%u,\"shadePackets\":%u,\"activeShadeLanesPercent\":%.6f}\n",

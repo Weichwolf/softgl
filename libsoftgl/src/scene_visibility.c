@@ -17,6 +17,7 @@
 #define SCENE_INDEX_MASK ((UINT32_C(1) << SCENE_INDEX_BITS)-1)
 
 #include "geometry_types.inc"
+#include "scene_coarse_types.h"
 
 typedef struct {
     scene_mesh mesh;
@@ -74,6 +75,7 @@ struct sg_scene_visibility {
     uint32_t *group_counts;
     atomic_int failed, next_task;
     pthread_mutex_t allocation_mutex;
+    scene_coarse_storage coarse;
 };
 
 static void scene_order_storage_destroy(struct sg_scene_visibility *f);
@@ -84,6 +86,7 @@ void sg_scene_visibility_destroy(void *storage) {
     for (int i = 0; i < SG_MAX_BINS; i++) { free(f->bins[i].triangles); free(f->bins[i].visible); }
     free(f->winner); free(f->pixels); free(f->pixel_material); free(f->backup_depth); free(f->backup_color);
     free(f->group_counts); free(f->materials); free(f->tasks); free(f->sample_point); free(f->shade_mask);
+    scene_coarse_destroy(&f->coarse);
     scene_geometry_destroy(f->geometry);
     scene_order_storage_destroy(f);
     pthread_mutex_destroy(&f->allocation_mutex);
@@ -164,6 +167,7 @@ int softgl_scene_visibility_begin(void) {
         f->bins[i].current_primitive = NULL;
     }
     atomic_store_explicit(&f->failed, 0, memory_order_relaxed);
+    f->coarse.enabled = 0; f->coarse.representatives = 0;
     f->quantized = 0;
     f->context = c; f->material_count = 0; f->task_count = 0;
     f->deferred_meshes = 0; f->mesh_vertices = 0;
@@ -1263,6 +1267,8 @@ int softgl_scene_native_wide(GLboolean enabled) {
     return 0;
 }
 
+#include "scene_coarse_impl.inc"
+
 static void scene_resolve(void *data) {
     struct sg_scene_visibility *f = data;
     for (;;) {
@@ -1477,6 +1483,13 @@ int softgl_scene_visibility_end(void) {
     if (atomic_load_explicit(&f->failed,memory_order_relaxed)) {
         scene_restore(f); return 0;
     }
+    if (f->coarse.enabled && f->deferred_meshes) {
+        atomic_store_explicit(&f->next_task, 0, memory_order_relaxed);
+        sg_workers_run_callback(c, scene_coarse_select, f);
+        if (atomic_load_explicit(&f->failed, memory_order_relaxed)) {
+            scene_restore(f); return 0;
+        }
+    }
     if (f->deferred_meshes) {
         scene_geometry_attributes(f);
         if (atomic_load_explicit(&f->failed,memory_order_relaxed)) {
@@ -1499,8 +1512,17 @@ int softgl_scene_visibility_end(void) {
             f->tasks[f->task_count++] = (scene_task){(uint32_t)i,m->first+at,m->count-at < 256 ? m->count-at : 256};
     }
     atomic_store_explicit(&f->next_task,0,memory_order_relaxed);
-    sg_workers_run_callback(c,scene_resolve,f);
+    if (f->coarse.enabled && f->deferred_meshes) {
+        scene_coarse_tasks(f, 1);
+        atomic_store_explicit(&f->next_task, 0, memory_order_relaxed);
+        sg_workers_run_callback(c, scene_coarse_resolve, f);
+        scene_coarse_tasks(f, 0);
+        atomic_store_explicit(&f->next_task, 0, memory_order_relaxed);
+        sg_workers_run_callback(c, scene_coarse_copy, f);
+    } else sg_workers_run_callback(c,scene_resolve,f);
     if (getenv("SOFTGL_SCENE_STATS")) {
+        fprintf(stderr, "COARSE {\"enabled\":%d,\"groups\":%u,\"representatives\":%u,\"scratchBytes\":%zu}\n",
+            f->coarse.enabled, visible, f->coarse.representatives, f->coarse.capacity*3*sizeof(uint32_t));
         uint64_t stored = 0, depth = 0;
         for (int i = 0; i < SG_MAX_BINS; i++) { stored += f->bins[i].count; depth += f->bins[i].depth_passes; }
         fprintf(stderr,"SCENE {\"materials\":%d,\"trianglesStored\":%llu,\"triangleBytes\":%zu,\"depthPasses\":%llu,\"visiblePixels\":%u,\"shadePackets\":%u,\"activeShadeLanesPercent\":%.6f}\n",
