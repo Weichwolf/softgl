@@ -1,6 +1,70 @@
 # Exact sample-grid edge reduction and original-coordinate packets
 
-Status: next MSAA architecture prototype; implementation and timings pending.
+Status: exact general-kernel fallback implemented and validated privately;
+dedicated original-coordinate packet backend and timing trials pending.
+
+## Completed first prototype
+
+The frozen baseline is `971c2cf`; its renderer still matches accepted `6e5ed5c`.
+The existing int32 fast path remains intact. A new reduced-unit path is used
+only when the original range proof fails but the reduced sample rectangle fits
+int32. Original int64 row edges, sample positions, bias and interpolation order
+remain. Unsupported reduced ranges retain the original int64 implementation.
+No packet producer, packet format or bin backend has been changed yet.
+
+Native fixtures pass 1,048,576 independent integer identities, 4,194,304 exact
+float reconstructions and 25,165,824 proposed packet coordinate round trips.
+Direct float reconstruction fails 56,927 of those float checks, so the exact
+prototype uses f64x2 followed by one float demotion. Actual SIMD128/f64x2 WASM
+executes the same arithmetic and matches native stdout, with a 4 GiB maximum
+memory declaration. This is a single-thread numeric fixture, not a WASM
+renderer, pthread, model or browser gate.
+
+Six paired native renderer fixtures have identical stdout. All 108 native
+model/mode/view pairs have identical final RGBA, stencil, resolved depth and
+physical sample depth. Native library ISA verification also passes. The
+instrumented census reproduces all 54 Bistro/Sponza views and their physical
+planes exactly. Counters exclude separate small-triangle kernels and general
+triangles rejected early by HZ, and are not elapsed-time measurements.
+
+| Asset/mode | Reduced setups/frame | Share of general setups | Reduced coverage pixels/frame | Exact f64 reconstruction pixels/frame |
+| --- | ---: | ---: | ---: | ---: |
+| Bistro 2× | 4.67 | 0.0041% | 8,885 | 0 |
+| Bistro 4× | 3.67 | 0.0140% | 5,689 | 5,424 |
+| Sponza 2× | 273.89 | 0.3389% | 230,334 | 0 |
+| Sponza 4× | 166.33 | 1.3860% | 119,238 | 71,128 |
+
+These are means across nine original camera views per mode. OFF counters are
+all zero. The original int32 path already covers almost all general setups;
+this extension alone is not evidence of a large Bistro speedup. The packet
+architecture below still requires actual integration, allocation accounting
+and timing. Full native CTest/sanitizer and full WASM/browser gates have not
+been run for this private, unadopted prototype.
+
+Frozen source patches, compiler configuration, fixture outputs, quality/census
+receipts and actual WASM arithmetic receipts are retained in
+[validation](validation/artifacts.json). `verify_archive.py` verifies retained
+bytes and reconstructs both source trees from the baseline plus their patches;
+`--git-tree index` and `--git-tree HEAD` verify the staged/committed copies.
+Production native/WASM binaries have not been replaced by this prototype.
+
+Reproduce in fresh output directories:
+
+```sh
+python3 experiments/scene-msaa-grid-reduction/prepare.py --output-root build/scene-msaa-grid-reduction/new-trial
+cmake -S experiments/scene-msaa-grid-reduction -B build/scene-msaa-grid-reduction/new-trial/native -DCMAKE_C_COMPILER="$HOME/.local/bin/clang-22" -DCMAKE_BUILD_TYPE=Release -DSCENE_TRIAL_ROOT="$PWD/build/scene-msaa-grid-reduction/new-trial"
+cmake --build build/scene-msaa-grid-reduction/new-trial/native -j4
+python3 experiments/scene-msaa-grid-reduction/native_contracts.py --root build/scene-msaa-grid-reduction/new-trial
+python3 experiments/scene-msaa-grid-reduction/wasm_contract.py --root build/scene-msaa-grid-reduction/new-trial --output build/scene-msaa-grid-reduction/new-wasm
+build/python/bin/python experiments/scene-depth-order-cached-keys/check_quality.py --root build/scene-msaa-grid-reduction/new-trial --output tmp/scene-msaa-grid-reduction/new-quality --assets bistro,sponza,bmw,t80 --samples 0,2,4
+```
+
+For counters, freeze a separate root with `prepare.py --audit`, configure it
+likewise, build `grid_census`, then run `run_census.py --root AUDIT_ROOT
+--output NEW_OUTPUT --reference QUALITY_OUTPUT`. These binaries are excluded
+from performance acceptance.
+
+## Architecture under investigation
 
 The original geometry uses 16.8 fixed coordinates, but every existing two-/four-
 sample offset and pixel step is divisible by 16. Reduce edge units rather than

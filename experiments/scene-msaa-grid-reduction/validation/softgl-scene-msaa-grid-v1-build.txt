@@ -1,0 +1,103 @@
+[  2%] Building C object candidate-library/CMakeFiles/softgl.dir/src/state.c.o
+[  2%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/state.c.o
+[  3%] Building C object candidate-library/CMakeFiles/softgl.dir/src/matrix.c.o
+[  4%] Building C object candidate-library/CMakeFiles/softgl.dir/src/buffers.c.o
+[  5%] Building C object candidate-library/CMakeFiles/softgl.dir/src/texture.c.o
+[  7%] Building C object candidate-library/CMakeFiles/softgl.dir/src/pipeline.c.o
+[  8%] Building C object candidate-library/CMakeFiles/softgl.dir/src/clip.c.o
+[  9%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/matrix.c.o
+[ 10%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/buffers.c.o
+[ 11%] Building C object candidate-library/CMakeFiles/softgl.dir/src/fragment_write.c.o
+[ 13%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/texture.c.o
+[ 14%] Building C object candidate-library/CMakeFiles/softgl.dir/src/multisample.c.o
+[ 15%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/pipeline.c.o
+[ 16%] Building C object candidate-library/CMakeFiles/softgl.dir/src/fragment_combine.c.o
+[ 17%] Building C object candidate-library/CMakeFiles/softgl.dir/src/rasterizer.c.o
+[ 19%] Building C object candidate-library/CMakeFiles/softgl.dir/src/lines.c.o
+[ 20%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/clip.c.o
+[ 21%] Building C object candidate-library/CMakeFiles/softgl.dir/src/fragment.c.o
+[ 22%] Building C object candidate-library/CMakeFiles/softgl.dir/src/framebuffer.c.o
+[ 23%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/fragment_write.c.o
+[ 25%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/multisample.c.o
+[ 26%] Building C object candidate-library/CMakeFiles/softgl.dir/src/lighting.c.o
+[ 27%] Building C object candidate-library/CMakeFiles/softgl.dir/src/api.c.o
+[ 28%] Building C object candidate-library/CMakeFiles/softgl.dir/src/immediate.c.o
+[ 29%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/fragment_combine.c.o
+[ 30%] Building C object candidate-library/CMakeFiles/softgl.dir/src/dlist.c.o
+[ 32%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/rasterizer.c.o
+[ 33%] Building C object candidate-library/CMakeFiles/softgl.dir/src/pixels.c.o
+[ 34%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/lines.c.o
+[ 35%] Building C object candidate-library/CMakeFiles/softgl.dir/src/evaluators.c.o
+[ 36%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/fragment.c.o
+[ 38%] Building C object candidate-library/CMakeFiles/softgl.dir/src/workers.c.o
+[ 39%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/framebuffer.c.o
+[ 40%] Building C object candidate-library/CMakeFiles/softgl.dir/src/scene_visibility.c.o
+[ 41%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/lighting.c.o
+[ 42%] Building C object candidate-library/CMakeFiles/softgl.dir/src/scene_density_hint.c.o
+[ 44%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/api.c.o
+[ 45%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/immediate.c.o
+[ 46%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/dlist.c.o
+[ 47%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/pixels.c.o
+[ 48%] Linking C static library libsoftgl.a
+[ 48%] Built target softgl
+[ 50%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/evaluators.c.o
+[ 51%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/workers.c.o
+[ 52%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/scene_visibility.c.o
+[ 53%] Building C object baseline-library/CMakeFiles/baseline_softgl.dir/src/scene_density_hint.c.o
+[ 54%] Building C object CMakeFiles/grid_contract.dir/grid_contract.c.o
+[ 55%] Building C object CMakeFiles/resident_candidate.dir/home/cosmo/Git/softgl/experiments/scene-material-visibility/resident_trial.c.o
+[ 57%] Building C object CMakeFiles/resident_candidate.dir/home/cosmo/Git/softgl/build/scene-msaa-grid-reduction/v1-fallback/source/model_wrap.c.o
+[ 58%] Linking C executable grid_contract
+[ 58%] Built target grid_contract
+[ 59%] Building C object CMakeFiles/quality_candidate.dir/home/cosmo/Git/softgl/experiments/scene-depth-order-cached-keys/quality_frames.c.o
+[ 60%] Building C object CMakeFiles/quality_candidate.dir/home/cosmo/Git/softgl/build/scene-msaa-grid-reduction/v1-fallback/source/model_wrap.c.o
+[ 61%] Linking C executable resident_candidate
+[ 61%] Built target resident_candidate
+[ 63%] Building C object CMakeFiles/quantized_candidate.dir/home/cosmo/Git/softgl/tests/scene_quantized.c.o
+[ 64%] Linking C executable quality_candidate
+[ 64%] Built target quality_candidate
+[ 65%] Building C object CMakeFiles/small_candidate.dir/home/cosmo/Git/softgl/experiments/scene-msaa-small-triangles/small_contract.c.o
+[ 66%] Building C object CMakeFiles/positions_candidate.dir/home/cosmo/Git/softgl/tests/scene_positions.c.o
+[ 67%] Linking C executable quantized_candidate
+[ 67%] Built target quantized_candidate
+[ 69%] Linking C executable positions_candidate
+[ 70%] Linking C executable small_candidate
+[ 71%] Building C object CMakeFiles/hz_candidate.dir/home/cosmo/Git/softgl/tests/scene_msaa.c.o
+[ 71%] Built target positions_candidate
+[ 72%] Building C object CMakeFiles/order_candidate.dir/home/cosmo/Git/softgl/tests/scene_depth_order.c.o
+[ 72%] Built target small_candidate
+[ 73%] Building C object CMakeFiles/hint_candidate.dir/home/cosmo/Git/softgl/experiments/scene-depth-order-cached-keys/hint_contract.c.o
+[ 75%] Linking C executable hz_candidate
+[ 76%] Linking C executable order_candidate
+[ 77%] Linking C executable hint_candidate
+[ 77%] Built target order_candidate
+[ 77%] Built target hz_candidate
+[ 77%] Built target hint_candidate
+[ 78%] Linking C static library libbaseline_softgl.a
+[ 78%] Built target baseline_softgl
+[ 79%] Building C object CMakeFiles/resident_baseline.dir/home/cosmo/Git/softgl/experiments/scene-material-visibility/resident_trial.c.o
+[ 80%] Building C object CMakeFiles/small_baseline.dir/home/cosmo/Git/softgl/experiments/scene-msaa-small-triangles/small_contract.c.o
+[ 82%] Building C object CMakeFiles/quality_baseline.dir/home/cosmo/Git/softgl/experiments/scene-depth-order-cached-keys/quality_frames.c.o
+[ 83%] Building C object CMakeFiles/quantized_baseline.dir/home/cosmo/Git/softgl/tests/scene_quantized.c.o
+[ 84%] Building C object CMakeFiles/resident_baseline.dir/home/cosmo/Git/softgl/build/scene-msaa-grid-reduction/v1-fallback/baseline-source/model_wrap.c.o
+[ 85%] Building C object CMakeFiles/quality_baseline.dir/home/cosmo/Git/softgl/build/scene-msaa-grid-reduction/v1-fallback/baseline-source/model_wrap.c.o
+[ 86%] Linking C executable quantized_baseline
+[ 86%] Built target quantized_baseline
+[ 88%] Linking C executable small_baseline
+[ 89%] Building C object CMakeFiles/positions_baseline.dir/home/cosmo/Git/softgl/tests/scene_positions.c.o
+[ 90%] Linking C executable resident_baseline
+[ 90%] Built target small_baseline
+[ 91%] Linking C executable quality_baseline
+[ 92%] Building C object CMakeFiles/hz_baseline.dir/home/cosmo/Git/softgl/tests/scene_msaa.c.o
+[ 92%] Built target resident_baseline
+[ 94%] Linking C executable positions_baseline
+[ 95%] Building C object CMakeFiles/order_baseline.dir/home/cosmo/Git/softgl/tests/scene_depth_order.c.o
+[ 95%] Built target quality_baseline
+[ 96%] Building C object CMakeFiles/hint_baseline.dir/home/cosmo/Git/softgl/experiments/scene-depth-order-cached-keys/hint_contract.c.o
+[ 96%] Built target positions_baseline
+[ 97%] Linking C executable order_baseline
+[ 98%] Linking C executable hz_baseline
+[100%] Linking C executable hint_baseline
+[100%] Built target order_baseline
+[100%] Built target hz_baseline
+[100%] Built target hint_baseline
