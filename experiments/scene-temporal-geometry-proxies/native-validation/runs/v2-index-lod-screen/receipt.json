@@ -1,0 +1,3197 @@
+{
+  "screeningOnly": true,
+  "width": 640,
+  "height": 360,
+  "arguments": {
+    "baseline": "build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+    "candidate": "build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+    "output": "tmp/scene-temporal-geometry-proxies/v2-index-lod-screen",
+    "pairs": 1,
+    "frames": 30,
+    "warmup": 60,
+    "samples": "0,2,4",
+    "assets": "bistro,sponza,bmw,t80",
+    "baseline_source": "build/scene-temporal-geometry-proxies/v2-index-lod/baseline-source/libsoftgl",
+    "baseline_wrapper": "build/scene-temporal-geometry-proxies/v2-index-lod/baseline-source/model_wrap.c",
+    "candidate_source": "build/scene-temporal-geometry-proxies/v2-index-lod/source/libsoftgl",
+    "candidate_wrapper": "build/scene-temporal-geometry-proxies/v2-index-lod/source/model_wrap.c"
+  },
+  "baselineSha256": "d059e80e949e39b3dbfba868249511c2130e77f5f6293f980e8bd09bec593941",
+  "candidateSha256": "7c42d4dc400208b9fd5fa0e316169d69d06a823d6be87ab951bef94a1988a3e7",
+  "gitHead": "b226169b1baad730cf15a7c5a7a537fa96d86e2b",
+  "packsSha256": {
+    "bistro": "4c862bcd28ef6833a89b0a058832c051098f5cf5869590999859b86f1cc993f3",
+    "sponza": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+    "bmw": "76cda2c57b81e10b3c92a269537b17e4e1c5f36c653bfd1af43fcb2218473cef",
+    "t80": "cb9146d7352f52600015c499c394566acc604b43fb5760a17d133c20c5a700f4"
+  },
+  "records": [
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 43.548774801,
+      "submitMs": 42.616318539,
+      "finishReadbackMs": 0.932359595,
+      "angle": 160,
+      "rgba": "da43e53785e82836",
+      "depth": "c62790a9c067e97b",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "bistro",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bistro-msaa0-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "efa6e492ef94ac3e82ede76805167efbe7d223546dee2c4e303c5934c85ae9ed",
+      "foreignCpuCores": 0.043245409148240994,
+      "requestElapsedSeconds": 3.468576270970516,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.312598340755261,
+          "minorFaults": 21612,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2871291904,
+          "rssAfterBytes": 2959396864
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2896416768,
+          "rssAfterBytes": 2896416768
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 367906,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 2142,
+        "io.full": 1754
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 31.941716031,
+      "submitMs": 31.293574034,
+      "finishReadbackMs": 0.648032001,
+      "angle": 160,
+      "rgba": "9aab449c2d1a35f3",
+      "depth": "b52f1a8fc32a38f1",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "bistro",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bistro-msaa0-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "806d6380f93ebb3f7222392ddcdde8503de8578fe07ce48c49166473ce6f1bec",
+      "foreignCpuCores": 0.0372332891153417,
+      "requestElapsedSeconds": 2.9543454960221425,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2959396864,
+          "rssAfterBytes": 2959396864
+        },
+        "candidate": {
+          "cpuCores": 3.4694655766568396,
+          "minorFaults": 21056,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2896416768,
+          "rssAfterBytes": 2982268928
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 212671,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 32.424284165,
+      "submitMs": 31.759368935,
+      "finishReadbackMs": 0.664821896,
+      "angle": 160,
+      "rgba": "9aab449c2d1a35f3",
+      "depth": "b52f1a8fc32a38f1",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "bistro",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bistro-msaa0-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "806d6380f93ebb3f7222392ddcdde8503de8578fe07ce48c49166473ce6f1bec",
+      "foreignCpuCores": 0.051690189507807564,
+      "requestElapsedSeconds": 2.901904625003226,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2959396864,
+          "rssAfterBytes": 2959396864
+        },
+        "candidate": {
+          "cpuCores": 3.490810798093938,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2982268928,
+          "rssAfterBytes": 2982268928
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 203752,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 2250,
+        "io.full": 331
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 32.474957635,
+      "submitMs": 31.808402234,
+      "finishReadbackMs": 0.666412067,
+      "angle": 160,
+      "rgba": "da43e53785e82836",
+      "depth": "c62790a9c067e97b",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "bistro",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bistro-msaa0-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "efa6e492ef94ac3e82ede76805167efbe7d223546dee2c4e303c5934c85ae9ed",
+      "foreignCpuCores": 0.03773459127154229,
+      "requestElapsedSeconds": 2.91509716399014,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.5058865708651106,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2959396864,
+          "rssAfterBytes": 2959396864
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2982268928,
+          "rssAfterBytes": 2982268928
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 218304,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 47.131992201,
+      "submitMs": 46.101052434,
+      "finishReadbackMs": 1.030886433,
+      "angle": 160,
+      "rgba": "d574fef069e32bbe",
+      "depth": "3147510cbc87a599",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "f73fe223e9257487",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "bistro",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bistro-msaa2-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "eb82b939191bd2377fc2c725a9ae0be57a53eab30d2bd80887d209861e4577e2",
+      "foreignCpuCores": 0.034551086412254184,
+      "requestElapsedSeconds": 4.341397495009005,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.6923594345895645,
+          "minorFaults": 8118,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2959396864,
+          "rssAfterBytes": 2991640576
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2982268928,
+          "rssAfterBytes": 2982268928
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 418159,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 3899,
+        "io.full": 43
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 48.231395334,
+      "submitMs": 47.103778634,
+      "finishReadbackMs": 1.127496699,
+      "angle": 160,
+      "rgba": "89e9f42d86661efe",
+      "depth": "d1df24ee26ed5e17",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "a5b8440f168014fb",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "bistro",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bistro-msaa2-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "578445d65f5b64ff8eca558fec281f7d02a487e8758e36b8550d32f2e1272e68",
+      "foreignCpuCores": 0.0379487816502387,
+      "requestElapsedSeconds": 4.479722209973261,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2991640576,
+          "rssAfterBytes": 2991640576
+        },
+        "candidate": {
+          "cpuCores": 3.6832641013466967,
+          "minorFaults": 7191,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2982268928,
+          "rssAfterBytes": 3011760128
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 422797,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 6473,
+        "io.full": 872
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 49.487492,
+      "submitMs": 48.217308036,
+      "finishReadbackMs": 1.270073967,
+      "angle": 160,
+      "rgba": "89e9f42d86661efe",
+      "depth": "d1df24ee26ed5e17",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "a5b8440f168014fb",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "bistro",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bistro-msaa2-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "578445d65f5b64ff8eca558fec281f7d02a487e8758e36b8550d32f2e1272e68",
+      "foreignCpuCores": 0.03191414927546521,
+      "requestElapsedSeconds": 4.386768977972679,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2991640576,
+          "rssAfterBytes": 2991640576
+        },
+        "candidate": {
+          "cpuCores": 3.676965912951812,
+          "minorFaults": 6,
+          "majorFaults": 0,
+          "rssBeforeBytes": 3011760128,
+          "rssAfterBytes": 3011760128
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 416464,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 1804,
+        "io.full": 1795
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 48.149791465,
+      "submitMs": 47.000574635,
+      "finishReadbackMs": 1.149143496,
+      "angle": 160,
+      "rgba": "d574fef069e32bbe",
+      "depth": "3147510cbc87a599",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "f73fe223e9257487",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "bistro",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bistro-msaa2-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "eb82b939191bd2377fc2c725a9ae0be57a53eab30d2bd80887d209861e4577e2",
+      "foreignCpuCores": 0.036486345092026196,
+      "requestElapsedSeconds": 4.385202178964391,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.6759992680216396,
+          "minorFaults": 7,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2991640576,
+          "rssAfterBytes": 2991640576
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 3011760128,
+          "rssAfterBytes": 3011760128
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 438727,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 53.992822402,
+      "submitMs": 52.604258231,
+      "finishReadbackMs": 1.388457503,
+      "angle": 160,
+      "rgba": "64e96bf1d14019bb",
+      "depth": "7c0bcde239c25207",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "8a97e8fa78d0c60e",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "bistro",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bistro-msaa4-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "1e7c838ebfaa03546a3ea73f6fd563f46e637ae6978ff73560b59124a0e02d1d",
+      "foreignCpuCores": 0.036612751835066425,
+      "requestElapsedSeconds": 4.9163198879687116,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.6490709328949538,
+          "minorFaults": 4940,
+          "majorFaults": 0,
+          "rssBeforeBytes": 2991640576,
+          "rssAfterBytes": 3011039232
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 3011760128,
+          "rssAfterBytes": 3011760128
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 429562,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 5485,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 53.598724364,
+      "submitMs": 52.179939994,
+      "finishReadbackMs": 1.418661035,
+      "angle": 160,
+      "rgba": "7685cfc4d5ba3dfc",
+      "depth": "adb462df86fe8425",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "a55b291a97d409af",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "bistro",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bistro-msaa4-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "6a8a0941cbafdb7b32441a07e791b111b581b8fedd38665e9fcad3edf52d1df1",
+      "foreignCpuCores": 0.038730152894670765,
+      "requestElapsedSeconds": 4.905738444067538,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 3011039232,
+          "rssAfterBytes": 3011039232
+        },
+        "candidate": {
+          "cpuCores": 3.6528649466973695,
+          "minorFaults": 4655,
+          "majorFaults": 0,
+          "rssBeforeBytes": 3011760128,
+          "rssAfterBytes": 3030372352
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 493437,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 53.801098299,
+      "submitMs": 52.416274301,
+      "finishReadbackMs": 1.384717331,
+      "angle": 160,
+      "rgba": "7685cfc4d5ba3dfc",
+      "depth": "adb462df86fe8425",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "a55b291a97d409af",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "bistro",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bistro-msaa4-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "6a8a0941cbafdb7b32441a07e791b111b581b8fedd38665e9fcad3edf52d1df1",
+      "foreignCpuCores": 0.052508203006303024,
+      "requestElapsedSeconds": 4.951607274939306,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 3011039232,
+          "rssAfterBytes": 3011039232
+        },
+        "candidate": {
+          "cpuCores": 3.627105099973855,
+          "minorFaults": 6,
+          "majorFaults": 0,
+          "rssBeforeBytes": 3030372352,
+          "rssAfterBytes": 3030372352
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 508918,
+        "cpu.full": 0,
+        "memory.some": 898,
+        "memory.full": 6,
+        "io.some": 8217,
+        "io.full": 143
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 640502,
+      "frames": 30,
+      "ms": 53.714634668,
+      "submitMs": 52.290040406,
+      "finishReadbackMs": 1.424480928,
+      "angle": 160,
+      "rgba": "64e96bf1d14019bb",
+      "depth": "7c0bcde239c25207",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "8a97e8fa78d0c60e",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "bistro",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bistro-msaa4-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "imageSha256": "1e7c838ebfaa03546a3ea73f6fd563f46e637ae6978ff73560b59124a0e02d1d",
+      "foreignCpuCores": 0.04566966104809729,
+      "requestElapsedSeconds": 5.036166126956232,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.6337165094790453,
+          "minorFaults": 6,
+          "majorFaults": 0,
+          "rssBeforeBytes": 3011039232,
+          "rssAfterBytes": 3011170304
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 3030372352,
+          "rssAfterBytes": 3030372352
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 498294,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 4635,
+        "io.full": 46
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 28.464155501,
+      "submitMs": 28.374895259,
+      "finishReadbackMs": 0.089190241,
+      "angle": 160,
+      "rgba": "c4d91c45e26aff6f",
+      "depth": "9b69df84db431822",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "sponza",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/sponza-msaa0-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "352c8de01ce79bd9cd47bab0afe08e6e38935eb2c51c4d952de2015748bf6413",
+      "foreignCpuCores": 0.04150148281208525,
+      "requestElapsedSeconds": 2.168597213923931,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.3201186249668204,
+          "minorFaults": 12844,
+          "majorFaults": 0,
+          "rssBeforeBytes": 156512256,
+          "rssAfterBytes": 208846848
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 158887936,
+          "rssAfterBytes": 158887936
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 189049,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 27.701276533,
+      "submitMs": 27.612759565,
+      "finishReadbackMs": 0.088403634,
+      "angle": 160,
+      "rgba": "f8a2c6d9b3815e3b",
+      "depth": "62a8e7e6e19e1d26",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "sponza",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/sponza-msaa0-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "fdb9af78bc925dd8c4c21060e67ffd52f74a1b2252f78e668412d71ec7d3e283",
+      "foreignCpuCores": 0.09174336279345804,
+      "requestElapsedSeconds": 2.6159930559806526,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 208846848,
+          "rssAfterBytes": 208846848
+        },
+        "candidate": {
+          "cpuCores": 3.1957271373054548,
+          "minorFaults": 13587,
+          "majorFaults": 0,
+          "rssBeforeBytes": 158887936,
+          "rssAfterBytes": 214376448
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 253952,
+        "cpu.full": 0,
+        "memory.some": 1388,
+        "memory.full": 363,
+        "io.some": 8836,
+        "io.full": 2363
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 28.528815667,
+      "submitMs": 28.440265482,
+      "finishReadbackMs": 0.088413518,
+      "angle": 160,
+      "rgba": "f8a2c6d9b3815e3b",
+      "depth": "62a8e7e6e19e1d26",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "sponza",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/sponza-msaa0-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "fdb9af78bc925dd8c4c21060e67ffd52f74a1b2252f78e668412d71ec7d3e283",
+      "foreignCpuCores": 0.04870433513317003,
+      "requestElapsedSeconds": 2.6691669159336016,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 208846848,
+          "rssAfterBytes": 208846848
+        },
+        "candidate": {
+          "cpuCores": 3.1695282709739883,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 214376448,
+          "rssAfterBytes": 214376448
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 194160,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 28.578912502,
+      "submitMs": 28.487125571,
+      "finishReadbackMs": 0.091706934,
+      "angle": 160,
+      "rgba": "c4d91c45e26aff6f",
+      "depth": "9b69df84db431822",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "sponza",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/sponza-msaa0-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "352c8de01ce79bd9cd47bab0afe08e6e38935eb2c51c4d952de2015748bf6413",
+      "foreignCpuCores": 0.05257813511151589,
+      "requestElapsedSeconds": 2.662703796988353,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.1772215931673173,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 208846848,
+          "rssAfterBytes": 208846848
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 214376448,
+          "rssAfterBytes": 214376448
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 187229,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 1545,
+        "io.full": 1521
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 47.294532135,
+      "submitMs": 46.016548271,
+      "finishReadbackMs": 1.27792053,
+      "angle": 160,
+      "rgba": "b597f5438d45eed2",
+      "depth": "3cfb3da67bd41870",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "8bea110d451aefd0",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "sponza",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/sponza-msaa2-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "6edb38bc2d9ba8b3281d8c371864ffe85ebb0322f9e6bd0992fe1912d0637a0f",
+      "foreignCpuCores": 0.043803523228635385,
+      "requestElapsedSeconds": 4.337550635100342,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.67257960543243,
+          "minorFaults": 8907,
+          "majorFaults": 0,
+          "rssBeforeBytes": 208846848,
+          "rssAfterBytes": 244269056
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 214376448,
+          "rssAfterBytes": 214376448
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 458416,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 6141,
+        "io.full": 1734
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 35.585376931,
+      "submitMs": 34.369933376,
+      "finishReadbackMs": 1.215356887,
+      "angle": 160,
+      "rgba": "39e62bf2c4ce19ca",
+      "depth": "0075ba42c5fe9e15",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "117efc4d157ca9e1",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "sponza",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/sponza-msaa2-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "42006510113d70a6bc6bc92a128b85ff45914bda138842ddaaf1615d7c69e857",
+      "foreignCpuCores": 0.03921949984082076,
+      "requestElapsedSeconds": 3.3146776610519737,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 244269056,
+          "rssAfterBytes": 244269056
+        },
+        "candidate": {
+          "cpuCores": 3.6534472544026104,
+          "minorFaults": 8176,
+          "majorFaults": 0,
+          "rssBeforeBytes": 214376448,
+          "rssAfterBytes": 245702656
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 97202,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 35.583613534,
+      "submitMs": 34.497616762,
+      "finishReadbackMs": 1.085910104,
+      "angle": 160,
+      "rgba": "39e62bf2c4ce19ca",
+      "depth": "0075ba42c5fe9e15",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "117efc4d157ca9e1",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "sponza",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/sponza-msaa2-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "42006510113d70a6bc6bc92a128b85ff45914bda138842ddaaf1615d7c69e857",
+      "foreignCpuCores": 0.04310065688388179,
+      "requestElapsedSeconds": 3.248210355057381,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 244269056,
+          "rssAfterBytes": 244269056
+        },
+        "candidate": {
+          "cpuCores": 3.669713071827649,
+          "minorFaults": 6,
+          "majorFaults": 0,
+          "rssBeforeBytes": 245702656,
+          "rssAfterBytes": 245702656
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 131613,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 3589,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 34.917981535,
+      "submitMs": 34.399603206,
+      "finishReadbackMs": 0.518311661,
+      "angle": 160,
+      "rgba": "b597f5438d45eed2",
+      "depth": "3cfb3da67bd41870",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "8bea110d451aefd0",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "sponza",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/sponza-msaa2-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "6edb38bc2d9ba8b3281d8c371864ffe85ebb0322f9e6bd0992fe1912d0637a0f",
+      "foreignCpuCores": 0.037236731906298,
+      "requestElapsedSeconds": 3.222624378046021,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.7081578856688417,
+          "minorFaults": 6,
+          "majorFaults": 0,
+          "rssBeforeBytes": 244269056,
+          "rssAfterBytes": 244269056
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 245702656,
+          "rssAfterBytes": 245702656
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 162837,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 36.776450633,
+      "submitMs": 35.869011066,
+      "finishReadbackMs": 0.907356234,
+      "angle": 160,
+      "rgba": "e98447ba7b23ce02",
+      "depth": "1ac5a242dff2b42c",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "9ab44a68c51d3aec",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "sponza",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/sponza-msaa4-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "833e920cd0d620d2329406b9fc78ad5c368592852193a2b3f5226d40b2373748",
+      "foreignCpuCores": 0.04069370273728948,
+      "requestElapsedSeconds": 3.4403357419651,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.610112771408109,
+          "minorFaults": 4700,
+          "majorFaults": 0,
+          "rssBeforeBytes": 244269056,
+          "rssAfterBytes": 263536640
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 245702656,
+          "rssAfterBytes": 245702656
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 148747,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 2901,
+        "io.full": 253
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 37.800930398,
+      "submitMs": 36.557276609,
+      "finishReadbackMs": 1.243550458,
+      "angle": 160,
+      "rgba": "c71080aeffddbc10",
+      "depth": "a0788eb25b666df7",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "69f728d51c988f73",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "sponza",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/sponza-msaa4-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "3cdb59ab63c735639dab18099d187813a281bac489023b9230f4366e156e23eb",
+      "foreignCpuCores": 0.040667948311339935,
+      "requestElapsedSeconds": 3.4425144570413977,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 263536640,
+          "rssAfterBytes": 263536640
+        },
+        "candidate": {
+          "cpuCores": 3.5933037186519634,
+          "minorFaults": 4297,
+          "majorFaults": 0,
+          "rssBeforeBytes": 245702656,
+          "rssAfterBytes": 263266304
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 126247,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 36.3881894,
+      "submitMs": 35.514426833,
+      "finishReadbackMs": 0.873689233,
+      "angle": 160,
+      "rgba": "c71080aeffddbc10",
+      "depth": "a0788eb25b666df7",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "69f728d51c988f73",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "sponza",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/sponza-msaa4-candidate.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "3cdb59ab63c735639dab18099d187813a281bac489023b9230f4366e156e23eb",
+      "foreignCpuCores": 0.03939224162445226,
+      "requestElapsedSeconds": 3.3001422269735485,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 263536640,
+          "rssAfterBytes": 263536640
+        },
+        "candidate": {
+          "cpuCores": 3.636206919180209,
+          "minorFaults": 6,
+          "majorFaults": 0,
+          "rssBeforeBytes": 263266304,
+          "rssAfterBytes": 263266304
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 103457,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 3296,
+        "io.full": 171
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 262267,
+      "frames": 30,
+      "ms": 38.385522001,
+      "submitMs": 37.211211798,
+      "finishReadbackMs": 1.174216869,
+      "angle": 160,
+      "rgba": "e98447ba7b23ce02",
+      "depth": "1ac5a242dff2b42c",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "9ab44a68c51d3aec",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "sponza",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/sponza-msaa4-baseline.ppm",
+      "stderr": "",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "imageSha256": "833e920cd0d620d2329406b9fc78ad5c368592852193a2b3f5226d40b2373748",
+      "foreignCpuCores": 0.04538938603774557,
+      "requestElapsedSeconds": 3.5250531890196726,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.580087823727181,
+          "minorFaults": 6,
+          "majorFaults": 0,
+          "rssBeforeBytes": 263536640,
+          "rssAfterBytes": 263536640
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 263266304,
+          "rssAfterBytes": 263266304
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 225222,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 90,
+        "io.full": 86
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 9.735605936,
+      "submitMs": 9.408584959,
+      "finishReadbackMs": 0.326864309,
+      "angle": 160,
+      "rgba": "e5c16fb28cc19256",
+      "depth": "7238c3c473eda397",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "bmw",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bmw-msaa0-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "d955bc7e27202a35767fd1096a327cc655155dd9cff2d183d5870b4f300cb330",
+      "foreignCpuCores": 0.033215771167971954,
+      "requestElapsedSeconds": 0.903185412986204,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 2.88977209161356,
+          "minorFaults": 6847,
+          "majorFaults": 0,
+          "rssBeforeBytes": 44875776,
+          "rssAfterBytes": 73019392
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 48062464,
+          "rssAfterBytes": 48062464
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 21999,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 9.605155532,
+      "submitMs": 9.247821174,
+      "finishReadbackMs": 0.357171024,
+      "angle": 160,
+      "rgba": "a9ce04bf2bc8e078",
+      "depth": "f63b6aeeb4dcec7e",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "bmw",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bmw-msaa0-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "118ce6db4e8be9c1f9473426ab3fda00c36b8d1d5576c92ad17bf78f195ef7e2",
+      "foreignCpuCores": 0.04436515853250059,
+      "requestElapsedSeconds": 0.9016084090108052,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 73019392,
+          "rssAfterBytes": 73019392
+        },
+        "candidate": {
+          "cpuCores": 2.883735304612538,
+          "minorFaults": 6191,
+          "majorFaults": 0,
+          "rssBeforeBytes": 48062464,
+          "rssAfterBytes": 73375744
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 24693,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 2078,
+        "io.full": 2062
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 9.975263302,
+      "submitMs": 9.513945319,
+      "finishReadbackMs": 0.461101315,
+      "angle": 160,
+      "rgba": "a9ce04bf2bc8e078",
+      "depth": "f63b6aeeb4dcec7e",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "bmw",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bmw-msaa0-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "118ce6db4e8be9c1f9473426ab3fda00c36b8d1d5576c92ad17bf78f195ef7e2",
+      "foreignCpuCores": 0.043902471506408226,
+      "requestElapsedSeconds": 0.9111104370094836,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 73019392,
+          "rssAfterBytes": 73019392
+        },
+        "candidate": {
+          "cpuCores": 2.864636265793137,
+          "minorFaults": 13,
+          "majorFaults": 0,
+          "rssBeforeBytes": 73375744,
+          "rssAfterBytes": 73375744
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 29139,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 9.713835836,
+      "submitMs": 9.357878197,
+      "finishReadbackMs": 0.355740974,
+      "angle": 160,
+      "rgba": "e5c16fb28cc19256",
+      "depth": "7238c3c473eda397",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "bmw",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bmw-msaa0-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "d955bc7e27202a35767fd1096a327cc655155dd9cff2d183d5870b4f300cb330",
+      "foreignCpuCores": 0.04483714409791271,
+      "requestElapsedSeconds": 0.8921174799324945,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 2.8807865082908912,
+          "minorFaults": 57,
+          "majorFaults": 0,
+          "rssBeforeBytes": 73019392,
+          "rssAfterBytes": 73281536
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 73375744,
+          "rssAfterBytes": 73375744
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 23894,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 15.778637367,
+      "submitMs": 14.845668036,
+      "finishReadbackMs": 0.932852664,
+      "angle": 160,
+      "rgba": "3d6414a90ea015cb",
+      "depth": "8c251eea5452b25b",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "97f92b529925329e",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "bmw",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bmw-msaa2-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "a162f42827e4df4f7c47ee30ad0c25f377c6c91160d25e2a76b999e2e2597a35",
+      "foreignCpuCores": 0.034331610180407555,
+      "requestElapsedSeconds": 1.4563837739406154,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.2477703230665544,
+          "minorFaults": 4216,
+          "majorFaults": 0,
+          "rssBeforeBytes": 73281536,
+          "rssAfterBytes": 90583040
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 73375744,
+          "rssAfterBytes": 73375744
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 51230,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 15.06647527,
+      "submitMs": 14.218162625,
+      "finishReadbackMs": 0.848179311,
+      "angle": 160,
+      "rgba": "a26009faeefdc7a7",
+      "depth": "1f7e53386d0f7485",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "91be241dcafa7819",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "bmw",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bmw-msaa2-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "d63c4bec7029475192a75391d5f579a771a7acd326ec8ef6e253f16ca09e3299",
+      "foreignCpuCores": 0.05628413535362419,
+      "requestElapsedSeconds": 1.421359669067897,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 90583040,
+          "rssAfterBytes": 90583040
+        },
+        "candidate": {
+          "cpuCores": 3.285586401267812,
+          "minorFaults": 4114,
+          "majorFaults": 0,
+          "rssBeforeBytes": 73375744,
+          "rssAfterBytes": 90284032
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 72431,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 2974,
+        "io.full": 1114
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 15.410316266,
+      "submitMs": 14.597797064,
+      "finishReadbackMs": 0.812402534,
+      "angle": 160,
+      "rgba": "a26009faeefdc7a7",
+      "depth": "1f7e53386d0f7485",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "91be241dcafa7819",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "bmw",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bmw-msaa2-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "d63c4bec7029475192a75391d5f579a771a7acd326ec8ef6e253f16ca09e3299",
+      "foreignCpuCores": 0.04231829917790639,
+      "requestElapsedSeconds": 1.4178263579960912,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 90583040,
+          "rssAfterBytes": 90583040
+        },
+        "candidate": {
+          "cpuCores": 3.3008273358766984,
+          "minorFaults": 6,
+          "majorFaults": 0,
+          "rssBeforeBytes": 90284032,
+          "rssAfterBytes": 90284032
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 61058,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 15.792837401,
+      "submitMs": 14.873111256,
+      "finishReadbackMs": 0.919612811,
+      "angle": 160,
+      "rgba": "3d6414a90ea015cb",
+      "depth": "8c251eea5452b25b",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "97f92b529925329e",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "bmw",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bmw-msaa2-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "a162f42827e4df4f7c47ee30ad0c25f377c6c91160d25e2a76b999e2e2597a35",
+      "foreignCpuCores": 0.04133776563343363,
+      "requestElapsedSeconds": 1.4514572590123862,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.2519042298301124,
+          "minorFaults": 11,
+          "majorFaults": 0,
+          "rssBeforeBytes": 90583040,
+          "rssAfterBytes": 90583040
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 90284032,
+          "rssAfterBytes": 90284032
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 64893,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 17.502439232,
+      "submitMs": 16.374212476,
+      "finishReadbackMs": 1.128110092,
+      "angle": 160,
+      "rgba": "a6a2703bd33ff951",
+      "depth": "b0f37ca6630a33b6",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "dc2f9662c4e4c224",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "bmw",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bmw-msaa4-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "0678474b998ad8d2a4ee42d5dc4da563071c521cc51214ec3764efd9681ceff3",
+      "foreignCpuCores": 0.04274258614982011,
+      "requestElapsedSeconds": 1.637710917973891,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.205693961236508,
+          "minorFaults": 70,
+          "majorFaults": 0,
+          "rssBeforeBytes": 90583040,
+          "rssAfterBytes": 90845184
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 90284032,
+          "rssAfterBytes": 90284032
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 67092,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 1957,
+        "io.full": 1530
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 17.023684302,
+      "submitMs": 15.884560967,
+      "finishReadbackMs": 1.13901,
+      "angle": 160,
+      "rgba": "a404d3bdc16c73df",
+      "depth": "c53c2cce39a5ae48",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "607f97275a885f6f",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "bmw",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bmw-msaa4-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "ea8f3d66a8db449de9271cd9eb977677ac223da9e1b6b406c38000037c8cbae1",
+      "foreignCpuCores": 0.03149856384878805,
+      "requestElapsedSeconds": 1.5873739590169862,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 90845184,
+          "rssAfterBytes": 90845184
+        },
+        "candidate": {
+          "cpuCores": 3.2506517891949267,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 90284032,
+          "rssAfterBytes": 90284032
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 63638,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 17.035304301,
+      "submitMs": 15.826027367,
+      "finishReadbackMs": 1.209150266,
+      "angle": 160,
+      "rgba": "a404d3bdc16c73df",
+      "depth": "c53c2cce39a5ae48",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "607f97275a885f6f",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "bmw",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bmw-msaa4-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "ea8f3d66a8db449de9271cd9eb977677ac223da9e1b6b406c38000037c8cbae1",
+      "foreignCpuCores": 0.04441231201275376,
+      "requestElapsedSeconds": 1.576139516895637,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 90845184,
+          "rssAfterBytes": 90845184
+        },
+        "candidate": {
+          "cpuCores": 3.2420987769310243,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 90284032,
+          "rssAfterBytes": 90284032
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 50884,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 63009,
+      "frames": 30,
+      "ms": 17.691422933,
+      "submitMs": 16.498859335,
+      "finishReadbackMs": 1.19246693,
+      "angle": 160,
+      "rgba": "a6a2703bd33ff951",
+      "depth": "b0f37ca6630a33b6",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "dc2f9662c4e4c224",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "bmw",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/bmw-msaa4-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "0678474b998ad8d2a4ee42d5dc4da563071c521cc51214ec3764efd9681ceff3",
+      "foreignCpuCores": 0.04956676694072082,
+      "requestElapsedSeconds": 1.6139846299774945,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.2342315428820334,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 90845184,
+          "rssAfterBytes": 90845184
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 90284032,
+          "rssAfterBytes": 90284032
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 58922,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 6.6590966,
+      "submitMs": 6.578263058,
+      "finishReadbackMs": 0.080696874,
+      "angle": 160,
+      "rgba": "8bbccd1a0bfc123c",
+      "depth": "4921157b93bcc627",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "t80",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/t80-msaa0-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "b523bb48fe208b82e23c9222305890e1a55eb98a198222779822b01a3975ed30",
+      "foreignCpuCores": 0.0495442006134715,
+      "requestElapsedSeconds": 0.6055199120892212,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 2.97265203680829,
+          "minorFaults": 4126,
+          "majorFaults": 0,
+          "rssBeforeBytes": 55271424,
+          "rssAfterBytes": 72171520
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 54890496,
+          "rssAfterBytes": 54890496
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 11486,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 2184,
+        "io.full": 599
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 6.143475033,
+      "submitMs": 6.052098202,
+      "finishReadbackMs": 0.091250163,
+      "angle": 160,
+      "rgba": "e48f82b6ff3367c4",
+      "depth": "5e115a2dc86b6c7d",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "t80",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/t80-msaa0-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "e999aa5ecc317f7f2f1e8681e331927e6fd126ed99e67faac2dd17d273ac56a2",
+      "foreignCpuCores": 0.03458865171684779,
+      "requestElapsedSeconds": 0.5782243310241029,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 72171520,
+          "rssAfterBytes": 72171520
+        },
+        "candidate": {
+          "cpuCores": 3.0783900027994533,
+          "minorFaults": 4506,
+          "majorFaults": 0,
+          "rssBeforeBytes": 54890496,
+          "rssAfterBytes": 73375744
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 21053,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 5.893584298,
+      "submitMs": 5.810480596,
+      "finishReadbackMs": 0.082980368,
+      "angle": 160,
+      "rgba": "e48f82b6ff3367c4",
+      "depth": "5e115a2dc86b6c7d",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "t80",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/t80-msaa0-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "e999aa5ecc317f7f2f1e8681e331927e6fd126ed99e67faac2dd17d273ac56a2",
+      "foreignCpuCores": 0.07038192918098418,
+      "requestElapsedSeconds": 0.568327700952068,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 72171520,
+          "rssAfterBytes": 72171520
+        },
+        "candidate": {
+          "cpuCores": 3.0792094016680576,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 73375744,
+          "rssAfterBytes": 73375744
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 18171,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 0,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 6.332218969,
+      "submitMs": 6.245648706,
+      "finishReadbackMs": 0.086493596,
+      "angle": 160,
+      "rgba": "8bbccd1a0bfc123c",
+      "depth": "4921157b93bcc627",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "0000000000000000",
+      "sampleStencil": "0000000000000000",
+      "asset": "t80",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "0 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/t80-msaa0-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "b523bb48fe208b82e23c9222305890e1a55eb98a198222779822b01a3975ed30",
+      "foreignCpuCores": 0.034564907960592584,
+      "requestElapsedSeconds": 0.5786215320695192,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.07627680849274,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 72171520,
+          "rssAfterBytes": 72171520
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 73375744,
+          "rssAfterBytes": 73375744
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 12432,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 12.684341268,
+      "submitMs": 10.673585371,
+      "finishReadbackMs": 2.010629229,
+      "angle": 160,
+      "rgba": "d19b47cf7fb989c3",
+      "depth": "811bfe54d3120454",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "81d4726c0b6419b6",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "t80",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/t80-msaa2-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "0b666147fa2be0ea06d642761c3d52bb4c25c54d9ce590d7ffe5fa91eaa2bc66",
+      "foreignCpuCores": 0.03410977385774308,
+      "requestElapsedSeconds": 1.172684409073554,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.189263855698978,
+          "minorFaults": 5642,
+          "majorFaults": 0,
+          "rssBeforeBytes": 72171520,
+          "rssAfterBytes": 95240192
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 73375744,
+          "rssAfterBytes": 73375744
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 27135,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 12.7065312,
+      "submitMs": 10.698141899,
+      "finishReadbackMs": 2.008309301,
+      "angle": 160,
+      "rgba": "d2549861b97ef513",
+      "depth": "9c7bba4b04317be8",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "287a7865e01347c4",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "t80",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/t80-msaa2-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "408dbd729450eb0ac2d4a5e33ebd0b9232be71fd76f082ab455cba25cca7694a",
+      "foreignCpuCores": 0.05084611227094085,
+      "requestElapsedSeconds": 1.1800312220584601,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 95240192,
+          "rssAfterBytes": 95240192
+        },
+        "candidate": {
+          "cpuCores": 3.177882016933803,
+          "minorFaults": 5242,
+          "majorFaults": 0,
+          "rssBeforeBytes": 73375744,
+          "rssAfterBytes": 94609408
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 39804,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 12.77245807,
+      "submitMs": 10.880575806,
+      "finishReadbackMs": 1.891792263,
+      "angle": 160,
+      "rgba": "d2549861b97ef513",
+      "depth": "9c7bba4b04317be8",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "287a7865e01347c4",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "t80",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/t80-msaa2-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "408dbd729450eb0ac2d4a5e33ebd0b9232be71fd76f082ab455cba25cca7694a",
+      "foreignCpuCores": 0.04234346628182739,
+      "requestElapsedSeconds": 1.180819720029831,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 95240192,
+          "rssAfterBytes": 95240192
+        },
+        "candidate": {
+          "cpuCores": 3.1672912778806888,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 94609408,
+          "rssAfterBytes": 94609408
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 38477,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 2211,
+        "io.full": 2192
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 2,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 12.608130932,
+      "submitMs": 10.666408475,
+      "finishReadbackMs": 1.941592456,
+      "angle": 160,
+      "rgba": "d19b47cf7fb989c3",
+      "depth": "811bfe54d3120454",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "81d4726c0b6419b6",
+      "sampleStencil": "1a5bcfc145f96383",
+      "asset": "t80",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "2 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/t80-msaa2-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "0b666147fa2be0ea06d642761c3d52bb4c25c54d9ce590d7ffe5fa91eaa2bc66",
+      "foreignCpuCores": 0.03397179615428507,
+      "requestElapsedSeconds": 1.177447310066782,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.1593770423485115,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 95240192,
+          "rssAfterBytes": 95240192
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 94609408,
+          "rssAfterBytes": 94609408
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 37251,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 14.320902701,
+      "submitMs": 11.967345607,
+      "finishReadbackMs": 2.353410427,
+      "angle": 160,
+      "rgba": "0752feeb1b19ed04",
+      "depth": "2c7ee74c33dd5311",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "b6bcf146709d53c0",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "t80",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/t80-msaa4-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "0b6637b1f3c372a14aac424bacf76bd4c3635fc698a188e383890ccd77820f85",
+      "foreignCpuCores": 0.045030962018093895,
+      "requestElapsedSeconds": 1.3324165709782392,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.114641539584828,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 95240192,
+          "rssAfterBytes": 95240192
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 94609408,
+          "rssAfterBytes": 94609408
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 45374,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 14.633566933,
+      "submitMs": 12.260356627,
+      "finishReadbackMs": 2.373100309,
+      "angle": 160,
+      "rgba": "d514a75abf8049e8",
+      "depth": "c0f096d9f6e4adec",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "1350705cf2e72d4a",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "t80",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "forward",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/t80-msaa4-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "32e1b06418b18b45b2b0ed320c704d6704550834894e481910be6adaddf55b80",
+      "foreignCpuCores": 0.04495358616523436,
+      "requestElapsedSeconds": 1.3347099779639393,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 95240192,
+          "rssAfterBytes": 95240192
+        },
+        "candidate": {
+          "cpuCores": 3.094305181040298,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 94609408,
+          "rssAfterBytes": 94609408
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 49084,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 14.222739066,
+      "submitMs": 11.866862098,
+      "finishReadbackMs": 2.355773638,
+      "angle": 160,
+      "rgba": "d514a75abf8049e8",
+      "depth": "c0f096d9f6e4adec",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "1350705cf2e72d4a",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "t80",
+      "variant": "candidate",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/t80-msaa4-candidate.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "32e1b06418b18b45b2b0ed320c704d6704550834894e481910be6adaddf55b80",
+      "foreignCpuCores": 0.029960758597625637,
+      "requestElapsedSeconds": 1.3350796799641103,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 95240192,
+          "rssAfterBytes": 95240192
+        },
+        "candidate": {
+          "cpuCores": 3.093448325204847,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 94609408,
+          "rssAfterBytes": 94609408
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 53272,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 2263,
+        "io.full": 2247
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    },
+    {
+      "renderer": "softgl-native",
+      "width": 640,
+      "height": 360,
+      "threads": 4,
+      "samples": 4,
+      "triangles": 44513,
+      "frames": 30,
+      "ms": 14.173665899,
+      "submitMs": 11.877335802,
+      "finishReadbackMs": 2.296203429,
+      "angle": 160,
+      "rgba": "0752feeb1b19ed04",
+      "depth": "2c7ee74c33dd5311",
+      "stencil": "97422459bb4b3383",
+      "sampleDepth": "b6bcf146709d53c0",
+      "sampleStencil": "009b538b2455c383",
+      "asset": "t80",
+      "variant": "baseline",
+      "pair": 0,
+      "order": "reverse",
+      "attempt": 0,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-temporal-geometry-proxies/v2-index-lod/native/resident_baseline",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "4 60 30 160 /home/cosmo/Git/softgl/tmp/scene-temporal-geometry-proxies/v2-index-lod-screen/t80-msaa4-baseline.ppm",
+      "stderr": "",
+      "camera": null,
+      "imageSha256": "0b6637b1f3c372a14aac424bacf76bd4c3635fc698a188e383890ccd77820f85",
+      "foreignCpuCores": 0.04534131726241289,
+      "requestElapsedSeconds": 1.3232963579939678,
+      "requestSoftwareMetrics": {
+        "baseline": {
+          "cpuCores": 3.105880232475283,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 95240192,
+          "rssAfterBytes": 95240192
+        },
+        "candidate": {
+          "cpuCores": 0.0,
+          "minorFaults": 0,
+          "majorFaults": 0,
+          "rssBeforeBytes": 94609408,
+          "rssAfterBytes": 94609408
+        }
+      },
+      "requestPressureMicros": {
+        "cpu.some": 50952,
+        "cpu.full": 0,
+        "memory.some": 0,
+        "memory.full": 0,
+        "io.some": 0,
+        "io.full": 0
+      },
+      "softwareMetricScope": "Whole request including worker init, warmup, measured frames and image dump; not measured-frame-only hardware counters",
+      "accepted": true
+    }
+  ],
+  "candidateSourcesSha256": {
+    "CMakeLists.txt": "7b997884fabeaa751c27d9cbce85dd2aa4d29c32730f2a4f9ab842470a33c908",
+    "include/GL/softgl.h": "bd89fbaeadb27b8ff4fe6cbab7960abb9e07fddd690db60aa45789936c6fb0cc",
+    "src/api.c": "9c373504af364d620c212afdfc9046bcc899bd61af198a6558fdda81f01691e1",
+    "src/buffers.c": "a0363363f060dc9cbd99a64703496e1e702c2cf82beb42b16a54337b524be2ff",
+    "src/clip.c": "f5c0b940f54a4aa52a2d55785de31d72c168d381b53012e408179f81381de3cc",
+    "src/cluster_cull.h": "b639ef7e507d28512549feda7e272e0bef855acf6fd1c8e8cad96cae6ad228d9",
+    "src/dlist.c": "e7446f33b3972e4384c103c2547869dfffad43c900e1f55bf6f8c38eaf36eae8",
+    "src/dlist.h": "4bc8e0e5966f5b226c8e086ead9a635fd6158eed18b0c55e4b4c2ed0bdbda033",
+    "src/evaluators.c": "69281ca9f25e0f7d5cc1f76f31fb17502c83b60ea6168bbbae238e65227344ba",
+    "src/frag_combine_hot.h": "e801062d6fe0ce8ade5f12730ba4cb1441689ba6bd39a331a308bc99e29f72cc",
+    "src/frag_hot.h": "e0e1cba7afec1b2c13a53a8198207d868fa0636a84ee98e059f238d131dca52e",
+    "src/frag_packet.h": "f06d0fa6a43404fbdbc2ca391d96162dcafb8e53dcfaca45afc46ebb7ff6b6de",
+    "src/fragment.c": "d1883401993e1576f565710c6ad9e3066d401684ac698928940f72fd582ef1d2",
+    "src/fragment_combine.c": "b7af7972265bf0ac384379fcba6885e93707cdd8a0de956f691ad28ed1dd7153",
+    "src/fragment_write.c": "6c806d57d87ff4ed31ecdf502be6f77772497696a607633edf71c9971da66f1d",
+    "src/framebuffer.c": "7c82e1f52d5b2c2e7d9752d155f379109a8791c41b147713cfb14f2788e1a974",
+    "src/geometry.inc": "007aec3ec9501b74efa98c4291bf0dc14a30bbaf60198cd05ae12e803a9c1ed5",
+    "src/geometry_types.inc": "543196c405d363f69c5542eb01a769ef61da6e1dc946299c8c2b4ac998718efc",
+    "src/immediate.c": "80b520a3c3c14e675eeca5d3083c5dbe423e9684a69b868446f85e99ef86534c",
+    "src/index_range.h": "4d0456bd563031b7b4ff1184bfb6fa513908ae4047bd5f6f83dc8a7f57d8bb03",
+    "src/lighting.c": "1e6db9b4f59e2a54b1f6b89e6bc129d206dc816aaa08f099d80e6f8f2f42e338",
+    "src/lines.c": "b08fef911685977a08d6f2b29265aa28721aa0497a1a208c492403bdde0bbe87",
+    "src/matrix.c": "fd5bff0e263cd87d1032fad4fa75f966f76b2cc605b746d47e3d4eeabde6d793",
+    "src/msaa_additive.h": "6fab4198defe4db18a83f1562034807e71957ba07db0c0bd51f2e26c90d4778f",
+    "src/multisample.c": "2ba7fe2df9c8afed9acf1daa5ea48df6fbe8b5c0cceeac11bd61c3804423ea1d",
+    "src/multisample.h": "cdbe1e0aa51827f13789ce7f46e3acc961e0b87c5d034e1c7ba22fe54c611315",
+    "src/pipeline.c": "fb559aa949d0e4211044451c9456f22e928982fb03c6f9132c199b316a2edfe3",
+    "src/pixels.c": "8e366864ac1418564d2342bd3c120ad5e8057998af21ff31ccb5663134ddfc92",
+    "src/raster_hz.h": "1cc4a6fe6f5a425607cb3b8a57d15cb19d5de537794c638b673f0bd4a14b4ed6",
+    "src/raster_msaa_impl.h": "1c5ace8d35a4413d5628ebf5c397c58d633758a3dd93145932d2973b3a61ae0f",
+    "src/raster_store.h": "251cbe4d9765edfc26b4428d7d5906ab17722689feae08eac432db59a7b22934",
+    "src/raster_triangle_impl.h": "51b5cf82bdd1298bcb42722a4af5cac0edbebe8442b4703a1cf0fbde35487915",
+    "src/raster_types.h": "0b050bdbf31f6c398366112c84a6041390a50398d1e18acafe4c7440a0700f45",
+    "src/raster_vertex_pack.h": "956a8084b973144a9d8ee28c0d485214e3e8551a7384238f610620e00ad6e528",
+    "src/rasterizer.c": "8cfc012004b794e6a83eeb8eb33b2dea674ba199a32c1a65baf691106cc596bc",
+    "src/scene_density_hint.c": "ec41d3417def1ff6e087656ae6935e34aab51822a30821fb315ca6f23991a669",
+    "src/scene_visibility.c": "797c20af16b0598df89f9d54a9a7fb03198c381c9880258d6402db7c5808841e",
+    "src/simd.h": "c639184db1b8a3c79b0aa07ad4fbe0a96b8c79e16536b3d98abef0b72d74e150",
+    "src/state.c": "04f4a8355c1fc37c3521001719dae9a55a1e9b7a34c2f1a70c53990a0d26fb38",
+    "src/texture.c": "9c4d999c73b68a7431bd1f0e88c2d3d2e7e1931670ad166ffee535f8d5764c45",
+    "src/types.h": "9eb99eb4dc29359b7edeb4dc817a7dfa8a108f32b84fa97e190a95f3e73a8cfe",
+    "src/vertex_inputs.h": "fb774a51f4627b91dd6d58fc2cb918df04ef224d45cd898dfa1ed5dd9a0b0db5",
+    "src/workers.c": "47c2bb16e01d1f17ce552ce3baa13e15a13f3d125a3c2ee0d6f30ebce8c63e21",
+    "src/workers.h": "3a74a68a42b0e1fc80b426cd3236e329ee70b145a5afe687520575599e709c5a",
+    "src/workers_queue_raw.inc": "ddec9df98f32ce5f428467f97b3a772506019cd4eca90e004afe956a6b9527b3"
+  },
+  "baselineWrapperSha256": "740bdb6a3f44e100bed8c5a31e6bebec94dfb4d938aff7791dfc772eeb0b603d",
+  "candidateWrapperSha256": "eff981bc736852b953617ca77ff965e27fc2c7311a1b39279af767771ab19b69",
+  "baselineSourcesSha256": {
+    "CMakeLists.txt": "5e525d0039f98e279c6ebca1ac7926d49bfaa88dc19faac5a80ece4ddcab3b87",
+    "include/GL/softgl.h": "bd89fbaeadb27b8ff4fe6cbab7960abb9e07fddd690db60aa45789936c6fb0cc",
+    "src/api.c": "9c373504af364d620c212afdfc9046bcc899bd61af198a6558fdda81f01691e1",
+    "src/buffers.c": "a0363363f060dc9cbd99a64703496e1e702c2cf82beb42b16a54337b524be2ff",
+    "src/clip.c": "f5c0b940f54a4aa52a2d55785de31d72c168d381b53012e408179f81381de3cc",
+    "src/cluster_cull.h": "b639ef7e507d28512549feda7e272e0bef855acf6fd1c8e8cad96cae6ad228d9",
+    "src/dlist.c": "e7446f33b3972e4384c103c2547869dfffad43c900e1f55bf6f8c38eaf36eae8",
+    "src/dlist.h": "4bc8e0e5966f5b226c8e086ead9a635fd6158eed18b0c55e4b4c2ed0bdbda033",
+    "src/evaluators.c": "69281ca9f25e0f7d5cc1f76f31fb17502c83b60ea6168bbbae238e65227344ba",
+    "src/frag_combine_hot.h": "e801062d6fe0ce8ade5f12730ba4cb1441689ba6bd39a331a308bc99e29f72cc",
+    "src/frag_hot.h": "e0e1cba7afec1b2c13a53a8198207d868fa0636a84ee98e059f238d131dca52e",
+    "src/frag_packet.h": "f06d0fa6a43404fbdbc2ca391d96162dcafb8e53dcfaca45afc46ebb7ff6b6de",
+    "src/fragment.c": "d1883401993e1576f565710c6ad9e3066d401684ac698928940f72fd582ef1d2",
+    "src/fragment_combine.c": "b7af7972265bf0ac384379fcba6885e93707cdd8a0de956f691ad28ed1dd7153",
+    "src/fragment_write.c": "6c806d57d87ff4ed31ecdf502be6f77772497696a607633edf71c9971da66f1d",
+    "src/framebuffer.c": "7c82e1f52d5b2c2e7d9752d155f379109a8791c41b147713cfb14f2788e1a974",
+    "src/geometry.inc": "007aec3ec9501b74efa98c4291bf0dc14a30bbaf60198cd05ae12e803a9c1ed5",
+    "src/geometry_types.inc": "543196c405d363f69c5542eb01a769ef61da6e1dc946299c8c2b4ac998718efc",
+    "src/immediate.c": "80b520a3c3c14e675eeca5d3083c5dbe423e9684a69b868446f85e99ef86534c",
+    "src/index_range.h": "4d0456bd563031b7b4ff1184bfb6fa513908ae4047bd5f6f83dc8a7f57d8bb03",
+    "src/lighting.c": "1e6db9b4f59e2a54b1f6b89e6bc129d206dc816aaa08f099d80e6f8f2f42e338",
+    "src/lines.c": "b08fef911685977a08d6f2b29265aa28721aa0497a1a208c492403bdde0bbe87",
+    "src/matrix.c": "fd5bff0e263cd87d1032fad4fa75f966f76b2cc605b746d47e3d4eeabde6d793",
+    "src/msaa_additive.h": "6fab4198defe4db18a83f1562034807e71957ba07db0c0bd51f2e26c90d4778f",
+    "src/multisample.c": "2ba7fe2df9c8afed9acf1daa5ea48df6fbe8b5c0cceeac11bd61c3804423ea1d",
+    "src/multisample.h": "cdbe1e0aa51827f13789ce7f46e3acc961e0b87c5d034e1c7ba22fe54c611315",
+    "src/pipeline.c": "fb559aa949d0e4211044451c9456f22e928982fb03c6f9132c199b316a2edfe3",
+    "src/pixels.c": "8e366864ac1418564d2342bd3c120ad5e8057998af21ff31ccb5663134ddfc92",
+    "src/raster_hz.h": "1cc4a6fe6f5a425607cb3b8a57d15cb19d5de537794c638b673f0bd4a14b4ed6",
+    "src/raster_msaa_impl.h": "1c5ace8d35a4413d5628ebf5c397c58d633758a3dd93145932d2973b3a61ae0f",
+    "src/raster_store.h": "251cbe4d9765edfc26b4428d7d5906ab17722689feae08eac432db59a7b22934",
+    "src/raster_triangle_impl.h": "51b5cf82bdd1298bcb42722a4af5cac0edbebe8442b4703a1cf0fbde35487915",
+    "src/raster_types.h": "0b050bdbf31f6c398366112c84a6041390a50398d1e18acafe4c7440a0700f45",
+    "src/raster_vertex_pack.h": "956a8084b973144a9d8ee28c0d485214e3e8551a7384238f610620e00ad6e528",
+    "src/rasterizer.c": "8cfc012004b794e6a83eeb8eb33b2dea674ba199a32c1a65baf691106cc596bc",
+    "src/scene_density_hint.c": "ec41d3417def1ff6e087656ae6935e34aab51822a30821fb315ca6f23991a669",
+    "src/scene_visibility.c": "797c20af16b0598df89f9d54a9a7fb03198c381c9880258d6402db7c5808841e",
+    "src/simd.h": "c639184db1b8a3c79b0aa07ad4fbe0a96b8c79e16536b3d98abef0b72d74e150",
+    "src/state.c": "04f4a8355c1fc37c3521001719dae9a55a1e9b7a34c2f1a70c53990a0d26fb38",
+    "src/texture.c": "9c4d999c73b68a7431bd1f0e88c2d3d2e7e1931670ad166ffee535f8d5764c45",
+    "src/types.h": "9eb99eb4dc29359b7edeb4dc817a7dfa8a108f32b84fa97e190a95f3e73a8cfe",
+    "src/vertex_inputs.h": "fb774a51f4627b91dd6d58fc2cb918df04ef224d45cd898dfa1ed5dd9a0b0db5",
+    "src/workers.c": "47c2bb16e01d1f17ce552ce3baa13e15a13f3d125a3c2ee0d6f30ebce8c63e21",
+    "src/workers.h": "3a74a68a42b0e1fc80b426cd3236e329ee70b145a5afe687520575599e709c5a",
+    "src/workers_queue_raw.inc": "ddec9df98f32ce5f428467f97b3a772506019cd4eca90e004afe956a6b9527b3"
+  },
+  "driverSha256": "4029b38308668a43bc057cc1678d0e9daba42dbe4a3c7be64974667a9fc2e85c",
+  "runnerSha256": "407bc7a18325a71be22064e815dbd2e7c0bff40611d4605c32aad4f20e08a624",
+  "residentAssets": true,
+  "coldAssetLoadSeconds": {
+    "bistro": {
+      "baseline": 6.024719901965,
+      "candidate": 6.224321951973252
+    },
+    "sponza": {
+      "baseline": 0.3018221060046926,
+      "candidate": 0.3230679699918255
+    },
+    "bmw": {
+      "baseline": 0.05419266305398196,
+      "candidate": 0.06170318590011448
+    },
+    "t80": {
+      "baseline": 0.08115124306641519,
+      "candidate": 0.08457295305561274
+    }
+  },
+  "cmakeCacheSha256": "c270224c429e4a31d20db2b69fc8e999d48682b175a0e5770161568a5eacdacb",
+  "baselineCmakeCacheSha256": "c270224c429e4a31d20db2b69fc8e999d48682b175a0e5770161568a5eacdacb"
+}
