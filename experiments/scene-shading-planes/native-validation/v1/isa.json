@@ -1,0 +1,47 @@
+{
+  "passed": true,
+  "binaries": {
+    "native/baseline-library/libbaseline_softgl.a": {
+      "sha256": "b36345fc1129012ee4b821712934e6e2c278b89e5682a2fb4b02e7d0960144b8",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 65853
+    },
+    "native/candidate-library/libsoftgl.a": {
+      "sha256": "8e5e8ba7b3d98654cd88bcede4bf5ae29a914ffd487e4c37961613a96773ea7a",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 66632
+    },
+    "native/resident_baseline": {
+      "sha256": "de0dffeb6a2e047f9ee0409ad8cdb928c5975f8725f2fbb096e4a0f62380d375",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 65559
+    },
+    "native/resident_candidate": {
+      "sha256": "aa0ee74c82b1f02aa2900df8ecc45f5a7e7d57f5af04129995e7b840fa4d26cd",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 66338
+    },
+    "native/quality_baseline": {
+      "sha256": "8ea6fa648573ae22e765e0dbbb218ccb2b99921ce0473a013e631c95174eeb5f",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 65406
+    },
+    "native/quality_candidate": {
+      "sha256": "54cd6a365dba66238faccba1a454c4e859e2e808a9cce539a0e17fbe9d84ded8",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 66185
+    },
+    "native/planes_contract": {
+      "sha256": "be203ad7d4d012424c008ed74a1de47a1536b761586934b76e90d81e2ca91961",
+      "avxInstructions": [],
+      "wideRegisters": [],
+      "xmmReferences": 66140
+    }
+  }
+}
