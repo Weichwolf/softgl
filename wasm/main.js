@@ -86,7 +86,7 @@
   });
   console.log('[main] module ready, calling sg_viewer_create');
 
-  /* Render threads actually spawned — 0 when SAB is missing or
+  /* Worker threads actually spawned — 0 when SAB is missing or
    * -pthread was off in the build. Matches sg_thread_count() on a
    * real context once one exists, so we read it lazily below. */
   const hwThreads = Mod.ccall('sg_hwthreads', 'number', [], []);
@@ -102,11 +102,11 @@
   }
 
   function updateThreadStats(ctx) {
-    const threads = Mod.ccall('sg_thread_count', 'number', ['number'], [ctx]);
-    sStatsThreads.textContent = threads > 0
-        ? `${threads} (tile workers + parallel vertex transform)`
-        : '0 (single-threaded fallback — no pthreads)';
-    sStatsThreads.classList.toggle('bad', threads === 0);
+    const workers = Mod.ccall('sg_thread_count', 'number', ['number'], [ctx]);
+    sStatsThreads.textContent = workers > 0
+        ? `${workers + 1} (${workers} workers + main thread)`
+        : '1 (main thread; no workers)';
+    sStatsThreads.classList.toggle('bad', workers === 0);
   }
 
   /* Rolling frame-time window for p50/p95 stats. */
