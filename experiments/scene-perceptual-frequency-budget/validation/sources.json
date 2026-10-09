@@ -1,0 +1,104 @@
+{
+  "utc": "2026-10-09T09:21:20.529747+00:00",
+  "scope": "Private local PDFs and text extraction; not redistributed and not proof of full-paper review",
+  "sources": [
+    {
+      "id": "multirate-2014",
+      "url": "https://graphics.cs.cmu.edu/projects/multirate/multirate.pdf",
+      "downloaded": false,
+      "error": "URLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: unable to get local issuer certificate (_ssl.c:1029)'))"
+    },
+    {
+      "id": "amfs-2014",
+      "url": "https://fileadmin.cs.lth.se/graphics/research/papers/2014/amfs/amfs.pdf",
+      "finalUrl": "https://fileadmin.cs.lth.se/graphics/research/papers/2014/amfs/amfs.pdf",
+      "mime": "application/pdf",
+      "bytes": 48328381,
+      "sha256": "7701647de3fa064b44955f1c9037afbd7ba64ff2528fe33df9f526acc0d27233",
+      "pages": 12,
+      "downloaded": true
+    },
+    {
+      "id": "content-motion-2019",
+      "url": "https://www.leiy.cc/publications/nas/nas-pacmcgit.pdf",
+      "finalUrl": "https://www.leiy.cc/publications/nas/nas-pacmcgit.pdf",
+      "mime": "application/pdf",
+      "bytes": 9176686,
+      "sha256": "90680e6dd3fbd621db66e3cd7de46478631411ab65832d24c5b1c181b8a7ddb4",
+      "pages": 18,
+      "downloaded": true
+    },
+    {
+      "id": "taa-2020",
+      "url": "https://www.leiy.cc/publications/TAA/TemporalAA.pdf",
+      "finalUrl": "https://www.leiy.cc/publications/TAA/TemporalAA.pdf",
+      "mime": "application/pdf",
+      "bytes": 3580454,
+      "sha256": "6ebd1164cd1bc3b1318783f28e4f1d65a8389cb43f858274d75e115ee58c9867",
+      "pages": 15,
+      "downloaded": true
+    },
+    {
+      "id": "bidirectional-2012",
+      "url": "https://www.leiy.cc/publications/BiReproj_SIGG12/bireproj-sigg12.pdf",
+      "finalUrl": "https://www.leiy.cc/publications/BiReproj_SIGG12/bireproj-sigg12.pdf",
+      "mime": "application/pdf",
+      "bytes": 6190033,
+      "sha256": "493360cf97f38a05905920fd997cf5e3d368dd21c160cf531919872652fc6be7",
+      "pages": 49,
+      "downloaded": true
+    },
+    {
+      "id": "ndf-2016",
+      "url": "https://research.nvidia.com/sites/default/files/pubs/2016-06_Filtering-Distributions-of/NDFFiltering.pdf",
+      "finalUrl": "https://research.nvidia.com/sites/default/files/pubs/2016-06_Filtering-Distributions-of/NDFFiltering.pdf",
+      "mime": "application/pdf",
+      "bytes": 3637930,
+      "sha256": "ac870955db3b56b63d80055c16ad98056d50e8c7f2cc7e86e8bfe5da4cd7c72e",
+      "pages": 12,
+      "downloaded": true
+    }
+  ],
+  "alternativeAttempt": {
+    "utc": "2026-10-09T09:28:53.925149+00:00",
+    "id": "multirate-2014",
+    "url": "https://pal.cs.ucr.edu/papers/2014/SIGGRAPH14/multirate.pdf",
+    "scope": "Author-hosted alternative after original CMU certificate verification failure; normal TLS verification enabled",
+    "finalUrl": "https://pal.cs.ucr.edu/papers/2014/SIGGRAPH14/multirate.pdf",
+    "mime": "application/pdf",
+    "downloaded": true,
+    "bytes": 16806200,
+    "sha256": "7973f580111f9aaae4a6c695792064a61f97953835a7d031beda15bca8095825",
+    "pages": 12
+  },
+  "readScope": {
+    "amfs-2014": "Abstract, Sections 3, 6.2, 7 and selected parametric-grid/reuse excerpts; not every equation independently validated",
+    "multirate-2014": "Sections 3.3, 4.1 and 6.3: stage buffering/compaction and adaptive lighting; published evaluation uses simulator",
+    "content-motion-2019": "Sections 3.1-3.4, 4 introduction and selected motion-adaptation excerpts; not a reproduced GPU implementation",
+    "taa-2020": "Selected history validation, accumulation and reconstruction sections",
+    "bidirectional-2012": "Course slides: iterative reprojection, candidate/depth selection, keyframes/latency and disocclusion repair",
+    "ndf-2016": "Abstract, authors and method overview; not a derivation adapted to our DOT3 shader",
+    "bolin-meyer-1998": "Primary university abstract/metadata only; full paper not independently recovered",
+    "lean-2010": "Author page abstract and errata only",
+    "decoupled-2011": "Author page and simulator evaluation scope",
+    "ssim-2004": "Author-hosted publication page and abstract only",
+    "svgf-2017": "Primary research page abstract only; no local algorithm reproduction"
+  },
+  "localRepos": [
+    {
+      "url": "https://github.com/NVlabs/flip",
+      "localPath": "/home/cosmo/Git/flip",
+      "revision": "b475eb4bf394ab877c42166c9eb0a84a02cc5b14",
+      "clean": true,
+      "headerSha256": "412b118db343a3a0d030104f17f46c1e3edc7455d2b83a7398a42e25befed104",
+      "inspection": "Actual C++ evaluate API, linear RGB convention and mean implementation; official README parameter order is not used as API authority"
+    },
+    {
+      "url": "https://github.com/AOMediaCodec/av1-spec",
+      "localPath": "/home/cosmo/Git/av1-spec",
+      "revision": "5e04f3f75e73a5898d7616c47c52f032144b8f80",
+      "clean": true,
+      "inspection": "08.decoding.process.md: Predict chroma from luma process; codec reference only"
+    }
+  ]
+}

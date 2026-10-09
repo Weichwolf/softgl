@@ -50,7 +50,7 @@ mode does not weaken unrelated tests or their pixel tolerances.
 - Lei Yang, Shiqiu Liu and Marco Salvi, *A Survey of Temporal Antialiasing
   Techniques*, Computer Graphics Forum 39(2), 2020:
   [publisher](https://onlinelibrary.wiley.com/doi/10.1111/cgf.14018),
-  [authors' PDF](https://behindthepixels.io/assets/files/TemporalAA.pdf).
+  [authors' PDF](https://www.leiy.cc/publications/TAA/TemporalAA.pdf).
   Covers temporal accumulation, history validation and reconstruction artifacts.
   TAA averaging alone is not evidence of lower render time or a worst-case
   one-byte error bound.
@@ -109,3 +109,22 @@ Adoption needs a substantial reproducible gain, acceptable motion quality,
 unchanged generic correctness tests, native SIMD128/ASan checks and actual
 SIMD128 WASM/browser validation with total memory below 4 GiB. Commit/push each
 accepted improvement and update the live WASM viewer afterward.
+
+## Related experiments and order
+
+First test [spatial multi-rate lighting/luma/chroma](../scene-codec-luma-chroma/README.md)
+with fresh coverage, then add validated history to its expensive lighting
+stage. [Sparse temporal sample reconstruction](../scene-temporal-sample-reconstruction/README.md)
+is a distinct path that can also reduce current visibility/MSAA work. Its
+keyframe/interpolation variant explicitly accounts for latency and fresh-frame
+rate. [Perceptual frequency budgets](../scene-perceptual-frequency-budget/README.md)
+control refinement; [motion/focus sampling](../scene-shutter-budget/README.md)
+tests useful softness from reduced work. All runtime paths remain unimplemented.
+
+Current [hardware sampling](../scene-alpha-plane/README.md) shows substantial
+raster and frontend work as well as shading. Its approximately 26% self-cycle
+share in `scene_resolve` is not a removable wall-time fraction. Nevertheless,
+it cautions against assuming shading reuse alone can erase the full gap to
+GLimpSW. Remeasure joined scopes on each new architecture; pursue reduced
+visibility sampling separately if it remains a major cost. Keep the first
+genuine-coverage path useful without making it the limit of the experiment.

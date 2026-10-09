@@ -1,0 +1,56 @@
+In file included from /home/cosmo/Git/softgl/experiments/scene-perceptual-frequency-budget/flip_probe.cpp:2:
+/home/cosmo/Git/flip/src/cpp/FLIP.h:2311:38: error: no matching constructor for initialization of 'FLIP::image<FLIP::color3>'
+ 2311 |     static FLIP::image<FLIP::color3> magmaMap = FLIP::image<FLIP::color3>(FLIP::MapMagma, 256);
+      |                                      ^          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/flip/src/cpp/FLIP.h:1637:9: note: candidate constructor not viable: no known conversion from 'FLIP::image<FLIP::color3>' to 'const int3' for 1st argument
+ 1637 |         image(const int3 dim)
+      |         ^     ~~~~~~~~~~~~~~
+/home/cosmo/Git/flip/src/cpp/FLIP.h:1642:9: note: candidate constructor not viable: expects an lvalue for 1st argument
+ 1642 |         image(image& image)
+      |         ^     ~~~~~~~~~~~~
+/home/cosmo/Git/flip/src/cpp/FLIP.h:1618:9: note: candidate constructor not viable: requires 0 arguments, but 1 was provided
+ 1618 |         image()
+      |         ^
+/home/cosmo/Git/flip/src/cpp/FLIP.h:1622:9: note: candidate constructor not viable: requires 2 arguments, but 1 was provided
+ 1622 |         image(const int width, const int height)
+      |         ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/flip/src/cpp/FLIP.h:1632:9: note: candidate constructor not viable: requires 2 arguments, but 1 was provided
+ 1632 |         image(const int3 dim, const T clearColor)
+      |         ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/flip/src/cpp/FLIP.h:1648:9: note: candidate constructor not viable: requires 2 arguments, but 1 was provided
+ 1648 |         image(tensor<T>& tensor, const int offset)
+      |         ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/flip/src/cpp/FLIP.h:1654:9: note: candidate constructor not viable: requires 2 arguments, but 1 was provided
+ 1654 |         image(const color3* pColorMap, int size)
+      |         ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/flip/src/cpp/FLIP.h:1627:9: note: candidate constructor not viable: requires 3 arguments, but 1 was provided
+ 1627 |         image(const int width, const int height, const T clearColor)
+      |         ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/flip/src/cpp/FLIP.h:2312:38: error: no matching constructor for initialization of 'FLIP::image<FLIP::color3>'
+ 2312 |     static FLIP::image<FLIP::color3> viridisMap = FLIP::image<FLIP::color3>(FLIP::MapViridis, 256);
+      |                                      ^            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/flip/src/cpp/FLIP.h:1637:9: note: candidate constructor not viable: no known conversion from 'FLIP::image<FLIP::color3>' to 'const int3' for 1st argument
+ 1637 |         image(const int3 dim)
+      |         ^     ~~~~~~~~~~~~~~
+/home/cosmo/Git/flip/src/cpp/FLIP.h:1642:9: note: candidate constructor not viable: expects an lvalue for 1st argument
+ 1642 |         image(image& image)
+      |         ^     ~~~~~~~~~~~~
+/home/cosmo/Git/flip/src/cpp/FLIP.h:1618:9: note: candidate constructor not viable: requires 0 arguments, but 1 was provided
+ 1618 |         image()
+      |         ^
+/home/cosmo/Git/flip/src/cpp/FLIP.h:1622:9: note: candidate constructor not viable: requires 2 arguments, but 1 was provided
+ 1622 |         image(const int width, const int height)
+      |         ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/flip/src/cpp/FLIP.h:1632:9: note: candidate constructor not viable: requires 2 arguments, but 1 was provided
+ 1632 |         image(const int3 dim, const T clearColor)
+      |         ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/flip/src/cpp/FLIP.h:1648:9: note: candidate constructor not viable: requires 2 arguments, but 1 was provided
+ 1648 |         image(tensor<T>& tensor, const int offset)
+      |         ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/flip/src/cpp/FLIP.h:1654:9: note: candidate constructor not viable: requires 2 arguments, but 1 was provided
+ 1654 |         image(const color3* pColorMap, int size)
+      |         ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/home/cosmo/Git/flip/src/cpp/FLIP.h:1627:9: note: candidate constructor not viable: requires 3 arguments, but 1 was provided
+ 1627 |         image(const int width, const int height, const T clearColor)
+      |         ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+2 errors generated.

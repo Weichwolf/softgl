@@ -1,0 +1,3787 @@
+{
+  "width": 640,
+  "height": 360,
+  "inputMsaa": 4,
+  "anglesPerAsset": 9,
+  "assets": 4,
+  "offlineQualityProxy": true,
+  "performanceAcceptance": false,
+  "rendererImplementation": false,
+  "temporalQualityTested": false,
+  "referenceReceiptSha256": "75443a0aef56b72def49e34d7ee8802c5efcbca5f26bd59fe7ad8ca1d024f437",
+  "runnerSha256": "0a05f74cf64989238c3524ed758b3783368d642dd7860909b6a25e52d601bda9",
+  "helperSha256": "f1a227ef7b318c295a7383e398042c37694c6ee3dd4106f4be00b5dd891b990b",
+  "binarySha256": "d00349cb86e19ca954d4371f4adae596b06062c3c1cdb91858a2b82ec2fcbf08",
+  "upstreamRevision": "b475eb4bf394ab877c42166c9eb0a84a02cc5b14",
+  "upstreamHeaderSha256": "412b118db343a3a0d030104f17f46c1e3edc7455d2b83a7398a42e25befed104",
+  "buildCommand": [
+    "/home/cosmo/.local/bin/clang++-22",
+    "-std=c++17",
+    "-O2",
+    "-Wall",
+    "-Wextra",
+    "-msse4.1",
+    "-mno-avx",
+    "-mno-avx2",
+    "-mno-avx512f",
+    "-isystem",
+    "/home/cosmo/Git/flip/src/cpp",
+    "/home/cosmo/Git/softgl/experiments/scene-perceptual-frequency-budget/flip_probe.cpp",
+    "-o",
+    "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe"
+  ],
+  "colorPolicy": "Full-range encoded RGB709 luma coefficients; centered 2x2 box chroma, bilinear reconstruction; RGB gamut clip/round; assume display sRGB then convert to linear RGB for LDR-FLIP",
+  "samplePolicy": "Original full renders are filtered after rendering; no actual shader or geometry work is skipped",
+  "viewingAssumptionsPpd": [
+    60,
+    90
+  ],
+  "controls": [
+    {
+      "identity": {
+        "ppd": 60,
+        "mean": 0,
+        "p95NearestRank": 0,
+        "p99NearestRank": 0,
+        "max": 0,
+        "command": [
+          "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+          "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/control-black.rgb",
+          "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/control-black.rgb",
+          "640",
+          "360",
+          "60",
+          "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/identity-ppd60.flip"
+        ],
+        "errorMapSha256": "0b150fd32588b1daca5569992ebe559c0102c837306b1af4c44d35128ec58366"
+      },
+      "opposite": {
+        "ppd": 60,
+        "mean": 0.968517661,
+        "p95NearestRank": 0.967384756,
+        "p99NearestRank": 0.967384756,
+        "max": 0.967384756,
+        "command": [
+          "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+          "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/control-black.rgb",
+          "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/control-white.rgb",
+          "640",
+          "360",
+          "60",
+          "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/opposite-ppd60.flip"
+        ],
+        "errorMapSha256": "94d92a135f2a6a68935cd701419dc6224bf55dd16ed11f720a4d1ddf9b501b29"
+      }
+    },
+    {
+      "identity": {
+        "ppd": 90,
+        "mean": 0,
+        "p95NearestRank": 0,
+        "p99NearestRank": 0,
+        "max": 0,
+        "command": [
+          "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+          "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/control-black.rgb",
+          "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/control-black.rgb",
+          "640",
+          "360",
+          "90",
+          "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/identity-ppd90.flip"
+        ],
+        "errorMapSha256": "0b150fd32588b1daca5569992ebe559c0102c837306b1af4c44d35128ec58366"
+      },
+      "opposite": {
+        "ppd": 90,
+        "mean": 0.968517721,
+        "p95NearestRank": 0.967394292,
+        "p99NearestRank": 0.967394292,
+        "max": 0.967394292,
+        "command": [
+          "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+          "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/control-black.rgb",
+          "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/control-white.rgb",
+          "640",
+          "360",
+          "90",
+          "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/opposite-ppd90.flip"
+        ],
+        "errorMapSha256": "c82354df02bc9ce73e6394b92df0ac97de7661903a035860da4564d39c66f65e"
+      }
+    }
+  ],
+  "records": [
+    {
+      "asset": "bistro",
+      "angle": 0,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bistro-ms4-baseline-angle0.ppm",
+      "sourceImageSha256": "76733aa5120d1a72cb680778679a1c890d0451ac389a15d4e4e0193ec0c27915",
+      "candidateImageSha256": "caa17a0de90d4554be44647d7c3985f887b6d14f3b6242e106130814ba52666d",
+      "meanAbsoluteChannelError": 1.3233130787037037,
+      "maxChannelError": 114,
+      "fractionPixelsOver8": 0.05444010416666667,
+      "fractionPixelsOver32": 0.0009027777777777777,
+      "meanLumaError": 0.1382788862847222,
+      "maxLumaError": 3.2304000000000013,
+      "fractionPixelsClippedBeforeQuantization": 0.0023784722222222224,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0165956616,
+          "p95NearestRank": 0.0483623631,
+          "p99NearestRank": 0.0824692622,
+          "max": 0.506151319,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle0-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle0-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle0-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "6451b4d40df7fcadc56d684d1ce579f577b12e757d42a628f216628d15c504ef"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0147038018,
+          "p95NearestRank": 0.0424048416,
+          "p99NearestRank": 0.0678870603,
+          "max": 0.394614995,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle0-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle0-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle0-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "0561e2382c48af719f9e0069e35bd80837e6ceb7f2fa04af4c34befb48eb09a6"
+        }
+      ]
+    },
+    {
+      "asset": "bistro",
+      "angle": 0,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bistro-ms4-baseline-angle0.ppm",
+      "sourceImageSha256": "76733aa5120d1a72cb680778679a1c890d0451ac389a15d4e4e0193ec0c27915",
+      "candidateImageSha256": "baeb7703688d1260de763de0478ecff6df940f31505d48941a8b1e4d0f4f5607",
+      "meanAbsoluteChannelError": 9.385855034722223,
+      "maxChannelError": 150,
+      "fractionPixelsOver8": 0.4460763888888889,
+      "fractionPixelsOver32": 0.05345920138888889,
+      "meanLumaError": 9.301832619791664,
+      "maxLumaError": 148.4974,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0884320587,
+          "p95NearestRank": 0.228783444,
+          "p99NearestRank": 0.363518208,
+          "max": 0.658723235,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle0-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle0-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle0-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "4d100639aa5c79c7913d0227d7da04df3e371023b1dd710685d8caa2cb219aec"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0726698488,
+          "p95NearestRank": 0.197353363,
+          "p99NearestRank": 0.309377253,
+          "max": 0.534436822,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle0-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle0-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle0-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "ea58579c66ebae89fbed507ad9111af5424be0d6239f8d7a546befa4d791cd63"
+        }
+      ]
+    },
+    {
+      "asset": "bistro",
+      "angle": 45,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bistro-ms4-baseline-angle45.ppm",
+      "sourceImageSha256": "a6206e52881bb811a6dd9ef0f9ea73eca5f9a9faa9c3554b73f52d1ba7bfa16f",
+      "candidateImageSha256": "96ba04ced7a100291548bfa7497edeae142fd1c849dbbf2839880f43ccddd844",
+      "meanAbsoluteChannelError": 1.1704325810185185,
+      "maxChannelError": 109,
+      "fractionPixelsOver8": 0.04533420138888889,
+      "fractionPixelsOver32": 0.0007855902777777777,
+      "meanLumaError": 0.12909118489583335,
+      "maxLumaError": 3.4623999999999997,
+      "fractionPixelsClippedBeforeQuantization": 0.0013585069444444445,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0147344917,
+          "p95NearestRank": 0.0444464311,
+          "p99NearestRank": 0.0789719373,
+          "max": 0.491852999,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle45-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle45-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle45-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "f3e8563acf306a7bac5e5c2a0c31679347ac931cca33b4309c6e3b48cf43e62c"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0128837349,
+          "p95NearestRank": 0.0389608331,
+          "p99NearestRank": 0.0657439753,
+          "max": 0.373492062,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle45-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle45-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle45-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "d416751e915391b4ad6693cd0b2270811a57d577ecb110f0d8d0f935a2553e49"
+        }
+      ]
+    },
+    {
+      "asset": "bistro",
+      "angle": 45,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bistro-ms4-baseline-angle45.ppm",
+      "sourceImageSha256": "a6206e52881bb811a6dd9ef0f9ea73eca5f9a9faa9c3554b73f52d1ba7bfa16f",
+      "candidateImageSha256": "8621ec2dab06f3cea81e5769f4ce2694c54c9fcc27891375e411c1dc999d4161",
+      "meanAbsoluteChannelError": 8.806809895833334,
+      "maxChannelError": 153,
+      "fractionPixelsOver8": 0.4154861111111111,
+      "fractionPixelsOver32": 0.04684027777777778,
+      "meanLumaError": 8.719603032986113,
+      "maxLumaError": 147.781,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0836318433,
+          "p95NearestRank": 0.215692744,
+          "p99NearestRank": 0.33243975,
+          "max": 0.868314981,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle45-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle45-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle45-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "6ea1c199f212b957aa3a14d1c0868657347316d346c4592fdd85876214a6ade7"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0680812672,
+          "p95NearestRank": 0.181064621,
+          "p99NearestRank": 0.281161487,
+          "max": 0.764905453,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle45-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle45-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle45-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "1e985ddbda92e6ce375a8d0c6315472307cd99b4607c1e8fb1fa3a38ec158c65"
+        }
+      ]
+    },
+    {
+      "asset": "bistro",
+      "angle": 90,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bistro-ms4-baseline-angle90.ppm",
+      "sourceImageSha256": "559708f3bf4c23a813b1b55c5db35274a4c4e3168c9bb325db07bf9e8e04190b",
+      "candidateImageSha256": "29a3569050fe6d61aa8383d46beb204f6f868a551374a4353d33644690e8e563",
+      "meanAbsoluteChannelError": 1.0612065972222222,
+      "maxChannelError": 111,
+      "fractionPixelsOver8": 0.038723958333333336,
+      "fractionPixelsOver32": 0.00078125,
+      "meanLumaError": 0.12014247569444446,
+      "maxLumaError": 1.7444,
+      "fractionPixelsClippedBeforeQuantization": 0.0008246527777777778,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.013370445,
+          "p95NearestRank": 0.0409733355,
+          "p99NearestRank": 0.0730654076,
+          "max": 0.565414727,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle90-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle90-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle90-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "44790cac011b81a74af98d5ac5194da4dea340183d44962d17d65791f63497ba"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0116398232,
+          "p95NearestRank": 0.0357956253,
+          "p99NearestRank": 0.0602360144,
+          "max": 0.41165641,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle90-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle90-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle90-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "6ee97dc25f69032f9c49b960a530c2d5171f05c53f37b2783bb0782d9f55ce6c"
+        }
+      ]
+    },
+    {
+      "asset": "bistro",
+      "angle": 90,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bistro-ms4-baseline-angle90.ppm",
+      "sourceImageSha256": "559708f3bf4c23a813b1b55c5db35274a4c4e3168c9bb325db07bf9e8e04190b",
+      "candidateImageSha256": "8920facfb7e24f223285ea09595b50f5094cbbf6b0a5c486019e061941b44cdc",
+      "meanAbsoluteChannelError": 8.447809606481481,
+      "maxChannelError": 165,
+      "fractionPixelsOver8": 0.3975911458333333,
+      "fractionPixelsOver32": 0.042018229166666664,
+      "meanLumaError": 8.367360416666665,
+      "maxLumaError": 161.9948,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0807366148,
+          "p95NearestRank": 0.210120365,
+          "p99NearestRank": 0.326234967,
+          "max": 0.731832981,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle90-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle90-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle90-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "a209b4c39b3d2fb711fbd24cf988f01b392edf1b7623d2d5b6c251ff3e07b54e"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0655111596,
+          "p95NearestRank": 0.175907388,
+          "p99NearestRank": 0.27569142,
+          "max": 0.545308292,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle90-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle90-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle90-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "f4cdcb5320885d259e42c63aa972720e742a98ba1cdcf9942578fdc667225453"
+        }
+      ]
+    },
+    {
+      "asset": "bistro",
+      "angle": 135,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bistro-ms4-baseline-angle135.ppm",
+      "sourceImageSha256": "a6206e52881bb811a6dd9ef0f9ea73eca5f9a9faa9c3554b73f52d1ba7bfa16f",
+      "candidateImageSha256": "96ba04ced7a100291548bfa7497edeae142fd1c849dbbf2839880f43ccddd844",
+      "meanAbsoluteChannelError": 1.1704325810185185,
+      "maxChannelError": 109,
+      "fractionPixelsOver8": 0.04533420138888889,
+      "fractionPixelsOver32": 0.0007855902777777777,
+      "meanLumaError": 0.12909118489583335,
+      "maxLumaError": 3.4623999999999997,
+      "fractionPixelsClippedBeforeQuantization": 0.0013585069444444445,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0147344917,
+          "p95NearestRank": 0.0444464311,
+          "p99NearestRank": 0.0789719373,
+          "max": 0.491852999,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle135-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle135-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle135-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "f3e8563acf306a7bac5e5c2a0c31679347ac931cca33b4309c6e3b48cf43e62c"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0128837349,
+          "p95NearestRank": 0.0389608331,
+          "p99NearestRank": 0.0657439753,
+          "max": 0.373492062,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle135-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle135-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle135-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "d416751e915391b4ad6693cd0b2270811a57d577ecb110f0d8d0f935a2553e49"
+        }
+      ]
+    },
+    {
+      "asset": "bistro",
+      "angle": 135,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bistro-ms4-baseline-angle135.ppm",
+      "sourceImageSha256": "a6206e52881bb811a6dd9ef0f9ea73eca5f9a9faa9c3554b73f52d1ba7bfa16f",
+      "candidateImageSha256": "8621ec2dab06f3cea81e5769f4ce2694c54c9fcc27891375e411c1dc999d4161",
+      "meanAbsoluteChannelError": 8.806809895833334,
+      "maxChannelError": 153,
+      "fractionPixelsOver8": 0.4154861111111111,
+      "fractionPixelsOver32": 0.04684027777777778,
+      "meanLumaError": 8.719603032986113,
+      "maxLumaError": 147.781,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0836318433,
+          "p95NearestRank": 0.215692744,
+          "p99NearestRank": 0.33243975,
+          "max": 0.868314981,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle135-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle135-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle135-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "6ea1c199f212b957aa3a14d1c0868657347316d346c4592fdd85876214a6ade7"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0680812672,
+          "p95NearestRank": 0.181064621,
+          "p99NearestRank": 0.281161487,
+          "max": 0.764905453,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle135-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle135-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle135-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "1e985ddbda92e6ce375a8d0c6315472307cd99b4607c1e8fb1fa3a38ec158c65"
+        }
+      ]
+    },
+    {
+      "asset": "bistro",
+      "angle": 160,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bistro-ms4-baseline-angle160.ppm",
+      "sourceImageSha256": "1e7c838ebfaa03546a3ea73f6fd563f46e637ae6978ff73560b59124a0e02d1d",
+      "candidateImageSha256": "7bfa508eb45c53c12962e294a5aed1a4140b606680e04130e3b75dd95ae4638a",
+      "meanAbsoluteChannelError": 1.3478993055555555,
+      "maxChannelError": 109,
+      "fractionPixelsOver8": 0.05580729166666667,
+      "fractionPixelsOver32": 0.0010894097222222223,
+      "meanLumaError": 0.13786555815972226,
+      "maxLumaError": 2.4315999999999995,
+      "fractionPixelsClippedBeforeQuantization": 0.002183159722222222,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0167705324,
+          "p95NearestRank": 0.0502416305,
+          "p99NearestRank": 0.0846724808,
+          "max": 0.476873547,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle160-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle160-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle160-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "f1387713cea8a6c1e1dd88243f8f85dd0bde325bd93e2910006295f93c12bbed"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0148421489,
+          "p95NearestRank": 0.044624269,
+          "p99NearestRank": 0.0696331561,
+          "max": 0.364440948,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle160-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle160-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle160-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "4a77fab3d1c68735259e67f35892208ffeb36b432db1218eab9fa02649e45b34"
+        }
+      ]
+    },
+    {
+      "asset": "bistro",
+      "angle": 160,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bistro-ms4-baseline-angle160.ppm",
+      "sourceImageSha256": "1e7c838ebfaa03546a3ea73f6fd563f46e637ae6978ff73560b59124a0e02d1d",
+      "candidateImageSha256": "7b3a6bb866ae0ab6f0c9e02a1f251014dcb78fed7b672a66cca36c4fed8e1264",
+      "meanAbsoluteChannelError": 9.585881076388889,
+      "maxChannelError": 146,
+      "fractionPixelsOver8": 0.4527907986111111,
+      "fractionPixelsOver32": 0.0558984375,
+      "meanLumaError": 9.503862754340277,
+      "maxLumaError": 144.647,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0906517506,
+          "p95NearestRank": 0.232963234,
+          "p99NearestRank": 0.35956192,
+          "max": 0.726922929,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle160-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle160-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle160-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "184f1321a4d050d1fb1e23db00951fec2f77fe59ee99f0ce34f3937e37d55e7c"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0747386739,
+          "p95NearestRank": 0.199056432,
+          "p99NearestRank": 0.307982832,
+          "max": 0.559770226,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle160-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle160-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle160-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "2c67cb2d95a1dbf573f6c9bb1a5e02a986ee470057b7684b5027573044634c17"
+        }
+      ]
+    },
+    {
+      "asset": "bistro",
+      "angle": 180,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bistro-ms4-baseline-angle180.ppm",
+      "sourceImageSha256": "76733aa5120d1a72cb680778679a1c890d0451ac389a15d4e4e0193ec0c27915",
+      "candidateImageSha256": "caa17a0de90d4554be44647d7c3985f887b6d14f3b6242e106130814ba52666d",
+      "meanAbsoluteChannelError": 1.3233130787037037,
+      "maxChannelError": 114,
+      "fractionPixelsOver8": 0.05444010416666667,
+      "fractionPixelsOver32": 0.0009027777777777777,
+      "meanLumaError": 0.1382788862847222,
+      "maxLumaError": 3.2304000000000013,
+      "fractionPixelsClippedBeforeQuantization": 0.0023784722222222224,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0165956616,
+          "p95NearestRank": 0.0483623631,
+          "p99NearestRank": 0.0824692622,
+          "max": 0.506151319,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle180-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle180-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle180-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "6451b4d40df7fcadc56d684d1ce579f577b12e757d42a628f216628d15c504ef"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0147038018,
+          "p95NearestRank": 0.0424048416,
+          "p99NearestRank": 0.0678870603,
+          "max": 0.394614995,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle180-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle180-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle180-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "0561e2382c48af719f9e0069e35bd80837e6ceb7f2fa04af4c34befb48eb09a6"
+        }
+      ]
+    },
+    {
+      "asset": "bistro",
+      "angle": 180,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bistro-ms4-baseline-angle180.ppm",
+      "sourceImageSha256": "76733aa5120d1a72cb680778679a1c890d0451ac389a15d4e4e0193ec0c27915",
+      "candidateImageSha256": "baeb7703688d1260de763de0478ecff6df940f31505d48941a8b1e4d0f4f5607",
+      "meanAbsoluteChannelError": 9.385855034722223,
+      "maxChannelError": 150,
+      "fractionPixelsOver8": 0.4460763888888889,
+      "fractionPixelsOver32": 0.05345920138888889,
+      "meanLumaError": 9.301832619791664,
+      "maxLumaError": 148.4974,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0884320587,
+          "p95NearestRank": 0.228783444,
+          "p99NearestRank": 0.363518208,
+          "max": 0.658723235,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle180-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle180-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle180-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "4d100639aa5c79c7913d0227d7da04df3e371023b1dd710685d8caa2cb219aec"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0726698488,
+          "p95NearestRank": 0.197353363,
+          "p99NearestRank": 0.309377253,
+          "max": 0.534436822,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle180-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle180-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle180-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "ea58579c66ebae89fbed507ad9111af5424be0d6239f8d7a546befa4d791cd63"
+        }
+      ]
+    },
+    {
+      "asset": "bistro",
+      "angle": 225,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bistro-ms4-baseline-angle225.ppm",
+      "sourceImageSha256": "e508e874d37f5a3e41c04de60fee135269041cf03c4f53d2993f010b1834e638",
+      "candidateImageSha256": "14b1a073ad429c8ddf2ed6c7bba25fde924aa39325752e0c095191cf3af81834",
+      "meanAbsoluteChannelError": 1.2833203125,
+      "maxChannelError": 110,
+      "fractionPixelsOver8": 0.050520833333333334,
+      "fractionPixelsOver32": 0.0007725694444444444,
+      "meanLumaError": 0.13752764236111112,
+      "maxLumaError": 2.012,
+      "fractionPixelsClippedBeforeQuantization": 0.002673611111111111,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0162597317,
+          "p95NearestRank": 0.0466948524,
+          "p99NearestRank": 0.0841012448,
+          "max": 0.506691873,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle225-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle225-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle225-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "6be08082883ae7f1b3fa35bcbd8f9d8c8ae1d4cf6367d2a724e1aea64793d707"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0144380992,
+          "p95NearestRank": 0.0406824164,
+          "p99NearestRank": 0.0688446462,
+          "max": 0.403794885,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle225-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle225-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle225-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "6a6f54896f4c58d908e50eaae5fe9e80d59e2ff70c3d2a1bf96240ad2cd5ff86"
+        }
+      ]
+    },
+    {
+      "asset": "bistro",
+      "angle": 225,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bistro-ms4-baseline-angle225.ppm",
+      "sourceImageSha256": "e508e874d37f5a3e41c04de60fee135269041cf03c4f53d2993f010b1834e638",
+      "candidateImageSha256": "33eccfeae9b77bf0cd3846b340fcee4956bfa15e032d53fed85f2a74eddedaaf",
+      "meanAbsoluteChannelError": 9.146532118055555,
+      "maxChannelError": 165,
+      "fractionPixelsOver8": 0.43636284722222224,
+      "fractionPixelsOver32": 0.05016059027777778,
+      "meanLumaError": 9.05748507204861,
+      "maxLumaError": 142.79139999999998,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0863508433,
+          "p95NearestRank": 0.223985806,
+          "p99NearestRank": 0.355303645,
+          "max": 0.624452889,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle225-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle225-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle225-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "a26dce1210aac0890ebd9f77aa7057f6d8bfd67e1acf29170a553193647835d1"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0715673044,
+          "p95NearestRank": 0.191662446,
+          "p99NearestRank": 0.306678534,
+          "max": 0.488151342,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle225-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle225-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle225-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "46cabd3977fdf9e6abdd9263e5cb03623d40a14091e63eff59068ef6cf8510d7"
+        }
+      ]
+    },
+    {
+      "asset": "bistro",
+      "angle": 270,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bistro-ms4-baseline-angle270.ppm",
+      "sourceImageSha256": "6baf159479ce3498e363a2704554acf60ad0ddd3853fdcc37c6ff811f18cb1e7",
+      "candidateImageSha256": "d086f5c6706e32639abaa2a56204babc3b94d508aba5bc72bc52f598c5afc1fa",
+      "meanAbsoluteChannelError": 1.2761241319444445,
+      "maxChannelError": 123,
+      "fractionPixelsOver8": 0.04871527777777778,
+      "fractionPixelsOver32": 0.0007248263888888889,
+      "meanLumaError": 0.13905985677083335,
+      "maxLumaError": 2.2418,
+      "fractionPixelsClippedBeforeQuantization": 0.0030078125,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0158430655,
+          "p95NearestRank": 0.0454968736,
+          "p99NearestRank": 0.081981495,
+          "max": 0.479052335,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle270-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle270-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle270-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "2eb3b51426d8de0758791bdc189c46512be8a6f325b7b9f8d97c605b3c620cf4"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0140037164,
+          "p95NearestRank": 0.0399473123,
+          "p99NearestRank": 0.0666696206,
+          "max": 0.371124178,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle270-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle270-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle270-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "aff12ce7fa9b2eb73fe4325dc32c0b552d67988020f9dc6db2c5c66277872064"
+        }
+      ]
+    },
+    {
+      "asset": "bistro",
+      "angle": 270,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bistro-ms4-baseline-angle270.ppm",
+      "sourceImageSha256": "6baf159479ce3498e363a2704554acf60ad0ddd3853fdcc37c6ff811f18cb1e7",
+      "candidateImageSha256": "ca3a49272b5241ad3d4b508783d120438fa9c6a7a75ed2fb1fd782f5da9964f1",
+      "meanAbsoluteChannelError": 8.897916666666667,
+      "maxChannelError": 146,
+      "fractionPixelsOver8": 0.42908854166666666,
+      "fractionPixelsOver32": 0.046258680555555556,
+      "meanLumaError": 8.820469644965277,
+      "maxLumaError": 138.2114,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0846814662,
+          "p95NearestRank": 0.219747439,
+          "p99NearestRank": 0.346327037,
+          "max": 0.633251548,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle270-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle270-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle270-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "c94fd0903ad125b4f16fd14bb74915732b6e8f0af25af88a986c023ee72d7fe1"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0702608079,
+          "p95NearestRank": 0.188085988,
+          "p99NearestRank": 0.298633605,
+          "max": 0.49167195,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle270-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle270-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle270-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "2e657d9875577478eae611fb630664d3903f98e53941b59dbe300194d7e20832"
+        }
+      ]
+    },
+    {
+      "asset": "bistro",
+      "angle": 315,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bistro-ms4-baseline-angle315.ppm",
+      "sourceImageSha256": "e508e874d37f5a3e41c04de60fee135269041cf03c4f53d2993f010b1834e638",
+      "candidateImageSha256": "14b1a073ad429c8ddf2ed6c7bba25fde924aa39325752e0c095191cf3af81834",
+      "meanAbsoluteChannelError": 1.2833203125,
+      "maxChannelError": 110,
+      "fractionPixelsOver8": 0.050520833333333334,
+      "fractionPixelsOver32": 0.0007725694444444444,
+      "meanLumaError": 0.13752764236111112,
+      "maxLumaError": 2.012,
+      "fractionPixelsClippedBeforeQuantization": 0.002673611111111111,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0162597317,
+          "p95NearestRank": 0.0466948524,
+          "p99NearestRank": 0.0841012448,
+          "max": 0.506691873,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle315-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle315-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle315-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "6be08082883ae7f1b3fa35bcbd8f9d8c8ae1d4cf6367d2a724e1aea64793d707"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0144380992,
+          "p95NearestRank": 0.0406824164,
+          "p99NearestRank": 0.0688446462,
+          "max": 0.403794885,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle315-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle315-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle315-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "6a6f54896f4c58d908e50eaae5fe9e80d59e2ff70c3d2a1bf96240ad2cd5ff86"
+        }
+      ]
+    },
+    {
+      "asset": "bistro",
+      "angle": 315,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bistro-ms4-baseline-angle315.ppm",
+      "sourceImageSha256": "e508e874d37f5a3e41c04de60fee135269041cf03c4f53d2993f010b1834e638",
+      "candidateImageSha256": "33eccfeae9b77bf0cd3846b340fcee4956bfa15e032d53fed85f2a74eddedaaf",
+      "meanAbsoluteChannelError": 9.146532118055555,
+      "maxChannelError": 165,
+      "fractionPixelsOver8": 0.43636284722222224,
+      "fractionPixelsOver32": 0.05016059027777778,
+      "meanLumaError": 9.05748507204861,
+      "maxLumaError": 142.79139999999998,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0863508433,
+          "p95NearestRank": 0.223985806,
+          "p99NearestRank": 0.355303645,
+          "max": 0.624452889,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle315-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle315-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle315-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "a26dce1210aac0890ebd9f77aa7057f6d8bfd67e1acf29170a553193647835d1"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0715673044,
+          "p95NearestRank": 0.191662446,
+          "p99NearestRank": 0.306678534,
+          "max": 0.488151342,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle315-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle315-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bistro-angle315-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "46cabd3977fdf9e6abdd9263e5cb03623d40a14091e63eff59068ef6cf8510d7"
+        }
+      ]
+    },
+    {
+      "asset": "sponza",
+      "angle": 0,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/sponza-ms4-baseline-angle0.ppm",
+      "sourceImageSha256": "74f8e4dae6c9d7a5319d1faa28db73f37c31ac8f26aad87b53f3504d1e3b3ed2",
+      "candidateImageSha256": "d09b31bfdca8302dbc33f9039cd65cd0e7d09334f62573ce3675aae7237a0d44",
+      "meanAbsoluteChannelError": 1.0667563657407408,
+      "maxChannelError": 65,
+      "fractionPixelsOver8": 0.031124131944444446,
+      "fractionPixelsOver32": 6.076388888888889e-05,
+      "meanLumaError": 0.13531462934027777,
+      "maxLumaError": 2.2976,
+      "fractionPixelsClippedBeforeQuantization": 0.0006119791666666667,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0105638914,
+          "p95NearestRank": 0.0309584439,
+          "p99NearestRank": 0.0466058403,
+          "max": 0.139447778,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle0-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle0-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle0-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "ddb67dc37b9209387722e351990a6fd2bf75ab1d7fb7460807a661d4e111ba9d"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00894792005,
+          "p95NearestRank": 0.026354827,
+          "p99NearestRank": 0.0371957161,
+          "max": 0.0878177956,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle0-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle0-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle0-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "1545e7bbf541891db962384ce18a4c2bbefcdc338cdc0f4ce3b2a0188f6423d9"
+        }
+      ]
+    },
+    {
+      "asset": "sponza",
+      "angle": 0,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/sponza-ms4-baseline-angle0.ppm",
+      "sourceImageSha256": "74f8e4dae6c9d7a5319d1faa28db73f37c31ac8f26aad87b53f3504d1e3b3ed2",
+      "candidateImageSha256": "b18f4f7f3d3cbb52727af21a93990761b948dced3f95a32309fcf9833794d74c",
+      "meanAbsoluteChannelError": 4.375839120370371,
+      "maxChannelError": 87,
+      "fractionPixelsOver8": 0.21348524305555555,
+      "fractionPixelsOver32": 0.0070182291666666665,
+      "meanLumaError": 4.3586246519097225,
+      "maxLumaError": 70.408,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0441653654,
+          "p95NearestRank": 0.124151453,
+          "p99NearestRank": 0.193309382,
+          "max": 0.392644286,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle0-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle0-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle0-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "67818a165e0b52f18f3fdb984d12349529b915689a60f0a18e51c0460a5e869e"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0346428789,
+          "p95NearestRank": 0.0996353552,
+          "p99NearestRank": 0.162192032,
+          "max": 0.304766417,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle0-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle0-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle0-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "21ddc636907bd05f918ba710146a70d373b257a04c491a65da8bfce04c3ee402"
+        }
+      ]
+    },
+    {
+      "asset": "sponza",
+      "angle": 45,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/sponza-ms4-baseline-angle45.ppm",
+      "sourceImageSha256": "d97c2709f2c9da8a6d199915363d1ce2828d14db6cf96b51fb0fd18abe758176",
+      "candidateImageSha256": "3e9d89114f9bc23ece23d175b2b3039d06fa35744f035f578d2cb47cc9da3857",
+      "meanAbsoluteChannelError": 0.9863411458333333,
+      "maxChannelError": 59,
+      "fractionPixelsOver8": 0.019748263888888888,
+      "fractionPixelsOver32": 9.114583333333334e-05,
+      "meanLumaError": 0.13108929513888892,
+      "maxLumaError": 2.374999999999999,
+      "fractionPixelsClippedBeforeQuantization": 0.0004861111111111111,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00895120855,
+          "p95NearestRank": 0.0239278022,
+          "p99NearestRank": 0.0395521298,
+          "max": 0.136266053,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle45-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle45-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle45-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "89fd3f9e245d5908b4d2a727c57d2d24581d4df18940bbfe748540878c4b792e"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00767694786,
+          "p95NearestRank": 0.0207624454,
+          "p99NearestRank": 0.0319478996,
+          "max": 0.0786785409,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle45-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle45-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle45-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "43327805408584114fff6a3d277544fc040ed47b60ff39420e26a789104094b8"
+        }
+      ]
+    },
+    {
+      "asset": "sponza",
+      "angle": 45,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/sponza-ms4-baseline-angle45.ppm",
+      "sourceImageSha256": "d97c2709f2c9da8a6d199915363d1ce2828d14db6cf96b51fb0fd18abe758176",
+      "candidateImageSha256": "8de5ce45fea6446c708dc140f346097bda42462a1ee15b2ff9955afde67cc50a",
+      "meanAbsoluteChannelError": 4.194441550925926,
+      "maxChannelError": 81,
+      "fractionPixelsOver8": 0.1890060763888889,
+      "fractionPixelsOver32": 0.00703125,
+      "meanLumaError": 4.215434388020833,
+      "maxLumaError": 76.83959999999999,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0420403332,
+          "p95NearestRank": 0.12246266,
+          "p99NearestRank": 0.190903798,
+          "max": 0.423961341,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle45-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle45-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle45-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "dfea500b87cb1e442516d8d0cebd2fb52cd4fb43744ede2cf2f80b8050c758df"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0328774191,
+          "p95NearestRank": 0.0989074036,
+          "p99NearestRank": 0.159518048,
+          "max": 0.312753916,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle45-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle45-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle45-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "c5a9d8d20a3f4d072027592e76c2fcd866d34a4128129ac6067a8cea70e4df55"
+        }
+      ]
+    },
+    {
+      "asset": "sponza",
+      "angle": 90,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/sponza-ms4-baseline-angle90.ppm",
+      "sourceImageSha256": "82e4571bbc2bae41ad48c42984f171a0054f5ed622a36bb9a78870f6246f3894",
+      "candidateImageSha256": "e8073145c5c0aa13e985b72548e7f8c7d5f917e17f16315b5333c3ccb67f88d5",
+      "meanAbsoluteChannelError": 0.9552126736111111,
+      "maxChannelError": 56,
+      "fractionPixelsOver8": 0.019088541666666667,
+      "fractionPixelsOver32": 0.00010416666666666667,
+      "meanLumaError": 0.13051276128472225,
+      "maxLumaError": 1.0706,
+      "fractionPixelsClippedBeforeQuantization": 0.00026475694444444447,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00862335134,
+          "p95NearestRank": 0.0220685974,
+          "p99NearestRank": 0.03726447,
+          "max": 0.111977436,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle90-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle90-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle90-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "c02f52fce5c52638d94263a4a4318f37fa2d8548efe961a31c912995de6609d8"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00741277728,
+          "p95NearestRank": 0.0189729165,
+          "p99NearestRank": 0.0306748077,
+          "max": 0.0809934735,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle90-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle90-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle90-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "85ff47aea9aac4ba939b928dc78bf375a82daa93147e05cc93e50329dea4b443"
+        }
+      ]
+    },
+    {
+      "asset": "sponza",
+      "angle": 90,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/sponza-ms4-baseline-angle90.ppm",
+      "sourceImageSha256": "82e4571bbc2bae41ad48c42984f171a0054f5ed622a36bb9a78870f6246f3894",
+      "candidateImageSha256": "0afd55f09cf30aa6a8bd7be3ef6e518f96de2ab67f70dd78c9c93767c69e3bcd",
+      "meanAbsoluteChannelError": 4.141427951388889,
+      "maxChannelError": 86,
+      "fractionPixelsOver8": 0.18421440972222222,
+      "fractionPixelsOver32": 0.007860243055555556,
+      "meanLumaError": 4.141668362847223,
+      "maxLumaError": 83.8476,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.041085545,
+          "p95NearestRank": 0.124687485,
+          "p99NearestRank": 0.198107839,
+          "max": 0.387601197,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle90-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle90-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle90-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "1bb1c1151a373eca083ef2fb051871b82360efa8774aae67d5ce0e1bffc99d3b"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0322015658,
+          "p95NearestRank": 0.100398101,
+          "p99NearestRank": 0.164462328,
+          "max": 0.282564461,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle90-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle90-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle90-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "3f2e1c35ac69ce396c5e04ef8c74c4fe52194d9e22c0093ab4ab7c2f6d5c6725"
+        }
+      ]
+    },
+    {
+      "asset": "sponza",
+      "angle": 135,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/sponza-ms4-baseline-angle135.ppm",
+      "sourceImageSha256": "d97c2709f2c9da8a6d199915363d1ce2828d14db6cf96b51fb0fd18abe758176",
+      "candidateImageSha256": "3e9d89114f9bc23ece23d175b2b3039d06fa35744f035f578d2cb47cc9da3857",
+      "meanAbsoluteChannelError": 0.9863411458333333,
+      "maxChannelError": 59,
+      "fractionPixelsOver8": 0.019748263888888888,
+      "fractionPixelsOver32": 9.114583333333334e-05,
+      "meanLumaError": 0.13108929513888892,
+      "maxLumaError": 2.374999999999999,
+      "fractionPixelsClippedBeforeQuantization": 0.0004861111111111111,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00895120855,
+          "p95NearestRank": 0.0239278022,
+          "p99NearestRank": 0.0395521298,
+          "max": 0.136266053,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle135-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle135-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle135-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "89fd3f9e245d5908b4d2a727c57d2d24581d4df18940bbfe748540878c4b792e"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00767694786,
+          "p95NearestRank": 0.0207624454,
+          "p99NearestRank": 0.0319478996,
+          "max": 0.0786785409,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle135-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle135-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle135-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "43327805408584114fff6a3d277544fc040ed47b60ff39420e26a789104094b8"
+        }
+      ]
+    },
+    {
+      "asset": "sponza",
+      "angle": 135,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/sponza-ms4-baseline-angle135.ppm",
+      "sourceImageSha256": "d97c2709f2c9da8a6d199915363d1ce2828d14db6cf96b51fb0fd18abe758176",
+      "candidateImageSha256": "8de5ce45fea6446c708dc140f346097bda42462a1ee15b2ff9955afde67cc50a",
+      "meanAbsoluteChannelError": 4.194441550925926,
+      "maxChannelError": 81,
+      "fractionPixelsOver8": 0.1890060763888889,
+      "fractionPixelsOver32": 0.00703125,
+      "meanLumaError": 4.215434388020833,
+      "maxLumaError": 76.83959999999999,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0420403332,
+          "p95NearestRank": 0.12246266,
+          "p99NearestRank": 0.190903798,
+          "max": 0.423961341,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle135-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle135-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle135-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "dfea500b87cb1e442516d8d0cebd2fb52cd4fb43744ede2cf2f80b8050c758df"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0328774191,
+          "p95NearestRank": 0.0989074036,
+          "p99NearestRank": 0.159518048,
+          "max": 0.312753916,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle135-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle135-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle135-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "c5a9d8d20a3f4d072027592e76c2fcd866d34a4128129ac6067a8cea70e4df55"
+        }
+      ]
+    },
+    {
+      "asset": "sponza",
+      "angle": 160,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/sponza-ms4-baseline-angle160.ppm",
+      "sourceImageSha256": "833e920cd0d620d2329406b9fc78ad5c368592852193a2b3f5226d40b2373748",
+      "candidateImageSha256": "2eb40965b2a6856564352f70c41b2c9103ff8c6cdfce2f71b5415a96687fea8d",
+      "meanAbsoluteChannelError": 0.9692317708333333,
+      "maxChannelError": 57,
+      "fractionPixelsOver8": 0.019171006944444444,
+      "fractionPixelsOver32": 6.510416666666667e-05,
+      "meanLumaError": 0.13187477690972224,
+      "maxLumaError": 2.6546,
+      "fractionPixelsClippedBeforeQuantization": 0.0005946180555555556,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00929771177,
+          "p95NearestRank": 0.0254935548,
+          "p99NearestRank": 0.0404003635,
+          "max": 0.103852853,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle160-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle160-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle160-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "d6319c8b79231151ad0ed8d26232c7a478008370c63b3137402cd4c2721cddb0"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0078956103,
+          "p95NearestRank": 0.0216892473,
+          "p99NearestRank": 0.0326641761,
+          "max": 0.069721736,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle160-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle160-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle160-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "a506a4097a0b54aa136537067fc305e715f64a0d5759b6ce4951abf84d1de4db"
+        }
+      ]
+    },
+    {
+      "asset": "sponza",
+      "angle": 160,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/sponza-ms4-baseline-angle160.ppm",
+      "sourceImageSha256": "833e920cd0d620d2329406b9fc78ad5c368592852193a2b3f5226d40b2373748",
+      "candidateImageSha256": "122e6c6240a59c0b1d55890d74660c15c762d9c378f31967b99a25eb349ba1a1",
+      "meanAbsoluteChannelError": 4.307835648148148,
+      "maxChannelError": 85,
+      "fractionPixelsOver8": 0.1965017361111111,
+      "fractionPixelsOver32": 0.007547743055555556,
+      "meanLumaError": 4.303593011284723,
+      "maxLumaError": 78.33980000000001,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0433526747,
+          "p95NearestRank": 0.124516025,
+          "p99NearestRank": 0.195909634,
+          "max": 0.44707185,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle160-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle160-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle160-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "011592328224f5b52271bbeafe39e3ebf6fc57a6751f366858b84fa42fb90da7"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.033896856,
+          "p95NearestRank": 0.101111732,
+          "p99NearestRank": 0.16303508,
+          "max": 0.343222469,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle160-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle160-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle160-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "7acfd2d2b8fbef4f5b2fcf78caa878e4dbb45051be27017cabe7735ec47fce8d"
+        }
+      ]
+    },
+    {
+      "asset": "sponza",
+      "angle": 180,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/sponza-ms4-baseline-angle180.ppm",
+      "sourceImageSha256": "74f8e4dae6c9d7a5319d1faa28db73f37c31ac8f26aad87b53f3504d1e3b3ed2",
+      "candidateImageSha256": "d09b31bfdca8302dbc33f9039cd65cd0e7d09334f62573ce3675aae7237a0d44",
+      "meanAbsoluteChannelError": 1.0667563657407408,
+      "maxChannelError": 65,
+      "fractionPixelsOver8": 0.031124131944444446,
+      "fractionPixelsOver32": 6.076388888888889e-05,
+      "meanLumaError": 0.13531462934027777,
+      "maxLumaError": 2.2976,
+      "fractionPixelsClippedBeforeQuantization": 0.0006119791666666667,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0105638914,
+          "p95NearestRank": 0.0309584439,
+          "p99NearestRank": 0.0466058403,
+          "max": 0.139447778,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle180-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle180-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle180-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "ddb67dc37b9209387722e351990a6fd2bf75ab1d7fb7460807a661d4e111ba9d"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00894792005,
+          "p95NearestRank": 0.026354827,
+          "p99NearestRank": 0.0371957161,
+          "max": 0.0878177956,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle180-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle180-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle180-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "1545e7bbf541891db962384ce18a4c2bbefcdc338cdc0f4ce3b2a0188f6423d9"
+        }
+      ]
+    },
+    {
+      "asset": "sponza",
+      "angle": 180,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/sponza-ms4-baseline-angle180.ppm",
+      "sourceImageSha256": "74f8e4dae6c9d7a5319d1faa28db73f37c31ac8f26aad87b53f3504d1e3b3ed2",
+      "candidateImageSha256": "b18f4f7f3d3cbb52727af21a93990761b948dced3f95a32309fcf9833794d74c",
+      "meanAbsoluteChannelError": 4.375839120370371,
+      "maxChannelError": 87,
+      "fractionPixelsOver8": 0.21348524305555555,
+      "fractionPixelsOver32": 0.0070182291666666665,
+      "meanLumaError": 4.3586246519097225,
+      "maxLumaError": 70.408,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0441653654,
+          "p95NearestRank": 0.124151453,
+          "p99NearestRank": 0.193309382,
+          "max": 0.392644286,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle180-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle180-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle180-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "67818a165e0b52f18f3fdb984d12349529b915689a60f0a18e51c0460a5e869e"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0346428789,
+          "p95NearestRank": 0.0996353552,
+          "p99NearestRank": 0.162192032,
+          "max": 0.304766417,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle180-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle180-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle180-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "21ddc636907bd05f918ba710146a70d373b257a04c491a65da8bfce04c3ee402"
+        }
+      ]
+    },
+    {
+      "asset": "sponza",
+      "angle": 225,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/sponza-ms4-baseline-angle225.ppm",
+      "sourceImageSha256": "bacb754bd8d1a897a2d6ffd7600875e3d7ec505ba40635c8c0c0526801143384",
+      "candidateImageSha256": "1bb7a31edf5e5171a6b3c3a9f51e3a5b10972a8b7db3d5679b1263713067e06c",
+      "meanAbsoluteChannelError": 1.3177459490740742,
+      "maxChannelError": 66,
+      "fractionPixelsOver8": 0.057330729166666664,
+      "fractionPixelsOver32": 8.246527777777778e-05,
+      "meanLumaError": 0.14283278993055556,
+      "maxLumaError": 2.8671999999999995,
+      "fractionPixelsClippedBeforeQuantization": 0.00042100694444444444,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0129107432,
+          "p95NearestRank": 0.0369238183,
+          "p99NearestRank": 0.0539182574,
+          "max": 0.133901611,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle225-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle225-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle225-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "4f10397d13137a0fd088745a35371b080207dcb0a7ac158c2e149c8f56a3e467"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0109737292,
+          "p95NearestRank": 0.0307665113,
+          "p99NearestRank": 0.043174006,
+          "max": 0.0834504291,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle225-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle225-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle225-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "a42d2aa918850e86076522ee748775928f8abf2d4e7844c53626438b2cf11935"
+        }
+      ]
+    },
+    {
+      "asset": "sponza",
+      "angle": 225,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/sponza-ms4-baseline-angle225.ppm",
+      "sourceImageSha256": "bacb754bd8d1a897a2d6ffd7600875e3d7ec505ba40635c8c0c0526801143384",
+      "candidateImageSha256": "56f3ff712db367f0ef7dbb656c0e93ea951b55e48c3f9bc48469379b26b308e0",
+      "meanAbsoluteChannelError": 4.57310619212963,
+      "maxChannelError": 78,
+      "fractionPixelsOver8": 0.251328125,
+      "fractionPixelsOver32": 0.006840277777777778,
+      "meanLumaError": 4.608986042534722,
+      "maxLumaError": 76.0722,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0460514985,
+          "p95NearestRank": 0.122312203,
+          "p99NearestRank": 0.188928351,
+          "max": 0.38381654,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle225-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle225-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle225-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "bbb69864b165bcc975d0e753846056e15c3e8a4065a52d34e2b8c771851ee1cc"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0365569293,
+          "p95NearestRank": 0.0986861959,
+          "p99NearestRank": 0.158349529,
+          "max": 0.309645414,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle225-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle225-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle225-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "ac34cb8d344c93ff92aaaeadd2eb4bbf0a06829514120578150295f95ec82718"
+        }
+      ]
+    },
+    {
+      "asset": "sponza",
+      "angle": 270,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/sponza-ms4-baseline-angle270.ppm",
+      "sourceImageSha256": "84b998e91e6d70c35e1bce75284135273b1516dc42245e5f44ba4ff7f0795cd3",
+      "candidateImageSha256": "2e6c3d9520a6e8c641eeb9ed1eca3fd876faa3a230d20f289157b5ba6ac5e48f",
+      "meanAbsoluteChannelError": 1.4055902777777778,
+      "maxChannelError": 56,
+      "fractionPixelsOver8": 0.06548177083333333,
+      "fractionPixelsOver32": 0.00013020833333333333,
+      "meanLumaError": 0.14572100260416665,
+      "maxLumaError": 1.7279999999999998,
+      "fractionPixelsClippedBeforeQuantization": 0.00040798611111111114,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0138435438,
+          "p95NearestRank": 0.0392879285,
+          "p99NearestRank": 0.0562070608,
+          "max": 0.129320592,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle270-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle270-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle270-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "e8e7c76eb5a7f4b38876bf727a4950c89ff7d6a55f4cf2d18dd21071e69e8ca9"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0117453514,
+          "p95NearestRank": 0.0322250836,
+          "p99NearestRank": 0.0445499681,
+          "max": 0.0876650289,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle270-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle270-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle270-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "5cfcf183dc9c826e2b782dd9c2acb362bf6764c19cd9d1b22b3abf35d578d977"
+        }
+      ]
+    },
+    {
+      "asset": "sponza",
+      "angle": 270,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/sponza-ms4-baseline-angle270.ppm",
+      "sourceImageSha256": "84b998e91e6d70c35e1bce75284135273b1516dc42245e5f44ba4ff7f0795cd3",
+      "candidateImageSha256": "fb09d2f8df7e371e1b3a8d569c7257bbf2fab7be72df91b19c3e622908dfd24a",
+      "meanAbsoluteChannelError": 4.682735821759259,
+      "maxChannelError": 73,
+      "fractionPixelsOver8": 0.268203125,
+      "fractionPixelsOver32": 0.006254340277777778,
+      "meanLumaError": 4.653535809027779,
+      "maxLumaError": 64.3622,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0463583134,
+          "p95NearestRank": 0.120401256,
+          "p99NearestRank": 0.181293935,
+          "max": 0.374966085,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle270-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle270-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle270-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "8c83efaa9a9f845a0567216e151b4e4cb09f4d460cc605f010f1014f9d315cde"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0366781428,
+          "p95NearestRank": 0.0957832634,
+          "p99NearestRank": 0.147472575,
+          "max": 0.29927662,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle270-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle270-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle270-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "b9123bb9c07112e670a1e8c5a683adb88b03dd901f9d97c30b496cf674c4e53f"
+        }
+      ]
+    },
+    {
+      "asset": "sponza",
+      "angle": 315,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/sponza-ms4-baseline-angle315.ppm",
+      "sourceImageSha256": "bacb754bd8d1a897a2d6ffd7600875e3d7ec505ba40635c8c0c0526801143384",
+      "candidateImageSha256": "1bb7a31edf5e5171a6b3c3a9f51e3a5b10972a8b7db3d5679b1263713067e06c",
+      "meanAbsoluteChannelError": 1.3177459490740742,
+      "maxChannelError": 66,
+      "fractionPixelsOver8": 0.057330729166666664,
+      "fractionPixelsOver32": 8.246527777777778e-05,
+      "meanLumaError": 0.14283278993055556,
+      "maxLumaError": 2.8671999999999995,
+      "fractionPixelsClippedBeforeQuantization": 0.00042100694444444444,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0129107432,
+          "p95NearestRank": 0.0369238183,
+          "p99NearestRank": 0.0539182574,
+          "max": 0.133901611,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle315-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle315-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle315-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "4f10397d13137a0fd088745a35371b080207dcb0a7ac158c2e149c8f56a3e467"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0109737292,
+          "p95NearestRank": 0.0307665113,
+          "p99NearestRank": 0.043174006,
+          "max": 0.0834504291,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle315-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle315-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle315-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "a42d2aa918850e86076522ee748775928f8abf2d4e7844c53626438b2cf11935"
+        }
+      ]
+    },
+    {
+      "asset": "sponza",
+      "angle": 315,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/sponza-ms4-baseline-angle315.ppm",
+      "sourceImageSha256": "bacb754bd8d1a897a2d6ffd7600875e3d7ec505ba40635c8c0c0526801143384",
+      "candidateImageSha256": "56f3ff712db367f0ef7dbb656c0e93ea951b55e48c3f9bc48469379b26b308e0",
+      "meanAbsoluteChannelError": 4.57310619212963,
+      "maxChannelError": 78,
+      "fractionPixelsOver8": 0.251328125,
+      "fractionPixelsOver32": 0.006840277777777778,
+      "meanLumaError": 4.608986042534722,
+      "maxLumaError": 76.0722,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0460514985,
+          "p95NearestRank": 0.122312203,
+          "p99NearestRank": 0.188928351,
+          "max": 0.38381654,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle315-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle315-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle315-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "bbb69864b165bcc975d0e753846056e15c3e8a4065a52d34e2b8c771851ee1cc"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0365569293,
+          "p95NearestRank": 0.0986861959,
+          "p99NearestRank": 0.158349529,
+          "max": 0.309645414,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle315-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle315-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/sponza-angle315-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "ac34cb8d344c93ff92aaaeadd2eb4bbf0a06829514120578150295f95ec82718"
+        }
+      ]
+    },
+    {
+      "asset": "bmw",
+      "angle": 0,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bmw-ms4-baseline-angle0.ppm",
+      "sourceImageSha256": "fc8fd167402fc5b8ea63b97448fce993dc777dee244d02091c84d05d01bcc867",
+      "candidateImageSha256": "d9c5ee74cbaf5a621c2e6d06c76151fceb32dbe1968596d9ffc0276e1e3126e4",
+      "meanAbsoluteChannelError": 0.12600694444444444,
+      "maxChannelError": 65,
+      "fractionPixelsOver8": 0.011354166666666667,
+      "fractionPixelsOver32": 0.0005034722222222222,
+      "meanLumaError": 0.010326578993055554,
+      "maxLumaError": 3.1752,
+      "fractionPixelsClippedBeforeQuantization": 0.002322048611111111,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00237119617,
+          "p95NearestRank": 0.0110768778,
+          "p99NearestRank": 0.0569485687,
+          "max": 0.14640215,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle0-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle0-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle0-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "c8c25700874855df8e751336bb0ddd3a18516c8860f9420b5a35a1e0e4c053a0"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00229057297,
+          "p95NearestRank": 0.0124801015,
+          "p99NearestRank": 0.0521212071,
+          "max": 0.123741612,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle0-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle0-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle0-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "cb85596da7b528d53c7c21787085cd46134566f381dbba275f5dd792631390ea"
+        }
+      ]
+    },
+    {
+      "asset": "bmw",
+      "angle": 0,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bmw-ms4-baseline-angle0.ppm",
+      "sourceImageSha256": "fc8fd167402fc5b8ea63b97448fce993dc777dee244d02091c84d05d01bcc867",
+      "candidateImageSha256": "beed04913d39dbe8f68af084d0c8b016571b07bc0198068805a0f79990aac555",
+      "meanAbsoluteChannelError": 1.0122844328703704,
+      "maxChannelError": 148,
+      "fractionPixelsOver8": 0.04139756944444444,
+      "fractionPixelsOver32": 0.007178819444444444,
+      "meanLumaError": 1.0557850190972222,
+      "maxLumaError": 148.0,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0143545317,
+          "p95NearestRank": 0.0990370363,
+          "p99NearestRank": 0.250910491,
+          "max": 0.623292625,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle0-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle0-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle0-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "f3d5db4a87374744dd05032c2e331536a9b9cf019c422ffbd38fb9ba0f88a050"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0126829222,
+          "p95NearestRank": 0.0867215693,
+          "p99NearestRank": 0.218077764,
+          "max": 0.50906992,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle0-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle0-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle0-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "22ed4a52472bd1d6ecb24fdf3c99e36e25b852777041705b064de90a3b6f6f87"
+        }
+      ]
+    },
+    {
+      "asset": "bmw",
+      "angle": 45,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bmw-ms4-baseline-angle45.ppm",
+      "sourceImageSha256": "fe3effd29b1343b07a1f3ff73eeee4c539307ad3c47255b1eed3a3aac958dfad",
+      "candidateImageSha256": "ef6f2c23d4e9bf254f782c83ddf382e41f5b08926451f5577c0564b46e00056d",
+      "meanAbsoluteChannelError": 0.17154224537037038,
+      "maxChannelError": 93,
+      "fractionPixelsOver8": 0.014613715277777778,
+      "fractionPixelsOver32": 0.00047743055555555554,
+      "meanLumaError": 0.01667124045138889,
+      "maxLumaError": 4.7741999999999996,
+      "fractionPixelsClippedBeforeQuantization": 0.005581597222222222,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00320625189,
+          "p95NearestRank": 0.0171275325,
+          "p99NearestRank": 0.0623596273,
+          "max": 0.213655353,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle45-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle45-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle45-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "b676f3a9cee446822dace8546ac71b0e25144efb4da64f263974f8885459a8ad"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00310368417,
+          "p95NearestRank": 0.0182571504,
+          "p99NearestRank": 0.0581671819,
+          "max": 0.166253611,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle45-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle45-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle45-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "6e9796980d42cb9dc5528d281e69d8ac2962ba07e2af0ff70729a8e290e2f323"
+        }
+      ]
+    },
+    {
+      "asset": "bmw",
+      "angle": 45,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bmw-ms4-baseline-angle45.ppm",
+      "sourceImageSha256": "fe3effd29b1343b07a1f3ff73eeee4c539307ad3c47255b1eed3a3aac958dfad",
+      "candidateImageSha256": "ee794cba6f7baa4d8e42d5bedeab96739d125d2209d26730ed79b250cf68dcdd",
+      "meanAbsoluteChannelError": 1.6898697916666667,
+      "maxChannelError": 184,
+      "fractionPixelsOver8": 0.0623046875,
+      "fractionPixelsOver32": 0.013441840277777778,
+      "meanLumaError": 1.7490196276041667,
+      "maxLumaError": 184.0,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0220802892,
+          "p95NearestRank": 0.143479779,
+          "p99NearestRank": 0.322960973,
+          "max": 0.719547987,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle45-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle45-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle45-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "fa3d82f95f9f91ba05eae3969f3523f1ce68a8fc23a9a0ad1459e20509a800e4"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0199191086,
+          "p95NearestRank": 0.126684457,
+          "p99NearestRank": 0.29815203,
+          "max": 0.594411373,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle45-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle45-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle45-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "d6a06e7c60ae3141821d6f98977d52c526eceb8016bacd235e8046c25d79fa32"
+        }
+      ]
+    },
+    {
+      "asset": "bmw",
+      "angle": 90,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bmw-ms4-baseline-angle90.ppm",
+      "sourceImageSha256": "eaa873f72cb7e6ec62e842e312ada967b3647ed582e3705daab22d10a1ac1714",
+      "candidateImageSha256": "6986eea139a14df8f6c9d9d6f2bd97c731e13ddd1de9d50b695215f35ab183a6",
+      "meanAbsoluteChannelError": 0.1715060763888889,
+      "maxChannelError": 62,
+      "fractionPixelsOver8": 0.012912326388888888,
+      "fractionPixelsOver32": 0.0003515625,
+      "meanLumaError": 0.01799424913194445,
+      "maxLumaError": 2.0694,
+      "fractionPixelsClippedBeforeQuantization": 0.0040581597222222225,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00335367909,
+          "p95NearestRank": 0.0191003215,
+          "p99NearestRank": 0.0567203946,
+          "max": 0.185011789,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle90-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle90-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle90-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "43cd847fad4ed84228946475094ba93354c501ed4626a0fd98e758602c6b6ef1"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00321432226,
+          "p95NearestRank": 0.0203784928,
+          "p99NearestRank": 0.0508693196,
+          "max": 0.146291941,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle90-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle90-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle90-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "6f9c556cbb592fe29770993bd2cb4e3ee910b4f322f95980ea823779c555f8be"
+        }
+      ]
+    },
+    {
+      "asset": "bmw",
+      "angle": 90,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bmw-ms4-baseline-angle90.ppm",
+      "sourceImageSha256": "eaa873f72cb7e6ec62e842e312ada967b3647ed582e3705daab22d10a1ac1714",
+      "candidateImageSha256": "7e8a57f1e72a2d94016ea4089309367aaa047a71526aa38057e2e31a54bce942",
+      "meanAbsoluteChannelError": 1.7774262152777778,
+      "maxChannelError": 176,
+      "fractionPixelsOver8": 0.06711371527777778,
+      "fractionPixelsOver32": 0.012821180555555556,
+      "meanLumaError": 1.8379190069444444,
+      "maxLumaError": 172.4894,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0227120761,
+          "p95NearestRank": 0.138597161,
+          "p99NearestRank": 0.306424022,
+          "max": 0.69453603,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle90-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle90-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle90-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "abbcd00de069fa40fe39be6e975051770963d28ae3314ee4ed09ec35b8c1b645"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0199537538,
+          "p95NearestRank": 0.11802955,
+          "p99NearestRank": 0.274553686,
+          "max": 0.597262561,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle90-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle90-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle90-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "40101457e5205368e01699613c62ccc0e5242f48da6869c43dcdec1f7e5ac796"
+        }
+      ]
+    },
+    {
+      "asset": "bmw",
+      "angle": 135,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bmw-ms4-baseline-angle135.ppm",
+      "sourceImageSha256": "ded8c949aedb1ec70da0325f7a317d14ead61b2f359b3cd4121084f316d23ed3",
+      "candidateImageSha256": "82e65eada1c57e8b080d6cb9643695d336e4d77b5f80f3e83ac7bacc31061751",
+      "meanAbsoluteChannelError": 0.16608940972222222,
+      "maxChannelError": 90,
+      "fractionPixelsOver8": 0.013776041666666667,
+      "fractionPixelsOver32": 0.00043402777777777775,
+      "meanLumaError": 0.017102330729166667,
+      "maxLumaError": 2.7072,
+      "fractionPixelsClippedBeforeQuantization": 0.004288194444444444,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00357208983,
+          "p95NearestRank": 0.0183667615,
+          "p99NearestRank": 0.0670477077,
+          "max": 0.199615017,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle135-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle135-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle135-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "13dbd3b685ea76dbf89b24e66995adfa85321551e8fd9bf37f0e17c6b0860236"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00347422343,
+          "p95NearestRank": 0.0202751588,
+          "p99NearestRank": 0.0601767711,
+          "max": 0.161752626,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle135-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle135-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle135-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "44ca5b4b65edc8df4c57d606492546b13b432ba5d062455ddfa422048d8c8fe8"
+        }
+      ]
+    },
+    {
+      "asset": "bmw",
+      "angle": 135,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bmw-ms4-baseline-angle135.ppm",
+      "sourceImageSha256": "ded8c949aedb1ec70da0325f7a317d14ead61b2f359b3cd4121084f316d23ed3",
+      "candidateImageSha256": "150dad379cdd16df407ab4772d56f53e97a8cc97ce21b5b0e1db34be03611a47",
+      "meanAbsoluteChannelError": 1.9801909722222222,
+      "maxChannelError": 173,
+      "fractionPixelsOver8": 0.07176215277777778,
+      "fractionPixelsOver32": 0.01658420138888889,
+      "meanLumaError": 2.0496686406249998,
+      "maxLumaError": 169.4894,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0250754189,
+          "p95NearestRank": 0.159777761,
+          "p99NearestRank": 0.330492496,
+          "max": 0.768511117,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle135-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle135-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle135-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "8420d254c331d81b3aec37be429d646e6aa8d86edd844024ba29de1430b6f7b6"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0221679639,
+          "p95NearestRank": 0.139456734,
+          "p99NearestRank": 0.293703914,
+          "max": 0.649637461,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle135-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle135-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle135-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "82b3169dd92140548b33a6fb23a37d53057c10501d64dc608b4f2ae9d026faab"
+        }
+      ]
+    },
+    {
+      "asset": "bmw",
+      "angle": 160,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bmw-ms4-baseline-angle160.ppm",
+      "sourceImageSha256": "0678474b998ad8d2a4ee42d5dc4da563071c521cc51214ec3764efd9681ceff3",
+      "candidateImageSha256": "ade0deaad27a157241e189ed8360477bd627537cda010cfd3276845b16abc7fa",
+      "meanAbsoluteChannelError": 0.153203125,
+      "maxChannelError": 98,
+      "fractionPixelsOver8": 0.0133984375,
+      "fractionPixelsOver32": 0.00040364583333333333,
+      "meanLumaError": 0.014732503472222228,
+      "maxLumaError": 6.1654,
+      "fractionPixelsClippedBeforeQuantization": 0.0038107638888888887,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00306193274,
+          "p95NearestRank": 0.0146479644,
+          "p99NearestRank": 0.0604719631,
+          "max": 0.304913878,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle160-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle160-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle160-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "23b20d2ce30d3273df477d9f63a62e909d6bd7d28c072d81f82db235ac86978e"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00302787055,
+          "p95NearestRank": 0.0175875295,
+          "p99NearestRank": 0.0564238913,
+          "max": 0.22973001,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle160-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle160-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle160-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "8f9c26e33d6c46bfe1add8b12fd9bcb654851231aa66d7839ad9fa0624c532a4"
+        }
+      ]
+    },
+    {
+      "asset": "bmw",
+      "angle": 160,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bmw-ms4-baseline-angle160.ppm",
+      "sourceImageSha256": "0678474b998ad8d2a4ee42d5dc4da563071c521cc51214ec3764efd9681ceff3",
+      "candidateImageSha256": "3f2d1df1b64eca7fc1b537a4ddbfea5af57e20ce3574aaf10c9635b3ed26e297",
+      "meanAbsoluteChannelError": 1.5798640046296297,
+      "maxChannelError": 177,
+      "fractionPixelsOver8": 0.06138454861111111,
+      "fractionPixelsOver32": 0.012309027777777778,
+      "meanLumaError": 1.6490538072916665,
+      "maxLumaError": 175.99599999999998,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0202440266,
+          "p95NearestRank": 0.135735556,
+          "p99NearestRank": 0.295444816,
+          "max": 0.75900352,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle160-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle160-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle160-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "b892ab538dee3a472530b0025292ed4a1235e0c6851e2557ac27b93d2dc7732d"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.018148521,
+          "p95NearestRank": 0.118571252,
+          "p99NearestRank": 0.275716215,
+          "max": 0.613608658,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle160-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle160-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle160-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "1891b72f563b35f5180ca2f82f24d2bcbe7b22bab3506c970acfcd6368ea013f"
+        }
+      ]
+    },
+    {
+      "asset": "bmw",
+      "angle": 180,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bmw-ms4-baseline-angle180.ppm",
+      "sourceImageSha256": "26e7a941fea556f7f6c5629c573d9e0fe3be634b36a4e407dbd6f713e3ca913d",
+      "candidateImageSha256": "1ad13d03d4fc916162669b9965f85cf05091195bff620632588fb00b2397ac4d",
+      "meanAbsoluteChannelError": 0.1418185763888889,
+      "maxChannelError": 76,
+      "fractionPixelsOver8": 0.012339409722222222,
+      "fractionPixelsOver32": 0.0006727430555555556,
+      "meanLumaError": 0.012116519965277779,
+      "maxLumaError": 4.8898,
+      "fractionPixelsClippedBeforeQuantization": 0.002951388888888889,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00274699554,
+          "p95NearestRank": 0.0106928162,
+          "p99NearestRank": 0.0627701655,
+          "max": 0.265981168,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle180-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle180-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle180-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "981f07c9e859bdd4b8cfb851a13e5f7703fbf4a9734a82fa12a57b5f3e08e3e2"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00269480539,
+          "p95NearestRank": 0.0103659453,
+          "p99NearestRank": 0.0581477955,
+          "max": 0.201499239,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle180-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle180-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle180-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "9de8d40c55ca1caf54f195cf7cccc9fddfb0e82464c08d09c1d9dab3e28f02f9"
+        }
+      ]
+    },
+    {
+      "asset": "bmw",
+      "angle": 180,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bmw-ms4-baseline-angle180.ppm",
+      "sourceImageSha256": "26e7a941fea556f7f6c5629c573d9e0fe3be634b36a4e407dbd6f713e3ca913d",
+      "candidateImageSha256": "0c597045632ea6e99af9e33165ec8cae610e15e9bc8325cbef007435c76d67fe",
+      "meanAbsoluteChannelError": 1.352449363425926,
+      "maxChannelError": 146,
+      "fractionPixelsOver8": 0.05410590277777778,
+      "fractionPixelsOver32": 0.010512152777777778,
+      "meanLumaError": 1.417448107638889,
+      "maxLumaError": 140.14039999999997,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0168788936,
+          "p95NearestRank": 0.11857567,
+          "p99NearestRank": 0.264282852,
+          "max": 0.774366438,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle180-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle180-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle180-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "b907a795d6bb06ded252943e0940bb4cfcc577d225bc76335e7f65b2ff1fd15a"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0147820497,
+          "p95NearestRank": 0.103331842,
+          "p99NearestRank": 0.225553662,
+          "max": 0.661785662,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle180-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle180-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle180-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "a1b2f0a9c02b6a05b554d013133d42d6d57f6474655d404a213c693eec4a3d46"
+        }
+      ]
+    },
+    {
+      "asset": "bmw",
+      "angle": 225,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bmw-ms4-baseline-angle225.ppm",
+      "sourceImageSha256": "02e0fcc823d5c5735bf429f37a707581a1adb44bd5b2ab709920058dc5dfa274",
+      "candidateImageSha256": "05c7ff9df05aab634dc38018709796e8c680aa73d6c3c4ffb668c4d965023f69",
+      "meanAbsoluteChannelError": 0.1694777199074074,
+      "maxChannelError": 103,
+      "fractionPixelsOver8": 0.014131944444444445,
+      "fractionPixelsOver32": 0.0006553819444444444,
+      "meanLumaError": 0.017303578125000003,
+      "maxLumaError": 7.228400000000001,
+      "fractionPixelsClippedBeforeQuantization": 0.0047309027777777775,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00357642095,
+          "p95NearestRank": 0.0191092175,
+          "p99NearestRank": 0.0684458092,
+          "max": 0.261568785,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle225-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle225-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle225-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "55b4900bf87d555dc6ec9c866fe56ca6549e2371d17e751738ddc6ec21efe800"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00346956169,
+          "p95NearestRank": 0.0218596198,
+          "p99NearestRank": 0.0594662428,
+          "max": 0.197317392,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle225-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle225-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle225-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "00b3d83cdec9b0bb83d1da5a32b12897c71a99624a76f6e603298a22dfce3566"
+        }
+      ]
+    },
+    {
+      "asset": "bmw",
+      "angle": 225,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bmw-ms4-baseline-angle225.ppm",
+      "sourceImageSha256": "02e0fcc823d5c5735bf429f37a707581a1adb44bd5b2ab709920058dc5dfa274",
+      "candidateImageSha256": "d0839c452634d298d2b9464051947ef33ff6251d7eeba086b2ce61a7b100b8b1",
+      "meanAbsoluteChannelError": 1.8435908564814816,
+      "maxChannelError": 180,
+      "fractionPixelsOver8": 0.06759548611111112,
+      "fractionPixelsOver32": 0.015264756944444444,
+      "meanLumaError": 1.917155262152778,
+      "maxLumaError": 176.48940000000002,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0236482453,
+          "p95NearestRank": 0.15500617,
+          "p99NearestRank": 0.320911855,
+          "max": 0.743157864,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle225-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle225-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle225-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "782f4061791ec68bf6075205532ff51e03cd0f8e6f2baa470b93a127b4007148"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0213100091,
+          "p95NearestRank": 0.135778129,
+          "p99NearestRank": 0.295861632,
+          "max": 0.639735579,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle225-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle225-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle225-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "393b34ca09da8a28ac7549293aa46683cadc519e4c3206ecb154447c47668d5b"
+        }
+      ]
+    },
+    {
+      "asset": "bmw",
+      "angle": 270,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bmw-ms4-baseline-angle270.ppm",
+      "sourceImageSha256": "0162f1336c8878e5e9bf9da0786b7aed7f3df8f9bd278a3e84ea3acf31194bef",
+      "candidateImageSha256": "de647641dd1a16cbbcf18d497651546727f79351c17ce33e66b84cfcbf7826d4",
+      "meanAbsoluteChannelError": 0.1827734375,
+      "maxChannelError": 54,
+      "fractionPixelsOver8": 0.014466145833333333,
+      "fractionPixelsOver32": 0.0003949652777777778,
+      "meanLumaError": 0.0184981953125,
+      "maxLumaError": 2.2045999999999997,
+      "fractionPixelsClippedBeforeQuantization": 0.003962673611111111,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00362233957,
+          "p95NearestRank": 0.0203695185,
+          "p99NearestRank": 0.0647140965,
+          "max": 0.158951044,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle270-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle270-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle270-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "cd4b8c44b0792358737cf8964aa04a7c6efd145b7a7b75ddca82447f05386b93"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0034961896,
+          "p95NearestRank": 0.0220750589,
+          "p99NearestRank": 0.0570980869,
+          "max": 0.143191203,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle270-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle270-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle270-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "43fb999e3e66e2cbaa8c842fd2f22feaf831d74cd0fe28720fd74a899eae5ba2"
+        }
+      ]
+    },
+    {
+      "asset": "bmw",
+      "angle": 270,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bmw-ms4-baseline-angle270.ppm",
+      "sourceImageSha256": "0162f1336c8878e5e9bf9da0786b7aed7f3df8f9bd278a3e84ea3acf31194bef",
+      "candidateImageSha256": "7ca175ee6e2e4d6d7a18b66f962350af45f9a9f5555b0d939dfd6cbfe8ad77c0",
+      "meanAbsoluteChannelError": 1.8073451967592593,
+      "maxChannelError": 178,
+      "fractionPixelsOver8": 0.06884114583333334,
+      "fractionPixelsOver32": 0.013958333333333333,
+      "meanLumaError": 1.878862435763889,
+      "maxLumaError": 177.0682,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0233522188,
+          "p95NearestRank": 0.144561678,
+          "p99NearestRank": 0.31655243,
+          "max": 0.729895175,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle270-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle270-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle270-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "8ab5cd0a3ee10038bebf5bbcf26c1b3fff49173a80ba13696e9b27bef989057f"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0206883214,
+          "p95NearestRank": 0.124730274,
+          "p99NearestRank": 0.285181522,
+          "max": 0.584637403,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle270-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle270-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle270-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "0dd084fffb1e04ab03f391f860ebf045944890bdb08f1bce31d1d992d41f32c7"
+        }
+      ]
+    },
+    {
+      "asset": "bmw",
+      "angle": 315,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bmw-ms4-baseline-angle315.ppm",
+      "sourceImageSha256": "1d08cdf65aa4d2727b45378bfda9cb3e87b44f3b1bd3bc5b5e9454586940dc6a",
+      "candidateImageSha256": "82bae3d203581cf9bd26151210b3fd9f2b45f5fb66c08035ff58e934c2faaab7",
+      "meanAbsoluteChannelError": 0.16358217592592592,
+      "maxChannelError": 87,
+      "fractionPixelsOver8": 0.013116319444444444,
+      "fractionPixelsOver32": 0.0005425347222222222,
+      "meanLumaError": 0.016476462673611112,
+      "maxLumaError": 2.5628,
+      "fractionPixelsClippedBeforeQuantization": 0.0038975694444444444,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00344647723,
+          "p95NearestRank": 0.0179726537,
+          "p99NearestRank": 0.0663253441,
+          "max": 0.215666473,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle315-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle315-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle315-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "5bc87d57ffed0789d63354fee07f33f4e61c039362dc3495944deb8eb8a88918"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00332009466,
+          "p95NearestRank": 0.0191432219,
+          "p99NearestRank": 0.059291821,
+          "max": 0.168596134,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle315-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle315-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle315-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "3c08f49abb9bb4b7ab674628c9459100ca074c3067b53705e07d1288e9a2237f"
+        }
+      ]
+    },
+    {
+      "asset": "bmw",
+      "angle": 315,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/bmw-ms4-baseline-angle315.ppm",
+      "sourceImageSha256": "1d08cdf65aa4d2727b45378bfda9cb3e87b44f3b1bd3bc5b5e9454586940dc6a",
+      "candidateImageSha256": "95bb6fe466ea7eef8914f7ddae4ab320695b0297fdf5ab511a36a990b7b81ca9",
+      "meanAbsoluteChannelError": 1.9027228009259258,
+      "maxChannelError": 170,
+      "fractionPixelsOver8": 0.06744791666666666,
+      "fractionPixelsOver32": 0.016506076388888888,
+      "meanLumaError": 1.9598626875,
+      "maxLumaError": 167.349,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0240830518,
+          "p95NearestRank": 0.155129865,
+          "p99NearestRank": 0.331755161,
+          "max": 0.721176386,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle315-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle315-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle315-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "29b25d57ae329c6c83af291dc51672d44a1ba0e303bbb9236f79be23000cfb48"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0214018505,
+          "p95NearestRank": 0.135251373,
+          "p99NearestRank": 0.295823097,
+          "max": 0.604216516,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle315-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle315-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/bmw-angle315-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "5f8db741d5f75bf704dbe5ece1fd75cd5d2d6dc523f451e363caa2cf7f0c759f"
+        }
+      ]
+    },
+    {
+      "asset": "t80",
+      "angle": 0,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/t80-ms4-baseline-angle0.ppm",
+      "sourceImageSha256": "1e47341fb1a7b483a6f705da6d8d66a4e73165ddc2a8007d2eb08943e5bd518c",
+      "candidateImageSha256": "e8e91f01278e974323c0a5418503cc65cd8656e66ab4de64ce1f729bf05b0c21",
+      "meanAbsoluteChannelError": 0.06622974537037037,
+      "maxChannelError": 19,
+      "fractionPixelsOver8": 0.0003559027777777778,
+      "fractionPixelsOver32": 0.0,
+      "meanLumaError": 0.012670640625000002,
+      "maxLumaError": 0.7192,
+      "fractionPixelsClippedBeforeQuantization": 0.000625,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.000904315617,
+          "p95NearestRank": 0.00772499293,
+          "p99NearestRank": 0.0130611593,
+          "max": 0.0697295442,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle0-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle0-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle0-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "c4bd9f2351fc4121e113240609766a896ee383fc2b15ff2378ba6e4978c42a71"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.000800305337,
+          "p95NearestRank": 0.00668608677,
+          "p99NearestRank": 0.0107236216,
+          "max": 0.0518442802,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle0-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle0-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle0-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "90e263d15be0ef6ff4ddb03f2c1b02418effc312657160d5173702fb61bdd67f"
+        }
+      ]
+    },
+    {
+      "asset": "t80",
+      "angle": 0,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/t80-ms4-baseline-angle0.ppm",
+      "sourceImageSha256": "1e47341fb1a7b483a6f705da6d8d66a4e73165ddc2a8007d2eb08943e5bd518c",
+      "candidateImageSha256": "8004fa434153a91e2ac4dfe890fa4c5d194212285150e08b4b861f8a10b8b65d",
+      "meanAbsoluteChannelError": 0.3400217013888889,
+      "maxChannelError": 88,
+      "fractionPixelsOver8": 0.01296875,
+      "fractionPixelsOver32": 0.0001345486111111111,
+      "meanLumaError": 0.3735574053819444,
+      "maxLumaError": 77.756,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00478597963,
+          "p95NearestRank": 0.0397960469,
+          "p99NearestRank": 0.0814772397,
+          "max": 0.453518778,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle0-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle0-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle0-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "b6094445640da4a52bf433cfbdc210c7abe4aca03ac142e4a858d4b856d900dd"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00367269339,
+          "p95NearestRank": 0.0295860395,
+          "p99NearestRank": 0.0592416488,
+          "max": 0.352723181,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle0-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle0-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle0-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "d3c42b6231ca504666411fc4924184cd1564386b71d719d77cf000dcf94ed863"
+        }
+      ]
+    },
+    {
+      "asset": "t80",
+      "angle": 45,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/t80-ms4-baseline-angle45.ppm",
+      "sourceImageSha256": "8b333dba10a96d47e02e48ba4d388d813b8ec68cd89ca5c4558a5e2526e74cbc",
+      "candidateImageSha256": "5ae8e6b9c4fe8d0183d235e5de2340fb2331bec3de2440270733a93e3671d5ec",
+      "meanAbsoluteChannelError": 0.09174479166666667,
+      "maxChannelError": 18,
+      "fractionPixelsOver8": 0.0007508680555555555,
+      "fractionPixelsOver32": 0.0,
+      "meanLumaError": 0.01819340364583333,
+      "maxLumaError": 1.1536,
+      "fractionPixelsClippedBeforeQuantization": 0.0018272569444444445,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00125212315,
+          "p95NearestRank": 0.00901227072,
+          "p99NearestRank": 0.0143315224,
+          "max": 0.0715596378,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle45-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle45-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle45-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "5a4caa703add1e82b77faf7069dbb015b3a8e34b7837fbc30621c648eb320fb6"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00112963596,
+          "p95NearestRank": 0.00784400385,
+          "p99NearestRank": 0.0120638795,
+          "max": 0.0501860268,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle45-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle45-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle45-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "3bb8e3ca10a425c2900938eeeaf162b95b61785fa38b2d6da708992218f4de66"
+        }
+      ]
+    },
+    {
+      "asset": "t80",
+      "angle": 45,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/t80-ms4-baseline-angle45.ppm",
+      "sourceImageSha256": "8b333dba10a96d47e02e48ba4d388d813b8ec68cd89ca5c4558a5e2526e74cbc",
+      "candidateImageSha256": "5ba5a6e878d9d2bb760d9e706e1056de1fa0ad71a33aa516004c9460e20e172f",
+      "meanAbsoluteChannelError": 0.5438194444444444,
+      "maxChannelError": 89,
+      "fractionPixelsOver8": 0.021892361111111112,
+      "fractionPixelsOver32": 0.00042100694444444444,
+      "meanLumaError": 0.5881908975694445,
+      "maxLumaError": 78.75599999999999,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00742918719,
+          "p95NearestRank": 0.0538150817,
+          "p99NearestRank": 0.0978542641,
+          "max": 0.51678735,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle45-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle45-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle45-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "d60a6eddf3a9e105258925a5fef1adc253dc900e6f31f33f319d9e575e6e2945"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0062155202,
+          "p95NearestRank": 0.0433123857,
+          "p99NearestRank": 0.0788575932,
+          "max": 0.398707896,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle45-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle45-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle45-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "20c4eb02efaac88e552e93cb0240e56685ebf8da8c9eda0d217cbda5da6e6c82"
+        }
+      ]
+    },
+    {
+      "asset": "t80",
+      "angle": 90,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/t80-ms4-baseline-angle90.ppm",
+      "sourceImageSha256": "4bf017e0a17d30ca3ad60f3ece32f10e6f9324e94d1e88b979e87c113f9a3f11",
+      "candidateImageSha256": "543dfc8e2ad53624321014726d1f856f63a0ecada5e71ac21a8f01c479f80e84",
+      "meanAbsoluteChannelError": 0.11645109953703704,
+      "maxChannelError": 15,
+      "fractionPixelsOver8": 0.0010503472222222223,
+      "fractionPixelsOver32": 0.0,
+      "meanLumaError": 0.021671570312500003,
+      "maxLumaError": 1.4384,
+      "fractionPixelsClippedBeforeQuantization": 0.0017925347222222223,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00157861377,
+          "p95NearestRank": 0.00920159183,
+          "p99NearestRank": 0.0156102767,
+          "max": 0.0599781051,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle90-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle90-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle90-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "7188eca84540f8d030d6fc631f0d2bf0ed0a9ba84a23b6e466576715fa3b1a75"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0014158308,
+          "p95NearestRank": 0.00786164496,
+          "p99NearestRank": 0.0140442606,
+          "max": 0.0445283279,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle90-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle90-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle90-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "243c6c8ddae3e0a73f976e9db6213ea2b90084a28691887b8f4d68b7b7a01d35"
+        }
+      ]
+    },
+    {
+      "asset": "t80",
+      "angle": 90,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/t80-ms4-baseline-angle90.ppm",
+      "sourceImageSha256": "4bf017e0a17d30ca3ad60f3ece32f10e6f9324e94d1e88b979e87c113f9a3f11",
+      "candidateImageSha256": "8a4244ba92998ae75524855ec116656a72a3cdd1e6a3c03adc737d5451651c8d",
+      "meanAbsoluteChannelError": 0.6252213541666667,
+      "maxChannelError": 73,
+      "fractionPixelsOver8": 0.02109375,
+      "fractionPixelsOver32": 0.0011675347222222222,
+      "meanLumaError": 0.6673831241319443,
+      "maxLumaError": 64.32159999999999,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00887346733,
+          "p95NearestRank": 0.0551958904,
+          "p99NearestRank": 0.100455523,
+          "max": 0.413062602,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle90-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle90-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle90-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "3ba9e82c307b80dc6c4046056f85d948905f0d2d94725c0df2399ec80d0e8dea"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00725114765,
+          "p95NearestRank": 0.0416058376,
+          "p99NearestRank": 0.0890588686,
+          "max": 0.308722943,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle90-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle90-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle90-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "da2447bdcaaaa44ee160c6f6c396e0d44ff38e775c372fcf1ae16ad84d3c335e"
+        }
+      ]
+    },
+    {
+      "asset": "t80",
+      "angle": 135,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/t80-ms4-baseline-angle135.ppm",
+      "sourceImageSha256": "7ae6223201d324bc1a9ef70a4999598134a09149d95984166d8d7f173e7a7c29",
+      "candidateImageSha256": "98969668c38bdbc3150f80f8299a36a4d1cf328a830e3ac63e02c78fe72ec73f",
+      "meanAbsoluteChannelError": 0.1163671875,
+      "maxChannelError": 18,
+      "fractionPixelsOver8": 0.0013628472222222223,
+      "fractionPixelsOver32": 0.0,
+      "meanLumaError": 0.021433972222222222,
+      "maxLumaError": 1.7966,
+      "fractionPixelsClippedBeforeQuantization": 0.0012456597222222222,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00160893705,
+          "p95NearestRank": 0.00974484533,
+          "p99NearestRank": 0.015577849,
+          "max": 0.0695956722,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle135-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle135-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle135-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "a1022d7fca4cbe365c7d6212b01489d58daad336f07b0bbebe0abadea5e33082"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0014593089,
+          "p95NearestRank": 0.00829566643,
+          "p99NearestRank": 0.01394659,
+          "max": 0.0515214317,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle135-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle135-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle135-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "dd0d234155e1375519a54f9055bcb4ad13086728788f5c1583f576a8d87dacdb"
+        }
+      ]
+    },
+    {
+      "asset": "t80",
+      "angle": 135,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/t80-ms4-baseline-angle135.ppm",
+      "sourceImageSha256": "7ae6223201d324bc1a9ef70a4999598134a09149d95984166d8d7f173e7a7c29",
+      "candidateImageSha256": "9499ea40bc02704af03aaca7947bee4ae1b57f1c968bc1437c5f9880c561bfc3",
+      "meanAbsoluteChannelError": 0.6426316550925926,
+      "maxChannelError": 86,
+      "fractionPixelsOver8": 0.02359809027777778,
+      "fractionPixelsOver32": 0.0013368055555555555,
+      "meanLumaError": 0.6936575998263889,
+      "maxLumaError": 74.8282,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00891283248,
+          "p95NearestRank": 0.0573864579,
+          "p99NearestRank": 0.105439022,
+          "max": 0.472065628,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle135-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle135-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle135-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "f63e5ccc64ce0d8a95868841248455a01ce26b90890d336c526a854571e0e825"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00743619772,
+          "p95NearestRank": 0.045025941,
+          "p99NearestRank": 0.0904520378,
+          "max": 0.372163683,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle135-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle135-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle135-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "eadcc34a31681675bb5a69da60afc36e785c5f39cea7a2656d043c074feaeed5"
+        }
+      ]
+    },
+    {
+      "asset": "t80",
+      "angle": 160,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/t80-ms4-baseline-angle160.ppm",
+      "sourceImageSha256": "0b6637b1f3c372a14aac424bacf76bd4c3635fc698a188e383890ccd77820f85",
+      "candidateImageSha256": "b0a897a61de2f0f8c7092fb9acc536921f14de80be6aa5bd8c1e3785354cc495",
+      "meanAbsoluteChannelError": 0.09064670138888889,
+      "maxChannelError": 17,
+      "fractionPixelsOver8": 0.0007638888888888889,
+      "fractionPixelsOver32": 0.0,
+      "meanLumaError": 0.01738637760416667,
+      "maxLumaError": 1.3661999999999999,
+      "fractionPixelsClippedBeforeQuantization": 0.001015625,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00127007801,
+          "p95NearestRank": 0.00866699405,
+          "p99NearestRank": 0.0141381156,
+          "max": 0.0762681663,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle160-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle160-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle160-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "002f4cec0944d6d36e04646abaab7fbecd7be4ebc47aa315612d6a31f8f4dec4"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00113700645,
+          "p95NearestRank": 0.00746228779,
+          "p99NearestRank": 0.0114814322,
+          "max": 0.0565300249,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle160-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle160-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle160-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "0c30da1390b37b22eb0baa97bbb867106e6893ecc66ff70ae478dee816ee1a68"
+        }
+      ]
+    },
+    {
+      "asset": "t80",
+      "angle": 160,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/t80-ms4-baseline-angle160.ppm",
+      "sourceImageSha256": "0b6637b1f3c372a14aac424bacf76bd4c3635fc698a188e383890ccd77820f85",
+      "candidateImageSha256": "36f05d9313eb334adb2030eec88068136b0252b7f0a4fb9cf3a4a9b39ea6346d",
+      "meanAbsoluteChannelError": 0.48746238425925925,
+      "maxChannelError": 83,
+      "fractionPixelsOver8": 0.017044270833333333,
+      "fractionPixelsOver32": 0.0008072916666666667,
+      "meanLumaError": 0.5275573576388888,
+      "maxLumaError": 71.9686,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00717591168,
+          "p95NearestRank": 0.0499629937,
+          "p99NearestRank": 0.097621344,
+          "max": 0.476196706,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle160-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle160-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle160-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "18aebdb5bc7bd1d359c2a9ea5cd3a9584ae6c656995e00d8157146fed3822c3c"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00581790274,
+          "p95NearestRank": 0.0378427356,
+          "p99NearestRank": 0.078021653,
+          "max": 0.373806864,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle160-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle160-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle160-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "1fbdbe4b6f62df37113b85ed18631a8d7fdb4069942582715534c4d07624db9f"
+        }
+      ]
+    },
+    {
+      "asset": "t80",
+      "angle": 180,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/t80-ms4-baseline-angle180.ppm",
+      "sourceImageSha256": "793902a67f9f8f5c1d5b923a3eb26166157d96df73b00a307756625a93f996f5",
+      "candidateImageSha256": "28f83e4e262778a8e7e3f433fc93298a540d7efd833f42c7538fdadbd3e59967",
+      "meanAbsoluteChannelError": 0.07184461805555556,
+      "maxChannelError": 18,
+      "fractionPixelsOver8": 0.0008333333333333334,
+      "fractionPixelsOver32": 0.0,
+      "meanLumaError": 0.014112358506944443,
+      "maxLumaError": 0.7192,
+      "fractionPixelsClippedBeforeQuantization": 0.0010894097222222223,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.0010216661,
+          "p95NearestRank": 0.00772548467,
+          "p99NearestRank": 0.0133529017,
+          "max": 0.0577589385,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle180-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle180-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle180-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "859f26ba68819f90be2297c3a7f1f61b889282f1e0e9a6ab23567d3212b57c4e"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.000896334648,
+          "p95NearestRank": 0.00666626543,
+          "p99NearestRank": 0.0107754953,
+          "max": 0.0379180163,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle180-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle180-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle180-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "c98b42f0fc08b86b52171062c9ec2cf51d9e70bd7b9930fdb313eec9ce3a4d9c"
+        }
+      ]
+    },
+    {
+      "asset": "t80",
+      "angle": 180,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/t80-ms4-baseline-angle180.ppm",
+      "sourceImageSha256": "793902a67f9f8f5c1d5b923a3eb26166157d96df73b00a307756625a93f996f5",
+      "candidateImageSha256": "60947eff16441af95596d4dbdf17687226700f0d9527f9e8beb2234f1e206404",
+      "meanAbsoluteChannelError": 0.3636472800925926,
+      "maxChannelError": 84,
+      "fractionPixelsOver8": 0.012625868055555555,
+      "fractionPixelsOver32": 0.00016059027777777778,
+      "meanLumaError": 0.3968581883680556,
+      "maxLumaError": 74.399,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00559900654,
+          "p95NearestRank": 0.0414527059,
+          "p99NearestRank": 0.0859332308,
+          "max": 0.427466333,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle180-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle180-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle180-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "75a16485e0db6777d4a38c6ca790de23131f0f402bf4480f1745acbae432de48"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00438450323,
+          "p95NearestRank": 0.0316173583,
+          "p99NearestRank": 0.0644508079,
+          "max": 0.306910813,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle180-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle180-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle180-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "2d5ab5a384104d15c675a463fb0e67b99024c8fc1230e55f7311341d370b8036"
+        }
+      ]
+    },
+    {
+      "asset": "t80",
+      "angle": 225,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/t80-ms4-baseline-angle225.ppm",
+      "sourceImageSha256": "7fe5956933fdedc00b37bdc567fa8757aa551fd0ee5711091eb551e04891a9ae",
+      "candidateImageSha256": "3c225f43a234bab54b404c90d263a75979640b8106c63adee4c63b2022686f15",
+      "meanAbsoluteChannelError": 0.10048900462962963,
+      "maxChannelError": 18,
+      "fractionPixelsOver8": 0.0007725694444444444,
+      "fractionPixelsOver32": 0.0,
+      "meanLumaError": 0.020047195312500002,
+      "maxLumaError": 1.5788,
+      "fractionPixelsClippedBeforeQuantization": 0.0015928819444444445,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00141056685,
+          "p95NearestRank": 0.00886116084,
+          "p99NearestRank": 0.0140869096,
+          "max": 0.0776157677,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle225-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle225-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle225-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "f9014fbf17bff51d923f4acdaaa15c317e55f2e0a51f045f1fbbe5961f7f0679"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00126462232,
+          "p95NearestRank": 0.00760360714,
+          "p99NearestRank": 0.0118181901,
+          "max": 0.0546074249,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle225-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle225-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle225-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "f5cf4e681ea47b04a565f52ba4c6183af8b09d580d74449688e02373e460cf18"
+        }
+      ]
+    },
+    {
+      "asset": "t80",
+      "angle": 225,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/t80-ms4-baseline-angle225.ppm",
+      "sourceImageSha256": "7fe5956933fdedc00b37bdc567fa8757aa551fd0ee5711091eb551e04891a9ae",
+      "candidateImageSha256": "2b5d464bfe77a8f410bc59819640c2e4be16e3d9d0f29aa116db271412a15681",
+      "meanAbsoluteChannelError": 0.6088715277777778,
+      "maxChannelError": 87,
+      "fractionPixelsOver8": 0.022747395833333333,
+      "fractionPixelsOver32": 0.0005598958333333334,
+      "meanLumaError": 0.6516992873263887,
+      "maxLumaError": 76.756,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00862636324,
+          "p95NearestRank": 0.0564815775,
+          "p99NearestRank": 0.101401582,
+          "max": 0.500673175,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle225-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle225-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle225-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "3ffa113d0a3852b2244ced438caa45035c20028dd67447ddf619c2c0ddf8c188"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00727804471,
+          "p95NearestRank": 0.0455814898,
+          "p99NearestRank": 0.0830876976,
+          "max": 0.38550812,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle225-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle225-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle225-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "25405a1cfc332f3ff22f8e564770d6159fc813c8ef15432f80780223ced616e4"
+        }
+      ]
+    },
+    {
+      "asset": "t80",
+      "angle": 270,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/t80-ms4-baseline-angle270.ppm",
+      "sourceImageSha256": "a7da8977a298a6a16adf661a97bacb4ddcf9eb66b8ed2718574342cbb2d9319b",
+      "candidateImageSha256": "e99c3575ff3edc9974dd4dc55e493ad31319de4fa44c176dab08cc6d18493049",
+      "meanAbsoluteChannelError": 0.11884693287037038,
+      "maxChannelError": 16,
+      "fractionPixelsOver8": 0.0009505208333333334,
+      "fractionPixelsOver32": 0.0,
+      "meanLumaError": 0.02230106510416667,
+      "maxLumaError": 1.4384,
+      "fractionPixelsClippedBeforeQuantization": 0.0020442708333333333,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00163228065,
+          "p95NearestRank": 0.00937415194,
+          "p99NearestRank": 0.0166419204,
+          "max": 0.0676015988,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle270-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle270-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle270-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "d500dc9a0ae72e91adaf1768b1a13607f9e5e6f98984cf99b21c7b345c35a47a"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00147466536,
+          "p95NearestRank": 0.00800373498,
+          "p99NearestRank": 0.0154076433,
+          "max": 0.0483796187,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle270-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle270-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle270-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "853b9438d9fabfef6706c488dd4d3114c479882980f9da3a3d750b57a22da40f"
+        }
+      ]
+    },
+    {
+      "asset": "t80",
+      "angle": 270,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/t80-ms4-baseline-angle270.ppm",
+      "sourceImageSha256": "a7da8977a298a6a16adf661a97bacb4ddcf9eb66b8ed2718574342cbb2d9319b",
+      "candidateImageSha256": "fe674a33046840c2d3fafbf1deaf468b1e9bf02876909c9bebd086358be5cb0e",
+      "meanAbsoluteChannelError": 0.6530353009259259,
+      "maxChannelError": 78,
+      "fractionPixelsOver8": 0.022834201388888888,
+      "fractionPixelsOver32": 0.0011631944444444443,
+      "meanLumaError": 0.6955158706597221,
+      "maxLumaError": 68.1812,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00919413287,
+          "p95NearestRank": 0.0564222187,
+          "p99NearestRank": 0.10833165,
+          "max": 0.439827859,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle270-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle270-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle270-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "4f5733721b248c1e523aadcc18e38664752943442e46bbc8764965bb91a85f2a"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00758540025,
+          "p95NearestRank": 0.0432263874,
+          "p99NearestRank": 0.0992133468,
+          "max": 0.32177642,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle270-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle270-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle270-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "c27dc2c4495829b1f3b9e3d8acd9b7f73148c21774f845dc309cc92aff78fbea"
+        }
+      ]
+    },
+    {
+      "asset": "t80",
+      "angle": 315,
+      "variant": "fine-y-chroma420",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/t80-ms4-baseline-angle315.ppm",
+      "sourceImageSha256": "cc85197c9614910f793570a44724e7754a9d3f7f6514fd0b11bb207c3887c0ba",
+      "candidateImageSha256": "c66ce17f6d676089318a097b1e548d0c809c83cbd89f08582a3563dc872fc1b0",
+      "meanAbsoluteChannelError": 0.1076707175925926,
+      "maxChannelError": 18,
+      "fractionPixelsOver8": 0.001328125,
+      "fractionPixelsOver32": 0.0,
+      "meanLumaError": 0.019569522569444445,
+      "maxLumaError": 2.0132,
+      "fractionPixelsClippedBeforeQuantization": 0.0014453125,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00148902659,
+          "p95NearestRank": 0.00952907,
+          "p99NearestRank": 0.0161110722,
+          "max": 0.0729845688,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle315-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle315-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle315-fine-y-chroma420-ppd60.flip"
+          ],
+          "errorMapSha256": "08fc7883b709b5f2338df3e743f17a12b8bcc96da185d1b1b124bda2e88c65eb"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.0013655558,
+          "p95NearestRank": 0.00820406154,
+          "p99NearestRank": 0.0150412088,
+          "max": 0.052535668,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle315-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle315-fine-y-chroma420.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle315-fine-y-chroma420-ppd90.flip"
+          ],
+          "errorMapSha256": "ca6d7adeb3cb015808acc6f14977211483360691abf525cd0d3954b8ec9c72a7"
+        }
+      ]
+    },
+    {
+      "asset": "t80",
+      "angle": 315,
+      "variant": "coarse-rgb2",
+      "sourceImage": "/home/cosmo/Git/softgl/tmp/scene-msaa-grid-reduction/v1-quality/t80-ms4-baseline-angle315.ppm",
+      "sourceImageSha256": "cc85197c9614910f793570a44724e7754a9d3f7f6514fd0b11bb207c3887c0ba",
+      "candidateImageSha256": "4e71e3847f269bc33ff58ccc05c18af54bdb58a6895686647f76048ade5bbe00",
+      "meanAbsoluteChannelError": 0.6114612268518519,
+      "maxChannelError": 85,
+      "fractionPixelsOver8": 0.023550347222222223,
+      "fractionPixelsOver32": 0.0015538194444444445,
+      "meanLumaError": 0.6606307187499999,
+      "maxLumaError": 74.756,
+      "fractionPixelsClippedBeforeQuantization": 0.0,
+      "flip": [
+        {
+          "ppd": 60,
+          "mean": 0.00830224901,
+          "p95NearestRank": 0.0559910685,
+          "p99NearestRank": 0.107560508,
+          "max": 0.475250602,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle315-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle315-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "60",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle315-coarse-rgb2-ppd60.flip"
+          ],
+          "errorMapSha256": "f6507634d5fff1b487a2ef3583790b4bc020ef7ee3e4c1749e34e7aa0c3a00fd"
+        },
+        {
+          "ppd": 90,
+          "mean": 0.00697791297,
+          "p95NearestRank": 0.0439992882,
+          "p99NearestRank": 0.0915058255,
+          "max": 0.377415985,
+          "command": [
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/flip_probe",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle315-reference.rgb",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle315-coarse-rgb2.rgb",
+            "640",
+            "360",
+            "90",
+            "/home/cosmo/Git/softgl/tmp/scene-codec-luma-chroma/v1-quality-proxy-cxx17/t80-angle315-coarse-rgb2-ppd90.flip"
+          ],
+          "errorMapSha256": "bc35ea5334a55d0f38c0cea449ce37a6bf3a2873019479fff0c7e4b6ac56d71c"
+        }
+      ]
+    }
+  ]
+}
