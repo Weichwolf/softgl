@@ -265,8 +265,7 @@ SG_INLINE void sg_fetch_vertex_attributes(softgl_ctx *c, int index, sg_vert *out
                                  sz, tp->type, &out->uv[u].x, 4, 0.f);
             if (sz < 4) out->uv[u].w = 1.f;
         } else {
-            out->uv[u].x = out->uv[u].y = out->uv[u].z = 0.f;
-            out->uv[u].w = 1.f;
+            memcpy(&out->uv[u], c->current_texcoord[u], sizeof(out->uv[u]));
         }
     }
 }
@@ -288,18 +287,6 @@ static void sg_process_vertex(softgl_ctx *c, int index, sg_vert *out,
         }
     }
     sg_fetch_vertex_attributes(c, index, out, normal, color, inputs);
-    if (c->vertex_attributes_full) {
-        float texcoord[SG_MAX_TEX_UNITS][4];
-        memcpy(texcoord, out->uv, sizeof(texcoord));
-        c->vertex_attributes_full(c->vertex_attribute_data, (GLuint)index, color, texcoord);
-        memcpy(out->uv, texcoord, sizeof(texcoord));
-    }
-    if (c->vertex_attributes) {
-        float texcoord[4];
-        memcpy(texcoord, &out->uv[c->vertex_attribute_unit], sizeof(texcoord));
-        c->vertex_attributes(c->vertex_attribute_data, (GLuint)index, color, texcoord);
-        memcpy(&out->uv[c->vertex_attribute_unit], texcoord, sizeof(texcoord));
-    }
 
     sg_vec4 eye;
     if (cached) {
@@ -756,6 +743,7 @@ void sg_build_vertex_imm(softgl_ctx *c, float px, float py, float pz, float pw, 
 
 void _sg_draw_elements_real(GLenum mode, GLsizei count, GLenum type, const void *indices) {
     softgl_ctx *c = sg_current(); if (!c) return;
+    if (sg_gl_batch_draw(c, mode, count, type, indices)) return;
     int stream = sg_workers_can_stream(c, mode, count);
     if (!stream) sg_workers_flush(c);
     if (c->workers) {

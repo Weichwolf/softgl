@@ -1,4 +1,5 @@
 #include "types.h"
+#include "material_fixture.h"
 #include "workers.h"
 #include <math.h>
 #include <stdio.h>
@@ -95,7 +96,7 @@ static void check_mode(int samples, int workers) {
     program_data data;
     for (int variant = 0; variant < 31; variant++) {
         data.phase = variant;
-        softgl_vertex_attributes_fn fn = variant%7 == 0 ? NULL : variant%3 == 0 ? attributes_second : attributes;
+        fixture_attributes_fn fn = variant%7 == 0 ? NULL : variant%3 == 0 ? attributes_second : attributes;
         for (int i = 0; i < VERTICES; i++) {
             memcpy(eager_colors[i],colors[i],sizeof(eager_colors[i]));
             eager_coordinates[i][0] = coordinates[i][0]; eager_coordinates[i][1] = coordinates[i][1];
@@ -105,10 +106,9 @@ static void check_mode(int samples, int workers) {
         for (int side = 0; side < 2; side++) {
             softgl_ctx *c = contexts[side]; softgl_make_current(c);
             glBindBuffer(GL_ARRAY_BUFFER,0);
-            glColorPointer(4,GL_FLOAT,0,side ? colors : eager_colors);
+            glColorPointer(4,GL_FLOAT,0,eager_colors);
             glClientActiveTexture(GL_TEXTURE3);
-            glTexCoordPointer(side ? 2 : 4,GL_FLOAT,0,side ? (const void *)coordinates : (const void *)eager_coordinates);
-            softgl_set_vertex_attributes(side ? fn : NULL, &data,3);
+            glTexCoordPointer(4,GL_FLOAT,0,eager_coordinates);
             glBindBuffer(GL_ARRAY_BUFFER,buffers[side][0]);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buffers[side][1]);
             if (variant == 8) {
@@ -170,14 +170,6 @@ static void check_mode(int samples, int workers) {
         compare(contexts[0],contexts[1],queries[0],queries[1]);
     }
     if (workers) CHECK(((sg_worker_pool *)contexts[1]->workers)->cluster_cache != NULL);
-    softgl_make_current(contexts[1]);
-    softgl_set_vertex_attributes(attributes,&data,SG_MAX_TEX_UNITS);
-    CHECK(glGetError() == GL_INVALID_VALUE);
-    glBegin(GL_POINTS);
-    softgl_set_vertex_attributes(attributes,&data,3);
-    CHECK(glGetError() == GL_INVALID_OPERATION);
-    glEnd();
-    softgl_set_vertex_attributes(NULL,NULL,0);
     softgl_destroy(contexts[0]); softgl_destroy(contexts[1]);
 }
 
@@ -185,6 +177,6 @@ int main(void) {
     for (int workers = 0; workers <= 3; workers += workers ? 2 : 1) {
         check_mode(0,workers); check_mode(2,workers); check_mode(4,workers);
     }
-    puts("Vertex attributes: 279 paired frames, full color/depth/stencil/sample planes and queries PASS");
+    puts("Vertex arrays: 279 paired frames, full color/depth/stencil/sample planes and queries PASS");
     return 0;
 }

@@ -4,6 +4,51 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define SG_TEXTURE_ALPHA_BUDGET (64u * 1024u * 1024u)
+
+static void sg_texture_release_alpha(softgl_ctx *c, sg_texture *texture) {
+    free(texture->alpha_plane); texture->alpha_plane = NULL;
+    free(texture->alpha_uniform); texture->alpha_uniform = NULL;
+    c->texture_alpha_bytes -= texture->alpha_plane_bytes+texture->alpha_uniform_bytes;
+    texture->alpha_plane_bytes = 0;
+    texture->alpha_uniform_bytes = 0;
+    texture->alpha_constant_valid = 0;
+}
+
+/* A small sampling cache for alpha-tested GL materials. RGBA storage remains
+ * canonical; mutations join pending draws before invalidating this plane. */
+void sg_texture_prepare_alpha(softgl_ctx *c, sg_texture *texture) {
+    if (!texture || texture->alpha_plane || texture->target != GL_TEXTURE_2D ||
+        !texture->data[0] || texture->w[0] <= 0 || texture->h[0] <= 0) return;
+    size_t pixels = (size_t)texture->w[0]*texture->h[0];
+    if (pixels > SG_TEXTURE_ALPHA_BUDGET-c->texture_alpha_bytes) return;
+    uint8_t *alpha = malloc(pixels); if (!alpha) return;
+    int constant = 1;
+    uint8_t first = texture->data[0][3];
+    for (size_t i = 0; i < pixels; i++) {
+        alpha[i] = texture->data[0][i*4+3];
+        if (alpha[i] != first) constant = 0;
+    }
+    texture->alpha_constant_valid = constant;
+    texture->alpha_constant = first*(1.f/255.f);
+    texture->alpha_plane = alpha; texture->alpha_plane_bytes = pixels;
+    c->texture_alpha_bytes += pixels;
+    size_t bytes = (pixels+7)/8;
+    if (texture->w[0] > 1 && texture->h[0] > 1 &&
+        bytes <= SG_TEXTURE_ALPHA_BUDGET-c->texture_alpha_bytes) {
+        uint8_t *uniform = calloc(bytes,1);
+        if (!uniform) return;
+        int w = texture->w[0], h = texture->h[0];
+        for (int y = 0; y < h-1; y++) for (int x = 0; x < w-1; x++) {
+            size_t i = (size_t)y*w+x;
+            if (alpha[i] == alpha[i+1] && alpha[i] == alpha[i+w] && alpha[i] == alpha[i+w+1])
+                uniform[i/8] |= (uint8_t)(1u << (i%8));
+        }
+        texture->alpha_uniform = uniform; texture->alpha_uniform_bytes = bytes;
+        c->texture_alpha_bytes += bytes;
+    }
+}
+
 /* Texture storage + upload. 1D/2D/3D: t->data[level] + w/h/d[level].
  * Cube: t->cube_faces[face][level] + cube_w/cube_h; face 0 mirrors into
  * t->data[]/w/h/d for legacy paths. */
@@ -133,6 +178,7 @@ static void sg_expand_pixel(uint8_t *dst, const void *src, int src_index,
 
 void glGenTextures(GLsizei n, GLuint *out) {
     softgl_ctx *c = sg_current(); if (!c || !out) return;
+    sg_workers_flush(c);
     for (GLsizei i = 0; i < n; i++) {
         GLuint id = 0;
         sg_alloc_tex_slot(c, &id);
@@ -146,6 +192,7 @@ void glDeleteTextures(GLsizei n, const GLuint *ids) {
     for (GLsizei i = 0; i < n; i++) {
         sg_texture *t = sg_texture_get(c, ids[i]);
         if (!t) continue;
+        sg_texture_release_alpha(c,t);
         for (int l = 0; l < SG_MAX_MIPMAP_LEVELS; l++) {
             if (t->data[l]) { sg_aligned_free(t->data[l]); t->data[l] = NULL; }
             for (int f = 0; f < 6; f++) {
@@ -177,6 +224,7 @@ void _sg_bind_texture_real(GLenum target, GLuint id) {
     int slot = sg_target_to_slot(target);
     if (slot < 0) { sg_set_error(GL_INVALID_ENUM); return; }
     if (id != 0 && id > c->textures_cap) {
+        sg_workers_flush(c);
         size_t new_cap = id;
         sg_texture *nt = (sg_texture*)realloc(c->textures, new_cap * sizeof(sg_texture));
         if (!nt) return;
@@ -269,6 +317,7 @@ void _sg_tex_image_2d_real(GLenum target, GLint level, GLint ifmt, GLsizei w, GL
     sg_texture *t = sg_active_tex_for_target(c, SG_TEX_TARGET_2D);
     if (!t) { sg_set_error(GL_INVALID_OPERATION); return; }
     t->target = GL_TEXTURE_2D;
+    if (!level) sg_texture_release_alpha(c,t);
 
     if (t->data[level]) { sg_aligned_free(t->data[level]); t->data[level] = NULL; }
     size_t bytes = (size_t)w * h * 4;
@@ -341,6 +390,7 @@ void _sg_tex_sub_image_2d_real(GLenum target, GLint level, GLint xoff, GLint yof
             sg_set_error(GL_INVALID_OPERATION); return;
         }
         dst = t->data[level];
+        if (!level) sg_texture_release_alpha(c,t);
         tw = t->w[level]; th = t->h[level];
     } else { sg_set_error(GL_INVALID_ENUM); return; }
 
@@ -426,6 +476,7 @@ void _sg_copy_tex_image_2d_real(GLenum target, GLint level, GLenum ifmt,
         t->cube_w[face][level] = w; t->cube_h[face][level] = h;
         t->target = GL_TEXTURE_CUBE_MAP;
     } else {
+        if (!level) sg_texture_release_alpha(c,t);
         if (t->data[level]) { sg_aligned_free(t->data[level]); t->data[level] = NULL; }
         t->data[level] = (uint8_t*)sg_aligned_alloc((size_t)w * h * 4, 16);
         if (!t->data[level]) { free(fb); sg_set_error(GL_OUT_OF_MEMORY); return; }
@@ -472,6 +523,7 @@ void _sg_copy_tex_sub_image_2d_real(GLenum target, GLint level, GLint xoff, GLin
             sg_set_error(GL_INVALID_OPERATION); return;
         }
         dst = t->data[level];
+        if (!level) sg_texture_release_alpha(c,t);
         tw = t->w[level]; th = t->h[level];
     } else { sg_set_error(GL_INVALID_ENUM); return; }
 
@@ -495,6 +547,7 @@ void _sg_tex_parameter_i_real(GLenum target, GLenum pname, GLint param) {
     GLuint id = c->tex_env[c->active_tex_unit].bound_tex_target[slot];
     sg_texture *t = sg_texture_get(c, id);
     if (!t) return;
+    sg_workers_flush(c);
     switch (pname) {
         case GL_TEXTURE_WRAP_S:     t->wrap_s = (GLenum)param; break;
         case GL_TEXTURE_WRAP_T:     t->wrap_t = (GLenum)param; break;

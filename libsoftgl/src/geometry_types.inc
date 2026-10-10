@@ -7,12 +7,13 @@ typedef struct {
     const float *positions, *coordinates;
     const uint32_t *indices;
     uint32_t minimum, span, offset, count;
-    size_t stride;
+    size_t stride, coordinate_stride;
     sg_mat4 modelview, projection;
     int cull_enabled;
     GLenum cull_face, front_face;
-    softgl_vertex_attributes_full_fn program;
-    SG_ALIGN16 unsigned char user[128];
+    sg_vertex_inputs inputs;
+    int simple_arrays;
+    sg_vec4 color, uv[4];
 } scene_mesh;
 
 typedef struct {

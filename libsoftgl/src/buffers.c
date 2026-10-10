@@ -40,6 +40,7 @@ sg_buffer *sg_buffer_get(softgl_ctx *c, GLuint id) {
  * as executed immediately). */
 void glGenBuffers(GLsizei n, GLuint *out) {
     softgl_ctx *c = sg_current(); if (!c || !out) return;
+    sg_workers_flush(c);
     for (GLsizei i = 0; i < n; i++) {
         GLuint id = 0;
         sg_alloc_slot(c, &id);
@@ -49,6 +50,7 @@ void glGenBuffers(GLsizei n, GLuint *out) {
 
 void glDeleteBuffers(GLsizei n, const GLuint *ids) {
     softgl_ctx *c = sg_current(); if (!c || !ids) return;
+    sg_workers_flush(c);
     for (GLsizei i = 0; i < n; i++) {
         GLuint id = ids[i];
         sg_buffer *b = sg_buffer_get(c, id);
@@ -66,6 +68,7 @@ void glDeleteBuffers(GLsizei n, const GLuint *ids) {
 void _sg_bind_buffer_real(GLenum target, GLuint id) {
     softgl_ctx *c = sg_current(); if (!c) return;
     if (id != 0 && id > c->buffers_cap) {
+        sg_workers_flush(c);
         size_t new_cap = id;
         sg_buffer *nb = (sg_buffer*)realloc(c->buffers, new_cap * sizeof(sg_buffer));
         if (!nb) return;
@@ -86,6 +89,7 @@ void _sg_bind_buffer_real(GLenum target, GLuint id) {
 
 void _sg_buffer_data_real(GLenum target, GLsizeiptr size, const void *data, GLenum usage) {
     softgl_ctx *c = sg_current(); if (!c) return;
+    sg_workers_flush(c);
     GLuint id = (target == GL_ARRAY_BUFFER) ? c->array_buffer_binding : c->element_buffer_binding;
     sg_buffer *b = sg_buffer_get(c, id);
     if (!b) return;
@@ -99,6 +103,7 @@ void _sg_buffer_data_real(GLenum target, GLsizeiptr size, const void *data, GLen
 
 void _sg_buffer_subdata_real(GLenum target, GLintptr offset, GLsizeiptr size, const void *data) {
     softgl_ctx *c = sg_current(); if (!c) return;
+    sg_workers_flush(c);
     GLuint id = (target == GL_ARRAY_BUFFER) ? c->array_buffer_binding : c->element_buffer_binding;
     sg_buffer *b = sg_buffer_get(c, id);
     if (!b || !b->data || !data) return;
@@ -288,6 +293,7 @@ static sg_buffer *sg_bound_buffer(softgl_ctx *c, GLenum target) {
 
 void *glMapBuffer(GLenum target, GLenum access) {
     softgl_ctx *c = sg_current(); if (!c) return NULL;
+    sg_workers_flush(c);
     if (access != GL_READ_ONLY && access != GL_WRITE_ONLY && access != GL_READ_WRITE) {
         sg_set_error(GL_INVALID_ENUM); return NULL;
     }

@@ -642,6 +642,8 @@ void glHint(GLenum target, GLenum mode);
 void glIndexMask(GLuint mask);
 
 GLenum glGetError(void);
+void glFinish(void);
+void glFlush(void);
 void glGetIntegerv(GLenum p, GLint *v);
 void glGetFloatv(GLenum p, GLfloat *v);
 void glGetBooleanv(GLenum p, GLboolean *v);
@@ -921,54 +923,6 @@ void  glPassThrough(GLfloat token);
 void glLineStipple(GLint factor, GLushort pattern);
 void glPolygonStipple(const GLubyte *mask);
 void glGetPolygonStipple(GLubyte *mask);
-
-/* ---- Softgl-specific extensions ---- */
-
-/* Optional pure attribute program for vertex-array draws. It can run on
- * workers; user data must be immutable until glDraw* returns, and it must
- * not call GL. Index is the original source vertex, including dense-cull
- * remapping. Color and the selected texture coordinate are in/out values.
- * Positions remain GL-controlled, so conservative geometry culling stays
- * valid. NULL disables the program. Immediate-mode vertices are unaffected. */
-typedef void (*softgl_vertex_attributes_fn)(void *user, GLuint index,
-    GLfloat color[4], GLfloat texcoord[4]);
-void softgl_set_vertex_attributes(softgl_vertex_attributes_fn program, void *user, GLuint texture_unit);
-/* Same lifetime and purity contract, with all four texture coordinates. */
-typedef void (*softgl_vertex_attributes_full_fn)(void *user, GLuint index,
-    GLfloat color[4], GLfloat texcoord[4][4]);
-void softgl_set_vertex_attributes_full(softgl_vertex_attributes_full_fn program, void *user);
-/* NULL restores GL fragment combiners; constants are copied into draw state. */
-void softgl_set_fused_dot3_material(const GLfloat tint[4], GLboolean quartic);
-void softgl_set_fused_dot3_transparent(const GLfloat tint[4], GLboolean quartic);
-/* Scene integration: supported opaque material draws only between
- * begin/end. A failed end restores the pre-batch framebuffer for caller replay. */
-int softgl_scene_visibility_begin(void);
-/* Explicit 1/16-pixel raster quantization for canonical meshes in this scene.
- * Call after a successful begin; each new begin restores full precision.
- * Legacy draws and MSAA keep their existing renderer. */
-void softgl_scene_quantized_visibility(GLboolean enabled);
-/* Scene draw order: 0 original, 1 near-first, 2 opaque then near-first.
- * Four-sample only. May change equal-depth winners and alpha/shading points. */
-void softgl_scene_depth_order(GLuint mode);
-/* Explicit approximate 4x scene shading: merge same-material winners inside
- * one pixel; physical depth/coverage stay fresh. Sets the policy for materials
- * captured subsequently; each begin resets it. Alpha-tested draws stay exact. */
-void softgl_scene_msaa_material_merge(GLboolean enabled);
-/* Opt-in scene cost hint: one input triangle per pixel for MSAA; order mode
- * has the same meaning as softgl_scene_depth_order.
- * No geometry or physical samples are removed. */
-int softgl_scene_visibility_begin_adaptive(GLuint triangles, GLuint mode);
-void softgl_scene_visibility_material(void);
-int softgl_scene_visibility_end(void);
-/* Canonical mesh integration: positions are float XYZ; coordinates
- * are float UV with the same byte stride. Inputs remain immutable through
- * scene end. The copied pure program must preserve UV0/UV2 and alpha one,
- * and may write RGB, half vector UV1, reflection UV3. Only supported opaque
- * triangle batches participate; zero asks the caller to use glDrawElements. */
-int softgl_scene_visibility_positions(const GLfloat *positions, const GLfloat *coordinates,
-    GLsizei stride, GLuint vertex_count, const GLuint *indices, GLsizei count,
-    softgl_vertex_attributes_full_fn program, const void *user, GLuint user_bytes);
-
 
 #ifdef __cplusplus
 }

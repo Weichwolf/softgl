@@ -45,6 +45,18 @@ static void setup(softgl_ctx *c, sg_tex_tri_ctx *t, int kind) {
  * the specialized formula. Include saturation, fractional alpha, ignored
  * operands, and constants on both sides of the allowed color interval. */
 int main(void) {
+    /* Clamp must preserve zeros and unordered source bits while saturating
+     * finite values and infinities. Include quiet and signaling NaNs. */
+    const uint32_t clamp_bits[] = {0,0x80000000u,0x3f800000u,0x3f800001u,
+        0x3f7fffffu,0xbf800000u,0x7f800000u,0xff800000u,0x7fc01234u,0xffc05678u,
+        0x7f801234u,0xff805678u,0x00000001u,0x80000001u};
+    for (unsigned i = 0; i < sizeof(clamp_bits)/sizeof(clamp_bits[0]); i++) {
+        float input[4], output[4];
+        for (int l = 0; l < 4; l++) memcpy(input+l,clamp_bits+i,sizeof(float));
+        sg_f32x4_store(output,sg_chain_clamp(sg_f32x4_load(input)));
+        float expected = input[0] < 0.f ? 0.f : input[0] > 1.f ? 1.f : input[0];
+        for (int l = 0; l < 4; l++) if (memcmp(output+l,&expected,sizeof(float))) return 1;
+    }
     softgl_ctx *c = calloc(1, sizeof(*c));
     if (!c) return 1;
     sg_tex_tri_ctx t;

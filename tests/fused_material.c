@@ -1,4 +1,5 @@
 #include "types.h"
+#include "material_fixture.h"
 #include "workers.h"
 #include <math.h>
 #include <stdio.h>
@@ -130,7 +131,7 @@ static void check_mode(int samples, int workers) {
     program_data data;
     for (int variant = 0; variant < 31; variant++) {
         data.phase = variant;
-        softgl_vertex_attributes_full_fn fn = variant%7 == 0 ? NULL : variant%3 == 0 ? attributes_second : attributes;
+        fixture_attributes_full_fn fn = variant%7 == 0 ? NULL : variant%3 == 0 ? attributes_second : attributes;
         for (int i = 0; i < VERTICES; i++) {
             memcpy(eager_colors[i],colors[i],sizeof(eager_colors[i]));
             float uv[4][4];
@@ -144,14 +145,13 @@ static void check_mode(int samples, int workers) {
         for (int side = 0; side < 2; side++) {
             softgl_ctx *c = contexts[side]; softgl_make_current(c);
             glBindBuffer(GL_ARRAY_BUFFER,0);
-            glColorPointer(4,GL_FLOAT,0,side ? colors : eager_colors);
+            glColorPointer(4,GL_FLOAT,0,eager_colors);
             for (int u = 0; u < 4; u++) {
                 glClientActiveTexture(GL_TEXTURE0+u);
-                glTexCoordPointer(side ? 2 : 4,GL_FLOAT,0,side ? (const void *)coordinates : (const void *)eager_coordinates[u]);
+                glTexCoordPointer(4,GL_FLOAT,0,eager_coordinates[u]);
             }
-            softgl_set_vertex_attributes_full(side ? fn : NULL, &data);
             const float tint[4] = {.3f+variant*.01f,.2f,.4f,.7f};
-            softgl_set_fused_dot3_material(variant%5 == 0 ? NULL : tint, variant&1);
+            fixture_material(variant%5 == 0 ? NULL : tint, variant&1);
             glBindBuffer(GL_ARRAY_BUFFER,buffers[side][0]);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buffers[side][1]);
             if (variant == 8) {
@@ -213,17 +213,6 @@ static void check_mode(int samples, int workers) {
         compare(contexts[0],contexts[1],queries[0],queries[1]);
     }
     if (workers) CHECK(((sg_worker_pool *)contexts[1]->workers)->cluster_cache != NULL);
-    softgl_make_current(contexts[1]);
-    glBegin(GL_POINTS);
-    softgl_set_vertex_attributes_full(attributes,&data);
-    CHECK(glGetError() == GL_INVALID_OPERATION);
-    const float tint[4] = {1,1,1,1};
-    softgl_set_fused_dot3_material(tint,GL_TRUE);
-    CHECK(glGetError() == GL_INVALID_OPERATION);
-    glEnd();
-    softgl_set_vertex_attributes(NULL,NULL,0);
-    CHECK(contexts[1]->vertex_attributes_full == NULL);
-    softgl_set_fused_dot3_material(NULL,GL_FALSE);
     softgl_destroy(contexts[0]); softgl_destroy(contexts[1]);
 }
 
@@ -233,6 +222,6 @@ int main(void) {
         int workers = worker_counts[i];
         check_mode(0,workers); check_mode(2,workers); check_mode(4,workers);
     }
-    puts("Fused material/full attributes: 372 serial/worker paired frames, full color/depth/stencil/sample planes and queries PASS");
+    puts("Fused material/standard arrays: 372 serial/worker paired frames, full color/depth/stencil/sample planes and queries PASS");
     return 0;
 }

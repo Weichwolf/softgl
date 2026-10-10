@@ -1,6 +1,8 @@
 #ifndef SOFTGL_FRAG_PACKET_H
 #define SOFTGL_FRAG_PACKET_H
 
+#include "material_blend.h"
+
 /* All lanes are independent pixels. Coverage and fragment writes remain ordered
  * in the caller; interpolation, addressing and combiners share SIMD work. */
 int sg_packet_sample_cube_coherent(const sg_tex_unit_tri *u,
@@ -86,10 +88,10 @@ SG_INLINE sg_i32x4 sg_packet_pairs(sg_i32x4 a, sg_i32x4 b) {
     return _mm_unpacklo_epi16(p, _mm_srli_si128(p, 8));
 }
 
-SG_INLINE void sg_packet_sample_2d(const sg_tex_unit_tri *u,
+SG_INLINE void sg_packet_sample_2d_channels(const sg_tex_unit_tri *u,
                                     sg_f32x4 x, sg_f32x4 y,
                                     unsigned live, int integer_filter,
-                                    sg_f32x4 out[4]) {
+                                    sg_f32x4 out[4], int channels) {
     const float inv255 = 1.f / 255.f;
     sg_f32x4 fx = sg_f32x4_mul(sg_packet_wrap(x, u->wrap_s), sg_f32x4_splat((float)u->tw));
     sg_f32x4 fy = sg_f32x4_mul(sg_packet_wrap(y, u->wrap_t), sg_f32x4_splat((float)u->th));
@@ -119,7 +121,7 @@ SG_INLINE void sg_packet_sample_2d(const sg_tex_unit_tri *u,
     sg_i32x4 taps[4];
     if (!linear) {
         taps[0] = sg_packet_gather(u->data0, address[0], live);
-        for (int k = 0; k < 4; k++) {
+        for (int k = 0; k < channels; k++) {
             out[k] = sg_f32x4_mul(_mm_cvtepi32_ps(sg_i32x4_and(taps[0],
                 sg_i32x4_splat(255))), sg_f32x4_splat(inv255));
             taps[0] = _mm_srli_epi32(taps[0], 8);
@@ -144,7 +146,7 @@ SG_INLINE void sg_packet_sample_2d(const sg_tex_unit_tri *u,
         weights = sg_packet_pairs(_mm_sub_epi32(sg_i32x4_splat(256), iu), iu);
         iiv = _mm_sub_epi32(sg_i32x4_splat(256), iv);
     }
-    for (int k = 0; k < 4; k++) {
+    for (int k = 0; k < channels; k++) {
         sg_i32x4 channel[4];
         for (int s = 0; s < 4; s++) {
             channel[s] = sg_i32x4_and(taps[s], sg_i32x4_splat(255));
@@ -165,6 +167,16 @@ SG_INLINE void sg_packet_sample_2d(const sg_tex_unit_tri *u,
                                                  sg_f32x4_mul(bot, fv)), sg_f32x4_splat(inv255));
         }
     }
+}
+
+SG_INLINE void sg_packet_sample_2d(const sg_tex_unit_tri *u,
+    sg_f32x4 x, sg_f32x4 y, unsigned live, int integer_filter, sg_f32x4 out[4]) {
+    sg_packet_sample_2d_channels(u,x,y,live,integer_filter,out,4);
+}
+
+SG_INLINE void sg_packet_sample_2d_rgb(const sg_tex_unit_tri *u,
+    sg_f32x4 x, sg_f32x4 y, unsigned live, sg_f32x4 out[4]) {
+    sg_packet_sample_2d_channels(u,x,y,live,0,out,3);
 }
 
 SG_INLINE void sg_packet_sample_unit(const sg_tex_unit_tri *u, int unit,
@@ -207,6 +219,76 @@ SG_INLINE void sg_packet_sample_unit(const sg_tex_unit_tri *u, int unit,
     sg_f32x4 d = sg_f32x4_load(tex[2]), e = sg_f32x4_load(tex[3]);
     _MM_TRANSPOSE4_PS(a, b, d, e);
     out[0] = a; out[1] = b; out[2] = d; out[3] = e;
+}
+
+SG_INLINE sg_f32x4 sg_packet_gather_alpha(const uint8_t *data,
+    const int address[4], unsigned live) {
+    uint32_t bytes = 0;
+    for (unsigned l = 0; l < 4; l++) {
+        if (live & (1u << l)) bytes |= (uint32_t)data[address[l]] << (l*8);
+    }
+    return _mm_cvtepi32_ps(_mm_cvtepu8_epi32(_mm_cvtsi32_si128((int32_t)bytes)));
+}
+
+/* Visibility needs the exact filtered alpha but none of the RGB channels.
+ * The optional byte plane keeps the GL texture dimensions and filtering. */
+SG_INLINE sg_f32x4 sg_packet_sample_unit_alpha(const sg_tex_unit_tri *u, int unit,
+    const sg_vert *v0, const sg_vert *v1, const sg_vert *v2,
+    sg_f32x4 w0, sg_f32x4 w1, sg_f32x4 w2, sg_f32x4 inverse, unsigned live) {
+    if (u->constant_color_valid) return sg_f32x4_splat(u->constant_color[3]);
+    if (!u->alpha_data0 || u->active_slot != SG_TEX_TARGET_2D) {
+        sg_f32x4 rgba[4];
+        sg_packet_sample_unit(u,unit,v0,v1,v2,w0,w1,w2,inverse,live,0,rgba);
+        return rgba[3];
+    }
+    sg_f32x4 x = sg_packet_lerp(v0->uv[unit].x,v1->uv[unit].x,v2->uv[unit].x,w0,w1,w2,inverse);
+    sg_f32x4 y = sg_packet_lerp(v0->uv[unit].y,v1->uv[unit].y,v2->uv[unit].y,w0,w1,w2,inverse);
+    sg_f32x4 fx = sg_f32x4_mul(sg_packet_wrap(x,u->wrap_s),sg_f32x4_splat((float)u->tw));
+    sg_f32x4 fy = sg_f32x4_mul(sg_packet_wrap(y,u->wrap_t),sg_f32x4_splat((float)u->th));
+    int linear = u->filter_mag != GL_NEAREST;
+    if (linear) {
+        fx = sg_f32x4_sub(fx,sg_f32x4_splat(.5f));
+        fy = sg_f32x4_sub(fy,sg_f32x4_splat(.5f));
+    }
+    sg_f32x4 bx = _mm_floor_ps(fx), by = _mm_floor_ps(fy);
+    sg_i32x4 xi = sg_f32x4_trunc_i32(bx), yi = sg_f32x4_trunc_i32(by);
+    sg_i32x4 x0 = sg_packet_address4(xi,u->tw,u->wrap_s,u->tw_mask_pot);
+    sg_i32x4 y0 = sg_packet_address4(yi,u->th,u->wrap_t,u->th_mask_pot);
+    sg_i32x4 row0 = _mm_mullo_epi32(y0,sg_i32x4_splat(u->tw));
+    SG_ALIGN16 int address[4][4];
+    _mm_store_si128((sg_i32x4 *)address[0],sg_i32x4_add(row0,x0));
+    sg_f32x4 inv255 = sg_f32x4_splat(1.f/255.f);
+    sg_f32x4 taps[4];
+    taps[0] = sg_packet_gather_alpha(u->alpha_data0,address[0],live);
+    if (!linear) return sg_f32x4_mul(taps[0],inv255);
+    sg_f32x4 fu = sg_f32x4_sub(fx,bx), fv = sg_f32x4_sub(fy,by);
+    sg_f32x4 ifu = sg_f32x4_sub(sg_f32x4_splat(1.f),fu);
+    sg_f32x4 ifv = sg_f32x4_sub(sg_f32x4_splat(1.f),fv);
+    if (u->alpha_uniform) {
+        unsigned uniform = 0;
+        for (unsigned l = 0; l < 4; l++) if (live & (1u << l)) {
+            size_t i = (size_t)address[0][l];
+            if (u->alpha_uniform[i/8] & (1u << (i%8))) uniform |= 1u << l;
+        }
+        if (uniform == live) {
+            if ((sg_mask4_live(sg_f32x4_eq(taps[0],sg_f32x4_splat(0.f))) & live) == live)
+                return sg_f32x4_splat(0.f);
+            /* Equal taps still use the original arithmetic: alpha-test cutoffs
+             * can observe a float ULP even when RGBA8 output cannot. */
+            sg_f32x4 top = sg_f32x4_add(sg_f32x4_mul(taps[0],ifu),sg_f32x4_mul(taps[0],fu));
+            return sg_f32x4_mul(sg_f32x4_add(sg_f32x4_mul(top,ifv),sg_f32x4_mul(top,fv)),inv255);
+        }
+    }
+    sg_i32x4 x1 = sg_packet_address4(sg_i32x4_add(xi,sg_i32x4_splat(1)),u->tw,u->wrap_s,u->tw_mask_pot);
+    sg_i32x4 y1 = sg_packet_address4(sg_i32x4_add(yi,sg_i32x4_splat(1)),u->th,u->wrap_t,u->th_mask_pot);
+    sg_i32x4 row1 = _mm_mullo_epi32(y1,sg_i32x4_splat(u->tw));
+    _mm_store_si128((sg_i32x4 *)address[1],sg_i32x4_add(row0,x1));
+    _mm_store_si128((sg_i32x4 *)address[2],sg_i32x4_add(row1,x0));
+    _mm_store_si128((sg_i32x4 *)address[3],sg_i32x4_add(row1,x1));
+    for (int s = 1; s < 4; s++) taps[s] = sg_packet_gather_alpha(u->alpha_data0,address[s],live);
+    sg_f32x4 top = sg_f32x4_add(sg_f32x4_mul(taps[0],ifu),sg_f32x4_mul(taps[1],fu));
+    sg_f32x4 bot = sg_f32x4_add(sg_f32x4_mul(taps[2],ifu),sg_f32x4_mul(taps[3],fu));
+    return sg_f32x4_mul(sg_f32x4_add(sg_f32x4_mul(top,ifv),sg_f32x4_mul(bot,fv)),inv255);
 }
 
 SG_INLINE int sg_packet_supported(const softgl_ctx *c, const sg_tex_tri_ctx *t) {
@@ -265,8 +347,10 @@ static __attribute__((noinline)) unsigned sg_shade_transparent_packet(const soft
         diffuse = sg_chain_clamp(sg_f32x4_add(diffuse, tex[3][k]));
         diffuse = sg_f32x4_mul(diffuse,alpha);
         sg_f32x4 tinted = sg_chain_clamp(sg_f32x4_mul(specular, sg_f32x4_splat(c->fused_dot3_tint[k])));
-        color[k] = sg_chain_clamp(sg_f32x4_add(diffuse, sg_f32x4_mul(tinted,
-            sg_f32x4_splat(sg_clampf(c->fused_dot3_tint[3], 0.f, 1.f)))));
+        sg_f32x4 contribution = sg_f32x4_mul(tinted,
+            sg_f32x4_splat(sg_clampf(c->fused_dot3_tint[3], 0.f, 1.f)));
+        if (c->fused_dot3_enabled == 4) contribution = sg_material_additive_round4(contribution);
+        color[k] = sg_chain_clamp(sg_f32x4_add(diffuse,contribution));
     }
     color[3] = alpha;
     _MM_TRANSPOSE4_PS(color[0], color[1], color[2], color[3]);

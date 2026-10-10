@@ -14,15 +14,14 @@ static void tiny_frame(softgl_ctx *c, int deferred) {
     glDisable(GL_CULL_FACE); glDisable(GL_ALPHA_TEST); glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST); glDepthFunc(GL_LESS); glDepthMask(GL_TRUE);
     const float tint[4] = {.1f,.2f,.3f,.5f}; program_data data = {0};
-    softgl_set_fused_dot3_material(tint,0); softgl_set_vertex_attributes_full(attributes,&data);
+    fixture_material(tint,0); prepare_attributes(0,&data,attributes);
     GLuint triangle[3] = {10,11,12};
     if (deferred) {
-        CHECK(softgl_scene_visibility_begin()); softgl_scene_visibility_material();
-        CHECK(softgl_scene_visibility_positions(vertices[0].p,vertices[0].uv,sizeof(vertex),VERTICES,
-            triangle,3,attributes,&data,sizeof(data)));
-        CHECK(softgl_scene_visibility_end());
+        CHECK(sg_scene_begin(sg_current())); sg_scene_material(sg_current());
+        CHECK(sg_scene_positions(sg_current(),vertices[0].p,vertices[0].uv,sizeof(vertex),VERTICES,
+            triangle,3));
+        CHECK(sg_scene_end(sg_current()));
     } else glDrawElements(GL_TRIANGLES,3,GL_UNSIGNED_INT,triangle);
-    softgl_set_vertex_attributes_full(NULL,NULL);
     CHECK(glGetError() == GL_NO_ERROR);
 }
 
@@ -53,26 +52,26 @@ static void mixed_alpha_frame(softgl_ctx *c, int deferred, int pattern) {
     glMatrixMode(GL_MODELVIEW); glLoadIdentity();
     glDisable(GL_CULL_FACE); glDisable(GL_ALPHA_TEST); glDisable(GL_BLEND);
     glEnable(GL_DEPTH_TEST); glDepthFunc(GL_LESS); glDepthMask(GL_TRUE);
-    if (deferred) CHECK(softgl_scene_visibility_begin());
+    if (deferred) CHECK(sg_scene_begin(sg_current()));
     for (int part = 0; part < 3; part++) {
         int alpha = (part+pattern)%2;
         if (alpha) { glEnable(GL_ALPHA_TEST); glAlphaFunc(GL_GREATER,.25f+pattern*.1f); }
         else glDisable(GL_ALPHA_TEST);
         const float tint[4] = {.1f+part*.1f,.2f,.3f,.5f};
-        softgl_set_fused_dot3_material(tint,alpha);
+        fixture_material(tint,alpha);
         program_data data = {(float)part};
-        softgl_set_vertex_attributes_full(attributes,&data);
+        prepare_attributes(part,&data,attributes);
         if (deferred) {
-            softgl_scene_visibility_material();
-            CHECK(softgl_scene_visibility_positions(vertices[0].p,vertices[0].uv,
-                sizeof(vertex),VERTICES,indices+part*96,96,attributes,&data,sizeof(data)));
+            sg_scene_material(sg_current());
+            CHECK(sg_scene_positions(sg_current(),vertices[0].p,vertices[0].uv,
+                sizeof(vertex),VERTICES,indices+part*96,96));
         } else glDrawElements(GL_TRIANGLES,96,GL_UNSIGNED_INT,indices+part*96);
-        data.phase = 1000.f; softgl_set_vertex_attributes_full(NULL,NULL);
+
     }
     /* The producer's context no longer carries each captured material's
      * alpha state. Rasterization must consult the material snapshot. */
     if (pattern == 2) glEnable(GL_ALPHA_TEST); else glDisable(GL_ALPHA_TEST);
-    if (deferred) CHECK(softgl_scene_visibility_end());
+    if (deferred) CHECK(sg_scene_end(sg_current()));
     CHECK(glGetError() == GL_NO_ERROR);
 }
 
@@ -96,17 +95,6 @@ static int run_sample_contract(void) {
     int result = 0;
     tiny_sample_test(2); tiny_sample_test(4);
     mixed_alpha_test();
-    for (int n = 2; n <= 4; n += 2) {
-        softgl_ctx *c = softgl_create_multisample(640,360,n); CHECK(c); initialize(c,3);
-        void *storage = c->scene_storage;
-        CHECK(!softgl_scene_visibility_begin_adaptive(0,2));
-        CHECK(!softgl_scene_visibility_begin_adaptive(230399,2));
-        CHECK(c->scene_storage == storage && !c->scene_visibility);
-        CHECK(softgl_scene_visibility_begin_adaptive(230400,2));
-        CHECK(softgl_scene_visibility_end());
-        CHECK(glGetError() == GL_NO_ERROR); softgl_destroy(c);
-    }
-    puts("Adaptive 2×/4× hint: exact density boundary, no allocation on rejection PASS");
     const int helpers[] = {1,3,8};
     for (int sample_count = 2; sample_count <= 4; sample_count += 2) {
         size_t pixels = (size_t)640*360, samples = pixels*(unsigned)sample_count;
@@ -124,9 +112,9 @@ static int run_sample_contract(void) {
             CHECK(!memcmp(stencil,c->fb.sample_stencil,samples));
             const GLenum unsupported[] = {GL_SAMPLE_ALPHA_TO_COVERAGE,GL_SAMPLE_ALPHA_TO_ONE,GL_SAMPLE_COVERAGE};
             for (unsigned j = 0; j < sizeof(unsupported)/sizeof(unsupported[0]); j++) {
-                glEnable(unsupported[j]); CHECK(!softgl_scene_visibility_begin()); glDisable(unsupported[j]);
+                glEnable(unsupported[j]); CHECK(!sg_scene_begin(sg_current())); glDisable(unsupported[j]);
             }
-            glDisable(GL_MULTISAMPLE); CHECK(!softgl_scene_visibility_begin()); glEnable(GL_MULTISAMPLE);
+            glDisable(GL_MULTISAMPLE); CHECK(!sg_scene_begin(sg_current())); glEnable(GL_MULTISAMPLE);
             CHECK(glGetError() == GL_NO_ERROR); softgl_destroy(c);
         }
         free(color); free(stencil); free(depth);
@@ -159,26 +147,27 @@ static void rollback_replay(int samples, int helpers) {
         glDisable(GL_CULL_FACE); glDisable(GL_ALPHA_TEST); glDisable(GL_BLEND);
         glMatrixMode(GL_PROJECTION); glLoadIdentity(); glOrtho(-2,2,-1.125,1.125,1,10);
         glMatrixMode(GL_MODELVIEW); glLoadIdentity();
-        softgl_set_fused_dot3_material(tint,0);
-        softgl_set_vertex_attributes_full(attributes,&data);
+        fixture_material(tint,0);
+        prepare_attributes(0,&data,attributes);
     }
     vertices[0] = (vertex){{-8,-4,-2},{0,0}};
     vertices[1] = (vertex){{8,-4,-2},{1,0}};
     vertices[2] = (vertex){{0,8,-2},{0,1}};
     softgl_make_current(b);
-    CHECK(softgl_scene_visibility_begin());
-    softgl_scene_visibility_material();
-    CHECK(softgl_scene_visibility_positions(vertices[0].p,vertices[0].uv,sizeof(vertex),
-        VERTICES,triangle,3,invalid_attributes,&data,sizeof(data)));
-    CHECK(!softgl_scene_visibility_end());
+    CHECK(sg_scene_begin(sg_current()));
+    sg_scene_material(sg_current());
+    prepare_attributes(0,&data,invalid_attributes);
+    CHECK(sg_scene_positions(sg_current(),vertices[0].p,vertices[0].uv,sizeof(vertex),
+        VERTICES,triangle,3));
+    CHECK(!sg_scene_end(sg_current()));
+    prepare_attributes(0,&data,attributes);
     vertices[0] = (vertex){{-1,-.5f,-4},{0,0}};
     vertices[1] = (vertex){{1,-.5f,-4},{1,0}};
     vertices[2] = (vertex){{0,.5f,-4},{0,1}};
     for (int i = 0; i < 2; i++) {
         softgl_make_current(contexts[i]);
         glDrawElements(GL_TRIANGLES,3,GL_UNSIGNED_INT,triangle);
-        softgl_set_vertex_attributes_full(NULL,NULL);
-        CHECK(glGetError() == GL_NO_ERROR);
+            CHECK(glGetError() == GL_NO_ERROR);
     }
     compare(a,b);
     CHECK(b->fb.sample_depth[((size_t)179*640+319)*samples] < .8f);

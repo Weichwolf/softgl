@@ -84,7 +84,7 @@ Only adopted work, useful measured findings and relevant research are retained. 
 | [scene-triangle-packets](scene-triangle-packets/README.md) | Accepted combined variant | SIMD128 SoA packets + mask16 bins: independent OFF −5.2/−6.9/−7.9/−9.4%; MSAA controls −0.2…+1.1%; 756 tests, exact native/WASM planes, live browser updated. |
 | [shared-vertex-uv](shared-vertex-uv/README.md) | Accepted | Identical resolved UV streams reuse the original raw attribute value. |
 | [simd-index-range](simd-index-range/README.md) | Accepted | Exact unsigned SIMD index scanning gives modest repeated BMW gains in all modes. |
-| [standard-gl-integration](standard-gl-integration/README.md) | Platform separation accepted; rendering integration in progress | Separate headless/SDL host boundary; 247 WASM and 12 native MSAA4 frame hashes unchanged, automatic GL integration still pending. |
+| [standard-gl-integration](standard-gl-integration/README.md) | Accepted | Standard GL arrays drive internal material fusion, visibility and MSAA; 788 native/248 WASM gates pass, native BMW +14%/Sponza +6%/T-80 +2%/Bistro -4% FPS, WASM within 1% of baseline. |
 | [static-cluster-culling](static-cluster-culling/README.md) | Adopted | 640x360 off/2x/4x: Sponza -13.13/-12.27/-11.38%, Bistro -19.29/-18.83/-17.50% frame time; BMW/T-80 mixed within 1%; tested RGB exact. |
 | [validation-protocol](validation-protocol/README.md) | Protocol | Bistro > Sponza > BMW F31 > T-80; double-digit complex-scene gains can justify ~2% BMW cost; 640×360 native AB/BA OFF/2×/4×, SIMD128/WASM and live updates. |
 | [visible-vertex-attributes](visible-vertex-attributes/README.md) | Accepted | Worker attributes after culling: Bistro -11–12%, other scenes -3–8%, all twelve images identical. |

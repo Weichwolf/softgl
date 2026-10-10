@@ -42,10 +42,10 @@ SG_INLINE sg_f32x4 sg_chain_clamp(sg_f32x4 v) {
     v128_t bounded = wasm_f32x4_pmax((v128_t)v, wasm_f32x4_splat(0.f));
     return (sg_f32x4)wasm_f32x4_pmin(bounded, wasm_f32x4_splat(1.f));
 #else
-    v = sg_f32x4_select(sg_f32x4_lt(v, sg_f32x4_splat(0.f)),
-                       sg_f32x4_splat(0.f), v);
-    return sg_f32x4_select(sg_f32x4_gt(v, sg_f32x4_splat(1.f)),
-                          sg_f32x4_splat(1.f), v);
+    /* SSE returns its second operand for ties and unordered comparisons.
+     * Keep the original value there to preserve signed zero and NaN payloads. */
+    v = _mm_max_ps(sg_f32x4_splat(0.f),v);
+    return _mm_min_ps(sg_f32x4_splat(1.f),v);
 #endif
 }
 

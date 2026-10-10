@@ -108,6 +108,12 @@ typedef struct {
     int      h[SG_MAX_MIPMAP_LEVELS];
     int      d[SG_MAX_MIPMAP_LEVELS];                   /* 1 for 1D/2D */
     uint8_t *data[SG_MAX_MIPMAP_LEVELS];                /* 1D/2D/3D */
+    uint8_t *alpha_plane;
+    size_t alpha_plane_bytes;
+    uint8_t *alpha_uniform;
+    size_t alpha_uniform_bytes;
+    int alpha_constant_valid;
+    float alpha_constant;
     uint8_t *cube_faces[6][SG_MAX_MIPMAP_LEVELS];
     int      cube_w[6][SG_MAX_MIPMAP_LEVELS];
     int      cube_h[6][SG_MAX_MIPMAP_LEVELS];
@@ -292,6 +298,7 @@ struct softgl_ctx {
 
     sg_buffer  *buffers;    size_t buffers_cap;
     sg_texture *textures;   size_t textures_cap;
+    size_t texture_alpha_bytes;
     GLuint      array_buffer_binding;
     GLuint      element_buffer_binding;
 
@@ -300,12 +307,8 @@ struct softgl_ctx {
     size_t    queries_cap;
     GLuint    current_query[SG_QUERY_TARGET_COUNT];  /* 0 = none */
 
-    softgl_vertex_attributes_fn vertex_attributes;
-    softgl_vertex_attributes_full_fn vertex_attributes_full;
     int fused_dot3_enabled, fused_dot3_quartic;
     float fused_dot3_tint[4];
-    void *vertex_attribute_data;
-    GLuint vertex_attribute_unit;
 
     /* Client vertex state */
     sg_attrib_ptr attr_pos;
@@ -397,6 +400,8 @@ struct softgl_ctx {
     struct sg_scene_visibility *scene_visibility;
     struct sg_scene_visibility *scene_storage;
     int scene_material;
+    struct sg_gl_batch *gl_batch;
+    int gl_batch_busy, gl_batch_disabled;
 
 };
 
@@ -429,6 +434,7 @@ struct sg_buffer_s;
 struct sg_texture_s;
 sg_buffer  *sg_buffer_get(softgl_ctx *c, GLuint id);
 sg_texture *sg_texture_get(softgl_ctx *c, GLuint id);
+void sg_texture_prepare_alpha(softgl_ctx *c, sg_texture *texture);
 sg_query   *sg_query_get(softgl_ctx *c, GLuint id);
 
 /* Texture samplers: RGBA floats in [0,1]. */
@@ -459,6 +465,8 @@ typedef struct {
     GLenum         wrap_s, wrap_t, wrap_r;
     int            tw, th, td;
     const uint8_t *data0;              /* level-0; NULL for cube */
+    const uint8_t *alpha_data0;
+    const uint8_t *alpha_uniform;
     /* POT masks: dim-1 when POT, else 0. Enable bitmask wrap. */
     int            tw_mask_pot;
     int            th_mask_pot;
@@ -492,6 +500,20 @@ void sg_scene_visibility_msaa_packet(softgl_ctx *c,
 void sg_scene_msaa_hz_count(unsigned index);
 #endif
 void sg_scene_visibility_destroy(void *storage);
+void sg_scene_abort(softgl_ctx *c);
+int sg_scene_begin(softgl_ctx *c);
+void sg_scene_quantized(softgl_ctx *c, GLboolean enabled);
+void sg_scene_order(softgl_ctx *c, GLuint mode);
+void sg_scene_merge(softgl_ctx *c, GLboolean enabled);
+void sg_scene_material(softgl_ctx *c);
+int sg_scene_positions(softgl_ctx *c, const GLfloat *positions, const GLfloat *coordinates,
+    GLsizei stride, GLuint vertex_count, const GLuint *indices, GLsizei count);
+int sg_scene_end(softgl_ctx *c);
+
+int sg_gl_batch_draw(softgl_ctx *c, GLenum mode, GLsizei count, GLenum type, const void *indices);
+void sg_gl_batch_flush(softgl_ctx *c);
+void sg_gl_batch_reset(softgl_ctx *c);
+void sg_gl_batch_destroy(softgl_ctx *c);
 int sg_scene_visibility_triangle(softgl_ctx *c, const sg_vert *v0,
     const sg_vert *v1, const sg_vert *v2, int ix0, int ix1);
 /* Classification: 1 intrinsically empty, 0 covered, -1 unsupported/early HZ.

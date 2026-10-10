@@ -14,7 +14,7 @@ static void mixed_order_frame(softgl_ctx *c, unsigned mode, int holes, const GLu
     glMatrixMode(GL_PROJECTION); glLoadIdentity(); glOrtho(-2,2,-1.125,1.125,1,10);
     glMatrixMode(GL_MODELVIEW); glLoadIdentity();
     glDisable(GL_CULL_FACE); glDisable(GL_BLEND);
-    CHECK(softgl_scene_visibility_begin()); softgl_scene_depth_order(mode);
+    CHECK(sg_scene_begin(sg_current())); sg_scene_order(sg_current(), mode);
     /* Submit the near cutout first, then farther opaque surfaces. Mode two
      * reverses that material ordering. Alpha is immutable and uniform, so
      * its accept/reject result must be independent of the MSAA sample point. */
@@ -24,13 +24,13 @@ static void mixed_order_frame(softgl_ctx *c, unsigned mode, int holes, const GLu
         glActiveTexture(GL_TEXTURE2);
         glBindTexture(GL_TEXTURE_2D,textures[part == 2 && holes]);
         const float tint[4] = {.1f+part*.1f,.2f,.3f,.5f};
-        softgl_set_fused_dot3_material(tint,0);
-        softgl_scene_visibility_material(); program_data data = {0};
-        CHECK(softgl_scene_visibility_positions(vertices[0].p,vertices[0].uv,
-            sizeof(vertex),VERTICES,indices+part*96,96,
-            constant_attributes,&data,sizeof(data)));
+        fixture_material(tint,0);
+        sg_scene_material(sg_current()); program_data data = {0};
+        prepare_attributes(part,&data,constant_attributes);
+        CHECK(sg_scene_positions(sg_current(),vertices[0].p,vertices[0].uv,
+            sizeof(vertex),VERTICES,indices+part*96,96));
     }
-    CHECK(softgl_scene_visibility_end()); CHECK(glGetError() == GL_NO_ERROR);
+    CHECK(sg_scene_end(sg_current())); CHECK(glGetError() == GL_NO_ERROR);
 }
 
 static void constant_attributes(void *user, GLuint index, GLfloat color[4], GLfloat uv[4][4]) {
@@ -49,17 +49,15 @@ static void order_frame(softgl_ctx *c, unsigned mode, int variant, int invalid) 
     if (variant == 2) { glRotatef(18.f,0,1,0); glTranslatef(0,0,1.5f); }
     glDisable(GL_CULL_FACE); glDisable(GL_ALPHA_TEST); glDisable(GL_BLEND);
     const float tint[4] = {.1f,.2f,.3f,.5f};
-    softgl_set_fused_dot3_material(tint,0);
-    /* Large cost hints select scene capture without adding geometry. Exercise
-     * the adaptive entry and retain the ordinary begin for the reset check. */
-    CHECK(mode == UINT32_MAX ? softgl_scene_visibility_begin() :
-        softgl_scene_visibility_begin_adaptive(640u*360u,mode));
-    softgl_scene_visibility_material();
+    fixture_material(tint,0);
+    CHECK(sg_scene_begin(sg_current()));
+    if (mode != UINT32_MAX) sg_scene_order(sg_current(), mode);
+    sg_scene_material(sg_current());
     program_data data = {0};
-    CHECK(softgl_scene_visibility_positions(vertices[0].p,vertices[0].uv,
-        sizeof(vertex),VERTICES,indices,TRIANGLES*3,
-        invalid ? invalid_attributes : constant_attributes,&data,sizeof(data)));
-    int completed = softgl_scene_visibility_end();
+    prepare_attributes(0,&data,invalid ? invalid_attributes : constant_attributes);
+    CHECK(sg_scene_positions(sg_current(),vertices[0].p,vertices[0].uv,
+        sizeof(vertex),VERTICES,indices,TRIANGLES*3));
+    int completed = sg_scene_end(sg_current());
     CHECK(completed == !invalid);
     CHECK(glGetError() == GL_NO_ERROR);
 }
@@ -94,10 +92,8 @@ int main(void) {
         softgl_ctx *b = softgl_create_multisample(640,360,samples[s]); CHECK(a && b);
         initialize(a,1); initialize(b,helpers[h]);
         softgl_make_current(b);
-        /* A rejected small MSAA hint must leave capture inactive. */
-        if (samples[s]) CHECK(!softgl_scene_visibility_begin_adaptive(1,2));
         CHECK(!b->scene_visibility);
-        softgl_scene_depth_order(2); /* Outside a capture: ignored. */
+        sg_scene_order(sg_current(), 2); /* Outside a capture: ignored. */
         softgl_ctx *contexts[] = {a,b};
         GLuint textures[2][2];
         for (int k = 0; k < 2; k++) {

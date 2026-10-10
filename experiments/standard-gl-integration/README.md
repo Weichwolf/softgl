@@ -1,6 +1,6 @@
 # Standard GL integration
 
-Status: platform separation accepted; automatic rendering integration in progress.
+Status: accepted.
 
 Applications should draw through ordinary OpenGL 1.5 calls. Material fusion,
 visibility batching, deferred shading and MSAA policy belong in the renderer,
@@ -11,9 +11,8 @@ the renderer must also work without SDL or a window.
 
 Context creation, selection, destruction and resolved framebuffer access moved
 from the GL header/state implementation to `softgl/platform.h` and `platform.c`.
-The five host functions retain their names and behavior. Rendering integration
-hooks remain temporarily while their caller-driven behavior is replaced;
-moving declarations alone does not complete this work.
+The five host functions retain their names and behavior. This first step kept
+rendering hooks temporarily; the automatic integration below removes them.
 
 `platform_api_contract` verifies independent headless contexts, access to a
 noncurrent framebuffer without changing the current context, invalid creation
@@ -59,15 +58,72 @@ The running SDL viewer serves the rebuilt module. Native disassembly contains
 no AVX instructions or YMM/ZMM registers; WASM retains `simd128` and the 4 GiB
 memory ceiling.
 
-## Next rendering integration
+## Automatic rendering integration
 
-The current viewer's pure callbacks compute tangent-space lighting inside
-renderer workers. Standard color/texture-coordinate arrays must replace these
-callbacks without serializing substantial application work. Opaque diffuse and
-additive specular draws express the material through ordinary GL combiners;
-automatic fusion must recognize compatible draw pairs and preserve barriers
-for framebuffer reads, unsupported draws and storage changes. Captured VBO
-data and GL state need explicit ownership until the internal batch completes.
+Applications now submit ordinary indexed VBO draws, color arrays,
+texture-coordinate arrays and GL texture combiners. The public GL header has
+no softgl rendering hooks or callback types. The separate platform header
+contains only the five host functions above. Default native library symbols
+confirm this boundary; SDL remains outside the renderer.
+
+The driver recognizes eligible diffuse/additive DOT3 draw pairs from geometry,
+matrices, combiners, textures and depth/blend state. It captures immutable draw
+state, forms triangle packets, resolves opaque visibility and fetches winning
+attributes before shading. Four-sample sharing excludes uncertain alpha and
+cutout boundaries. Unsupported state and failed capture use the ordered GL
+pipeline; failed scene processing restores framebuffer state and replays the
+captured commands inside the library. Reads, synchronization, buffer/texture
+mutations and storage growth join pending work before changing its inputs.
+
+Transparent material pairs stay in one ordered queue after opaque visibility
+completes. Joining after every pair caused a roughly 19% WASM BMW slowdown;
+retaining the queue removes that regression. Additive RGB contributions respect
+RGBA8 rounding, and alpha preserves the two original framebuffer roundings.
+A regression with three overlapping transparent layers passes the same
+one-byte channel tolerance as the ordinary pipeline.
+
+The common viewer computes tangent-space lighting into standard GL arrays.
+Its SIMD128 producer and the renderer each use three helpers plus the caller
+in separate phases, with at most four rendering threads active. There are no
+model IDs or application callbacks in the renderer. Native disassembly has no
+AVX instructions or YMM/ZMM registers. WASM uses SIMD128, with a shared memory
+maximum of 65,536 pages (4 GiB).
+
+All 788 native tests pass, including 236 GL cases, twelve model views and the
+material/attribute/sampler/worker contracts. The shared model adapter now uses
+equal depth for opaque/cutout specular passes, fixing the former Sponza/Bistro
+Mesa failures without changing tolerances. WASM also passes all 248
+single-sample Mesa gates; all 235 pre-existing GL frame hashes are unchanged.
+
+Four-sample snapshots are compared with the frozen four-sample renderer rather
+than the single-sample Mesa model references. Sponza and T-80 remain RGB-exact
+in native and WASM. WASM BMW differs by at most one byte per RGB channel.
+Corrected transparency rounding changes a small number of Bistro pixels by
+up to three bytes against the former fused WASM path. Alpha differences reflect
+the corrected two-pass GL blend semantics. Exact frame hashes and error counts
+are recorded in `integration-validation.json`.
+
+Native timing uses two independent renderer contexts in one process, alternating
+the old/new order for every frame. Three rounds measure 96 frames after twelve
+warmups, with identical assets/cameras, 640×360, 4× MSAA and SIMD128. All twelve
+old-context snapshots match the original frozen reference byte for byte.
+The median of paired run FPS ratios is BMW +14.2%, T-80 +2.1%, Sponza +6.0%
+and Bistro -4.2%. Bistro remains an optimization target; this API transition
+does not make every scene faster.
+
+WASM timing uses four AB/BA page-crossover rounds with 36 measured frames after
+twelve warmups, at the same resolution, sample count and worker count. All four
+paired changes stay within one percent of the frozen WASM renderer. Maximum
+observed module memory is below 3 GiB. The browser build now uses `-O3`; neither
+the native nor browser build widens SIMD beyond 128 bits.
+
+Receipts for this step: `native-paired.json`, `wasm-paired.json` and
+`integration-validation.json`. Historical platform receipts above remain
+unchanged. `native_pair.c` is the same-process comparison driver; it links the
+current library/model adapter and a copy of the frozen objects whose defined
+global symbols have a `baseline_` prefix. Run it with a prepared pack, measured
+frame count, warmup count and output-image prefix; `SOFTGL_CAMERA` supplies the
+registry's eight comma-separated camera values when present.
 
 ## Sources
 

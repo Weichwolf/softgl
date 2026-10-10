@@ -7,17 +7,36 @@ target_link_libraries(platform_api_contract PRIVATE softgl)
 add_test(NAME platform_api_contract COMMAND platform_api_contract)
 set_tests_properties(platform_api_contract PROPERTIES TIMEOUT 30)
 
+add_executable(model_lighting_contract model_lighting.c)
+target_compile_options(model_lighting_contract PRIVATE -msse4.1 -mno-avx -mno-avx2 -mno-avx512f)
+target_link_libraries(model_lighting_contract PRIVATE softgl)
+add_test(NAME model_lighting_contract COMMAND model_lighting_contract)
+set_tests_properties(model_lighting_contract PROPERTIES TIMEOUT 30)
+
+add_executable(gl_material_batch_contract gl_material_batch.c)
+target_include_directories(gl_material_batch_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_link_libraries(gl_material_batch_contract PRIVATE softgl)
+add_test(NAME gl_material_batch_contract COMMAND gl_material_batch_contract)
+set_tests_properties(gl_material_batch_contract PROPERTIES TIMEOUT 60)
+
+add_executable(texture_alpha_contract texture_alpha.c)
+target_include_directories(texture_alpha_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_compile_options(texture_alpha_contract PRIVATE -msse4.1 -mno-avx)
+target_link_libraries(texture_alpha_contract PRIVATE softgl)
+add_test(NAME texture_alpha_contract COMMAND texture_alpha_contract)
+set_tests_properties(texture_alpha_contract PROPERTIES TIMEOUT 30)
+
 add_executable(worker_pool worker_pool.c)
 target_include_directories(worker_pool PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
 target_link_libraries(worker_pool PRIVATE softgl)
 add_test(NAME worker_pool_contract COMMAND worker_pool)
 set_tests_properties(worker_pool_contract PROPERTIES TIMEOUT 30)
 
-add_executable(vertex_attributes_contract vertex_attributes.c)
-target_include_directories(vertex_attributes_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
-target_link_libraries(vertex_attributes_contract PRIVATE softgl)
-add_test(NAME vertex_attributes_contract COMMAND vertex_attributes_contract)
-set_tests_properties(vertex_attributes_contract PROPERTIES TIMEOUT 30)
+add_executable(vertex_arrays_contract vertex_arrays.c)
+target_include_directories(vertex_arrays_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_link_libraries(vertex_arrays_contract PRIVATE softgl)
+add_test(NAME vertex_arrays_contract COMMAND vertex_arrays_contract)
+set_tests_properties(vertex_arrays_contract PROPERTIES TIMEOUT 30)
 
 add_executable(fused_material_contract fused_material.c)
 target_include_directories(fused_material_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
@@ -451,6 +470,7 @@ set(SG_TEST_CASES
     233_large_query_handoffs
     234_multisample_state
     235_dot3_constant_output_alpha
+    236_current_array_texcoords
 )
 
 # Tolerances for reference/softgl pixel diff. Default exact; individual tests
@@ -716,6 +736,8 @@ set(SG_TOL_234_multisample_state_MAX_DELTA 0)
 set(SG_TOL_234_multisample_state_MAX_BAD 0)
 set(SG_TOL_235_dot3_constant_output_alpha_MAX_DELTA 1)
 set(SG_TOL_235_dot3_constant_output_alpha_MAX_BAD 0)
+set(SG_TOL_236_current_array_texcoords_MAX_DELTA 1)
+set(SG_TOL_236_current_array_texcoords_MAX_BAD 0)
 
 foreach(case_name IN LISTS SG_TEST_CASES)
     set(src cases/test_${case_name}.c)
@@ -794,8 +816,8 @@ foreach(model_index RANGE ${SG_MODEL_LAST})
         target_include_directories(model_image_scene PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/include)
         add_library(model_softgl_scene OBJECT ${CMAKE_SOURCE_DIR}/wasm/model_wrap.c)
         target_include_directories(model_softgl_scene PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/include)
-        target_compile_definitions(model_softgl_scene PRIVATE SOFTGL_MODEL_VERTEX_ATTRIBUTES
-            SOFTGL_MODEL_SCENE_VISIBILITY SOFTGL_MODEL_SCENE_POSITIONS)
+        target_compile_options(model_softgl_scene PRIVATE -msse4.1 -mno-avx -mno-avx2 -mno-avx512f)
+        target_compile_definitions(model_softgl_scene PRIVATE SOFTGL_MODEL_ARRAY_ATTRIBUTES)
         add_executable(model_bench bench/model_bench.c harness/ppm_write.c
             $<TARGET_OBJECTS:model_softgl_scene>)
         target_include_directories(model_bench PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src
@@ -890,14 +912,6 @@ target_compile_options(scene_material_merge_contract PRIVATE -msse4.1)
 target_link_libraries(scene_material_merge_contract PRIVATE softgl)
 add_test(NAME scene_material_merge_contract COMMAND scene_material_merge_contract)
 set_tests_properties(scene_material_merge_contract PROPERTIES TIMEOUT 90)
-
-# Opt-in density policy boundaries, ordering modes and legacy-safe rejection.
-add_executable(scene_density_hint_contract scene_density_hint.c)
-target_include_directories(scene_density_hint_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
-target_compile_options(scene_density_hint_contract PRIVATE -msse4.1)
-target_link_libraries(scene_density_hint_contract PRIVATE softgl)
-add_test(NAME scene_density_hint_contract COMMAND scene_density_hint_contract)
-set_tests_properties(scene_density_hint_contract PROPERTIES TIMEOUT 90)
 
 add_executable(scene_coverage_contract scene_coverage.c)
 target_include_directories(scene_coverage_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)

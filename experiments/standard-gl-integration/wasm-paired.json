@@ -1,0 +1,368 @@
+{
+  "timestamp": "2026-10-10T16:12:50.028Z",
+  "browser": "154.0.8037.92",
+  "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+  "hostLogicalCpus": 4,
+  "gitCommit": "7d7da49df8d4636e2f3d12e7e745c1d86f66f460",
+  "driverSha256": "28646c2617b80a4b6efdd951e2b2faf28f972211ccd56acda722385c6e3f64ca",
+  "wasmSha256": "ec69f9303fb88bce9df0cbe05a18160d97c062703a1b96ed004667ffc33f1a8c",
+  "options": {
+    "wasm-build": "build/wasm-driver",
+    "native-build": "build/native-clang22",
+    "output": "build/api-baseline/driver-integrated-wasm-timings.json",
+    "rounds": 4,
+    "warmup": 12,
+    "frames": 36,
+    "samples": 4,
+    "browser": "/usr/bin/chromium",
+    "reference-build": "build/api-baseline/wasm",
+    "candidate-workers": 3,
+    "reference-workers": 3,
+    "scenes": "bistro,sponza,bmw,t80",
+    "profile-scene": "",
+    "bench-only": true,
+    "crossover": true
+  },
+  "metadata": {
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+    "hardwareConcurrency": 4,
+    "crossOriginIsolated": true,
+    "width": 640,
+    "height": 360,
+    "testCount": 236
+  },
+  "modelAssets": {
+    "bmw": {
+      "candidatePackSha256": "76cda2c57b81e10b3c92a269537b17e4e1c5f36c653bfd1af43fcb2218473cef",
+      "referencePackSha256": "76cda2c57b81e10b3c92a269537b17e4e1c5f36c653bfd1af43fcb2218473cef",
+      "nativePackSha256": "76cda2c57b81e10b3c92a269537b17e4e1c5f36c653bfd1af43fcb2218473cef",
+      "textureManifestSha256": null
+    },
+    "t80": {
+      "candidatePackSha256": "cb9146d7352f52600015c499c394566acc604b43fb5760a17d133c20c5a700f4",
+      "referencePackSha256": "cb9146d7352f52600015c499c394566acc604b43fb5760a17d133c20c5a700f4",
+      "nativePackSha256": "cb9146d7352f52600015c499c394566acc604b43fb5760a17d133c20c5a700f4",
+      "textureManifestSha256": null
+    },
+    "sponza": {
+      "candidatePackSha256": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+      "referencePackSha256": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+      "nativePackSha256": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+      "textureManifestSha256": null
+    },
+    "bistro": {
+      "candidatePackSha256": "6a95cd6486d5a1310017836a67ca8e95365cc58f23239ac6e0a913b1f65358bc",
+      "referencePackSha256": "6a95cd6486d5a1310017836a67ca8e95365cc58f23239ac6e0a913b1f65358bc",
+      "nativePackSha256": "4c862bcd28ef6833a89b0a058832c051098f5cf5869590999859b86f1cc993f3",
+      "textureManifestSha256": "369a01d3278b292f6b8b6e0f272ef2164448bf8432de7be26b9a425bb947815d"
+    }
+  },
+  "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+  "sourceDiffSha256": "ef1fac5ee5ec00b8817eb05542577311cae09053c1bcc3007de03baa96a88464",
+  "referenceTestCount": 235,
+  "referenceWasmSha256": "8a2d8d9b34d598d18abb1ed6e39d9b14877b56dff653fad52213a9faaded61c9",
+  "benchmarks": {
+    "workers": 3,
+    "workerCounts": {
+      "reference": 3,
+      "candidate": 3
+    },
+    "samples": 4,
+    "resolvePerFrame": true,
+    "protocol": "page crossover AB/BA, two-round geometric pairs",
+    "scenes": [
+      {
+        "name": "bistro",
+        "samples": [
+          64.58125000198682,
+          64.71361111270056,
+          63.947916666666664,
+          65.76375000013246
+        ],
+        "medianMs": 64.71361111270056,
+        "minMs": 63.947916666666664,
+        "maxMs": 65.76375000013246,
+        "heapBytes": [
+          2974679040,
+          2974679040,
+          2974679040,
+          2974679040
+        ],
+        "geometrySamples": [
+          {
+            "workers": 3,
+            "samples": 4
+          },
+          {
+            "workers": 3,
+            "samples": 4
+          },
+          {
+            "workers": 3,
+            "samples": 4
+          },
+          {
+            "workers": 3,
+            "samples": 4
+          }
+        ],
+        "reference": {
+          "samples": [
+            65.89444444245763,
+            63.93625000119209,
+            63.77208333214124,
+            64.98277777764532
+          ],
+          "medianMs": 64.98277777764532,
+          "minMs": 63.77208333214124,
+          "maxMs": 65.89444444245763,
+          "heapBytes": [
+            2820669440,
+            2837446656,
+            2820669440,
+            2820669440
+          ],
+          "geometrySamples": [
+            {
+              "workers": 3,
+              "samples": 4
+            },
+            {
+              "workers": 3,
+              "samples": 4
+            },
+            {
+              "workers": 3,
+              "samples": 4
+            },
+            {
+              "workers": 3,
+              "samples": 4
+            }
+          ]
+        },
+        "medianRatio": 1.007377036169176,
+        "changePercent": 0.7377036169176066
+      },
+      {
+        "name": "sponza",
+        "samples": [
+          40.5355555580722,
+          40.961388889286255,
+          41.196527779102325,
+          41.14291666944822
+        ],
+        "medianMs": 41.14291666944822,
+        "minMs": 40.5355555580722,
+        "maxMs": 41.196527779102325,
+        "heapBytes": [
+          2974679040,
+          365559808,
+          2974679040,
+          2974679040
+        ],
+        "geometrySamples": [
+          {
+            "workers": 3,
+            "samples": 4
+          },
+          {
+            "workers": 3,
+            "samples": 4
+          },
+          {
+            "workers": 3,
+            "samples": 4
+          },
+          {
+            "workers": 3,
+            "samples": 4
+          }
+        ],
+        "reference": {
+          "samples": [
+            41.55166666706403,
+            42.862638887431885,
+            40.353055556615196,
+            42.68402777777778
+          ],
+          "medianMs": 42.68402777777778,
+          "minMs": 40.353055556615196,
+          "maxMs": 42.862638887431885,
+          "heapBytes": [
+            2820669440,
+            365559808,
+            2820669440,
+            2820669440
+          ],
+          "geometrySamples": [
+            {
+              "workers": 3,
+              "samples": 4
+            },
+            {
+              "workers": 3,
+              "samples": 4
+            },
+            {
+              "workers": 3,
+              "samples": 4
+            },
+            {
+              "workers": 3,
+              "samples": 4
+            }
+          ]
+        },
+        "medianRatio": 0.9919891799223053,
+        "changePercent": -0.8010820077694714
+      },
+      {
+        "name": "bmw",
+        "samples": [
+          19.745138890213436,
+          20.050694442457623,
+          20.440277778440052,
+          20.696944445371628
+        ],
+        "medianMs": 20.440277778440052,
+        "minMs": 19.745138890213436,
+        "maxMs": 20.696944445371628,
+        "heapBytes": [
+          2974679040,
+          365559808,
+          139198464,
+          2974679040
+        ],
+        "geometrySamples": [
+          {
+            "workers": 3,
+            "samples": 4
+          },
+          {
+            "workers": 3,
+            "samples": 4
+          },
+          {
+            "workers": 3,
+            "samples": 4
+          },
+          {
+            "workers": 3,
+            "samples": 4
+          }
+        ],
+        "reference": {
+          "samples": [
+            19.589444441927803,
+            23.379305558072197,
+            21.019305553701187,
+            20.364027774996227
+          ],
+          "medianMs": 21.019305553701187,
+          "minMs": 19.589444441927803,
+          "maxMs": 23.379305558072197,
+          "heapBytes": [
+            2820669440,
+            365559808,
+            139198464,
+            2820669440
+          ],
+          "geometrySamples": [
+            {
+              "workers": 3,
+              "samples": 4
+            },
+            {
+              "workers": 3,
+              "samples": 4
+            },
+            {
+              "workers": 3,
+              "samples": 4
+            },
+            {
+              "workers": 3,
+              "samples": 4
+            }
+          ]
+        },
+        "medianRatio": 0.9941581830424386,
+        "changePercent": -0.5841816957561363
+      },
+      {
+        "name": "t80",
+        "samples": [
+          13.516388886504703,
+          15.124166667461395,
+          13.478472222884497,
+          14.624583333730698
+        ],
+        "medianMs": 14.624583333730698,
+        "minMs": 13.478472222884497,
+        "maxMs": 15.124166667461395,
+        "heapBytes": [
+          2974679040,
+          365559808,
+          139198464,
+          167051264
+        ],
+        "geometrySamples": [
+          {
+            "workers": 3,
+            "samples": 4
+          },
+          {
+            "workers": 3,
+            "samples": 4
+          },
+          {
+            "workers": 3,
+            "samples": 4
+          },
+          {
+            "workers": 3,
+            "samples": 4
+          }
+        ],
+        "reference": {
+          "samples": [
+            14.389166666401756,
+            15.40458333492279,
+            13.441388888491524,
+            14.544583333863152
+          ],
+          "medianMs": 14.544583333863152,
+          "minMs": 13.441388888491524,
+          "maxMs": 15.40458333492279,
+          "heapBytes": [
+            2820669440,
+            365559808,
+            139198464,
+            139198464
+          ],
+          "geometrySamples": [
+            {
+              "workers": 3,
+              "samples": 4
+            },
+            {
+              "workers": 3,
+              "samples": 4
+            },
+            {
+              "workers": 3,
+              "samples": 4
+            },
+            {
+              "workers": 3,
+              "samples": 4
+            }
+          ]
+        },
+        "medianRatio": 1.0041286749279208,
+        "changePercent": 0.41286749279207946
+      }
+    ]
+  }
+}

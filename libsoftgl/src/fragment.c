@@ -56,6 +56,8 @@ void sg_tex_tri_prepare(softgl_ctx *c, sg_tex_tri_ctx *t) {
         ut->active_slot = active_slot;
         ut->tex = NULL;
         ut->data0 = NULL;
+        ut->alpha_data0 = NULL;
+        ut->alpha_uniform = NULL;
         ut->constant_color_valid = 0;
         ut->tw = ut->th = ut->td = 0;
 
@@ -84,6 +86,8 @@ void sg_tex_tri_prepare(softgl_ctx *c, sg_tex_tri_ctx *t) {
             ut->tw_log2 = lg;
         }
         if (active_slot != SG_TEX_TARGET_CUBE) ut->data0 = tex->data[0];
+        if (active_slot == SG_TEX_TARGET_2D) ut->alpha_data0 = tex->alpha_plane;
+        if (active_slot == SG_TEX_TARGET_2D) ut->alpha_uniform = tex->alpha_uniform;
         /* Repeat/edge sampling of a single texel cannot depend on UV. */
         if (active_slot == SG_TEX_TARGET_2D && ut->tw == 1 && ut->th == 1 && ut->data0 &&
             (ut->wrap_s == GL_REPEAT || ut->wrap_s == GL_CLAMP_TO_EDGE) &&
@@ -138,7 +142,7 @@ void sg_tex_tri_prepare(softgl_ctx *c, sg_tex_tri_ctx *t) {
     }
     if (t->combine_kind == 1 && c->fused_dot3_enabled) {
         t->combine_kind = (c->fused_dot3_quartic ? 5 : 4)+
-            (c->fused_dot3_enabled == 2 && c->blend && c->blend_src == GL_ONE &&
+            ((c->fused_dot3_enabled == 2 || c->fused_dot3_enabled == 4) && c->blend && c->blend_src == GL_ONE &&
              c->blend_dst == GL_ONE_MINUS_SRC_ALPHA ? 2 : 0);
         /* Unit 1 carries the half vector, including in packed raster vertices. */
         t->sample_mask |= 1u << 1;

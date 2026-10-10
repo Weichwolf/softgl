@@ -3,6 +3,7 @@
  * RGB = .5*A + S*tint.rgb*.5 + background*(1-A), background=(64,128,192)/255.
  * A is 0,64/255,1. The tables are independently rounded byte results. */
 #include "types.h"
+#include "material_fixture.h"
 #include "workers.h"
 #include <stdio.h>
 #define CHECK(x) do { if (!(x)) { fprintf(stderr,"line %d: %s\n",__LINE__,#x); exit(1); } } while (0)
@@ -28,7 +29,6 @@ static void initialize(softgl_ctx *c, int helpers) {
     glMatrixMode(GL_MODELVIEW);glLoadIdentity();
     glEnableClientState(GL_VERTEX_ARRAY);glVertexPointer(3,GL_FLOAT,0,points);
     glColor4f(.75f,.5f,.5f,1.f);
-    softgl_set_vertex_attributes_full(attributes,NULL);
     for (int u=0;u<4;u++) {
         glActiveTexture(GL_TEXTURE0+u);glEnable(GL_TEXTURE_2D);
         GLuint id;glGenTextures(1,&id);glBindTexture(GL_TEXTURE_2D,id);
@@ -69,12 +69,12 @@ int main(void) {
             glClearColor(64.f/255.f,128.f/255.f,192.f/255.f,1.f);
             glClearDepth(1);glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
             glActiveTexture(GL_TEXTURE2);glBindTexture(GL_TEXTURE_2D,albedo[a]);
-            const GLfloat tint[4]={.4f,.2f,.1f,.5f};softgl_set_fused_dot3_transparent(tint,quartic);
+            const GLfloat tint[4]={.4f,.2f,.1f,.5f};fixture_transparent_material(tint,quartic);
             glDrawArrays(GL_TRIANGLES,0,6);
             /* Pending draws must retain the old copied material constants. */
             const GLfloat replacement[4]={0,0,0,0};
-            softgl_set_fused_dot3_transparent(replacement,!quartic);
-            softgl_set_fused_dot3_transparent(NULL,GL_FALSE);
+            fixture_transparent_material(replacement,!quartic);
+            fixture_transparent_material(NULL,GL_FALSE);
             const uint8_t *rgba=softgl_read_rgba8(c);CHECK(rgba);
             const size_t at=(size_t)180*640+320;
             if(memcmp(rgba+at*4,expected[quartic][a],4)) fprintf(stderr,"helpers=%d samples=%d quartic=%d alpha=%d actual=%u,%u,%u,%u expected=%u,%u,%u,%u depth=%g\n",helpers[w],samples[s],quartic,a,rgba[at*4],rgba[at*4+1],rgba[at*4+2],rgba[at*4+3],expected[quartic][a][0],expected[quartic][a][1],expected[quartic][a][2],expected[quartic][a][3],c->fb.depth[at]);

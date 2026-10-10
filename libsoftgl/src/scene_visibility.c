@@ -1,4 +1,4 @@
-/* Scene-wide material resolve prototype. Forward geometry/clipping remains the
+/* Scene-wide material resolve. Forward geometry/clipping remains the
  * independent producer; only opaque visibility and final shading are deferred. */
 #include "types.h"
 #include "workers.h"
@@ -9,6 +9,7 @@
 #include "raster_store.h"
 #include "multisample.h"
 #include "raster_hz.h"
+#include <float.h>
 #include <stdio.h>
 
 #define SCENE_MATERIALS 4096
@@ -23,6 +24,7 @@ typedef struct {
     sg_tex_tri_ctx texture;
     float ambient[4], tint[4], cutoff;
     int alpha_test;
+    int gl_additive_alpha, final_alpha_one;
     int merge_material_pixels;
     uint32_t count, first, cursor;
 } scene_material;
@@ -110,8 +112,7 @@ static int scene_state_supported(const softgl_ctx *c) {
         c->color_mask[0] && c->color_mask[1] && c->color_mask[2] && c->color_mask[3];
 }
 
-int softgl_scene_visibility_begin(void) {
-    softgl_ctx *c = sg_current();
+int sg_scene_begin(softgl_ctx *c) {
     if (!c || c->scene_visibility || !scene_state_supported(c) ||
         !c->workers || !((sg_worker_pool *)c->workers)->column_bin || !sg_thread_count(c)) return 0;
     sg_workers_flush(c);
@@ -171,8 +172,7 @@ int softgl_scene_visibility_begin(void) {
     return 1;
 }
 
-void softgl_scene_visibility_material(void) {
-    softgl_ctx *c = sg_current();
+void sg_scene_material(softgl_ctx *c) {
     if (!c || !c->scene_visibility) return;
     struct sg_scene_visibility *f = c->scene_visibility;
     if (!scene_state_supported(c) || f->material_count == SCENE_MATERIALS ||
@@ -181,7 +181,7 @@ void softgl_scene_visibility_material(void) {
     }
     scene_material *m = &f->materials[f->material_count];
     sg_tex_tri_prepare(c, &m->texture);
-    if (m->texture.combine_kind < 4 ||
+    if ((m->texture.combine_kind != 1 && m->texture.combine_kind < 4) ||
         m->texture.unit[0].active_slot != SG_TEX_TARGET_2D ||
         m->texture.unit[2].active_slot != SG_TEX_TARGET_2D ||
         (m->texture.unit[3].active_slot != SG_TEX_TARGET_CUBE &&
@@ -192,6 +192,29 @@ void softgl_scene_visibility_material(void) {
     memcpy(m->tint, c->fused_dot3_tint, sizeof(m->tint));
     m->merge_material_pixels = f->merge_material_pixels;
     m->alpha_test = c->alpha_test; m->cutoff = c->alpha_ref;
+    /* Canonical mesh attributes are validated before resolve, including
+     * primary alpha one. A constant alpha texture then has no coverage edge.
+     * Any violated attribute contract restores and replays the GL commands. */
+    const sg_texture *albedo = m->texture.unit[2].tex;
+    if (c->gl_batch_busy && m->alpha_test && !m->texture.constant_alpha_valid &&
+        albedo && albedo->alpha_constant_valid &&
+        (fabsf(albedo->alpha_constant-m->cutoff) > 16.f*FLT_EPSILON ||
+            (albedo->alpha_constant == 0.f && m->cutoff >= 0.f) ||
+            (albedo->alpha_constant == 1.f && m->cutoff >= 1.f))) {
+        m->texture.constant_alpha_valid = 1;
+        m->texture.constant_alpha = albedo->alpha_constant;
+    }
+    if (c->gl_batch_busy && m->alpha_test && m->texture.constant_alpha_valid &&
+        m->texture.constant_alpha > m->cutoff) m->alpha_test = 0;
+    m->gl_additive_alpha = c->fused_dot3_enabled == 3;
+    float specular_alpha = sg_clampf(m->tint[3],0.f,1.f);
+    float alpha_add = specular_alpha*specular_alpha;
+    m->final_alpha_one = m->gl_additive_alpha &&
+        (specular_alpha == 1.f || (m->texture.constant_alpha_valid &&
+            sg_quantize(m->texture.constant_alpha)*(1.f/255.f)+alpha_add >= 1.f) ||
+         (m->alpha_test && m->cutoff+alpha_add >= 1.f+(.5f/255.f)));
+    if (m->alpha_test || (c->gl_batch_busy && !m->texture.constant_alpha_valid && !m->final_alpha_one))
+        m->merge_material_pixels = 0;
     m->count = m->first = m->cursor = 0;
     m->mesh.positions = NULL;
     c->scene_material = f->material_count++;
@@ -287,7 +310,10 @@ static inline void scene_msaa_store_pixel(struct sg_scene_visibility *f,
         f->shade_mask[base] = 0;
         SCENE_UNIFORM_AUDIT(1,1);
     }
-    for (unsigned s = 0; s < n; s++) if (coverage & (1u << s)) {
+    unsigned remaining = coverage;
+    while (remaining) {
+        unsigned s = (unsigned)__builtin_ctz(remaining);
+        remaining &= remaining-1;
         c->fb.sample_depth[base+s] = depth[s];
         f->winner[base+s] = record;
         f->sample_point[base+s] = point;
@@ -325,9 +351,8 @@ void sg_scene_visibility_msaa_packet(softgl_ctx *c,
         sg_f32x4 w1 = sg_f32x4_mul(b1,sg_f32x4_splat(v1->ndc.w));
         sg_f32x4 w2 = sg_f32x4_mul(b2,sg_f32x4_splat(v2->ndc.w));
         sg_f32x4 inverse = sg_f32x4_div(sg_f32x4_splat(1.f),sg_f32x4_add(sg_f32x4_add(w0,w1),w2));
-        sg_f32x4 tex[4];
-        sg_packet_sample_unit(&texture->unit[2],2,v0,v1,v2,w0,w1,w2,inverse,live,0,tex);
-        sg_f32x4 alpha = sg_chain_clamp(sg_f32x4_mul(tex[3],
+        sg_f32x4 tex_alpha = sg_packet_sample_unit_alpha(&texture->unit[2],2,v0,v1,v2,w0,w1,w2,inverse,live);
+        sg_f32x4 alpha = sg_chain_clamp(sg_f32x4_mul(tex_alpha,
             sg_packet_lerp(v0->color.w,v1->color.w,v2->color.w,w0,w1,w2,inverse)));
         live &= sg_mask4_live(sg_f32x4_gt(alpha,sg_f32x4_splat(m->cutoff)));
         if (!live) return;
@@ -374,8 +399,7 @@ void sg_scene_visibility_msaa_packet(softgl_ctx *c,
     }
 }
 
-void softgl_scene_quantized_visibility(GLboolean enabled) {
-    softgl_ctx *c = sg_current();
+void sg_scene_quantized(softgl_ctx *c, GLboolean enabled) {
     if (c && c->scene_visibility) {
         struct sg_scene_visibility *f = c->scene_visibility;
         f->quantized = enabled != GL_FALSE && !c->fb.samples;
@@ -457,9 +481,8 @@ static int scene_quantized_triangle(softgl_ctx *c, const sg_vert *v0,
                 sg_f32x4 w1 = sg_f32x4_mul(b1,sg_f32x4_splat(v1->ndc.w));
                 sg_f32x4 w2 = sg_f32x4_mul(b2,sg_f32x4_splat(v2->ndc.w));
                 sg_f32x4 inverse = sg_f32x4_div(sg_f32x4_splat(1.f),sg_f32x4_add(sg_f32x4_add(w0,w1),w2));
-                sg_f32x4 tex[4];
-                sg_packet_sample_unit(&m->texture.unit[2],2,v0,v1,v2,w0,w1,w2,inverse,live,0,tex);
-                sg_f32x4 alpha = sg_chain_clamp(sg_f32x4_mul(tex[3],
+                sg_f32x4 tex_alpha = sg_packet_sample_unit_alpha(&m->texture.unit[2],2,v0,v1,v2,w0,w1,w2,inverse,live);
+                sg_f32x4 alpha = sg_chain_clamp(sg_f32x4_mul(tex_alpha,
                     sg_packet_lerp(v0->color.w,v1->color.w,v2->color.w,w0,w1,w2,inverse)));
                 live &= sg_mask4_live(sg_f32x4_gt(alpha,sg_f32x4_splat(m->cutoff)));
                 if (!live) continue;
@@ -506,9 +529,8 @@ static inline __attribute__((always_inline)) void scene_small_msaa_capture(softg
         sg_f32x4 w1 = sg_f32x4_mul(b1,sg_f32x4_splat(v1->ndc.w));
         sg_f32x4 w2 = sg_f32x4_mul(b2,sg_f32x4_splat(v2->ndc.w));
         sg_f32x4 inverse = sg_f32x4_div(sg_f32x4_splat(1.f),sg_f32x4_add(sg_f32x4_add(w0,w1),w2));
-        sg_f32x4 tex[4];
-        sg_packet_sample_unit(&texture->unit[2],2,v0,v1,v2,w0,w1,w2,inverse,live,0,tex);
-        sg_f32x4 alpha = sg_chain_clamp(sg_f32x4_mul(tex[3],
+        sg_f32x4 tex_alpha = sg_packet_sample_unit_alpha(&texture->unit[2],2,v0,v1,v2,w0,w1,w2,inverse,live);
+        sg_f32x4 alpha = sg_chain_clamp(sg_f32x4_mul(tex_alpha,
             sg_packet_lerp(v0->color.w,v1->color.w,v2->color.w,w0,w1,w2,inverse)));
         live &= sg_mask4_live(sg_f32x4_gt(alpha,sg_f32x4_splat(m->cutoff)));
         if (!live) return;
@@ -940,9 +962,8 @@ int sg_scene_visibility_triangle(softgl_ctx *c, const sg_vert *v0,
                 sg_f32x4 w1 = sg_f32x4_mul(b1,sg_f32x4_splat(v1->ndc.w));
                 sg_f32x4 w2 = sg_f32x4_mul(b2,sg_f32x4_splat(v2->ndc.w));
                 sg_f32x4 inverse = sg_f32x4_div(sg_f32x4_splat(1.f),sg_f32x4_add(sg_f32x4_add(w0,w1),w2));
-                sg_f32x4 tex[4];
-                sg_packet_sample_unit(&m->texture.unit[2],2,v0,v1,v2,w0,w1,w2,inverse,live,0,tex);
-                sg_f32x4 alpha = sg_chain_clamp(sg_f32x4_mul(tex[3],
+                sg_f32x4 tex_alpha = sg_packet_sample_unit_alpha(&m->texture.unit[2],2,v0,v1,v2,w0,w1,w2,inverse,live);
+                sg_f32x4 alpha = sg_chain_clamp(sg_f32x4_mul(tex_alpha,
                     sg_packet_lerp(v0->color.w,v1->color.w,v2->color.w,w0,w1,w2,inverse)));
                 live &= sg_mask4_live(sg_f32x4_gt(alpha,sg_f32x4_splat(m->cutoff)));
                 if (!live) continue;
@@ -1062,16 +1083,15 @@ static int scene_packet_triangle(softgl_ctx *c, const scene_primitive *primitive
                     &f->geometry->tasks[primitive->task].clipped[primitive->clipped];
                 for (int j = 0; j < 3; j++) {
                     const float *uv = clipped ? clipped->coordinates[j] :
-                        (const float *)((const uint8_t *)mesh->coordinates+(size_t)primitive->indices[j]*mesh->stride);
+                        (const float *)((const uint8_t *)mesh->coordinates+(size_t)primitive->indices[j]*mesh->coordinate_stride);
                     vertices[j].uv[2] = (sg_vec4){uv[0],uv[1],0.f,1.f};
                 }
                 sg_f32x4 w0 = sg_f32x4_mul(b0,sg_f32x4_splat(packet->zw[0][1][lane]));
                 sg_f32x4 w1 = sg_f32x4_mul(b1,sg_f32x4_splat(packet->zw[1][1][lane]));
                 sg_f32x4 w2 = sg_f32x4_mul(b2,sg_f32x4_splat(packet->zw[2][1][lane]));
                 sg_f32x4 inverse = sg_f32x4_div(sg_f32x4_splat(1.f),sg_f32x4_add(sg_f32x4_add(w0,w1),w2));
-                sg_f32x4 tex[4];
-                sg_packet_sample_unit(&m->texture.unit[2],2,vertices,vertices+1,vertices+2,w0,w1,w2,inverse,live,0,tex);
-                sg_f32x4 alpha = sg_chain_clamp(sg_f32x4_mul(tex[3],
+                sg_f32x4 tex_alpha = sg_packet_sample_unit_alpha(&m->texture.unit[2],2,vertices,vertices+1,vertices+2,w0,w1,w2,inverse,live);
+                sg_f32x4 alpha = sg_chain_clamp(sg_f32x4_mul(tex_alpha,
                     sg_packet_lerp(1.f,1.f,1.f,w0,w1,w2,inverse)));
                 live &= sg_mask4_live(sg_f32x4_gt(alpha,sg_f32x4_splat(m->cutoff)));
                 if (!live) continue;
@@ -1162,7 +1182,7 @@ static void scene_packet_fallback(softgl_ctx *c, const scene_primitive *p, int b
         v[j].color.w = 1.f;
         if (f->materials[p->material].alpha_test) {
             const float *uv = clipped ? clipped->coordinates[j] :
-                (const float *)((const uint8_t *)m->coordinates+(size_t)p->indices[j]*m->stride);
+                (const float *)((const uint8_t *)m->coordinates+(size_t)p->indices[j]*m->coordinate_stride);
             v[j].uv[2] = (sg_vec4){uv[0],uv[1],0.f,1.f};
         }
     }
@@ -1328,8 +1348,16 @@ static inline int scene_occlusion_packet_hidden(softgl_ctx *c,
 
 #include "geometry.inc"
 
-static sg_f32x4 scene_gather_lerp(const scene_triangle *t[4], int field, int channel,
+SG_INLINE sg_f32x4 scene_gather_lerp(const scene_triangle *t[4], int field, int channel, int uniform,
     sg_f32x4 w0, sg_f32x4 w1, sg_f32x4 w2, sg_f32x4 inverse) {
+    if (uniform) {
+        float value[3];
+        for (int v = 0; v < 3; v++) {
+            sg_vec4 a = field < 0 ? t[0]->color[v] : t[0]->uv[field][v];
+            value[v] = channel == 0 ? a.x : channel == 1 ? a.y : channel == 2 ? a.z : a.w;
+        }
+        return sg_packet_lerp(value[0],value[1],value[2],w0,w1,w2,inverse);
+    }
     float value[3][4];
     for (int v = 0; v < 3; v++) for (int l = 0; l < 4; l++) {
         sg_vec4 a = field < 0 ? t[l]->color[v] : t[l]->uv[field][v];
@@ -1339,22 +1367,23 @@ static sg_f32x4 scene_gather_lerp(const scene_triangle *t[4], int field, int cha
         sg_f32x4_mul(sg_f32x4_load(value[1]),w1)),sg_f32x4_mul(sg_f32x4_load(value[2]),w2)),inverse);
 }
 
-static void scene_shade_packet(struct sg_scene_visibility *f, scene_material *m,
-    const uint32_t pixels[4], unsigned live) {
+SG_INLINE void scene_shade_packet_impl(struct sg_scene_visibility *f, scene_material *m,
+    const uint32_t pixels[4], unsigned live, unsigned samples) {
     softgl_ctx *c = f->context;
     const scene_triangle *tri[4];
     float bary[3][4];
     for (int l = 0; l < 4; l++) {
         tri[l] = scene_triangle_at(f,f->winner[pixels[l]]);
-        uint32_t pixel = c->fb.samples ? pixels[l]/(unsigned)c->fb.samples : pixels[l];
-        int x = (int)(pixel % (unsigned)c->fb.w), y = (int)(pixel / (unsigned)c->fb.w);
+        uint32_t pixel = samples ? pixels[l]/samples : pixels[l];
+        /* Scene admission and its position frontend both require 360p. */
+        int x = (int)(pixel % 640u), y = (int)(pixel / 640u);
         const scene_triangle *t = tri[l];
         int sx = 128, sy = 128;
-        if (c->fb.samples && f->sample_point[pixels[l]] != 4)
-            sg_sample_position(c->fb.samples,f->sample_point[pixels[l]],&sx,&sy);
+        if (samples && f->sample_point[pixels[l]] != 4)
+            sg_sample_position((int)samples,f->sample_point[pixels[l]],&sx,&sy);
         int64_t e0 = t->edge[0][0]+t->edge[0][1]*x+t->edge[0][2]*y;
         int64_t e1 = t->edge[1][0]+t->edge[1][1]*x+t->edge[1][2]*y;
-        if (c->fb.samples) {
+        if (samples) {
             e0 += (t->edge[0][1]/256)*(sx-128)+(t->edge[0][2]/256)*(sy-128);
             e1 += (t->edge[1][1]/256)*(sx-128)+(t->edge[1][2]/256)*(sy-128);
         }
@@ -1365,11 +1394,16 @@ static void scene_shade_packet(struct sg_scene_visibility *f, scene_material *m,
     }
     sg_f32x4 w0 = sg_f32x4_load(bary[0]), w1 = sg_f32x4_load(bary[1]), w2 = sg_f32x4_load(bary[2]);
     sg_f32x4 inverse = sg_f32x4_div(sg_f32x4_splat(1.f),sg_f32x4_add(sg_f32x4_add(w0,w1),w2));
-    sg_f32x4 primary[4], encoded_half[3], tex[4][4];
-    for (int k = 0; k < 4; k++) primary[k] = scene_gather_lerp(tri,-1,k,w0,w1,w2,inverse);
-    for (int k = 0; k < 3; k++) encoded_half[k] = scene_gather_lerp(tri,1,k,w0,w1,w2,inverse);
-    /* Canonical programs must preserve identical UV0/UV2; geometry validation
-     * restores the scene if any program violates that contract. */
+    sg_f32x4 primary[4], encoded_half[4], tex[4][4];
+    int fused = m->texture.combine_kind >= 4;
+    int uniform = tri[0] == tri[1] && tri[0] == tri[2] && tri[0] == tri[3];
+    for (int k = 0; k < 3; k++) primary[k] = scene_gather_lerp(tri,-1,k,uniform,w0,w1,w2,inverse);
+    /* Canonical mesh capture validates primary alpha at winning vertices.
+     * Constant output alpha also makes interpolation of this channel dead. */
+    primary[3] = m->mesh.positions || m->texture.constant_alpha_valid || m->final_alpha_one
+        ? sg_f32x4_splat(1.f) : scene_gather_lerp(tri,-1,3,uniform,w0,w1,w2,inverse);
+    if (fused) for (int k = 0; k < 3; k++) encoded_half[k] = scene_gather_lerp(tri,1,k,uniform,w0,w1,w2,inverse);
+    /* Canonical arrays have identical UV0/UV2. */
     int shared_uv = tri[0]->primitive && tri[1]->primitive && tri[2]->primitive && tri[3]->primitive;
     int have_uv = 0;
     sg_f32x4 shared_x, shared_y;
@@ -1384,46 +1418,99 @@ static void scene_shade_packet(struct sg_scene_visibility *f, scene_material *m,
         if (u == 2 && have_uv) {
             x = shared_x; y = shared_y;
         } else {
-            x = scene_gather_lerp(tri,u,0,w0,w1,w2,inverse);
-            y = scene_gather_lerp(tri,u,1,w0,w1,w2,inverse);
+            int field = shared_uv && u == 2 ? 0 : u;
+            x = scene_gather_lerp(tri,field,0,uniform,w0,w1,w2,inverse);
+            y = scene_gather_lerp(tri,field,1,uniform,w0,w1,w2,inverse);
             if (u == 0 && shared_uv) { shared_x = x; shared_y = y; have_uv = 1; }
         }
         if (unit->active_slot == SG_TEX_TARGET_CUBE) {
-            sg_f32x4 z = scene_gather_lerp(tri,u,2,w0,w1,w2,inverse);
+            sg_f32x4 z = scene_gather_lerp(tri,u,2,uniform,w0,w1,w2,inverse);
             sg_packet_sample_cube_target(unit,x,y,z,live,tex[u]);
-        } else sg_packet_sample_2d(unit,x,y,live,0,tex[u]);
+        } else if (u == 2 && !m->texture.constant_alpha_valid && !m->final_alpha_one)
+            sg_packet_sample_2d(unit,x,y,live,0,tex[u]);
+        else sg_packet_sample_2d_rgb(unit,x,y,live,tex[u]);
     }
     sg_f32x4 dot[3], spec[3], half = sg_f32x4_splat(.5f);
     for (int k = 0; k < 3; k++) {
         sg_f32x4 n = sg_f32x4_sub(tex[0][k],half);
         dot[k] = sg_f32x4_mul(n,sg_f32x4_sub(primary[k],half));
-        spec[k] = sg_f32x4_mul(n,sg_f32x4_sub(encoded_half[k],half));
+        if (fused) spec[k] = sg_f32x4_mul(n,sg_f32x4_sub(encoded_half[k],half));
     }
     sg_f32x4 d = sg_chain_clamp(sg_f32x4_mul(sg_f32x4_splat(4.f),sg_f32x4_add(sg_f32x4_add(dot[0],dot[1]),dot[2])));
-    sg_f32x4 s = sg_chain_clamp(sg_f32x4_mul(sg_f32x4_splat(4.f),sg_f32x4_add(sg_f32x4_add(spec[0],spec[1]),spec[2])));
-    s = sg_f32x4_mul(s,s);
-    if (m->texture.combine_kind == 5) s = sg_f32x4_mul(s,s);
+    sg_f32x4 s = sg_f32x4_splat(0.f);
+    if (fused) {
+        s = sg_chain_clamp(sg_f32x4_mul(sg_f32x4_splat(4.f),sg_f32x4_add(sg_f32x4_add(spec[0],spec[1]),spec[2])));
+        s = sg_f32x4_mul(s,s);
+        if (m->texture.combine_kind == 5) s = sg_f32x4_mul(s,s);
+    }
     sg_f32x4 color[4];
     for (int k = 0; k < 3; k++) {
         sg_f32x4 diffuse = sg_chain_clamp(sg_f32x4_add(d,sg_f32x4_splat(m->ambient[k])));
         diffuse = sg_chain_clamp(sg_f32x4_mul(diffuse,tex[2][k]));
         diffuse = sg_chain_clamp(sg_f32x4_add(diffuse,tex[3][k]));
-        sg_f32x4 tinted = sg_chain_clamp(sg_f32x4_mul(s,sg_f32x4_splat(m->tint[k])));
-        color[k] = sg_chain_clamp(sg_f32x4_add(diffuse,sg_f32x4_mul(tinted,sg_f32x4_splat(sg_clampf(m->tint[3],0.f,1.f)))));
+        color[k] = diffuse;
+        if (fused) {
+            sg_f32x4 tinted = sg_chain_clamp(sg_f32x4_mul(s,sg_f32x4_splat(m->tint[k])));
+            color[k] = sg_chain_clamp(sg_f32x4_add(diffuse,sg_f32x4_mul(tinted,sg_f32x4_splat(sg_clampf(m->tint[3],0.f,1.f)))));
+        }
     }
-    color[3] = m->texture.constant_alpha_valid ? sg_f32x4_splat(m->texture.constant_alpha)
+    color[3] = m->final_alpha_one ? sg_f32x4_splat(1.f) :
+        m->texture.constant_alpha_valid ? sg_f32x4_splat(m->texture.constant_alpha)
         : sg_chain_clamp(sg_f32x4_mul(primary[3],tex[2][3]));
-    _MM_TRANSPOSE4_PS(color[0],color[1],color[2],color[3]);
+    if (!m->final_alpha_one && m->gl_additive_alpha) {
+        /* The first opaque GL pass quantizes alpha before the additive pass. */
+        sg_i32x4 quantized = sg_f32x4_trunc_i32(sg_f32x4_add(sg_f32x4_mul(color[3],
+            sg_f32x4_splat(255.f)),sg_f32x4_splat(.5f)));
+        float alpha = sg_clampf(m->tint[3],0.f,1.f);
+        color[3] = sg_chain_clamp(sg_f32x4_add(sg_f32x4_mul(_mm_cvtepi32_ps(quantized),
+            sg_f32x4_splat(1.f/255.f)),sg_f32x4_splat(alpha*alpha)));
+    }
+    /* Keep four pixels in lanes through conversion, then interleave bytes.
+     * This replaces four channel transposes and four separate pack chains. */
+    sg_i32x4 quantized[4];
+    for (int k = 0; k < 4; k++) {
+        sg_f32x4 value = sg_chain_clamp(color[k]);
+        quantized[k] = sg_f32x4_trunc_i32(sg_f32x4_add(sg_f32x4_mul(value,
+            sg_f32x4_splat(255.f)),sg_f32x4_splat(.5f)));
+    }
+    sg_i32x4 rg = _mm_packus_epi32(quantized[0],quantized[1]);
+    sg_i32x4 ba = _mm_packus_epi32(quantized[2],quantized[3]);
+    sg_i32x4 rgba = _mm_shuffle_epi8(_mm_packus_epi16(rg,ba),
+        sg_i32x4_set(0x0c080400,0x0d090501,0x0e0a0602,0x0f0b0703));
+    uint32_t packed_pixels[4];
+    _mm_storeu_si128((sg_i32x4 *)packed_pixels,rgba);
     for (int l = 0; l < 4; l++) if (live & (1u << l)) {
-        float rgba[4]; sg_f32x4_store(rgba,color[l]);
-        uint32_t packed = sg_store_quantize_rgba(rgba);
-        if (c->fb.samples) {
-            size_t base = (size_t)(pixels[l]/(unsigned)c->fb.samples)*c->fb.samples;
-            for (int s = 0; s < c->fb.samples; s++) if (f->shade_mask[pixels[l]] & (1u << s))
-                { memcpy(c->fb.sample_color+(base+s)*4,&packed,sizeof(packed)); SCENE_MSAA_AUDIT(6,1); }
+        uint32_t packed = packed_pixels[l];
+        if (samples) {
+            size_t base = (size_t)(pixels[l]/samples)*samples;
+            unsigned mask = f->shade_mask[pixels[l]];
+            if (samples == 4 && mask == 15) {
+                _mm_storeu_si128((sg_i32x4 *)(c->fb.sample_color+base*4),sg_i32x4_splat((int32_t)packed));
+                SCENE_MSAA_AUDIT(6,4);
+            } else for (unsigned s = 0; s < samples; s++) if (mask & (1u << s))
+                {
+                    memcpy(c->fb.sample_color+(base+s)*4,&packed,sizeof(packed)); SCENE_MSAA_AUDIT(6,1);
+                }
             SCENE_MSAA_AUDIT(5,1);
         } else memcpy(c->fb.color+(size_t)pixels[l]*4,&packed,sizeof(packed));
     }
+}
+
+/* Separate complete packets from the infrequent tail. Constants propagate
+ * through addressing, sampling and stores without changing any arithmetic. */
+static __attribute__((noinline)) void scene_shade_full_msaa4(struct sg_scene_visibility *f,
+    scene_material *m, const uint32_t pixels[4]) {
+    scene_shade_packet_impl(f,m,pixels,15,4);
+}
+
+static __attribute__((noinline)) void scene_shade_full_packet(struct sg_scene_visibility *f,
+    scene_material *m, const uint32_t pixels[4]) {
+    scene_shade_packet_impl(f,m,pixels,15,(unsigned)f->context->fb.samples);
+}
+
+static __attribute__((noinline)) void scene_shade_tail(struct sg_scene_visibility *f,
+    scene_material *m, const uint32_t pixels[4], unsigned live) {
+    scene_shade_packet_impl(f,m,pixels,live,(unsigned)f->context->fb.samples);
 }
 
 static void scene_resolve(void *data) {
@@ -1433,14 +1520,19 @@ static void scene_resolve(void *data) {
         if (task >= f->task_count) break;
         scene_task *t = &f->tasks[task];
         scene_material *m = &f->materials[t->material];
-        for (uint32_t first = t->first; first < t->first+t->count; first += 4) {
+        uint32_t first = t->first, end = t->first+t->count;
+        for (; end-first >= 4; first += 4) {
+            if (f->context->fb.samples == 4) scene_shade_full_msaa4(f,m,f->pixels+first);
+            else scene_shade_full_packet(f,m,f->pixels+first);
+        }
+        if (first < end) {
             uint32_t pixels[4]; unsigned live = 0;
             for (int l = 0; l < 4; l++) {
                 uint32_t at = first+(unsigned)l;
                 pixels[l] = f->pixels[at < t->first+t->count ? at : first];
                 if (at < t->first+t->count) live |= 1u << l;
             }
-            scene_shade_packet(f,m,pixels,live);
+            scene_shade_tail(f,m,pixels,live);
         }
     }
 }
@@ -1495,7 +1587,6 @@ static void scene_msaa_group_bins_ordinary(void *data) {
                     for (unsigned k = s+1; k < n; k++) if (f->pixel_material[base+k] != UINT16_MAX &&
                         ((f->materials[f->pixel_material[at]].merge_material_pixels && f->deferred_meshes && n == 4 &&
                           f->materials[f->pixel_material[at]].mesh.positions &&
-                          !f->materials[f->pixel_material[at]].alpha_test &&
                           f->pixel_material[base+k] == f->pixel_material[at]) ||
                          (f->winner[base+k] == f->winner[at] &&
                           f->sample_point[base+k] == f->sample_point[at]))) mask |= 1u << k;
@@ -1547,7 +1638,6 @@ static void scene_msaa_group_bins_uniform(void *data) {
                     if (!uniform) for (unsigned k = s+1; k < n; k++) if (f->pixel_material[base+k] != UINT16_MAX &&
                         ((f->materials[f->pixel_material[at]].merge_material_pixels && f->deferred_meshes && n == 4 &&
                           f->materials[f->pixel_material[at]].mesh.positions &&
-                          !f->materials[f->pixel_material[at]].alpha_test &&
                           f->pixel_material[base+k] == f->pixel_material[at]) ||
                          (f->winner[base+k] == f->winner[at] &&
                           f->sample_point[base+k] == f->sample_point[at]))) mask |= 1u << k;
@@ -1620,8 +1710,7 @@ static void scene_msaa_list(struct sg_scene_visibility *f) {
     sg_workers_run_callback(f->context,scene_msaa_list_bins,f);
 }
 
-int softgl_scene_visibility_end(void) {
-    softgl_ctx *c = sg_current();
+int sg_scene_end(softgl_ctx *c) {
     if (!c || !c->scene_visibility) return 0;
     struct sg_scene_visibility *f = c->scene_visibility;
     sg_workers_flush(c);
@@ -1681,15 +1770,18 @@ int softgl_scene_visibility_end(void) {
     return 1;
 }
 
-void softgl_scene_msaa_material_merge(GLboolean enabled) {
-    softgl_ctx *c = sg_current();
+void sg_scene_abort(softgl_ctx *c) {
+    if (c->scene_visibility)
+        atomic_store_explicit(&c->scene_visibility->failed, 1, memory_order_relaxed);
+}
+
+void sg_scene_merge(softgl_ctx *c, GLboolean enabled) {
     if (c && c->scene_visibility)
         ((struct sg_scene_visibility *)c->scene_visibility)->merge_material_pixels =
             enabled != GL_FALSE && c->fb.samples == 4;
 }
 
-void softgl_scene_depth_order(GLuint mode) {
-    softgl_ctx *c = sg_current();
+void sg_scene_order(softgl_ctx *c, GLuint mode) {
     if (c && c->scene_visibility)
         ((struct sg_scene_visibility *)c->scene_visibility)->bins[SG_MAX_BINS-1].order_storage.mode =
             c->fb.samples == 4 && mode <= 2 ? mode : 0;

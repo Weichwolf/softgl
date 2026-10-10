@@ -19,7 +19,7 @@ set(SRC ${CMAKE_CURRENT_SOURCE_DIR}/..)
 # -pthread enables the Web-Workers-backed pthreads runtime so the tile
 # binning renderer + parallel vertex transform light up in the browser.
 # Required to be on BOTH the compile and link command lines.
-add_compile_options(-O2 -msimd128 -msse -msse2 -msse3 -mssse3 -msse4.1 -pthread -Wno-unused-parameter)
+add_compile_options(-O3 -msimd128 -msse -msse2 -msse3 -mssse3 -msse4.1 -pthread -Wno-unused-parameter)
 
 # libsoftgl sources (wrapped rather than subdir to avoid toolchain clashes)
 file(GLOB SOFTGL_SRC ${SRC}/libsoftgl/src/*.c)
@@ -64,7 +64,7 @@ add_executable(softgl
     ${TEST_OBJECTS}
 )
 
-target_compile_definitions(softgl PRIVATE SOFTGL_MODEL_VERTEX_ATTRIBUTES SOFTGL_MODEL_SCENE_VISIBILITY SOFTGL_MODEL_SCENE_POSITIONS SOFTGL_MODEL_TRANSPARENT_FUSION SOFTGL_MODEL_QUANTIZED_VISIBILITY)
+target_compile_definitions(softgl PRIVATE SOFTGL_MODEL_ARRAY_ATTRIBUTES)
 
 # The preview lives beside the compiled module under the single build tree.
 configure_file(index.html ${CMAKE_CURRENT_BINARY_DIR}/index.html COPYONLY)
@@ -88,5 +88,5 @@ target_compile_options(softgl PRIVATE -sUSE_SDL=2)
 set_target_properties(softgl PROPERTIES
     OUTPUT_NAME softgl
     SUFFIX ".js"
-    LINK_FLAGS "-O2 -msimd128 -pthread -sUSE_SDL=2 -sPTHREAD_POOL_SIZE=8 -sEXPORTED_FUNCTIONS=_softgl_create,_softgl_create_multisample,_softgl_destroy,_softgl_make_current,_softgl_read_rgba8,_sg_test_count,_sg_test_name,_sg_test_run,_sg_bench_slot_count,_sg_bench_slot_tag,_sg_bench_slot_test_index,_sg_bench_run_idx,_sg_bench_run_slot,_sg_model_load,_sg_model_set_camera,_sg_model_upload_albedo,_sg_model_share_albedo,_sg_model_render,_sg_model_unload,_sg_model_tri_count,_sg_model_mat_count,_sg_thread_count,_sg_hwthreads,_sg_viewer_create,_sg_viewer_present,_sg_viewer_destroy,_malloc,_free -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,HEAPU8,UTF8ToString -sMODULARIZE=1 -sEXPORT_NAME=createSoftGL -sALLOW_MEMORY_GROWTH=1 -sMAXIMUM_MEMORY=4GB -sINITIAL_MEMORY=67108864 -sSTACK_SIZE=8388608"
+    LINK_FLAGS "-O3 -msimd128 -pthread -sUSE_SDL=2 -sPTHREAD_POOL_SIZE=8 -sEXPORTED_FUNCTIONS=_softgl_create,_softgl_create_multisample,_softgl_destroy,_softgl_make_current,_softgl_read_rgba8,_sg_test_count,_sg_test_name,_sg_test_run,_sg_bench_slot_count,_sg_bench_slot_tag,_sg_bench_slot_test_index,_sg_bench_run_idx,_sg_bench_run_slot,_sg_model_load,_sg_model_set_camera,_sg_model_upload_albedo,_sg_model_share_albedo,_sg_model_render,_sg_model_unload,_sg_model_tri_count,_sg_model_mat_count,_sg_thread_count,_sg_hwthreads,_sg_viewer_create,_sg_viewer_present,_sg_viewer_destroy,_malloc,_free -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,HEAPU8,UTF8ToString -sMODULARIZE=1 -sEXPORT_NAME=createSoftGL -sALLOW_MEMORY_GROWTH=1 -sMAXIMUM_MEMORY=4GB -sINITIAL_MEMORY=67108864 -sSTACK_SIZE=8388608"
 )

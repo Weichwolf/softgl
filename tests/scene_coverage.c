@@ -1,4 +1,5 @@
 #include "types.h"
+#include "material_fixture.h"
 #include "workers.h"
 #include <math.h>
 #include <stdio.h>
@@ -128,7 +129,7 @@ static void check_mode(int samples, int workers) {
     program_data data;
     for (int variant = 0; variant < 31; variant++) {
         data.phase = variant;
-        softgl_vertex_attributes_full_fn fn = variant%7 == 0 ? NULL : variant%3 == 0 ? attributes_second : attributes;
+        fixture_attributes_full_fn fn = variant%7 == 0 ? NULL : variant%3 == 0 ? attributes_second : attributes;
         for (int i = 0; i < VERTICES; i++) {
             memcpy(eager_colors[i],colors[i],sizeof(eager_colors[i]));
             float uv[4][4];
@@ -142,14 +143,13 @@ static void check_mode(int samples, int workers) {
         for (int side = 0; side < 2; side++) {
             softgl_ctx *c = contexts[side]; softgl_make_current(c);
             glBindBuffer(GL_ARRAY_BUFFER,0);
-            glColorPointer(4,GL_FLOAT,0,side ? colors : eager_colors);
+            glColorPointer(4,GL_FLOAT,0,eager_colors);
             for (int u = 0; u < 4; u++) {
                 glClientActiveTexture(GL_TEXTURE0+u);
-                glTexCoordPointer(side ? 2 : 4,GL_FLOAT,0,side ? (const void *)coordinates : (const void *)eager_coordinates[u]);
+                glTexCoordPointer(4,GL_FLOAT,0,eager_coordinates[u]);
             }
-            softgl_set_vertex_attributes_full(side ? fn : NULL, &data);
             const float tint[4] = {.3f+variant*.01f,.2f,.4f,.7f};
-            softgl_set_fused_dot3_material(variant%5 == 0 ? NULL : tint, variant&1);
+            fixture_material(variant%5 == 0 ? NULL : tint, variant&1);
             glBindBuffer(GL_ARRAY_BUFFER,buffers[side][0]);
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,buffers[side][1]);
             if (variant == 8) {
@@ -195,8 +195,8 @@ static void check_mode(int samples, int workers) {
             if (variant&1) { glEnable(GL_BLEND); glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA); }
             if (variant&2) { glEnable(GL_STENCIL_TEST); glStencilFunc(GL_ALWAYS,1,255); glStencilOp(GL_KEEP,GL_KEEP,GL_INCR); }
             glColor4f(.7f,.3f,.5f,.6f);
-            int begun = side ? softgl_scene_visibility_begin() : 0;
-            if (begun) { captures++; softgl_scene_visibility_material(); }
+            int begun = side ? sg_scene_begin(sg_current()) : 0;
+            if (begun) { captures++; sg_scene_material(sg_current()); }
             for (int replay = 0; replay < 2; replay++) {
             if (variant == 27) glDrawArrays(GL_TRIANGLES,192,192);
             else if (variant == 28) {
@@ -215,9 +215,9 @@ static void check_mode(int samples, int workers) {
                 if (variant == 16) {
                     /* Fail after queued visibility may already have written
                      * depth. End must restore the pre-batch framebuffer. */
-                    for (int i = 0; i < 4097; i++) softgl_scene_visibility_material();
+                    for (int i = 0; i < 4097; i++) sg_scene_material(sg_current());
                 }
-                if (softgl_scene_visibility_end()) break;
+                if (sg_scene_end(sg_current())) break;
                 fallbacks++; begun = 0;
             }
             CHECK(glGetError() == GL_NO_ERROR);
@@ -225,17 +225,6 @@ static void check_mode(int samples, int workers) {
         compare(contexts[0],contexts[1],queries[0],queries[1]);
     }
     if (workers) CHECK(((sg_worker_pool *)contexts[1]->workers)->cluster_cache != NULL);
-    softgl_make_current(contexts[1]);
-    glBegin(GL_POINTS);
-    softgl_set_vertex_attributes_full(attributes,&data);
-    CHECK(glGetError() == GL_INVALID_OPERATION);
-    const float tint[4] = {1,1,1,1};
-    softgl_set_fused_dot3_material(tint,GL_TRUE);
-    CHECK(glGetError() == GL_INVALID_OPERATION);
-    glEnd();
-    softgl_set_vertex_attributes(NULL,NULL,0);
-    CHECK(contexts[1]->vertex_attributes_full == NULL);
-    softgl_set_fused_dot3_material(NULL,GL_FALSE);
     softgl_destroy(contexts[0]); softgl_destroy(contexts[1]);
 }
 

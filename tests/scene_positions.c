@@ -1,5 +1,6 @@
-/* Canonical mesh commands, copied programs, clipping, masks and rollback. */
+/* Canonical mesh commands, captured GL arrays, clipping, masks and rollback. */
 #include "types.h"
+#include "material_fixture.h"
 #include "workers.h"
 #include <stdio.h>
 #define CHECK(x) do { if (!(x)) { fprintf(stderr,"line %d: %s\n",__LINE__,#x); exit(1); } } while (0)
@@ -24,6 +25,29 @@ static void attributes(void *user, GLuint index, GLfloat color[4], GLfloat uv[4]
 
 static void invalid_attributes(void *user, GLuint index, GLfloat color[4], GLfloat uv[4][4]) {
     attributes(user,index,color,uv); color[3] = .5f;
+}
+
+/* Each submitted part owns standard arrays until the private batch resolves. */
+static float submitted_colors[3][VERTICES][4], submitted_uv[3][4][VERTICES][4];
+static void prepare_attributes(int slot, const void *data, fixture_attributes_full_fn fn) {
+    for (GLuint i = 0; i < VERTICES; i++) {
+        float color[4] = {1,1,1,1}, uv[4][4];
+        for (int u = 0; u < 4; u++) {
+            uv[u][0] = vertices[i].uv[0]; uv[u][1] = vertices[i].uv[1];
+            uv[u][2] = 0.f; uv[u][3] = 1.f;
+        }
+        fn((void *)data, i, color, uv);
+        memcpy(submitted_colors[slot][i], color, sizeof(color));
+        for (int u = 0; u < 4; u++) memcpy(submitted_uv[slot][u][i], uv[u], sizeof(uv[u]));
+    }
+    glBindBuffer(GL_ARRAY_BUFFER,0);
+    glEnableClientState(GL_COLOR_ARRAY);
+    glColorPointer(4,GL_FLOAT,0,submitted_colors[slot]);
+    for (int u = 0; u < 4; u++) {
+        glClientActiveTexture(GL_TEXTURE0+u);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        glTexCoordPointer(4,GL_FLOAT,0,submitted_uv[slot][u]);
+    }
 }
 
 static void diffuse_chain(void) {
@@ -88,26 +112,24 @@ static void frame(softgl_ctx *c, int deferred, int variant) {
     else glDisable(GL_CULL_FACE);
     glFrontFace(variant%4 ? GL_CCW : GL_CW);
     if (variant&1) { glEnable(GL_ALPHA_TEST); glAlphaFunc(GL_GREATER,.4f); } else glDisable(GL_ALPHA_TEST);
-    int begun = softgl_scene_visibility_begin();
+    int begun = sg_scene_begin(sg_current());
     for (int part = 0; part < 3; part++) {
         const float tint[4] = {.1f+part*.1f,.2f,.3f,.5f};
-        softgl_set_fused_dot3_material(tint,variant&1);
+        fixture_material(tint,variant&1);
         program_data data = {(float)(variant+part)};
-        softgl_set_vertex_attributes_full(attributes,&data);
-        if (begun) softgl_scene_visibility_material();
-        int queued = deferred && softgl_scene_visibility_positions(vertices[0].p,vertices[0].uv,
-            sizeof(vertex),VERTICES,indices+part*96,96,attributes,&data,sizeof(data));
+        prepare_attributes(part,&data,attributes);
+        if (begun) sg_scene_material(sg_current());
+        int queued = deferred && sg_scene_positions(sg_current(),vertices[0].p,vertices[0].uv,
+            sizeof(vertex),VERTICES,indices+part*96,96);
         if (queued) captured++;
         else glDrawElements(GL_TRIANGLES,96,GL_UNSIGNED_INT,indices+part*96);
-        /* Deferred work must use its copied program, even after the original
-         * stack object, callback and matrices have been changed. */
-        data.phase = 1000.f; softgl_set_vertex_attributes_full(NULL,NULL);
+        /* Captured attributes and matrices survive later GL pointer/state changes. */
         glMatrixMode(GL_MODELVIEW); glLoadIdentity(); glRotatef((float)variant*9.f,0,1,0);
         if (variant == 8) glTranslatef(20,0,0);
         if (variant == 9) glTranslatef(0,0,1.5f);
     }
     glLoadIdentity();
-    if (begun) CHECK(softgl_scene_visibility_end());
+    if (begun) CHECK(sg_scene_end(sg_current()));
     CHECK(glGetError() == GL_NO_ERROR);
 }
 
@@ -133,24 +155,26 @@ static void rollback(softgl_ctx *c) {
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     size_t pixels = (size_t)640*360; uint8_t *color = malloc(pixels*4); float *depth = malloc(pixels*sizeof(float));
     CHECK(color && depth); memcpy(color,c->fb.color,pixels*4); memcpy(depth,c->fb.depth,pixels*sizeof(float));
-    CHECK(softgl_scene_visibility_begin());
-    const float tint[4] = {.1f,.2f,.3f,.5f}; softgl_set_fused_dot3_material(tint,0);
-    softgl_scene_visibility_material(); program_data data = {1.f};
-    CHECK(softgl_scene_visibility_positions(vertices[0].p,vertices[0].uv,sizeof(vertex),VERTICES,indices,96,attributes,&data,sizeof(data)));
+    CHECK(sg_scene_begin(sg_current()));
+    const float tint[4] = {.1f,.2f,.3f,.5f}; fixture_material(tint,0);
+    sg_scene_material(sg_current()); program_data data = {1.f};
+    prepare_attributes(0,&data,attributes);
+    CHECK(sg_scene_positions(sg_current(),vertices[0].p,vertices[0].uv,sizeof(vertex),VERTICES,indices,96));
     /* A span exceeds the allocation budget before any vertex is accessed. */
-    const GLuint huge[] = {0,2000000,1}; softgl_scene_visibility_material();
-    CHECK(softgl_scene_visibility_positions(vertices[0].p,vertices[0].uv,sizeof(vertex),2000001,huge,3,attributes,&data,sizeof(data)));
-    CHECK(!softgl_scene_visibility_end());
+    const GLuint huge[] = {0,2000000,1}; sg_scene_material(sg_current());
+    CHECK(sg_scene_positions(sg_current(),vertices[0].p,vertices[0].uv,sizeof(vertex),2000001,huge,3));
+    CHECK(!sg_scene_end(sg_current()));
     CHECK(!memcmp(color,c->fb.color,pixels*4)); CHECK(!memcmp(depth,c->fb.depth,pixels*sizeof(float)));
-    CHECK(!softgl_scene_visibility_positions(vertices[0].p,vertices[0].uv,sizeof(vertex),VERTICES,indices,96,attributes,&data,sizeof(data)));
+    CHECK(!sg_scene_positions(sg_current(),vertices[0].p,vertices[0].uv,sizeof(vertex),VERTICES,indices,96));
     restored++;
-    CHECK(softgl_scene_visibility_begin());
-    softgl_scene_visibility_material();
-    CHECK(!softgl_scene_visibility_positions(vertices[0].p,vertices[0].uv,13,VERTICES,indices,96,attributes,&data,sizeof(data)));
-    CHECK(!softgl_scene_visibility_positions(vertices[0].p,vertices[0].uv,sizeof(vertex),VERTICES,indices,2,attributes,&data,sizeof(data)));
-    CHECK(softgl_scene_visibility_positions(vertices[0].p,vertices[0].uv,sizeof(vertex),VERTICES,indices,96,invalid_attributes,&data,sizeof(data)));
+    CHECK(sg_scene_begin(sg_current()));
+    sg_scene_material(sg_current());
+    CHECK(!sg_scene_positions(sg_current(),vertices[0].p,vertices[0].uv,13,VERTICES,indices,96));
+    CHECK(!sg_scene_positions(sg_current(),vertices[0].p,vertices[0].uv,sizeof(vertex),VERTICES,indices,2));
+    prepare_attributes(0,&data,invalid_attributes);
+    CHECK(sg_scene_positions(sg_current(),vertices[0].p,vertices[0].uv,sizeof(vertex),VERTICES,indices,96));
     /* Failure after the position/raster phases must undo all written depth. */
-    CHECK(!softgl_scene_visibility_end());
+    CHECK(!sg_scene_end(sg_current()));
     CHECK(!memcmp(color,c->fb.color,pixels*4)); CHECK(!memcmp(depth,c->fb.depth,pixels*sizeof(float)));
     restored++; free(color); free(depth);
 }

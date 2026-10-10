@@ -76,6 +76,7 @@ void softgl_destroy(softgl_ctx *c) {
      * gets torn down (fb.color/depth, textures, vbos). */
     sg_workers_flush(c);
     sg_workers_shutdown(c);
+    sg_gl_batch_destroy(c);
     sg_scene_visibility_destroy(c->scene_storage);
     if (c->fb.color)   sg_aligned_free(c->fb.color);
     if (c->fb.depth)   sg_aligned_free(c->fb.depth);
@@ -95,6 +96,8 @@ void softgl_destroy(softgl_ctx *c) {
     }
     if (c->textures) {
         for (size_t i = 0; i < c->textures_cap; i++) {
+            free(c->textures[i].alpha_plane);
+            free(c->textures[i].alpha_uniform);
             for (int l = 0; l < SG_MAX_MIPMAP_LEVELS; l++) {
                 if (c->textures[i].data[l]) sg_aligned_free(c->textures[i].data[l]);
                 for (int face = 0; face < 6; face++)

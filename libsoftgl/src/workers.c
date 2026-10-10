@@ -1236,6 +1236,7 @@ const uint8_t *sg_workers_inside_frustum(softgl_ctx *c) {
 }
 
 void sg_workers_flush(softgl_ctx *c) {
+    sg_gl_batch_flush(c);
     sg_worker_pool *p = (sg_worker_pool*)c->workers;
     if (!p) return;
     if (++p->depth_epoch == 0) p->depth_epoch = 1;

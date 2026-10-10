@@ -2,14 +2,14 @@
  * including constant/varying normal maps and differing texture wrap modes. */
 #include "types.h"
 static softgl_ctx *reference_context;
-static int begin_selected_uv(void) {
-    return sg_current() == reference_context ? 0 : softgl_scene_visibility_begin();
+static int begin_selected_uv(softgl_ctx *context) {
+    return sg_current() == reference_context ? 0 : sg_scene_begin(sg_current());
 }
-#define softgl_scene_visibility_begin begin_selected_uv
+#define sg_scene_begin begin_selected_uv
 #define main previous_position_fixture_main
 #include "scene_positions.c"
 #undef main
-#undef softgl_scene_visibility_begin
+#undef sg_scene_begin
 
 static void texture_modes(softgl_ctx *c, int varying, int wrap) {
     softgl_make_current(c);

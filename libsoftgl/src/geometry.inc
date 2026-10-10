@@ -32,10 +32,8 @@ static void scene_geometry_fail(struct sg_scene_visibility *f) {
     atomic_store_explicit(&f->failed,1,memory_order_relaxed);
 }
 
-int softgl_scene_visibility_positions(const GLfloat *positions, const GLfloat *coordinates,
-    GLsizei stride, GLuint vertex_count, const GLuint *indices, GLsizei count,
-    softgl_vertex_attributes_full_fn program, const void *user, GLuint user_bytes) {
-    softgl_ctx *c = sg_current();
+int sg_scene_positions(softgl_ctx *c, const GLfloat *positions, const GLfloat *coordinates,
+    GLsizei stride, GLuint vertex_count, const GLuint *indices, GLsizei count) {
     if (!c || !c->scene_visibility) return 0;
     struct sg_scene_visibility *f = c->scene_visibility;
     if (atomic_load_explicit(&f->failed,memory_order_relaxed)) return 1;
@@ -43,11 +41,10 @@ int softgl_scene_visibility_positions(const GLfloat *positions, const GLfloat *c
         c->scene_material >= f->material_count || c->lighting || c->shade_model != 0x1D01 /* GL_SMOOTH */ ||
         c->polygon_mode_front != GL_FILL || c->polygon_mode_back != GL_FILL ||
         c->viewport[0] || c->viewport[1] || c->viewport[2] != 640 || c->viewport[3] != 360 ||
-        !positions || !coordinates || !indices || !program || stride < 12 || stride % sizeof(float) ||
+        !positions || !coordinates || !indices || stride < 12 || stride % sizeof(float) ||
         (uintptr_t)positions % sizeof(float) || (uintptr_t)coordinates % sizeof(float) ||
         (uintptr_t)indices % sizeof(uint32_t) ||
-        count <= 0 || count % 3 || user_bytes > sizeof(((scene_mesh *)0)->user) ||
-        (user_bytes && !user)) return 0;
+        count <= 0 || count % 3) return 0;
     for (int i = 0; i < 6; i++) if (c->clip_plane_enabled[i]) return 0;
     scene_mesh *m = &f->materials[c->scene_material].mesh;
     if (m->positions) return 0;
@@ -55,6 +52,10 @@ int softgl_scene_visibility_positions(const GLfloat *positions, const GLfloat *c
     sg_index_range(GL_UNSIGNED_INT,(const uint8_t *)indices,count,&minimum,&maximum);
     if (maximum >= vertex_count || maximum-minimum == UINT32_MAX) return 0;
     uint32_t span = maximum-minimum+1;
+    /* Heavy index reuse has little deferred-attribute benefit and can encode
+     * repeated equal-depth primitives in an additive pass. Keep that topology
+     * on the ordered pipeline. Ordinary indexed manifold meshes remain eligible. */
+    if ((uint64_t)span*8u < (unsigned)count/3u) return 0;
     size_t bytes = sizeof(scene_position)+sizeof(scene_attribute)+sizeof(uint8_t)+sizeof(atomic_uchar);
     if (span > SCENE_VERTEX_BYTES/bytes-f->mesh_vertices) {
         scene_geometry_fail(f); return 1;
@@ -64,8 +65,33 @@ int softgl_scene_visibility_positions(const GLfloat *positions, const GLfloat *c
     m->count = (uint32_t)count; m->stride = (size_t)stride;
     m->modelview = c->mv_stack[c->mv_top]; m->projection = c->pr_stack[c->pr_top];
     m->cull_enabled = c->cull_enabled; m->cull_face = c->cull_face; m->front_face = c->front_face;
-    m->program = program;
-    memset(m->user,0,sizeof(m->user)); if (user_bytes) memcpy(m->user,user,user_bytes);
+    sg_prepare_vertex_inputs(c, &m->inputs);
+    m->simple_arrays = m->inputs.color.base && m->inputs.color.type == GL_FLOAT &&
+        m->inputs.color.size == 3 && m->inputs.uv[0].base == (const uint8_t *)coordinates &&
+        m->inputs.uv[0].type == GL_FLOAT &&
+        m->inputs.uv[0].size == 2 && m->inputs.uv[1].base &&
+        m->inputs.uv[1].type == GL_FLOAT && m->inputs.uv[1].size == 3 &&
+        m->inputs.uv[2].type == SG_INPUT_UV_COPY && m->inputs.uv[2].stride == 0 &&
+        m->inputs.uv[3].base && m->inputs.uv[3].type == GL_FLOAT && m->inputs.uv[3].size == 3;
+    /* Alpha-only visibility may reject every primitive before winning
+     * attributes are fetched. Prove the canonical primary alpha up front for
+     * explicit RGBA arrays; RGB arrays already have alpha one by GL default. */
+    if (c->gl_batch_busy) {
+        const sg_resolved_attrib *color = &m->inputs.color;
+        if (!color->base) {
+            if (c->current_color[3] != 1.f) return 0;
+        } else if (color->size == 4) {
+            for (uint32_t i = minimum; ; i++) {
+                const float *value = (const float *)(color->base+(size_t)i*color->stride);
+                if (value[3] != 1.f) return 0;
+                if (i == maximum) break;
+            }
+        }
+    }
+    m->coordinate_stride = m->inputs.uv[0].base == (const uint8_t *)coordinates ?
+        (size_t)m->inputs.uv[0].stride : m->stride;
+    memcpy(&m->color, c->current_color, sizeof(m->color));
+    memcpy(m->uv, c->current_texcoord, sizeof(m->uv));
     f->mesh_vertices += span; f->deferred_meshes++;
     return 1;
 }
@@ -335,7 +361,7 @@ static void scene_geometry_triangles(void *data) {
             for (int k = 0; k < 3; k++) {
                 cur[k].clip = g->positions[positions[k]].clip;
                 for (int j = 0; j < 3; j++) cur[k].basis[j] = k == j ? 1.f : 0.f;
-                const float *uv = (const float *)((const uint8_t *)m->coordinates+(size_t)indices[k]*m->stride);
+                const float *uv = (const float *)((const uint8_t *)m->coordinates+(size_t)indices[k]*m->coordinate_stride);
                 memcpy(cur[k].uv,uv,2*sizeof(float));
             }
             int count = 3;
@@ -499,11 +525,41 @@ static void scene_geometry_build(struct sg_scene_visibility *f) {
 static scene_attribute *scene_geometry_attribute(struct sg_scene_visibility *f, const scene_mesh *m, uint32_t index) {
     scene_geometry *g = f->geometry; uint32_t at = m->offset+index-m->minimum;
     scene_attribute *a = &g->attributes[at]; unsigned char empty = 0;
+    /* Most winning triangles reuse already prepared vertices. A cache hit
+     * needs an acquire load, not another exclusive compare-exchange. */
+    if (atomic_load_explicit(&g->ready[at],memory_order_acquire) == 2) return a;
     if (atomic_compare_exchange_strong_explicit(&g->ready[at],&empty,1,memory_order_acquire,memory_order_relaxed)) {
-        const float *uv = (const float *)((const uint8_t *)m->coordinates+(size_t)index*m->stride);
-        a->color = (sg_vec4){1.f,1.f,1.f,1.f};
-        for (int u = 0; u < 4; u++) a->uv[u] = (sg_vec4){uv[0],uv[1],0.f,1.f};
-        m->program((void *)m->user,index,&a->color.x,(float (*)[4])a->uv);
+        const float *uv = (const float *)((const uint8_t *)m->coordinates+(size_t)index*m->coordinate_stride);
+        if (m->simple_arrays) {
+            /* Common GL float arrays have known default alpha/W. Construct
+             * their final values once instead of initializing and patching
+             * every channel through variable-size attribute loops. */
+            const float *color = (const float *)(m->inputs.color.base+(size_t)index*m->inputs.color.stride);
+            const float *half = (const float *)(m->inputs.uv[1].base+(size_t)index*m->inputs.uv[1].stride);
+            const float *reflection = (const float *)(m->inputs.uv[3].base+(size_t)index*m->inputs.uv[3].stride);
+            a->color = (sg_vec4){color[0],color[1],color[2],1.f};
+            a->uv[0] = a->uv[2] = (sg_vec4){uv[0],uv[1],0.f,1.f};
+            a->uv[1] = (sg_vec4){half[0],half[1],half[2],1.f};
+            a->uv[3] = (sg_vec4){reflection[0],reflection[1],reflection[2],1.f};
+        } else {
+            a->color = m->color;
+            memcpy(a->uv, m->uv, sizeof(a->uv));
+            const sg_resolved_attrib *color = &m->inputs.color;
+            if (color->base && color->type == GL_FLOAT) {
+                const float *source = (const float *)(color->base+(size_t)index*color->stride);
+                for (int k = 0; k < color->size; k++) (&a->color.x)[k] = source[k];
+                if (color->size < 4) a->color.w = 1.f;
+            }
+            for (int u = 0; u < 4; u++) {
+                const sg_resolved_attrib *input = &m->inputs.uv[u];
+                if (input->base && input->type == SG_INPUT_UV_COPY) a->uv[u] = a->uv[input->stride];
+                else if (input->base && input->type == GL_FLOAT) {
+                    const float *source = (const float *)(input->base+(size_t)index*input->stride);
+                    a->uv[u] = (sg_vec4){0.f,0.f,0.f,1.f};
+                    for (int k = 0; k < input->size; k++) (&a->uv[u].x)[k] = source[k];
+                }
+            }
+        }
         if (a->color.w != 1.f || a->uv[0].x != uv[0] || a->uv[0].y != uv[1] ||
             a->uv[0].z != 0.f || a->uv[0].w != 1.f ||
             a->uv[2].x != uv[0] || a->uv[2].y != uv[1] || a->uv[2].z != 0.f || a->uv[2].w != 1.f) scene_geometry_fail(f);
@@ -548,6 +604,12 @@ static void scene_geometry_attribute_bins(void *data) {
                 t->color[j] = clipped ? scene_geometry_interpolate(&a[0]->color,&a[1]->color,&a[2]->color,clipped->basis[j]) : a[j]->color;
                 t->color[j].w = 1.f;
                 for (int u = 0; u < 4; u++) {
+                    /* UV2 aliases UV0 in this frontend. Constant samplers do
+                     * not consume coordinates; unit 1 holds fused half vectors. */
+                    const sg_tex_tri_ctx *texture = &f->materials[p->material].texture;
+                    if (u == 2 || (u == 1 ? texture->combine_kind < 4 :
+                        texture->unit[u].constant_color_valid &&
+                            (u != 0 || texture->unit[2].constant_color_valid))) continue;
                     t->uv[u][j] = clipped ? scene_geometry_interpolate(&a[0]->uv[u],&a[1]->uv[u],&a[2]->uv[u],clipped->basis[j]) : a[j]->uv[u];
                     if (clipped && (u == 0 || u == 2)) t->uv[u][j] = (sg_vec4){clipped->coordinates[j][0],clipped->coordinates[j][1],0.f,1.f};
                 }

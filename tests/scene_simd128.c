@@ -1,33 +1,34 @@
 /* SIMD128 worker equivalence, exact sample planes, and rectangle tails. */
 #include "types.h"
+#include "material_fixture.h"
 static int request_quantization;
-static int begin_selected_simd128(void) {
-    int begun = softgl_scene_visibility_begin();
+static int begin_selected_simd128(softgl_ctx *context) {
+    int begun = sg_scene_begin(sg_current());
     if (begun) {
-        softgl_scene_quantized_visibility(request_quantization);
+        sg_scene_quantized(sg_current(), request_quantization);
     }
     return begun;
 }
-#define softgl_scene_visibility_begin begin_selected_simd128
+#define sg_scene_begin begin_selected_simd128
 #define main previous_position_fixture_main
 #include "scene_positions.c"
 #undef main
-#undef softgl_scene_visibility_begin
+#undef sg_scene_begin
 
 static void rectangle(softgl_ctx *c, int count, int canonical) {
     softgl_make_current(c);
     glClearColor(.1f,.2f,.3f,1); glClearDepth(1); glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION); glLoadIdentity(); glMatrixMode(GL_MODELVIEW); glLoadIdentity();
     glDisable(GL_CULL_FACE); glDisable(GL_ALPHA_TEST);
-    int begun = begin_selected_simd128(); CHECK(begun);
-    const float tint[4] = {.1f,.2f,.3f,.5f}; softgl_set_fused_dot3_material(tint,count&1);
-    program_data data = {2.f}; softgl_set_vertex_attributes_full(attributes,&data);
-    softgl_scene_visibility_material();
+    int begun = begin_selected_simd128(c); CHECK(begun);
+    const float tint[4] = {.1f,.2f,.3f,.5f}; fixture_material(tint,count&1);
+    program_data data = {2.f}; prepare_attributes(0,&data,attributes);
+    sg_scene_material(sg_current());
     if (canonical) {
-        CHECK(softgl_scene_visibility_positions(vertices[0].p,vertices[0].uv,sizeof(vertex),VERTICES,
-            indices,6,attributes,&data,sizeof(data))); captured++;
+        CHECK(sg_scene_positions(sg_current(),vertices[0].p,vertices[0].uv,sizeof(vertex),VERTICES,
+            indices,6)); captured++;
     } else glDrawElements(GL_TRIANGLES,6,GL_UNSIGNED_INT,indices);
-    CHECK(softgl_scene_visibility_end()); CHECK(glGetError() == GL_NO_ERROR);
+    CHECK(sg_scene_end(sg_current())); CHECK(glGetError() == GL_NO_ERROR);
     unsigned covered = 0;
     for (int y = 0; y < 360; y++) for (int x = 0; x < 640; x++) {
         int expected = y == 100 && x >= 100 && x < 100+count;

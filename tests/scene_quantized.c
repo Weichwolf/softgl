@@ -5,17 +5,17 @@
 #include <stdio.h>
 static int request_quantization;
 
-static int begin_selected(void) {
-    int begun = softgl_scene_visibility_begin();
-    if (begun) softgl_scene_quantized_visibility(request_quantization);
+static int begin_selected(softgl_ctx *context) {
+    int begun = sg_scene_begin(sg_current());
+    if (begun) sg_scene_quantized(sg_current(), request_quantization);
     return begun;
 }
 
-#define softgl_scene_visibility_begin begin_selected
+#define sg_scene_begin begin_selected
 #define main previous_position_fixture_main
 #include "scene_positions.c"
 #undef main
-#undef softgl_scene_visibility_begin
+#undef sg_scene_begin
 
 static uint64_t plane_hash(const void *data, size_t bytes, uint64_t hash) {
     const uint8_t *p = data;

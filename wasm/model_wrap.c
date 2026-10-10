@@ -1,6 +1,6 @@
 #include <stdio.h>
 /* Static glTF-prepared SGLM viewer: GL fragment combiners and VBO geometry.
- * SoftGL can opt into worker attribute preparation; Mesa uses eager arrays. */
+ * Both renderers receive standard color and texture-coordinate arrays. */
 #include <GL/softgl.h>
 #include <math.h>
 #include <stdint.h>
@@ -9,13 +9,12 @@
 
 #define MODEL_MATERIALS 512
 #define STATIC_STRIDE 12
-#define DYNAMIC_STRIDE 11
+#define DYNAMIC_STRIDE 9
 
 typedef struct {
     GLuint albedo, normal, cube;
     float base[4], metallic, roughness, coat, cutoff;
     unsigned alpha_mode, double_sided, wrap_s, wrap_t;
-    int albedo_alpha_constant;
 } model_material;
 typedef struct {
     uint32_t material, vertex, first, count;
@@ -28,6 +27,9 @@ static struct {
     model_part *part;
     unsigned *order;
 } G;
+#include "model_lighting.inc"
+
+
 static struct {
     int enabled;
     float eye[3], yaw, pitch, fov, near_plane, far_plane;
@@ -68,6 +70,7 @@ static GLuint texture2d(unsigned w, unsigned h, const void *pixels) {
 }
 
 void sg_model_unload(void) {
+    model_lighting_shutdown();
     /* GL objects belong to the scene context, destroyed by the caller. */
     free(G.part);
     free(G.order);
@@ -131,20 +134,17 @@ int sg_model_load(const uint8_t *bytes, unsigned size) {
         if (version == 2) {
             uint8_t *albedo = malloc((size_t)w*h*4);
             if (!albedo) return 0;
-            m->albedo_alpha_constant = 1;
             for (size_t p = 0; p < (size_t)w*h; p++) for (int channel = 0; channel < 4; channel++) {
                 float factor = m->base[channel];
                 if (channel < 3) factor *= 1.f-m->metallic;
                 else if (m->alpha_mode == 0) factor = 1.f;
                 float value = input[p*4+channel]*factor;
                 albedo[p*4+channel] = (uint8_t)(fminf(255.f, fmaxf(0.f, value))+.5f);
-                if (channel == 3 && p && albedo[p*4+3] != albedo[3]) m->albedo_alpha_constant = 0;
             }
             m->albedo = texture2d(w, h, albedo);
             free(albedo);
         } else {
             m->albedo = G.white;
-            m->albedo_alpha_constant = 1;
         }
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, (GLint)wrap_s);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, (GLint)wrap_t);
@@ -190,10 +190,6 @@ int sg_model_load(const uint8_t *bytes, unsigned size) {
 int sg_model_upload_albedo(unsigned material, unsigned w, unsigned h, const uint8_t *pixels) {
     if (material >= G.materials || !pixels || !w || !h || w > 4096 || h > 4096) return 0;
     model_material *m = &G.material[material];
-    m->albedo_alpha_constant = 1;
-    for (size_t p = 1; p < (size_t)w*h; p++) if (pixels[p*4+3] != pixels[3]) {
-        m->albedo_alpha_constant = 0; break;
-    }
     m->albedo = texture2d(w, h, pixels);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, (GLint)m->wrap_s);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, (GLint)m->wrap_t);
@@ -203,7 +199,6 @@ int sg_model_upload_albedo(unsigned material, unsigned w, unsigned h, const uint
 int sg_model_share_albedo(unsigned material, unsigned source) {
     if (material >= G.materials || source >= G.materials) return 0;
     G.material[material].albedo = G.material[source].albedo;
-    G.material[material].albedo_alpha_constant = G.material[source].albedo_alpha_constant;
     return 1;
 }
 
@@ -219,7 +214,10 @@ static void update_vectors(const float matrix[16]) {
     const float *v = glMapBuffer(GL_ARRAY_BUFFER, GL_READ_ONLY);
     glBindBuffer(GL_ARRAY_BUFFER, G.dynamic_vbo);
     float *out = glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
-    if (v && out) for (unsigned i = 0; i < G.vertices; i++, v += STATIC_STRIDE, out += DYNAMIC_STRIDE) {
+#ifdef SOFTGL_MODEL_ARRAY_ATTRIBUTES
+    if (v && out) model_lighting_update(v, out, G.vertices, matrix, object_light);
+#else
+    if (v && out) for (unsigned i = 0; i < G.vertices; i++, v += STATIC_STRIDE) {
         const float *n = v+3, *t = v+8;
         float b[3] = {(n[1]*t[2]-n[2]*t[1])*v[11], (n[2]*t[0]-n[0]*t[2])*v[11], (n[0]*t[1]-n[1]*t[0])*v[11]};
         float eye[3], eye_normal[3];
@@ -233,97 +231,17 @@ static void update_vectors(const float matrix[16]) {
         float inv_half = 1.f/sqrtf(fmaxf(half[0]*half[0]+half[1]*half[1]+half[2]*half[2], 1e-20f));
         const float *basis[] = {t, b, n};
         for (int j = 0; j < 3; j++) {
-            out[j] = .5f+.5f*(basis[j][0]*object_light[0]+basis[j][1]*object_light[1]+basis[j][2]*object_light[2]);
-            out[4+j] = .5f+.5f*(basis[j][0]*half[0]+basis[j][1]*half[1]+basis[j][2]*half[2])*inv_half;
+            out[(size_t)i*3+j] = .5f+.5f*(basis[j][0]*object_light[0]+basis[j][1]*object_light[1]+basis[j][2]*object_light[2]);
+            out[((size_t)G.vertices+i)*3+j] = .5f+.5f*(basis[j][0]*half[0]+basis[j][1]*half[1]+basis[j][2]*half[2])*inv_half;
         }
-        out[3] = out[7] = 1.f;
         float dot = eye[0]*eye_normal[0]+eye[1]*eye_normal[1]+eye[2]*eye_normal[2];
-        for (int j = 0; j < 3; j++) out[8+j] = eye[j]-2.f*dot*eye_normal[j];
+        for (int j = 0; j < 3; j++) out[((size_t)G.vertices*2+i)*3+j] = eye[j]-2.f*dot*eye_normal[j];
     }
+#endif
     glBindBuffer(GL_ARRAY_BUFFER, G.static_vbo); glUnmapBuffer(GL_ARRAY_BUFFER);
     glBindBuffer(GL_ARRAY_BUFFER, G.dynamic_vbo); glUnmapBuffer(GL_ARRAY_BUFFER);
 }
 
-#ifdef SOFTGL_MODEL_VERTEX_ATTRIBUTES
-/* Model-viewer attribute program. Geometry and fragment stages remain GL. */
-typedef struct {
-    const float *vertices;
-    const float *matrix;
-    float object_light[3];
-    int specular;
-} model_attribute_program;
-static model_attribute_program attribute_program;
-#ifdef SOFTGL_MODEL_SCENE_POSITIONS
-static const GLuint *scene_indices;
-#endif
-
-static void generate_attributes(void *user, GLuint index, GLfloat color[4], GLfloat texcoord[4]) {
-    const model_attribute_program *program = user;
-    const float *v = program->vertices+(size_t)index*STATIC_STRIDE;
-    const float *n = v+3, *t = v+8, *matrix = program->matrix;
-    const float *object_light = program->object_light;
-    float b[3] = {(n[1]*t[2]-n[2]*t[1])*v[11], (n[2]*t[0]-n[0]*t[2])*v[11], (n[0]*t[1]-n[1]*t[0])*v[11]};
-    float eye[3];
-    for (int j = 0; j < 3; j++)
-        eye[j] = matrix[j]*v[0]+matrix[4+j]*v[1]+matrix[8+j]*v[2]+matrix[12+j];
-    const float *basis[] = {t, b, n};
-    if (program->specular) {
-        float inv_eye = 1.f/sqrtf(eye[0]*eye[0]+eye[1]*eye[1]+eye[2]*eye[2]);
-        float half[3];
-        for (int j = 0; j < 3; j++)
-            half[j] = object_light[j]-(matrix[j*4]*eye[0]+matrix[j*4+1]*eye[1]+matrix[j*4+2]*eye[2])*inv_eye;
-        float inv_half = 1.f/sqrtf(fmaxf(half[0]*half[0]+half[1]*half[1]+half[2]*half[2], 1e-20f));
-        for (int j = 0; j < 3; j++)
-            color[j] = .5f+.5f*(basis[j][0]*half[0]+basis[j][1]*half[1]+basis[j][2]*half[2])*inv_half;
-    } else {
-        for (int j = 0; j < 3; j++)
-            color[j] = .5f+.5f*(basis[j][0]*object_light[0]+basis[j][1]*object_light[1]+basis[j][2]*object_light[2]);
-        float eye_normal[3];
-        for (int j = 0; j < 3; j++)
-            eye_normal[j] = matrix[j]*n[0]+matrix[4+j]*n[1]+matrix[8+j]*n[2];
-        float dot = eye[0]*eye_normal[0]+eye[1]*eye_normal[1]+eye[2]*eye_normal[2];
-        for (int j = 0; j < 3; j++) texcoord[j] = eye[j]-2.f*dot*eye_normal[j];
-        texcoord[3] = 1.f;
-    }
-    color[3] = 1.f;
-}
-
-static void generate_fused_attributes(void *user, GLuint index, GLfloat color[4], GLfloat uv[4][4]) {
-    const model_attribute_program *program = user;
-    const float *v = program->vertices+(size_t)index*STATIC_STRIDE;
-    const float *n = v+3, *t = v+8, *matrix = program->matrix;
-    const float *light = program->object_light;
-    float b[3] = {(n[1]*t[2]-n[2]*t[1])*v[11], (n[2]*t[0]-n[0]*t[2])*v[11], (n[0]*t[1]-n[1]*t[0])*v[11]};
-    float eye[3], eye_normal[3], half[3];
-    for (int j = 0; j < 3; j++) {
-        eye[j] = matrix[j]*v[0]+matrix[4+j]*v[1]+matrix[8+j]*v[2]+matrix[12+j];
-        eye_normal[j] = matrix[j]*n[0]+matrix[4+j]*n[1]+matrix[8+j]*n[2];
-    }
-    float inv_eye = 1.f/sqrtf(eye[0]*eye[0]+eye[1]*eye[1]+eye[2]*eye[2]);
-    for (int j = 0; j < 3; j++)
-        half[j] = light[j]-(matrix[j*4]*eye[0]+matrix[j*4+1]*eye[1]+matrix[j*4+2]*eye[2])*inv_eye;
-    float inv_half = 1.f/sqrtf(fmaxf(half[0]*half[0]+half[1]*half[1]+half[2]*half[2], 1e-20f));
-    const float *basis[] = {t, b, n};
-    for (int j = 0; j < 3; j++) {
-        color[j] = .5f+.5f*(basis[j][0]*light[0]+basis[j][1]*light[1]+basis[j][2]*light[2]);
-        uv[1][j] = .5f+.5f*(basis[j][0]*half[0]+basis[j][1]*half[1]+basis[j][2]*half[2])*inv_half;
-    }
-    float dot = eye[0]*eye_normal[0]+eye[1]*eye_normal[1]+eye[2]*eye_normal[2];
-    for (int j = 0; j < 3; j++) uv[3][j] = eye[j]-2.f*dot*eye_normal[j];
-    color[3] = uv[1][3] = uv[3][3] = 1.f;
-}
-
-static void prepare_attribute_program(const float matrix[16]) {
-    float light[3] = {.45f, .75f, .65f}, length = sqrtf(.45f*.45f+.75f*.75f+.65f*.65f);
-    for (int j = 0; j < 3; j++) light[j] /= length;
-    for (int j = 0; j < 3; j++)
-        attribute_program.object_light[j] = matrix[j*4]*light[0]+matrix[j*4+1]*light[1]+matrix[j*4+2]*light[2];
-    attribute_program.matrix = matrix;
-    glBindBuffer(GL_ARRAY_BUFFER, G.static_vbo);
-    attribute_program.vertices = glMapBuffer(GL_ARRAY_BUFFER, GL_READ_ONLY);
-    if (attribute_program.vertices) glUnmapBuffer(GL_ARRAY_BUFFER);
-}
-#endif
 
 static void combiner(GLenum function, GLenum a, GLenum b) {
     glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_COMBINE);
@@ -355,23 +273,14 @@ static void draw_part(const model_part *part, int specular) {
         glActiveTexture(GL_TEXTURE0+unit);
         glDisable(GL_TEXTURE_CUBE_MAP); glEnable(GL_TEXTURE_2D);
     }
-#ifdef SOFTGL_MODEL_VERTEX_ATTRIBUTES
-    glDisableClientState(GL_COLOR_ARRAY);
-    attribute_program.specular = specular;
-    const float *all_vertices = attribute_program.vertices;
-    attribute_program.vertices = all_vertices+(size_t)part->vertex*STATIC_STRIDE;
-#ifdef SOFTGL_MODEL_TRANSPARENT_FUSION
-    if (!specular)
-#else
-    if (!specular && m->alpha_mode != 2)
-#endif
-        softgl_set_vertex_attributes_full(generate_fused_attributes, &attribute_program);
-    else softgl_set_vertex_attributes(generate_attributes, &attribute_program, 3);
-#else
     glBindBuffer(GL_ARRAY_BUFFER, G.dynamic_vbo);
-    base = (uintptr_t)part->vertex*DYNAMIC_STRIDE*sizeof(float);
-    glColorPointer(4, GL_FLOAT, DYNAMIC_STRIDE*sizeof(float), (const void*)(base+(specular ? 16 : 0)));
-#endif
+    base = (uintptr_t)part->vertex*3*sizeof(float);
+    uintptr_t plane = (uintptr_t)G.vertices*3*sizeof(float);
+    glColorPointer(3, GL_FLOAT, 3*sizeof(float), (const void*)(base+(specular ? plane : 0)));
+    if (!specular) {
+        glClientActiveTexture(GL_TEXTURE1);
+        glTexCoordPointer(3, GL_FLOAT, 3*sizeof(float), (const void*)(base+plane));
+    }
     glActiveTexture(GL_TEXTURE0); glBindTexture(GL_TEXTURE_2D, m->normal);
     combiner(GL_DOT3_RGB, GL_TEXTURE, GL_PRIMARY_COLOR);
     glActiveTexture(GL_TEXTURE1); glBindTexture(GL_TEXTURE_2D, G.white);
@@ -398,11 +307,7 @@ static void draw_part(const model_part *part, int specular) {
         glDisable(GL_TEXTURE_2D); glEnable(GL_TEXTURE_CUBE_MAP); glBindTexture(GL_TEXTURE_CUBE_MAP, m->cube);
         combiner(GL_ADD, GL_PREVIOUS, GL_TEXTURE);
         glClientActiveTexture(GL_TEXTURE3);
-#ifdef SOFTGL_MODEL_VERTEX_ATTRIBUTES
-        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-#else
-        glTexCoordPointer(3, GL_FLOAT, DYNAMIC_STRIDE*sizeof(float), (const void*)(base+32));
-#endif
+        glTexCoordPointer(3, GL_FLOAT, 3*sizeof(float), (const void*)(base+plane*2));
     }
     if (!specular && m->alpha_mode == 0) {
         /* glTF OPAQUE ignores stored texture alpha in every renderer. */
@@ -410,39 +315,8 @@ static void draw_part(const model_part *part, int specular) {
         glTexEnvfv(GL_TEXTURE_ENV,GL_TEXTURE_ENV_COLOR,opaque);
         glTexEnvi(GL_TEXTURE_ENV,GL_SOURCE0_ALPHA,GL_CONSTANT);
     }
-#ifdef SOFTGL_MODEL_VERTEX_ATTRIBUTES
-    float fused_tint[4];
-    for (int j = 0; j < 3; j++) fused_tint[j] = .25f*((1.f-m->metallic)*.04f+m->metallic*m->base[j]+.04f*m->coat);
-    fused_tint[3] = m->alpha_mode == 0 ? 1.f : m->base[3];
-#ifdef SOFTGL_MODEL_TRANSPARENT_FUSION
-    if (!specular && m->alpha_mode == 2) {
-        softgl_set_fused_dot3_transparent(fused_tint,m->roughness < .6f);
-        /* Specular survives an albedo-alpha hole in the old additive pass. */
-        glDisable(GL_ALPHA_TEST);
-    } else softgl_set_fused_dot3_material(!specular ? fused_tint : NULL, m->roughness < .6f);
-#else
-    softgl_set_fused_dot3_material(!specular && m->alpha_mode != 2 ? fused_tint : NULL,m->roughness < .6f);
-#endif
-#endif
-#ifdef SOFTGL_MODEL_SCENE_VISIBILITY
-    softgl_scene_msaa_material_merge(m->alpha_mode == 0 || m->albedo_alpha_constant ? GL_TRUE : GL_FALSE);
-    softgl_scene_visibility_material();
-#endif
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, G.ebo);
-#ifdef SOFTGL_MODEL_SCENE_POSITIONS
-    int deferred = scene_indices && !specular && m->alpha_mode != 2 &&
-        softgl_scene_visibility_positions(attribute_program.vertices,
-            attribute_program.vertices+6, STATIC_STRIDE*sizeof(float), G.vertices-part->vertex,
-            scene_indices+part->first, (GLsizei)part->count,
-            generate_fused_attributes, &attribute_program, sizeof(attribute_program));
-    if (!deferred)
-#endif
     glDrawElements(GL_TRIANGLES, (GLsizei)part->count, GL_UNSIGNED_INT, (const void*)((uintptr_t)part->first*4));
-#ifdef SOFTGL_MODEL_VERTEX_ATTRIBUTES
-    softgl_set_vertex_attributes(NULL, NULL, 0);
-    softgl_set_fused_dot3_material(NULL, GL_FALSE);
-    attribute_program.vertices = all_vertices;
-#endif
 }
 
 void sg_model_render(float angle, int w, int h) {
@@ -467,35 +341,10 @@ void sg_model_render(float angle, int w, int h) {
         glTranslatef(0.f, -.035f, -2.3f); glRotatef(14.f, 1.f, 0.f, 0.f); glRotatef(angle, 0.f, 1.f, 0.f);
     }
     float matrix[16]; glGetFloatv(GL_MODELVIEW_MATRIX, matrix);
-#ifdef SOFTGL_MODEL_VERTEX_ATTRIBUTES
-    prepare_attribute_program(matrix);
-#else
     update_vectors(matrix);
-#endif
     glEnableClientState(GL_VERTEX_ARRAY); glEnableClientState(GL_COLOR_ARRAY);
     unsigned transparent = 0;
     glDisable(GL_BLEND);
-#ifdef SOFTGL_MODEL_SCENE_VISIBILITY
-    GLint frame_samples = 0;
-    glGetIntegerv(GL_SAMPLES,&frame_samples);
-    int scene_visibility;
-    if (frame_samples == 4 && (uint64_t)G.triangles * 8u >= (uint64_t)w * h) {
-        scene_visibility = softgl_scene_visibility_begin();
-        if (scene_visibility) softgl_scene_depth_order(2);
-    } else scene_visibility = softgl_scene_visibility_begin_adaptive(G.triangles,2);
-    if (scene_visibility) softgl_scene_msaa_material_merge(GL_TRUE);
-#ifdef SOFTGL_MODEL_QUANTIZED_VISIBILITY
-    if (scene_visibility) softgl_scene_quantized_visibility(GL_TRUE);
-#endif
-#ifdef SOFTGL_MODEL_SCENE_POSITIONS
-    scene_indices = NULL;
-    if (scene_visibility) {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, G.ebo);
-        scene_indices = glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_READ_ONLY);
-        if (scene_indices) glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
-    }
-#endif
-#endif
     for (unsigned i = 0; i < G.parts; i++) {
         model_part *p = &G.part[i];
         if (G.material[p->material].alpha_mode == 2) {
@@ -505,24 +354,14 @@ void sg_model_render(float angle, int w, int h) {
             G.order[j] = i;
         } else draw_part(p, 0);
     }
-#ifdef SOFTGL_MODEL_SCENE_VISIBILITY
-    if (scene_visibility && !softgl_scene_visibility_end()) {
-        for (unsigned i = 0; i < G.parts; i++)
-            if (G.material[G.part[i].material].alpha_mode != 2) draw_part(&G.part[i], 0);
-    }
-#endif
-    glEnable(GL_BLEND); glBlendFunc(GL_SRC_ALPHA, GL_ONE); glDepthMask(GL_FALSE); glDepthFunc(GL_LEQUAL);
-#ifndef SOFTGL_MODEL_VERTEX_ATTRIBUTES
+    /* Add light only to samples populated by the opaque/masked surface.
+     * Equal depth preserves cutout holes without sampling albedo twice. */
+    glEnable(GL_BLEND); glBlendFunc(GL_SRC_ALPHA, GL_ONE); glDepthMask(GL_FALSE); glDepthFunc(GL_EQUAL);
     for (unsigned i = 0; i < G.parts; i++) if (G.material[G.part[i].material].alpha_mode != 2) draw_part(&G.part[i], 1);
-#endif
-    /* SoftGL worker attributes evaluate nontransparent specular in the first pass. */
+    glDepthFunc(GL_LEQUAL);
     for (unsigned i = 0; i < transparent; i++) {
-#if defined(SOFTGL_MODEL_VERTEX_ATTRIBUTES) && defined(SOFTGL_MODEL_TRANSPARENT_FUSION)
-        glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA); draw_part(&G.part[G.order[i]], 0);
-#else
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); draw_part(&G.part[G.order[i]], 0);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE); draw_part(&G.part[G.order[i]], 1);
-#endif
     }
     glDepthMask(GL_TRUE); glDisable(GL_BLEND); glDisable(GL_ALPHA_TEST);
     glActiveTexture(GL_TEXTURE0); glClientActiveTexture(GL_TEXTURE0);

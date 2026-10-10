@@ -1,5 +1,6 @@
 /* Subpixel UV seam: opt-in colors, exact physical samples, reset and fallback. */
 #include "types.h"
+#include "material_fixture.h"
 #include "workers.h"
 #include <stdio.h>
 #define CHECK(x) do { if (!(x)) { fprintf(stderr,"line %d: %s\n",__LINE__,#x); exit(1); } } while (0)
@@ -63,25 +64,28 @@ static void frame(softgl_ctx *c, int opt, int canonical, int separate_materials)
     else glDisable(GL_ALPHA_TEST);
     glClearColor(.1f,.2f,.3f,1.f); glClearDepth(1);
     glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-    if (opt == 3) softgl_scene_msaa_material_merge(GL_TRUE);
-    CHECK(softgl_scene_visibility_begin());
-    if (opt >= 0 && opt != 3) softgl_scene_msaa_material_merge(opt && opt != 5 ? GL_TRUE : GL_FALSE);
-    if (opt == 2) softgl_scene_msaa_material_merge(GL_FALSE);
-    const float tint[4] = {0,0,0,0}; softgl_set_fused_dot3_material(tint,GL_FALSE);
-    softgl_set_vertex_attributes_full(attributes,NULL);
+    if (opt == 3) sg_scene_merge(sg_current(), GL_TRUE);
+    CHECK(sg_scene_begin(sg_current()));
+    if (opt >= 0 && opt != 3) sg_scene_merge(sg_current(), opt && opt != 5 ? GL_TRUE : GL_FALSE);
+    if (opt == 2) sg_scene_merge(sg_current(), GL_FALSE);
+    const float tint[4] = {0,0,0,0}; fixture_material(tint,GL_FALSE);
+    glDisableClientState(GL_COLOR_ARRAY); glColor4f(1,1,1,1);
+    glClientActiveTexture(GL_TEXTURE1); glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+    glMultiTexCoord4f(GL_TEXTURE1,.75f,.75f,.75f,1.f);
+    glClientActiveTexture(GL_TEXTURE3); glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+    glMultiTexCoord4f(GL_TEXTURE3,.5f,.5f,0.f,1.f);
     int parts = separate_materials ? 2 : 1;
     for (int part = 0; part < parts; part++) {
-        softgl_scene_visibility_material();
+        sg_scene_material(sg_current());
         const GLuint *span = indices+part*3;
         int count = separate_materials ? 3 : 6;
-        if (canonical) CHECK(softgl_scene_visibility_positions(vertices[0].position,
-            vertices[0].uv,sizeof(vertex),6,span,count,attributes,NULL,0));
+        if (canonical) CHECK(sg_scene_positions(sg_current(),vertices[0].position,
+            vertices[0].uv,sizeof(vertex),6,span,count));
         else glDrawElements(GL_TRIANGLES,count,GL_UNSIGNED_INT,span);
     }
-    softgl_set_vertex_attributes_full(NULL,NULL);
-    if (opt == 4) softgl_scene_msaa_material_merge(GL_FALSE);
-    if (opt == 5) softgl_scene_msaa_material_merge(GL_TRUE);
-    CHECK(softgl_scene_visibility_end()); CHECK(glGetError() == GL_NO_ERROR);
+    if (opt == 4) sg_scene_merge(sg_current(), GL_FALSE);
+    if (opt == 5) sg_scene_merge(sg_current(), GL_TRUE);
+    CHECK(sg_scene_end(sg_current())); CHECK(glGetError() == GL_NO_ERROR);
 }
 
 static void compare(softgl_ctx *a, softgl_ctx *b, int different_colors) {
@@ -114,7 +118,7 @@ static void compare(softgl_ctx *a, softgl_ctx *b, int different_colors) {
 
 int main(void) {
     const int helpers[] = {1,3,8}, samples[] = {0,2,4};
-    softgl_make_current(NULL); softgl_scene_msaa_material_merge(GL_TRUE);
+    softgl_make_current(NULL); sg_scene_merge(sg_current(), GL_TRUE);
     for (int w = 0; w < 3; w++) for (int s = 0; s < 3; s++) {
         softgl_ctx *a = softgl_create_multisample(640,360,samples[s]);
         softgl_ctx *b = softgl_create_multisample(640,360,samples[s]); CHECK(a && b);

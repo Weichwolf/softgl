@@ -5,6 +5,7 @@
 #include "frag_combine_hot.h"
 #include "multisample.h"
 #include "raster_store.h"
+#include "material_blend.h"
 #include "workers.h"
 #include <math.h>
 
@@ -155,7 +156,10 @@ SG_INLINE int sg_shade_pixel(softgl_ctx *c,
                 for (int k = 0; k < 3; k++) {
                     float specular = sg_clampf(d * c->fused_dot3_tint[k], 0.f, 1.f);
                     if (tctx->combine_kind >= 6) col[k] *= col[3];
-                    col[k] = sg_clampf(col[k] + specular * sg_clampf(c->fused_dot3_tint[3], 0.f, 1.f), 0.f, 1.f);
+                    float contribution = specular * sg_clampf(c->fused_dot3_tint[3], 0.f, 1.f);
+                    if (c->fused_dot3_enabled == 4)
+                        contribution = sg_quantize(contribution)*(1.f/255.f);
+                    col[k] = sg_clampf(col[k] + contribution, 0.f, 1.f);
                 }
             } else sg_dot3_chain_shade(tctx->combine_kind, c->tex_env, primary, unit_tex, col);
         } else {
@@ -596,7 +600,8 @@ SG_INLINE void sg_shade_quad(softgl_ctx *c,
         cr = sg_f32x4_add(sg_f32x4_mul(cr, sf), sg_f32x4_mul(dRv, df));
         cg = sg_f32x4_add(sg_f32x4_mul(cg, sf), sg_f32x4_mul(dGv, df));
         cb = sg_f32x4_add(sg_f32x4_mul(cb, sf), sg_f32x4_mul(dBv, df));
-        ca = sg_f32x4_add(sg_f32x4_mul(ca, sf), sg_f32x4_mul(dAv, df));
+        ca = c->fused_dot3_enabled == 4 ? sg_material_transparent_alpha4(c,ca,dAv) :
+            sg_f32x4_add(sg_f32x4_mul(ca, sf), sg_f32x4_mul(dAv, df));
     } else if (c->blend) {
         /* Rare blend combo → per-lane scalar. Depth was already speculatively
          * written; sg_write_fragment re-tests (idempotent). */

@@ -2,6 +2,7 @@
 #include "simd.h"
 #include "raster_hz.h"
 #include "msaa_additive.h"
+#include "material_blend.h"
 #include <math.h>
 
 /* Per-fragment write in GL spec order: scissor -> alpha test -> stencil ->
@@ -158,6 +159,7 @@ SG_INLINE void sg_write_sample(softgl_ctx *c, size_t idx, uint8_t *color,
         return;
     }
     if (c->blend) {
+        float diffuse_alpha = a;
         float dr = px[0] * (1.0f / 255.0f);
         float dg = px[1] * (1.0f / 255.0f);
         float db = px[2] * (1.0f / 255.0f);
@@ -186,6 +188,8 @@ SG_INLINE void sg_write_sample(softgl_ctx *c, size_t idx, uint8_t *color,
         g = g * sf_g + dg * df_g;
         b = b * sf_b + db * df_b;
         a = a * sf_a + da * df_a;
+        if (c->fused_dot3_enabled == 4)
+            a = sg_material_transparent_alpha(c,diffuse_alpha,da);
     }
 
     if (c->color_mask[0]) px[0] = sg_quantize(r);
@@ -287,6 +291,11 @@ SG_INLINE void sg_write_msaa2_fast(softgl_ctx *c, int x, int y, unsigned coverag
             sg_i32x4 g = sg_blend_sample_channel(color[1], old_color, 8, sf, df);
             sg_i32x4 b = sg_blend_sample_channel(color[2], old_color, 16, sf, df);
             sg_i32x4 a = sg_blend_sample_channel(alpha, old_color, 24, sf, df);
+            if (c->fused_dot3_enabled == 4) {
+                sg_i32x4 bytes = _mm_srli_epi32(old_color,24);
+                sg_f32x4 destination = sg_f32x4_mul(_mm_cvtepi32_ps(bytes),sg_f32x4_splat(1.f/255.f));
+                a = sg_quantize_samples(sg_material_transparent_alpha4(c,sg_f32x4_splat(alpha),destination));
+            }
             packed = _mm_or_si128(_mm_or_si128(r, _mm_slli_epi32(g, 8)),
                                  _mm_or_si128(_mm_slli_epi32(b, 16), _mm_slli_epi32(a, 24)));
         }
@@ -334,6 +343,11 @@ SG_INLINE void sg_write_msaa4_fast(softgl_ctx *c, int x, int y, unsigned coverag
             sg_i32x4 g = sg_blend_sample_channel(color[1], old_color, 8, sf, df);
             sg_i32x4 b = sg_blend_sample_channel(color[2], old_color, 16, sf, df);
             sg_i32x4 a = sg_blend_sample_channel(alpha, old_color, 24, sf, df);
+            if (c->fused_dot3_enabled == 4) {
+                sg_i32x4 bytes = _mm_srli_epi32(old_color,24);
+                sg_f32x4 destination = sg_f32x4_mul(_mm_cvtepi32_ps(bytes),sg_f32x4_splat(1.f/255.f));
+                a = sg_quantize_samples(sg_material_transparent_alpha4(c,sg_f32x4_splat(alpha),destination));
+            }
             packed = _mm_or_si128(_mm_or_si128(r, _mm_slli_epi32(g, 8)),
                                  _mm_or_si128(_mm_slli_epi32(b, 16), _mm_slli_epi32(a, 24)));
         }
@@ -474,6 +488,10 @@ void sg_store_off_post_depth(softgl_ctx *c, int x, int y, float z,
         float df = c->blend_dst == GL_ONE ? 1.f : 1.f - color[3];
         source = sg_f32x4_add(sg_f32x4_mul(source, sg_f32x4_splat(sf)),
                               sg_f32x4_mul(destination, sg_f32x4_splat(df)));
+        if (c->fused_dot3_enabled == 4) {
+            float alpha = sg_material_transparent_alpha(c,color[3],(old >> 24)*(1.f/255.f));
+            source = _mm_blend_ps(source,sg_f32x4_splat(alpha),8);
+        }
     }
     sg_i32x4 quantized = sg_quantize_samples(source);
     sg_i32x4 words = _mm_packus_epi32(quantized, quantized);

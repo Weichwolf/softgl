@@ -4,10 +4,10 @@
 
 softgl implements an OpenGL 1.5 software renderer in C11.
 
-- `libsoftgl/include/GL/softgl.h`: GL rendering API; the remaining explicit rendering integrations are being replaced by automatic internal paths.
+- `libsoftgl/include/GL/softgl.h`: standard GL rendering API; material recognition, batching and deferred shading stay inside the driver.
 - `libsoftgl/include/softgl/platform.h`: separate platform-neutral context and framebuffer API for SDL and headless hosts.
 - `libsoftgl/src/`: state, transforms, clipping, rasterization, textures, scene batching and pthread workers; internal headers stay here.
-- `tests/cases/`: rendering cases numbered `001` through `235`; `tests/harness/`: softgl/OSMesa adapters and image comparator.
+- `tests/cases/`: rendering cases numbered `001` through `236`; `tests/harness/`: softgl/OSMesa adapters and image comparator.
 - `tests/bench/`: native benchmarks and the shared model image driver.
 - `assets/<model>/`: original sources, `source.json`, README and license metadata; `assets/models.json`: common preparation settings and cameras.
 - `tools/`: shared glTF preparation, browser validation and measurement tools; `tools/experiment_support/`: shared experiment drivers.

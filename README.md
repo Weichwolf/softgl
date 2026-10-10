@@ -6,7 +6,7 @@ Native x86 uses SSE4.1; WASM uses `simd128`. Neither build uses AVX2 or AVX512.
 
 The browser viewer renders BMW F31, T-80, Sponza and Bistro at 640×360 with
 MSAA off, 2× or 4×. All four scenes use the same model adapter and asset tools.
-The renderer also has 235 numbered GL rendering cases, checked against Mesa
+The renderer also has 236 numbered GL rendering cases, checked against Mesa
 llvmpipe through a headless OSMesa harness.
 
 ## Rendering
@@ -20,8 +20,8 @@ single sampling, 2× MSAA or 4× MSAA.
 GL declarations live in `GL/softgl.h`; host context creation and resolved
 framebuffer access live separately in `softgl/platform.h`. The core has no SDL
 dependency and supports headless rendering. The browser's SDL2 adapter presents
-the CPU framebuffer through a streaming texture. Explicit rendering hooks are
-being migrated into automatic GL-state-driven optimizations.
+the CPU framebuffer through a streaming texture. Applications draw through the
+standard GL rendering API; material recognition and scheduling are internal.
 
 Several optimizations are shared by the native and WASM implementations:
 
@@ -31,17 +31,28 @@ Several optimizations are shared by the native and WASM implementations:
   The default uses at most three helpers plus the calling thread.
 - Conservative hierarchical depth rejection and revision-checked geometry caches.
 - Bounded packed draw queues that overlap preparation with rasterization.
-- A model scene path that batches triangle packets and material work, shades
-  visible samples together and fuses the model's DOT3 material operations.
+- Automatic batching of supported indexed VBO draws. The driver recognizes
+  diffuse/additive DOT3 passes from texture combiners, geometry and GL state,
+  forms triangle packets and shades visible samples together.
 - Four-sample material sharing that reduces repeated shading within one pixel
   while retaining freshly computed physical coverage and sample depths.
+- Exact alpha sampling caches for cutout textures, RGB-only filtering when the
+  GL state proves alpha is constant, and shared attribute loads for pixels of
+  the same triangle.
 
-The scene path accepts only supported states and replays through the ordinary
-GL path after a failed batch. Pure attribute callbacks supply fresh material
-lighting while canonical position/UV arrays permit geometry reuse. Model
-materials approximate glTF PBR with GL 1.5 combiners and prepared textures;
-rendering differences and asset-specific limits are documented in the
-[asset READMEs](assets/README.md). The model path can use approximate shading;
+The deferred scene path currently targets 640×360 and accepts only supported
+states. Other sizes and unsupported draws use the ordinary GL pipeline.
+Storage mutations, synchronization and framebuffer reads drain queued work;
+failed batches restore the framebuffer and replay their original GL commands.
+No application callbacks or model identifiers enter the driver.
+
+The shared model viewer computes tangent-space lighting into ordinary GL color
+and texture-coordinate arrays. Its SIMD128 producer uses three helpers plus the
+caller before the driver's rendering workers run, so at most four threads do
+rendering work concurrently. Model materials approximate glTF PBR with GL 1.5
+combiners and prepared textures. Rendering differences and asset-specific limits
+are documented in the
+[asset READMEs](assets/README.md). Complex batches can share shading within a pixel;
 general GL correctness tests retain their established tolerances.
 
 Adopted changes, useful measurements and research references are indexed in
@@ -92,10 +103,9 @@ worker ordering and state transitions. Output images and diffs live in the
 selected native build's `out/` directory. The reference harness verifies that
 Mesa actually reports llvmpipe.
 
-The expanded model checks currently exceed the existing pixel budget for Sponza
-and Bistro at 0° (5,557 and 4,889 pixels above delta 4; budget 4,608). Both
-softgl images match the pre-cleanup renderer byte for byte. These existing Mesa
-differences remain visible as failing checks; the tolerance is unchanged.
+Opaque and cutout specular passes use equal depth, so rejected cutout samples
+receive no additive light. The previous Sponza/Bistro model comparison failures
+are resolved by this shared GL pass sequence; pixel tolerances are unchanged.
 
 Run a related case or the optional native benchmarks explicitly:
 
@@ -150,9 +160,8 @@ node tools/wasm_perf.cjs --native-build build/native-clang22 --images-only \
 `wasm_perf.cjs` reads the native CTest tolerance manifest and compares WASM
 frames with the same Mesa references. The same model loader, registry cameras
 and prepared packs apply to all four model scenes. The current WASM build passes
-all 235 GL cases; nine model views (BMW, Sponza and Bistro) exceed that same
-Mesa budget with the viewer's optimized material/quantization path. These
-comparisons still report failure rather than silently widening tolerances.
+all 236 GL cases and all 12 model views with MSAA off, using the established
+Mesa tolerances. Automatic batches retain the ordinary raster precision.
 Model image checks honor `--samples`; GL cases keep their single-sample reference
 contexts. Use `--samples 4 --save-images` to save model snapshots alongside the
 JSON result for before/after comparisons.
@@ -178,7 +187,7 @@ Do not infer gains from counters, reduced triangle counts or a single FPS readou
 | Directory | Purpose |
 | --- | --- |
 | `libsoftgl/` | Public GL API and the C11 renderer |
-| `tests/cases/` | Rendering cases numbered `001` through `235` |
+| `tests/cases/` | Rendering cases numbered `001` through `236` |
 | `tests/harness/` | softgl/OSMesa adapters and image comparison |
 | `tests/bench/` | Native benchmark and shared model image drivers |
 | `wasm/` | Build recipe, viewer and COOP/COEP server |
