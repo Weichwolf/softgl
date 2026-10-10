@@ -1,0 +1,2004 @@
+{
+  "passed": true,
+  "assessmentOnly": true,
+  "adopted": false,
+  "width": 640,
+  "height": 360,
+  "threads": 4,
+  "originalMeshes": true,
+  "originalTextures": true,
+  "temporalCache": false,
+  "alphaMeasured": false,
+  "imagePolicy": "Require equal covered-depth masks; assess absolute depth/RGB errors explicitly",
+  "referenceReceiptSha256": "804b5a075ae6a42d471e67fff1bee56ccc4ba4d8ab0207169fefc4419dbe4155",
+  "runnerSha256": "a1ac256ac7844901d31ab2793f2c3cb88e7de5c9164ff596b946f5b4445f96c8",
+  "binarySha256": {
+    "baseline": "7065756a69bc9988dd9ebd68d84d5f782bd16dbcbee0e106334d19d76d47e8e6",
+    "candidate": "20165730d7817ccdeb9090ffa6fd8d5d254cc8bc2761cc2e9ed7c1e08b34703b"
+  },
+  "sourceManifestSha256": "3176cf3023735ea1a3242845ab721b0696f8d50cc93d91db4388ea226d64da53",
+  "records": [
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "angle": 0,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 7.140636444091797e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "f7b2b86069fb62615bd091018b9a00f90ee91677d503b76f0737a89710afef22",
+            "candidate": "bdd300f7a583cb6ddba4a10dee5e4f2d516ebcb84319c67248fbc9022296f571"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 7.140636444091797e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "f2d15ea297818b4b4b22d37b49fd8d3c375835b8440dd366f5d2badbd2b987ba",
+            "candidate": "711f038a2f1dabee1ad3d964fc4ba54de777d6a0f7207ef810db7a4dbcc02846"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.06183883101851852,
+      "maxRgbError": 105,
+      "pixelFractionOver1": 0.003515625,
+      "pixelFractionOver8": 0.0024739583333333332,
+      "pixelFractionOver32": 0.0005815972222222222,
+      "reference": {
+        "angle": 0,
+        "rgba": "7b600a83e76f6067",
+        "depth": "43a020be84622b67",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "897a40d72746fbb7",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 0,
+        "rgba": "ab5c421235a1c464",
+        "depth": "4e5300fdb98889ca",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "b21779f8d11bbbb6",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "angle": 45,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.00011259317398071289,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "7710d9bb0a723989c094198c6e3723ff4ecb09328acbf258830c59e0c8f3c084",
+            "candidate": "7875adb70ea0ec6f62e08e890f6710a8413d8823f4bca804b675003af831ea28"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.00011259317398071289,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "27391ab5e0b8d30e3e8986f301f062ee4bacaaf0008f8acdfddcbf6d9ff25bdb",
+            "candidate": "c72b7fc869f5c41e7e6e17e426b8f2579e6d2d4c7a60a297d7115d2a31faf583"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.06423900462962963,
+      "maxRgbError": 126,
+      "pixelFractionOver1": 0.0034331597222222224,
+      "pixelFractionOver8": 0.002447916666666667,
+      "pixelFractionOver32": 0.0006684027777777777,
+      "reference": {
+        "angle": 45,
+        "rgba": "45b470f5abcff0f0",
+        "depth": "ca57d08b86a64ea3",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "a18a5e8f64ec557b",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 45,
+        "rgba": "56f02beb058ced56",
+        "depth": "058b5684432ef075",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "c3b2842c49203c19",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "angle": 90,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 6.246566772460938e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "2d50205797e26d688b4234f1577d19a2d1f9ba0256921d4e67da2987dcd337dc",
+            "candidate": "4d57c5711ce195ae48098a252b250ee02759cdc0b6164d83024af10e4b5a9b95"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0001398324966430664,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "5d647924a72dd263b216b0344e42f85526554c6ae5b0bc85cc65ab8b7e3a5b37",
+            "candidate": "16942606473e8ea66f423e643805e498a55fcda1eb42689dae5a4e3d22f58568"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.06316840277777777,
+      "maxRgbError": 137,
+      "pixelFractionOver1": 0.003515625,
+      "pixelFractionOver8": 0.0025260416666666665,
+      "pixelFractionOver32": 0.0005685763888888889,
+      "reference": {
+        "angle": 90,
+        "rgba": "ba7a1e039863921a",
+        "depth": "20841b3fd377579c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "9867d69e71a40833",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 90,
+        "rgba": "c4a50f355990dd3a",
+        "depth": "8f528b7ec25f22d6",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "941740064e7837ff",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "angle": 135,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.00011259317398071289,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "7710d9bb0a723989c094198c6e3723ff4ecb09328acbf258830c59e0c8f3c084",
+            "candidate": "7875adb70ea0ec6f62e08e890f6710a8413d8823f4bca804b675003af831ea28"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.00011259317398071289,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "27391ab5e0b8d30e3e8986f301f062ee4bacaaf0008f8acdfddcbf6d9ff25bdb",
+            "candidate": "c72b7fc869f5c41e7e6e17e426b8f2579e6d2d4c7a60a297d7115d2a31faf583"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.06423900462962963,
+      "maxRgbError": 126,
+      "pixelFractionOver1": 0.0034331597222222224,
+      "pixelFractionOver8": 0.002447916666666667,
+      "pixelFractionOver32": 0.0006684027777777777,
+      "reference": {
+        "angle": 135,
+        "rgba": "45b470f5abcff0f0",
+        "depth": "ca57d08b86a64ea3",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "a18a5e8f64ec557b",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 135,
+        "rgba": "56f02beb058ced56",
+        "depth": "058b5684432ef075",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "c3b2842c49203c19",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "angle": 160,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 6.449222564697266e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "ed5c8ac11a653abda1f907dd3d6fbfb84409050173d252aa419b73872a63d795",
+            "candidate": "7f2e9cd5eb47b75dafc7ca1642a9407ef16ad105221bc9263276fdeaa8416814"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.00011461973190307617,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "6418e1484864a4ad2af7a9d85d4d535ddfa572d08f432628778678a960506eca",
+            "candidate": "717536e5d74e8cc5fb0358a72107788bdf26854fc519f6039c8f86bd1b8fde7e"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.07616174768518519,
+      "maxRgbError": 129,
+      "pixelFractionOver1": 0.004131944444444444,
+      "pixelFractionOver8": 0.0027647569444444442,
+      "pixelFractionOver32": 0.0006857638888888889,
+      "reference": {
+        "angle": 160,
+        "rgba": "d3545e37e1a472c9",
+        "depth": "7c0bcde239c25207",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "8a97e8fa78d0c60e",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 160,
+        "rgba": "a1b1c2ced8be123a",
+        "depth": "cb90f145cfa74e67",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "a4a29364c0046aa2",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "angle": 180,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 7.140636444091797e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "f7b2b86069fb62615bd091018b9a00f90ee91677d503b76f0737a89710afef22",
+            "candidate": "bdd300f7a583cb6ddba4a10dee5e4f2d516ebcb84319c67248fbc9022296f571"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 7.140636444091797e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "f2d15ea297818b4b4b22d37b49fd8d3c375835b8440dd366f5d2badbd2b987ba",
+            "candidate": "711f038a2f1dabee1ad3d964fc4ba54de777d6a0f7207ef810db7a4dbcc02846"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.06183883101851852,
+      "maxRgbError": 105,
+      "pixelFractionOver1": 0.003515625,
+      "pixelFractionOver8": 0.0024739583333333332,
+      "pixelFractionOver32": 0.0005815972222222222,
+      "reference": {
+        "angle": 180,
+        "rgba": "7b600a83e76f6067",
+        "depth": "43a020be84622b67",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "897a40d72746fbb7",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 180,
+        "rgba": "ab5c421235a1c464",
+        "depth": "4e5300fdb98889ca",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "b21779f8d11bbbb6",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "angle": 225,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 4.303455352783203e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "41ac81232401ed8d391eba34d3b70d5c4ab8c499b3417d7dbc71aff12962bc32",
+            "candidate": "64b79f13a24176bff37a7c8d9420c10b400d3bf1856fda84f252f767ad87a8a8"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 4.506111145019531e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "66e897d57836fc8ef9f1f7f26cc20de0d49f339859553e153b900f1959dac6ea",
+            "candidate": "a8ec2c449c56b252cbe6640d150a6178fba6517b6e605f0cd8988555c4cf6eda"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.06801649305555556,
+      "maxRgbError": 87,
+      "pixelFractionOver1": 0.004409722222222222,
+      "pixelFractionOver8": 0.0029600694444444444,
+      "pixelFractionOver32": 0.0005859375,
+      "reference": {
+        "angle": 225,
+        "rgba": "2dfbafc310247bc8",
+        "depth": "bb292faacaea703c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "664c5a76d835c6ea",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 225,
+        "rgba": "ed6f07fa80a6f451",
+        "depth": "11f12c6ac6fbfcdf",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "6fe167879f058ee7",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "angle": 270,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 4.458427429199219e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "3c04d6b6d65d4f02b9e5cfc7bda2d5d792b22410581757debb4d8fc06a44bd18",
+            "candidate": "627237df29060483ad5a3e44d1a57f7a1ffff3434cfcbeac14831319ca02e690"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 4.8279762268066406e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "bbee9b6a5f08d85530d07cae8b274041089e611e2aec58d9879155aeee82b55a",
+            "candidate": "f62dfa7fb66b717790ff54fa8c75b69a96fba0f7d5f9da738ade25e4cea76517"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.07040798611111111,
+      "maxRgbError": 92,
+      "pixelFractionOver1": 0.004296875,
+      "pixelFractionOver8": 0.0029296875,
+      "pixelFractionOver32": 0.0005989583333333333,
+      "reference": {
+        "angle": 270,
+        "rgba": "408e35d59c1cb459",
+        "depth": "6b45a91f34913520",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "7097882431cfe9d2",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 270,
+        "rgba": "9f044a0767db5c4f",
+        "depth": "08af1496c89864f9",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "1c97a9154fd77d81",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "angle": 315,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 4.303455352783203e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "41ac81232401ed8d391eba34d3b70d5c4ab8c499b3417d7dbc71aff12962bc32",
+            "candidate": "64b79f13a24176bff37a7c8d9420c10b400d3bf1856fda84f252f767ad87a8a8"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 4.506111145019531e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "66e897d57836fc8ef9f1f7f26cc20de0d49f339859553e153b900f1959dac6ea",
+            "candidate": "a8ec2c449c56b252cbe6640d150a6178fba6517b6e605f0cd8988555c4cf6eda"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.06801649305555556,
+      "maxRgbError": 87,
+      "pixelFractionOver1": 0.004409722222222222,
+      "pixelFractionOver8": 0.0029600694444444444,
+      "pixelFractionOver32": 0.0005859375,
+      "reference": {
+        "angle": 315,
+        "rgba": "2dfbafc310247bc8",
+        "depth": "bb292faacaea703c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "664c5a76d835c6ea",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 315,
+        "rgba": "ed6f07fa80a6f451",
+        "depth": "11f12c6ac6fbfcdf",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "6fe167879f058ee7",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "angle": 0,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 6.4849853515625e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "a8fc5b0f704089d75e286b1f602b40649ec286be2dfb3cb1ab6dfb0109e98c81",
+            "candidate": "c9c23981f8d28cfd5d1e5e0acaeaeb51220cae2f68052f5ceef6194612222d33"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 7.647275924682617e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "ea402fa5f7899c3ba234b361f82e60e78d63499c03f9b5e6112217bd58827edc",
+            "candidate": "451db876698adeee6b8df94a1b1bc18783ecfa62be00a880e9df215db942dd81"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.015141782407407408,
+      "maxRgbError": 52,
+      "pixelFractionOver1": 0.0010503472222222223,
+      "pixelFractionOver8": 0.0007378472222222222,
+      "pixelFractionOver32": 0.00016059027777777778,
+      "reference": {
+        "angle": 0,
+        "rgba": "2e70b242a72f31a0",
+        "depth": "77dab6b5970c1bee",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "ed3fb8c502c0aca1",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 0,
+        "rgba": "b49b68888d87ff7a",
+        "depth": "f08a221d241ca827",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "724f730715f3513a",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "angle": 45,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 6.586313247680664e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "dd577a53a031ac05fb2254e202f2a659aff99444466375ba5f2d40782dbfb581",
+            "candidate": "ce47bf2abe5fb7bb1cb6fdfc137bb99e669a48ec37a582fbc2d06f3c346df6fe"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 7.909536361694336e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "4e7a40869d07f46441e0f873b11a06ab0f03f875c04f765a0b467716d37a31e9",
+            "candidate": "a36a401abab6d17bf0a16de39203469c33d3d535433cb1d99c3e11825bf9a644"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.015632233796296295,
+      "maxRgbError": 52,
+      "pixelFractionOver1": 0.0009592013888888889,
+      "pixelFractionOver8": 0.0007335069444444444,
+      "pixelFractionOver32": 0.00014322916666666667,
+      "reference": {
+        "angle": 45,
+        "rgba": "06a0124aea25d0f0",
+        "depth": "2825eba1331662f3",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "5890c39e0ba932c9",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 45,
+        "rgba": "b574940f1248f659",
+        "depth": "b2c77479f4b0a0cc",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "e70be4f6f74e9434",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "angle": 90,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 5.97834587097168e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "c7a57d964c906df8593970a03d6c1c0136f392e21122a313ce6a09780c45d029",
+            "candidate": "b945b1ab39f146a9314d435ecb6e881e1bd1e95439f12fc29bfcb51cc2ae3de9"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 7.331371307373047e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "9f7b4f4687e16445f0f7c351dc9dba019b67729ddc08fc0f558cd044115471ee",
+            "candidate": "481709972908dfab5c21785d53de22ed876edb6c692730340c025af36a1f303a"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.011633391203703703,
+      "maxRgbError": 49,
+      "pixelFractionOver1": 0.0007465277777777778,
+      "pixelFractionOver8": 0.0004904513888888889,
+      "pixelFractionOver32": 0.00012586805555555555,
+      "reference": {
+        "angle": 90,
+        "rgba": "39f55a1c139c6964",
+        "depth": "98fe4e85acee4adc",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "dc21ec4a8171f4f7",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 90,
+        "rgba": "406c4d1af112e687",
+        "depth": "34a57f69e50cfe72",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "789da9b67a09a708",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "angle": 135,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 6.586313247680664e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "dd577a53a031ac05fb2254e202f2a659aff99444466375ba5f2d40782dbfb581",
+            "candidate": "ce47bf2abe5fb7bb1cb6fdfc137bb99e669a48ec37a582fbc2d06f3c346df6fe"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 7.909536361694336e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "4e7a40869d07f46441e0f873b11a06ab0f03f875c04f765a0b467716d37a31e9",
+            "candidate": "a36a401abab6d17bf0a16de39203469c33d3d535433cb1d99c3e11825bf9a644"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.015632233796296295,
+      "maxRgbError": 52,
+      "pixelFractionOver1": 0.0009592013888888889,
+      "pixelFractionOver8": 0.0007335069444444444,
+      "pixelFractionOver32": 0.00014322916666666667,
+      "reference": {
+        "angle": 135,
+        "rgba": "06a0124aea25d0f0",
+        "depth": "2825eba1331662f3",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "5890c39e0ba932c9",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 135,
+        "rgba": "b574940f1248f659",
+        "depth": "b2c77479f4b0a0cc",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "e70be4f6f74e9434",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "angle": 160,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 6.490945816040039e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "8e0778fd28894fc6baa322cf04f6c65297279190ce69ff327d2e836936f7d79f",
+            "candidate": "95e498dd5e1bf45b91156989b2c8dcf2dffbf4f8d350d5458082bc49c9fe79a8"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 7.718801498413086e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "189d31bfd0e321eefb761b9fccbb6e6c06933d4a8f0a51d09394beed3c0a03eb",
+            "candidate": "b0d32b992e7c54b6c07f181db3130ae58cf7f27581aa339bc6709721729fabb3"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.015260416666666667,
+      "maxRgbError": 54,
+      "pixelFractionOver1": 0.0009592013888888889,
+      "pixelFractionOver8": 0.0007248263888888889,
+      "pixelFractionOver32": 0.00014756944444444445,
+      "reference": {
+        "angle": 160,
+        "rgba": "c3f19973921f2fc2",
+        "depth": "1ac5a242dff2b42c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "9ab44a68c51d3aec",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 160,
+        "rgba": "f6d973af87b3dfae",
+        "depth": "15e12eef6347afa1",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "244ebe87f8e34195",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "angle": 180,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 6.4849853515625e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "a8fc5b0f704089d75e286b1f602b40649ec286be2dfb3cb1ab6dfb0109e98c81",
+            "candidate": "c9c23981f8d28cfd5d1e5e0acaeaeb51220cae2f68052f5ceef6194612222d33"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 7.647275924682617e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "ea402fa5f7899c3ba234b361f82e60e78d63499c03f9b5e6112217bd58827edc",
+            "candidate": "451db876698adeee6b8df94a1b1bc18783ecfa62be00a880e9df215db942dd81"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.015141782407407408,
+      "maxRgbError": 52,
+      "pixelFractionOver1": 0.0010503472222222223,
+      "pixelFractionOver8": 0.0007378472222222222,
+      "pixelFractionOver32": 0.00016059027777777778,
+      "reference": {
+        "angle": 180,
+        "rgba": "2e70b242a72f31a0",
+        "depth": "77dab6b5970c1bee",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "ed3fb8c502c0aca1",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 180,
+        "rgba": "b49b68888d87ff7a",
+        "depth": "f08a221d241ca827",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "724f730715f3513a",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "angle": 225,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 6.186962127685547e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "4fd16f65582db463d84047c8de04239952341968ef8821aae9cc35884fed5202",
+            "candidate": "87de41d2f0548f5ba60fc2d33877dc5a00b00a2f352be2ebd9fd6177d4cbcb92"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 8.225440979003906e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "816f8e77986f59b7b9da1ddc295f23be66eebe9b91f0e5a6160b97ae9f74c200",
+            "candidate": "1901b6f99c5567aea4ffd7e1c10a199fe76fe6baacd7b6ecaefcd8e78cf02a4b"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.014408275462962963,
+      "maxRgbError": 56,
+      "pixelFractionOver1": 0.0009852430555555556,
+      "pixelFractionOver8": 0.0006119791666666667,
+      "pixelFractionOver32": 0.00014322916666666667,
+      "reference": {
+        "angle": 225,
+        "rgba": "fde518ee01b533fc",
+        "depth": "30278e1618bce161",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "6637bce204c5b00e",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 225,
+        "rgba": "f114906ee81c7b3f",
+        "depth": "723a22aa002c407e",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "6e7d527f9ebe4c2c",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "angle": 270,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 6.335973739624023e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "a0ea295dfe3cd9fafd410e6731866a85b0a5aacb884ced3c67b4873e722c36d6",
+            "candidate": "c546d8265bcbebdac3e15d27021a15e78d90f06b877942aa3550f99e48a4f498"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 8.350610733032227e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "9c6bb52a78d420dec2ac82e4eb6e450b0cbf6695ff7529e0720b6871cd415355",
+            "candidate": "17bc4aad709096d529758d1727468a37f05a5071f3ed3cb620e653b43f2f5ca8"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.012440682870370371,
+      "maxRgbError": 67,
+      "pixelFractionOver1": 0.0007942708333333334,
+      "pixelFractionOver8": 0.0005251736111111111,
+      "pixelFractionOver32": 9.114583333333334e-05,
+      "reference": {
+        "angle": 270,
+        "rgba": "0b2a856c3ff1d0c6",
+        "depth": "03e022ef901346c0",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "bc97ba8f8864c0f5",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 270,
+        "rgba": "cd39a50bf9284971",
+        "depth": "4bd300c8fd48eb50",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "9e1fcfb2178f7fa8",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "angle": 315,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 6.186962127685547e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "4fd16f65582db463d84047c8de04239952341968ef8821aae9cc35884fed5202",
+            "candidate": "87de41d2f0548f5ba60fc2d33877dc5a00b00a2f352be2ebd9fd6177d4cbcb92"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 8.225440979003906e-05,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "816f8e77986f59b7b9da1ddc295f23be66eebe9b91f0e5a6160b97ae9f74c200",
+            "candidate": "1901b6f99c5567aea4ffd7e1c10a199fe76fe6baacd7b6ecaefcd8e78cf02a4b"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.014408275462962963,
+      "maxRgbError": 56,
+      "pixelFractionOver1": 0.0009852430555555556,
+      "pixelFractionOver8": 0.0006119791666666667,
+      "pixelFractionOver32": 0.00014322916666666667,
+      "reference": {
+        "angle": 315,
+        "rgba": "fde518ee01b533fc",
+        "depth": "30278e1618bce161",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "6637bce204c5b00e",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 315,
+        "rgba": "f114906ee81c7b3f",
+        "depth": "723a22aa002c407e",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "6e7d527f9ebe4c2c",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "angle": 0,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0005791187286376953,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "6dcf64e186cd7346d51aec05e52c63ae67b2dcb807cfc5ee923c6b3d7ffd0cf8",
+            "candidate": "e1bd2dbbda4b5571822833dcea0c0baf72e74b5ac0506c1f55c87ef7c946650e"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0017725825309753418,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "37fb91f946e045c32a6dbb18e55d4f72772490e4b2121a4bb0aa3da2cb846628",
+            "candidate": "f9aabf1244d687fe9a26eee8c95129f4676994bd35d1187938640fd34b98186b"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.0009071180555555555,
+      "maxRgbError": 66,
+      "pixelFractionOver1": 4.340277777777778e-05,
+      "pixelFractionOver8": 2.604166666666667e-05,
+      "pixelFractionOver32": 1.3020833333333334e-05,
+      "reference": {
+        "angle": 0,
+        "rgba": "e85d69ac5c2f2017",
+        "depth": "9020d00dd77e384c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "2fad226bda59bac4",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 0,
+        "rgba": "4d9850f04281f56c",
+        "depth": "cb7146d19c060a5c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "754d6e93c7f5c80c",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "angle": 45,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0001920759677886963,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "078ed9a9e676881192bb892aed96b532ac6c9addab83c4e0b2cc61387f1aeb3f",
+            "candidate": "5b9dbed5c78dc9d522c472131dbfce4c53a3590f5f0ca3fb5ed96f5cba62a6d2"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0010440945625305176,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "b43f27e19c57093aba0c55571c514450ea6c64213b48f54334b9589a150fada8",
+            "candidate": "faadeb7f790a590a827604b950549d893500116af8d9727a78d2c824c748e8cd"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.002054398148148148,
+      "maxRgbError": 76,
+      "pixelFractionOver1": 0.00011284722222222222,
+      "pixelFractionOver8": 8.680555555555556e-05,
+      "pixelFractionOver32": 3.0381944444444444e-05,
+      "reference": {
+        "angle": 45,
+        "rgba": "f5a50a583c4c7c7f",
+        "depth": "647e343fe6649517",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "04931b6a948d08fb",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 45,
+        "rgba": "8e39d4db45bb0911",
+        "depth": "4aa690d626195b4d",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "4ba0d830e7c387c4",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "angle": 90,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0004432201385498047,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "c399f5323521e3e2826330cdfff8a4d63e64370366444b3f1f21a2ad463e4e40",
+            "candidate": "8dbe8b340689a64c4811edf5df81ca29eb814235dff715531cbbf763c88d747a"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.001080632209777832,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "de0185f72462b524e75fd80f757aaf4608ea4939c6dac0d6cb7fc9d149eef0cc",
+            "candidate": "f91ab81fe9ee427bd693522b71696dad3a6befabe792c904858e6f1d3e615688"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.0038671875,
+      "maxRgbError": 77,
+      "pixelFractionOver1": 0.00012152777777777777,
+      "pixelFractionOver8": 9.98263888888889e-05,
+      "pixelFractionOver32": 7.378472222222222e-05,
+      "reference": {
+        "angle": 90,
+        "rgba": "a69b65c2497d580e",
+        "depth": "19ff655b6c26bf1f",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "234d271910cb9410",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 90,
+        "rgba": "82d5c1bfe0a40feb",
+        "depth": "0640b824b27b2ee7",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "15752120f6e29ca8",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "angle": 135,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0006071925163269043,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "72d0a1e0d7c7bd95f716bb999a62f76f10f321655e0229e959c3c6347234f4f2",
+            "candidate": "80532de6fb9450aa719a3f023ef640ef335b5f73dc6763dac572c66fe39a3e71"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0008088946342468262,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "23a838e0db3728255dbc1406b150eaf4d488bc527d121f08c847a910a78067d4",
+            "candidate": "8b6e765cf1c8f41c55708863be762fbc4c6365c38121ffa63f0a83a8ce2fde23"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.013661747685185185,
+      "maxRgbError": 127,
+      "pixelFractionOver1": 0.00045138888888888887,
+      "pixelFractionOver8": 0.0004166666666666667,
+      "pixelFractionOver32": 0.00032118055555555556,
+      "reference": {
+        "angle": 135,
+        "rgba": "cbc865ec31780362",
+        "depth": "48dd2d9800035947",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "afa6e66fd423504b",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 135,
+        "rgba": "f42160a93cc0ad65",
+        "depth": "f3e5fc85650c0982",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "b14d9293813964df",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "angle": 160,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0005723834037780762,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "6a30b627574f2bb9f507f7c10a8d44648c6847e34a7c1c3369493e40a914d323",
+            "candidate": "79856cb2d29b5c2eb7b467515314af578bddf9f526e1fce25355fe6cd920fa73"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0006431937217712402,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "462be312bb1af1127372d4e025e902782f7b00d21f336893b838ff34bc398b0d",
+            "candidate": "1857fe3269123c43abd03fdeebb0ff5aa54e0d6a56e68194869709d4f28ebe73"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.018098958333333335,
+      "maxRgbError": 82,
+      "pixelFractionOver1": 0.0005555555555555556,
+      "pixelFractionOver8": 0.0005078125,
+      "pixelFractionOver32": 0.000390625,
+      "reference": {
+        "angle": 160,
+        "rgba": "6d87786287f3a447",
+        "depth": "b0f37ca6630a33b6",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "dc2f9662c4e4c224",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 160,
+        "rgba": "4c466256dc7d9025",
+        "depth": "8e102804c3b74779",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "a8e863c55cd27908",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "angle": 180,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0013764500617980957,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "d8993b1f564d38826c4c7c585d0fad0ae2e2f3411e181ccfc839e92e6148873c",
+            "candidate": "630b954c7b2afc8b10ad71ce8cbc6becddef956e5a2e57f5ef7204693fe73d6d"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0019629597663879395,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "f39358a9af6dc5515ee1b985b86ae85bde2c5f55fce17314dce7428d5e372931",
+            "candidate": "20bddd8e40e62bbe357d7a17ea854bb2dcf81259d53239b737aeaf85460127fa"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.018153935185185186,
+      "maxRgbError": 127,
+      "pixelFractionOver1": 0.0005208333333333333,
+      "pixelFractionOver8": 0.0005034722222222222,
+      "pixelFractionOver32": 0.0004166666666666667,
+      "reference": {
+        "angle": 180,
+        "rgba": "19d265cbca3530ae",
+        "depth": "830af7a001fbace7",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "2018c7e2f1ed6b6e",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 180,
+        "rgba": "a51d72badc7d0544",
+        "depth": "cd7dd0f0b825f54d",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "e4152eac736beee1",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "angle": 225,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0009083747863769531,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "517b468f5c9ca1078a798f2d67766b7592a87285457559986396b2f8d78be554",
+            "candidate": "5baaf52c6edc6e8440232a1114c7a507a5e00c3047990bd928dc334ec8c92996"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0009083747863769531,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "ad9d5d88e65d1b905ef314cac27c114918a81baa70c49862021f7cc6192f5bd2",
+            "candidate": "544bf67cdcea548b3321203fdd5cb141aaf9dc3dee31b1059dcd70de629ed99d"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.016205150462962965,
+      "maxRgbError": 126,
+      "pixelFractionOver1": 0.0004253472222222222,
+      "pixelFractionOver8": 0.00036024305555555554,
+      "pixelFractionOver32": 0.0002951388888888889,
+      "reference": {
+        "angle": 225,
+        "rgba": "21d32156b63993fb",
+        "depth": "17d8199105eb84e8",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "815931bcccb34629",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 225,
+        "rgba": "a8d99c1ec551afaa",
+        "depth": "6c6a427b8864f42d",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "8d7d2deea011a6c1",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "angle": 270,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.000745236873626709,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "250af7a1934062a755a5ea871c84714265169b1d7fd6279c202378a9467faf62",
+            "candidate": "02906952a6a1e2befa3010ad4c6b5730b90904bd848f569ddaad2863bf796b75"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0009083151817321777,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "b337fa7ddfd0ba1fc1289806f9fbc5940a6b8376605833dd6a77fa1c6dfd533c",
+            "candidate": "6e96ed55fbb73e66cd4defa75d02ce8dbad1a8ad32b5d81c3f8eee33889e508e"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.003119212962962963,
+      "maxRgbError": 74,
+      "pixelFractionOver1": 0.00010416666666666667,
+      "pixelFractionOver8": 9.98263888888889e-05,
+      "pixelFractionOver32": 8.680555555555556e-05,
+      "reference": {
+        "angle": 270,
+        "rgba": "54e2ca0aec1bfc98",
+        "depth": "42ff82608b312b7a",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "ef7644a6c9e3370f",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 270,
+        "rgba": "a51a54b07464d1c8",
+        "depth": "7324fa0428376677",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "ba92b2a8f6d154a0",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "angle": 315,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0008757114410400391,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "c2756c54120a10c4384a9257a0af8d47317b7cf5c001cfbbeea1d50fcdcaeda3",
+            "candidate": "e9fc11679fb260a65107181124428760d1faf70408489b79d6f42319f68abf5c"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0008757114410400391,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "44f2e94e0f7af9333207f86d83dbf24e95730b29570149d240cf5577789032de",
+            "candidate": "c7aad017622fd660a7fc19271be9f08a9f7593927b50daf35316c95f5984ad7c"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.0016710069444444444,
+      "maxRgbError": 91,
+      "pixelFractionOver1": 9.548611111111112e-05,
+      "pixelFractionOver8": 5.208333333333334e-05,
+      "pixelFractionOver32": 2.604166666666667e-05,
+      "reference": {
+        "angle": 315,
+        "rgba": "f2e34ee03625d63f",
+        "depth": "b99673f6aea7a01a",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "fb0b76218fe361ba",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 315,
+        "rgba": "efa88b3bc14b68aa",
+        "depth": "26496aefd7bba130",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "cac524abf22e0b96",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "angle": 0,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0004929900169372559,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "bce766a2c52c13131e433da78df4c967b205dcf73db03c66f4d0d09301edbb02",
+            "candidate": "38b7433447ed0c595adfa606ec44e6716f92085c698e7b2ac75151823b3ce126"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0012255311012268066,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "e6c52a2dd01dbb27a90008dc857de129d34557daa7fcddee2c4cda9b54aa276c",
+            "candidate": "6051484db5f44ca3eac504ce1f4e5eeab37a19a4106693953f7027fcbbd49dc6"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.0015002893518518518,
+      "maxRgbError": 35,
+      "pixelFractionOver1": 8.680555555555556e-05,
+      "pixelFractionOver8": 6.944444444444444e-05,
+      "pixelFractionOver32": 1.3020833333333334e-05,
+      "reference": {
+        "angle": 0,
+        "rgba": "0d2a54e21af7e9cd",
+        "depth": "36c026808d99947b",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "c23c9404080bc4e7",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 0,
+        "rgba": "ec939798ccf3b2be",
+        "depth": "6062fbe207bfd8ea",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "cfc4ab7f994c12bc",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "angle": 45,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0005446076393127441,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "9724ece16ea5d5b33c2ccb981ab526bbb263648b16d0e297e6a1b04847523a9e",
+            "candidate": "767ca1a04805e62a9b7d6a94298eb1feff3f31a1157b4b9db57fa0ee4abfcf76"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0008199214935302734,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "c04b02e066b162fec1a9ff2c5c8def32a41a7aac037929302fcc6b0598d270f1",
+            "candidate": "d8cdd78f57e6b497c9f4e68425dfc942d9209cc5306df97f6057422245f85d92"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.0012760416666666666,
+      "maxRgbError": 39,
+      "pixelFractionOver1": 8.246527777777778e-05,
+      "pixelFractionOver8": 5.642361111111111e-05,
+      "pixelFractionOver32": 2.604166666666667e-05,
+      "reference": {
+        "angle": 45,
+        "rgba": "54534a93ac94e745",
+        "depth": "6f0095754be0cf92",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "65bcf05bdaba2204",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 45,
+        "rgba": "bb50c0d6e76987a7",
+        "depth": "e999317500eab442",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "e0bf377e4040db85",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "angle": 90,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0009421706199645996,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "22d50380900809dade90d49ed39c2b44cbe6d3942cfc440acd9788cb253c46e2",
+            "candidate": "ad49dd23f93e248a692cf497baf99c9ce0ea5b5f5ba7402afc12a46bec7a68e8"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0009470582008361816,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "0a7f9533759fbcb838ace43a5ffca6cfca1d52b4ea61ae4099ffa2b63ce746bf",
+            "candidate": "21b2a4253727b1242014996996612fc521b9550e706ccdce8d2b13ab60e4f2de"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.0019820601851851852,
+      "maxRgbError": 68,
+      "pixelFractionOver1": 0.0001171875,
+      "pixelFractionOver8": 7.378472222222222e-05,
+      "pixelFractionOver32": 2.604166666666667e-05,
+      "reference": {
+        "angle": 90,
+        "rgba": "9bea854772341768",
+        "depth": "097ac88e74d27eb6",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "9bfb050e4acb0364",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 90,
+        "rgba": "2aef8fb02977f63e",
+        "depth": "74d9aec669ce7b52",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "2095aa0ccf479467",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "angle": 135,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0007380247116088867,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "25d490a9f3595d15f15877049eb2d87ce0016bfd1bbbaa04e82054779db98618",
+            "candidate": "2577e32eb21ecb0bc7ab0a23f353c0428c16763d8d0459c81bef39e408e8cd18"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0007380247116088867,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "622b59c95e5adee9e3f392828a9e51acbfa142004bad78af7d7d61e72c563514",
+            "candidate": "33b044abe8cc51df2458f7044c5249b894a698edd455e86375e6b2edef5fed20"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.005331307870370371,
+      "maxRgbError": 87,
+      "pixelFractionOver1": 0.00021701388888888888,
+      "pixelFractionOver8": 0.00015190972222222222,
+      "pixelFractionOver32": 9.114583333333334e-05,
+      "reference": {
+        "angle": 135,
+        "rgba": "9a29b10abb01193f",
+        "depth": "5d79de51d9287575",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "bbee0d00d18cd857",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 135,
+        "rgba": "17cfa6796c86f044",
+        "depth": "f174621b74d5d3b5",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "6a999d14e5a01575",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "angle": 160,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0006401538848876953,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "9a9a4e591fdaefbea8337b29cda6beffa9b4b75762f5a228ee31a6bbf343c07f",
+            "candidate": "87bdb902ed3c22591849481f18fc168cc136abc1e6a0f67c33d94f01cad3adff"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0006401538848876953,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "abeddde5e10a298a91ad91e7485124b68c590c8195c5ea31a4d94b429fbd2287",
+            "candidate": "886561bd7f2fcf779de50da6c5b5a98c9f6d8347d8df0b350f0f55b65d97fae5"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.0017664930555555557,
+      "maxRgbError": 40,
+      "pixelFractionOver1": 0.0001345486111111111,
+      "pixelFractionOver8": 7.8125e-05,
+      "pixelFractionOver32": 2.604166666666667e-05,
+      "reference": {
+        "angle": 160,
+        "rgba": "f4c3cfe15ed7f724",
+        "depth": "2c7ee74c33dd5311",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "b6bcf146709d53c0",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 160,
+        "rgba": "313d9521188d4add",
+        "depth": "704abf6449b8a30a",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "ed9be91f8bbe4d02",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "angle": 180,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0007387399673461914,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "af38d8486d316ecd8714f74f3bba170fe9de495e1a6394fdf7ed4a40bf0baf0e",
+            "candidate": "567def1c17af7ae50ee4640e81d672b391738b33cdc3b4ce1d10336c790dd155"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0007387399673461914,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "3df49e44237a0354e04cefcb6284aed031aa5e9968fb2594a44100b1e0d6983b",
+            "candidate": "f2895e988308f1546d09b0cbc86f2ff0aa33dffb445c486f6cbcf5f861d83331"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.0011530671296296295,
+      "maxRgbError": 28,
+      "pixelFractionOver1": 6.076388888888889e-05,
+      "pixelFractionOver8": 5.642361111111111e-05,
+      "pixelFractionOver32": 0.0,
+      "reference": {
+        "angle": 180,
+        "rgba": "d180c29b2facdf2a",
+        "depth": "42ed5dc589f2ebf4",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "02fddced4a729c4b",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 180,
+        "rgba": "4fcad58adaaa7e81",
+        "depth": "49ede8368dff4d0c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "ba3b177bcda3290e",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "angle": 225,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0006188154220581055,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "7ece17caf49723535b3f8aa27bf4c5dee36e5a02fea042a98eeb187ea32fe39c",
+            "candidate": "d9da361615eb854d1a8fefc05c469f4a03bcfb53ccc244977d51e101200bf76d"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0007633566856384277,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "a67aee913d7ca818a6dd1d11a2cf74dcc5e675ea19fa847cb1053fa577dbbc11",
+            "candidate": "653fb18832a56e1710d246a26072999c56071ba3561f59fd6b6f8c97c8c7906f"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.002232349537037037,
+      "maxRgbError": 33,
+      "pixelFractionOver1": 0.00020833333333333335,
+      "pixelFractionOver8": 0.0001388888888888889,
+      "pixelFractionOver32": 4.340277777777778e-06,
+      "reference": {
+        "angle": 225,
+        "rgba": "b921108f131d2536",
+        "depth": "3d93b4b7f0e71586",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "c6a335c5768faafb",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 225,
+        "rgba": "7733dccfd9714317",
+        "depth": "963588348aa9c7ce",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "3efcfb729d32fb07",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "angle": 270,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.000737309455871582,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "540b4ff91e54b453f1b5e3bdda14471648715c57e820541ab4eb1314233e88ee",
+            "candidate": "755c5e10b5602c56824bb30d902d02f521b3691014a4f84b4ba7ce990ac89576"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.000737309455871582,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "ba44b730ba19b8576e1dee8edd2e8b24fb63bcedbaa63c2c1f9274ce7bb079a9",
+            "candidate": "4abe588cbae39196ac6c112e007e2faf0b1bd9b6f331d2e3baab76b909818159"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.0020833333333333333,
+      "maxRgbError": 67,
+      "pixelFractionOver1": 0.00014756944444444445,
+      "pixelFractionOver8": 6.944444444444444e-05,
+      "pixelFractionOver32": 2.604166666666667e-05,
+      "reference": {
+        "angle": 270,
+        "rgba": "6cf5ae4254fb4ee2",
+        "depth": "02a0e55bb37704ce",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "f8a3e02246df5d99",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 270,
+        "rgba": "98869f0fc60ac64e",
+        "depth": "d166a6ddc829fd40",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "2ac877167fa17c6f",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "angle": 315,
+      "depthPlanes": {
+        "depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0004661679267883301,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "5bb7532293dbb46c8ba9cb466b7e1c6f49a5d530acd01934bd7f6c8fcdcaabc7",
+            "candidate": "d178d45297a3d33ef6cf4d69054a5de0e8e76456eb69cd43408b62a1d8487c86"
+          }
+        },
+        "sample-depth": {
+          "byteIdentical": false,
+          "maxAbsoluteError": 0.0007228255271911621,
+          "finiteInRange": true,
+          "missingCoveredValues": 0,
+          "extraCoveredValues": 0,
+          "sha256": {
+            "reference": "e55943ae0390afcd0ce9f3c3fb24a334dc97828dda7b907771ef9228250fd1f1",
+            "candidate": "3df0762d7ea7a33c8505c2f161866385d36b8270dc7f72d5098a437442603dbf"
+          }
+        }
+      },
+      "stencilExact": true,
+      "rgbaHashExact": false,
+      "meanAbsoluteRgbError": 0.0015205439814814814,
+      "maxRgbError": 87,
+      "pixelFractionOver1": 5.642361111111111e-05,
+      "pixelFractionOver8": 3.90625e-05,
+      "pixelFractionOver32": 2.604166666666667e-05,
+      "reference": {
+        "angle": 315,
+        "rgba": "978553c7ac2edbb4",
+        "depth": "7e62a2339e069db3",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "ac5432b0777388be",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 315,
+        "rgba": "a14b39ebe95e8f23",
+        "depth": "de6777ee9653f106",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "f7256252cf6ad8d2",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "withinExploratoryBudget": false
+    }
+  ],
+  "runs": [
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-msaa-centroid-order/v2-direct/native/quality_candidate",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "4",
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-centroid-order/quality-v2/bistro-ms4-candidate"
+      ],
+      "stderr": "",
+      "packSha256": "4c862bcd28ef6833a89b0a058832c051098f5cf5869590999859b86f1cc993f3",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ]
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-msaa-centroid-order/v2-direct/native/quality_candidate",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "4",
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-centroid-order/quality-v2/sponza-ms4-candidate"
+      ],
+      "stderr": "",
+      "packSha256": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ]
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-msaa-centroid-order/v2-direct/native/quality_candidate",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack",
+        "4",
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-centroid-order/quality-v2/bmw-ms4-candidate"
+      ],
+      "stderr": "",
+      "packSha256": "76cda2c57b81e10b3c92a269537b17e4e1c5f36c653bfd1af43fcb2218473cef",
+      "camera": null
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-msaa-centroid-order/v2-direct/native/quality_candidate",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack",
+        "4",
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-centroid-order/quality-v2/t80-ms4-candidate"
+      ],
+      "stderr": "",
+      "packSha256": "cb9146d7352f52600015c499c394566acc604b43fb5760a17d133c20c5a700f4",
+      "camera": null
+    }
+  ],
+  "pairedViews": 36,
+  "allWithinExploratoryBudget": false
+}
