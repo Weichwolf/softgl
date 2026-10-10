@@ -1,0 +1,70 @@
+{
+  "passed": false,
+  "simdBits": 128,
+  "sourceManifestSha256": "21dbe0dce64b2ef48ae5df775927faa483e540285f4c50d7f170ac93ccd9dafd",
+  "librarySha256": "75e6863d77698a3d94db906356aa192ffff1f2621fdb3941ed858536b8dde42a",
+  "runs": [
+    {
+      "kind": "scene_material_merge",
+      "command": [
+        "/home/cosmo/.local/bin/clang-22",
+        "-std=c11",
+        "-O3",
+        "-g",
+        "-fno-strict-aliasing",
+        "-ffast-math",
+        "-fno-associative-math",
+        "-fsigned-zeros",
+        "-fno-finite-math-only",
+        "-msse4.1",
+        "-mno-avx",
+        "-mno-avx2",
+        "-mno-avx512f",
+        "-I/home/cosmo/Git/softgl/build/scene-msaa-four-pixel-interiors/v2-outlined/source/libsoftgl/src",
+        "-I/home/cosmo/Git/softgl/build/scene-msaa-four-pixel-interiors/v2-outlined/source/libsoftgl/include",
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-four-pixel-interiors/exact-contract-v2/recipe/scene_material_merge.c",
+        "/home/cosmo/Git/softgl/build/scene-msaa-four-pixel-interiors/v2-outlined/native/library/libsoftgl.a",
+        "-lm",
+        "-pthread",
+        "-o",
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-four-pixel-interiors/exact-contract-v2/scene_material_merge"
+      ],
+      "exitCode": 0,
+      "stdout": "MSAA material merge: 90 paired frames, 6 deliberate seam approximations; depth, coverage, alpha, reset and fallback PASS\n",
+      "stderr": "",
+      "binarySha256": "07871bdc3a72350e27e8d73acf5a4ee3a50b1306ecc3ad63f0760a384ef6a125",
+      "fixtureSha256": "cb59a4fe96d1199e0a1f69baae1c705d1422984966d8f7bb032bbec103755560"
+    },
+    {
+      "kind": "scene_positions",
+      "command": [
+        "/home/cosmo/.local/bin/clang-22",
+        "-std=c11",
+        "-O3",
+        "-g",
+        "-fno-strict-aliasing",
+        "-ffast-math",
+        "-fno-associative-math",
+        "-fsigned-zeros",
+        "-fno-finite-math-only",
+        "-msse4.1",
+        "-mno-avx",
+        "-mno-avx2",
+        "-mno-avx512f",
+        "-I/home/cosmo/Git/softgl/build/scene-msaa-four-pixel-interiors/v2-outlined/source/libsoftgl/src",
+        "-I/home/cosmo/Git/softgl/build/scene-msaa-four-pixel-interiors/v2-outlined/source/libsoftgl/include",
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-four-pixel-interiors/exact-contract-v2/recipe/scene_positions.c",
+        "/home/cosmo/Git/softgl/build/scene-msaa-four-pixel-interiors/v2-outlined/native/library/libsoftgl.a",
+        "-lm",
+        "-pthread",
+        "-o",
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-four-pixel-interiors/exact-contract-v2/scene_positions"
+      ],
+      "exitCode": 1,
+      "stdout": "",
+      "stderr": "line 118: !memcmp(a->fb.depth,b->fb.depth,pixels*sizeof(float))\n",
+      "binarySha256": "810f4e25f4506d158d8224bd2c46c032c76b83418c995612cdd7e8a2be4efa0b",
+      "fixtureSha256": "a5df5e741f6157b674b24b8340934985318c9fe0ef1820b9e29fc73e4679d71c"
+    }
+  ]
+}
