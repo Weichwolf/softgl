@@ -1,0 +1,344 @@
+{
+  "passed": true,
+  "diagnosticOnly": true,
+  "performanceAcceptance": false,
+  "asset": "sponza",
+  "width": 640,
+  "height": 360,
+  "threads": 4,
+  "samples": 4,
+  "events": "cycles:u,instructions:u,cache-misses:u,task-clock,context-switches,cpu-migrations,page-faults",
+  "camera": [
+    0.25,
+    -0.12,
+    0,
+    -90,
+    0,
+    60,
+    0.003,
+    3
+  ],
+  "packSha256": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+  "runnerSha256": "c913e942122c2c3bd7ab8988798eec21670b6dc336a2b481eabcd61c82f0f335",
+  "binarySha256": {
+    "baseline": "73ffda348e1f7fd92a589c6bade0af4dbae9935690cc65c6fedfcca554e24065",
+    "candidate": "bd223acbdd01ae193566c1b29b9b08c9da35e0061e3fcdc651cd027831a0af1a"
+  },
+  "sourceManifestSha256": {
+    "baseline": "15ffcfc8b7624ccb3ee08fc1bc70b51cdc55915fadf7a1085b72154d56c52ffe",
+    "candidate": "28c65cc66d2e3d2411bae62a634e9e9f455151fdde235ffb76b44757bb64ceec"
+  },
+  "programs": {
+    "baseline": {
+      "command": [
+        "perf",
+        "stat",
+        "-x",
+        ";",
+        "-e",
+        "cycles:u,instructions:u,cache-misses:u,task-clock,context-switches,cpu-migrations,page-faults",
+        "-o",
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-short-coverage/paired-counters-v3/baseline-counters.csv",
+        "--delay=-1",
+        "--control",
+        "fd:3,6",
+        "--",
+        "/home/cosmo/Git/softgl/build/scene-msaa-guarded-depth-planes/v1-control/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "pid": 32109,
+      "ready": {
+        "ready": true,
+        "width": 640,
+        "height": 360
+      }
+    },
+    "candidate": {
+      "command": [
+        "perf",
+        "stat",
+        "-x",
+        ";",
+        "-e",
+        "cycles:u,instructions:u,cache-misses:u,task-clock,context-switches,cpu-migrations,page-faults",
+        "-o",
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-short-coverage/paired-counters-v3/candidate-counters.csv",
+        "--delay=-1",
+        "--control",
+        "fd:3,11",
+        "--",
+        "/home/cosmo/Git/softgl/build/scene-msaa-short-coverage/v3-small-proof/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "pid": 32123,
+      "ready": {
+        "ready": true,
+        "width": 640,
+        "height": 360
+      }
+    }
+  },
+  "warmups": [
+    {
+      "variant": "baseline",
+      "request": "4 60 30 160 -",
+      "result": {
+        "renderer": "softgl-native",
+        "width": 640,
+        "height": 360,
+        "threads": 4,
+        "samples": 4,
+        "triangles": 262267,
+        "frames": 30,
+        "ms": 31.273477164,
+        "submitMs": 30.535285074,
+        "finishReadbackMs": 0.738138756,
+        "angle": 160,
+        "rgba": "c3f19973921f2fc2",
+        "depth": "1ac5a242dff2b42c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "9ab44a68c51d3aec",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "variant": "candidate",
+      "request": "4 60 30 160 -",
+      "result": {
+        "renderer": "softgl-native",
+        "width": 640,
+        "height": 360,
+        "threads": 4,
+        "samples": 4,
+        "triangles": 262267,
+        "frames": 30,
+        "ms": 34.041952167,
+        "submitMs": 32.886895378,
+        "finishReadbackMs": 1.154970122,
+        "angle": 160,
+        "rgba": "c3f19973921f2fc2",
+        "depth": "1ac5a242dff2b42c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "9ab44a68c51d3aec",
+        "sampleStencil": "009b538b2455c383"
+      }
+    }
+  ],
+  "records": [
+    {
+      "variant": "baseline",
+      "request": "4 60 30 160 -",
+      "result": {
+        "renderer": "softgl-native",
+        "width": 640,
+        "height": 360,
+        "threads": 4,
+        "samples": 4,
+        "triangles": 262267,
+        "frames": 30,
+        "ms": 32.862422033,
+        "submitMs": 31.741785204,
+        "finishReadbackMs": 1.120586829,
+        "angle": 160,
+        "rgba": "c3f19973921f2fc2",
+        "depth": "1ac5a242dff2b42c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "9ab44a68c51d3aec",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "variant": "candidate",
+      "request": "4 60 30 160 -",
+      "result": {
+        "renderer": "softgl-native",
+        "width": 640,
+        "height": 360,
+        "threads": 4,
+        "samples": 4,
+        "triangles": 262267,
+        "frames": 30,
+        "ms": 34.509603633,
+        "submitMs": 33.292383297,
+        "finishReadbackMs": 1.217153668,
+        "angle": 160,
+        "rgba": "c3f19973921f2fc2",
+        "depth": "1ac5a242dff2b42c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "9ab44a68c51d3aec",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "variant": "candidate",
+      "request": "4 60 30 160 -",
+      "result": {
+        "renderer": "softgl-native",
+        "width": 640,
+        "height": 360,
+        "threads": 4,
+        "samples": 4,
+        "triangles": 262267,
+        "frames": 30,
+        "ms": 32.863038701,
+        "submitMs": 32.058219627,
+        "finishReadbackMs": 0.804725739,
+        "angle": 160,
+        "rgba": "c3f19973921f2fc2",
+        "depth": "1ac5a242dff2b42c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "9ab44a68c51d3aec",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "variant": "baseline",
+      "request": "4 60 30 160 -",
+      "result": {
+        "renderer": "softgl-native",
+        "width": 640,
+        "height": 360,
+        "threads": 4,
+        "samples": 4,
+        "triangles": 262267,
+        "frames": 30,
+        "ms": 34.410420099,
+        "submitMs": 33.178713025,
+        "finishReadbackMs": 1.23162374,
+        "angle": 160,
+        "rgba": "c3f19973921f2fc2",
+        "depth": "1ac5a242dff2b42c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "9ab44a68c51d3aec",
+        "sampleStencil": "009b538b2455c383"
+      }
+    }
+  ],
+  "counters": {
+    "baseline": {
+      "rows": [
+        {
+          "value": "49830768877",
+          "unit": "",
+          "event": "cycles:u",
+          "runningTime": "21425442200",
+          "runningPercent": "100.00",
+          "raw": "49830768877;;cycles:u;21425442200;100.00;2.326;GHz"
+        },
+        {
+          "value": "89267566153",
+          "unit": "",
+          "event": "instructions:u",
+          "runningTime": "21425442200",
+          "runningPercent": "100.00",
+          "raw": "89267566153;;instructions:u;21425442200;100.00;1.79;insn per cycle"
+        },
+        {
+          "value": "396502385",
+          "unit": "",
+          "event": "cache-misses:u",
+          "runningTime": "21425442200",
+          "runningPercent": "100.00",
+          "raw": "396502385;;cache-misses:u;21425442200;100.00;;"
+        },
+        {
+          "value": "21425.44",
+          "unit": "msec",
+          "event": "task-clock:u",
+          "runningTime": "21425442200",
+          "runningPercent": "100.00",
+          "raw": "21425.44;msec;task-clock:u;21425442200;100.00;1.116;CPUs utilized"
+        },
+        {
+          "value": "0",
+          "unit": "",
+          "event": "context-switches:u",
+          "runningTime": "21425442200",
+          "runningPercent": "100.00",
+          "raw": "0;;context-switches:u;21425442200;100.00;0.000;/sec"
+        },
+        {
+          "value": "0",
+          "unit": "",
+          "event": "cpu-migrations:u",
+          "runningTime": "21425442200",
+          "runningPercent": "100.00",
+          "raw": "0;;cpu-migrations:u;21425442200;100.00;0.000;/sec"
+        },
+        {
+          "value": "12",
+          "unit": "",
+          "event": "page-faults:u",
+          "runningTime": "21425442200",
+          "runningPercent": "100.00",
+          "raw": "12;;page-faults:u;21425442200;100.00;0.560;/sec"
+        }
+      ],
+      "reportSha256": "178c0caac71e95023b64fe1f33be808db3900f801aa34deb48cccfa158ec68bb",
+      "stderrSha256": "0929d0c238d8b31dfae78ce5d8507e90b93a3947af3b2b611b78d2a094f6652c"
+    },
+    "candidate": {
+      "rows": [
+        {
+          "value": "51820018441",
+          "unit": "",
+          "event": "cycles:u",
+          "runningTime": "22307120000",
+          "runningPercent": "100.00",
+          "raw": "51820018441;;cycles:u;22307120000;100.00;2.323;GHz"
+        },
+        {
+          "value": "97328433873",
+          "unit": "",
+          "event": "instructions:u",
+          "runningTime": "22307120000",
+          "runningPercent": "100.00",
+          "raw": "97328433873;;instructions:u;22307120000;100.00;1.88;insn per cycle"
+        },
+        {
+          "value": "395777748",
+          "unit": "",
+          "event": "cache-misses:u",
+          "runningTime": "22307120000",
+          "runningPercent": "100.00",
+          "raw": "395777748;;cache-misses:u;22307120000;100.00;;"
+        },
+        {
+          "value": "22307.12",
+          "unit": "msec",
+          "event": "task-clock:u",
+          "runningTime": "22307120000",
+          "runningPercent": "100.00",
+          "raw": "22307.12;msec;task-clock:u;22307120000;100.00;1.187;CPUs utilized"
+        },
+        {
+          "value": "0",
+          "unit": "",
+          "event": "context-switches:u",
+          "runningTime": "22307120000",
+          "runningPercent": "100.00",
+          "raw": "0;;context-switches:u;22307120000;100.00;0.000;/sec"
+        },
+        {
+          "value": "0",
+          "unit": "",
+          "event": "cpu-migrations:u",
+          "runningTime": "22307120000",
+          "runningPercent": "100.00",
+          "raw": "0;;cpu-migrations:u;22307120000;100.00;0.000;/sec"
+        },
+        {
+          "value": "12",
+          "unit": "",
+          "event": "page-faults:u",
+          "runningTime": "22307120000",
+          "runningPercent": "100.00",
+          "raw": "12;;page-faults:u;22307120000;100.00;0.538;/sec"
+        }
+      ],
+      "reportSha256": "e39d17d6a98e4ad92eb8e4780f0d15f8fcbcbf5dd080badcb020e062ea9e3d4c",
+      "stderrSha256": "0929d0c238d8b31dfae78ce5d8507e90b93a3947af3b2b611b78d2a094f6652c"
+    }
+  },
+  "scope": "Both real drivers imported before any profiled request. One disabled-counter warmup per driver first. Four balanced AB/BA requests then include 60 warm and 30 rotating frames, worker restart, angle160 and final hashes. Counters aggregate two requests per variant; never an FPS acceptance gate."
+}

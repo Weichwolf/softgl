@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "command": [
+    "/home/cosmo/.local/bin/clang-22",
+    "-std=c11",
+    "-O3",
+    "-fno-strict-aliasing",
+    "-ffast-math",
+    "-fno-associative-math",
+    "-fsigned-zeros",
+    "-fno-finite-math-only",
+    "-msse4.1",
+    "-mno-avx",
+    "-mno-avx2",
+    "-mno-avx512f",
+    "-I/home/cosmo/Git/softgl/build/scene-msaa-short-coverage/v3-small-proof/source/libsoftgl/src",
+    "-I/home/cosmo/Git/softgl/build/scene-msaa-short-coverage/v3-small-proof/source/libsoftgl/include",
+    "/home/cosmo/Git/softgl/tmp/scene-msaa-short-coverage/arithmetic-v3/recipe/arithmetic_contract.c",
+    "-lm",
+    "-pthread",
+    "-o",
+    "/home/cosmo/Git/softgl/tmp/scene-msaa-short-coverage/arithmetic-v3/arithmetic_contract"
+  ],
+  "exitCode": 0,
+  "stdout": "Short edges: 786432 range checks, 1278406 exact pair masks, 20454496 exact raw/float conversions; 58052 admitted/204092 rejected boxes, 3122160 small-box corner checks PASS\n",
+  "stderr": "",
+  "empirical": true,
+  "universalProof": false,
+  "simdBits": 128,
+  "sourceManifestSha256": "28c65cc66d2e3d2411bae62a634e9e9f455151fdde235ffb76b44757bb64ceec",
+  "kernelSha256": "9e0935a019aa988a569fd5cd3c0e739edada9073aebea32fa3fe8b72a6b7d637",
+  "binarySha256": "87c009247626ef6323517943347b778742cdd41e6d07277e6872ed434fd51a24",
+  "recipeSha256": {
+    "arithmetic.py": "21dc9de22e47cb678cd098e99b2530ca8a1b2945ccee68d43f55c8824999e3c4",
+    "arithmetic_contract.c": "3a94fa8dac368326943d2a0ebf7e5ba50ff7d2c5f3b775909a8ef3d5535b6703",
+    "arithmetic_helper.inc": "0cd9c054bb7d83cd4bf8658081a170ca4c6dc9f3f43718a477a57ca7aad52fc4"
+  }
+}
