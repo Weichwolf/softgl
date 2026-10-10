@@ -1,0 +1,38 @@
+{
+  "passed": false,
+  "simdBits": 128,
+  "command": [
+    "/home/cosmo/.local/bin/clang-22",
+    "-std=c11",
+    "-O3",
+    "-g",
+    "-fno-strict-aliasing",
+    "-ffast-math",
+    "-fno-associative-math",
+    "-fsigned-zeros",
+    "-fno-finite-math-only",
+    "-msse4.1",
+    "-mno-avx",
+    "-mno-avx2",
+    "-mno-avx512f",
+    "-I/home/cosmo/Git/softgl/build/scene-msaa-batched-hiz/v1-small-only/source/libsoftgl/src",
+    "-I/home/cosmo/Git/softgl/build/scene-msaa-batched-hiz/v1-small-only/source/libsoftgl/include",
+    "/home/cosmo/Git/softgl/tmp/scene-msaa-batched-hiz/hierarchy-v1/recipe/hierarchical_depth.c",
+    "/home/cosmo/Git/softgl/build/scene-msaa-batched-hiz/v1-small-only/native/library/libsoftgl.a",
+    "-lm",
+    "-pthread",
+    "-o",
+    "/home/cosmo/Git/softgl/tmp/scene-msaa-batched-hiz/hierarchy-v1/hierarchical_depth"
+  ],
+  "sourceManifestSha256": "e8ad7d6758ce7eb0fe99a25afb115235fc581b5a578fec3cab1789c8fb794711",
+  "librarySha256": "fda46e9a16e8e56e4e7578cd1f5976c498bbe63b7da2886d5de6dd3501c419a0",
+  "fixtureSha256": "ee5d6bca2b00944d3b71b58239422f52c753b712594ff44a8fd711638c7e5762",
+  "binarySha256": "57a65530516f6d656c4dffbc5dbb34169e62512cb0409ac716135e3c027d1767",
+  "exitCode": 1,
+  "stdout": "",
+  "stderr": "line 172: !sg_hz_occluded(c, 0, 0, 4, 4, z0, z1, z2, offset)\n",
+  "recipeSha256": {
+    "hierarchical_depth.c": "ee5d6bca2b00944d3b71b58239422f52c753b712594ff44a8fd711638c7e5762",
+    "hierarchy_gate.py": "94a61caf2e7ee2bc5c79cd32263d6048385b50ff69fc6c65e0d186176ca21377"
+  }
+}

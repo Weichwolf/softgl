@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "simdBits": 128,
+  "command": [
+    "/home/cosmo/.local/bin/clang-22",
+    "-std=c11",
+    "-O2",
+    "-g",
+    "-fno-fast-math",
+    "-ffp-contract=off",
+    "-msse4.1",
+    "-mno-avx",
+    "-mno-avx2",
+    "-mno-avx512f",
+    "-I/home/cosmo/Git/softgl/build/scene-msaa-guarded-depth-planes/v1-control/source/libsoftgl/src",
+    "-I/home/cosmo/Git/softgl/build/scene-msaa-guarded-depth-planes/v1-control/source/libsoftgl/include",
+    "/home/cosmo/Git/softgl/tmp/scene-msaa-batched-hiz/hierarchy-control-strict/recipe/hierarchical_depth.c",
+    "/home/cosmo/Git/softgl/build/scene-msaa-guarded-depth-planes/v1-control/native/library/libsoftgl.a",
+    "-lm",
+    "-pthread",
+    "-o",
+    "/home/cosmo/Git/softgl/tmp/scene-msaa-batched-hiz/hierarchy-control-strict/hierarchical_depth"
+  ],
+  "sourceManifestSha256": "15ffcfc8b7624ccb3ee08fc1bc70b51cdc55915fadf7a1085b72154d56c52ffe",
+  "librarySha256": "77598e74d85e6caae6036bcdf2e162f019c25e3c0d3923406ca2747339646767",
+  "fixtureSha256": "ee5d6bca2b00944d3b71b58239422f52c753b712594ff44a8fd711638c7e5762",
+  "binarySha256": "78968ddb80ec4670c45e52427dccf84a0c0809fa4d40019cc26b3d611b81acc7",
+  "exitCode": 0,
+  "stdout": "samples=2: 131072 tracked writes, 1048576 numerical bounds, 1536 exact HZ-on/off frames and sample queries, 1/3/8 workers, fallbacks passed\nsamples=4: 131072 tracked writes, 1048576 numerical bounds, 1536 exact HZ-on/off frames and sample queries, 1/3/8 workers, fallbacks passed\n",
+  "stderr": "",
+  "recipeSha256": {
+    "hierarchical_depth.c": "ee5d6bca2b00944d3b71b58239422f52c753b712594ff44a8fd711638c7e5762",
+    "hierarchy_gate.py": "c7898bbefce83dfd234a3a5f7d69e6b940a0e292caa38c66a3dbb7fd63be5f4d"
+  }
+}
