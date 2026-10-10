@@ -924,16 +924,6 @@ void glGetPolygonStipple(GLubyte *mask);
 
 /* ---- Softgl-specific extensions ---- */
 
-/* Context management. These are softgl-only; the OSMesa path uses its own. */
-typedef struct softgl_ctx softgl_ctx;
-softgl_ctx *softgl_create(GLsizei w, GLsizei h);
-/* Samples are selected at context creation, as with a window pixel format.
- * Supported values: 0 (single sample), 2 and 4. */
-softgl_ctx *softgl_create_multisample(GLsizei w, GLsizei h, GLsizei samples);
-void        softgl_destroy(softgl_ctx *c);
-void        softgl_make_current(softgl_ctx *c);
-const void *softgl_read_rgba8(softgl_ctx *c);
-
 /* Optional pure attribute program for vertex-array draws. It can run on
  * workers; user data must be immutable until glDraw* returns, and it must
  * not call GL. Index is the original source vertex, including dense-cull

@@ -4,7 +4,8 @@
 
 softgl implements an OpenGL 1.5 software renderer in C11.
 
-- `libsoftgl/include/GL/softgl.h`: public GL API and integrations used by the current WASM build.
+- `libsoftgl/include/GL/softgl.h`: GL rendering API; the remaining explicit rendering integrations are being replaced by automatic internal paths.
+- `libsoftgl/include/softgl/platform.h`: separate platform-neutral context and framebuffer API for SDL and headless hosts.
 - `libsoftgl/src/`: state, transforms, clipping, rasterization, textures, scene batching and pthread workers; internal headers stay here.
 - `tests/cases/`: rendering cases numbered `001` through `235`; `tests/harness/`: softgl/OSMesa adapters and image comparator.
 - `tests/bench/`: native benchmarks and the shared model image driver.
@@ -48,7 +49,7 @@ Open `http://localhost:8000/`. The server supplies COOP/COEP headers required by
 
 ## Coding Style & Naming Conventions
 
-Use four-space indentation, same-line braces and `snake_case`. Preserve `gl*` API names, `softgl_*` integration functions, `sg_*` internals and `SG_*` constants. Keep helpers `static` where possible. Follow adjacent code; no formatter or linter configuration is tracked. Resolve compiler warnings. Keep public `softgl_*` functions only when the current WASM build uses them; remove rejected experimental implementations from `libsoftgl/`.
+Use four-space indentation, same-line braces and `snake_case`. Preserve `gl*` API names, `softgl_*` platform functions, `sg_*` internals and `SG_*` constants. Keep helpers `static` where possible. Follow adjacent code; no formatter or linter configuration is tracked. Resolve compiler warnings. Rendering optimizations belong inside the GL pipeline and must not require application-specific hooks. Keep context/framebuffer declarations in the separate platform header; the core must not depend on SDL. Remove obsolete interfaces and rejected experimental implementations from `libsoftgl/`.
 
 Native and WASM libsoftgl must both use SIMD128 exclusively. Do not add AVX2/AVX512 paths or wider auto-vectorization. Preserve SSE4.1/native and SIMD128/WASM paths, vertex alignment and bottom-origin framebuffer coordinates. WASM must fit within its 4 GiB memory limit. Asset reductions happen through the common offline tools; compare renderers using identical prepared assets, texture dimensions and cameras. Avoid model-specific adapters or test infrastructure.
 

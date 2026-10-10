@@ -1,3 +1,4 @@
+#include <softgl/platform.h>
 /* WASM bench wrapper. Reuses the existing sg_test_* dispatch machinery
  * (which already links in every test_*.c case) to time any scene by index.
  *

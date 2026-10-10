@@ -1,5 +1,6 @@
 add_library(softgl STATIC
     src/state.c
+    src/platform.c
     src/matrix.c
     src/buffers.c
     src/texture.c

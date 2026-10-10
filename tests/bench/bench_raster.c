@@ -1,3 +1,4 @@
+#include <softgl/platform.h>
 /* FP-3 benchmark: compares float and fixed backends on a few heavy
  * fill scenes. Not a correctness gate -- just a timing harness so we
  * can validate that the SIMD-quad rasterizer actually pays off.

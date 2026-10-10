@@ -21,7 +21,7 @@ const options = {
 };
 for (let i = 2; i < process.argv.length; i++) {
     const key = process.argv[i].replace(/^--/, '');
-    if (key === 'bench-only' || key === 'images-only' || key === 'crossover') options[key] = true;
+    if (key === 'bench-only' || key === 'images-only' || key === 'crossover' || key === 'save-images') options[key] = true;
     else if (Object.hasOwn(options, key)) options[key] = process.argv[++i];
     else throw new Error(`Unknown option: ${process.argv[i]}`);
 }
@@ -167,7 +167,7 @@ async function main() {
             sourceDiffSha256: crypto.createHash('sha256').update(execFileSync('git', ['diff', '--', 'libsoftgl', 'wasm'], {cwd: repo})).digest('hex'),
         };
         if (!options['bench-only']) {
-            result.images = await page.evaluate(async ({cases, modelCases, models}) => {
+            result.images = await page.evaluate(async ({cases, modelCases, models, samples, saveImages}) => {
                 const uploadTextures = async (asset, prefix = '/') => {
                     if (!models[asset].textureManifest) return;
                     const response = await fetch(prefix + models[asset].textureManifest);
@@ -218,10 +218,20 @@ async function main() {
                         if (delta > spec.maxDelta) bad++;
                     }
                     const digest = await crypto.subtle.digest('SHA-256', pixels.slice());
-                    results.push({name: spec.name, bad, maxDelta, maxBad: spec.maxBad,
+                    const record = {name: spec.name, bad, maxDelta, maxBad: spec.maxBad,
+                        samples: spec.asset ? samples : 0,
+                        referenceSamples: 0,
                         threshold: spec.maxDelta, averageDelta: sumDelta / pixels.length,
                         sha256: Array.from(new Uint8Array(digest), b => b.toString(16).padStart(2, '0')).join(''),
-                        passed: bad <= spec.maxBad});
+                        passed: bad <= spec.maxBad};
+                    if (saveImages && spec.asset) {
+                        let binary = '';
+                        for (let offset = 0; offset < pixels.length; offset += 16384) {
+                            binary += String.fromCharCode(...pixels.subarray(offset, offset + 16384));
+                        }
+                        record.rgbaBase64 = btoa(binary);
+                    }
+                    results.push(record);
                 }
                 for (let i = 0; i < count; i++) {
                     const name = mod.UTF8ToString(mod._sg_test_name(i));
@@ -244,7 +254,7 @@ async function main() {
                     mod.HEAPU8.set(bytes, ptr);
                     try {
                         for (const spec of modelCases.filter(test => test.asset === asset)) {
-                            const ctx = mod._softgl_create(640, 360);
+                            const ctx = mod._softgl_create_multisample(640, 360, samples);
                             if (!ctx) throw new Error(`${asset} context allocation failed`);
                             try {
                                 mod._softgl_make_current(ctx);
@@ -261,7 +271,19 @@ async function main() {
                     } finally { mod._free(ptr); }
                 }
                 return results;
-            }, {cases, modelCases, models});
+            }, {cases, modelCases, models, samples: options.samples, saveImages: options['save-images']});
+            if (options['save-images']) {
+                const directory = path.join(path.dirname(output), path.basename(output, '.json') + '-images');
+                fs.mkdirSync(directory, {recursive: true});
+                for (const record of result.images) if (record.rgbaBase64) {
+                    const header = Buffer.alloc(12);
+                    header.write('SGRG'); header.writeUInt32LE(640, 4); header.writeUInt32LE(360, 8);
+                    const file = path.join(directory, record.name + '.rgba');
+                    fs.writeFileSync(file, Buffer.concat([header, Buffer.from(record.rgbaBase64, 'base64')]));
+                    record.imageFile = path.relative(repo, file);
+                    delete record.rgbaBase64;
+                }
+            }
             const failures = result.images.filter(t => !t.passed);
             console.log(`Mesa image gate: ${result.images.length - failures.length}/${result.images.length} passed`);
             if (failures.length) {

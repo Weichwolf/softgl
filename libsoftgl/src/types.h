@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
-#include <GL/softgl.h>
+#include <softgl/platform.h>
 
 #define SG_ALIGN16 __attribute__((aligned(16)))
 #define SG_INLINE  static inline __attribute__((always_inline))
@@ -413,6 +413,8 @@ void *sg_aligned_alloc(size_t size, size_t align);
 void  sg_aligned_free(void *p);
 
 struct softgl_ctx *sg_current(void);
+void sg_set_current(softgl_ctx *c);
+void sg_state_init(softgl_ctx *c);
 void sg_msaa_resolve(softgl_ctx *c);
 void sg_write_multisample(softgl_ctx *c, int x, int y, unsigned coverage,
                           const float z[4], const float color[4]);

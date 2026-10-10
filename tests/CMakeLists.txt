@@ -2,6 +2,11 @@ cmake_minimum_required(VERSION 3.20)
 
 enable_testing()
 
+add_executable(platform_api_contract platform_api.c)
+target_link_libraries(platform_api_contract PRIVATE softgl)
+add_test(NAME platform_api_contract COMMAND platform_api_contract)
+set_tests_properties(platform_api_contract PROPERTIES TIMEOUT 30)
+
 add_executable(worker_pool worker_pool.c)
 target_include_directories(worker_pool PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
 target_link_libraries(worker_pool PRIVATE softgl)
@@ -791,6 +796,12 @@ foreach(model_index RANGE ${SG_MODEL_LAST})
         target_include_directories(model_softgl_scene PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/include)
         target_compile_definitions(model_softgl_scene PRIVATE SOFTGL_MODEL_VERTEX_ATTRIBUTES
             SOFTGL_MODEL_SCENE_VISIBILITY SOFTGL_MODEL_SCENE_POSITIONS)
+        add_executable(model_bench bench/model_bench.c harness/ppm_write.c
+            $<TARGET_OBJECTS:model_softgl_scene>)
+        target_include_directories(model_bench PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src
+            ${CMAKE_SOURCE_DIR}/tests/harness)
+        target_link_libraries(model_bench PRIVATE softgl)
+        set_target_properties(model_bench PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bench)
     endif()
     string(JSON camera_count ERROR_VARIABLE camera_error LENGTH "${SG_MODEL_REGISTRY}" ${model} camera)
     set(camera_values "")

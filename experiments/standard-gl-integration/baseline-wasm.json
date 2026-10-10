@@ -1,0 +1,193 @@
+{
+  "timestamp": "2026-10-10T11:03:14.541Z",
+  "browser": "154.0.8037.92",
+  "cpu": "11th Gen Intel(R) Core(TM) i5-1135G7 @ 2.40GHz",
+  "hostLogicalCpus": 4,
+  "gitCommit": "a79b01432c9139ef8c175492e4a78b1c447feae6",
+  "driverSha256": "5168f98ded495d822081f03e17d0181c5d1d829d78322d7c572d13163ab17c33",
+  "wasmSha256": "8a2d8d9b34d598d18abb1ed6e39d9b14877b56dff653fad52213a9faaded61c9",
+  "options": {
+    "wasm-build": "build/api-baseline/wasm",
+    "native-build": "build/native-clang22",
+    "output": "build/api-baseline/wasm-timings-isolated.json",
+    "rounds": 3,
+    "warmup": 12,
+    "frames": 36,
+    "samples": 4,
+    "browser": "/usr/bin/chromium",
+    "reference-build": "",
+    "candidate-workers": "",
+    "reference-workers": "",
+    "scenes": "bmw,t80,sponza,bistro",
+    "profile-scene": "",
+    "bench-only": true
+  },
+  "metadata": {
+    "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+    "hardwareConcurrency": 4,
+    "crossOriginIsolated": true,
+    "width": 640,
+    "height": 360,
+    "testCount": 235
+  },
+  "modelAssets": {
+    "bmw": {
+      "candidatePackSha256": "76cda2c57b81e10b3c92a269537b17e4e1c5f36c653bfd1af43fcb2218473cef",
+      "referencePackSha256": null,
+      "nativePackSha256": "76cda2c57b81e10b3c92a269537b17e4e1c5f36c653bfd1af43fcb2218473cef",
+      "textureManifestSha256": null
+    },
+    "t80": {
+      "candidatePackSha256": "cb9146d7352f52600015c499c394566acc604b43fb5760a17d133c20c5a700f4",
+      "referencePackSha256": null,
+      "nativePackSha256": "cb9146d7352f52600015c499c394566acc604b43fb5760a17d133c20c5a700f4",
+      "textureManifestSha256": null
+    },
+    "sponza": {
+      "candidatePackSha256": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+      "referencePackSha256": null,
+      "nativePackSha256": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+      "textureManifestSha256": null
+    },
+    "bistro": {
+      "candidatePackSha256": "6a95cd6486d5a1310017836a67ca8e95365cc58f23239ac6e0a913b1f65358bc",
+      "referencePackSha256": null,
+      "nativePackSha256": "4c862bcd28ef6833a89b0a058832c051098f5cf5869590999859b86f1cc993f3",
+      "textureManifestSha256": "369a01d3278b292f6b8b6e0f272ef2164448bf8432de7be26b9a425bb947815d"
+    }
+  },
+  "emscripten": "emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 3.1.69 ()",
+  "sourceDiffSha256": "791e86efd070a6aef9d1c25e6a0b00e37ec7e16be60a2fa6c5b0bfd6a0b08ecb",
+  "benchmarks": {
+    "workers": 3,
+    "workerCounts": {
+      "candidate": 3
+    },
+    "samples": 4,
+    "resolvePerFrame": true,
+    "protocol": "single variant",
+    "scenes": [
+      {
+        "name": "bmw",
+        "samples": [
+          20.358194447225994,
+          19.499583333730698,
+          20.345833331346512
+        ],
+        "medianMs": 20.345833331346512,
+        "minMs": 19.499583333730698,
+        "maxMs": 20.358194447225994,
+        "heapBytes": [
+          139198464,
+          2837446656,
+          2837446656
+        ],
+        "geometrySamples": [
+          {
+            "workers": 3,
+            "samples": 4
+          },
+          {
+            "workers": 3,
+            "samples": 4
+          },
+          {
+            "workers": 3,
+            "samples": 4
+          }
+        ]
+      },
+      {
+        "name": "t80",
+        "samples": [
+          14.456666668256124,
+          13.632361110713747,
+          13.64875000052982
+        ],
+        "medianMs": 13.64875000052982,
+        "minMs": 13.632361110713747,
+        "maxMs": 14.456666668256124,
+        "heapBytes": [
+          139198464,
+          2837446656,
+          2837446656
+        ],
+        "geometrySamples": [
+          {
+            "workers": 3,
+            "samples": 4
+          },
+          {
+            "workers": 3,
+            "samples": 4
+          },
+          {
+            "workers": 3,
+            "samples": 4
+          }
+        ]
+      },
+      {
+        "name": "sponza",
+        "samples": [
+          41.384305556615196,
+          41.816388888491524,
+          42.511805557542374
+        ],
+        "medianMs": 41.816388888491524,
+        "minMs": 41.384305556615196,
+        "maxMs": 42.511805557542374,
+        "heapBytes": [
+          365559808,
+          2837446656,
+          2837446656
+        ],
+        "geometrySamples": [
+          {
+            "workers": 3,
+            "samples": 4
+          },
+          {
+            "workers": 3,
+            "samples": 4
+          },
+          {
+            "workers": 3,
+            "samples": 4
+          }
+        ]
+      },
+      {
+        "name": "bistro",
+        "samples": [
+          65.51625000105963,
+          64.87805555595293,
+          63.120972219440674
+        ],
+        "medianMs": 64.87805555595293,
+        "minMs": 63.120972219440674,
+        "maxMs": 65.51625000105963,
+        "heapBytes": [
+          2837446656,
+          2837446656,
+          2837446656
+        ],
+        "geometrySamples": [
+          {
+            "workers": 3,
+            "samples": 4
+          },
+          {
+            "workers": 3,
+            "samples": 4
+          },
+          {
+            "workers": 3,
+            "samples": 4
+          }
+        ]
+      }
+    ]
+  },
+  "measurementStatus": "Complete; serialized after native paired measurements, without concurrent build/test jobs."
+}

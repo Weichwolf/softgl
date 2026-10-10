@@ -1,3 +1,4 @@
+#include <softgl/platform.h>
 /* FP-6 final benchmark: the FP-3 fill-dominated synthetic scenes plus five
  * real test-case scenes (showcase, shadow, particles, city, icosphere).
  *

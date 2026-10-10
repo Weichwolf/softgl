@@ -1,0 +1,15 @@
+{
+  "commit": "1fdd639a4f98b56406d6483afa00d25c5e57fb68",
+  "width": 640,
+  "height": 360,
+  "samples": 4,
+  "workers": 3,
+  "simd": 128,
+  "goal": "\u00dcberarbeite libsoftgl so, dass Anwendungen ausschlie\u00dflich \u00fcber die standardisierte OpenGL-1.5-Rendering-API zeichnen und keine softgl-spezifischen Rendering-Funktionen ben\u00f6tigen. \u00dcberf\u00fchre Materialfusion, Sichtbarkeitsverarbeitung, verz\u00f6gertes Shading und MSAA-Optimierungen in allgemeine interne Verfahren, die GL-Zustand und Geometriedaten selbst auswerten; ersetze die bisherigen Vertex-Callbacks durch eine allgemeine Implementierung oder standardisierte GL-Attribute, ohne modellabh\u00e4ngige Sonderbehandlung. Kapsle Kontextverwaltung und Framebuffer-Zugriff hinter einer kleinen separaten Plattformanbindung und verwende SDL f\u00fcr Fenster, Eingabe und Pr\u00e4sentation, w\u00e4hrend der Kern unabh\u00e4ngig von SDL und weiterhin ohne Fenster nutzbar bleibt. Bewahre native und WASM-Kompatibilit\u00e4t mit ausschlie\u00dflich SIMD128 und dem WASM-Speicherlimit von 4 GB. Sichere vor dem Umbau Bildqualit\u00e4t und Leistung als Vergleichsbasis, halte die GL-Regressionstests erfolgreich und \u00fcberpr\u00fcfe BMW, T-80, Sponza und Bistro bei 640\u00d7360 mit 4\u00d7 MSAA auf substanzielle Leistungseinbu\u00dfen, wobei komplexe Szenen st\u00e4rker gewichtet werden. Aktualisiere Dokumentation und Tests, entferne \u00fcberfl\u00fcssige Schnittstellen tats\u00e4chlich statt sie nur umzubenennen und committe und pushe jeden erfolgreich \u00fcberpr\u00fcften Schritt einschlie\u00dflich eines aktuellen WASM-Builds f\u00fcr den laufenden Webviewer.",
+  "files": {
+    "libsoftgl.a": "285472fdaca6e1b3033b78283f3ced2edf4ac91e7bece03b2a8ba6488e6b9c9c",
+    "model_wrap.o": "18b6d5cfa22090be628aa457738d7e1f1a56daf29378bc7bcb88f6fbaf35399c",
+    "wasm/softgl.js": "b59739948ffe0c6d142d9045c06cf3f27d3dff330c6be9499e3f5343234f0165",
+    "wasm/softgl.wasm": "8a2d8d9b34d598d18abb1ed6e39d9b14877b56dff653fad52213a9faaded61c9"
+  }
+}

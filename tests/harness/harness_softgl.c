@@ -1,3 +1,4 @@
+#include <softgl/platform.h>
 #include "harness.h"
 #include "ppm_write.h"
 #include <stdio.h>

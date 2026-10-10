@@ -17,6 +17,12 @@ blending, clipping, pixel transfer, queries, evaluators and selection/feedback.
 Color, depth and stencil use bottom-origin framebuffers. Context creation selects
 single sampling, 2× MSAA or 4× MSAA.
 
+GL declarations live in `GL/softgl.h`; host context creation and resolved
+framebuffer access live separately in `softgl/platform.h`. The core has no SDL
+dependency and supports headless rendering. The browser's SDL2 adapter presents
+the CPU framebuffer through a streaming texture. Explicit rendering hooks are
+being migrated into automatic GL-state-driven optimizations.
+
 Several optimizations are shared by the native and WASM implementations:
 
 - SIMD128 edge coverage, depth tests, texture filtering and MSAA resolve.
@@ -99,6 +105,16 @@ build/native-clang22/bench/bench_raster
 ctest --test-dir build/native-clang22 -C Bench -R benchmark_fp6
 ```
 
+Measure all prepared models at 640×360 with 4× MSAA and three helpers plus the
+calling thread. Loading and image writes are outside the complete-frame timing;
+the first round saves images at 0°, 120° and 240°:
+
+```sh
+.venv/bin/python tools/model_bench.py --output build/perf/native-models.json
+```
+
+Use `--reference /path/to/previous/model_bench` for alternating paired runs.
+
 ## Build and serve WASM
 
 With Emscripten activated:
@@ -137,6 +153,12 @@ and prepared packs apply to all four model scenes. The current WASM build passes
 all 235 GL cases; nine model views (BMW, Sponza and Bistro) exceed that same
 Mesa budget with the viewer's optimized material/quantization path. These
 comparisons still report failure rather than silently widening tolerances.
+Model image checks honor `--samples`; GL cases keep their single-sample reference
+contexts. Use `--samples 4 --save-images` to save model snapshots alongside the
+JSON result for before/after comparisons.
+The existing OSMesa image references use single sampling, so 4× model snapshots
+are suitable for comparisons with another 4× build; their differences against
+those Mesa references include the different sampling mode.
 
 For focused browser measurements, resolve cost is included and asset loading
 is outside the timed interval:
