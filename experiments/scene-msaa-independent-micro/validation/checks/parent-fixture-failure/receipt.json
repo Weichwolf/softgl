@@ -1,0 +1,30 @@
+{
+  "scope": "Unchanged accepted parent reproduces erroneous new fixture admission expectation",
+  "command": [
+    "/home/cosmo/.local/bin/clang-22",
+    "-std=c11",
+    "-O3",
+    "-fno-strict-aliasing",
+    "-ffast-math",
+    "-fno-associative-math",
+    "-fsigned-zeros",
+    "-fno-finite-math-only",
+    "-msse4.1",
+    "-mno-avx",
+    "-mno-avx2",
+    "-mno-avx512f",
+    "-I/home/cosmo/Git/softgl/build/scene-material-integer-filter/v1-control/source/libsoftgl/src",
+    "-I/home/cosmo/Git/softgl/build/scene-material-integer-filter/v1-control/source/libsoftgl/include",
+    "tmp/scene-msaa-independent-micro/parent-fixture-failure/recipe/micro_contract.c",
+    "/home/cosmo/Git/softgl/build/scene-material-integer-filter/v1-control/native/library/libsoftgl.a",
+    "-lm",
+    "-pthread",
+    "-o",
+    "tmp/scene-msaa-independent-micro/parent-fixture-failure/micro_contract"
+  ],
+  "librarySha256": "0f4c9cc7260413be2c1d18666c827d38200e8b48f1e21ef659e874cab0059a19",
+  "fixtureSha256": "a7b31d1ed7ffe9854ee04f3c92f62fda10ba252d1471c4b4e81d6aa17bf92fcb",
+  "exitCode": 1,
+  "stdout": "",
+  "stderr": "line 53: softgl_scene_visibility_begin()\n"
+}

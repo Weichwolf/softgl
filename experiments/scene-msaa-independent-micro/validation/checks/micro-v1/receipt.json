@@ -1,0 +1,38 @@
+{
+  "passed": false,
+  "simdBits": 128,
+  "sourceManifestSha256": "7893be15c7e2d9f69438191b666849d61e56e52de2dd46734a8018dafaf62f3f",
+  "measuredLibrarySha256": "2fb3ce00220c495949eeaaf3834fe453d0829c5b9b1152f62b3fba844efde5b2",
+  "runs": [
+    {
+      "name": "micro_contract",
+      "command": [
+        "/home/cosmo/.local/bin/clang-22",
+        "-std=c11",
+        "-O3",
+        "-fno-strict-aliasing",
+        "-ffast-math",
+        "-fno-associative-math",
+        "-fsigned-zeros",
+        "-fno-finite-math-only",
+        "-msse4.1",
+        "-mno-avx",
+        "-mno-avx2",
+        "-mno-avx512f",
+        "-I/home/cosmo/Git/softgl/build/scene-msaa-independent-micro/v1-single-pixel/source/libsoftgl/src",
+        "-I/home/cosmo/Git/softgl/build/scene-msaa-independent-micro/v1-single-pixel/source/libsoftgl/include",
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-independent-micro/micro-v1/recipe/micro_contract.c",
+        "/home/cosmo/Git/softgl/build/scene-msaa-independent-micro/v1-single-pixel/native/library/libsoftgl.a",
+        "-lm",
+        "-pthread",
+        "-o",
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-independent-micro/micro-v1/micro_contract"
+      ],
+      "exitCode": 1,
+      "binarySha256": "355ef2ad376dbd5527bba1694265e5ccb8226f95ab7322b96402f18bdad3e416",
+      "fixtureSha256": "a7b31d1ed7ffe9854ee04f3c92f62fda10ba252d1471c4b4e81d6aa17bf92fcb",
+      "stdout": "",
+      "stderr": "line 53: softgl_scene_visibility_begin()\n"
+    }
+  ]
+}

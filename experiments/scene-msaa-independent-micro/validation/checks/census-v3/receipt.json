@@ -1,0 +1,105 @@
+{
+  "performanceAcceptance": false,
+  "sourceManifestSha256": "d3df265d77a09ca136b99f450523c4468c0d6021078a635dadb5d87f02b4060f",
+  "runnerSha256": "6f73ebb5e4987a9ba290e5b937860946df08e249eab494f79c6b66203cacb1f5",
+  "binarySha256": "c91b66f4ccd86d7fa610a85486403080b3e98c0354a536faf88f6b9f263ae9a2",
+  "recipeSha256": {
+    "CMakeLists.txt": "1dbcbf8b85ce9ff82252a5cc17ac2bcacfa4c7619f5e575f9c983c56477e4542",
+    "census.py": "6f73ebb5e4987a9ba290e5b937860946df08e249eab494f79c6b66203cacb1f5",
+    "micro_contract.c": "32f2f08f8789632b06bbd53e9085242e4a329aa6f4c628ead568de5ab0ff790f",
+    "resident_trial.c": "a5dd6cb687c4192323c20f0e1f5b9a48fe58bf86904ab58aa45917c6da4fa470",
+    "scene_positions.c": "a5df5e741f6157b674b24b8340934985318c9fe0ef1820b9e29fc73e4679d71c"
+  },
+  "configureCommand": [
+    "cmake",
+    "-S",
+    "/home/cosmo/Git/softgl/tmp/scene-msaa-independent-micro/census-v3/recipe",
+    "-B",
+    "/home/cosmo/Git/softgl/tmp/scene-msaa-independent-micro/census-v3/native",
+    "-DCMAKE_C_COMPILER=/home/cosmo/.local/bin/clang-22",
+    "-DENGINE_SOURCE=/home/cosmo/Git/softgl/build/scene-msaa-independent-micro/v3-prefilter/source/libsoftgl",
+    "-DMODEL_WRAPPER=/home/cosmo/Git/softgl/build/scene-msaa-independent-micro/v3-prefilter/source/model_wrap.c"
+  ],
+  "buildCommand": [
+    "cmake",
+    "--build",
+    "/home/cosmo/Git/softgl/tmp/scene-msaa-independent-micro/census-v3/native",
+    "-j4"
+  ],
+  "records": [
+    {
+      "asset": "bmw",
+      "packSha256": "76cda2c57b81e10b3c92a269537b17e4e1c5f36c653bfd1af43fcb2218473cef",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-independent-micro/census-v3/native/census",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "stdout": "{\"ready\":true,\"width\":640,\"height\":360}\n{\"renderer\":\"softgl-native\",\"width\":640,\"height\":360,\"threads\":4,\"samples\":4,\"triangles\":63009,\"frames\":1,\"ms\":25.791476946,\"submitMs\":24.376572925,\"finishReadbackMs\":1.414604019,\"angle\":160,\"rgba\":\"6d87786287f3a447\",\"depth\":\"b0f37ca6630a33b6\",\"stencil\":\"97422459bb4b3383\",\"sampleDepth\":\"dc2f9662c4e4c224\",\"sampleStencil\":\"009b538b2455c383\"}\n",
+      "stderr": "MICRO 1736 4441 1594 4381 1565 ALL_PACKET_CALLS 19738\n",
+      "groups": 1594,
+      "triangles": 4381,
+      "samples": 1565,
+      "eligibleGroups": 1736,
+      "individualTinyTriangles": 4441,
+      "packetCalls": 19738,
+      "groupFraction": 0.08075792886817307
+    },
+    {
+      "asset": "bistro",
+      "packSha256": "4c862bcd28ef6833a89b0a058832c051098f5cf5869590999859b86f1cc993f3",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-independent-micro/census-v3/native/census",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "stdout": "{\"ready\":true,\"width\":640,\"height\":360}\n{\"renderer\":\"softgl-native\",\"width\":640,\"height\":360,\"threads\":4,\"samples\":4,\"triangles\":640502,\"frames\":1,\"ms\":90.774573036,\"submitMs\":89.583568973,\"finishReadbackMs\":1.190604060,\"angle\":160,\"rgba\":\"d3545e37e1a472c9\",\"depth\":\"7c0bcde239c25207\",\"stencil\":\"97422459bb4b3383\",\"sampleDepth\":\"8a97e8fa78d0c60e\",\"sampleStencil\":\"009b538b2455c383\"}\n",
+      "stderr": "MICRO 8311 22926 7645 22601 7268 ALL_PACKET_CALLS 76067\n",
+      "groups": 7645,
+      "triangles": 22601,
+      "samples": 7268,
+      "eligibleGroups": 8311,
+      "individualTinyTriangles": 22926,
+      "packetCalls": 76067,
+      "groupFraction": 0.10050350349034404
+    },
+    {
+      "asset": "sponza",
+      "packSha256": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-independent-micro/census-v3/native/census",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "stdout": "{\"ready\":true,\"width\":640,\"height\":360}\n{\"renderer\":\"softgl-native\",\"width\":640,\"height\":360,\"threads\":4,\"samples\":4,\"triangles\":262267,\"frames\":1,\"ms\":56.773470016,\"submitMs\":55.555667030,\"finishReadbackMs\":1.217602985,\"angle\":160,\"rgba\":\"c3f19973921f2fc2\",\"depth\":\"1ac5a242dff2b42c\",\"stencil\":\"97422459bb4b3383\",\"sampleDepth\":\"9ab44a68c51d3aec\",\"sampleStencil\":\"009b538b2455c383\"}\n",
+      "stderr": "MICRO 8867 27236 8328 26983 16558 ALL_PACKET_CALLS 45474\n",
+      "groups": 8328,
+      "triangles": 26983,
+      "samples": 16558,
+      "eligibleGroups": 8867,
+      "individualTinyTriangles": 27236,
+      "packetCalls": 45474,
+      "groupFraction": 0.18313761709988124
+    },
+    {
+      "asset": "t80",
+      "packSha256": "cb9146d7352f52600015c499c394566acc604b43fb5760a17d133c20c5a700f4",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-independent-micro/census-v3/native/census",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "stdout": "{\"ready\":true,\"width\":640,\"height\":360}\n{\"renderer\":\"softgl-native\",\"width\":640,\"height\":360,\"threads\":4,\"samples\":4,\"triangles\":44513,\"frames\":1,\"ms\":18.265455030,\"submitMs\":17.594352947,\"finishReadbackMs\":0.670702080,\"angle\":160,\"rgba\":\"f4c3cfe15ed7f724\",\"depth\":\"2c7ee74c33dd5311\",\"stencil\":\"97422459bb4b3383\",\"sampleDepth\":\"b6bcf146709d53c0\",\"sampleStencil\":\"009b538b2455c383\"}\n",
+      "stderr": "MICRO 2962 7689 2675 7589 3189 ALL_PACKET_CALLS 16072\n",
+      "groups": 2675,
+      "triangles": 7589,
+      "samples": 3189,
+      "eligibleGroups": 2962,
+      "individualTinyTriangles": 7689,
+      "packetCalls": 16072,
+      "groupFraction": 0.16643852663016426
+    }
+  ],
+  "contract": {
+    "binarySha256": "6ad4b1e7697f05b3e8e4e4d2e7edb3c9960d9e186a4ef5267b36bc06bb292b21",
+    "exitCode": 0,
+    "stdout": "Micro packets: 792 independent full-plane pairs; independent origins/mixed large lanes/order/ties/disabled multisampling/tails/masks/borders PASS\n",
+    "stderr": ""
+  }
+}

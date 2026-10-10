@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "simdBits": 128,
+  "sourceManifestSha256": "9afa22ffa5bd71915a6ba6c1b8e2ebc9b609f3982817331b153f37fc949e5d1c",
+  "measuredLibrarySha256": "b9e32a9decdbafe415b1a23266c1e5ff98bcf28838dda6d76026031522a44ecd",
+  "samplerHeaderSha256": "c8ec5c00ba3c18d134a98beed8bc6ab0ff65e3db5861f29e7f8957f814bf469b",
+  "runs": [
+    {
+      "name": "filter_contract",
+      "command": [
+        "/home/cosmo/.local/bin/clang-22",
+        "-std=c11",
+        "-O2",
+        "-fno-strict-aliasing",
+        "-ffp-contract=off",
+        "-msse4.1",
+        "-mno-avx",
+        "-mno-avx2",
+        "-mno-avx512f",
+        "-I/home/cosmo/Git/softgl/build/scene-material-integer-filter/v3-both10/source/libsoftgl/src",
+        "-I/home/cosmo/Git/softgl/build/scene-material-integer-filter/v3-both10/source/libsoftgl/include",
+        "/home/cosmo/Git/softgl/tmp/scene-material-integer-filter/filter-v3/recipe/filter_contract.c",
+        "/home/cosmo/Git/softgl/build/scene-material-integer-filter/v3-both10/native/library/libsoftgl.a",
+        "-lm",
+        "-pthread",
+        "-o",
+        "/home/cosmo/Git/softgl/tmp/scene-material-integer-filter/filter-v3/filter_contract"
+      ],
+      "exitCode": 0,
+      "binarySha256": "819eb0b10868475783adf7e364adc3d966437668d86fb30c0333346ed9ac59dc",
+      "fixtureSha256": "e91f8b7815c953981e8cb75cf9bed7602d151965dbe5ac045332c28b3b9c90a0",
+      "stdout": "Integer material filter: 1658880 independent scalar RGB checks, 1036800 bit-exact float-alpha lanes PASS; bits 10 rounded 0 max oracle 8.60176834e-08 max float in bytes 0.13661027\n",
+      "stderr": ""
+    }
+  ],
+  "recipeSha256": {
+    "filter_contract.c": "e91f8b7815c953981e8cb75cf9bed7602d151965dbe5ac045332c28b3b9c90a0",
+    "filter_gates.py": "3cdc547700bbd05749b462fc9750634a21f9b823f60d624883b94f3e13a88e4e"
+  }
+}

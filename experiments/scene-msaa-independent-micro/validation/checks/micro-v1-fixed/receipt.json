@@ -1,0 +1,43 @@
+{
+  "passed": true,
+  "simdBits": 128,
+  "sourceManifestSha256": "7893be15c7e2d9f69438191b666849d61e56e52de2dd46734a8018dafaf62f3f",
+  "measuredLibrarySha256": "2fb3ce00220c495949eeaaf3834fe453d0829c5b9b1152f62b3fba844efde5b2",
+  "runs": [
+    {
+      "name": "micro_contract",
+      "command": [
+        "/home/cosmo/.local/bin/clang-22",
+        "-std=c11",
+        "-O3",
+        "-fno-strict-aliasing",
+        "-ffast-math",
+        "-fno-associative-math",
+        "-fsigned-zeros",
+        "-fno-finite-math-only",
+        "-msse4.1",
+        "-mno-avx",
+        "-mno-avx2",
+        "-mno-avx512f",
+        "-I/home/cosmo/Git/softgl/build/scene-msaa-independent-micro/v1-single-pixel/source/libsoftgl/src",
+        "-I/home/cosmo/Git/softgl/build/scene-msaa-independent-micro/v1-single-pixel/source/libsoftgl/include",
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-independent-micro/micro-v1-fixed/recipe/micro_contract.c",
+        "/home/cosmo/Git/softgl/build/scene-msaa-independent-micro/v1-single-pixel/native/library/libsoftgl.a",
+        "-lm",
+        "-pthread",
+        "-o",
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-independent-micro/micro-v1-fixed/micro_contract"
+      ],
+      "exitCode": 0,
+      "binarySha256": "9c9c21c8e9603adbb41e1dd4f2fd6745d4369d1a6e3d1c56ae9f4d656ce53576",
+      "fixtureSha256": "32f2f08f8789632b06bbd53e9085242e4a329aa6f4c628ead568de5ab0ff790f",
+      "stdout": "Micro packets: 792 independent full-plane pairs; independent origins/mixed large lanes/order/ties/disabled multisampling/tails/masks/borders PASS\n",
+      "stderr": ""
+    }
+  ],
+  "recipeSha256": {
+    "micro_contract.c": "32f2f08f8789632b06bbd53e9085242e4a329aa6f4c628ead568de5ab0ff790f",
+    "micro_gates.py": "4c5bc25899e2d481dbea4c6f1a0a6ca9b6a71bd2d528143e6725598c64cee4f4",
+    "scene_positions.c": "a5df5e741f6157b674b24b8340934985318c9fe0ef1820b9e29fc73e4679d71c"
+  }
+}
