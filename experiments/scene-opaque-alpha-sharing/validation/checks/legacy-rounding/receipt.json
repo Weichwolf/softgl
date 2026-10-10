@@ -1,0 +1,36 @@
+{
+  "exitCode": 0,
+  "stdout": "{\"preexistingPreviousAlpha\":true,\"samples\":2,\"helpers\":1,\"variant\":5,\"depthExact\":true,\"maxRgbDifference\":1,\"changedSampleChannels\":2,\"firstByte\":40960,\"legacy\":89,\"canonical\":88}\n",
+  "stderr": "",
+  "buildCommand": [
+    "/home/cosmo/.local/bin/clang-22",
+    "-std=gnu11",
+    "-O3",
+    "-g",
+    "-DNDEBUG",
+    "-fno-strict-aliasing",
+    "-ffast-math",
+    "-fno-associative-math",
+    "-fsigned-zeros",
+    "-fno-finite-math-only",
+    "-msse4.1",
+    "-mno-avx",
+    "-mno-avx2",
+    "-mno-avx512f",
+    "-Ibuild/scene-msaa-rebased-edges/v3-opaque-spans/source/libsoftgl/include",
+    "-Ibuild/scene-msaa-rebased-edges/v3-opaque-spans/source/libsoftgl/src",
+    "tmp/scene-opaque-alpha-sharing/legacy-rounding/recipe/legacy_rounding.c",
+    "build/scene-msaa-rebased-edges/v3-opaque-spans/native/library/libsoftgl.a",
+    "-pthread",
+    "-lm",
+    "-o",
+    "tmp/scene-opaque-alpha-sharing/legacy-rounding/legacy_rounding"
+  ],
+  "librarySha256": "04ef99ebe4cf1b77de84a0f2efd1112026818aab335cf5f2ee78723591974edb",
+  "sourceManifestSha256": "be0b5000aead3dfd1d0165ecf73086d2b51641e8e73046e85aafce65d7305d92",
+  "binarySha256": "56a5458ee4704c9b5e808be5140fb5bf39c8a1cb2f7dfdb3e97fdd8799693758",
+  "recipeSha256": {
+    "legacy_rounding.c": "bfc37469dc54e1499d9532d77a81ad083c74617fc7f86ca111000d27e7946fa0",
+    "scene_positions.c": "a5df5e741f6157b674b24b8340934985318c9fe0ef1820b9e29fc73e4679d71c"
+  }
+}

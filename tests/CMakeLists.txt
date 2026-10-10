@@ -451,6 +451,7 @@ set(SG_TEST_CASES
     232_combiner_operand_channels
     233_large_query_handoffs
     234_multisample_state
+    235_dot3_constant_output_alpha
 )
 
 # Tolerances for reference/softgl pixel diff. Default exact; individual tests
@@ -714,6 +715,8 @@ set(SG_TOL_233_large_query_handoffs_MAX_DELTA 0)
 set(SG_TOL_233_large_query_handoffs_MAX_BAD 0)
 set(SG_TOL_234_multisample_state_MAX_DELTA 0)
 set(SG_TOL_234_multisample_state_MAX_BAD 0)
+set(SG_TOL_235_dot3_constant_output_alpha_MAX_DELTA 1)
+set(SG_TOL_235_dot3_constant_output_alpha_MAX_BAD 0)
 
 foreach(case_name IN LISTS SG_TEST_CASES)
     set(src cases/test_${case_name}.c)
@@ -944,3 +947,11 @@ target_compile_options(scene_native_wide_contract PRIVATE -msse4.1)
 target_link_libraries(scene_native_wide_contract PRIVATE softgl)
 add_test(NAME scene_native_wide_contract COMMAND scene_native_wide_contract)
 set_tests_properties(scene_native_wide_contract PROPERTIES TIMEOUT 90)
+
+# Constant final alpha: analytic cutoff oracle and exact opaque RGB/sample planes.
+add_executable(scene_output_alpha_contract scene_output_alpha.c)
+target_include_directories(scene_output_alpha_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_compile_options(scene_output_alpha_contract PRIVATE -msse4.1)
+target_link_libraries(scene_output_alpha_contract PRIVATE softgl)
+add_test(NAME scene_output_alpha_contract COMMAND scene_output_alpha_contract)
+set_tests_properties(scene_output_alpha_contract PROPERTIES TIMEOUT 90)

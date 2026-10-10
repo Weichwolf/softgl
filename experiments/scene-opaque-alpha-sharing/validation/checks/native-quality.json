@@ -1,0 +1,4650 @@
+{
+  "width": 640,
+  "height": 360,
+  "threads": 4,
+  "originalMeshes": true,
+  "imagePolicy": "Equal final opaque alpha: exact depth/stencil and resolved/sample alpha; exact RGBA in off/2x; quantify 4x intrapixel RGB with existing accepted material-sharing limits",
+  "approximateIntrapixelShading": true,
+  "temporalCache": false,
+  "runnerSha256": "4474c1c2ce0d9d63f12b086c6d8d6f89ce045afa019bb20db47d5146ced94760",
+  "driverSha256": "bd9daf1d9d1903ccef82974ec1dde9243308712aedbb50fdf76638ceed00fa5e",
+  "gatesReceiptSha256": "a6c12873461854cd2da24b0d7b90310675bcf1a743355eff8f5c96c743471de1",
+  "baselineSourceManifest": {
+    "parentRevision": "2d00a545b8da3b8c5305958b5ff076618349ec90",
+    "variant": "control",
+    "originalMeshes": true,
+    "fullResolution": true,
+    "temporalCache": false,
+    "approximateIntrapixelShading": true,
+    "opaqueOutputAlpha": 1,
+    "beforeSourceSha256": {
+      "libsoftgl/CMakeLists.txt": "7b997884fabeaa751c27d9cbce85dd2aa4d29c32730f2a4f9ab842470a33c908",
+      "libsoftgl/include/GL/softgl.h": "562f05e4f755299af9ce7a282b2191312f98d29451329d21ae25028df1f0c4f3",
+      "libsoftgl/src/api.c": "9c373504af364d620c212afdfc9046bcc899bd61af198a6558fdda81f01691e1",
+      "libsoftgl/src/buffers.c": "a0363363f060dc9cbd99a64703496e1e702c2cf82beb42b16a54337b524be2ff",
+      "libsoftgl/src/clip.c": "f5c0b940f54a4aa52a2d55785de31d72c168d381b53012e408179f81381de3cc",
+      "libsoftgl/src/cluster_cull.h": "b639ef7e507d28512549feda7e272e0bef855acf6fd1c8e8cad96cae6ad228d9",
+      "libsoftgl/src/dlist.c": "e7446f33b3972e4384c103c2547869dfffad43c900e1f55bf6f8c38eaf36eae8",
+      "libsoftgl/src/dlist.h": "4bc8e0e5966f5b226c8e086ead9a635fd6158eed18b0c55e4b4c2ed0bdbda033",
+      "libsoftgl/src/evaluators.c": "69281ca9f25e0f7d5cc1f76f31fb17502c83b60ea6168bbbae238e65227344ba",
+      "libsoftgl/src/frag_combine_hot.h": "e801062d6fe0ce8ade5f12730ba4cb1441689ba6bd39a331a308bc99e29f72cc",
+      "libsoftgl/src/frag_hot.h": "e0e1cba7afec1b2c13a53a8198207d868fa0636a84ee98e059f238d131dca52e",
+      "libsoftgl/src/frag_packet.h": "f06d0fa6a43404fbdbc2ca391d96162dcafb8e53dcfaca45afc46ebb7ff6b6de",
+      "libsoftgl/src/fragment.c": "d1883401993e1576f565710c6ad9e3066d401684ac698928940f72fd582ef1d2",
+      "libsoftgl/src/fragment_combine.c": "b7af7972265bf0ac384379fcba6885e93707cdd8a0de956f691ad28ed1dd7153",
+      "libsoftgl/src/fragment_write.c": "6c806d57d87ff4ed31ecdf502be6f77772497696a607633edf71c9971da66f1d",
+      "libsoftgl/src/framebuffer.c": "7c82e1f52d5b2c2e7d9752d155f379109a8791c41b147713cfb14f2788e1a974",
+      "libsoftgl/src/geometry.inc": "007aec3ec9501b74efa98c4291bf0dc14a30bbaf60198cd05ae12e803a9c1ed5",
+      "libsoftgl/src/geometry_types.inc": "543196c405d363f69c5542eb01a769ef61da6e1dc946299c8c2b4ac998718efc",
+      "libsoftgl/src/immediate.c": "80b520a3c3c14e675eeca5d3083c5dbe423e9684a69b868446f85e99ef86534c",
+      "libsoftgl/src/index_range.h": "4d0456bd563031b7b4ff1184bfb6fa513908ae4047bd5f6f83dc8a7f57d8bb03",
+      "libsoftgl/src/lighting.c": "1e6db9b4f59e2a54b1f6b89e6bc129d206dc816aaa08f099d80e6f8f2f42e338",
+      "libsoftgl/src/lines.c": "b08fef911685977a08d6f2b29265aa28721aa0497a1a208c492403bdde0bbe87",
+      "libsoftgl/src/matrix.c": "fd5bff0e263cd87d1032fad4fa75f966f76b2cc605b746d47e3d4eeabde6d793",
+      "libsoftgl/src/msaa_additive.h": "6fab4198defe4db18a83f1562034807e71957ba07db0c0bd51f2e26c90d4778f",
+      "libsoftgl/src/multisample.c": "2ba7fe2df9c8afed9acf1daa5ea48df6fbe8b5c0cceeac11bd61c3804423ea1d",
+      "libsoftgl/src/multisample.h": "cdbe1e0aa51827f13789ce7f46e3acc961e0b87c5d034e1c7ba22fe54c611315",
+      "libsoftgl/src/pipeline.c": "fb559aa949d0e4211044451c9456f22e928982fb03c6f9132c199b316a2edfe3",
+      "libsoftgl/src/pixels.c": "8e366864ac1418564d2342bd3c120ad5e8057998af21ff31ccb5663134ddfc92",
+      "libsoftgl/src/raster_hz.h": "1cc4a6fe6f5a425607cb3b8a57d15cb19d5de537794c638b673f0bd4a14b4ed6",
+      "libsoftgl/src/raster_msaa_impl.h": "1c5ace8d35a4413d5628ebf5c397c58d633758a3dd93145932d2973b3a61ae0f",
+      "libsoftgl/src/raster_store.h": "251cbe4d9765edfc26b4428d7d5906ab17722689feae08eac432db59a7b22934",
+      "libsoftgl/src/raster_triangle_impl.h": "51b5cf82bdd1298bcb42722a4af5cac0edbebe8442b4703a1cf0fbde35487915",
+      "libsoftgl/src/raster_types.h": "0b050bdbf31f6c398366112c84a6041390a50398d1e18acafe4c7440a0700f45",
+      "libsoftgl/src/raster_vertex_pack.h": "956a8084b973144a9d8ee28c0d485214e3e8551a7384238f610620e00ad6e528",
+      "libsoftgl/src/rasterizer.c": "8cfc012004b794e6a83eeb8eb33b2dea674ba199a32c1a65baf691106cc596bc",
+      "libsoftgl/src/scene_density_hint.c": "ec41d3417def1ff6e087656ae6935e34aab51822a30821fb315ca6f23991a669",
+      "libsoftgl/src/scene_visibility.c": "033fd7f39c564a96e2745e2d26cdd32685d29708ad99e8f92a9b074109bacd7f",
+      "libsoftgl/src/simd.h": "c639184db1b8a3c79b0aa07ad4fbe0a96b8c79e16536b3d98abef0b72d74e150",
+      "libsoftgl/src/state.c": "04f4a8355c1fc37c3521001719dae9a55a1e9b7a34c2f1a70c53990a0d26fb38",
+      "libsoftgl/src/texture.c": "9c4d999c73b68a7431bd1f0e88c2d3d2e7e1931670ad166ffee535f8d5764c45",
+      "libsoftgl/src/types.h": "9eb99eb4dc29359b7edeb4dc817a7dfa8a108f32b84fa97e190a95f3e73a8cfe",
+      "libsoftgl/src/vertex_inputs.h": "fb774a51f4627b91dd6d58fc2cb918df04ef224d45cd898dfa1ed5dd9a0b0db5",
+      "libsoftgl/src/workers.c": "47c2bb16e01d1f17ce552ce3baa13e15a13f3d125a3c2ee0d6f30ebce8c63e21",
+      "libsoftgl/src/workers.h": "3a74a68a42b0e1fc80b426cd3236e329ee70b145a5afe687520575599e709c5a",
+      "libsoftgl/src/workers_queue_raw.inc": "ddec9df98f32ce5f428467f97b3a772506019cd4eca90e004afe956a6b9527b3",
+      "model_wrap.c": "684b38caa56046e7616cb87ab5fa42234abc6764c6719a54f2f289c5d17f5cf9"
+    },
+    "sourceSha256": {
+      "libsoftgl/CMakeLists.txt": "7b997884fabeaa751c27d9cbce85dd2aa4d29c32730f2a4f9ab842470a33c908",
+      "libsoftgl/include/GL/softgl.h": "562f05e4f755299af9ce7a282b2191312f98d29451329d21ae25028df1f0c4f3",
+      "libsoftgl/src/api.c": "9c373504af364d620c212afdfc9046bcc899bd61af198a6558fdda81f01691e1",
+      "libsoftgl/src/buffers.c": "a0363363f060dc9cbd99a64703496e1e702c2cf82beb42b16a54337b524be2ff",
+      "libsoftgl/src/clip.c": "f5c0b940f54a4aa52a2d55785de31d72c168d381b53012e408179f81381de3cc",
+      "libsoftgl/src/cluster_cull.h": "b639ef7e507d28512549feda7e272e0bef855acf6fd1c8e8cad96cae6ad228d9",
+      "libsoftgl/src/dlist.c": "e7446f33b3972e4384c103c2547869dfffad43c900e1f55bf6f8c38eaf36eae8",
+      "libsoftgl/src/dlist.h": "4bc8e0e5966f5b226c8e086ead9a635fd6158eed18b0c55e4b4c2ed0bdbda033",
+      "libsoftgl/src/evaluators.c": "69281ca9f25e0f7d5cc1f76f31fb17502c83b60ea6168bbbae238e65227344ba",
+      "libsoftgl/src/frag_combine_hot.h": "76b4b93c080598b9f6bf28bb6863174c88863d639b6ae6a94df8c8a7014bf381",
+      "libsoftgl/src/frag_hot.h": "e0e1cba7afec1b2c13a53a8198207d868fa0636a84ee98e059f238d131dca52e",
+      "libsoftgl/src/frag_packet.h": "d06e7d5f1124b0a9c214d7671be6a02a571aad123124a26b213a312c955851da",
+      "libsoftgl/src/fragment.c": "d61985d189089767954053202d2afcef6ee69e1dfe890544c1497fdad57ea04b",
+      "libsoftgl/src/fragment_combine.c": "b7af7972265bf0ac384379fcba6885e93707cdd8a0de956f691ad28ed1dd7153",
+      "libsoftgl/src/fragment_write.c": "6c806d57d87ff4ed31ecdf502be6f77772497696a607633edf71c9971da66f1d",
+      "libsoftgl/src/framebuffer.c": "7c82e1f52d5b2c2e7d9752d155f379109a8791c41b147713cfb14f2788e1a974",
+      "libsoftgl/src/geometry.inc": "007aec3ec9501b74efa98c4291bf0dc14a30bbaf60198cd05ae12e803a9c1ed5",
+      "libsoftgl/src/geometry_types.inc": "543196c405d363f69c5542eb01a769ef61da6e1dc946299c8c2b4ac998718efc",
+      "libsoftgl/src/immediate.c": "80b520a3c3c14e675eeca5d3083c5dbe423e9684a69b868446f85e99ef86534c",
+      "libsoftgl/src/index_range.h": "4d0456bd563031b7b4ff1184bfb6fa513908ae4047bd5f6f83dc8a7f57d8bb03",
+      "libsoftgl/src/lighting.c": "1e6db9b4f59e2a54b1f6b89e6bc129d206dc816aaa08f099d80e6f8f2f42e338",
+      "libsoftgl/src/lines.c": "b08fef911685977a08d6f2b29265aa28721aa0497a1a208c492403bdde0bbe87",
+      "libsoftgl/src/matrix.c": "fd5bff0e263cd87d1032fad4fa75f966f76b2cc605b746d47e3d4eeabde6d793",
+      "libsoftgl/src/msaa_additive.h": "6fab4198defe4db18a83f1562034807e71957ba07db0c0bd51f2e26c90d4778f",
+      "libsoftgl/src/multisample.c": "2ba7fe2df9c8afed9acf1daa5ea48df6fbe8b5c0cceeac11bd61c3804423ea1d",
+      "libsoftgl/src/multisample.h": "cdbe1e0aa51827f13789ce7f46e3acc961e0b87c5d034e1c7ba22fe54c611315",
+      "libsoftgl/src/pipeline.c": "fb559aa949d0e4211044451c9456f22e928982fb03c6f9132c199b316a2edfe3",
+      "libsoftgl/src/pixels.c": "8e366864ac1418564d2342bd3c120ad5e8057998af21ff31ccb5663134ddfc92",
+      "libsoftgl/src/raster_hz.h": "1cc4a6fe6f5a425607cb3b8a57d15cb19d5de537794c638b673f0bd4a14b4ed6",
+      "libsoftgl/src/raster_msaa_impl.h": "1c5ace8d35a4413d5628ebf5c397c58d633758a3dd93145932d2973b3a61ae0f",
+      "libsoftgl/src/raster_store.h": "251cbe4d9765edfc26b4428d7d5906ab17722689feae08eac432db59a7b22934",
+      "libsoftgl/src/raster_triangle_impl.h": "51b5cf82bdd1298bcb42722a4af5cac0edbebe8442b4703a1cf0fbde35487915",
+      "libsoftgl/src/raster_types.h": "0b050bdbf31f6c398366112c84a6041390a50398d1e18acafe4c7440a0700f45",
+      "libsoftgl/src/raster_vertex_pack.h": "956a8084b973144a9d8ee28c0d485214e3e8551a7384238f610620e00ad6e528",
+      "libsoftgl/src/rasterizer.c": "8cfc012004b794e6a83eeb8eb33b2dea674ba199a32c1a65baf691106cc596bc",
+      "libsoftgl/src/scene_density_hint.c": "ec41d3417def1ff6e087656ae6935e34aab51822a30821fb315ca6f23991a669",
+      "libsoftgl/src/scene_visibility.c": "37cc584f02e22d377d2ac278dea06e82e8223e53cf3483c928463bac270fe0bd",
+      "libsoftgl/src/simd.h": "c639184db1b8a3c79b0aa07ad4fbe0a96b8c79e16536b3d98abef0b72d74e150",
+      "libsoftgl/src/state.c": "04f4a8355c1fc37c3521001719dae9a55a1e9b7a34c2f1a70c53990a0d26fb38",
+      "libsoftgl/src/texture.c": "9c4d999c73b68a7431bd1f0e88c2d3d2e7e1931670ad166ffee535f8d5764c45",
+      "libsoftgl/src/types.h": "ca2c8175bbee812788d002c6c070bfb56f407b36666b9f4b259869bbb1aa0250",
+      "libsoftgl/src/vertex_inputs.h": "fb774a51f4627b91dd6d58fc2cb918df04ef224d45cd898dfa1ed5dd9a0b0db5",
+      "libsoftgl/src/workers.c": "47c2bb16e01d1f17ce552ce3baa13e15a13f3d125a3c2ee0d6f30ebce8c63e21",
+      "libsoftgl/src/workers.h": "3a74a68a42b0e1fc80b426cd3236e329ee70b145a5afe687520575599e709c5a",
+      "libsoftgl/src/workers_queue_raw.inc": "ddec9df98f32ce5f428467f97b3a772506019cd4eca90e004afe956a6b9527b3",
+      "model_wrap.c": "758de7b25490241097e0b4323c802c703514d9e4d477824108a8c22b8cfc8ae5"
+    },
+    "recipeSha256": {
+      "CMakeLists.txt": "fbc6c1eb20c604f46ff3a6056c670c305c556032b355c62f334ba4c4d3549f45",
+      "apply.py": "03328f95ea1d63e8a803599098bfac478779909b247efe5a731f1232c3704926",
+      "prepare.py": "abc34dd6956661465d4ba133ee6e5958c7d58d4bea6c312d8acacacd2a1e50dd",
+      "quality_frames.c": "1ea0a423b32418fb635fd59d83da565010c7b32167e3dc10ece00d4b8631f352",
+      "resident_trial.c": "4029b38308668a43bc057cc1678d0e9daba42dbe4a3c7be64974667a9fc2e85c"
+    }
+  },
+  "sourceManifest": {
+    "parentRevision": "2d00a545b8da3b8c5305958b5ff076618349ec90",
+    "variant": "sharing",
+    "originalMeshes": true,
+    "fullResolution": true,
+    "temporalCache": false,
+    "approximateIntrapixelShading": true,
+    "opaqueOutputAlpha": 1,
+    "beforeSourceSha256": {
+      "libsoftgl/CMakeLists.txt": "7b997884fabeaa751c27d9cbce85dd2aa4d29c32730f2a4f9ab842470a33c908",
+      "libsoftgl/include/GL/softgl.h": "562f05e4f755299af9ce7a282b2191312f98d29451329d21ae25028df1f0c4f3",
+      "libsoftgl/src/api.c": "9c373504af364d620c212afdfc9046bcc899bd61af198a6558fdda81f01691e1",
+      "libsoftgl/src/buffers.c": "a0363363f060dc9cbd99a64703496e1e702c2cf82beb42b16a54337b524be2ff",
+      "libsoftgl/src/clip.c": "f5c0b940f54a4aa52a2d55785de31d72c168d381b53012e408179f81381de3cc",
+      "libsoftgl/src/cluster_cull.h": "b639ef7e507d28512549feda7e272e0bef855acf6fd1c8e8cad96cae6ad228d9",
+      "libsoftgl/src/dlist.c": "e7446f33b3972e4384c103c2547869dfffad43c900e1f55bf6f8c38eaf36eae8",
+      "libsoftgl/src/dlist.h": "4bc8e0e5966f5b226c8e086ead9a635fd6158eed18b0c55e4b4c2ed0bdbda033",
+      "libsoftgl/src/evaluators.c": "69281ca9f25e0f7d5cc1f76f31fb17502c83b60ea6168bbbae238e65227344ba",
+      "libsoftgl/src/frag_combine_hot.h": "e801062d6fe0ce8ade5f12730ba4cb1441689ba6bd39a331a308bc99e29f72cc",
+      "libsoftgl/src/frag_hot.h": "e0e1cba7afec1b2c13a53a8198207d868fa0636a84ee98e059f238d131dca52e",
+      "libsoftgl/src/frag_packet.h": "f06d0fa6a43404fbdbc2ca391d96162dcafb8e53dcfaca45afc46ebb7ff6b6de",
+      "libsoftgl/src/fragment.c": "d1883401993e1576f565710c6ad9e3066d401684ac698928940f72fd582ef1d2",
+      "libsoftgl/src/fragment_combine.c": "b7af7972265bf0ac384379fcba6885e93707cdd8a0de956f691ad28ed1dd7153",
+      "libsoftgl/src/fragment_write.c": "6c806d57d87ff4ed31ecdf502be6f77772497696a607633edf71c9971da66f1d",
+      "libsoftgl/src/framebuffer.c": "7c82e1f52d5b2c2e7d9752d155f379109a8791c41b147713cfb14f2788e1a974",
+      "libsoftgl/src/geometry.inc": "007aec3ec9501b74efa98c4291bf0dc14a30bbaf60198cd05ae12e803a9c1ed5",
+      "libsoftgl/src/geometry_types.inc": "543196c405d363f69c5542eb01a769ef61da6e1dc946299c8c2b4ac998718efc",
+      "libsoftgl/src/immediate.c": "80b520a3c3c14e675eeca5d3083c5dbe423e9684a69b868446f85e99ef86534c",
+      "libsoftgl/src/index_range.h": "4d0456bd563031b7b4ff1184bfb6fa513908ae4047bd5f6f83dc8a7f57d8bb03",
+      "libsoftgl/src/lighting.c": "1e6db9b4f59e2a54b1f6b89e6bc129d206dc816aaa08f099d80e6f8f2f42e338",
+      "libsoftgl/src/lines.c": "b08fef911685977a08d6f2b29265aa28721aa0497a1a208c492403bdde0bbe87",
+      "libsoftgl/src/matrix.c": "fd5bff0e263cd87d1032fad4fa75f966f76b2cc605b746d47e3d4eeabde6d793",
+      "libsoftgl/src/msaa_additive.h": "6fab4198defe4db18a83f1562034807e71957ba07db0c0bd51f2e26c90d4778f",
+      "libsoftgl/src/multisample.c": "2ba7fe2df9c8afed9acf1daa5ea48df6fbe8b5c0cceeac11bd61c3804423ea1d",
+      "libsoftgl/src/multisample.h": "cdbe1e0aa51827f13789ce7f46e3acc961e0b87c5d034e1c7ba22fe54c611315",
+      "libsoftgl/src/pipeline.c": "fb559aa949d0e4211044451c9456f22e928982fb03c6f9132c199b316a2edfe3",
+      "libsoftgl/src/pixels.c": "8e366864ac1418564d2342bd3c120ad5e8057998af21ff31ccb5663134ddfc92",
+      "libsoftgl/src/raster_hz.h": "1cc4a6fe6f5a425607cb3b8a57d15cb19d5de537794c638b673f0bd4a14b4ed6",
+      "libsoftgl/src/raster_msaa_impl.h": "1c5ace8d35a4413d5628ebf5c397c58d633758a3dd93145932d2973b3a61ae0f",
+      "libsoftgl/src/raster_store.h": "251cbe4d9765edfc26b4428d7d5906ab17722689feae08eac432db59a7b22934",
+      "libsoftgl/src/raster_triangle_impl.h": "51b5cf82bdd1298bcb42722a4af5cac0edbebe8442b4703a1cf0fbde35487915",
+      "libsoftgl/src/raster_types.h": "0b050bdbf31f6c398366112c84a6041390a50398d1e18acafe4c7440a0700f45",
+      "libsoftgl/src/raster_vertex_pack.h": "956a8084b973144a9d8ee28c0d485214e3e8551a7384238f610620e00ad6e528",
+      "libsoftgl/src/rasterizer.c": "8cfc012004b794e6a83eeb8eb33b2dea674ba199a32c1a65baf691106cc596bc",
+      "libsoftgl/src/scene_density_hint.c": "ec41d3417def1ff6e087656ae6935e34aab51822a30821fb315ca6f23991a669",
+      "libsoftgl/src/scene_visibility.c": "033fd7f39c564a96e2745e2d26cdd32685d29708ad99e8f92a9b074109bacd7f",
+      "libsoftgl/src/simd.h": "c639184db1b8a3c79b0aa07ad4fbe0a96b8c79e16536b3d98abef0b72d74e150",
+      "libsoftgl/src/state.c": "04f4a8355c1fc37c3521001719dae9a55a1e9b7a34c2f1a70c53990a0d26fb38",
+      "libsoftgl/src/texture.c": "9c4d999c73b68a7431bd1f0e88c2d3d2e7e1931670ad166ffee535f8d5764c45",
+      "libsoftgl/src/types.h": "9eb99eb4dc29359b7edeb4dc817a7dfa8a108f32b84fa97e190a95f3e73a8cfe",
+      "libsoftgl/src/vertex_inputs.h": "fb774a51f4627b91dd6d58fc2cb918df04ef224d45cd898dfa1ed5dd9a0b0db5",
+      "libsoftgl/src/workers.c": "47c2bb16e01d1f17ce552ce3baa13e15a13f3d125a3c2ee0d6f30ebce8c63e21",
+      "libsoftgl/src/workers.h": "3a74a68a42b0e1fc80b426cd3236e329ee70b145a5afe687520575599e709c5a",
+      "libsoftgl/src/workers_queue_raw.inc": "ddec9df98f32ce5f428467f97b3a772506019cd4eca90e004afe956a6b9527b3",
+      "model_wrap.c": "684b38caa56046e7616cb87ab5fa42234abc6764c6719a54f2f289c5d17f5cf9"
+    },
+    "sourceSha256": {
+      "libsoftgl/CMakeLists.txt": "7b997884fabeaa751c27d9cbce85dd2aa4d29c32730f2a4f9ab842470a33c908",
+      "libsoftgl/include/GL/softgl.h": "562f05e4f755299af9ce7a282b2191312f98d29451329d21ae25028df1f0c4f3",
+      "libsoftgl/src/api.c": "9c373504af364d620c212afdfc9046bcc899bd61af198a6558fdda81f01691e1",
+      "libsoftgl/src/buffers.c": "a0363363f060dc9cbd99a64703496e1e702c2cf82beb42b16a54337b524be2ff",
+      "libsoftgl/src/clip.c": "f5c0b940f54a4aa52a2d55785de31d72c168d381b53012e408179f81381de3cc",
+      "libsoftgl/src/cluster_cull.h": "b639ef7e507d28512549feda7e272e0bef855acf6fd1c8e8cad96cae6ad228d9",
+      "libsoftgl/src/dlist.c": "e7446f33b3972e4384c103c2547869dfffad43c900e1f55bf6f8c38eaf36eae8",
+      "libsoftgl/src/dlist.h": "4bc8e0e5966f5b226c8e086ead9a635fd6158eed18b0c55e4b4c2ed0bdbda033",
+      "libsoftgl/src/evaluators.c": "69281ca9f25e0f7d5cc1f76f31fb17502c83b60ea6168bbbae238e65227344ba",
+      "libsoftgl/src/frag_combine_hot.h": "76b4b93c080598b9f6bf28bb6863174c88863d639b6ae6a94df8c8a7014bf381",
+      "libsoftgl/src/frag_hot.h": "e0e1cba7afec1b2c13a53a8198207d868fa0636a84ee98e059f238d131dca52e",
+      "libsoftgl/src/frag_packet.h": "d06e7d5f1124b0a9c214d7671be6a02a571aad123124a26b213a312c955851da",
+      "libsoftgl/src/fragment.c": "d61985d189089767954053202d2afcef6ee69e1dfe890544c1497fdad57ea04b",
+      "libsoftgl/src/fragment_combine.c": "b7af7972265bf0ac384379fcba6885e93707cdd8a0de956f691ad28ed1dd7153",
+      "libsoftgl/src/fragment_write.c": "6c806d57d87ff4ed31ecdf502be6f77772497696a607633edf71c9971da66f1d",
+      "libsoftgl/src/framebuffer.c": "7c82e1f52d5b2c2e7d9752d155f379109a8791c41b147713cfb14f2788e1a974",
+      "libsoftgl/src/geometry.inc": "007aec3ec9501b74efa98c4291bf0dc14a30bbaf60198cd05ae12e803a9c1ed5",
+      "libsoftgl/src/geometry_types.inc": "543196c405d363f69c5542eb01a769ef61da6e1dc946299c8c2b4ac998718efc",
+      "libsoftgl/src/immediate.c": "80b520a3c3c14e675eeca5d3083c5dbe423e9684a69b868446f85e99ef86534c",
+      "libsoftgl/src/index_range.h": "4d0456bd563031b7b4ff1184bfb6fa513908ae4047bd5f6f83dc8a7f57d8bb03",
+      "libsoftgl/src/lighting.c": "1e6db9b4f59e2a54b1f6b89e6bc129d206dc816aaa08f099d80e6f8f2f42e338",
+      "libsoftgl/src/lines.c": "b08fef911685977a08d6f2b29265aa28721aa0497a1a208c492403bdde0bbe87",
+      "libsoftgl/src/matrix.c": "fd5bff0e263cd87d1032fad4fa75f966f76b2cc605b746d47e3d4eeabde6d793",
+      "libsoftgl/src/msaa_additive.h": "6fab4198defe4db18a83f1562034807e71957ba07db0c0bd51f2e26c90d4778f",
+      "libsoftgl/src/multisample.c": "2ba7fe2df9c8afed9acf1daa5ea48df6fbe8b5c0cceeac11bd61c3804423ea1d",
+      "libsoftgl/src/multisample.h": "cdbe1e0aa51827f13789ce7f46e3acc961e0b87c5d034e1c7ba22fe54c611315",
+      "libsoftgl/src/pipeline.c": "fb559aa949d0e4211044451c9456f22e928982fb03c6f9132c199b316a2edfe3",
+      "libsoftgl/src/pixels.c": "8e366864ac1418564d2342bd3c120ad5e8057998af21ff31ccb5663134ddfc92",
+      "libsoftgl/src/raster_hz.h": "1cc4a6fe6f5a425607cb3b8a57d15cb19d5de537794c638b673f0bd4a14b4ed6",
+      "libsoftgl/src/raster_msaa_impl.h": "1c5ace8d35a4413d5628ebf5c397c58d633758a3dd93145932d2973b3a61ae0f",
+      "libsoftgl/src/raster_store.h": "251cbe4d9765edfc26b4428d7d5906ab17722689feae08eac432db59a7b22934",
+      "libsoftgl/src/raster_triangle_impl.h": "51b5cf82bdd1298bcb42722a4af5cac0edbebe8442b4703a1cf0fbde35487915",
+      "libsoftgl/src/raster_types.h": "0b050bdbf31f6c398366112c84a6041390a50398d1e18acafe4c7440a0700f45",
+      "libsoftgl/src/raster_vertex_pack.h": "956a8084b973144a9d8ee28c0d485214e3e8551a7384238f610620e00ad6e528",
+      "libsoftgl/src/rasterizer.c": "8cfc012004b794e6a83eeb8eb33b2dea674ba199a32c1a65baf691106cc596bc",
+      "libsoftgl/src/scene_density_hint.c": "ec41d3417def1ff6e087656ae6935e34aab51822a30821fb315ca6f23991a669",
+      "libsoftgl/src/scene_visibility.c": "37cc584f02e22d377d2ac278dea06e82e8223e53cf3483c928463bac270fe0bd",
+      "libsoftgl/src/simd.h": "c639184db1b8a3c79b0aa07ad4fbe0a96b8c79e16536b3d98abef0b72d74e150",
+      "libsoftgl/src/state.c": "04f4a8355c1fc37c3521001719dae9a55a1e9b7a34c2f1a70c53990a0d26fb38",
+      "libsoftgl/src/texture.c": "9c4d999c73b68a7431bd1f0e88c2d3d2e7e1931670ad166ffee535f8d5764c45",
+      "libsoftgl/src/types.h": "ca2c8175bbee812788d002c6c070bfb56f407b36666b9f4b259869bbb1aa0250",
+      "libsoftgl/src/vertex_inputs.h": "fb774a51f4627b91dd6d58fc2cb918df04ef224d45cd898dfa1ed5dd9a0b0db5",
+      "libsoftgl/src/workers.c": "47c2bb16e01d1f17ce552ce3baa13e15a13f3d125a3c2ee0d6f30ebce8c63e21",
+      "libsoftgl/src/workers.h": "3a74a68a42b0e1fc80b426cd3236e329ee70b145a5afe687520575599e709c5a",
+      "libsoftgl/src/workers_queue_raw.inc": "ddec9df98f32ce5f428467f97b3a772506019cd4eca90e004afe956a6b9527b3",
+      "model_wrap.c": "20301bee8dc0b5e37530b473a178cb4ca71c129142ee76b321a7e12e83680157"
+    },
+    "recipeSha256": {
+      "CMakeLists.txt": "fbc6c1eb20c604f46ff3a6056c670c305c556032b355c62f334ba4c4d3549f45",
+      "apply.py": "03328f95ea1d63e8a803599098bfac478779909b247efe5a731f1232c3704926",
+      "prepare.py": "abc34dd6956661465d4ba133ee6e5958c7d58d4bea6c312d8acacacd2a1e50dd",
+      "quality_frames.c": "1ea0a423b32418fb635fd59d83da565010c7b32167e3dc10ece00d4b8631f352",
+      "resident_trial.c": "4029b38308668a43bc057cc1678d0e9daba42dbe4a3c7be64974667a9fc2e85c"
+    }
+  },
+  "binarySha256": {
+    "baseline": "36af90dd6821ccc6f6f95c5343d367738b18b83c06078ac35eaf0787a74446e4",
+    "candidate": "aa9440047cbe0484f0f7250d5b9cad3499ee2c68a38e312d03f01c1c4f902231"
+  },
+  "records": [
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "angle": 0,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "cf9ffb97ea6d4f59fbf433b8c6a02d4e417995ebdbca534a2055644e9f9c13d7",
+        "candidate": "cf9ffb97ea6d4f59fbf433b8c6a02d4e417995ebdbca534a2055644e9f9c13d7"
+      },
+      "reference": {
+        "angle": 0,
+        "rgba": "f8549d32e0a63d43",
+        "depth": "a45ade83eb744445",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 0,
+        "rgba": "f8549d32e0a63d43",
+        "depth": "a45ade83eb744445",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "angle": 45,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "fd02537bd0cba0ab151a7cfe64c828b1a8944fc8450cfd7f156b1175a5c052a2",
+        "candidate": "fd02537bd0cba0ab151a7cfe64c828b1a8944fc8450cfd7f156b1175a5c052a2"
+      },
+      "reference": {
+        "angle": 45,
+        "rgba": "8d4021e22e94e438",
+        "depth": "108b61eb1c8c6ba2",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 45,
+        "rgba": "8d4021e22e94e438",
+        "depth": "108b61eb1c8c6ba2",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "angle": 90,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "4fa18fb80120c78e78fcf7da06eeaa8bfbe493b3c64fe2cea30804810346bf49",
+        "candidate": "4fa18fb80120c78e78fcf7da06eeaa8bfbe493b3c64fe2cea30804810346bf49"
+      },
+      "reference": {
+        "angle": 90,
+        "rgba": "f22825e53b6bbd27",
+        "depth": "58bfcda4c385d183",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 90,
+        "rgba": "f22825e53b6bbd27",
+        "depth": "58bfcda4c385d183",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "angle": 135,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "fd02537bd0cba0ab151a7cfe64c828b1a8944fc8450cfd7f156b1175a5c052a2",
+        "candidate": "fd02537bd0cba0ab151a7cfe64c828b1a8944fc8450cfd7f156b1175a5c052a2"
+      },
+      "reference": {
+        "angle": 135,
+        "rgba": "8d4021e22e94e438",
+        "depth": "108b61eb1c8c6ba2",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 135,
+        "rgba": "8d4021e22e94e438",
+        "depth": "108b61eb1c8c6ba2",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "angle": 160,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "efa6e492ef94ac3e82ede76805167efbe7d223546dee2c4e303c5934c85ae9ed",
+        "candidate": "efa6e492ef94ac3e82ede76805167efbe7d223546dee2c4e303c5934c85ae9ed"
+      },
+      "reference": {
+        "angle": 160,
+        "rgba": "ca9dc0118c5df129",
+        "depth": "c62790a9c067e97b",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 160,
+        "rgba": "ca9dc0118c5df129",
+        "depth": "c62790a9c067e97b",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "angle": 180,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "cf9ffb97ea6d4f59fbf433b8c6a02d4e417995ebdbca534a2055644e9f9c13d7",
+        "candidate": "cf9ffb97ea6d4f59fbf433b8c6a02d4e417995ebdbca534a2055644e9f9c13d7"
+      },
+      "reference": {
+        "angle": 180,
+        "rgba": "f8549d32e0a63d43",
+        "depth": "a45ade83eb744445",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 180,
+        "rgba": "f8549d32e0a63d43",
+        "depth": "a45ade83eb744445",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "angle": 225,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "52f3c915b595a6b98ec0a4d5d08e0671a0bf7787f2d021ba8aaf128f32dc1818",
+        "candidate": "52f3c915b595a6b98ec0a4d5d08e0671a0bf7787f2d021ba8aaf128f32dc1818"
+      },
+      "reference": {
+        "angle": 225,
+        "rgba": "6f9df98f5bbff8f3",
+        "depth": "ad67ffb8c81e36cd",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 225,
+        "rgba": "6f9df98f5bbff8f3",
+        "depth": "ad67ffb8c81e36cd",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "angle": 270,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "bcb7a3d26fbc4a9bccda806c711004379e5aa0f5dcff018b8bbc2f05e88127cb",
+        "candidate": "bcb7a3d26fbc4a9bccda806c711004379e5aa0f5dcff018b8bbc2f05e88127cb"
+      },
+      "reference": {
+        "angle": 270,
+        "rgba": "306163dd1907fa3a",
+        "depth": "439d3cd4ab2714d5",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 270,
+        "rgba": "306163dd1907fa3a",
+        "depth": "439d3cd4ab2714d5",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "angle": 315,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "52f3c915b595a6b98ec0a4d5d08e0671a0bf7787f2d021ba8aaf128f32dc1818",
+        "candidate": "52f3c915b595a6b98ec0a4d5d08e0671a0bf7787f2d021ba8aaf128f32dc1818"
+      },
+      "reference": {
+        "angle": 315,
+        "rgba": "6f9df98f5bbff8f3",
+        "depth": "ad67ffb8c81e36cd",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 315,
+        "rgba": "6f9df98f5bbff8f3",
+        "depth": "ad67ffb8c81e36cd",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "angle": 0,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "2b30433ee644f74c9537550bbc5de389d684347d785d3c629a8151bcff5bed96",
+        "candidate": "2b30433ee644f74c9537550bbc5de389d684347d785d3c629a8151bcff5bed96"
+      },
+      "reference": {
+        "angle": 0,
+        "rgba": "e6bc57bc9d176eec",
+        "depth": "cd43f8609680493b",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "cb2c52188f413b43",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 0,
+        "rgba": "e6bc57bc9d176eec",
+        "depth": "cd43f8609680493b",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "cb2c52188f413b43",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "angle": 45,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "1cddd794f15b0cb9c40daa4904926aa0130b844ee763cf12e88eb283489277da",
+        "candidate": "1cddd794f15b0cb9c40daa4904926aa0130b844ee763cf12e88eb283489277da"
+      },
+      "reference": {
+        "angle": 45,
+        "rgba": "4a58363234c9821a",
+        "depth": "9eb027c2bd090959",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "101a2d5a02ec6e1d",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 45,
+        "rgba": "4a58363234c9821a",
+        "depth": "9eb027c2bd090959",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "101a2d5a02ec6e1d",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "angle": 90,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "a5454b76987a7380e6eb524f876272a505bde5f2484498dc78b5299c8312c6f3",
+        "candidate": "a5454b76987a7380e6eb524f876272a505bde5f2484498dc78b5299c8312c6f3"
+      },
+      "reference": {
+        "angle": 90,
+        "rgba": "25391bc1a128667a",
+        "depth": "f94793cd7a55b5b1",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "b2e10f408ad1cc0d",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 90,
+        "rgba": "25391bc1a128667a",
+        "depth": "f94793cd7a55b5b1",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "b2e10f408ad1cc0d",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "angle": 135,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "1cddd794f15b0cb9c40daa4904926aa0130b844ee763cf12e88eb283489277da",
+        "candidate": "1cddd794f15b0cb9c40daa4904926aa0130b844ee763cf12e88eb283489277da"
+      },
+      "reference": {
+        "angle": 135,
+        "rgba": "4a58363234c9821a",
+        "depth": "9eb027c2bd090959",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "101a2d5a02ec6e1d",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 135,
+        "rgba": "4a58363234c9821a",
+        "depth": "9eb027c2bd090959",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "101a2d5a02ec6e1d",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "angle": 160,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "eb82b939191bd2377fc2c725a9ae0be57a53eab30d2bd80887d209861e4577e2",
+        "candidate": "eb82b939191bd2377fc2c725a9ae0be57a53eab30d2bd80887d209861e4577e2"
+      },
+      "reference": {
+        "angle": 160,
+        "rgba": "535d7db15776789c",
+        "depth": "3147510cbc87a599",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "f73fe223e9257487",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 160,
+        "rgba": "535d7db15776789c",
+        "depth": "3147510cbc87a599",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "f73fe223e9257487",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "angle": 180,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "2b30433ee644f74c9537550bbc5de389d684347d785d3c629a8151bcff5bed96",
+        "candidate": "2b30433ee644f74c9537550bbc5de389d684347d785d3c629a8151bcff5bed96"
+      },
+      "reference": {
+        "angle": 180,
+        "rgba": "e6bc57bc9d176eec",
+        "depth": "cd43f8609680493b",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "cb2c52188f413b43",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 180,
+        "rgba": "e6bc57bc9d176eec",
+        "depth": "cd43f8609680493b",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "cb2c52188f413b43",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "angle": 225,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "c602892d005ed7fe611af4e8fc4e513749b0ed204c2ba648b14b1f7b89ad7701",
+        "candidate": "c602892d005ed7fe611af4e8fc4e513749b0ed204c2ba648b14b1f7b89ad7701"
+      },
+      "reference": {
+        "angle": 225,
+        "rgba": "d24c4b21150fe0db",
+        "depth": "0f92468ace3ddab5",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "b2ea4e4f9ae7ee49",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 225,
+        "rgba": "d24c4b21150fe0db",
+        "depth": "0f92468ace3ddab5",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "b2ea4e4f9ae7ee49",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "angle": 270,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "8536bad238de7d6511ba0ebd756b0a3aac188559c8ece64554120694e0785237",
+        "candidate": "8536bad238de7d6511ba0ebd756b0a3aac188559c8ece64554120694e0785237"
+      },
+      "reference": {
+        "angle": 270,
+        "rgba": "ad85c78844ec169f",
+        "depth": "b5fee35266844211",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "d611e32eae1c67b8",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 270,
+        "rgba": "ad85c78844ec169f",
+        "depth": "b5fee35266844211",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "d611e32eae1c67b8",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "angle": 315,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "c602892d005ed7fe611af4e8fc4e513749b0ed204c2ba648b14b1f7b89ad7701",
+        "candidate": "c602892d005ed7fe611af4e8fc4e513749b0ed204c2ba648b14b1f7b89ad7701"
+      },
+      "reference": {
+        "angle": 315,
+        "rgba": "d24c4b21150fe0db",
+        "depth": "0f92468ace3ddab5",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "b2ea4e4f9ae7ee49",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 315,
+        "rgba": "d24c4b21150fe0db",
+        "depth": "0f92468ace3ddab5",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "b2ea4e4f9ae7ee49",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "angle": 0,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": false,
+      "meanAbsoluteChannelError": 1.8746860532407408,
+      "meanSquaredChannelError": 38.6898828125,
+      "maxChannelError": 136,
+      "pixelFractionOver8": 0.07907986111111111,
+      "pixelFractionOver32": 0.01025607638888889,
+      "imageSha256": {
+        "baseline": "768e3a61c7ec84313b226ff1a24dd0cd2cc0ebc257dd16efaac81994662f0336",
+        "candidate": "c908db21c7071c02f8a5292d6e437bbc263a0dba5b73540503e79ebdfd572423"
+      },
+      "reference": {
+        "angle": 0,
+        "rgba": "db566e6c0de052b6",
+        "depth": "43a020be84622b67",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "897a40d72746fbb7",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 0,
+        "rgba": "7b600a83e76f6067",
+        "depth": "43a020be84622b67",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "897a40d72746fbb7",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "angle": 45,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": false,
+      "meanAbsoluteChannelError": 1.570730613425926,
+      "meanSquaredChannelError": 33.15981047453704,
+      "maxChannelError": 137,
+      "pixelFractionOver8": 0.06434461805555555,
+      "pixelFractionOver32": 0.008259548611111112,
+      "imageSha256": {
+        "baseline": "f37be7f06cdd1bce1114061fd1c0ace31aab5e7da62470f704f830697dc32723",
+        "candidate": "6b5e68465e1ff94cf34c9ddad703143edcc21b5c8e5178aa18294e1e43c53d87"
+      },
+      "reference": {
+        "angle": 45,
+        "rgba": "61939ce7bac5defb",
+        "depth": "ca57d08b86a64ea3",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "a18a5e8f64ec557b",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 45,
+        "rgba": "45b470f5abcff0f0",
+        "depth": "ca57d08b86a64ea3",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "a18a5e8f64ec557b",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "angle": 90,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": false,
+      "meanAbsoluteChannelError": 1.398817997685185,
+      "meanSquaredChannelError": 29.299712094907406,
+      "maxChannelError": 118,
+      "pixelFractionOver8": 0.057803819444444446,
+      "pixelFractionOver32": 0.007191840277777778,
+      "imageSha256": {
+        "baseline": "29ae0c164e0dbf554c854cf36e9e1549b46f7536f2aeb0af81def77b890e2192",
+        "candidate": "2449decfffe571e03a64ac76534cdbb6404c66b65463d8569ed9ecac3d715dba"
+      },
+      "reference": {
+        "angle": 90,
+        "rgba": "abc1965e6f9c9d8b",
+        "depth": "20841b3fd377579c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "9867d69e71a40833",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 90,
+        "rgba": "ba7a1e039863921a",
+        "depth": "20841b3fd377579c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "9867d69e71a40833",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "angle": 135,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": false,
+      "meanAbsoluteChannelError": 1.570730613425926,
+      "meanSquaredChannelError": 33.15981047453704,
+      "maxChannelError": 137,
+      "pixelFractionOver8": 0.06434461805555555,
+      "pixelFractionOver32": 0.008259548611111112,
+      "imageSha256": {
+        "baseline": "f37be7f06cdd1bce1114061fd1c0ace31aab5e7da62470f704f830697dc32723",
+        "candidate": "6b5e68465e1ff94cf34c9ddad703143edcc21b5c8e5178aa18294e1e43c53d87"
+      },
+      "reference": {
+        "angle": 135,
+        "rgba": "61939ce7bac5defb",
+        "depth": "ca57d08b86a64ea3",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "a18a5e8f64ec557b",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 135,
+        "rgba": "45b470f5abcff0f0",
+        "depth": "ca57d08b86a64ea3",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "a18a5e8f64ec557b",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "angle": 160,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": false,
+      "meanAbsoluteChannelError": 1.7671151620370371,
+      "meanSquaredChannelError": 37.62039641203704,
+      "maxChannelError": 137,
+      "pixelFractionOver8": 0.07288194444444444,
+      "pixelFractionOver32": 0.00935763888888889,
+      "imageSha256": {
+        "baseline": "62ed9a8afe4fb764ebc16d13b54cb8dbc9f3048daa0d2690aa7249e2bb3c0dd1",
+        "candidate": "f2a2dcebdeced9a84fb520fe2a8acbe589590e68224956e0fb29282481fba402"
+      },
+      "reference": {
+        "angle": 160,
+        "rgba": "6f07a815fc778959",
+        "depth": "7c0bcde239c25207",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "8a97e8fa78d0c60e",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 160,
+        "rgba": "d3545e37e1a472c9",
+        "depth": "7c0bcde239c25207",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "8a97e8fa78d0c60e",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "angle": 180,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": false,
+      "meanAbsoluteChannelError": 1.8746860532407408,
+      "meanSquaredChannelError": 38.6898828125,
+      "maxChannelError": 136,
+      "pixelFractionOver8": 0.07907986111111111,
+      "pixelFractionOver32": 0.01025607638888889,
+      "imageSha256": {
+        "baseline": "768e3a61c7ec84313b226ff1a24dd0cd2cc0ebc257dd16efaac81994662f0336",
+        "candidate": "c908db21c7071c02f8a5292d6e437bbc263a0dba5b73540503e79ebdfd572423"
+      },
+      "reference": {
+        "angle": 180,
+        "rgba": "db566e6c0de052b6",
+        "depth": "43a020be84622b67",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "897a40d72746fbb7",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 180,
+        "rgba": "7b600a83e76f6067",
+        "depth": "43a020be84622b67",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "897a40d72746fbb7",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "angle": 225,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": false,
+      "meanAbsoluteChannelError": 2.0333984375,
+      "meanSquaredChannelError": 40.52334924768518,
+      "maxChannelError": 135,
+      "pixelFractionOver8": 0.08874131944444444,
+      "pixelFractionOver32": 0.010069444444444445,
+      "imageSha256": {
+        "baseline": "aa710a6df3777e907df77dfe4e6ee9f126fba7031cf930bb00373c146fe16f91",
+        "candidate": "ea68a8c220f6372d578212ae37b78a97c1a05f6b817cde42c82ed876e53d4bf1"
+      },
+      "reference": {
+        "angle": 225,
+        "rgba": "e62569147bda76f7",
+        "depth": "bb292faacaea703c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "664c5a76d835c6ea",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 225,
+        "rgba": "2dfbafc310247bc8",
+        "depth": "bb292faacaea703c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "664c5a76d835c6ea",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "angle": 270,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": false,
+      "meanAbsoluteChannelError": 1.9785243055555555,
+      "meanSquaredChannelError": 38.11799189814815,
+      "maxChannelError": 134,
+      "pixelFractionOver8": 0.08665364583333333,
+      "pixelFractionOver32": 0.009535590277777778,
+      "imageSha256": {
+        "baseline": "f1d7d26a1b484b516cb711e6b71ec04f7863103e932d4a85d4e90287286d23ca",
+        "candidate": "4bcc2c27b081bbc0bd5dfe5413e7feb0e0a533cb135f378ccd71e52803cc64d2"
+      },
+      "reference": {
+        "angle": 270,
+        "rgba": "bb7d1727a17f0fcf",
+        "depth": "6b45a91f34913520",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "7097882431cfe9d2",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 270,
+        "rgba": "408e35d59c1cb459",
+        "depth": "6b45a91f34913520",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "7097882431cfe9d2",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "angle": 315,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": false,
+      "meanAbsoluteChannelError": 2.0333984375,
+      "meanSquaredChannelError": 40.52334924768518,
+      "maxChannelError": 135,
+      "pixelFractionOver8": 0.08874131944444444,
+      "pixelFractionOver32": 0.010069444444444445,
+      "imageSha256": {
+        "baseline": "aa710a6df3777e907df77dfe4e6ee9f126fba7031cf930bb00373c146fe16f91",
+        "candidate": "ea68a8c220f6372d578212ae37b78a97c1a05f6b817cde42c82ed876e53d4bf1"
+      },
+      "reference": {
+        "angle": 315,
+        "rgba": "e62569147bda76f7",
+        "depth": "bb292faacaea703c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "664c5a76d835c6ea",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 315,
+        "rgba": "2dfbafc310247bc8",
+        "depth": "bb292faacaea703c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "664c5a76d835c6ea",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "angle": 0,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "b343d572f7033b9f56c23d4ca18998544d262fa0b0267005f0e1c4903d9d929d",
+        "candidate": "b343d572f7033b9f56c23d4ca18998544d262fa0b0267005f0e1c4903d9d929d"
+      },
+      "reference": {
+        "angle": 0,
+        "rgba": "d1ed1b6d37372b00",
+        "depth": "cb0fcd174f34597d",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 0,
+        "rgba": "d1ed1b6d37372b00",
+        "depth": "cb0fcd174f34597d",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "angle": 45,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "2a6a59bdcd1b24219fec187e7ce11d655db8d1a04fee27f9f36c4c218ba9c2c8",
+        "candidate": "2a6a59bdcd1b24219fec187e7ce11d655db8d1a04fee27f9f36c4c218ba9c2c8"
+      },
+      "reference": {
+        "angle": 45,
+        "rgba": "f29cd14e2c332fc6",
+        "depth": "81898d4b34a5307b",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 45,
+        "rgba": "f29cd14e2c332fc6",
+        "depth": "81898d4b34a5307b",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "angle": 90,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "100982ad3ec3bec666a8b0a166947d9ac74ca119a033c4c6bb3dcdcb9ee8d7d5",
+        "candidate": "100982ad3ec3bec666a8b0a166947d9ac74ca119a033c4c6bb3dcdcb9ee8d7d5"
+      },
+      "reference": {
+        "angle": 90,
+        "rgba": "1c07db53db8aee76",
+        "depth": "e7aaef990ce10445",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 90,
+        "rgba": "1c07db53db8aee76",
+        "depth": "e7aaef990ce10445",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "angle": 135,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "2a6a59bdcd1b24219fec187e7ce11d655db8d1a04fee27f9f36c4c218ba9c2c8",
+        "candidate": "2a6a59bdcd1b24219fec187e7ce11d655db8d1a04fee27f9f36c4c218ba9c2c8"
+      },
+      "reference": {
+        "angle": 135,
+        "rgba": "f29cd14e2c332fc6",
+        "depth": "81898d4b34a5307b",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 135,
+        "rgba": "f29cd14e2c332fc6",
+        "depth": "81898d4b34a5307b",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "angle": 160,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "352c8de01ce79bd9cd47bab0afe08e6e38935eb2c51c4d952de2015748bf6413",
+        "candidate": "352c8de01ce79bd9cd47bab0afe08e6e38935eb2c51c4d952de2015748bf6413"
+      },
+      "reference": {
+        "angle": 160,
+        "rgba": "c4d91c45e26aff6f",
+        "depth": "9b69df84db431822",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 160,
+        "rgba": "c4d91c45e26aff6f",
+        "depth": "9b69df84db431822",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "angle": 180,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "b343d572f7033b9f56c23d4ca18998544d262fa0b0267005f0e1c4903d9d929d",
+        "candidate": "b343d572f7033b9f56c23d4ca18998544d262fa0b0267005f0e1c4903d9d929d"
+      },
+      "reference": {
+        "angle": 180,
+        "rgba": "d1ed1b6d37372b00",
+        "depth": "cb0fcd174f34597d",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 180,
+        "rgba": "d1ed1b6d37372b00",
+        "depth": "cb0fcd174f34597d",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "angle": 225,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "d2e0fb3dfd2104307b5245a391f90295e05c977dac05f3f655bc2f8898923c22",
+        "candidate": "d2e0fb3dfd2104307b5245a391f90295e05c977dac05f3f655bc2f8898923c22"
+      },
+      "reference": {
+        "angle": 225,
+        "rgba": "f95867b4fc39703e",
+        "depth": "6c63dd598340ece9",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 225,
+        "rgba": "f95867b4fc39703e",
+        "depth": "6c63dd598340ece9",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "angle": 270,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "d095c808f23edee695a2fee0088ff21f07fa21faab21b596e141d0fe939d01ae",
+        "candidate": "d095c808f23edee695a2fee0088ff21f07fa21faab21b596e141d0fe939d01ae"
+      },
+      "reference": {
+        "angle": 270,
+        "rgba": "0fb250c87bfb6916",
+        "depth": "e54261b93adf34c1",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 270,
+        "rgba": "0fb250c87bfb6916",
+        "depth": "e54261b93adf34c1",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "angle": 315,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "d2e0fb3dfd2104307b5245a391f90295e05c977dac05f3f655bc2f8898923c22",
+        "candidate": "d2e0fb3dfd2104307b5245a391f90295e05c977dac05f3f655bc2f8898923c22"
+      },
+      "reference": {
+        "angle": 315,
+        "rgba": "f95867b4fc39703e",
+        "depth": "6c63dd598340ece9",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 315,
+        "rgba": "f95867b4fc39703e",
+        "depth": "6c63dd598340ece9",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "angle": 0,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "0a9aa86b8aa48e8c00d72f9cfb1d88fb84f297f1b8580bfa41db3cf0eaa30a59",
+        "candidate": "0a9aa86b8aa48e8c00d72f9cfb1d88fb84f297f1b8580bfa41db3cf0eaa30a59"
+      },
+      "reference": {
+        "angle": 0,
+        "rgba": "beba190e26ef5c11",
+        "depth": "08c97c9ef4d8631a",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "1213e192e3bb5e06",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 0,
+        "rgba": "beba190e26ef5c11",
+        "depth": "08c97c9ef4d8631a",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "1213e192e3bb5e06",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "angle": 45,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "0fca872f5bcc5b60a16b8dcc0c514dcbb98acec0e133d8a82b646a740f83eb09",
+        "candidate": "0fca872f5bcc5b60a16b8dcc0c514dcbb98acec0e133d8a82b646a740f83eb09"
+      },
+      "reference": {
+        "angle": 45,
+        "rgba": "828c808cf19b1e55",
+        "depth": "2eccfe2e47fa080e",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "176ade7d39723b35",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 45,
+        "rgba": "828c808cf19b1e55",
+        "depth": "2eccfe2e47fa080e",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "176ade7d39723b35",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "angle": 90,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "8771ea1b6086f6b98bbecbbf2bd2b3fb8a2a7a62978086731308edfa287459a1",
+        "candidate": "8771ea1b6086f6b98bbecbbf2bd2b3fb8a2a7a62978086731308edfa287459a1"
+      },
+      "reference": {
+        "angle": 90,
+        "rgba": "8df65ef80e00f1fa",
+        "depth": "48299ccdf5690e3f",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "21cfe86f39f53143",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 90,
+        "rgba": "8df65ef80e00f1fa",
+        "depth": "48299ccdf5690e3f",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "21cfe86f39f53143",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "angle": 135,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "0fca872f5bcc5b60a16b8dcc0c514dcbb98acec0e133d8a82b646a740f83eb09",
+        "candidate": "0fca872f5bcc5b60a16b8dcc0c514dcbb98acec0e133d8a82b646a740f83eb09"
+      },
+      "reference": {
+        "angle": 135,
+        "rgba": "828c808cf19b1e55",
+        "depth": "2eccfe2e47fa080e",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "176ade7d39723b35",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 135,
+        "rgba": "828c808cf19b1e55",
+        "depth": "2eccfe2e47fa080e",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "176ade7d39723b35",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "angle": 160,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "6edb38bc2d9ba8b3281d8c371864ffe85ebb0322f9e6bd0992fe1912d0637a0f",
+        "candidate": "6edb38bc2d9ba8b3281d8c371864ffe85ebb0322f9e6bd0992fe1912d0637a0f"
+      },
+      "reference": {
+        "angle": 160,
+        "rgba": "b597f5438d45eed2",
+        "depth": "3cfb3da67bd41870",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "8bea110d451aefd0",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 160,
+        "rgba": "b597f5438d45eed2",
+        "depth": "3cfb3da67bd41870",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "8bea110d451aefd0",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "angle": 180,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "0a9aa86b8aa48e8c00d72f9cfb1d88fb84f297f1b8580bfa41db3cf0eaa30a59",
+        "candidate": "0a9aa86b8aa48e8c00d72f9cfb1d88fb84f297f1b8580bfa41db3cf0eaa30a59"
+      },
+      "reference": {
+        "angle": 180,
+        "rgba": "beba190e26ef5c11",
+        "depth": "08c97c9ef4d8631a",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "1213e192e3bb5e06",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 180,
+        "rgba": "beba190e26ef5c11",
+        "depth": "08c97c9ef4d8631a",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "1213e192e3bb5e06",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "angle": 225,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "800f13a9af229d8ecee220abbb52b539081dadd0f5b74826e61d22590e4880ff",
+        "candidate": "800f13a9af229d8ecee220abbb52b539081dadd0f5b74826e61d22590e4880ff"
+      },
+      "reference": {
+        "angle": 225,
+        "rgba": "9bb965747e9082c3",
+        "depth": "26a381243863793d",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "2253d41f820db9fd",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 225,
+        "rgba": "9bb965747e9082c3",
+        "depth": "26a381243863793d",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "2253d41f820db9fd",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "angle": 270,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "928d89b9fc14ec78bd8d07467a46ab915d01e95997ef92d1aee252183b7d8d3d",
+        "candidate": "928d89b9fc14ec78bd8d07467a46ab915d01e95997ef92d1aee252183b7d8d3d"
+      },
+      "reference": {
+        "angle": 270,
+        "rgba": "93794e3221eb551c",
+        "depth": "4464aec254c7f7a4",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "2c804e180e9c5254",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 270,
+        "rgba": "93794e3221eb551c",
+        "depth": "4464aec254c7f7a4",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "2c804e180e9c5254",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "angle": 315,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "800f13a9af229d8ecee220abbb52b539081dadd0f5b74826e61d22590e4880ff",
+        "candidate": "800f13a9af229d8ecee220abbb52b539081dadd0f5b74826e61d22590e4880ff"
+      },
+      "reference": {
+        "angle": 315,
+        "rgba": "9bb965747e9082c3",
+        "depth": "26a381243863793d",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "2253d41f820db9fd",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 315,
+        "rgba": "9bb965747e9082c3",
+        "depth": "26a381243863793d",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "2253d41f820db9fd",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "angle": 0,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "d0105339d60ee479488a1d55431c0ddeafcd20ae1859f04a554fd90490ba23e2",
+        "candidate": "d0105339d60ee479488a1d55431c0ddeafcd20ae1859f04a554fd90490ba23e2"
+      },
+      "reference": {
+        "angle": 0,
+        "rgba": "2e70b242a72f31a0",
+        "depth": "77dab6b5970c1bee",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "ed3fb8c502c0aca1",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 0,
+        "rgba": "2e70b242a72f31a0",
+        "depth": "77dab6b5970c1bee",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "ed3fb8c502c0aca1",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "angle": 45,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "8b7e345a7f2910c50773fe34f379745ba44800d60043cf91876deba5c832fc14",
+        "candidate": "8b7e345a7f2910c50773fe34f379745ba44800d60043cf91876deba5c832fc14"
+      },
+      "reference": {
+        "angle": 45,
+        "rgba": "06a0124aea25d0f0",
+        "depth": "2825eba1331662f3",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "5890c39e0ba932c9",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 45,
+        "rgba": "06a0124aea25d0f0",
+        "depth": "2825eba1331662f3",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "5890c39e0ba932c9",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "angle": 90,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "314e655d1daed0c516a3bd87c7806b64f7816b3ab837fbeb5d908df9f3cfe100",
+        "candidate": "314e655d1daed0c516a3bd87c7806b64f7816b3ab837fbeb5d908df9f3cfe100"
+      },
+      "reference": {
+        "angle": 90,
+        "rgba": "39f55a1c139c6964",
+        "depth": "98fe4e85acee4adc",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "dc21ec4a8171f4f7",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 90,
+        "rgba": "39f55a1c139c6964",
+        "depth": "98fe4e85acee4adc",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "dc21ec4a8171f4f7",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "angle": 135,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "8b7e345a7f2910c50773fe34f379745ba44800d60043cf91876deba5c832fc14",
+        "candidate": "8b7e345a7f2910c50773fe34f379745ba44800d60043cf91876deba5c832fc14"
+      },
+      "reference": {
+        "angle": 135,
+        "rgba": "06a0124aea25d0f0",
+        "depth": "2825eba1331662f3",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "5890c39e0ba932c9",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 135,
+        "rgba": "06a0124aea25d0f0",
+        "depth": "2825eba1331662f3",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "5890c39e0ba932c9",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "angle": 160,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "bb9d5dce71b26914deee6608ba7fc956b3ed0148f9a57e8bc9bf81b96de85952",
+        "candidate": "bb9d5dce71b26914deee6608ba7fc956b3ed0148f9a57e8bc9bf81b96de85952"
+      },
+      "reference": {
+        "angle": 160,
+        "rgba": "c3f19973921f2fc2",
+        "depth": "1ac5a242dff2b42c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "9ab44a68c51d3aec",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 160,
+        "rgba": "c3f19973921f2fc2",
+        "depth": "1ac5a242dff2b42c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "9ab44a68c51d3aec",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "angle": 180,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "d0105339d60ee479488a1d55431c0ddeafcd20ae1859f04a554fd90490ba23e2",
+        "candidate": "d0105339d60ee479488a1d55431c0ddeafcd20ae1859f04a554fd90490ba23e2"
+      },
+      "reference": {
+        "angle": 180,
+        "rgba": "2e70b242a72f31a0",
+        "depth": "77dab6b5970c1bee",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "ed3fb8c502c0aca1",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 180,
+        "rgba": "2e70b242a72f31a0",
+        "depth": "77dab6b5970c1bee",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "ed3fb8c502c0aca1",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "angle": 225,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "5a0664bae916023800d25c2f068ee347550866fa62a7f5f5d716bf90d3357380",
+        "candidate": "5a0664bae916023800d25c2f068ee347550866fa62a7f5f5d716bf90d3357380"
+      },
+      "reference": {
+        "angle": 225,
+        "rgba": "fde518ee01b533fc",
+        "depth": "30278e1618bce161",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "6637bce204c5b00e",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 225,
+        "rgba": "fde518ee01b533fc",
+        "depth": "30278e1618bce161",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "6637bce204c5b00e",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "angle": 270,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "5878d06dfb075ce6446012c10e418c80fc1b03b23f25010e2fa14df5c466fc43",
+        "candidate": "5878d06dfb075ce6446012c10e418c80fc1b03b23f25010e2fa14df5c466fc43"
+      },
+      "reference": {
+        "angle": 270,
+        "rgba": "0b2a856c3ff1d0c6",
+        "depth": "03e022ef901346c0",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "bc97ba8f8864c0f5",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 270,
+        "rgba": "0b2a856c3ff1d0c6",
+        "depth": "03e022ef901346c0",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "bc97ba8f8864c0f5",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "angle": 315,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "5a0664bae916023800d25c2f068ee347550866fa62a7f5f5d716bf90d3357380",
+        "candidate": "5a0664bae916023800d25c2f068ee347550866fa62a7f5f5d716bf90d3357380"
+      },
+      "reference": {
+        "angle": 315,
+        "rgba": "fde518ee01b533fc",
+        "depth": "30278e1618bce161",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "6637bce204c5b00e",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 315,
+        "rgba": "fde518ee01b533fc",
+        "depth": "30278e1618bce161",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "6637bce204c5b00e",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 0,
+      "angle": 0,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "1f4799c4403a30d15f56ce903e2686346d58363c848769d04792260fd45f7dcd",
+        "candidate": "1f4799c4403a30d15f56ce903e2686346d58363c848769d04792260fd45f7dcd"
+      },
+      "reference": {
+        "angle": 0,
+        "rgba": "295e328ad425fc2f",
+        "depth": "33a1132fa2d6a5a9",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 0,
+        "rgba": "295e328ad425fc2f",
+        "depth": "33a1132fa2d6a5a9",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 0,
+      "angle": 45,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "7b8a658a041d4236219563fd61b79b038c318311bb02f1b2dae6b6d00f9f7c4a",
+        "candidate": "7b8a658a041d4236219563fd61b79b038c318311bb02f1b2dae6b6d00f9f7c4a"
+      },
+      "reference": {
+        "angle": 45,
+        "rgba": "82d53df9e177372c",
+        "depth": "1cc86fc6b0551be5",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 45,
+        "rgba": "82d53df9e177372c",
+        "depth": "1cc86fc6b0551be5",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 0,
+      "angle": 90,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "a1435dfa45b622d2b832d52279e5d0347315d24e633158878b72ee7fc1bce4b7",
+        "candidate": "a1435dfa45b622d2b832d52279e5d0347315d24e633158878b72ee7fc1bce4b7"
+      },
+      "reference": {
+        "angle": 90,
+        "rgba": "4987a89590e6b558",
+        "depth": "c495d8009fba7574",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 90,
+        "rgba": "4987a89590e6b558",
+        "depth": "c495d8009fba7574",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 0,
+      "angle": 135,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "e94ee58a67cbcbff8a08ff63de00fc5ffe12c43289806a883c5ce7ac125a0bfc",
+        "candidate": "e94ee58a67cbcbff8a08ff63de00fc5ffe12c43289806a883c5ce7ac125a0bfc"
+      },
+      "reference": {
+        "angle": 135,
+        "rgba": "0a6bd931b064871b",
+        "depth": "16bd02804b0d7bd3",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 135,
+        "rgba": "0a6bd931b064871b",
+        "depth": "16bd02804b0d7bd3",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 0,
+      "angle": 160,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "d955bc7e27202a35767fd1096a327cc655155dd9cff2d183d5870b4f300cb330",
+        "candidate": "d955bc7e27202a35767fd1096a327cc655155dd9cff2d183d5870b4f300cb330"
+      },
+      "reference": {
+        "angle": 160,
+        "rgba": "e5c16fb28cc19256",
+        "depth": "7238c3c473eda397",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 160,
+        "rgba": "e5c16fb28cc19256",
+        "depth": "7238c3c473eda397",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 0,
+      "angle": 180,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "720748ff38354b94c7bb1c35a3fbf1be04f7cbea8dd0a4904f5e4c98766897e1",
+        "candidate": "720748ff38354b94c7bb1c35a3fbf1be04f7cbea8dd0a4904f5e4c98766897e1"
+      },
+      "reference": {
+        "angle": 180,
+        "rgba": "7798fe001b8904a8",
+        "depth": "22d3f7683356d2ba",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 180,
+        "rgba": "7798fe001b8904a8",
+        "depth": "22d3f7683356d2ba",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 0,
+      "angle": 225,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "f163b1ea5be4cea080e3287e0ac700f70181490594ef058a7792cea6db1ec27b",
+        "candidate": "f163b1ea5be4cea080e3287e0ac700f70181490594ef058a7792cea6db1ec27b"
+      },
+      "reference": {
+        "angle": 225,
+        "rgba": "c5e81e3959438d41",
+        "depth": "c73e82a0fcc377a1",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 225,
+        "rgba": "c5e81e3959438d41",
+        "depth": "c73e82a0fcc377a1",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 0,
+      "angle": 270,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "1814a63b33fafa0cec6536638f6643c9888965ed15b447960109ebb75b698c75",
+        "candidate": "1814a63b33fafa0cec6536638f6643c9888965ed15b447960109ebb75b698c75"
+      },
+      "reference": {
+        "angle": 270,
+        "rgba": "437adcf7dcc3d733",
+        "depth": "2af74efc14f15aef",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 270,
+        "rgba": "437adcf7dcc3d733",
+        "depth": "2af74efc14f15aef",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 0,
+      "angle": 315,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "19be7496a7f08194b3e59517cbd50439517590139d2b1e8edf5ba4a070fe864b",
+        "candidate": "19be7496a7f08194b3e59517cbd50439517590139d2b1e8edf5ba4a070fe864b"
+      },
+      "reference": {
+        "angle": 315,
+        "rgba": "03fcbe7f4b56862e",
+        "depth": "d7d7d82344685a31",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 315,
+        "rgba": "03fcbe7f4b56862e",
+        "depth": "d7d7d82344685a31",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 2,
+      "angle": 0,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "24ab0c99eca53214d1c2edb042dacb1b512029186b9830a2f2d004a8d64400b1",
+        "candidate": "24ab0c99eca53214d1c2edb042dacb1b512029186b9830a2f2d004a8d64400b1"
+      },
+      "reference": {
+        "angle": 0,
+        "rgba": "9bb402dcf264bb52",
+        "depth": "36ee017d788ebdde",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "e461f357dc7f9e16",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 0,
+        "rgba": "9bb402dcf264bb52",
+        "depth": "36ee017d788ebdde",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "e461f357dc7f9e16",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 2,
+      "angle": 45,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "4e5186a755178ea145c056d869074358315b91484085632563c84b2facd65056",
+        "candidate": "4e5186a755178ea145c056d869074358315b91484085632563c84b2facd65056"
+      },
+      "reference": {
+        "angle": 45,
+        "rgba": "6eb5f4ac3a19d068",
+        "depth": "ac240e2b3cc4830e",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "385c19e1d6d39792",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 45,
+        "rgba": "6eb5f4ac3a19d068",
+        "depth": "ac240e2b3cc4830e",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "385c19e1d6d39792",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 2,
+      "angle": 90,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "85bdfecd36965c2a2e736ccc586de184085d1b3c8bfed9c466c65b4208b0272d",
+        "candidate": "85bdfecd36965c2a2e736ccc586de184085d1b3c8bfed9c466c65b4208b0272d"
+      },
+      "reference": {
+        "angle": 90,
+        "rgba": "5a7d1da2d6cac04a",
+        "depth": "c51bf8621ccf8f3d",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "58e114354ddefff6",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 90,
+        "rgba": "5a7d1da2d6cac04a",
+        "depth": "c51bf8621ccf8f3d",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "58e114354ddefff6",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 2,
+      "angle": 135,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "a834351461a2cecbabc861301c7756accc3df7ed7f360deace142426cfc8a169",
+        "candidate": "a834351461a2cecbabc861301c7756accc3df7ed7f360deace142426cfc8a169"
+      },
+      "reference": {
+        "angle": 135,
+        "rgba": "83c09c3b1b0002f1",
+        "depth": "ce445536a2bf618f",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "e54ea1e7c94d1ed2",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 135,
+        "rgba": "83c09c3b1b0002f1",
+        "depth": "ce445536a2bf618f",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "e54ea1e7c94d1ed2",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 2,
+      "angle": 160,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "a162f42827e4df4f7c47ee30ad0c25f377c6c91160d25e2a76b999e2e2597a35",
+        "candidate": "a162f42827e4df4f7c47ee30ad0c25f377c6c91160d25e2a76b999e2e2597a35"
+      },
+      "reference": {
+        "angle": 160,
+        "rgba": "3d6414a90ea015cb",
+        "depth": "8c251eea5452b25b",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "97f92b529925329e",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 160,
+        "rgba": "3d6414a90ea015cb",
+        "depth": "8c251eea5452b25b",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "97f92b529925329e",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 2,
+      "angle": 180,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "a20c68a785ca67e24c22110dc7a55a7ee92c8bc2a7d393748e8312a5b9ad00f7",
+        "candidate": "a20c68a785ca67e24c22110dc7a55a7ee92c8bc2a7d393748e8312a5b9ad00f7"
+      },
+      "reference": {
+        "angle": 180,
+        "rgba": "cf831a79ca39bf6d",
+        "depth": "b5eb0da9b80f7f79",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "b818098ee96b28be",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 180,
+        "rgba": "cf831a79ca39bf6d",
+        "depth": "b5eb0da9b80f7f79",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "b818098ee96b28be",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 2,
+      "angle": 225,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "4f148d44244ed6c68fdd2801abba93dc9faeeba3ab2edf0da43d2acf69444f90",
+        "candidate": "4f148d44244ed6c68fdd2801abba93dc9faeeba3ab2edf0da43d2acf69444f90"
+      },
+      "reference": {
+        "angle": 225,
+        "rgba": "04b739767fde9d6e",
+        "depth": "03d85d3fba7dfade",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "e8b1120a50c03244",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 225,
+        "rgba": "04b739767fde9d6e",
+        "depth": "03d85d3fba7dfade",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "e8b1120a50c03244",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 2,
+      "angle": 270,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "b9b773fef20eebb4765220a2300d241e2853a092ca5506de38cbbbdb917a5d43",
+        "candidate": "b9b773fef20eebb4765220a2300d241e2853a092ca5506de38cbbbdb917a5d43"
+      },
+      "reference": {
+        "angle": 270,
+        "rgba": "9647ddf7db912cee",
+        "depth": "4ac1a06936f4bc72",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "1e19c976245abf8c",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 270,
+        "rgba": "9647ddf7db912cee",
+        "depth": "4ac1a06936f4bc72",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "1e19c976245abf8c",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 2,
+      "angle": 315,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "9ed9c58d9189332d44de43fbf54025c58b09af326d1a81c08604aa6a5707eb7a",
+        "candidate": "9ed9c58d9189332d44de43fbf54025c58b09af326d1a81c08604aa6a5707eb7a"
+      },
+      "reference": {
+        "angle": 315,
+        "rgba": "58642251b604dbf9",
+        "depth": "88db861dbf0da03d",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "72d05abee58d9cc7",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 315,
+        "rgba": "58642251b604dbf9",
+        "depth": "88db861dbf0da03d",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "72d05abee58d9cc7",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "angle": 0,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "ffc952af1b271b326aeac20dbd276f757e890bbeeddb0a239008f27cc401d6ca",
+        "candidate": "ffc952af1b271b326aeac20dbd276f757e890bbeeddb0a239008f27cc401d6ca"
+      },
+      "reference": {
+        "angle": 0,
+        "rgba": "e85d69ac5c2f2017",
+        "depth": "9020d00dd77e384c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "2fad226bda59bac4",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 0,
+        "rgba": "e85d69ac5c2f2017",
+        "depth": "9020d00dd77e384c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "2fad226bda59bac4",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "angle": 45,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "50b5c4371d817c1a9c6c07c844b8c36e5c9665f994018d9a65ff48185525c08d",
+        "candidate": "50b5c4371d817c1a9c6c07c844b8c36e5c9665f994018d9a65ff48185525c08d"
+      },
+      "reference": {
+        "angle": 45,
+        "rgba": "f5a50a583c4c7c7f",
+        "depth": "647e343fe6649517",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "04931b6a948d08fb",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 45,
+        "rgba": "f5a50a583c4c7c7f",
+        "depth": "647e343fe6649517",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "04931b6a948d08fb",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "angle": 90,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "e7f7dc25b9e4e9875510d52dd288290b8c57394da38849146d537e8e8f9e66ae",
+        "candidate": "e7f7dc25b9e4e9875510d52dd288290b8c57394da38849146d537e8e8f9e66ae"
+      },
+      "reference": {
+        "angle": 90,
+        "rgba": "a69b65c2497d580e",
+        "depth": "19ff655b6c26bf1f",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "234d271910cb9410",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 90,
+        "rgba": "a69b65c2497d580e",
+        "depth": "19ff655b6c26bf1f",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "234d271910cb9410",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "angle": 135,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "c5dd84a43bd2f6d7a9340a8cef44903644768a266748561c6acc6ea5f6544184",
+        "candidate": "c5dd84a43bd2f6d7a9340a8cef44903644768a266748561c6acc6ea5f6544184"
+      },
+      "reference": {
+        "angle": 135,
+        "rgba": "cbc865ec31780362",
+        "depth": "48dd2d9800035947",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "afa6e66fd423504b",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 135,
+        "rgba": "cbc865ec31780362",
+        "depth": "48dd2d9800035947",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "afa6e66fd423504b",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "angle": 160,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "ffd5e54d07e16063d10bc356a0bdb2b584ffdff930e6b71a5dab24fda2f4b59f",
+        "candidate": "ffd5e54d07e16063d10bc356a0bdb2b584ffdff930e6b71a5dab24fda2f4b59f"
+      },
+      "reference": {
+        "angle": 160,
+        "rgba": "6d87786287f3a447",
+        "depth": "b0f37ca6630a33b6",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "dc2f9662c4e4c224",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 160,
+        "rgba": "6d87786287f3a447",
+        "depth": "b0f37ca6630a33b6",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "dc2f9662c4e4c224",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "angle": 180,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "2879b3feabbaed450b5f8c5e3f93b19bcce90b7cd3609ba7c9ea364943e400a5",
+        "candidate": "2879b3feabbaed450b5f8c5e3f93b19bcce90b7cd3609ba7c9ea364943e400a5"
+      },
+      "reference": {
+        "angle": 180,
+        "rgba": "19d265cbca3530ae",
+        "depth": "830af7a001fbace7",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "2018c7e2f1ed6b6e",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 180,
+        "rgba": "19d265cbca3530ae",
+        "depth": "830af7a001fbace7",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "2018c7e2f1ed6b6e",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "angle": 225,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "a36905cbff00f234abf39b280438a9781e5d7118d41f00befdc7ca8d3141b567",
+        "candidate": "a36905cbff00f234abf39b280438a9781e5d7118d41f00befdc7ca8d3141b567"
+      },
+      "reference": {
+        "angle": 225,
+        "rgba": "21d32156b63993fb",
+        "depth": "17d8199105eb84e8",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "815931bcccb34629",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 225,
+        "rgba": "21d32156b63993fb",
+        "depth": "17d8199105eb84e8",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "815931bcccb34629",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "angle": 270,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "83dd1d789bccf7c0208a3b82598420bcb453644b1829435167dec9e2f5ac7caa",
+        "candidate": "83dd1d789bccf7c0208a3b82598420bcb453644b1829435167dec9e2f5ac7caa"
+      },
+      "reference": {
+        "angle": 270,
+        "rgba": "54e2ca0aec1bfc98",
+        "depth": "42ff82608b312b7a",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "ef7644a6c9e3370f",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 270,
+        "rgba": "54e2ca0aec1bfc98",
+        "depth": "42ff82608b312b7a",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "ef7644a6c9e3370f",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "angle": 315,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "b1330bdbecf932095979422c71eb28720e93302ca601841201ae699d488d2f67",
+        "candidate": "b1330bdbecf932095979422c71eb28720e93302ca601841201ae699d488d2f67"
+      },
+      "reference": {
+        "angle": 315,
+        "rgba": "f2e34ee03625d63f",
+        "depth": "b99673f6aea7a01a",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "fb0b76218fe361ba",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 315,
+        "rgba": "f2e34ee03625d63f",
+        "depth": "b99673f6aea7a01a",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "fb0b76218fe361ba",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 0,
+      "angle": 0,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "cc64b18895dcd8ac0dfa445a41a8b22cc53f787ac97465c000476bb22c303f1a",
+        "candidate": "cc64b18895dcd8ac0dfa445a41a8b22cc53f787ac97465c000476bb22c303f1a"
+      },
+      "reference": {
+        "angle": 0,
+        "rgba": "34067bf602e1b40a",
+        "depth": "c7b88918fc17a18c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 0,
+        "rgba": "34067bf602e1b40a",
+        "depth": "c7b88918fc17a18c",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 0,
+      "angle": 45,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "9e65f2fef82285c57a5371260265c21ffb9ce4ad0580cf5ddae0c4b9051959ae",
+        "candidate": "9e65f2fef82285c57a5371260265c21ffb9ce4ad0580cf5ddae0c4b9051959ae"
+      },
+      "reference": {
+        "angle": 45,
+        "rgba": "90c921b1ac6f7af6",
+        "depth": "01dea4dd47f72557",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 45,
+        "rgba": "90c921b1ac6f7af6",
+        "depth": "01dea4dd47f72557",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 0,
+      "angle": 90,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "01084c035560512e660b9628af023a0f6a46c54e59dff476c3f1c55138808427",
+        "candidate": "01084c035560512e660b9628af023a0f6a46c54e59dff476c3f1c55138808427"
+      },
+      "reference": {
+        "angle": 90,
+        "rgba": "8fa6ead7c42b314d",
+        "depth": "cbc01cc5a1d948f0",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 90,
+        "rgba": "8fa6ead7c42b314d",
+        "depth": "cbc01cc5a1d948f0",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 0,
+      "angle": 135,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "77670afd3390412d243aec529dd8f7fc8bad9e028741b2931daf81874824c461",
+        "candidate": "77670afd3390412d243aec529dd8f7fc8bad9e028741b2931daf81874824c461"
+      },
+      "reference": {
+        "angle": 135,
+        "rgba": "120fa4fae8b83d9f",
+        "depth": "c1ae7cc27c208a68",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 135,
+        "rgba": "120fa4fae8b83d9f",
+        "depth": "c1ae7cc27c208a68",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 0,
+      "angle": 160,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "b523bb48fe208b82e23c9222305890e1a55eb98a198222779822b01a3975ed30",
+        "candidate": "b523bb48fe208b82e23c9222305890e1a55eb98a198222779822b01a3975ed30"
+      },
+      "reference": {
+        "angle": 160,
+        "rgba": "8bbccd1a0bfc123c",
+        "depth": "4921157b93bcc627",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 160,
+        "rgba": "8bbccd1a0bfc123c",
+        "depth": "4921157b93bcc627",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 0,
+      "angle": 180,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "038989cbf4d8c1bf008689d10e540886776062529fb88148765bcf6fc84fb859",
+        "candidate": "038989cbf4d8c1bf008689d10e540886776062529fb88148765bcf6fc84fb859"
+      },
+      "reference": {
+        "angle": 180,
+        "rgba": "b669f192d708bb40",
+        "depth": "ae35b8b22e1c2512",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 180,
+        "rgba": "b669f192d708bb40",
+        "depth": "ae35b8b22e1c2512",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 0,
+      "angle": 225,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "b12b2d2c52219c37d5805b7049802e69e4ade2d252f82148f1166525d096a8fa",
+        "candidate": "b12b2d2c52219c37d5805b7049802e69e4ade2d252f82148f1166525d096a8fa"
+      },
+      "reference": {
+        "angle": 225,
+        "rgba": "27fec1e90b79ca73",
+        "depth": "298cc18d0d2a79cb",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 225,
+        "rgba": "27fec1e90b79ca73",
+        "depth": "298cc18d0d2a79cb",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 0,
+      "angle": 270,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "7dde66fb2ebe8714913a3814a7bf5a3dded7602054625c718dc8fa91a4933264",
+        "candidate": "7dde66fb2ebe8714913a3814a7bf5a3dded7602054625c718dc8fa91a4933264"
+      },
+      "reference": {
+        "angle": 270,
+        "rgba": "8761530c29196fe4",
+        "depth": "df8e1644ce24d9ce",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 270,
+        "rgba": "8761530c29196fe4",
+        "depth": "df8e1644ce24d9ce",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 0,
+      "angle": 315,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "9fd7360fae03e191b82b5f500a347345fce5c77e6e0fb096c8d8a65a5c949922",
+        "candidate": "9fd7360fae03e191b82b5f500a347345fce5c77e6e0fb096c8d8a65a5c949922"
+      },
+      "reference": {
+        "angle": 315,
+        "rgba": "11491ff92cfd75c7",
+        "depth": "842f6f3828042b70",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      },
+      "candidate": {
+        "angle": 315,
+        "rgba": "11491ff92cfd75c7",
+        "depth": "842f6f3828042b70",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "0000000000000000",
+        "sampleStencil": "0000000000000000"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 2,
+      "angle": 0,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "f76bcfd330abf39b362438bc6dd231d4d4437fc20c259fe2ed0dd3deab369aa7",
+        "candidate": "f76bcfd330abf39b362438bc6dd231d4d4437fc20c259fe2ed0dd3deab369aa7"
+      },
+      "reference": {
+        "angle": 0,
+        "rgba": "734845285d5a603b",
+        "depth": "5d1c3c43c6360c90",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "69ded2b114787060",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 0,
+        "rgba": "734845285d5a603b",
+        "depth": "5d1c3c43c6360c90",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "69ded2b114787060",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 2,
+      "angle": 45,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "d5cfe9726637ae593fef7b7b84bc6f0dca5ebe6a400da1eca388843b146d8779",
+        "candidate": "d5cfe9726637ae593fef7b7b84bc6f0dca5ebe6a400da1eca388843b146d8779"
+      },
+      "reference": {
+        "angle": 45,
+        "rgba": "ab34daddf7a83eb8",
+        "depth": "f9bf4c788b515498",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "38f14367f5604c7c",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 45,
+        "rgba": "ab34daddf7a83eb8",
+        "depth": "f9bf4c788b515498",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "38f14367f5604c7c",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 2,
+      "angle": 90,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "b8aa3568ed2c5eeda014f793f7fba2266671e61cca9cb4501e6f510cb05ce0dd",
+        "candidate": "b8aa3568ed2c5eeda014f793f7fba2266671e61cca9cb4501e6f510cb05ce0dd"
+      },
+      "reference": {
+        "angle": 90,
+        "rgba": "e41d4713558b0e0d",
+        "depth": "f059c3e0ca0b0db9",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "5774d7fe1e1be85e",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 90,
+        "rgba": "e41d4713558b0e0d",
+        "depth": "f059c3e0ca0b0db9",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "5774d7fe1e1be85e",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 2,
+      "angle": 135,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "02b9c24938c0a981bc07cd74d0f51b7a7f481b82fc7b563d703ed0734468a3b7",
+        "candidate": "02b9c24938c0a981bc07cd74d0f51b7a7f481b82fc7b563d703ed0734468a3b7"
+      },
+      "reference": {
+        "angle": 135,
+        "rgba": "bb02e2cc2a94e50d",
+        "depth": "dbe0f96d7f56edb0",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "bdcb82d096a91966",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 135,
+        "rgba": "bb02e2cc2a94e50d",
+        "depth": "dbe0f96d7f56edb0",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "bdcb82d096a91966",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 2,
+      "angle": 160,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "0b666147fa2be0ea06d642761c3d52bb4c25c54d9ce590d7ffe5fa91eaa2bc66",
+        "candidate": "0b666147fa2be0ea06d642761c3d52bb4c25c54d9ce590d7ffe5fa91eaa2bc66"
+      },
+      "reference": {
+        "angle": 160,
+        "rgba": "d19b47cf7fb989c3",
+        "depth": "811bfe54d3120454",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "81d4726c0b6419b6",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 160,
+        "rgba": "d19b47cf7fb989c3",
+        "depth": "811bfe54d3120454",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "81d4726c0b6419b6",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 2,
+      "angle": 180,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "c21671e281fad1da4784d0b1863badb7b13c7124d2d566f0e8d205120ade8111",
+        "candidate": "c21671e281fad1da4784d0b1863badb7b13c7124d2d566f0e8d205120ade8111"
+      },
+      "reference": {
+        "angle": 180,
+        "rgba": "abbc6f3084947243",
+        "depth": "5f53bea0b3481e6e",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "36a210036b363b64",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 180,
+        "rgba": "abbc6f3084947243",
+        "depth": "5f53bea0b3481e6e",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "36a210036b363b64",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 2,
+      "angle": 225,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "85f0221574cbb7af0efc6caad34848bab7fd49a2eab4a50175de0413c3b07a5a",
+        "candidate": "85f0221574cbb7af0efc6caad34848bab7fd49a2eab4a50175de0413c3b07a5a"
+      },
+      "reference": {
+        "angle": 225,
+        "rgba": "a3dd9456421661a7",
+        "depth": "ad9cd3a8f14c50cd",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "63e214e1faba4d82",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 225,
+        "rgba": "a3dd9456421661a7",
+        "depth": "ad9cd3a8f14c50cd",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "63e214e1faba4d82",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 2,
+      "angle": 270,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "4c889488e7dba6114a57903ba52792a9e319defd7fecf85ef064d45b99bd715e",
+        "candidate": "4c889488e7dba6114a57903ba52792a9e319defd7fecf85ef064d45b99bd715e"
+      },
+      "reference": {
+        "angle": 270,
+        "rgba": "5d7991f05ae0935f",
+        "depth": "d93d18b1125d52dd",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "e6114f79945a9e7c",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 270,
+        "rgba": "5d7991f05ae0935f",
+        "depth": "d93d18b1125d52dd",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "e6114f79945a9e7c",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 2,
+      "angle": 315,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "84c5a03b43f7921c093dd01250571443c02c1c933f841de29932997d08d13d05",
+        "candidate": "84c5a03b43f7921c093dd01250571443c02c1c933f841de29932997d08d13d05"
+      },
+      "reference": {
+        "angle": 315,
+        "rgba": "fac350cebae0423e",
+        "depth": "60813d692adf4004",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "00b743399b2c14ad",
+        "sampleStencil": "1a5bcfc145f96383"
+      },
+      "candidate": {
+        "angle": 315,
+        "rgba": "fac350cebae0423e",
+        "depth": "60813d692adf4004",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "00b743399b2c14ad",
+        "sampleStencil": "1a5bcfc145f96383"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "angle": 0,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "a490b55c9ed543c3d0ce8be6c6abadc4fbdbcb13a23747e5d3981d8c8607820f",
+        "candidate": "a490b55c9ed543c3d0ce8be6c6abadc4fbdbcb13a23747e5d3981d8c8607820f"
+      },
+      "reference": {
+        "angle": 0,
+        "rgba": "0d2a54e21af7e9cd",
+        "depth": "36c026808d99947b",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "c23c9404080bc4e7",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 0,
+        "rgba": "0d2a54e21af7e9cd",
+        "depth": "36c026808d99947b",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "c23c9404080bc4e7",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "angle": 45,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "ac37fd346e204b941ae4170e3ebc476c49f7640222bc8bab89ec093d53da696e",
+        "candidate": "ac37fd346e204b941ae4170e3ebc476c49f7640222bc8bab89ec093d53da696e"
+      },
+      "reference": {
+        "angle": 45,
+        "rgba": "54534a93ac94e745",
+        "depth": "6f0095754be0cf92",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "65bcf05bdaba2204",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 45,
+        "rgba": "54534a93ac94e745",
+        "depth": "6f0095754be0cf92",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "65bcf05bdaba2204",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "angle": 90,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "52b72ea8d3bbfb21ec140c228854120ac70503397869f5748be40cee4f1e563a",
+        "candidate": "52b72ea8d3bbfb21ec140c228854120ac70503397869f5748be40cee4f1e563a"
+      },
+      "reference": {
+        "angle": 90,
+        "rgba": "9bea854772341768",
+        "depth": "097ac88e74d27eb6",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "9bfb050e4acb0364",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 90,
+        "rgba": "9bea854772341768",
+        "depth": "097ac88e74d27eb6",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "9bfb050e4acb0364",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "angle": 135,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "0ee6584bf8f698880b88e0ce860e134357657a9e6dcf2563aa2544d62b7a9676",
+        "candidate": "0ee6584bf8f698880b88e0ce860e134357657a9e6dcf2563aa2544d62b7a9676"
+      },
+      "reference": {
+        "angle": 135,
+        "rgba": "9a29b10abb01193f",
+        "depth": "5d79de51d9287575",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "bbee0d00d18cd857",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 135,
+        "rgba": "9a29b10abb01193f",
+        "depth": "5d79de51d9287575",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "bbee0d00d18cd857",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "angle": 160,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "ff2cbc6a441225077ec55ca2f5ca9189aa73454f7864a0a38d852cd754a073bd",
+        "candidate": "ff2cbc6a441225077ec55ca2f5ca9189aa73454f7864a0a38d852cd754a073bd"
+      },
+      "reference": {
+        "angle": 160,
+        "rgba": "f4c3cfe15ed7f724",
+        "depth": "2c7ee74c33dd5311",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "b6bcf146709d53c0",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 160,
+        "rgba": "f4c3cfe15ed7f724",
+        "depth": "2c7ee74c33dd5311",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "b6bcf146709d53c0",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "angle": 180,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "7fcf9e3fbc2bd499459f55f4c084d1c86fe55ed8098937a5cf2427e1e67de912",
+        "candidate": "7fcf9e3fbc2bd499459f55f4c084d1c86fe55ed8098937a5cf2427e1e67de912"
+      },
+      "reference": {
+        "angle": 180,
+        "rgba": "d180c29b2facdf2a",
+        "depth": "42ed5dc589f2ebf4",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "02fddced4a729c4b",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 180,
+        "rgba": "d180c29b2facdf2a",
+        "depth": "42ed5dc589f2ebf4",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "02fddced4a729c4b",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "angle": 225,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "dfebbaa0b33df7caa11b63e095838596033dfdc4ea94a8abdec631247e81e965",
+        "candidate": "dfebbaa0b33df7caa11b63e095838596033dfdc4ea94a8abdec631247e81e965"
+      },
+      "reference": {
+        "angle": 225,
+        "rgba": "b921108f131d2536",
+        "depth": "3d93b4b7f0e71586",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "c6a335c5768faafb",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 225,
+        "rgba": "b921108f131d2536",
+        "depth": "3d93b4b7f0e71586",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "c6a335c5768faafb",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "angle": 270,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "1a6ba08344d70ce830ba0e991431edee46bcf4fb40ea9e3068164529fc30d8cb",
+        "candidate": "1a6ba08344d70ce830ba0e991431edee46bcf4fb40ea9e3068164529fc30d8cb"
+      },
+      "reference": {
+        "angle": 270,
+        "rgba": "6cf5ae4254fb4ee2",
+        "depth": "02a0e55bb37704ce",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "f8a3e02246df5d99",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 270,
+        "rgba": "6cf5ae4254fb4ee2",
+        "depth": "02a0e55bb37704ce",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "f8a3e02246df5d99",
+        "sampleStencil": "009b538b2455c383"
+      }
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "angle": 315,
+      "physicalPlanesExact": true,
+      "depthBuffersByteIdentical": true,
+      "alphaBuffersByteIdentical": {
+        "rgba": true,
+        "sample-color": true
+      },
+      "rgbaByteIdentical": true,
+      "meanAbsoluteChannelError": 0.0,
+      "meanSquaredChannelError": 0.0,
+      "maxChannelError": 0,
+      "pixelFractionOver8": 0.0,
+      "pixelFractionOver32": 0.0,
+      "imageSha256": {
+        "baseline": "e414925e05a6353cc4e04078c2a2660ac187a4393310ed06f1a418967ca37f9a",
+        "candidate": "e414925e05a6353cc4e04078c2a2660ac187a4393310ed06f1a418967ca37f9a"
+      },
+      "reference": {
+        "angle": 315,
+        "rgba": "978553c7ac2edbb4",
+        "depth": "7e62a2339e069db3",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "ac5432b0777388be",
+        "sampleStencil": "009b538b2455c383"
+      },
+      "candidate": {
+        "angle": 315,
+        "rgba": "978553c7ac2edbb4",
+        "depth": "7e62a2339e069db3",
+        "stencil": "97422459bb4b3383",
+        "sampleDepth": "ac5432b0777388be",
+        "sampleStencil": "009b538b2455c383"
+      }
+    }
+  ],
+  "runs": [
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "variant": "baseline",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/control_quality",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "0",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/bistro-ms0-baseline"
+      ],
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "packSha256": "4c862bcd28ef6833a89b0a058832c051098f5cf5869590999859b86f1cc993f3",
+      "stderr": ""
+    },
+    {
+      "asset": "bistro",
+      "samples": 0,
+      "variant": "candidate",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/candidate_quality",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "0",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/bistro-ms0-candidate"
+      ],
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "packSha256": "4c862bcd28ef6833a89b0a058832c051098f5cf5869590999859b86f1cc993f3",
+      "stderr": ""
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "variant": "baseline",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/control_quality",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "2",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/bistro-ms2-baseline"
+      ],
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "packSha256": "4c862bcd28ef6833a89b0a058832c051098f5cf5869590999859b86f1cc993f3",
+      "stderr": ""
+    },
+    {
+      "asset": "bistro",
+      "samples": 2,
+      "variant": "candidate",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/candidate_quality",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "2",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/bistro-ms2-candidate"
+      ],
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "packSha256": "4c862bcd28ef6833a89b0a058832c051098f5cf5869590999859b86f1cc993f3",
+      "stderr": ""
+    },
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "variant": "baseline",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/control_quality",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "4",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/bistro-ms4-baseline"
+      ],
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "packSha256": "4c862bcd28ef6833a89b0a058832c051098f5cf5869590999859b86f1cc993f3",
+      "stderr": ""
+    },
+    {
+      "asset": "bistro",
+      "samples": 4,
+      "variant": "candidate",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/candidate_quality",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack",
+        "4",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/bistro-ms4-candidate"
+      ],
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "packSha256": "4c862bcd28ef6833a89b0a058832c051098f5cf5869590999859b86f1cc993f3",
+      "stderr": ""
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "variant": "baseline",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/control_quality",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "0",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/sponza-ms0-baseline"
+      ],
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "packSha256": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+      "stderr": ""
+    },
+    {
+      "asset": "sponza",
+      "samples": 0,
+      "variant": "candidate",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/candidate_quality",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "0",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/sponza-ms0-candidate"
+      ],
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "packSha256": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+      "stderr": ""
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "variant": "baseline",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/control_quality",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "2",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/sponza-ms2-baseline"
+      ],
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "packSha256": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+      "stderr": ""
+    },
+    {
+      "asset": "sponza",
+      "samples": 2,
+      "variant": "candidate",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/candidate_quality",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "2",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/sponza-ms2-candidate"
+      ],
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "packSha256": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+      "stderr": ""
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "variant": "baseline",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/control_quality",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "4",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/sponza-ms4-baseline"
+      ],
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "packSha256": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+      "stderr": ""
+    },
+    {
+      "asset": "sponza",
+      "samples": 4,
+      "variant": "candidate",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/candidate_quality",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack",
+        "4",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/sponza-ms4-candidate"
+      ],
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "packSha256": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+      "stderr": ""
+    },
+    {
+      "asset": "bmw",
+      "samples": 0,
+      "variant": "baseline",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/control_quality",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack",
+        "0",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/bmw-ms0-baseline"
+      ],
+      "camera": null,
+      "packSha256": "76cda2c57b81e10b3c92a269537b17e4e1c5f36c653bfd1af43fcb2218473cef",
+      "stderr": ""
+    },
+    {
+      "asset": "bmw",
+      "samples": 0,
+      "variant": "candidate",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/candidate_quality",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack",
+        "0",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/bmw-ms0-candidate"
+      ],
+      "camera": null,
+      "packSha256": "76cda2c57b81e10b3c92a269537b17e4e1c5f36c653bfd1af43fcb2218473cef",
+      "stderr": ""
+    },
+    {
+      "asset": "bmw",
+      "samples": 2,
+      "variant": "baseline",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/control_quality",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack",
+        "2",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/bmw-ms2-baseline"
+      ],
+      "camera": null,
+      "packSha256": "76cda2c57b81e10b3c92a269537b17e4e1c5f36c653bfd1af43fcb2218473cef",
+      "stderr": ""
+    },
+    {
+      "asset": "bmw",
+      "samples": 2,
+      "variant": "candidate",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/candidate_quality",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack",
+        "2",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/bmw-ms2-candidate"
+      ],
+      "camera": null,
+      "packSha256": "76cda2c57b81e10b3c92a269537b17e4e1c5f36c653bfd1af43fcb2218473cef",
+      "stderr": ""
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "variant": "baseline",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/control_quality",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack",
+        "4",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/bmw-ms4-baseline"
+      ],
+      "camera": null,
+      "packSha256": "76cda2c57b81e10b3c92a269537b17e4e1c5f36c653bfd1af43fcb2218473cef",
+      "stderr": ""
+    },
+    {
+      "asset": "bmw",
+      "samples": 4,
+      "variant": "candidate",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/candidate_quality",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack",
+        "4",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/bmw-ms4-candidate"
+      ],
+      "camera": null,
+      "packSha256": "76cda2c57b81e10b3c92a269537b17e4e1c5f36c653bfd1af43fcb2218473cef",
+      "stderr": ""
+    },
+    {
+      "asset": "t80",
+      "samples": 0,
+      "variant": "baseline",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/control_quality",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack",
+        "0",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/t80-ms0-baseline"
+      ],
+      "camera": null,
+      "packSha256": "cb9146d7352f52600015c499c394566acc604b43fb5760a17d133c20c5a700f4",
+      "stderr": ""
+    },
+    {
+      "asset": "t80",
+      "samples": 0,
+      "variant": "candidate",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/candidate_quality",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack",
+        "0",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/t80-ms0-candidate"
+      ],
+      "camera": null,
+      "packSha256": "cb9146d7352f52600015c499c394566acc604b43fb5760a17d133c20c5a700f4",
+      "stderr": ""
+    },
+    {
+      "asset": "t80",
+      "samples": 2,
+      "variant": "baseline",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/control_quality",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack",
+        "2",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/t80-ms2-baseline"
+      ],
+      "camera": null,
+      "packSha256": "cb9146d7352f52600015c499c394566acc604b43fb5760a17d133c20c5a700f4",
+      "stderr": ""
+    },
+    {
+      "asset": "t80",
+      "samples": 2,
+      "variant": "candidate",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/candidate_quality",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack",
+        "2",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/t80-ms2-candidate"
+      ],
+      "camera": null,
+      "packSha256": "cb9146d7352f52600015c499c394566acc604b43fb5760a17d133c20c5a700f4",
+      "stderr": ""
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "variant": "baseline",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/control_quality",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack",
+        "4",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/t80-ms4-baseline"
+      ],
+      "camera": null,
+      "packSha256": "cb9146d7352f52600015c499c394566acc604b43fb5760a17d133c20c5a700f4",
+      "stderr": ""
+    },
+    {
+      "asset": "t80",
+      "samples": 4,
+      "variant": "candidate",
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/native-gates-v4/native/candidate_quality",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack",
+        "4",
+        "/home/cosmo/Git/softgl/tmp/scene-opaque-alpha-sharing/quality-v2/t80-ms4-candidate"
+      ],
+      "camera": null,
+      "packSha256": "cb9146d7352f52600015c499c394566acc604b43fb5760a17d133c20c5a700f4",
+      "stderr": ""
+    }
+  ],
+  "passed": true,
+  "pairedViews": 108
+}

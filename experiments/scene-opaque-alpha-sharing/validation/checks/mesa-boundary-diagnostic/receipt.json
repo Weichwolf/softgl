@@ -1,0 +1,49 @@
+{
+  "passed": true,
+  "previousProductOutputExact": true,
+  "compileCommand": [
+    "/home/cosmo/.local/bin/clang-22",
+    "-std=gnu11",
+    "-O3",
+    "-g",
+    "-DNDEBUG",
+    "-fno-strict-aliasing",
+    "-ffast-math",
+    "-fno-associative-math",
+    "-fsigned-zeros",
+    "-fno-finite-math-only",
+    "-msse4.1",
+    "-mno-avx",
+    "-mno-avx2",
+    "-mno-avx512f",
+    "-Ibuild/scene-msaa-rebased-edges/v3-opaque-spans/source/libsoftgl/include",
+    "-Itmp/scene-opaque-alpha-sharing/mesa-boundary-diagnostic/recipe",
+    "tmp/scene-opaque-alpha-sharing/mesa-boundary-diagnostic/recipe/test_235_dot3_constant_output_alpha.c",
+    "tmp/scene-opaque-alpha-sharing/mesa-boundary-diagnostic/recipe/harness_softgl.c",
+    "tmp/scene-opaque-alpha-sharing/mesa-boundary-diagnostic/recipe/ppm_write.c",
+    "build/scene-msaa-rebased-edges/v3-opaque-spans/native/library/libsoftgl.a",
+    "-pthread",
+    "-lm",
+    "-o",
+    "tmp/scene-opaque-alpha-sharing/mesa-boundary-diagnostic/old-product"
+  ],
+  "runCommand": [
+    "tmp/scene-opaque-alpha-sharing/mesa-boundary-diagnostic/old-product",
+    "tmp/scene-opaque-alpha-sharing/mesa-boundary-diagnostic/old-product.rgba",
+    "tmp/scene-opaque-alpha-sharing/mesa-boundary-diagnostic/old-product.ppm"
+  ],
+  "stdout": "",
+  "stderr": "",
+  "librarySha256": "04ef99ebe4cf1b77de84a0f2efd1112026818aab335cf5f2ee78723591974edb",
+  "sourceManifestSha256": "be0b5000aead3dfd1d0165ecf73086d2b51641e8e73046e85aafce65d7305d92",
+  "binarySha256": "a63545edcf86c1b38c8782f7fdddd6ea5327fce4b0e88043ff2f7b318569b984",
+  "oldOutputSha256": "bfb2a67ddfb39aeee05aef3de61d7a608e21200d750acbf1c129e47eeede8554",
+  "newOutputSha256": "bfb2a67ddfb39aeee05aef3de61d7a608e21200d750acbf1c129e47eeede8554",
+  "recipeSha256": {
+    "ppm_write.c": "63ae3233e9e5fc2e3048bb08e90bca0d56f1169c7c8bc6871d59d4329bcfbc25",
+    "test_235_dot3_constant_output_alpha.c": "ab01d54241e1f0e1759f61b6d231093387b01035c6b2fb02dd916b7a4db06c92",
+    "harness_softgl.c": "eec37277908a8040f98b43a3319e2bfe8d31235182c67c3a9640ce28d57711ee",
+    "harness.h": "fb14acb55e14a5bd17afe483d08ad940d71c97f52f7e22b2d37f218377e13ad3",
+    "ppm_write.h": "1f0176f7facc6e60b66f8c4f932762b8c4fe63dea003d3e25b3e720c68ec2e07"
+  }
+}
