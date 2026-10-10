@@ -12,7 +12,7 @@ import time
 repo = Path(__file__).resolve().parents[2]
 parser = argparse.ArgumentParser()
 parser.add_argument('--root', type=Path, default=repo/'build/scene-msaa-current-phase-accounting/v2')
-parser.add_argument('--baseline', type=Path, default=repo/'build/scene-lazy-cluster-frontend/v6-rotated/native/resident_baseline')
+parser.add_argument('--baseline', type=Path, required=True)
 parser.add_argument('--output', type=Path, required=True)
 parser.add_argument('--assets', default='bmw,t80,sponza,bistro')
 parser.add_argument('--samples', default='0,2,4')

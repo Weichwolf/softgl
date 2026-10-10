@@ -171,8 +171,8 @@ set(SG_BENCH_SCENES
     showcase:100_showcase
     shadow:202_shadow_volume
     particles:209_particles_additive
-    city:98_city_block
-    sphere_lit:57_icosphere_lit)
+    city:098_city_block
+    sphere_lit:057_icosphere_lit)
 
 foreach(pair IN LISTS SG_BENCH_SCENES)
     string(REPLACE ":" ";" parts ${pair})
@@ -197,12 +197,6 @@ target_link_libraries(bench_scenes PRIVATE softgl)
 set_target_properties(bench_scenes PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bench)
 
-# --- bench_tank: T-80 MBT asset (OBJ+PNG pre-packed by tools/pack_tank.py) ---
-add_executable(bench_tank bench/bench_tank.c)
-target_link_libraries(bench_tank PRIVATE softgl)
-set_target_properties(bench_tank PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bench)
-
 # --- Harness library: softgl backend ---
 add_library(harness_softgl STATIC harness/harness_softgl.c harness/ppm_write.c)
 target_link_libraries(harness_softgl PUBLIC softgl)
@@ -217,105 +211,105 @@ target_include_directories(harness_mesa PUBLIC harness ${OSMESA_INCLUDE_DIR})
 target_compile_definitions(harness_mesa PUBLIC SG_HARNESS_MESA=1)
 
 set(SG_TEST_CASES
-    01_clear_black
-    02_clear_red
-    03_scissor_clear
-    04_partial_viewport_clear
-    05_multi_clear_stripes
-    06_get_viewport
-    07_matrix_identity
-    08_matrix_translate
-    09_matrix_stack
-    10_ortho_projection
-    11_triangle_ccw
-    12_triangle_cw_culled
-    13_triangle_depth
-    14_triangle_frustum
-    15_two_tris_depth
-    16_flat_shaded
-    17_gouraud_rgb
-    18_fullscreen_quad
-    19_degenerate_triangle
-    20_triangle_at_edges
-    21_clip_left
-    22_clip_right
-    23_clip_top
-    24_clip_bottom
-    25_clip_near
-    26_clip_far
-    27_clip_all_planes
-    28_clip_offscreen_but_visible
-    29_clip_quad_seam
-    30_clip_many_triangles
-    31_translate
-    32_rotate_x
-    33_rotate_y
-    34_rotate_z
-    35_scale_nonuniform
-    36_rotate_translate
-    37_orbit
-    38_perspective_60fov
-    39_aspect_correction
-    40_hierarchical_transform
-    41_tex_checkerboard
-    42_tex_gradient_bilinear
-    43_tex_repeat
-    44_tex_clamp
-    45_tex_many_repeats
-    46_tex_alpha_cutout
-    47_tex_modulate
-    48_tex_replace
-    49_tex_decal
-    50_multitexture
-    51_directional_light
-    52_ambient_only
-    53_diffuse_lambert
-    54_specular_blinn
-    55_point_light_attenuation
-    56_multi_lights
-    57_icosphere_lit
-    58_colored_material
-    59_emission
-    60_normalize
-    61_tessellated_grid
-    62_icosphere_subdiv
-    63_uv_sphere
-    64_cylinder
-    65_torus
-    66_bezier_patch
-    67_extrusion
-    68_loft
-    69_superquadric
-    70_heightfield
-    71_fog_exp2
-    72_fog_linear
-    73_fog_exp
-    74_fog_colored
-    75_alpha_blend
-    76_additive_blend
-    77_alpha_test_edge
-    78_transparent_stack
-    79_premult_alpha
-    80_blend_depth
-    81_vbo_simple
-    82_vbo_interleaved_pc
-    83_vbo_interleaved_pnct
-    84_indexed_draw
-    85_multi_vbos
-    86_buffer_subdata
-    87_large_mesh
-    88_instanced_manual
-    89_dynamic_vbo
-    90_multi_drawarrays
-    91_dot3_baseline
-    92_normalmap_pattern
-    93_normalmap_depth
-    94_lit_textured_sphere
-    95_scene_sphere_ground
-    96_building_cube
-    97_multiple_buildings
-    98_city_block
-    99_moving_camera
+    001_clear_black
+    002_clear_red
+    003_scissor_clear
+    004_partial_viewport_clear
+    005_multi_clear_stripes
+    006_get_viewport
+    007_matrix_identity
+    008_matrix_translate
+    009_matrix_stack
+    010_ortho_projection
+    011_triangle_ccw
+    012_triangle_cw_culled
+    013_triangle_depth
+    014_triangle_frustum
+    015_two_tris_depth
+    016_flat_shaded
+    017_gouraud_rgb
+    018_fullscreen_quad
+    019_degenerate_triangle
+    020_triangle_at_edges
+    021_clip_left
+    022_clip_right
+    023_clip_top
+    024_clip_bottom
+    025_clip_near
+    026_clip_far
+    027_clip_all_planes
+    028_clip_offscreen_but_visible
+    029_clip_quad_seam
+    030_clip_many_triangles
+    031_translate
+    032_rotate_x
+    033_rotate_y
+    034_rotate_z
+    035_scale_nonuniform
+    036_rotate_translate
+    037_orbit
+    038_perspective_60fov
+    039_aspect_correction
+    040_hierarchical_transform
+    041_tex_checkerboard
+    042_tex_gradient_bilinear
+    043_tex_repeat
+    044_tex_clamp
+    045_tex_many_repeats
+    046_tex_alpha_cutout
+    047_tex_modulate
+    048_tex_replace
+    049_tex_decal
+    050_multitexture
+    051_directional_light
+    052_ambient_only
+    053_diffuse_lambert
+    054_specular_blinn
+    055_point_light_attenuation
+    056_multi_lights
+    057_icosphere_lit
+    058_colored_material
+    059_emission
+    060_normalize
+    061_tessellated_grid
+    062_icosphere_subdiv
+    063_uv_sphere
+    064_cylinder
+    065_torus
+    066_bezier_patch
+    067_extrusion
+    068_loft
+    069_superquadric
+    070_heightfield
+    071_fog_exp2
+    072_fog_linear
+    073_fog_exp
+    074_fog_colored
+    075_alpha_blend
+    076_additive_blend
+    077_alpha_test_edge
+    078_transparent_stack
+    079_premult_alpha
+    080_blend_depth
+    081_vbo_simple
+    082_vbo_interleaved_pc
+    083_vbo_interleaved_pnct
+    084_indexed_draw
+    085_multi_vbos
+    086_buffer_subdata
+    087_large_mesh
+    088_instanced_manual
+    089_dynamic_vbo
+    090_multi_drawarrays
+    091_dot3_baseline
+    092_normalmap_pattern
+    093_normalmap_depth
+    094_lit_textured_sphere
+    095_scene_sphere_ground
+    096_building_cube
+    097_multiple_buildings
+    098_city_block
+    099_moving_camera
     100_showcase
     101_begin_triangles
     102_vertex_variants
@@ -469,48 +463,48 @@ math(EXPR SG_RASTER_MAX_BAD "640 * 360 * 2 / 100")    # 2% budget
 math(EXPR SG_LINE_MAX_BAD   "640 * 360 * 3 / 100")    # 3% budget for lines/points
 math(EXPR SG_LINE_MAX_BAD_BIG "640 * 360 * 5 / 100")  # 5% for wide-line / offset
 
-set(SG_TOL_11_triangle_ccw_MAX_DELTA 2)
-set(SG_TOL_11_triangle_ccw_MAX_BAD ${SG_RASTER_MAX_BAD})
-set(SG_TOL_13_triangle_depth_MAX_DELTA 2)
-set(SG_TOL_13_triangle_depth_MAX_BAD ${SG_RASTER_MAX_BAD})
-set(SG_TOL_14_triangle_frustum_MAX_DELTA 2)
-set(SG_TOL_14_triangle_frustum_MAX_BAD ${SG_RASTER_MAX_BAD})
-set(SG_TOL_15_two_tris_depth_MAX_DELTA 2)
-set(SG_TOL_15_two_tris_depth_MAX_BAD ${SG_RASTER_MAX_BAD})
-set(SG_TOL_16_flat_shaded_MAX_DELTA 2)
-set(SG_TOL_16_flat_shaded_MAX_BAD ${SG_RASTER_MAX_BAD})
-set(SG_TOL_17_gouraud_rgb_MAX_DELTA 2)
-set(SG_TOL_17_gouraud_rgb_MAX_BAD ${SG_RASTER_MAX_BAD})
-set(SG_TOL_18_fullscreen_quad_MAX_DELTA 2)
-set(SG_TOL_18_fullscreen_quad_MAX_BAD ${SG_RASTER_MAX_BAD})
-set(SG_TOL_19_degenerate_triangle_MAX_DELTA 2)
-set(SG_TOL_19_degenerate_triangle_MAX_BAD ${SG_RASTER_MAX_BAD})
-set(SG_TOL_20_triangle_at_edges_MAX_DELTA 2)
-set(SG_TOL_20_triangle_at_edges_MAX_BAD ${SG_RASTER_MAX_BAD})
+set(SG_TOL_011_triangle_ccw_MAX_DELTA 2)
+set(SG_TOL_011_triangle_ccw_MAX_BAD ${SG_RASTER_MAX_BAD})
+set(SG_TOL_013_triangle_depth_MAX_DELTA 2)
+set(SG_TOL_013_triangle_depth_MAX_BAD ${SG_RASTER_MAX_BAD})
+set(SG_TOL_014_triangle_frustum_MAX_DELTA 2)
+set(SG_TOL_014_triangle_frustum_MAX_BAD ${SG_RASTER_MAX_BAD})
+set(SG_TOL_015_two_tris_depth_MAX_DELTA 2)
+set(SG_TOL_015_two_tris_depth_MAX_BAD ${SG_RASTER_MAX_BAD})
+set(SG_TOL_016_flat_shaded_MAX_DELTA 2)
+set(SG_TOL_016_flat_shaded_MAX_BAD ${SG_RASTER_MAX_BAD})
+set(SG_TOL_017_gouraud_rgb_MAX_DELTA 2)
+set(SG_TOL_017_gouraud_rgb_MAX_BAD ${SG_RASTER_MAX_BAD})
+set(SG_TOL_018_fullscreen_quad_MAX_DELTA 2)
+set(SG_TOL_018_fullscreen_quad_MAX_BAD ${SG_RASTER_MAX_BAD})
+set(SG_TOL_019_degenerate_triangle_MAX_DELTA 2)
+set(SG_TOL_019_degenerate_triangle_MAX_BAD ${SG_RASTER_MAX_BAD})
+set(SG_TOL_020_triangle_at_edges_MAX_DELTA 2)
+set(SG_TOL_020_triangle_at_edges_MAX_BAD ${SG_RASTER_MAX_BAD})
 foreach(clip_case
-    21_clip_left 22_clip_right 23_clip_top 24_clip_bottom
-    25_clip_near 26_clip_far 27_clip_all_planes
-    28_clip_offscreen_but_visible 29_clip_quad_seam 30_clip_many_triangles
-    31_translate 32_rotate_x 33_rotate_y 34_rotate_z
-    35_scale_nonuniform 36_rotate_translate 37_orbit
-    38_perspective_60fov 39_aspect_correction 40_hierarchical_transform
-    41_tex_checkerboard 42_tex_gradient_bilinear 43_tex_repeat 44_tex_clamp
-    45_tex_many_repeats 46_tex_alpha_cutout
-    47_tex_modulate 48_tex_replace 49_tex_decal 50_multitexture
-    51_directional_light 52_ambient_only 53_diffuse_lambert 54_specular_blinn
-    55_point_light_attenuation 56_multi_lights 57_icosphere_lit
-    58_colored_material 59_emission 60_normalize
-    61_tessellated_grid 62_icosphere_subdiv 63_uv_sphere 64_cylinder
-    65_torus 66_bezier_patch 67_extrusion 68_loft 69_superquadric 70_heightfield
-    71_fog_exp2 72_fog_linear 73_fog_exp 74_fog_colored
-    75_alpha_blend 76_additive_blend 77_alpha_test_edge
-    78_transparent_stack 79_premult_alpha 80_blend_depth
-    81_vbo_simple 82_vbo_interleaved_pc 83_vbo_interleaved_pnct
-    84_indexed_draw 85_multi_vbos 86_buffer_subdata
-    87_large_mesh 88_instanced_manual 89_dynamic_vbo 90_multi_drawarrays
-    91_dot3_baseline 92_normalmap_pattern 93_normalmap_depth
-    94_lit_textured_sphere 95_scene_sphere_ground 96_building_cube
-    97_multiple_buildings 98_city_block 99_moving_camera 100_showcase
+    021_clip_left 022_clip_right 023_clip_top 024_clip_bottom
+    025_clip_near 026_clip_far 027_clip_all_planes
+    028_clip_offscreen_but_visible 029_clip_quad_seam 030_clip_many_triangles
+    031_translate 032_rotate_x 033_rotate_y 034_rotate_z
+    035_scale_nonuniform 036_rotate_translate 037_orbit
+    038_perspective_60fov 039_aspect_correction 040_hierarchical_transform
+    041_tex_checkerboard 042_tex_gradient_bilinear 043_tex_repeat 044_tex_clamp
+    045_tex_many_repeats 046_tex_alpha_cutout
+    047_tex_modulate 048_tex_replace 049_tex_decal 050_multitexture
+    051_directional_light 052_ambient_only 053_diffuse_lambert 054_specular_blinn
+    055_point_light_attenuation 056_multi_lights 057_icosphere_lit
+    058_colored_material 059_emission 060_normalize
+    061_tessellated_grid 062_icosphere_subdiv 063_uv_sphere 064_cylinder
+    065_torus 066_bezier_patch 067_extrusion 068_loft 069_superquadric 070_heightfield
+    071_fog_exp2 072_fog_linear 073_fog_exp 074_fog_colored
+    075_alpha_blend 076_additive_blend 077_alpha_test_edge
+    078_transparent_stack 079_premult_alpha 080_blend_depth
+    081_vbo_simple 082_vbo_interleaved_pc 083_vbo_interleaved_pnct
+    084_indexed_draw 085_multi_vbos 086_buffer_subdata
+    087_large_mesh 088_instanced_manual 089_dynamic_vbo 090_multi_drawarrays
+    091_dot3_baseline 092_normalmap_pattern 093_normalmap_depth
+    094_lit_textured_sphere 095_scene_sphere_ground 096_building_cube
+    097_multiple_buildings 098_city_block 099_moving_camera 100_showcase
     101_begin_triangles 102_vertex_variants 103_triangle_strip
     104_triangle_fan 105_quads_one 106_quads_two 107_quad_strip
     108_polygon_hexagon 109_lit_triangle 110_textured_quad
@@ -779,45 +773,39 @@ add_test(NAME benchmark_fp6
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}/bench)
 set_tests_properties(benchmark_fp6 PROPERTIES LABELS "bench")
 
-# The browser tank scene also gets Mesa references at three camera angles.
-add_library(tank_image_scene OBJECT ${CMAKE_SOURCE_DIR}/wasm/tank_wrap.c)
-target_include_directories(tank_image_scene PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/include)
-foreach(angle 0 120 240)
-    set(case_name tank_view_${angle})
-    foreach(backend ref sgl)
-        add_executable(${backend}_${case_name} bench/tank_image.c
-            $<TARGET_OBJECTS:tank_image_scene>)
-        target_compile_definitions(${backend}_${case_name} PRIVATE
-            SG_TANK_ANGLE=${angle}
-            SG_TANK_PACK_PATH="${CMAKE_SOURCE_DIR}/tests/bench/tank_data/tank.pack")
-        if(backend STREQUAL "ref")
-            target_link_libraries(${backend}_${case_name} PRIVATE harness_mesa)
-        else()
-            target_link_libraries(${backend}_${case_name} PRIVATE harness_softgl)
+# All registered model scenes share the same asset and image-test path.
+set(SG_MODEL_ASSET_DIR "${CMAKE_SOURCE_DIR}/build/assets" CACHE PATH "Prepared model packs")
+file(READ "${CMAKE_SOURCE_DIR}/assets/models.json" SG_MODEL_REGISTRY)
+string(JSON SG_MODEL_COUNT LENGTH "${SG_MODEL_REGISTRY}")
+math(EXPR SG_MODEL_LAST "${SG_MODEL_COUNT} - 1")
+foreach(model_index RANGE ${SG_MODEL_LAST})
+    string(JSON model MEMBER "${SG_MODEL_REGISTRY}" ${model_index})
+    set(model_pack "${SG_MODEL_ASSET_DIR}/${model}.pack")
+    if(NOT EXISTS "${model_pack}")
+        continue()
+    endif()
+    if(NOT TARGET model_image_scene)
+        add_library(model_image_scene OBJECT ${CMAKE_SOURCE_DIR}/wasm/model_wrap.c)
+        target_include_directories(model_image_scene PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/include)
+        add_library(model_softgl_scene OBJECT ${CMAKE_SOURCE_DIR}/wasm/model_wrap.c)
+        target_include_directories(model_softgl_scene PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/include)
+        target_compile_definitions(model_softgl_scene PRIVATE SOFTGL_MODEL_VERTEX_ATTRIBUTES
+            SOFTGL_MODEL_SCENE_VISIBILITY SOFTGL_MODEL_SCENE_POSITIONS)
+    endif()
+    string(JSON camera_count ERROR_VARIABLE camera_error LENGTH "${SG_MODEL_REGISTRY}" ${model} camera)
+    set(camera_values "")
+    if(NOT camera_error)
+        if(NOT camera_count EQUAL 8)
+            message(FATAL_ERROR "${model}: camera needs eight values")
         endif()
-        add_test(NAME ${case_name}_run_${backend}
-            COMMAND ${backend}_${case_name}
-                ${CMAKE_BINARY_DIR}/out/${case_name}_${backend}.rgba
-                ${CMAKE_BINARY_DIR}/out/${case_name}_${backend}.ppm)
-    endforeach()
-    add_test(NAME ${case_name}_compare COMMAND sg_compare
-        ${CMAKE_BINARY_DIR}/out/${case_name}_ref.rgba
-        ${CMAKE_BINARY_DIR}/out/${case_name}_sgl.rgba
-        2 ${SG_RASTER_MAX_BAD}
-        ${CMAKE_BINARY_DIR}/out/${case_name}_diff.ppm)
-    set_tests_properties(${case_name}_compare PROPERTIES
-        DEPENDS "${case_name}_run_ref;${case_name}_run_sgl")
-endforeach()
-
-set(SG_MODEL_PACK "${CMAKE_SOURCE_DIR}/build/assets/bmw.pack" CACHE FILEPATH "Prepared BMW model pack")
-if(EXISTS "${SG_MODEL_PACK}")
-    add_library(model_image_scene OBJECT ${CMAKE_SOURCE_DIR}/wasm/model_wrap.c)
-    target_include_directories(model_image_scene PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/include)
-    add_library(model_softgl_scene OBJECT ${CMAKE_SOURCE_DIR}/wasm/model_wrap.c)
-    target_include_directories(model_softgl_scene PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/include)
-    target_compile_definitions(model_softgl_scene PRIVATE SOFTGL_MODEL_VERTEX_ATTRIBUTES SOFTGL_MODEL_SCENE_VISIBILITY SOFTGL_MODEL_SCENE_POSITIONS)
+        foreach(camera_index RANGE 0 7)
+            string(JSON camera_value GET "${SG_MODEL_REGISTRY}" ${model} camera ${camera_index})
+            list(APPEND camera_values "${camera_value}")
+        endforeach()
+        list(JOIN camera_values "," camera_values)
+    endif()
     foreach(angle 0 120 240)
-        set(case_name bmw_view_${angle})
+        set(case_name ${model}_view_${angle})
         foreach(backend ref sgl)
             if(backend STREQUAL "ref")
                 set(model_scene model_image_scene)
@@ -826,7 +814,10 @@ if(EXISTS "${SG_MODEL_PACK}")
             endif()
             add_executable(${backend}_${case_name} bench/model_image.c $<TARGET_OBJECTS:${model_scene}>)
             target_compile_definitions(${backend}_${case_name} PRIVATE
-                SG_MODEL_ANGLE=${angle} SG_MODEL_PACK_PATH="${SG_MODEL_PACK}")
+                SG_MODEL_ANGLE=${angle} SG_MODEL_PACK_PATH="${model_pack}")
+            if(camera_values)
+                target_compile_definitions(${backend}_${case_name} PRIVATE SG_MODEL_CAMERA=${camera_values})
+            endif()
             if(backend STREQUAL "ref")
                 target_link_libraries(${backend}_${case_name} PRIVATE harness_mesa)
             else()
@@ -836,7 +827,7 @@ if(EXISTS "${SG_MODEL_PACK}")
                 ${CMAKE_BINARY_DIR}/out/${case_name}_${backend}.rgba
                 ${CMAKE_BINARY_DIR}/out/${case_name}_${backend}.ppm)
         endforeach()
-        # Match the established cube-map case delta and raster edge budget.
+        # Existing model tolerance and raster edge budget apply to every asset.
         add_test(NAME ${case_name}_compare COMMAND sg_compare
             ${CMAKE_BINARY_DIR}/out/${case_name}_ref.rgba
             ${CMAKE_BINARY_DIR}/out/${case_name}_sgl.rgba
@@ -844,7 +835,7 @@ if(EXISTS "${SG_MODEL_PACK}")
         set_tests_properties(${case_name}_compare PROPERTIES
             DEPENDS "${case_name}_run_ref;${case_name}_run_sgl")
     endforeach()
-endif()
+endforeach()
 
 # Create out directory
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/out)
@@ -941,12 +932,12 @@ target_link_libraries(scene_uv_contract PRIVATE softgl)
 add_test(NAME scene_uv_contract COMMAND scene_uv_contract)
 set_tests_properties(scene_uv_contract PROPERTIES TIMEOUT 90)
 
-add_executable(scene_native_wide_contract scene_native_wide.c)
-target_include_directories(scene_native_wide_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
-target_compile_options(scene_native_wide_contract PRIVATE -msse4.1)
-target_link_libraries(scene_native_wide_contract PRIVATE softgl)
-add_test(NAME scene_native_wide_contract COMMAND scene_native_wide_contract)
-set_tests_properties(scene_native_wide_contract PROPERTIES TIMEOUT 90)
+add_executable(scene_simd128_contract scene_simd128.c)
+target_include_directories(scene_simd128_contract PRIVATE ${CMAKE_SOURCE_DIR}/libsoftgl/src)
+target_compile_options(scene_simd128_contract PRIVATE -msse4.1)
+target_link_libraries(scene_simd128_contract PRIVATE softgl)
+add_test(NAME scene_simd128_contract COMMAND scene_simd128_contract)
+set_tests_properties(scene_simd128_contract PROPERTIES TIMEOUT 90)
 
 # Constant final alpha: analytic cutoff oracle and exact opaque RGB/sample planes.
 add_executable(scene_output_alpha_contract scene_output_alpha.c)

@@ -29,7 +29,7 @@ shading. Alpha-tested geometry keeps its previous shading.
 Sources: our [Full control and CPU profiles](../scene-full-msaa-control/README.md),
 [existing sample grouping](../../libsoftgl/src/scene_visibility.c),
 [exact uniform metadata](../scene-msaa-uniform-metadata/README.md),
-[earlier low-density trial](../scene-msaa-low-density/README.md), and
+[earlier low-density trial](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-msaa-low-density/README.md), and
 [model upload/material selection](../../wasm/model_wrap.c).
 This within-pixel material approximation and its eligibility policy are our
 proposal; no upstream speedup is used as evidence.

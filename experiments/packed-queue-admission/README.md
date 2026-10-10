@@ -19,13 +19,13 @@ is proposed. SIMD remains SSE4.1 / WASM128, caller plus three helpers.
 
 This differs from earlier [packed oversized draws](../packed-oversized-draws/README.md)
 (single-job streams), [DOT3 compact queue](../dot3-compact-queue/README.md)
-(storage within already-admitted draws) and [packed capacity](../ordered-packed-capacity/README.md)
+(storage within already-admitted draws) and [packed capacity](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/ordered-packed-capacity/README.md)
 (reservation rounding). It changes admission and cross-draw cooperation.
 
 Sources: own [workers.c](../../libsoftgl/src/workers.c) and
 [workers_queue_raw.inc](../../libsoftgl/src/workers_queue_raw.inc), reviewed on
 accepted [1ff3c2c](https://github.com/Weichwolf/softgl/commit/1ff3c2c2c12113d0d37fe53116b823b60cba52cf),
-plus the [fresh CPU attribution](../native-cpu-profiles/current-1ff/broadcast-callers.txt).
+plus the [fresh CPU attribution](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/native-cpu-profiles/current-1ff/broadcast-callers.txt).
 No external code copied. `prepare.py --baseline <commit>` freezes the selected
 accepted source and writes only ignored build/ files. Build with native Clang 22
 and test 640x360 AB/BA off/2x/4x before considering production adoption.

@@ -250,3 +250,10 @@ The [current triangle-packet comparison](current-triangle-packets/README.md)
 now directly measures renderer `8085056` against the same Mesa/GLimpSW inputs:
 72 accepted balanced runs. This is the current backend gap; previous tables
 retain their dated renderer provenance.
+
+## Historical browser receipt
+
+[historical-wasm-results.json](historical-wasm-results.json) preserves the earlier
+browser measurements and image checks unchanged. Its old case names, OBJ tank
+workload and source paths describe that historical run, not the current model
+catalog. Current measurement output belongs under `build/perf/`.

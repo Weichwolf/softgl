@@ -4,7 +4,7 @@ Retained for the reproducible BMW off-mode frame-time reduction of 5.131%/5.432%
 
 ## Architecture
 
-Fresh [accepted-e7 profiles](../accepted-e7-profiles/README.md) show general
+Fresh [accepted-e7 profiles](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/accepted-e7-profiles/README.md) show general
 fragment writers in BMW's off/2x/4x paths. Source inspection confirms that
 packet rasterizers already test coverage and depth, but blended fragments
 enter the complete ordered fragment writer again. Opaque MSAA already has

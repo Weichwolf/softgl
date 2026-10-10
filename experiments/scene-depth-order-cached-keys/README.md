@@ -8,7 +8,7 @@ browser cases pass; localhost:8000 serves the updated WASM.
 
 ## Method
 
-The earlier [near-first trial](../scene-depth-order/README.md) adds a
+The earlier [near-first trial](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-depth-order/README.md) adds a
 minimum-depth field to every primitive. This implementation reuses existing
 four-triangle occlusion summaries, retaining the original 24-byte primitive.
 For each 16-triangle reference, take the minimum near depth of its active

@@ -10,7 +10,7 @@ const {chromium} = require('playwright');
 
 const repo = path.resolve(__dirname, '..');
 const options = {
-    'wasm-build': 'build/wasm', 'native-build': 'build/native',
+    'wasm-build': 'build/wasm', 'native-build': 'build/native-clang22',
     output: 'build/perf/result.json', rounds: '7', warmup: '20', frames: '60', samples: '0',
     browser: process.env.CHROMIUM || '/usr/bin/chromium',
     'reference-build': '',
@@ -44,11 +44,43 @@ if (expectedWorkerCounts) {
         if (!Number.isInteger(options[key]) || options[key] < 0) throw new Error(`Invalid ${key}`);
     }
 }
-const modelPack = fs.existsSync(path.join(wasmDir, 'bmw.pack')) ? path.join(wasmDir, 'bmw.pack') : path.join(repo, 'build/assets/bmw.pack');
-const referenceModelPack = referenceDir && fs.existsSync(path.join(referenceDir, 'bmw.pack')) ?
-    path.join(referenceDir, 'bmw.pack') : modelPack;
-const hashFile = file => fs.existsSync(file) ?
-    crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex') : null;
+const models = JSON.parse(fs.readFileSync(path.join(repo, 'assets/models.json'), 'utf8'));
+const modelNames = Object.keys(models);
+const resolveModelPack = (name, directory) => {
+    const candidates = [directory, path.join(repo, 'build/assets')].filter(Boolean);
+    for (const folder of candidates) {
+        for (const file of [models[name].browserPack, `${name}.pack`].filter(Boolean)) {
+            if (fs.existsSync(path.join(folder, file))) return path.join(folder, file);
+        }
+    }
+    return path.join(repo, 'build/assets', `${name}.pack`);
+};
+const modelPacks = Object.fromEntries(modelNames.map(name => [name, resolveModelPack(name, wasmDir)]));
+const referenceModelPacks = Object.fromEntries(modelNames.map(name => [name,
+    referenceDir ? resolveModelPack(name, referenceDir) : modelPacks[name]]));
+const modelTextureFiles = new Map();
+for (const packs of [modelPacks, referenceModelPacks]) {
+    for (const name of modelNames) {
+        const manifestName = models[name].textureManifest;
+        if (!manifestName) continue;
+        const folder = path.dirname(packs[name]), manifestFile = path.join(folder, manifestName);
+        if (!fs.existsSync(manifestFile)) continue;
+        const prefix = packs === referenceModelPacks ? '/reference/' : '/';
+        modelTextureFiles.set(prefix + manifestName, manifestFile);
+        const manifest = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
+        for (const group of manifest.groups) modelTextureFiles.set(prefix + group.file, path.join(folder, group.file));
+    }
+}
+const hashFile = file => {
+    if (!fs.existsSync(file)) return null;
+    const digest = crypto.createHash('sha256'), buffer = Buffer.alloc(4 * 1024 * 1024);
+    const fd = fs.openSync(file, 'r');
+    try {
+        let size;
+        while ((size = fs.readSync(fd, buffer, 0, buffer.length, null))) digest.update(buffer.subarray(0, size));
+        return digest.digest('hex');
+    } finally { fs.closeSync(fd); }
+};
 if (options.crossover && (!referenceDir || options.rounds < 2 || options.rounds % 2)) {
     throw new Error('--crossover requires a reference build and an even number of rounds');
 }
@@ -65,9 +97,9 @@ const imageCases = manifest.tests.filter(t => t.name.endsWith('_compare')).map(t
     name: t.name.replace(/_compare$/, ''), ref: t.command[1],
     maxDelta: Number(t.command[3]), maxBad: Number(t.command[4]),
 }));
-const cases = imageCases.filter(t => !/^(tank|bmw)_view_/.test(t.name));
-const tankCases = imageCases.filter(t => t.name.startsWith('tank_view_'));
-const bmwCases = imageCases.filter(t => t.name.startsWith('bmw_view_'));
+const modelCases = imageCases.filter(t => modelNames.some(name => t.name.startsWith(`${name}_view_`)))
+    .map(t => ({...t, asset:t.name.split('_view_')[0], angle:Number(t.name.split('_view_')[1])}));
+const cases = imageCases.filter(t => !modelCases.some(model => model.name === t.name));
 const refs = new Map(imageCases.map(t => [`/refs/${t.name}.rgba`, t.ref]));
 const html = '<!doctype html><script src="/module/softgl.js"></script>' +
     '<script>window.ready = createSoftGL({printErr:console.error}).then(m => window.mod=m);</script>';
@@ -84,14 +116,14 @@ const server = http.createServer((req, res) => {
     const files = new Map([
         ['/module/softgl.js', path.join(wasmDir, 'softgl.js')],
         ['/module/softgl.wasm', path.join(wasmDir, 'softgl.wasm')],
-        ['/tank.pack', path.join(repo, 'tests/bench/tank_data/tank.pack')],
-        ['/bmw.pack', modelPack],
+        ...modelNames.map(name => [`/${name}.pack`, modelPacks[name]]),
         ...refs,
+        ...modelTextureFiles,
     ]);
     if (referenceDir) {
         files.set('/reference/softgl.js', path.join(referenceDir, 'softgl.js'));
         files.set('/reference/softgl.wasm', path.join(referenceDir, 'softgl.wasm'));
-        files.set('/reference/bmw.pack', referenceModelPack);
+        for (const name of modelNames) files.set(`/reference/${name}.pack`, referenceModelPacks[name]);
     }
     const file = files.get(url);
     if (!file || !fs.existsSync(file)) { res.writeHead(404); res.end('Missing artifact'); return; }
@@ -124,13 +156,41 @@ async function main() {
             driverSha256: crypto.createHash('sha256').update(fs.readFileSync(__filename)).digest('hex'),
             wasmSha256: crypto.createHash('sha256').update(fs.readFileSync(path.join(wasmDir, 'softgl.wasm'))).digest('hex'),
             options, metadata,
-            modelAssets: {candidatePackSha256:hashFile(modelPack),
-                referencePackSha256:referenceDir ? hashFile(referenceModelPack) : null},
+            modelAssets: Object.fromEntries(modelNames.map(name => [name, {
+                candidatePackSha256:hashFile(modelPacks[name]),
+                referencePackSha256:referenceDir ? hashFile(referenceModelPacks[name]) : null,
+                nativePackSha256:hashFile(path.join(repo, 'build/assets', `${name}.pack`)),
+                textureManifestSha256:models[name].textureManifest ?
+                    hashFile(path.join(path.dirname(modelPacks[name]), models[name].textureManifest)) : null,
+            }])),
             emscripten: execFileSync('emcc', ['--version'], {encoding: 'utf8'}).split('\n')[0],
             sourceDiffSha256: crypto.createHash('sha256').update(execFileSync('git', ['diff', '--', 'libsoftgl', 'wasm'], {cwd: repo})).digest('hex'),
         };
         if (!options['bench-only']) {
-            result.images = await page.evaluate(async ({cases, tankCases, bmwCases}) => {
+            result.images = await page.evaluate(async ({cases, modelCases, models}) => {
+                const uploadTextures = async (asset, prefix = '/') => {
+                    if (!models[asset].textureManifest) return;
+                    const response = await fetch(prefix + models[asset].textureManifest);
+                    if (!response.ok) throw new Error(`${asset} texture manifest missing`);
+                    const manifest = await response.json();
+                    const ptr = mod._malloc(manifest.maximumUploadBytes);
+                    if (!ptr) throw new Error(`${asset} texture allocation failed`);
+                    try {
+                        for (const group of manifest.groups) {
+                            const response = await fetch(prefix + group.file);
+                            if (!response.ok) throw new Error(`${group.file} missing`);
+                            const pixels = new Uint8Array(await response.arrayBuffer());
+                            if (pixels.length !== group.width * group.height * 4) throw new Error('Invalid texture size');
+                            mod.HEAPU8.set(pixels, ptr);
+                            if (!mod._sg_model_upload_albedo(group.materials[0], group.width, group.height, ptr))
+                                throw new Error(`${asset} texture upload failed`);
+                            for (const material of group.materials.slice(1)) {
+                                if (!mod._sg_model_share_albedo(material, group.materials[0]))
+                                    throw new Error(`${asset} texture sharing failed`);
+                            }
+                        }
+                    } finally { mod._free(ptr); }
+                };
                 const results = [];
                 const count = mod._sg_test_count();
                 if (count !== cases.length) throw new Error(`Case count mismatch: WASM ${count}, native ${cases.length}`);
@@ -175,70 +235,49 @@ async function main() {
                         await compare(spec, ctx);
                     } finally { mod._softgl_destroy(ctx); }
                 }
-                if (tankCases.length) {
-                    const bytes = new Uint8Array(await (await fetch('/tank.pack')).arrayBuffer());
-                    const ptr = mod._malloc(bytes.length);
-                    if (!ptr) throw new Error('Tank allocation failed');
-                    mod.HEAPU8.set(bytes, ptr);
-                    try {
-                        for (const spec of tankCases) {
-                            const angle = Number(spec.name.replace('tank_view_', ''));
-                            const ctx = mod._softgl_create(640, 360);
-                            if (!ctx) throw new Error('Tank context allocation failed');
-                            try {
-                                mod._softgl_make_current(ctx);
-                                if (!mod._sg_tank_load(ptr, bytes.length)) throw new Error('Tank load failed');
-                                mod._sg_tank_render(angle, 640, 360);
-                                await compare(spec, ctx);
-                            } finally {
-                                mod._sg_tank_unload();
-                                mod._softgl_destroy(ctx);
-                            }
-                        }
-                    } finally { mod._free(ptr); }
-                }
-                if (bmwCases.length) {
-                    const response = await fetch('/bmw.pack');
-                    if (!response.ok) throw new Error('BMW pack missing');
+                for (const asset of new Set(modelCases.map(spec => spec.asset))) {
+                    const response = await fetch(`/${asset}.pack`);
+                    if (!response.ok) throw new Error(`${asset} pack missing`);
                     const bytes = new Uint8Array(await response.arrayBuffer());
                     const ptr = mod._malloc(bytes.length);
-                    if (!ptr) throw new Error('BMW allocation failed');
+                    if (!ptr) throw new Error(`${asset} allocation failed`);
                     mod.HEAPU8.set(bytes, ptr);
                     try {
-                        for (const spec of bmwCases) {
+                        for (const spec of modelCases.filter(test => test.asset === asset)) {
                             const ctx = mod._softgl_create(640, 360);
-                            if (!ctx) throw new Error('BMW context allocation failed');
+                            if (!ctx) throw new Error(`${asset} context allocation failed`);
                             try {
                                 mod._softgl_make_current(ctx);
-                                if (!mod._sg_model_load(ptr, bytes.length)) throw new Error('BMW load failed');
-                                mod._sg_model_render(Number(spec.name.replace('bmw_view_', '')), 640, 360);
+                                if (!mod._sg_model_load(ptr, bytes.length)) throw new Error(`${asset} load failed`);
+                                if (new DataView(bytes.buffer).getUint32(4, true) === 3) await uploadTextures(asset);
+                                if (models[asset].camera) mod._sg_model_set_camera(...models[asset].camera);
+                                mod._sg_model_render(spec.angle, 640, 360);
                                 await compare(spec, ctx);
                             } finally {
                                 mod._sg_model_unload();
                                 mod._softgl_destroy(ctx);
                             }
                         }
-                    } finally {mod._free(ptr);}
+                    } finally { mod._free(ptr); }
                 }
                 return results;
-            }, {cases, tankCases, bmwCases});
+            }, {cases, modelCases, models});
             const failures = result.images.filter(t => !t.passed);
             console.log(`Mesa image gate: ${result.images.length - failures.length}/${result.images.length} passed`);
             if (failures.length) {
                 console.error(JSON.stringify(failures, null, 2));
                 saveResult(result);
-                throw new Error(`Image regressions detected; results: ${output}`);
+                throw new Error(`Image comparisons exceed the Mesa budget; results: ${output}`);
             }
         }
         const allScenes = ['100_showcase', '202_shadow_volume', '209_particles_additive',
-            '98_city_block', '57_icosphere_lit', '70_heightfield', '217_dot3_multipass_fog',
-            '94_lit_textured_sphere', '72_fog_linear', '73_fog_exp', '74_fog_colored', 'tank'];
+            '098_city_block', '057_icosphere_lit', '070_heightfield', '217_dot3_multipass_fog',
+            '094_lit_textured_sphere', '072_fog_linear', '073_fog_exp', '074_fog_colored', ...modelNames.filter(name => fs.existsSync(modelPacks[name]))];
         if (options['images-only']) {
             saveResult(result);
             console.log(`Results: ${output}`);
             return;
         }
-        if (bmwCases.length) allScenes.push('bmw');
         const scenes = options.scenes ? options.scenes.split(',') : allScenes;
         if (new Set(scenes).size !== scenes.length || scenes.some(name => !allScenes.includes(name) && !cases.some(test => test.name === name))) {
             throw new Error(`Invalid scenes: ${options.scenes}`);
@@ -253,7 +292,7 @@ async function main() {
             // Model scenes load the same frozen packs through dedicated exports;
             // adding an unrelated correctness case does not change that workload.
             if (referenceCount !== metadata.testCount &&
-                scenes.some(name => name !== 'bmw' && name !== 'tank')) {
+                scenes.some(name => !modelNames.includes(name))) {
                 throw new Error('Reference and candidate must have identical test catalogs');
             }
             result.referenceTestCount = referenceCount;
@@ -261,33 +300,67 @@ async function main() {
                 .update(fs.readFileSync(path.join(referenceDir, 'softgl.wasm'))).digest('hex');
         }
         const preparePage = async target => {
-            await target.evaluate(async ({includeBMW, samples}) => {
+            await target.evaluate(async ({models, samples}) => {
                 const indices = new Map();
                 for (let i = 0; i < mod._sg_test_count(); i++) indices.set(mod.UTF8ToString(mod._sg_test_name(i)), i);
-                const tankBytes = new Uint8Array(await (await fetch('/tank.pack')).arrayBuffer());
-                const packURL = location.pathname.startsWith('/reference/') ? '/reference/bmw.pack' : '/bmw.pack';
-                const bmwBytes = includeBMW ? new Uint8Array(await (await fetch(packURL)).arrayBuffer()) : null;
+                const uploadTextures = async (asset, prefix = '/') => {
+                    if (!models[asset].textureManifest) return;
+                    const response = await fetch(prefix + models[asset].textureManifest);
+                    if (!response.ok) throw new Error(`${asset} texture manifest missing`);
+                    const manifest = await response.json();
+                    const ptr = mod._malloc(manifest.maximumUploadBytes);
+                    if (!ptr) throw new Error(`${asset} texture allocation failed`);
+                    try {
+                        for (const group of manifest.groups) {
+                            const response = await fetch(prefix + group.file);
+                            if (!response.ok) throw new Error(`${group.file} missing`);
+                            const pixels = new Uint8Array(await response.arrayBuffer());
+                            if (pixels.length !== group.width * group.height * 4) throw new Error('Invalid texture size');
+                            mod.HEAPU8.set(pixels, ptr);
+                            if (!mod._sg_model_upload_albedo(group.materials[0], group.width, group.height, ptr))
+                                throw new Error(`${asset} texture upload failed`);
+                            for (const material of group.materials.slice(1)) {
+                                if (!mod._sg_model_share_albedo(material, group.materials[0]))
+                                    throw new Error(`${asset} texture sharing failed`);
+                            }
+                        }
+                    } finally { mod._free(ptr); }
+                };
+                // Keep at most one source pack in JS; load and upload are outside timing.
+                let cachedName = null, cachedBytes = null;
+                const loadModel = async name => {
+                    if (cachedName !== name) {
+                        cachedBytes = null;
+                        const prefix = location.pathname.startsWith('/reference/') ? '/reference/' : '/';
+                        const response = await fetch(`${prefix}${name}.pack`);
+                        if (!response.ok) throw new Error(`${name} pack unavailable`);
+                        cachedBytes = new Uint8Array(await response.arrayBuffer());
+                        cachedName = name;
+                    }
+                    const ptr = mod._malloc(cachedBytes.length);
+                    if (!ptr) throw new Error(`${name} allocation failed`);
+                    try {
+                        mod.HEAPU8.set(cachedBytes, ptr);
+                        if (!mod._sg_model_load(ptr, cachedBytes.length)) throw new Error(`${name} load failed`);
+                        if (new DataView(cachedBytes.buffer).getUint32(4, true) === 3) {
+                            const prefix = location.pathname.startsWith('/reference/') ? '/reference/' : '/';
+                            await uploadTextures(name, prefix);
+                        }
+                        if (models[name].camera) mod._sg_model_set_camera(...models[name].camera);
+                    } finally { mod._free(ptr); }
+                };
                 const createContext = () => samples ?
                     mod._softgl_create_multisample(640, 360, samples) : mod._softgl_create(640, 360);
                 window.perfRun = async (name, warmup, frames) => {
                     const ctx = createContext();
                     if (!ctx) throw new Error(`Context allocation failed: ${name}`);
-                    let tankPtr = 0;
                     try {
                         mod._softgl_make_current(ctx);
                         const workers = mod._sg_thread_count(ctx);
-                        if (name === 'tank' || name === 'bmw') {
-                            const bytes = name === 'tank' ? tankBytes : bmwBytes;
-                            if (!bytes) throw new Error('BMW pack unavailable');
-                            tankPtr = mod._malloc(bytes.length);
-                            if (!tankPtr) throw new Error('Tank allocation failed');
-                            mod.HEAPU8.set(bytes, tankPtr);
-                            const load = name === 'tank' ? mod._sg_tank_load : mod._sg_model_load;
-                            if (!load(tankPtr, bytes.length)) throw new Error(`${name} load failed`);
-                        } else if (!indices.has(`test_${name}`)) throw new Error(`Missing scene: ${name}`);
-                        const draw = name === 'tank' ?
-                            i => mod._sg_tank_render((i % frames) * 360 / frames, 640, 360) :
-                            name === 'bmw' ? i => mod._sg_model_render((i % frames) * 360 / frames, 640, 360) :
+                        if (models[name]) await loadModel(name);
+                        else if (!indices.has(`test_${name}`)) throw new Error(`Missing scene: ${name}`);
+                        const draw = models[name] ?
+                            i => mod._sg_model_render((i % frames) * 360 / frames, 640, 360) :
                             () => mod._sg_test_run(indices.get(`test_${name}`), 640, 360);
                         const render = i => {
                             draw(i);
@@ -301,9 +374,7 @@ async function main() {
                         const ms = (performance.now() - start) / frames;
                         return {ms, workers, samples, heapBytes: mod.HEAPU8.byteLength};
                     } finally {
-                        if (name === 'tank') mod._sg_tank_unload();
-                        if (name === 'bmw') mod._sg_model_unload();
-                        if (tankPtr) mod._free(tankPtr);
+                        if (models[name]) mod._sg_model_unload();
                         mod._softgl_destroy(ctx);
                     }
                 };
@@ -314,30 +385,20 @@ async function main() {
                     if (!profile) return;
                     const state = profile; profile = null;
                     mod._softgl_make_current(state.ctx);
-                    if (state.name === 'tank') mod._sg_tank_unload();
-                    if (state.name === 'bmw') mod._sg_model_unload();
-                    if (state.ptr) mod._free(state.ptr);
+                    if (models[state.name]) mod._sg_model_unload();
                     mod._softgl_destroy(state.ctx);
                 };
                 window.perfProfilePrepare = async ({name, warmup, frames}) => {
                     if (profile) throw new Error('Profiling context already exists');
                     const ctx = createContext();
                     if (!ctx) throw new Error(`Profiling context allocation failed: ${name}`);
-                    profile = {ctx, name, ptr:0, frames};
+                    profile = {ctx, name, frames};
                     try {
                         mod._softgl_make_current(ctx);
-                        if (name === 'tank' || name === 'bmw') {
-                            const bytes = name === 'tank' ? tankBytes : bmwBytes;
-                            if (!bytes) throw new Error('Profiling model pack unavailable');
-                            profile.ptr = mod._malloc(bytes.length);
-                            if (!profile.ptr) throw new Error('Profiling model allocation failed');
-                            mod.HEAPU8.set(bytes, profile.ptr);
-                            const load = name === 'tank' ? mod._sg_tank_load : mod._sg_model_load;
-                            if (!load(profile.ptr, bytes.length)) throw new Error(`Profiling model load failed: ${name}`);
-                        } else if (!indices.has(`test_${name}`)) throw new Error(`Missing profile scene: ${name}`);
-                        const draw = name === 'tank' ?
-                            i => mod._sg_tank_render((i % frames) * 360 / frames, 640, 360) :
-                            name === 'bmw' ? i => mod._sg_model_render((i % frames) * 360 / frames, 640, 360) :
+                        if (models[name]) await loadModel(name);
+                        else if (!indices.has(`test_${name}`)) throw new Error(`Missing profile scene: ${name}`);
+                        const draw = models[name] ?
+                            i => mod._sg_model_render((i % frames) * 360 / frames, 640, 360) :
                             () => mod._sg_test_run(indices.get(`test_${name}`), 640, 360);
                         profile.render = i => {
                             draw(i);
@@ -355,7 +416,7 @@ async function main() {
                     for (let i = 0; i < profile.frames; i++) profile.render(i);
                     mod._softgl_read_rgba8(profile.ctx);
                 };
-            }, {includeBMW: scenes.includes('bmw'), samples: options.samples});
+            }, {models:Object.fromEntries(modelNames.filter(name => scenes.includes(name)).map(name => [name, models[name]])), samples: options.samples});
         };
         for (const target of [candidatePage, referencePage].filter(Boolean)) await preparePage(target);
         const samples = new Map(scenes.map(name => [name, {

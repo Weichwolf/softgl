@@ -9,7 +9,7 @@ parser.add_argument('--baseline', default='da8ab07')
 args = parser.parse_args()
 repo = Path(__file__).resolve().parents[2]
 root = repo / 'build/scene-triangle-packets'
-subprocess.run(['python3', str(repo / 'experiments/scene-packet-bin-masks/prepare.py'),
+subprocess.run(['python3', str(repo / 'tools/experiment_support/prepare_bin_masks.py'),
     '--baseline', args.baseline, '--output-root', str(root)], cwd=repo, check=True)
 
 def replace_once(code, before, after):

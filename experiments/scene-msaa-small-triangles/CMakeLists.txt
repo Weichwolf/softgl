@@ -24,7 +24,7 @@ foreach(variant baseline candidate)
         if(kind STREQUAL "resident")
             set(driver ${repo}/experiments/scene-material-visibility/resident_trial.c)
         else()
-            set(driver ${repo}/experiments/scene-hierarchical-depth/quality_frames.c)
+            set(driver ${repo}/tools/experiment_support/quality_frames.c)
         endif()
         add_executable(${kind}_${variant} ${driver} ${source}/model_wrap.c)
         target_compile_definitions(${kind}_${variant} PRIVATE SOFTGL_MODEL_VERTEX_ATTRIBUTES SOFTGL_MODEL_SCENE_VISIBILITY

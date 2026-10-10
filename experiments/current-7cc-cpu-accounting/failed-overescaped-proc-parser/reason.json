@@ -1,8 +1,0 @@
-{
-  "session": 34608,
-  "exitCode": 1,
-  "reason": "Overescaped d/s regular expressions in Python raw JS text and NUL split produced zero processes/threads. Node render benchmark passed guard, observer validation rejected totalStableThreadTicks=0. No CPU utilization conclusion. Correct parser and validate actual proc data; module unchanged.",
-  "initialDiagnosisIncorrect": true,
-  "actualCause": "Chromium rewrites cmdline to one space-separated string; Array.includes (--type=renderer) returned false. Archived JS contains correctly escaped regexes; attempted masking correction changed no observer bytes.",
-  "observerBytesEqualToSecondFailure": true
-}

@@ -227,7 +227,7 @@ int SG_RASTER_TRI_FUNCTION(softgl_ctx *c,
                  * them inside this worker's stripe and framebuffer. */
                 if (use_simd_quad && ix + 1 < tile_ix1) {
 #if SG_RASTER_OFF_CAPTURE
-                    /* This first trial reuses packet depth loads only. */
+                    /* Reuse the packet depth loads. */
                     weak_seen = 1;
 #endif
                     sg_shade_quad(c, tctx, v0, v1, v2, ix, iy, cov,

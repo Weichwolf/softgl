@@ -1,8 +1,30 @@
 # T-80 MBT
 
-Supplied glTF export of [T-80 MBT [MAIN BATTLE TANK]](https://sketchfab.com/3d-models/t-80-mbt-main-battle-tank-2daa7c41afbb4778af59d74acb26356c)
-by [Muhamad Mirza Arrafi](https://sketchfab.com/nazidefenseforceofficial),
-licensed [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
-`source.zip` is preserved unchanged; `license.txt` is the supplied attribution.
-Run `python3 tools/prepare_assets.py t80` with NumPy/Pillow installed.
-The asset uses the common SGLM viewer, unlike the historical OBJ tank benchmark.
+## Source
+
+- Source: [T-80 MBT](https://sketchfab.com/3d-models/t-80-mbt-main-battle-tank-2daa7c41afbb4778af59d74acb26356c).
+- Credit: Muhamad Mirza Arrafi.
+- License: CC-BY-4.0.
+- Provenance: [source.json](source.json), including the archive hash and pinned revision where available.
+- Original terms: [license.txt](license.txt).
+
+`source.zip` is the preserved glTF input. Preparation writes generated files
+under `build/assets/` and leaves the source archive unchanged.
+
+## Preparation
+
+From the repository root, with the shared [asset environment](../README.md):
+
+```sh
+.venv/bin/python tools/prepare_assets.py t80
+```
+
+Preparation settings and the camera are registered in
+[models.json](../models.json). Resulting geometry, material and texture counts
+are recorded in `build/assets/t80.json`.
+
+## Rendering notes
+
+Preparation retains source geometry and original texture dimensions. It uses
+the same glTF/SGLM packer, material approximation and `wasm/model_wrap.c` adapter
+as the other scenes. There is no separate OBJ pack format or tank renderer.

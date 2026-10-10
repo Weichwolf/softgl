@@ -943,39 +943,34 @@ const void *softgl_read_rgba8(softgl_ctx *c);
 typedef void (*softgl_vertex_attributes_fn)(void *user, GLuint index,
     GLfloat color[4], GLfloat texcoord[4]);
 void softgl_set_vertex_attributes(softgl_vertex_attributes_fn program, void *user, GLuint texture_unit);
-/* Private experiment: same lifetime/purity contract, all four raw coordinates. */
+/* Same lifetime and purity contract, with all four texture coordinates. */
 typedef void (*softgl_vertex_attributes_full_fn)(void *user, GLuint index,
     GLfloat color[4], GLfloat texcoord[4][4]);
 void softgl_set_vertex_attributes_full(softgl_vertex_attributes_full_fn program, void *user);
 /* NULL restores GL fragment combiners; constants are copied into draw state. */
 void softgl_set_fused_dot3_material(const GLfloat tint[4], GLboolean quartic);
 void softgl_set_fused_dot3_transparent(const GLfloat tint[4], GLboolean quartic);
-/* Private scene experiment: supported opaque material draws only between
+/* Scene integration: supported opaque material draws only between
  * begin/end. A failed end restores the pre-batch framebuffer for caller replay. */
 int softgl_scene_visibility_begin(void);
-int softgl_scene_visibility_begin_hint(GLuint triangles);
 /* Explicit 1/16-pixel raster quantization for canonical meshes in this scene.
  * Call after a successful begin; each new begin restores full precision.
  * Legacy draws and MSAA keep their existing renderer. */
 void softgl_scene_quantized_visibility(GLboolean enabled);
-/* Private scene order trial: 0 original, 1 near-first, 2 opaque then near-first.
+/* Scene draw order: 0 original, 1 near-first, 2 opaque then near-first.
  * Four-sample only. May change equal-depth winners and alpha/shading points. */
 void softgl_scene_depth_order(GLuint mode);
 /* Explicit approximate 4x scene shading: merge same-material winners inside
  * one pixel; physical depth/coverage stay fresh. Sets the policy for materials
  * captured subsequently; each begin resets it. Alpha-tested draws stay exact. */
 void softgl_scene_msaa_material_merge(GLboolean enabled);
-int softgl_scene_visibility_begin_hint_ordered(GLuint triangles, GLuint mode);
 /* Opt-in scene cost hint: one input triangle per pixel for MSAA; order mode
- * has the same meaning as softgl_scene_depth_order. Legacy hints retain their
- * existing thresholds. No geometry or physical samples are removed. */
+ * has the same meaning as softgl_scene_depth_order.
+ * No geometry or physical samples are removed. */
 int softgl_scene_visibility_begin_adaptive(GLuint triangles, GLuint mode);
-/* Compatibility entry point for the removed native-wide backend.
- * Always returns zero; native and WASM rendering use SIMD128 exclusively. */
-int softgl_scene_native_wide(GLboolean enabled);
 void softgl_scene_visibility_material(void);
 int softgl_scene_visibility_end(void);
-/* Experimental canonical mesh path: positions are float XYZ; coordinates
+/* Canonical mesh integration: positions are float XYZ; coordinates
  * are float UV with the same byte stride. Inputs remain immutable through
  * scene end. The copied pure program must preserve UV0/UV2 and alpha one,
  * and may write RGB, half vector UV1, reflection UV3. Only supported opaque

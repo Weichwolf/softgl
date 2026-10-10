@@ -1,7 +1,0 @@
-{
-  "observationExitCode": 1,
-  "rawSha256": "ee74a73eb2f88c14bbe3fa8cdfe1e45aa12e616833c0a56354e6c03adf641ef7",
-  "reason": "T-80 off runs first on a fresh WASM module in audit 2. No sg_shade_packet invocation has yet claimed a lifetime slot. Zero allocated slots with zero packets is valid; the checker incorrectly required at least one.",
-  "rendererOrCounterSourceChanged": false,
-  "reuseAllSixCompletedCaptures": true
-}

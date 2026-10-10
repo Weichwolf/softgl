@@ -45,8 +45,8 @@ static const bench_slot_t g_slots[] = {
     { "showcase",   "test_100_showcase" },
     { "shadow",     "test_202_shadow_volume" },
     { "particles",  "test_209_particles_additive" },
-    { "city",       "test_98_city_block" },
-    { "sphere_lit", "test_57_icosphere_lit" },
+    { "city",       "test_098_city_block" },
+    { "sphere_lit", "test_057_icosphere_lit" },
     { NULL, NULL }
 };
 

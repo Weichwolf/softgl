@@ -11,7 +11,7 @@ No geometry epoch, BVH, image approximation or setup expansion is introduced.
 
 Source: libsoftgl geometry.inc and geometry_types.inc at d481c90;
 [accepted whole-scene frontend](../scene-position-visibility/README.md) and
-its [current CPU samples](../scene-hierarchical-depth/profiles/README.md).
+its [current CPU samples](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-hierarchical-depth/profiles/README.md).
 The prefix partition is an original application of standard counting-sort
 construction to existing scene tasks. SIMD128/WASM source compatibility and
 the 16-MiB reference budget remain unchanged; task metadata grows by two

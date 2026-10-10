@@ -1,8 +1,0 @@
-/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay/source-root/libsoftgl/src/fragment_mask_stream.h:109:6: runtime error: member access within null pointer of type 'struct sg_fragment_mask_cursor'
-    #0 0x5f087649cfdd in sg_raster_triangle_msaa2_replay.isra.0 (/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay/asan-full/tests/fragment_mask_replay_contract+0x656fdd) (BuildId: 207105ca75a123d91951d2f8aa1e52a58dcd314d)
-    #1 0x5f08764be5a0 in sg_raster_triangle_tile_prepared (/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay/asan-full/tests/fragment_mask_replay_contract+0x6785a0) (BuildId: 207105ca75a123d91951d2f8aa1e52a58dcd314d)
-    #2 0x5f08761f5076 in main (/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay/asan-full/tests/fragment_mask_replay_contract+0x3af076) (BuildId: 207105ca75a123d91951d2f8aa1e52a58dcd314d)
-    #3 0x7b31ee435ca7  (/lib/x86_64-linux-gnu/libc.so.6+0x29ca7) (BuildId: 5e5b51f4c39af9ac589408c1dc432ba390a273cc)
-    #4 0x7b31ee435d64 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x29d64) (BuildId: 5e5b51f4c39af9ac589408c1dc432ba390a273cc)
-    #5 0x5f08761f6c80 in _start (/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay/asan-full/tests/fragment_mask_replay_contract+0x3b0c80) (BuildId: 207105ca75a123d91951d2f8aa1e52a58dcd314d)
-

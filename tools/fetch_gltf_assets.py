@@ -2,12 +2,12 @@
 """Fetch pinned glTF sources into assets/, retaining source license metadata."""
 import argparse
 import concurrent.futures
-import hashlib
 import json
 from pathlib import Path
 import time
 import urllib.request
 import zipfile
+from asset_sources import write_source_metadata
 
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser(description=__doc__)
@@ -25,6 +25,8 @@ for name, repository, revision, prefix in sources:
         continue
     target = root/'assets'/name
     if (target/'source.json').exists() and (target/'source.zip').exists():
+        write_source_metadata(name, target/'source.zip',
+                              repository=f'https://github.com/{repository}', revision=revision)
         print(name, 'already downloaded')
         continue
     cache = target/'upstream'
@@ -74,11 +76,8 @@ for name, repository, revision, prefix in sources:
             output.writestr(info, data)
     for path in metadata_paths:
         (target/('upstream-'+path)).write_bytes(entries[path])
-    receipt = {
-        'repository': f'https://github.com/{repository}', 'revision': revision,
-        'sourceSha256': hashlib.sha256(archive.read_bytes()).hexdigest(),
-        'sourceBytes': archive.stat().st_size,
-        'changes': 'Upstream glTF and buffers retained; Bistro DDS alternate texture sources retained' if name == 'bistro' else 'none',
-    }
-    (target/'source.json').write_text(json.dumps(receipt, indent=2)+'\n')
+    receipt = write_source_metadata(name, archive,
+        repository=f'https://github.com/{repository}', revision=revision,
+        changes='Upstream glTF and buffers retained; Bistro DDS alternate texture sources retained'
+                if name == 'bistro' else 'none')
     print(name, receipt, flush=True)

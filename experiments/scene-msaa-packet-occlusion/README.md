@@ -18,7 +18,7 @@ with a fail-open limit for the compact 16-bit rectangle. Its scratch is charged
 to the existing 128 MiB geometry budget and freed with each task. OFF retains
 its rendering algorithm, with the extra dispatch checks still present. There
 is no previous-frame prediction. Positions/geometry have already run: this
-is distinct from [lazy cluster processing](../scene-meshlet-occlusion/README.md).
+is distinct from [lazy cluster processing](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-meshlet-occlusion/README.md).
 
 Sources inspected locally after cloning under `~/Git/`:
 [EmberGL cluster Hi-Z before cluster rasterization](https://github.com/EmberGL-org/EmberGL/blob/6c197451257d3b2d800b40d4e21e5e3fe4f52ae7/src/egl_rasterizer.cpp),

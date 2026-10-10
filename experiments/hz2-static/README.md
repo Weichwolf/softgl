@@ -7,7 +7,7 @@ Candidate WASM:
 `902bcf8cdbde85fc1f8b172503c06f00090f8ebc423b2d1b8b186a1aa4d4b9af`.
 The canonical CMake JS/WASM match the timed frozen candidate byte-for-byte.
 
-The [shared-helper trial](../hz2-basic/README.md) improves 2x but repeatedly
+The [shared-helper trial](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/hz2-basic/README.md) improves 2x but repeatedly
 costs BMW time with 4x. This successor uses separate, statically selected
 state, write and occlusion helpers. The 4x paths keep their constant 64-bit
 coverage masks and four-sample indexing. Two-sample cells track 32 actual

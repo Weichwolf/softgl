@@ -1,6 +1,0 @@
-{
-  "cases": 1007307,
-  "items": 182312387,
-  "stdout": "Index range: 1007307 exact unsigned cases, 182312387 independently decoded items; all alignments, allocation ends, vector/unroll/tails, every lane, high bits and fallbacks passed\n",
-  "scope": "Independent byte-decoding oracle of actual internal helper; native preflight. Full native/sanitizer/WASM/image/API gates required before timings. Allocation ends checked by subsequent ASan run, not by this unsanitized preflight."
-}

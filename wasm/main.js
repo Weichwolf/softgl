@@ -36,7 +36,6 @@
   const fsBtn     = document.getElementById('fullscreen');
   const bmwBtn = document.getElementById('bmw');
   const modelButtons = ['t80', 'sponza', 'bistro'].map(name => document.getElementById(name));
-  const modelCredit = document.getElementById('model-credit');
   const testsBtn  = document.getElementById('tests');
   const benchOut  = document.getElementById('bench-out');
   const sStatsSimd    = document.getElementById('s-simd');
@@ -143,7 +142,7 @@
   let benching = false;
   let transitioning = false;
   let benchmarkCancelled = false;
-  let mode = 'tank';       /* 'tank' | 'tests' | 'bench' */
+  let mode = 'model';       /* 'model' | 'tests' | 'bench' */
 
   function renderTest() {
     const c = createContext();
@@ -183,32 +182,26 @@
     }, INTERVAL_MS);
   }
 
-  /* ---- Tank mode -------------------------------------------------- */
+  /* ---- Model mode -------------------------------------------------- */
   /* 30 fps display cap. 2:2 cadence on 60 Hz, 4:4 on 120 Hz — clean,
    * no judder. The compute-time measurement below (t1-t0 around
-   * sg_tank_render) is unaffected, so the "fps" shown in the UI stays
+   * sg_model_render) is unaffected, so the "fps" shown in the UI stays
    * the uncapped theoretical rate implied by render cost. */
-  const TANK_CAP_MS = 1000 / 30;
+  const MODEL_CAP_MS = 1000 / 30;
   const assetBytes = new Map();
   const assets = {
-    bmw: {file:'bmw.pack', prefix:'sg_model', title:'2014 BMW 3 Series (F31)'},
-    t80: {file:'t80.pack', prefix:'sg_model', title:'T-80 MBT'},
-    sponza: {file:'sponza.pack', prefix:'sg_model', title:'Sponza'},
-    bistro: {file:'bistro.pack', prefix:'sg_model', title:'Amazon Lumberyard Bistro'},
+    bmw: {file:'bmw.pack', title:'2014 BMW 3 Series (F31)'},
+    t80: {file:'t80.pack', title:'T-80 MBT'},
+    sponza: {file:'sponza.pack', title:'Sponza'},
+    bistro: {file:'bistro.pack', title:'Amazon Lumberyard Bistro'},
   };
   let modelMetadata;
-  async function updateModelCredit() {
-    modelCredit.hidden = false;
+  async function loadModelMetadata() {
     if (!modelMetadata) {
       const response = await fetch('models.json');
       if (!response.ok) throw new Error(`Model metadata unavailable (${response.status})`);
       modelMetadata = await response.json();
     }
-    const metadata = modelMetadata[selectedAsset];
-    const link = document.createElement('a');
-    link.href = metadata.source;
-    link.textContent = metadata.title;
-    modelCredit.replaceChildren(link, document.createTextNode(` by ${metadata.credit} · ${metadata.license}`));
   }
   let selectedAsset = 't80';
   const textureManifests = new Map();
@@ -241,14 +234,14 @@
       Mod._free(ptr);
     }
   }
-  let tankCtx = 0;
-  let tankFrameId = 0;
-  let tankAngle = 0;
-  let tankLastTime = 0;
+  let modelCtx = 0;
+  let modelFrameId = 0;
+  let modelAngle = 0;
+  let modelLastTime = 0;
 
-  async function loadTank() {
+  async function loadModel() {
     const asset = assets[selectedAsset];
-    await updateModelCredit();
+    await loadModelMetadata();
     const file = modelMetadata?.[selectedAsset]?.browserPack || asset.file;
     if (!assetBytes.has(selectedAsset)) {
       const resp = await fetch(file);
@@ -263,65 +256,65 @@
     Mod.HEAPU8.set(bytes, ptr);
 
     /* A context must be current before glGenBuffers etc. can do anything */
-    if (!tankCtx) {
-      tankCtx = createContext(Number(msaaSelect.value));
+    if (!modelCtx) {
+      modelCtx = createContext(Number(msaaSelect.value));
     }
-    Mod.ccall('softgl_make_current', null, ['number'], [tankCtx]);
+    Mod.ccall('softgl_make_current', null, ['number'], [modelCtx]);
 
-    const ok = Mod.ccall(`${asset.prefix}_load`, 'number', ['number','number'], [ptr, bytes.length]);
+    const ok = Mod.ccall('sg_model_load', 'number', ['number','number'], [ptr, bytes.length]);
     Mod._free(ptr);
-    if (!ok) throw new Error(`${asset.prefix}_load returned 0 (bad pack?)`);
+    if (!ok) throw new Error(`sg_model_load returned 0 (bad pack?)`);
     await loadOriginalTextures(selectedAsset);
 
-    const tris = Mod.ccall(`${asset.prefix}_tri_count`, 'number', [], []);
-    const mats = Mod.ccall(`${asset.prefix}_mat_count`, 'number', [], []);
+    const tris = Mod.ccall('sg_model_tri_count', 'number', [], []);
+    const mats = Mod.ccall('sg_model_mat_count', 'number', [], []);
     counterEl.textContent = asset.title;
-    await updateModelCredit();
+    await loadModelMetadata();
     const camera = modelMetadata?.[selectedAsset]?.camera;
     if (camera) Mod.ccall("sg_model_set_camera", null, camera.map(() => "number"), camera);
     nameEl.textContent = `${tris.toLocaleString()} triangles · ${mats} materials`;
-    updateThreadStats(tankCtx);
+    updateThreadStats(modelCtx);
   }
 
-  function tankFrame(t) {
-    if (mode !== 'tank') { tankFrameId = 0; return; }
-    tankFrameId = requestAnimationFrame(tankFrame);
+  function modelFrame(t) {
+    if (mode !== 'model') { modelFrameId = 0; return; }
+    modelFrameId = requestAnimationFrame(modelFrame);
     /* Drop rAF ticks that land before the 30 fps budget elapses.
      * 0.95× tolerance absorbs rAF jitter on 60 Hz (→ every 2nd tick
-     * renders) and 120 Hz (→ every 4th). tankLastTime is only advanced
+     * renders) and 120 Hz (→ every 4th). modelLastTime is only advanced
      * on rendered frames, so angle dt stays true real time. */
-    if (tankLastTime !== 0 && (t - tankLastTime) < TANK_CAP_MS * 0.95) return;
+    if (modelLastTime !== 0 && (t - modelLastTime) < MODEL_CAP_MS * 0.95) return;
 
-    if (tankLastTime === 0) tankLastTime = t;
-    const dt = Math.min(50, t - tankLastTime);    /* clamp to 50 ms */
-    tankLastTime = t;
-    tankAngle = (tankAngle + dt * 0.04) % 360;    /* ~14.4 °/s */
+    if (modelLastTime === 0) modelLastTime = t;
+    const dt = Math.min(50, t - modelLastTime);    /* clamp to 50 ms */
+    modelLastTime = t;
+    modelAngle = (modelAngle + dt * 0.04) % 360;    /* ~14.4 °/s */
 
-    Mod.ccall('softgl_make_current', null, ['number'], [tankCtx]);
+    Mod.ccall('softgl_make_current', null, ['number'], [modelCtx]);
     const t0 = performance.now();
-    Mod.ccall(`${assets[selectedAsset].prefix}_render`, null, ['number','number','number'],
-              [tankAngle, W, H]);
+    Mod.ccall('sg_model_render', null, ['number','number','number'],
+              [modelAngle, W, H]);
     const t1 = performance.now();
-    blitContext(tankCtx);
+    blitContext(modelCtx);
     const ms = t1 - t0;
     timingEl.textContent = `render: ${ms.toFixed(2)} ms   ·   ${(1000/ms).toFixed(0)} fps theoretical (capped @ 30)`;
     recordFrameMs(ms);
     /* steady angle bar instead of test progress */
     progEl.style.transition = 'none';
-    progEl.style.width = `${(tankAngle / 360) * 100}%`;
+    progEl.style.width = `${(modelAngle / 360) * 100}%`;
   }
 
   function stopPlayback() {
     clearTimeout(timer);
-    if (tankFrameId) { cancelAnimationFrame(tankFrameId); tankFrameId = 0; }
+    if (modelFrameId) { cancelAnimationFrame(modelFrameId); modelFrameId = 0; }
   }
 
-  function releaseTank() {
-    if (!tankCtx) return;
-    Mod._softgl_make_current(tankCtx);
-    Mod.ccall(`${assets[selectedAsset].prefix}_unload`, null, [], []);
-    Mod._softgl_destroy(tankCtx);
-    tankCtx = 0;
+  function releaseModel() {
+    if (!modelCtx) return;
+    Mod._softgl_make_current(modelCtx);
+    Mod.ccall('sg_model_unload', null, [], []);
+    Mod._softgl_destroy(modelCtx);
+    modelCtx = 0;
   }
 
   function setControlsBusy(busy) {
@@ -329,31 +322,31 @@
       if (button) button.disabled = busy;
   }
 
-  async function startTank() {
+  async function startModel() {
     if (transitioning || benching) return;
     transitioning = true;
     setControlsBusy(true);
     stopPlayback();
-    mode = 'tank';
+    mode = 'model';
     try {
       // Let terminated pthreads return to Emscripten's prestarted pool.
       await yieldBrowser();
-      if (!tankCtx) {
+      if (!modelCtx) {
         nameEl.textContent = `loading ${assets[selectedAsset].file}…`;
-        await loadTank();
+        await loadModel();
       } else {
         const asset = assets[selectedAsset];
         counterEl.textContent = asset.title;
-        const tris = Mod.ccall(`${asset.prefix}_tri_count`, 'number', [], []);
-        const mats = Mod.ccall(`${asset.prefix}_mat_count`, 'number', [], []);
+        const tris = Mod.ccall('sg_model_tri_count', 'number', [], []);
+        const mats = Mod.ccall('sg_model_mat_count', 'number', [], []);
         nameEl.textContent = `${tris.toLocaleString()} triangles · ${mats} materials`;
-        await updateModelCredit();
-        updateThreadStats(tankCtx);
+        await loadModelMetadata();
+        updateThreadStats(modelCtx);
       }
       paused = false;
       pauseBtn.textContent = 'Pause';
-      tankLastTime = 0;
-      tankFrameId = requestAnimationFrame(tankFrame);
+      modelLastTime = 0;
+      modelFrameId = requestAnimationFrame(modelFrame);
     } finally {
       transitioning = false;
       setControlsBusy(false);
@@ -367,7 +360,7 @@
     stopPlayback();
     mode = 'tests';
     try {
-      releaseTank();
+      releaseModel();
       await yieldBrowser();
       paused = false;
       pauseBtn.textContent = 'Pause';
@@ -392,9 +385,9 @@
     pauseBtn.textContent = paused ? 'Resume' : 'Pause';
     if (mode === 'tests') {
       if (paused) clearTimeout(timer); else scheduleTests();
-    } else if (mode === 'tank') {
+    } else if (mode === 'model') {
       if (paused) stopPlayback();
-      else { tankLastTime = 0; tankFrameId = requestAnimationFrame(tankFrame); }
+      else { modelLastTime = 0; modelFrameId = requestAnimationFrame(modelFrame); }
     }
   };
   const stepTest = async direction => {
@@ -409,11 +402,11 @@
     if (transitioning || benching) return;
     if (name !== selectedAsset) {
       stopPlayback();
-      releaseTank();
+      releaseModel();
       selectedAsset = name;
-      if (name === 'bmw') tankAngle = 120;
+      if (name === 'bmw') modelAngle = 120;
     }
-    await startTank();
+    await startModel();
   }
   if (bmwBtn) bmwBtn.onclick = () => startAsset('bmw').catch(reportError);
   for (const button of modelButtons) {
@@ -422,10 +415,10 @@
   if (testsBtn) testsBtn.onclick = () => startTests().catch(reportError);
   msaaSelect.onchange = async () => {
     if (transitioning || benching) return;
-    if (mode === 'tank') {
+    if (mode === 'model') {
       stopPlayback();
-      releaseTank();
-      await startTank();
+      releaseModel();
+      await startModel();
     }
   };
   /* ---- Benchmark mode -------------------------------------------- */
@@ -433,7 +426,6 @@
     if (benching) { benchmarkCancelled = true; return; }
     if (transitioning) return;
     const benchmarkAsset = selectedAsset;
-    const includeModel = assets[benchmarkAsset].prefix === 'sg_model';
     benching = true;
     benchmarkCancelled = false;
     mode = 'bench';
@@ -453,14 +445,14 @@
     log('');
 
     try {
-      releaseTank();
+      releaseModel();
       await yieldBrowser();
       const slots = Mod._sg_bench_slot_count();
       const scenes = Array.from({length:slots}, (_, s) => ({
         tag:Mod.ccall('sg_bench_slot_tag', 'string', ['number'], [s]),
         test:Mod._sg_bench_slot_test_index(s),
       }));
-      if (includeModel) scenes.push({tag:benchmarkAsset, model:true});
+      scenes.push({tag:benchmarkAsset, model:true});
       for (const benchmarkSamples of [0, 2, 4]) {
         if (benchmarkCancelled) break;
         msaaSelect.value = String(benchmarkSamples);
@@ -547,14 +539,14 @@
     fsBtn.textContent = document.fullscreenElement ? 'Exit Fullscreen' : 'Fullscreen';
   });
 
-  /* ---- Boot: try tank, fall back to tests ------------------------- */
+  /* ---- Boot: try model, fall back to tests ------------------------- */
   nameEl.textContent = `loading ${assets[selectedAsset].file}…`;
   try {
-    await startTank();
+    await startModel();
   } catch (err) {
-    console.error('tank mode unavailable:', err);
+    console.error('model mode unavailable:', err);
     nameEl.style.color = '#c77';
-    nameEl.textContent = `tank load failed: ${err.message} — falling back to test cycle`;
+    nameEl.textContent = `model load failed: ${err.message} — falling back to test cycle`;
     timingEl.textContent = (err.stack || '').split('\n').slice(0,3).join(' | ');
     /* small delay so the user can read the error before cycling starts */
     await new Promise(r => setTimeout(r, 1500));

@@ -74,7 +74,7 @@ cmake -S experiments/fused-transparent-pass -B build/fused-transparent-pass/nati
   -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=clang-22
 cmake --build build/fused-transparent-pass/native -j4
 build/fused-transparent-pass/native/transparency_contract
-build/python/bin/python experiments/fused-transparent-pass/check_quality.py --samples 0,2,4
+.venv/bin/python experiments/fused-transparent-pass/check_quality.py --samples 0,2,4
 python3 experiments/fused-transparent-pass/resident_trial.py --pairs 3 --samples 0,2,4
 python3 experiments/fused-transparent-pass/check_resident.py
 node experiments/fused-transparent-pass/browser-smoke.cjs

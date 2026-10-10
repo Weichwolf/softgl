@@ -27,7 +27,7 @@ measured separately from builds and correctness/browser workloads.
 Sources: [scene_visibility.c](../../libsoftgl/src/scene_visibility.c),
 [native build policy](../../libsoftgl/CMakeLists.txt),
 [SIMD128 wrapper](../../libsoftgl/src/simd.h),
-[historical native-wide experiment](../scene-native-wide-materials/README.md).
+[historical native-wide experiment](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-native-wide-materials/README.md).
 
 ## Completed policy validation
 

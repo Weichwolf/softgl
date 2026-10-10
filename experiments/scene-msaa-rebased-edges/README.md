@@ -6,7 +6,7 @@ Store each biased sample edge as `floor((raw+bias)/256)`. A one-pixel movement c
 
 V3 retains the accepted eight-pixel kernel and masked-material paths. Larger opaque triangles with a proved raw range use the new recurrence; large/unproved ranges use the original general renderer. No extra buffers or caches are allocated. `begin` and ordinary GL APIs keep their existing behavior. This is independent of the accepted material-pixel shading approximation, which remains unchanged.
 
-The full-viewport V2 variant is retained as an unadopted screen: BMW −3.12%, Bistro −1.54%, Sponza +10.94%, T-80 −3.10% frame time. Its 108 native views match exactly, but the Sponza screen is variable and does not justify adoption. V3 limits scope to the proved range and preserves the existing small/masked paths. The separate [64-pixel extent expansion](../scene-msaa-bounded-spans/README.md) was rejected. An initial V1 build failed on an undeclared integer-load helper before any timing; that log and source are retained.
+The full-viewport V2 variant is retained as an unadopted screen: BMW −3.12%, Bistro −1.54%, Sponza +10.94%, T-80 −3.10% frame time. Its 108 native views match exactly, but the Sponza screen is variable and does not justify adoption. V3 limits scope to the proved range and preserves the existing small/masked paths. The separate [64-pixel extent expansion](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-msaa-bounded-spans/README.md) was rejected. An initial V1 build failed on an undeclared integer-load helper before any timing; that log and source are retained.
 
 ## Native measurements
 

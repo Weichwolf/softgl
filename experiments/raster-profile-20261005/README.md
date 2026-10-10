@@ -33,7 +33,7 @@ renderer arithmetic. Vertex preparation is smaller than the raster bodies
 in both observations. Even after outlining texture/shader/depth helpers,
 substantial work remains in those bodies. These observations motivated strict
 4x4-cell rejection inside partially visible triangles. The subsequent
-[row-span trial](../hz4-span/README.md) is slower in all six BMW 4x pairs and
+[row-span trial](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/hz4-span/README.md) is slower in all six BMW 4x pairs and
 was rejected, despite reducing logical raster work.
 
 `sg_hz_refresh4` was requested as a separate diagnostic boundary but Binaryen

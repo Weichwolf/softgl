@@ -1,4 +1,4 @@
-/* Private experiment: ordered draws can progress independently per X bin.
+/* Ordered draws can progress independently per X bin.
  * All queue bookkeeping uses p->mtx. Pixel work runs outside that mutex;
  * completion release/acquire orders writes before the next draw in a bin. */
 #define SG_QUEUE_SLOTS 4

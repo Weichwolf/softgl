@@ -1,9 +1,0 @@
-UBSan argument=(nil) actual TLS cursor=0x71b689f86320 read=0x53100001480c end=0x531000014da7
-/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay/source-root/libsoftgl/src/fragment_mask_stream.h:109:6: runtime error: member access within null pointer of type 'struct sg_fragment_mask_cursor'
-    #0 0x56152d54ffdd in sg_raster_triangle_msaa2_replay.isra.0 (/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay/asan-wrapped-contract+0x656fdd) (BuildId: 9858c9e95f77eb6b35a724523902b43f1bccd859)
-    #1 0x56152d5715a0 in sg_raster_triangle_tile_prepared (/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay/asan-wrapped-contract+0x6785a0) (BuildId: 9858c9e95f77eb6b35a724523902b43f1bccd859)
-    #2 0x56152d2a8076 in main (/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay/asan-wrapped-contract+0x3af076) (BuildId: 9858c9e95f77eb6b35a724523902b43f1bccd859)
-    #3 0x71b688e35ca7  (/lib/x86_64-linux-gnu/libc.so.6+0x29ca7) (BuildId: 5e5b51f4c39af9ac589408c1dc432ba390a273cc)
-    #4 0x71b688e35d64 in __libc_start_main (/lib/x86_64-linux-gnu/libc.so.6+0x29d64) (BuildId: 5e5b51f4c39af9ac589408c1dc432ba390a273cc)
-    #5 0x56152d2a9c80 in _start (/home/cosmo/Git/softgl/build/diagnostics/fragment-mask-replay/asan-wrapped-contract+0x3b0c80) (BuildId: 9858c9e95f77eb6b35a724523902b43f1bccd859)
-

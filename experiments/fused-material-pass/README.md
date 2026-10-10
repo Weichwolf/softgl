@@ -66,7 +66,7 @@ cmake -S experiments/fused-material-pass -B build/fused-material-pass/native \
 cmake --build build/fused-material-pass/native -j4
 python3 experiments/fused-material-pass/run_trial.py --pairs 3 --samples 0,2,4 \
   --output tmp/fused-material-pass/validation
-build/python/bin/python experiments/fused-material-pass/check_quality.py
+.venv/bin/python experiments/fused-material-pass/check_quality.py
 ```
 
 The frozen baseline executable, archive and wrapper come from

@@ -1,9 +1,0 @@
-{
-  "observationExitCode": 1,
-  "guardedRenderCaptureComplete": true,
-  "rawFile": "lanes-ms0-audit-1.json",
-  "rawSha256": "37efb06af63d14d1ed2f0f9f916a7c3d7685156faf3a9ac56b9aaff24c4cb263",
-  "reason": "The checker assumed every model/mode invokes sg_shade_packet. Actual T-80 off uses the legacy quad path, so all100 counted packet totals are legitimately zero. BMW off is counted. Source raster_triangle_impl.h selects packets only for combine_kind; observed frame hashes and histogram partitions remain checked.",
-  "rendererOrCounterSourceChanged": false,
-  "reuseExistingFirstCapture": true
-}

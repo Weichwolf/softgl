@@ -24,7 +24,7 @@ def digest(p):
     return hashlib.sha256(p.read_bytes()).hexdigest()
 receipt = {'width':640,'height':360,'threads':4,'angles':[0,45,90,135,160,180,225,270,315],
            'samples':list(map(int,args.samples.split(','))),'binarySha256':{v:digest(p) for v,p in binaries.items()},
-           'runnerSha256':digest(Path(__file__)),'driverSha256':digest(repo/'experiments/scene-hierarchical-depth/quality_frames.c'),
+           'runnerSha256':digest(Path(__file__)),'driverSha256':digest(repo/'tools/experiment_support/quality_frames.c'),
            'exactAllModes':True,
            'records':[],'runs':[]}
 for a in args.assets.split(','):

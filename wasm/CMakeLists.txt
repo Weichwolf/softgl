@@ -36,7 +36,7 @@ list(SORT TEST_SRCS)
 set(DISPATCH_DECL "")
 set(DISPATCH_ENTRIES "")
 foreach(t IN LISTS TEST_SRCS)
-    get_filename_component(n ${t} NAME_WE)   # test_NN_...
+    get_filename_component(n ${t} NAME_WE)   # test_NNN_...
     string(APPEND DISPATCH_DECL "extern void ${n}(int,int);\n")
     string(APPEND DISPATCH_ENTRIES "    { \"${n}\", ${n} },\n")
 endforeach()
@@ -58,7 +58,6 @@ endforeach()
 add_executable(softgl
     ${CMAKE_CURRENT_BINARY_DIR}/dispatch.c
     ${CMAKE_CURRENT_SOURCE_DIR}/bench_wrap.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/tank_wrap.c
     ${CMAKE_CURRENT_SOURCE_DIR}/model_wrap.c
     ${CMAKE_CURRENT_SOURCE_DIR}/sdl_viewer.c
     $<TARGET_OBJECTS:softgl_objs>
@@ -70,7 +69,6 @@ target_compile_definitions(softgl PRIVATE SOFTGL_MODEL_VERTEX_ATTRIBUTES SOFTGL_
 # The preview lives beside the compiled module under the single build tree.
 configure_file(index.html ${CMAKE_CURRENT_BINARY_DIR}/index.html COPYONLY)
 configure_file(main.js ${CMAKE_CURRENT_BINARY_DIR}/main.js COPYONLY)
-configure_file(${SRC}/tests/bench/tank_data/tank.pack ${CMAKE_CURRENT_BINARY_DIR}/tank.pack COPYONLY)
 foreach(model bmw t80 sponza bistro)
     if(EXISTS "${SRC}/build/assets/${model}-browser.pack")
         configure_file(${SRC}/build/assets/${model}-browser.pack ${CMAKE_CURRENT_BINARY_DIR}/${model}-browser.pack COPYONLY)
@@ -90,5 +88,5 @@ target_compile_options(softgl PRIVATE -sUSE_SDL=2)
 set_target_properties(softgl PROPERTIES
     OUTPUT_NAME softgl
     SUFFIX ".js"
-    LINK_FLAGS "-O2 -msimd128 -pthread -sUSE_SDL=2 -sPTHREAD_POOL_SIZE=8 -sEXPORTED_FUNCTIONS=_softgl_create,_softgl_create_multisample,_softgl_destroy,_softgl_make_current,_softgl_read_rgba8,_sg_test_count,_sg_test_name,_sg_test_run,_sg_bench_slot_count,_sg_bench_slot_tag,_sg_bench_slot_test_index,_sg_bench_run_idx,_sg_bench_run_slot,_sg_tank_load,_sg_tank_render,_sg_tank_tri_count,_sg_tank_mat_count,_sg_tank_unload,_sg_model_load,_sg_model_set_camera,_sg_model_upload_albedo,_sg_model_share_albedo,_sg_model_render,_sg_model_unload,_sg_model_tri_count,_sg_model_mat_count,_sg_thread_count,_sg_hwthreads,_sg_viewer_create,_sg_viewer_present,_sg_viewer_destroy,_malloc,_free -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,HEAPU8,UTF8ToString -sMODULARIZE=1 -sEXPORT_NAME=createSoftGL -sALLOW_MEMORY_GROWTH=1 -sMAXIMUM_MEMORY=4GB -sINITIAL_MEMORY=67108864 -sSTACK_SIZE=8388608"
+    LINK_FLAGS "-O2 -msimd128 -pthread -sUSE_SDL=2 -sPTHREAD_POOL_SIZE=8 -sEXPORTED_FUNCTIONS=_softgl_create,_softgl_create_multisample,_softgl_destroy,_softgl_make_current,_softgl_read_rgba8,_sg_test_count,_sg_test_name,_sg_test_run,_sg_bench_slot_count,_sg_bench_slot_tag,_sg_bench_slot_test_index,_sg_bench_run_idx,_sg_bench_run_slot,_sg_model_load,_sg_model_set_camera,_sg_model_upload_albedo,_sg_model_share_albedo,_sg_model_render,_sg_model_unload,_sg_model_tri_count,_sg_model_mat_count,_sg_thread_count,_sg_hwthreads,_sg_viewer_create,_sg_viewer_present,_sg_viewer_destroy,_malloc,_free -sEXPORTED_RUNTIME_METHODS=ccall,cwrap,HEAPU8,UTF8ToString -sMODULARIZE=1 -sEXPORT_NAME=createSoftGL -sALLOW_MEMORY_GROWTH=1 -sMAXIMUM_MEMORY=4GB -sINITIAL_MEMORY=67108864 -sSTACK_SIZE=8388608"
 )

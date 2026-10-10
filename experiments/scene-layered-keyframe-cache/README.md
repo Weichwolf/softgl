@@ -190,6 +190,6 @@ and browser choice accordingly. Native and WASM use SIMD128 only, four total
 native threads and a measured total browser heap below 4 GiB. Adopt only after
 moving-image validation and repeated AB/BA prove a priority-scene benefit.
 
-Related proposals: [motion-compensated residuals](../scene-motion-compensated-residual/README.md),
-[temporal sample reconstruction](../scene-temporal-sample-reconstruction/README.md)
-and the removed [current-frame coarse shader](../scene-coarse-direct-scatter/README.md).
+Related proposals: [motion-compensated residuals](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-motion-compensated-residual/README.md),
+[temporal sample reconstruction](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-temporal-sample-reconstruction/README.md)
+and the removed [current-frame coarse shader](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-coarse-direct-scatter/README.md).

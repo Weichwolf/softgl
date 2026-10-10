@@ -74,11 +74,11 @@ is not reused as evidence for current SIMD128 costs.
 
 Sources: our [current scene renderer](../../libsoftgl/src/scene_visibility.c),
 [geometry frontend](../../libsoftgl/src/geometry.inc),
-[earlier joined-scope instrumentation](../scene-current-phase-accounting/README.md)
+[earlier joined-scope instrumentation](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-current-phase-accounting/README.md)
 and original native resident/quality drivers. For a separate shading hypothesis,
 [SIGGRAPH 2010 fragment merging](https://graphics.stanford.edu/papers/fragmerging/)
 suggests sharing work across compatible adjacent triangles; our
-[surface-merging census](../scene-msaa-surface-merge/README.md) is opportunity
+[surface-merging census](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-msaa-surface-merge/README.md) is opportunity
 counting, not an implemented shader or frame-rate result.
 
 ```sh

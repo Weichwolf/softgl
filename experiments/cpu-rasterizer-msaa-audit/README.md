@@ -21,8 +21,8 @@ across surfaces or pixels would require measured cache overhead and explicit
 quality assessment; the paper's architectural simulation estimates are not
 CPU-native speed predictions.
 
-The existing [surface-merging census](../scene-msaa-surface-merge/README.md)
-and [coarse-shading trial](../scene-coarse-shading/README.md) already explore
+The existing [surface-merging census](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-msaa-surface-merge/README.md)
+and [coarse-shading trial](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-coarse-shading/README.md) already explore
 parts of that direction. Do not re-label those results as new gains.
-Independent next work is the [compact attribute record](../scene-compact-attributes/README.md)
-and our [exact packet coordinate decoder](../scene-packet-coordinate-decode/README.md).
+Independent next work is the [compact attribute record](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-compact-attributes/README.md)
+and our [exact packet coordinate decoder](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-packet-coordinate-decode/README.md).

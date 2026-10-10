@@ -108,7 +108,7 @@ Run the reproducible probe with the repository Python environment containing
 NumPy/Pillow and the clean pinned FLIP clone:
 
 ```sh
-build/python/bin/python experiments/scene-codec-luma-chroma/quality_probe.py \
+.venv/bin/python experiments/scene-codec-luma-chroma/quality_probe.py \
   --reference tmp/scene-msaa-grid-reduction/v1-quality \
   --output tmp/scene-codec-luma-chroma/new-quality-proxy
 ```
@@ -127,8 +127,8 @@ separately. Verify retained bytes and tested local source identities
 with `python3 experiments/scene-codec-luma-chroma/verify_archive.py`.
 
 Related experiments: [perceptual budget](../scene-perceptual-frequency-budget/README.md),
-[temporal reconstruction](../scene-temporal-sample-reconstruction/README.md),
-[motion/focus budget](../scene-shutter-budget/README.md).
+[temporal reconstruction](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-temporal-sample-reconstruction/README.md),
+[motion/focus budget](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-shutter-budget/README.md).
 
 ## Actual renderer prototypes
 
@@ -220,7 +220,7 @@ Frozen recipes, reconstructible patches and receipts are in
 remain in ignored `tmp/`. Reproduce V4 into a fresh root:
 
 ```sh
-build/python/bin/python experiments/scene-codec-luma-chroma/prepare_renderer.py \
+.venv/bin/python experiments/scene-codec-luma-chroma/prepare_renderer.py \
   --output-root build/scene-codec-luma-chroma/new-specialized
 cmake -S experiments/scene-codec-luma-chroma \
   -B build/scene-codec-luma-chroma/new-specialized/native \

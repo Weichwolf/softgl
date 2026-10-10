@@ -66,7 +66,7 @@ nor runtime MSE control nor temporal stability is measured. The simulated
 uniform probes are a calibration baseline, not the finished runtime sampler.
 
 ```sh
-build/python/bin/python experiments/scene-error-budget-profiles/mse_probe.py \
+.venv/bin/python experiments/scene-error-budget-profiles/mse_probe.py \
   --quality tmp/scene-codec-luma-chroma/v2-quality-proxy-cxx17 \
   --reference tmp/scene-msaa-grid-reduction/v1-quality \
   --output tmp/scene-error-budget-profiles/new-mse-probe

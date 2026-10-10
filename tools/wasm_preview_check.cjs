@@ -25,7 +25,7 @@ async function main() {
         assert.ok(moduleResponse.ok(), 'Preview WASM must be available from the checked server');
         const wasmSha256 = require('node:crypto').createHash('sha256')
             .update(await moduleResponse.body()).digest('hex');
-        const waitTank = () => page.waitForFunction(() =>
+        const waitT80 = () => page.waitForFunction(() =>
             document.querySelector('#counter').textContent.startsWith('T-80') &&
             document.querySelector('#name').textContent.includes('triangles'));
         const waitBMW = () => page.waitForFunction(() =>
@@ -34,11 +34,11 @@ async function main() {
         const waitTest = () => page.waitForFunction(() => document.querySelector('#name').textContent.startsWith('test_'));
         const waitWorkers = n => page.waitForFunction(n =>
             document.querySelector('#s-threads').textContent === `${n + 1} (${n} workers + main thread)`, n);
-        await waitTank();
+        await waitT80();
         await waitWorkers(3);
         for (const samples of ['2', '4', '0']) {
             await page.selectOption('#msaa', samples);
-            await waitTank();
+            await waitT80();
             await waitWorkers(3);
             await page.waitForTimeout(150);
             assert.equal(await page.locator('#msaa').inputValue(), samples);
@@ -69,11 +69,11 @@ async function main() {
         await waitTest();
         await page.click('#pause');
         await page.click('#next');
-        await page.waitForFunction(() => document.querySelector('#name').textContent === 'test_02_clear_red');
+        await page.waitForFunction(() => document.querySelector('#name').textContent === 'test_002_clear_red');
         await page.click('#prev');
-        await page.waitForFunction(() => document.querySelector('#name').textContent === 'test_01_clear_black');
+        await page.waitForFunction(() => document.querySelector('#name').textContent === 'test_001_clear_black');
         await page.click('#t80');
-        await waitTank();
+        await waitT80();
         await waitWorkers(3);
         await page.click('#bench');
         await page.waitForFunction(() => document.querySelector('#bench').textContent === 'Stop Benchmark');
@@ -119,7 +119,7 @@ async function main() {
             await waitTest();
         }
         await page.click('#t80');
-        await waitTank();
+        await waitT80();
         await waitWorkers(3);
         assert.deepEqual(errors, []);
         fs.mkdirSync(path.dirname(output), {recursive: true});

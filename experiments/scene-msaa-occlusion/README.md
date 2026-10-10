@@ -43,7 +43,7 @@ Sources: the local `libsoftgl/src/raster_hz.h` conservative MSAA hierarchy,
 `scene_visibility.c` real sample writes/rollback, and
 [Greene, Kass and Miller, Hierarchical Z-Buffer Visibility (SIGGRAPH 1993)](https://www.cs.cmu.edu/afs/cs/academic/class/15869-f11/www/readings/greene93_hierarchicalz.pdf).
 This reuses a single existing summary level; it does not implement every method
-in that paper. [Earlier OFF-only summary results](../scene-hierarchical-depth/README.md)
+in that paper. [Earlier OFF-only summary results](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-hierarchical-depth/README.md)
 were mixed and do not establish a gain in genuine deferred MSAA.
 
 ## Initial evidence

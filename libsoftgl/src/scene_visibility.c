@@ -110,15 +110,6 @@ static int scene_state_supported(const softgl_ctx *c) {
         c->color_mask[0] && c->color_mask[1] && c->color_mask[2] && c->color_mask[3];
 }
 
-/* Optional cost hint chooses a pipeline, never culls geometry. Small MSAA
- * scenes stay on forward rendering before allocating or copying any buffers. */
-int softgl_scene_visibility_begin_hint(GLuint triangles) {
-    softgl_ctx *c = sg_current();
-    if (c && c->fb.samples && (uint64_t)triangles < (uint64_t)c->fb.w*c->fb.h*2u)
-        return 0;
-    return softgl_scene_visibility_begin();
-}
-
 int softgl_scene_visibility_begin(void) {
     softgl_ctx *c = sg_current();
     if (!c || c->scene_visibility || !scene_state_supported(c) ||
@@ -1435,13 +1426,6 @@ static void scene_shade_packet(struct sg_scene_visibility *f, scene_material *m,
     }
 }
 
-/* Retained for callers of the former native-wide opt-in. All targets use
- * SIMD128, so a request for a wider backend is always unsupported. */
-int softgl_scene_native_wide(GLboolean enabled) {
-    (void)enabled;
-    return 0;
-}
-
 static void scene_resolve(void *data) {
     struct sg_scene_visibility *f = data;
     for (;;) {
@@ -1713,11 +1697,4 @@ void softgl_scene_depth_order(GLuint mode) {
 
 static __attribute__((noinline,cold)) void scene_order_storage_destroy(struct sg_scene_visibility *f) {
     sg_aligned_free(f->bins[SG_MAX_BINS-1].order_storage.data);
-}
-
-/* Integrate the opt-in without a second API call/branch in model submission. */
-int softgl_scene_visibility_begin_hint_ordered(GLuint triangles, GLuint mode) {
-    int started = softgl_scene_visibility_begin_hint(triangles);
-    if (started) softgl_scene_depth_order(mode);
-    return started;
 }

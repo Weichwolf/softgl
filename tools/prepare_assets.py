@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 from pack_gltf import pack
 from stream_model_pack import split_pack
+from asset_sources import write_source_metadata
 root = Path(__file__).resolve().parents[1]
 models = json.loads((root/'assets/models.json').read_text())
 parser = argparse.ArgumentParser(description=__doc__)
@@ -20,6 +21,7 @@ for name in args.assets:
     archive = root/model['archive']
     if not archive.exists():
         parser.error(f'{archive} missing; use tools/fetch_gltf_assets.py for Sponza/Bistro or supply the original Sketchfab ZIP')
+    source = write_source_metadata(name, archive)
     output = args.output_dir/f'{name}.pack'
     pack(archive, output, target_vertices=model['targetVertices'],
          max_texture_size=model['maxTextureSize'], only_base_textures=model['onlyBaseTextures'],
@@ -28,7 +30,7 @@ for name in args.assets:
     metadata = json.loads(output.with_suffix('.json').read_text())
     metadata['registeredAsset'] = name
     metadata['attribution'] = {key: model[key] for key in ['title', 'credit', 'source', 'license']}
-    metadata['archiveSha256'] = hashlib.sha256(archive.read_bytes()).hexdigest()
+    metadata['archiveSha256'] = source['sourceSha256']
     metadata['packSha256'] = hashlib.sha256(output.read_bytes()).hexdigest()
     output.with_suffix('.json').write_text(json.dumps(metadata, indent=2)+'\n')
 

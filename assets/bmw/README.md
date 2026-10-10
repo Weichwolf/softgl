@@ -1,43 +1,38 @@
 # 2014 BMW 3 Series (F31)
 
-Source: [DisneyCars on Sketchfab](https://sketchfab.com/3d-models/2014-bmw-3-series-f31-71746440f98d48ca9ea41ceeaa3504c7).
-License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/); the original attribution is in `license.txt`.
-`source.zip` is the supplied glTF export, preserved as the reproducible input.
+## Source
 
-Prepare it with NumPy and Pillow installed:
+- Source: [2014 BMW 3 Series (F31)](https://sketchfab.com/3d-models/2014-bmw-3-series-f31-71746440f98d48ca9ea41ceeaa3504c7).
+- Credit: DisneyCars.
+- License: CC-BY-4.0.
+- Provenance: [source.json](source.json), including the archive hash and pinned revision where available.
+- Original terms: [license.txt](license.txt).
+
+`source.zip` is the preserved glTF input. Preparation writes generated files
+under `build/assets/` and leaves the source archive unchanged.
+
+## Preparation
+
+From the repository root, with the shared [asset environment](../README.md):
 
 ```sh
-python3 tools/pack_gltf.py assets/bmw/source.zip --output build/assets/bmw.pack
+.venv/bin/python tools/prepare_assets.py bmw
 ```
 
-The source contains 939,641 triangles and 614,139 vertices. The packer targets
-approximately 50,000 vertices offline, retaining 23 materials, five original
-textures at their original dimensions and separate transparent parts.
-An attribute-aware quadric simplifier protects shared material/part interfaces
-and incorporates normals and UVs. Small parts, including badges and number
-plates, retain their original geometry. Large parts share the remaining vertex
-budget. Tangents are rebuilt after simplification, and transparent centers
-remain unchanged for sorting. No simplifier or LOD cache runs in SoftGL.
+Preparation settings and the camera are registered in
+[models.json](../models.json). Resulting geometry, material and texture counts
+are recorded in `build/assets/bmw.json`.
 
-Use `--target-vertices 0` to preserve all source geometry for comparisons;
-`--preserve-parts --target-vertices 0` also retains the original draw layout.
-The pinned C++11 helper builds under `build/tools/` on the first preparation run.
-Its meshoptimizer 1.3 sources live in `tools/third_party/meshoptimizer/`;
-no system meshoptimizer package is required.
-The generated JSON records per-part budgets, resulting counts and error metrics.
+## Rendering notes
 
-The renderer uses OpenGL 1.5 VBOs, DOT3 texture combiners, two lighting passes,
-alpha blending and cube maps. Diffuse colors and dielectric/metallic reflection
-tints use the glTF material parameters. Studio cube maps use the exact material
-roughness values with a 128-sample GGX prefilter. Normal maps are derived from
-color textures or procedural grain; the archive supplies no normal maps.
-Glass parts are drawn after opaque parts, sorted by their view-space centers.
+The source contains 939,641 triangles and 614,139 vertices. Preparation targets
+50,000 vertices with attribute-aware quadric simplification, retains all 23
+materials and original texture dimensions, and preserves small parts such as
+badges and number plates. Shared material boundaries, normals and UVs contribute
+to the error metric; tangents are rebuilt afterwards.
 
-This is an approximation of glTF's material model with fixed texture combiners.
-The environment prefilter assumes N=V. Half-vector lighting, finite texture
-resolution, clearcoat weighting and part-level transparency sorting cannot
-reproduce every aspect of a shader-based glTF PBR renderer. The source
-parameters remain recorded in `build/assets/bmw.json`.
-
-The viewer shows the attribution alongside the BMW. Prepared geometry,
-normal maps and studio reflections are generated under `build/`.
+The GL 1.5 material approximation uses DOT3 lighting, generated normal maps and
+128-sample GGX-filtered studio cube maps. The source provides no normal maps.
+Glass is blended after opaque geometry and sorted by part centers. The fixed
+combiners and part sorting approximate glTF PBR; source parameters and generated
+counts remain in `build/assets/bmw.json`.

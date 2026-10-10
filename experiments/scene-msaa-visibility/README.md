@@ -165,7 +165,7 @@ Stable-specialized retains 48 accepted runs, zero rejected attempts; vector's
 is under [validation](validation/). Timings from different screens must not be
 subtracted as if collected under identical clock/cache/host conditions. There
 is no accepted broad gain in these globally enabled variants. The independent
-[forward scaled-coverage trial](../msaa-scaled-coverage/README.md) isolates that
+[forward scaled-coverage trial](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/msaa-scaled-coverage/README.md) isolates that
 kernel from deferred architecture costs and has its own mixed screen.
 
 ## Accepted adaptive confirmation

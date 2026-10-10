@@ -35,10 +35,10 @@ attribute cache are distinct future trials. Its AVX512 compress/expand operation
 need a measured SIMD128 design; they cannot be copied into this renderer.
 
 Related evidence: [packet/bin masks](../scene-triangle-packets/README.md),
-[meshlets](../scene-meshlets-soa/README.md), [4×4 layout](../scene-tiled-4x4/README.md),
-[hierarchical coverage](../hierarchical-coverage/README.md),
-[masked summaries](../hz-masked-summary/README.md),
-[scene hierarchy](../scene-hierarchical-depth/README.md),
+[meshlets](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-meshlets-soa/README.md), [4×4 layout](../scene-tiled-4x4/README.md),
+[hierarchical coverage](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/hierarchical-coverage/README.md),
+[masked summaries](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/hz-masked-summary/README.md),
+[scene hierarchy](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-hierarchical-depth/README.md),
 [MSAA visibility](../scene-msaa-visibility/README.md).
 
 ## PCM and Debian tools

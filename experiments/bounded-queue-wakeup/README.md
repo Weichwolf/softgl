@@ -16,7 +16,7 @@ There is no permanently spinning idle pool and no wider native SIMD path.
 
 Source: own [workers_queue_raw.inc](../../libsoftgl/src/workers_queue_raw.inc)
 at [1ff3c2c](https://github.com/Weichwolf/softgl/commit/1ff3c2c2c12113d0d37fe53116b823b60cba52cf),
-and [native CPU profiles](../native-cpu-profiles/README.md). Earlier profiles
+and [native CPU profiles](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/native-cpu-profiles/README.md). Earlier profiles
 sampled substantial pthread broadcast/wakeup work; those older percentages are
 motivation, not predictions for the current baseline. No external code copied.
 

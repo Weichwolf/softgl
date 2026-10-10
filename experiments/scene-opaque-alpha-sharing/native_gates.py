@@ -19,7 +19,7 @@ recipe = output/'recipe'; recipe.mkdir()
 for name in ('native_gates.py','dot3_contract.c','scene_alpha_contract.c'):
     shutil.copyfile(experiment/name,recipe/name)
 shutil.copyfile(repo/'tests/scene_positions.c',recipe/'scene_positions.c')
-shutil.copyfile(repo/'experiments/scene-msaa-rgb-alpha-split/quality_frames.c',recipe/'quality_frames.c')
+shutil.copyfile(repo/'tools/experiment_support/quality_alpha_frames.c',recipe/'quality_frames.c')
 flags = '-O3 -g -fno-strict-aliasing -ffast-math -fno-associative-math -fsigned-zeros -fno-finite-math-only -msse4.1 -mno-avx -mno-avx2 -mno-avx512f'
 (recipe/'CMakeLists.txt').write_text('''cmake_minimum_required(VERSION 3.20)
 project(OpaqueAlphaGates C)

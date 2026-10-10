@@ -19,7 +19,7 @@ Adoption requires repeated quiet AB/BA and native, sanitizer, WASM/browser gates
 
 Sources: [A4, sections 5.3.2 and 6](https://fileadmin.cs.lth.se/graphics/research/papers/2013/a4/a4.pdf),
 [SimdRast Resolve.cpp](https://github.com/rasmusbarr/simdrast/blob/e6a2a07fa92e55ba11107915455685f8ef7cd60c/SimdRast/Resolve.cpp)
-and our [synchronized phase measurement](../scene-phase-profile/README.md).
+and our [synchronized phase measurement](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-phase-profile/README.md).
 This is our own C implementation of parallel compaction; no upstream code copied.
 
 Completed native evidence: 216 independent platform-baseline hashes, 162
@@ -49,7 +49,7 @@ python3 experiments/scene-msaa-parallel-groups/prepare.py
 cmake -S experiments/scene-msaa-parallel-groups -B build/scene-msaa-parallel-groups/native \
   -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER=/home/cosmo/.local/bin/clang-22
 cmake --build build/scene-msaa-parallel-groups/native -j4
-build/python/bin/python experiments/scene-meshlets-soa/check_quality.py \
+.venv/bin/python experiments/scene-meshlets-soa/check_quality.py \
   --root build/scene-msaa-parallel-groups --output tmp/scene-msaa-parallel-groups/quality
 ```
 

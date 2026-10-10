@@ -20,6 +20,6 @@ GLimpSW derives its combined texture layers/PBR/minification internally and
 does not render pixel-identically to Mesa. Its different pipeline is documented
 in provenance.json and parent README. Both external comparison drivers currently
 support off mode; separate softgl off/2×/4× audits are in
-[native shader validation](../../scene-native-wide-materials/README.md).
+[native shader validation](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-native-wide-materials/README.md).
 The root native sources/wrapper hashes match the measured production build.
 Softgl remains 4.20–6.08× slower than GLimpSW; the open-ended goal is not achieved.

@@ -1,7 +1,0 @@
-Traceback (most recent call last):
-  File "/home/cosmo/Git/softgl/build/diagnostics/queue-cost-priority/inspect-codegen.py", line 112, in <module>
-    result = analyze(directory / 'softgl.wasm', directory / 'softgl.js.symbols')
-  File "/home/cosmo/Git/softgl/build/diagnostics/queue-cost-priority/inspect-codegen.py", line 91, in analyze
-    assert len(hits) == 1, (name, hits)
-           ^^^^^^^^^^^^^^
-AssertionError: ('sg_workers_submit_stream', [])

@@ -54,7 +54,7 @@ python3 experiments/scene-material-visibility/prepare.py --baseline 9c6f0e9
 cmake -S experiments/scene-material-visibility -B build/scene-material-visibility/native -DCMAKE_C_COMPILER=$HOME/.local/bin/clang-22 -DCMAKE_BUILD_TYPE=Release
 cmake --build build/scene-material-visibility/native -j4
 build/scene-material-visibility/native/scene_contract
-build/python/bin/python experiments/scene-material-visibility/check_quality.py
+.venv/bin/python experiments/scene-material-visibility/check_quality.py
 python3 experiments/scene-material-visibility/run_trial.py --output tmp/scene-material-visibility/validation --pairs 3 --samples 0,2,4
 ```
 
@@ -76,9 +76,9 @@ The saved compact-records/profile/ tables cover BMW and Bistro, 120 frames each,
 640x360/MSAA off/four threads; these are diagnostics, not acceptance timings.
 
 Sources: [accepted fused shader](../fused-material-pass/README.md),
-[earlier visibility experiments](../visibility-buffer-architecture/README.md),
+[earlier visibility experiments](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/visibility-buffer-architecture/README.md),
 [packet occupancy diagnostic](../packet-lane-occupancy/README.md),
-[accepted baseline profiles](../native-cpu-profiles/current-4b/receipt.json),
+[accepted baseline profiles](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/native-cpu-profiles/current-4b/receipt.json),
 [GLimpSW material resolve](https://github.com/dubiousconst282/GLimpSW/blob/2f915606d50b70fef8859ef29adc9d53f9aee887/src/SwRast/Shading.cpp),
 and [GLimpSW rasterizer](https://github.com/dubiousconst282/GLimpSW/blob/2f915606d50b70fef8859ef29adc9d53f9aee887/src/SwRast/Rasterizer.cpp).
 GLimpSW sources were inspected in the local clone at that pinned revision.

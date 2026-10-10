@@ -17,7 +17,7 @@ record allocation/rollback, selected shading point and real current-frame HZ
 writes. Avoid extra packet arrays and their per-frame preparation/memory cost.
 
 This is a distinct approach from the rejected full-precision
-[triangle packets](../scene-msaa-triangle-packets/README.md), which regressed
+[triangle packets](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-msaa-triangle-packets/README.md), which regressed
 despite exact output. Native SIMD128 only; any adoption requires independent
 sample-plane/image checks, actual fast/fallback dispatch, repeated all-four
 OFF/2×/4× timing, sanitizer, WASM and browser validation.

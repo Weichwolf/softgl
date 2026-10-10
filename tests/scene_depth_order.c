@@ -51,9 +51,9 @@ static void order_frame(softgl_ctx *c, unsigned mode, int variant, int invalid) 
     const float tint[4] = {.1f,.2f,.3f,.5f};
     softgl_set_fused_dot3_material(tint,0);
     /* Large cost hints select scene capture without adding geometry. Exercise
-     * the combined entry and retain the ordinary begin for the reset check. */
+     * the adaptive entry and retain the ordinary begin for the reset check. */
     CHECK(mode == UINT32_MAX ? softgl_scene_visibility_begin() :
-        softgl_scene_visibility_begin_hint_ordered(640u*360u*2u,mode));
+        softgl_scene_visibility_begin_adaptive(640u*360u,mode));
     softgl_scene_visibility_material();
     program_data data = {0};
     CHECK(softgl_scene_visibility_positions(vertices[0].p,vertices[0].uv,
@@ -95,7 +95,7 @@ int main(void) {
         initialize(a,1); initialize(b,helpers[h]);
         softgl_make_current(b);
         /* A rejected small MSAA hint must leave capture inactive. */
-        if (samples[s]) CHECK(!softgl_scene_visibility_begin_hint_ordered(1,2));
+        if (samples[s]) CHECK(!softgl_scene_visibility_begin_adaptive(1,2));
         CHECK(!b->scene_visibility);
         softgl_scene_depth_order(2); /* Outside a capture: ignored. */
         softgl_ctx *contexts[] = {a,b};

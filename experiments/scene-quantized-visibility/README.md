@@ -28,7 +28,7 @@ and TriangleEdgeVars::Setup at pinned revision
 2f915606d50b70fef8859ef29adc9d53f9aee887, available in
 [upstream Rasterizer.cpp](https://github.com/dubiousconst282/GLimpSW/blob/2f915606d50b70fef8859ef29adc9d53f9aee887/src/SwRast/Rasterizer.cpp);
 accepted [scene visibility](../../libsoftgl/src/scene_visibility.c) at 3495913;
-[current phase accounting](../scene-phase-accounting/README.md).
+[current phase accounting](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/scene-phase-accounting/README.md).
 No upstream implementation code is copied. This uses SIMD128, not AVX512.
 
 Prepare/build with Clang 22.1.8 Release, then check_quality.py --samples 0

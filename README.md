@@ -1,352 +1,69 @@
 # softgl
 
-GL 1.5 software renderer in C11 — fixed-point SIMD rasterizer, pthread tile pool,
-WASM + native, Mesa-referenced.
+softgl is an OpenGL 1.5 software renderer written in C11. It runs natively and
+in the browser through WebAssembly, with the same SIMD128 rendering kernels.
+Native x86 uses SSE4.1; WASM uses `simd128`. Neither build uses AVX2 or AVX512.
 
-## Research objective
+The browser viewer renders BMW F31, T-80, Sponza and Bistro at 640×360 with
+MSAA off, 2× or 4×. All four scenes use the same model adapter and asset tools.
+The renderer also has 235 numbered GL rendering cases, checked against Mesa
+llvmpipe through a headless OSMesa harness.
 
-SoftGL is an open, reproducible research project aiming to make an
-OpenGL 1.5 software renderer run as fast as practically possible in WebAssembly.
-Research covers algorithms, memory layout, SIMD and cooperation between four
-CPU cores, preserving image
-quality, prepared geometry and OpenGL semantics. BMW F31 is the primary workload;
-T-80 provides a second demanding reference. Compare changes repeatedly with
-MSAA off, 2x and 4x, and run full regression checks before retaining renderer
-changes. Publish methods, results and unsuccessful experiments alongside code.
-Progress means reproducible performance gains and a better understanding of
-remaining technical limits, without fixed FPS targets.
-See [optimization evidence](experiments/INDEX.md) and the compact
-[current measurements](bench_report.md).
+## Rendering
 
-## Scope
+The GL pipeline supports vertex arrays and VBOs, immediate mode, display lists,
+lighting, multitexturing and DOT3 combiners, 2D/cube textures, fog, depth/stencil,
+blending, clipping, pixel transfer, queries, evaluators and selection/feedback.
+Color, depth and stencil use bottom-origin framebuffers. Context creation selects
+single sampling, 2× MSAA or 4× MSAA.
 
-API-level compatibility with real OpenGL 1.5:
+Several optimizations are shared by the native and WASM implementations:
 
-- VBOs (`glGenBuffers`/`glBufferData`/`glDrawArrays`/`glDrawElements`) + client arrays
-- Immediate mode (`glBegin`/`glEnd` with every `glVertex*`/`glColor*`/`glNormal*`/`glTexCoord*` variant, `glArrayElement`, `glEdgeFlag`, `glRect*`)
-- Display lists
-- Matrix stacks for `GL_MODELVIEW`, `GL_PROJECTION`, `GL_TEXTURE`
-- Up to 4 texture units; `GL_TEXTURE_1D`/`2D`/`3D`/`CUBE_MAP`; nearest + bilinear filtering
-- Fixed-function Gouraud lighting with 8 lights, color material, light model
-- Tex-env: `MODULATE` / `REPLACE` / `DECAL` / `COMBINE` including `DOT3_RGB`, `INTERPOLATE`, `SUBTRACT`, `ADD_SIGNED`
-- Fog (`LINEAR`/`EXP`/`EXP2`), alpha test, alpha blending, color logic op
-- Stencil, depth test, scissor, polygon stipple, line stipple
-- Optional 2x/4x MSAA: sample coverage, alpha-to-coverage and alpha-to-one
-- Sutherland-Hodgman frustum clipping, back-face cull, clip planes
-- Pixel transfer (`glDrawPixels`/`ReadPixels`/`CopyPixels`/`PixelStore`/`PixelZoom`/`RasterPos`)
-- Occlusion queries, `glMapBuffer`, comprehensive `glGet*` state readback
-- Evaluators (`glMap1`/`glMap2`), accumulation buffer, selection / feedback modes
+- SIMD128 edge coverage, depth tests, texture filtering and MSAA resolve.
+- A persistent pthread worker pool with ordered stripe bins; geometry preparation
+  and vertex transforms share the workers, and the calling thread helps render.
+  The default uses at most three helpers plus the calling thread.
+- Conservative hierarchical depth rejection and revision-checked geometry caches.
+- Bounded packed draw queues that overlap preparation with rasterization.
+- A model scene path that batches triangle packets and material work, shades
+  visible samples together and fuses the model's DOT3 material operations.
+- Four-sample material sharing that reduces repeated shading within one pixel
+  while retaining freshly computed physical coverage and sample depths.
 
-323 entry points, 234 test cases plus three Tank and three BMW camera views. Each runs
-against softgl and Mesa llvmpipe, followed by a pixel comparison
-(720 image correctness checks plus 24 contracts when the
-BMW asset is prepared; `ctest -C Bench` also includes the native benchmark).
+The scene path accepts only supported states and replays through the ordinary
+GL path after a failed batch. Pure attribute callbacks supply fresh material
+lighting while canonical position/UV arrays permit geometry reuse. Model
+materials approximate glTF PBR with GL 1.5 combiners and prepared textures;
+rendering differences and asset-specific limits are documented in the
+[asset READMEs](assets/README.md). The model path can use approximate shading;
+general GL correctness tests retain their established tolerances.
 
-## Model preparation
+Adopted changes, useful measurements and research references are indexed in
+[experiments/INDEX.md](experiments/INDEX.md). Each retained experiment documents
+its own result, scope and evidence. Rejected implementations are absent from
+`libsoftgl/`; historical archives remain retrievable from Git.
 
-SoftGL renders the geometry supplied by the application with normal OpenGL 1.5
-semantics. There is no runtime mesh simplification, LOD cache or Performance
-mode. Model complexity is chosen offline during asset preparation.
+## Prepare assets
 
-The BMW packer targets approximately 50,000 vertices using attribute-aware
-quadric simplification with meshoptimizer. It protects interfaces between parts,
-retains small parts such as badges and number plates, and includes normals and
-UVs in its error metric. Tangents are rebuilt for the prepared geometry; all
-materials and original texture dimensions remain available. Use
-`--target-vertices 0` to prepare full detail for appearance comparisons.
-
-The offline helper uses pinned meshoptimizer 1.3 sources in
-[`tools/third_party/meshoptimizer`](tools/third_party/meshoptimizer/README.md).
-It requires a C++11 compiler and builds under `build/tools/`; meshoptimizer is
-not linked into the renderer. The system package is not required: version 0.22
-lacks the simplification APIs used by the helper.
-
-## Architecture
-
-- **Pineda edge functions** in 16.8 fixed-point with i64 accumulator; 2×2-quad SIMD via SSE4.1 / `wasm_simd128`
-- **Early-Z** before scalar texture shading when depth testing is enabled and stencil is disabled; the SIMD path also requires alpha testing disabled
-- **Packed 2-row 64-bit framebuffer I/O** for depth load / blend-dst load / color write
-- **AoS 16-byte aligned vertex** with vec4 clip / ndc / color / normal / eye + per-unit UVs
-- **Separate RGBA8 color + f32 depth planes**, row 0 = bottom (GL convention)
-- **Optional MSAA sample buffers**, with color/depth/stencil per sample and one texture/combiner evaluation per covered pixel; SIMD resolves four pixels at a time in both 2x and 4x modes
-- **Exact 2×/4× sample coverage SIMD** bounds all sample edges over each triangle rectangle before testing sample lanes together; larger ranges retain i64 coverage
-- **Direct WASM pseudo-min/max color clamps** preserve each combiner stage, NaN payloads and signed zero; native SSE4.1 retains its existing path
-- **SIMD texture addresses** wrap/clamp four pixels together and share bilinear row offsets; full packets coalesce adjacent tap pairs into bounded 64-bit loads; prepared power-of-two masks shorten REPEAT addressing while filtering arithmetic stays unchanged
-- **RGBA cube-filter SIMD** loads each four-byte texel once and filters four channels together with the original float arithmetic; face selection and addressing stay scalar
-- **Coherent cube packets** project pixels sharing one cube face together and reuse the SIMD 2D addressing/filter kernel; mixed faces and exceptional inputs retain the scalar sampler in a separate cube kernel
-- **Exact additive 2×/4× MSAA blending** uses native saturated byte addition when a conservative rounding guard proves parity with the float writer; boundary and exceptional values retain the float path
-- **Separate 2× MSAA sample writer** vectorizes depth tests and common opaque/blended writes with bounded 64-bit loads/stores; alpha/stencil/logic/query/color-mask states retain the scalar fallback
-- **Opaque 2×/4× MSAA stores** reuse the rasterizer's tested sample mask and convert RGBA with SIMD; other fragment states retain the general writer
-- **Hierarchical 2×/4× sample depth** rejects fully hidden triangles with conservative 4×4-cell bounds; statically selected kernels track 32 or 64 actual samples per cell, the optional table is capped at 256KiB, and WASM keeps the sample-count raster loops separate from the common rasterizer
-- **Packed large raster draws** retain exact float NDC, front color, eye.z and every active UV set (64 bytes with one UV set); a 64-entry collision-safe vertex cache feeds the existing rasterizer, allowing formerly oversized draws to overlap preparation within the 2MiB submitted-vertex budget
-- **Pthread tile worker pool** with X-stripe bins; a four-slot queue overlaps filled multitexture draws while preserving order within each stripe, with a shared 2MiB budget for retained raw and packed vertex arrays; ordinary full/packed draws retain their bounded snapshots, and the caller helps drain outstanding bins
-- **Compact DOT3 queue payloads** retain exact float raster fields and UVs consumed by nonconstant samplers, using 48–96 bytes per vertex and a private 64-entry decoded cache per rendering thread; small and other-state draws retain raw ownership swaps
-- **Position and ordered-bin cache** shares a 4MiB payload budget; VBO storage revisions and matrix/viewport keys preserve fresh attributes and lighting across draws
-- **Transient depth visibility** skips strictly hidden geometry references in later material passes within a monotonic depth epoch. Equality remains available for LEQUAL/EQUAL, and clears or nonmonotonic writes invalidate reuse. Strict hierarchical depth bounds also feed this transient visibility; triangles tied at the LESS rejection bound remain available for later LEQUAL/EQUAL passes. A separate 4x capture kernel keeps the ordinary raster kernels free of visibility bookkeeping; bitmaps use reclaimed geometry-cache payload space.
-- **Prepared vertex inputs** resolve array/VBO addresses once per joined vertex job; bounded SIMD loads serve float arrays, with the original conversions for other types; identical enabled UV arrays share one fetch within the job
-- **Exact unsigned index ranges** dispatch BYTE/SHORT/INT once per cache-miss scan; four SIMD reduction chains use bounded loads and scalar tails, preserving the geometry-cache hit path
-- **Parallel triangle preparation** shares the same workers and caller for 128-triangle slices; exact culling, bounds and bin descriptors use at most 224KiB retained scratch (448KiB during growth), then the caller appends in primitive order; clipping and small/ineligible jobs retain the original path
-- **Automatic WASM pool** uses at most three workers plus the calling thread, capped at the reported logical CPU count; explicit worker counts remain available, and a one-CPU browser renders without raster workers
-- **Single rasterizer** (`rasterizer.c::sg_raster_triangle`); per-lane scalar fallback only for stencil / polygon stipple / color logic op / occlusion queries (pixel-serial state)
-
-## Building
-
-### Build layout and BMW preparation
-
-All generated files live under the single `build/` tree: `native/`, `wasm/`,
-`assets/`, `perf/` and the optional Emscripten `emscripten-cache/`.
-Historical measurements and control builds are preserved in `build/archive/`;
-old paths in their metadata describe the original runs.
-
-Prepare the supplied, attributed BMW asset before configuring the builds:
+Use one project virtual environment and the registered preparation settings:
 
 ```sh
-python3 -m venv build/python
-build/python/bin/pip install -r tools/requirements-assets.txt
-build/python/bin/python tools/pack_gltf.py assets/bmw/source.zip
+python3 -m venv .venv
+.venv/bin/pip install -r tools/requirements-assets.txt
+.venv/bin/python tools/fetch_gltf_assets.py sponza bistro
+.venv/bin/python tools/prepare_assets.py bmw t80 sponza bistro
 ```
 
-Select **BMW F31** in the preview. Its material lighting uses OpenGL 1.5 DOT3
-combiners, authored metallic/roughness parameters, prepared normal maps and
-GGX-filtered studio cube maps. The source contains 939,641 triangles; the
-prepared pack targets approximately 50,000 vertices. See
-[asset preparation and attribution](assets/bmw/README.md) for fidelity limits.
-Selecting BMW before **Run Benchmark** adds it to the interactive benchmark.
-The benchmark runs MSAA off, 2× and 4× sequentially, appends all three passes
-to the log, then restores the selected MSAA setting. It yields between frames
-and can be stopped. Scene switches
-release the active render context before starting the next one.
+Original sources and provenance live under `assets/<model>/`. Generated packs,
+textures and counts live under `build/assets/`. The offline mesh simplifier
+requires a C++11 compiler; it is not linked into libsoftgl. Preparation limits
+are recorded in [assets/models.json](assets/models.json). All comparison
+renderers must receive the same prepared assets and cameras.
 
-### Native (test suite)
+## Build and test natively
 
-Requires an x86 CPU with SSE4.1, GCC or Clang, CMake 3.20+, pthreads,
-Mesa OSMesa development libraries. On Debian/Ubuntu:
-
-```sh
-sudo apt install build-essential cmake libosmesa6-dev
-cmake -S . -B build/native -DCMAKE_BUILD_TYPE=Release
-cmake --build build/native -j4
-ctest --test-dir build/native -C Bench --output-on-failure -j1
-```
-
-The OSMesa harness renders without a display server, requests RGBA8 color,
-24-bit depth, 8-bit stencil, and a 16-bit accumulation buffer, and verifies
-that the reference renderer is Mesa llvmpipe. Raw images and PPM diffs are
-written to `build/native/out/`. The comparator uses the per-case tolerances in
-`tests/CMakeLists.txt`, typically a ~2 % pixel budget at triangle edges.
-
-Each test includes `harness.h`, which selects `<GL/gl.h>` and extension
-prototypes for the Mesa reference build, or `<GL/softgl.h>` for softgl.
-The same `.c` test file compiles against both backends unchanged.
-
-The scene benchmark is separate from the correctness suite:
-
-```sh
-ctest --test-dir build/native -C Bench -L bench --output-on-failure
-```
-
-### WASM (browser preview)
-
-On Debian, use the distribution's `emscripten` package (validated with
-`3.1.69+dfsg-3`). Run these commands from the repository root:
-
-```sh
-sudo apt install emscripten cmake python3
-export EM_CACHE="$PWD/build/emscripten-cache"
-export EM_FROZEN_CACHE=0
-emcmake cmake -S wasm -B build/wasm
-cmake --build build/wasm -j4
-bash wasm/serve.sh 8000
-```
-
-The cache settings let Emscripten build its SDL2 and pthread dependencies in
-the writable `build/` tree. Keep them exported for subsequent WASM builds.
-
-Open http://localhost:8000. The preview page cycles the tests and runs a
-live Tank demo with pthread tile workers. Its **MSAA** selector switches the
-model viewer and interactive benchmark between off, 2x and 4x. Correctness tests
-use single-sample contexts. Applications select samples through
-`softgl_create_multisample(w, h, samples)` at context creation; the default
-`softgl_create` remains single-sample. `GL_MULTISAMPLE` starts enabled and controls
-sample coverage within a multisample context. The GL states and
-`glSampleCoverage` follow [OpenGL 1.5 sections 3.2.1 and 4.1.3](https://registry.khronos.org/OpenGL/specs/gl/glspec15.pdf).
-
-Threads require a secure browser
-context (HTTPS or localhost) and COOP/COEP headers; `serve.sh` sets the headers
-and listens on all IPv4 interfaces. For access over a LAN IP, supply a TLS
-certificate and key outside the served `build/wasm/` directory:
-
-```sh
-SOFTGL_TLS_CERT=/absolute/path/cert.pem SOFTGL_TLS_KEY=/absolute/path/key.pem \
-  bash wasm/serve.sh 8443
-```
-
-Open `https://<server-ip>:8443`. The certificate must cover the server IP
-or hostname; for a local self-signed certificate, accept its browser warning.
-CMake copies the preview files and prepared packs into `build/wasm/`.
-
-### WASM performance and image validation
-
-Requires Node.js 20+, Chromium, and the native/Mesa and WASM builds above:
-
-```sh
-npm ci --prefix tools
-ctest --test-dir build/native -C Bench --output-on-failure -j1
-node tools/wasm_perf.cjs --output build/perf/current.json
-node tools/wasm_perf.cjs --bench-only --samples 4 --scenes bmw,tank \
-  --output build/perf/msaa4.json
-```
-
-`--samples` selects 0, 2 or 4 samples for benchmarks and profiles. Every timed
-frame waits for resolve/readback, including MSAA off; the Mesa image gate uses
-single samples.
-
-For the research protocol, compare two frozen builds with:
-
-```sh
-python3 tools/wasm_research_compare.py --candidate build/controls/candidate \
-  --reference build/controls/reference --output-dir build/perf/research \
-  --label candidate
-```
-
-This runs three fresh off pairs and six pairs each for 2x and 4x, using 80
-warm-up and 100 measured frames per round. It preserves quiet-host monitors,
-discarded attempts, raw crossover samples and module identities. Use
-`--summarize-only` to recheck existing data against the same frozen modules.
-
-Compare prepared model appearance against full source geometry with the same
-renderer (C++11 is required only for the offline simplifier):
-
-```sh
-build/python/bin/python tools/pack_gltf.py assets/bmw/source.zip \
-  --target-vertices 0 --output build/assets/bmw-original.pack
-node tools/wasm_model_check.cjs build/model-check build/wasm \
-  build/assets/bmw-original.pack build/assets/bmw.pack
-```
-
-The appearance tool captures twelve original/prepared views, reports image and
-silhouette differences and verifies that runtime simplification APIs are absent.
-These asset diagnostics are separate from the unchanged Mesa regression gate.
-
-The tool renders every WASM test, three Tank views and the prepared BMW views in headless Chromium,
-then compares RGBA output against Mesa using the unchanged CTest tolerances.
-An image failure produces a nonzero exit status. It also measures twelve scenes plus the prepared BMW at 640×360, with 20 warm-up frames and seven rounds of 60 timed frames.
-Context creation, model asset loading, image comparison, and display upload
-are outside the timed region; test scenes execute their complete `run_test`
-including per-frame setup. A final framebuffer read waits for all workers.
-
-For optimization comparisons, preserve the reference build's `softgl.js`
-and `softgl.wasm` in another directory and pass `--reference-build DIR`.
-The tool interleaves reference/candidate measurements in alternating AB/BA
-order and records raw samples, paired ratios, browser/CPU/compiler metadata,
-worker count, and WASM hashes. Increase `--warmup`, `--frames`, and `--rounds`
-to confirm a result; `--bench-only` skips image checks for an already validated
-binary. Keep test catalogs and compiler flags identical across builds.
-For further confirmation, use `--crossover --rounds 10`: the modules swap
-browser pages and loading order between rounds. Each reported comparison
-combines two rounds geometrically to reduce a consistent page/instance bias.
-Both pages are brought to the foreground before their measurements.
-Comparisons require equal worker counts by default. For pool-sizing changes,
-pass both `--candidate-workers N` and `--reference-workers N` to assert the
-expected counts for each build. These options validate the observed counts;
-they do not set the renderer's pool size. Results record `workerCounts` and
-each scene's actual worker count on both sides.
-Use `--scenes 98_city_block,tank` for focused follow-up measurements.
-Measured results and remaining candidates are recorded in
-[`bench_report.md`](bench_report.md).
-
-Each sample also records `heapBytes` after rendering, outside the timer.
-This is the whole module's linear memory, including worker stacks and
-earlier scenes on that page; it does not shrink when a context is freed.
-The driver hash records which measurement implementation produced a run.
-
-For quiet-host comparisons on Linux, wrap the same command with
-`python3 tools/wasm_quiet_audit.py OUTPUT`, keeping its `--output OUTPUT`
-argument. The wrapper waits for three seconds without compiler/test activity
-or foreign CPU use of at least 0.10 cores per polling interval. It excludes its own
-benchmark descendants, discards interrupted attempts and preserves their logs
-and monitor JSON. It records the monitor hash and checks process birth identities
-before stopping only its own audit processes. It waits while other work is active.
-
-For CPU sampling, link a separate diagnostic build with
-`--profiling-funcs` to retain WASM function names, then pass
-`--wasm-build DIR --profile-scene tank --scenes tank --rounds 1`.
-The tool writes a separate `.profiles.json` with main-thread and Web-Worker
-profiles from an additional warmed render run. Model/context setup and warm-up
-are excluded. Profiling is separate from the reported benchmark samples; use
-the ordinary build for performance decisions. An ordinary module can instead
-use a byte-matched symbol map emitted with `--emit-symbol-map`.
-
-Summarize and bind the raw samples to the profiled module with:
-
-```sh
-python3 tools/wasm_profile_summary.py --result build/profile/result.json \
-    --wasm build/profile/softgl.wasm --symbols build/profile/softgl.js.symbols \
-    --output build/profile/summary.json
-```
-
-The summary preserves inactive workers and distinguishes sampled self time
-from frame latency or hardware counters. Published raw profiles and diagnostic
-limitations are in [the BMW profile package](experiments/raster-profile-20261005/README.md).
-
-## Consumer API
-
-```c
-#include <GL/softgl.h>
-
-softgl_ctx *ctx = softgl_create(640, 360);
-softgl_make_current(ctx);
-
-glMatrixMode(GL_PROJECTION); /* ... all the GL 1.5 stuff ... */
-
-const uint8_t *rgba = softgl_read_rgba8(ctx);   /* row 0 = bottom */
-softgl_destroy(ctx);
-```
-
-Drawing uses standard GL 1.5. Sample-buffer selection through
-`softgl_create_multisample` is specific to SoftGL context creation.
-
-## Tank demo
-
-`wasm/tank_wrap.c` drives a T-80 MBT with approximately 44k triangles,
-51k vertices, six textured materials, lighting, and a rotating camera.
-The native image harness uses the same scene at 0°, 120°, and 240° so the
-browser demo is covered by the Mesa comparisons.
-
-Model: "T-80 MBT [MAIN BATTLE TANK]" by Muhamad Mirza Arrafi
-(@nazidefenseforceofficial) on Sketchfab, licensed under CC BY 4.0.
-
-## Directory layout
-
-```
-libsoftgl/        renderer API, C pipeline; pinned MIT dependency for offline preparation
-tests/            harness + test cases + Tank views (both backends + compare)
-wasm/             Emscripten preview: CMakeLists, SDL2 blit layer, index.html
-```
-
-For a focused BMW browser baseline (asset loading excluded from timing):
-
-```sh
-node tools/wasm_perf.cjs --scenes bmw,tank,100_showcase,70_heightfield \
-  --rounds 7 --warmup 8 --frames 12 --output build/perf/bmw-baseline.json
-node tools/wasm_preview_check.cjs http://localhost:8000/
-```
-
-The preview check exercises all test controls, benchmark completion/cancellation
-and context recycling. The default pool follows the reported processor count,
-with at most three helpers plus the calling thread. Explicit worker counts
-remain available for contract tests.
-
-## Common model assets and native Clang 22
-
-BMW, T-80, Sponza and Bistro are registered in [assets/models.json](assets/models.json)
-and prepared by the same [asset tools](assets/README.md). Sponza and Bistro source
-downloads stay under `assets/` locally; source revisions, licenses and preparation
-settings are tracked. The browser offers the four prepared models; T-80 glTF is the default.
-The historical OBJ tank remains a separate regression workload.
-
-The native Clang preset uses **Clang 22** for reproducible comparisons with
-GLimpSW. With `clang-22` on `PATH`:
+Linux requires CMake 3.21+, a C11 compiler, pthreads and Mesa OSMesa development
+headers/libraries. The Clang 22 preset is used for reproducible native work:
 
 ```sh
 cmake --preset native-clang22
@@ -354,11 +71,97 @@ cmake --build --preset native-clang22
 ctest --preset native-clang22
 ```
 
-On Debian the native requirements are `clang-22`, `cmake`, `make`,
-`libosmesa6-dev` and a C/C++ standard library toolchain. Asset preparation needs
-the pinned NumPy/Pillow packages in `tools/requirements-assets.txt`.
-Clang 22 native builds disable floating-point reassociation, retain signed zeros
-and permit infinities: the exact DOT3 contract otherwise diverges under
-`-ffast-math`, and hierarchical depth uses an infinity sentinel. SSE4.1 remains
-the native renderer path. Emscripten retains its matching bundled compiler and
-SIMD128 toolchain; the native preset does not replace that compiler.
+For a different installed compiler:
+
+```sh
+cmake -S . -B build/native -DCMAKE_BUILD_TYPE=Release
+cmake --build build/native -j4
+ctest --test-dir build/native --output-on-failure -j1
+```
+
+CTest renders every numbered case through Mesa and softgl, then compares the
+images. Prepared models add views at 0°, 120° and 240°, with cameras from the
+asset registry. Contract tests cover sample planes, SIMD tails, rollback,
+worker ordering and state transitions. Output images and diffs live in the
+selected native build's `out/` directory. The reference harness verifies that
+Mesa actually reports llvmpipe.
+
+The expanded model checks currently exceed the existing pixel budget for Sponza
+and Bistro at 0° (5,557 and 4,889 pixels above delta 4; budget 4,608). Both
+softgl images match the pre-cleanup renderer byte for byte. These existing Mesa
+differences remain visible as failing checks; the tolerance is unchanged.
+
+Run a related case or the optional native benchmarks explicitly:
+
+```sh
+ctest --test-dir build/native-clang22 -R '217_' --output-on-failure
+build/native-clang22/bench/bench_raster
+ctest --test-dir build/native-clang22 -C Bench -R benchmark_fp6
+```
+
+## Build and serve WASM
+
+With Emscripten activated:
+
+```sh
+export EM_CACHE="$PWD/build/emscripten-cache"
+export EM_FROZEN_CACHE=0
+emcmake cmake -S wasm -B build/wasm
+cmake --build build/wasm -j4
+bash wasm/serve.sh 8000
+```
+
+Open <http://localhost:8000/>. The server supplies COOP/COEP headers for pthreads.
+The generated module, UI and prepared assets live together under `build/wasm/`.
+No copying into the source directory is needed. Reconfigure after changing
+assets or adding/renaming test cases. WASM memory is capped at 4 GiB; Bistro's
+texture uploads avoid keeping a second complete pack inside that address space.
+
+The viewer provides model selection, MSAA selection, the GL test cycle and an
+interactive benchmark. Model sources and licenses are documented in `assets/`.
+
+## Browser validation and measurements
+
+The browser tools require Node.js, Playwright and Chromium:
+
+```sh
+npm ci --prefix tools
+node tools/wasm_preview_check.cjs http://localhost:8000/
+node tools/wasm_perf.cjs --native-build build/native-clang22 --images-only \
+  --output build/perf/wasm-images.json
+```
+
+`wasm_perf.cjs` reads the native CTest tolerance manifest and compares WASM
+frames with the same Mesa references. The same model loader, registry cameras
+and prepared packs apply to all four model scenes. The current WASM build passes
+all 235 GL cases; nine model views (BMW, Sponza and Bistro) exceed that same
+Mesa budget with the viewer's optimized material/quantization path. These
+comparisons still report failure rather than silently widening tolerances.
+
+For focused browser measurements, resolve cost is included and asset loading
+is outside the timed interval:
+
+```sh
+node tools/wasm_perf.cjs --native-build build/native-clang22 --bench-only \
+  --scenes bmw,t80,sponza,bistro --samples 4 --rounds 7 --warmup 20 --frames 60 \
+  --output build/perf/models-msaa4.json
+```
+
+Performance work uses 640×360 and SIMD128. Judge results from repeated paired
+measurements, with complex scenes weighted Bistro > Sponza > BMW > T-80.
+Do not infer gains from counters, reduced triangle counts or a single FPS readout.
+
+## Layout
+
+| Directory | Purpose |
+| --- | --- |
+| `libsoftgl/` | Public GL API and the C11 renderer |
+| `tests/cases/` | Rendering cases numbered `001` through `235` |
+| `tests/harness/` | softgl/OSMesa adapters and image comparison |
+| `tests/bench/` | Native benchmark and shared model image drivers |
+| `wasm/` | Build recipe, viewer and COOP/COEP server |
+| `assets/` | Model registry, source archives and provenance |
+| `tools/` | Shared asset, validation and measurement tools |
+| `experiments/` | Retained improvements, findings and research |
+| `build/` | Generated artifacts; ignored by Git |
+| `.venv/` | Python environment; ignored by Git |

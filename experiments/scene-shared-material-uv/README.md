@@ -23,7 +23,7 @@ normal texture sampling, so removing operations need not improve frame time.
 Sources: accepted [material shader](../../libsoftgl/src/scene_visibility.c),
 [canonical attribute validation](../../libsoftgl/src/geometry.inc),
 [quantized visibility](../scene-quantized-visibility/README.md) at 0bd845b.
-The older [shared-packet UV trial](../shared-packet-uv/README.md) did not repay
+The older [shared-packet UV trial](https://github.com/Weichwolf/softgl/blob/262f573c0cc0b664cb1be5dd4f0e9533bea5037b/experiments/shared-packet-uv/README.md) did not repay
 its generic raster-path checks; this uses the different scene material resolver
 and its explicit canonical UV contract, rather than retrying that old patch.
 No upstream code is copied.

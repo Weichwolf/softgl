@@ -99,10 +99,10 @@ static int run_sample_contract(void) {
     for (int n = 2; n <= 4; n += 2) {
         softgl_ctx *c = softgl_create_multisample(640,360,n); CHECK(c); initialize(c,3);
         void *storage = c->scene_storage;
-        CHECK(!softgl_scene_visibility_begin_hint(0));
-        CHECK(!softgl_scene_visibility_begin_hint(460799));
+        CHECK(!softgl_scene_visibility_begin_adaptive(0,2));
+        CHECK(!softgl_scene_visibility_begin_adaptive(230399,2));
         CHECK(c->scene_storage == storage && !c->scene_visibility);
-        CHECK(softgl_scene_visibility_begin_hint(460800));
+        CHECK(softgl_scene_visibility_begin_adaptive(230400,2));
         CHECK(softgl_scene_visibility_end());
         CHECK(glGetError() == GL_NO_ERROR); softgl_destroy(c);
     }

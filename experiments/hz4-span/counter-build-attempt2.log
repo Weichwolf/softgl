@@ -1,5 +1,0 @@
-Traceback (most recent call last):
-  File "/home/cosmo/Git/softgl/build/diagnostics/hz4-span-counter/build-wasm.py", line 19, in <module>
-    exports=[name.strip().strip("\"'") for name in arg.split('=',1)[1].strip()[1:-1].split(',')];assert all(__import__('re').fullmatch(r'_[A-Za-z0-9_]+', name) for name in exports);exports.append('_sg_tiny_diag_counter');command[j]='-sEXPORTED_FUNCTIONS='+__import__('json').dumps(exports);break
-                                                                                                        ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError
