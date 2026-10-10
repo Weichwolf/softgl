@@ -1,0 +1,14 @@
+{
+  "gdb.txt": {
+    "text": "[Thread debugging using libthread_db enabled]\nUsing host libthread_db library \"/lib/x86_64-linux-gnu/libthread_db.so.1\".\n\nThread 31 \"scene_positions\" received signal SIGSEGV, Segmentation fault.\n[Switching to Thread 0x7ffff40c66c0 (LWP 4183865)]\n0x0000555555593e13 in scene_guarded_exact_old (c=c@entry=0x5555555f0a60, base=base@entry=30800) at /home/cosmo/Git/softgl/build/scene-msaa-guarded-depth-planes/v2-guarded/source/libsoftgl/src/scene_visibility.c:601\n601\t    int uniform = f->shade_mask[base] == 0x80;\n#0  0x0000555555593e13 in scene_guarded_exact_old (c=c@entry=0x5555555f0a60, base=base@entry=30800) at /home/cosmo/Git/softgl/build/scene-msaa-guarded-depth-planes/v2-guarded/source/libsoftgl/src/scene_visibility.c:601\n#1  0x0000555555591a7f in scene_guarded_materialize_bin (f=0x555555653f00, bin=<optimized out>) at /home/cosmo/Git/softgl/build/scene-msaa-guarded-depth-planes/v2-guarded/source/libsoftgl/src/scene_visibility.c:638\n#2  scene_guarded_materialize (data=0x555555653f00) at /home/cosmo/Git/softgl/build/scene-msaa-guarded-depth-planes/v2-guarded/source/libsoftgl/src/scene_visibility.c:650\n#3  0x000055555557974d in sg_worker_main (arg=0x5555555f4948) at /home/cosmo/Git/softgl/build/scene-msaa-guarded-depth-planes/v2-guarded/source/libsoftgl/src/workers.c:775\n#4  0x00007ffff7d618bb in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:448\n#5  0x00007ffff7ddf538 in __GI___clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78\n$1 = (struct sg_scene_visibility *) 0x0\n",
+    "sha256": "9f04fd594de0ead3b598e954ec4c738c65ac0c54f58f72dd23cc7157ec8771bb"
+  },
+  "scene_positions-build.log": {
+    "text": "",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "scene_positions-run.log": {
+    "text": "",
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

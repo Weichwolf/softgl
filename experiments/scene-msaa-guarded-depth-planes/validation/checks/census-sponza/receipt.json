@@ -1,0 +1,126 @@
+{
+  "diagnosticOnly": true,
+  "width": 640,
+  "height": 360,
+  "threads": 4,
+  "samples": 4,
+  "records": [
+    {
+      "variant": "v1-control",
+      "binarySha256": "73ffda348e1f7fd92a589c6bade0af4dbae9935690cc65c6fedfcca554e24065",
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-msaa-guarded-depth-planes/v1-control/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "4 0 1 160 -",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "scene": [
+        {
+          "materials": 25,
+          "trianglesStored": 42577,
+          "triangleBytes": 22937600,
+          "depthPasses": 1303937,
+          "visiblePixels": 248827,
+          "shadePackets": 62214,
+          "activeShadeLanesPercent": 99.988347
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42723,
+          "triangleBytes": 29491200,
+          "depthPasses": 1296182,
+          "visiblePixels": 249510,
+          "shadePackets": 62385,
+          "activeShadeLanesPercent": 99.987978
+        }
+      ]
+    },
+    {
+      "variant": "v5-direct",
+      "binarySha256": "18562f4d1ac95ab45e5735e583284b5cfcb7c328d57854d2c83a504b1ca76b9e",
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-msaa-guarded-depth-planes/v5-direct/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "4 0 1 160 -",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "scene": [
+        {
+          "materials": 25,
+          "trianglesStored": 42577,
+          "triangleBytes": 22937600,
+          "depthPasses": 1303938,
+          "visiblePixels": 248827,
+          "shadePackets": 62214,
+          "activeShadeLanesPercent": 99.988347
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42724,
+          "triangleBytes": 29491200,
+          "depthPasses": 1296189,
+          "visiblePixels": 249509,
+          "shadePackets": 62384,
+          "activeShadeLanesPercent": 99.98918
+        }
+      ]
+    },
+    {
+      "variant": "v6-direct-rebased",
+      "binarySha256": "e636b05fd8ac407f6bb55348a9c662abcf14fb9b8d17e05d43ff71acc899c466",
+      "command": [
+        "/home/cosmo/Git/softgl/build/scene-msaa-guarded-depth-planes/v6-direct-rebased/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "4 0 1 160 -",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "scene": [
+        {
+          "materials": 25,
+          "trianglesStored": 42577,
+          "triangleBytes": 22937600,
+          "depthPasses": 1303937,
+          "visiblePixels": 248827,
+          "shadePackets": 62214,
+          "activeShadeLanesPercent": 99.988347
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42723,
+          "triangleBytes": 29491200,
+          "depthPasses": 1296188,
+          "visiblePixels": 249509,
+          "shadePackets": 62384,
+          "activeShadeLanesPercent": 99.98918
+        }
+      ]
+    }
+  ]
+}

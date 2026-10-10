@@ -1,0 +1,32 @@
+{
+  "passed": true,
+  "exitCode": 0,
+  "stdout": "4,000,000 raw/coarse-edge plane intervals: 2541469 separated / 1458531 exact-fallback; maximum upper error 2.14576721e-06 PASS\n",
+  "stderr": "",
+  "command": [
+    "/home/cosmo/.local/bin/clang-22",
+    "-std=c11",
+    "-O3",
+    "-fno-strict-aliasing",
+    "-ffast-math",
+    "-fno-associative-math",
+    "-fsigned-zeros",
+    "-fno-finite-math-only",
+    "-msse4.1",
+    "-mno-avx",
+    "-mno-avx2",
+    "-mno-avx512f",
+    "-DGUARD_EPSILON=0x1p-19f",
+    "/home/cosmo/Git/softgl/tmp/scene-msaa-guarded-depth-planes/edge-numeric-v4/recipe/edge_numeric.c",
+    "-lm",
+    "-o",
+    "/home/cosmo/Git/softgl/tmp/scene-msaa-guarded-depth-planes/edge-numeric-v4/edge_numeric"
+  ],
+  "simdBits": 128,
+  "binarySha256": "2fe74fc8ab361f81d7cfbd8f87bb6ca4d4ebff9f8b1da957d502452b268f964c",
+  "sourceSha256": {
+    "edge_numeric.c": "82ccf894b470f68b63c603f1fc3c1453e893c57413e0a735787a88d2efd40a8f",
+    "numeric_contract.c": "53132e72c89e39309fb068382a4d03759edb831d7aede6cea31266867b89604c"
+  },
+  "candidateSourceManifestSha256": "389a35c511b12652953381d97e72f5d8e71f55fce591dc952f0eaf4b6fab4e31"
+}
