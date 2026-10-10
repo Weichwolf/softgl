@@ -1,0 +1,68 @@
+{
+  "passed": true,
+  "simdBits": 128,
+  "sourceManifestSha256": "95edb4b3cb09f98531ba3d31edabf5de9629633fbaf519ff17d3ea21999f43a1",
+  "measuredLibrarySha256": "3cb2b9b0148bf0bc10aea7001f1e051637c5c9e94a72cbe71f79adf7792fe43e",
+  "samplerHeaderSha256": "387c83f9b56bd1aa0aeb69300e34db77b1f15cf8737d529d85410ca2008f5019",
+  "runs": [
+    {
+      "name": "sampler_contract",
+      "command": [
+        "/home/cosmo/.local/bin/clang-22",
+        "-std=c11",
+        "-O2",
+        "-fno-strict-aliasing",
+        "-ffp-contract=off",
+        "-msse4.1",
+        "-mno-avx",
+        "-mno-avx2",
+        "-mno-avx512f",
+        "-I/home/cosmo/Git/softgl/build/scene-footprint-trilinear/v2-continuous/source/libsoftgl/src",
+        "-I/home/cosmo/Git/softgl/build/scene-footprint-trilinear/v2-continuous/source/libsoftgl/include",
+        "/home/cosmo/Git/softgl/tmp/scene-footprint-trilinear/sampler-v2/recipe/sampler_contract.c",
+        "/home/cosmo/Git/softgl/build/scene-footprint-trilinear/v2-continuous/native/library/libsoftgl.a",
+        "-lm",
+        "-pthread",
+        "-o",
+        "/home/cosmo/Git/softgl/tmp/scene-footprint-trilinear/sampler-v2/sampler_contract"
+      ],
+      "exitCode": 0,
+      "binarySha256": "51346a83515fc54306471dcbbfa4575b467e139910694dfe5f8cf992f02498de",
+      "fixtureSha256": "139afbb16995f34584271814e47ad88b67adbb1a8362dbffedfc033f975f2e2e",
+      "stdout": "Footprint filtering: 65536 monotone/exact-log LOD checks and 414720 independent scalar filter channels PASS; max LOD 0.000520744433, filter 3.59567941e-06\n",
+      "stderr": ""
+    },
+    {
+      "name": "math_contract",
+      "command": [
+        "/home/cosmo/.local/bin/clang-22",
+        "-std=c11",
+        "-O2",
+        "-fno-strict-aliasing",
+        "-ffp-contract=off",
+        "-msse4.1",
+        "-mno-avx",
+        "-mno-avx2",
+        "-mno-avx512f",
+        "-I/home/cosmo/Git/softgl/build/scene-footprint-trilinear/v2-continuous/source/libsoftgl/src",
+        "-I/home/cosmo/Git/softgl/build/scene-footprint-trilinear/v2-continuous/source/libsoftgl/include",
+        "/home/cosmo/Git/softgl/tmp/scene-footprint-trilinear/sampler-v2/recipe/math_contract.c",
+        "/home/cosmo/Git/softgl/build/scene-footprint-trilinear/v2-continuous/native/library/libsoftgl.a",
+        "-lm",
+        "-pthread",
+        "-o",
+        "/home/cosmo/Git/softgl/tmp/scene-footprint-trilinear/sampler-v2/math_contract"
+      ],
+      "exitCode": 0,
+      "binarySha256": "a87a67ef820f59ffcd0ae4da2da679139560b2ec80866e64d62937151e5c671f",
+      "fixtureSha256": "de8662aad44902a0536a53d5cc120ddfb5046a42ccdd0d5d08c7abd64f4d9f77",
+      "stdout": "Perspective mip math: 384 independent finite-difference checks PASS\n",
+      "stderr": ""
+    }
+  ],
+  "recipeSha256": {
+    "math_contract.c": "de8662aad44902a0536a53d5cc120ddfb5046a42ccdd0d5d08c7abd64f4d9f77",
+    "sampler_contract.c": "139afbb16995f34584271814e47ad88b67adbb1a8362dbffedfc033f975f2e2e",
+    "sampler_gates.py": "4f8028ecfef88a1725e24de507eea83f8783627007893565c8c23af6b626cfb2"
+  }
+}
