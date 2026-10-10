@@ -4,10 +4,29 @@ import argparse
 import concurrent.futures
 import json
 from pathlib import Path
+import re
 import time
+from urllib.parse import urljoin
 import urllib.request
 import zipfile
 from asset_sources import write_source_metadata
+
+
+def normalize_metadata_links(path, data, origin):
+    """Resolve upstream-relative license links against their pinned source."""
+    if path == 'metadata.json':
+        metadata = json.loads(data)
+        for item in metadata.get('legal', []):
+            if item.get('licenseUrl'):
+                item['licenseUrl'] = urljoin(origin, item['licenseUrl'])
+        return (json.dumps(metadata, indent=2) + '\n').encode()
+    if path.lower().startswith('license'):
+        text = data.decode()
+        text = re.sub(r'\]\((\.\./[^)]+)\)',
+                      lambda match: '](' + urljoin(origin, match.group(1)) + ')', text)
+        return text.encode()
+    return data
+
 
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser(description=__doc__)
@@ -75,7 +94,8 @@ for name, repository, revision, prefix in sources:
             info.compress_type = zipfile.ZIP_DEFLATED
             output.writestr(info, data)
     for path in metadata_paths:
-        (target/('upstream-'+path)).write_bytes(entries[path])
+        (target/('upstream-'+path)).write_bytes(
+            normalize_metadata_links(path, entries[path], base_url+source_prefix))
     receipt = write_source_metadata(name, archive,
         repository=f'https://github.com/{repository}', revision=revision,
         changes='Upstream glTF and buffers retained; Bistro DDS alternate texture sources retained'

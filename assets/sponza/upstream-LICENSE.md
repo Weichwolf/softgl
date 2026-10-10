@@ -4,7 +4,7 @@ All files in this directory tree are licensed as indicated below.
 
 * All files directly associated with the model including all text, image and binary files:
 
-  * [Cryengine Limited License Agreement](../../LICENSES/LicenseRef-CRYENGINE-Agreement.txt)
+  * [Cryengine Limited License Agreement](https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/edc7c9e67c639d230715049ee31f9a96a6babbbe/LICENSES/LicenseRef-CRYENGINE-Agreement.txt)
 
 * This file and all other metadocumentation files including "metadata.json":
 
