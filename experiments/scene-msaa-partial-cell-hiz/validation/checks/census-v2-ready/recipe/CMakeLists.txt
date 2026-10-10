@@ -1,0 +1,22 @@
+cmake_minimum_required(VERSION 3.20)
+project(SceneFullMsaaControl C)
+set(CMAKE_C_STANDARD 11)
+set(CMAKE_C_FLAGS_RELEASE "-O3 -g -DNDEBUG")
+add_compile_options(-O3 -fno-strict-aliasing -ffast-math -fno-associative-math
+    -fsigned-zeros -fno-finite-math-only -msse4.1 -mno-avx -mno-avx2 -mno-avx512f)
+add_compile_options(-include stdatomic.h)
+add_compile_definitions(SOFTGL_PARTIAL_HIZ_AUDIT SOFTGL_MSAA_PACKET_OCCLUSION_AUDIT)
+add_subdirectory(${SCENE_TRIAL_ROOT}/source/libsoftgl library)
+foreach(kind resident quality)
+    if(kind STREQUAL "resident")
+        set(driver ${CMAKE_CURRENT_SOURCE_DIR}/resident_trial.c)
+    else()
+        set(driver ${SCENE_TRIAL_ROOT}/recipe/quality_frames.c)
+    endif()
+    add_executable(${kind}_candidate ${driver} ${SCENE_TRIAL_ROOT}/source/model_wrap.c)
+    target_include_directories(${kind}_candidate PRIVATE ${SCENE_TRIAL_ROOT}/source/libsoftgl/src)
+    target_compile_definitions(${kind}_candidate PRIVATE SOFTGL_MODEL_VERTEX_ATTRIBUTES
+        SOFTGL_MODEL_SCENE_VISIBILITY SOFTGL_MODEL_SCENE_POSITIONS
+        SOFTGL_MODEL_TRANSPARENT_FUSION SOFTGL_MODEL_QUANTIZED_VISIBILITY)
+    target_link_libraries(${kind}_candidate PRIVATE softgl m)
+endforeach()

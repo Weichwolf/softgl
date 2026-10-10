@@ -1,0 +1,74 @@
+{
+  "passed": true,
+  "simdBits": 128,
+  "sourceManifestSha256": "fe91c284c3a56800fc7acb8fb7b76c538743651ffb9693bfdce6ca5c269fd482",
+  "measuredLibrarySha256": "81810521c70bf4bb0f9cce175d09a0646bae4a12417683d7314cc5ad73ae1d9f",
+  "runs": [
+    {
+      "kind": "mask",
+      "command": [
+        "/home/cosmo/.local/bin/clang-22",
+        "-std=c11",
+        "-O2",
+        "-g",
+        "-fno-strict-aliasing",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-msse4.1",
+        "-mno-avx",
+        "-mno-avx2",
+        "-mno-avx512f",
+        "-DSOFTGL_PARTIAL_QUERY_LOCAL",
+        "-I/home/cosmo/Git/softgl/build/scene-msaa-partial-cell-hiz/v2-query/source/libsoftgl/src",
+        "-I/home/cosmo/Git/softgl/build/scene-msaa-partial-cell-hiz/v2-query/source/libsoftgl/include",
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-partial-cell-hiz/partial-v2/recipe/mask_contract.c",
+        "/home/cosmo/Git/softgl/build/scene-msaa-partial-cell-hiz/v2-query/native/library/libsoftgl.a",
+        "-lm",
+        "-pthread",
+        "-o",
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-partial-cell-hiz/partial-v2/mask_contract"
+      ],
+      "exitCode": 0,
+      "binarySha256": "dc266e0c9777313273d808c96b73ffc57a7c4dd04c072b04ee806f3490795c42",
+      "fixtureSha256": "1f8167f12e69040cf7d9734cd2bcd81d3b5c6048ae1250c36669971567fc9f93",
+      "stdout": "Partial-cell oracle: 171115 real sample writes, 24880 queries/281 positive; masks/bounds/holes/overwrites/reset/invalid state PASS\n",
+      "stderr": ""
+    },
+    {
+      "kind": "sequence",
+      "command": [
+        "/home/cosmo/.local/bin/clang-22",
+        "-std=c11",
+        "-O2",
+        "-g",
+        "-fno-strict-aliasing",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-msse4.1",
+        "-mno-avx",
+        "-mno-avx2",
+        "-mno-avx512f",
+        "-DSOFTGL_PARTIAL_QUERY_LOCAL",
+        "-I/home/cosmo/Git/softgl/build/scene-msaa-partial-cell-hiz/v2-query/source/libsoftgl/src",
+        "-I/home/cosmo/Git/softgl/build/scene-msaa-partial-cell-hiz/v2-query/source/libsoftgl/include",
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-partial-cell-hiz/partial-v2/recipe/sequence_contract.c",
+        "/home/cosmo/Git/softgl/build/scene-msaa-partial-cell-hiz/v2-query/native/library/libsoftgl.a",
+        "-lm",
+        "-pthread",
+        "-o",
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-partial-cell-hiz/partial-v2/sequence_contract"
+      ],
+      "exitCode": 0,
+      "binarySha256": "a701217b34eced8d42f69d949a1e429249cbff4bc6c224b200cdf2120d47b4d2",
+      "fixtureSha256": "c6fa606ce90d245126f43a0cf8dfc1b37c0c4e95ae7359a88a2d9dc63ae1c542",
+      "stdout": "Partial-cell Hi-Z: 216 fresh full-plane pairs; motion/cuts/light/mesh edits/winding/alpha/reset/rollback PASS\n",
+      "stderr": ""
+    }
+  ],
+  "recipeSha256": {
+    "sequence_contract.c": "c6fa606ce90d245126f43a0cf8dfc1b37c0c4e95ae7359a88a2d9dc63ae1c542",
+    "partial_gates.py": "b0ebc8eb37d23cef28389a79e6bb0540248161e19624781a632197b268569137",
+    "scene_positions.c": "a5df5e741f6157b674b24b8340934985318c9fe0ef1820b9e29fc73e4679d71c",
+    "mask_contract.c": "1f8167f12e69040cf7d9734cd2bcd81d3b5c6048ae1250c36669971567fc9f93"
+  }
+}

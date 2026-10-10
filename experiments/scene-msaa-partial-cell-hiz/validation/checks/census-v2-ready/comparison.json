@@ -1,0 +1,101 @@
+{
+  "baselineReceiptSha256": "893dae0711ba92e09bbedcd316e29b1a93184fecfd900cc64592443b36484012",
+  "candidateReceiptSha256": "1a5eccabc4a37f84ff73a1faf7875ac5472025b84cb72e246d756e978e6d32e0",
+  "baselineSourceManifestSha256": "0e95b5b2986f78504927961bcbdddd9cb15c5e07ad82c370b21a03a4d795b476",
+  "records": [
+    {
+      "asset": "bistro",
+      "depthWritesExactPerFrame": true,
+      "frames": 31,
+      "baselinePacket": {
+        "eligible": 1513792,
+        "queries": 2119481,
+        "rejected": 968468,
+        "rejectedTriangles": 3273864
+      },
+      "candidatePacket": {
+        "eligible": 1513792,
+        "queries": 2119481,
+        "rejected": 982246,
+        "rejectedTriangles": 3321165
+      },
+      "packSha256": "4c862bcd28ef6833a89b0a058832c051098f5cf5869590999859b86f1cc993f3",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ]
+    },
+    {
+      "asset": "sponza",
+      "depthWritesExactPerFrame": true,
+      "frames": 31,
+      "baselinePacket": {
+        "eligible": 767984,
+        "queries": 987819,
+        "rejected": 305611,
+        "rejectedTriangles": 1027758
+      },
+      "candidatePacket": {
+        "eligible": 767984,
+        "queries": 987819,
+        "rejected": 310136,
+        "rejectedTriangles": 1043738
+      },
+      "packSha256": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ]
+    },
+    {
+      "asset": "bmw",
+      "depthWritesExactPerFrame": true,
+      "frames": 31,
+      "baselinePacket": {
+        "eligible": 410827,
+        "queries": 711914,
+        "rejected": 310017,
+        "rejectedTriangles": 960400
+      },
+      "candidatePacket": {
+        "eligible": 410827,
+        "queries": 711914,
+        "rejected": 322207,
+        "rejectedTriangles": 998567
+      },
+      "packSha256": "76cda2c57b81e10b3c92a269537b17e4e1c5f36c653bfd1af43fcb2218473cef",
+      "camera": null
+    },
+    {
+      "asset": "t80",
+      "depthWritesExactPerFrame": true,
+      "frames": 31,
+      "baselinePacket": {
+        "eligible": 326646,
+        "queries": 503382,
+        "rejected": 214346,
+        "rejectedTriangles": 698903
+      },
+      "candidatePacket": {
+        "eligible": 326646,
+        "queries": 503382,
+        "rejected": 226878,
+        "rejectedTriangles": 740654
+      },
+      "packSha256": "cb9146d7352f52600015c499c394566acc604b43fb5760a17d133c20c5a700f4",
+      "camera": null
+    }
+  ]
+}

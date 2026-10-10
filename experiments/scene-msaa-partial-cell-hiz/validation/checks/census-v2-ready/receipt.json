@@ -1,0 +1,1275 @@
+{
+  "passed": true,
+  "performanceAcceptance": false,
+  "width": 640,
+  "height": 360,
+  "threads": 4,
+  "sourceManifestSha256": "fe91c284c3a56800fc7acb8fb7b76c538743651ffb9693bfdce6ca5c269fd482",
+  "runnerSha256": "a31225b87c1cc0d588e62faecc826e04db82b4591b93a97a8171adc8de143cc1",
+  "recipeSha256": {
+    "census.py": "a31225b87c1cc0d588e62faecc826e04db82b4591b93a97a8171adc8de143cc1",
+    "resident_trial.c": "31cd2cebad30210032335598bdfa4290ebdf7cdd391d02d8288fbe22358a8429",
+    "CMakeLists.txt": "88ee2f07721bac78e6d7246644653b10511a9cf7b0cd1764ffba3ce6a664552c",
+    "quality_frames.c": "b919d9851eb8c7a13f8443284ac7dee5ff3387dab1e732bf592efb7ab3ddbe4f"
+  },
+  "configureCommand": [
+    "cmake",
+    "-S",
+    "/home/cosmo/Git/softgl/tmp/scene-msaa-partial-cell-hiz/census-v2-ready/recipe",
+    "-B",
+    "/home/cosmo/Git/softgl/tmp/scene-msaa-partial-cell-hiz/census-v2-ready/native",
+    "-DCMAKE_BUILD_TYPE=Release",
+    "-DCMAKE_C_COMPILER=/home/cosmo/.local/bin/clang-22",
+    "-DSCENE_TRIAL_ROOT=/home/cosmo/Git/softgl/build/scene-msaa-partial-cell-hiz/v2-query"
+  ],
+  "buildCommand": [
+    "cmake",
+    "--build",
+    "/home/cosmo/Git/softgl/tmp/scene-msaa-partial-cell-hiz/census-v2-ready/native",
+    "--target",
+    "resident_candidate",
+    "-j4"
+  ],
+  "librarySha256": "14f06b941a3444c53d289a3d064b153aba909db284ebe12fa1a0f40705f0d413",
+  "binarySha256": "5d4af25f7de26e28c9f440575a9611edeb55c99793bd9c03f11794666a569fbb",
+  "records": [
+    {
+      "asset": "bistro",
+      "packSha256": "4c862bcd28ef6833a89b0a058832c051098f5cf5869590999859b86f1cc993f3",
+      "camera": [
+        -0.2645781988686565,
+        -0.0701259774896742,
+        -0.030798770463549046,
+        106.61614456367424,
+        1.8303149246194799,
+        35.98339890412515,
+        0.0008674848072185219,
+        8.674848072185219
+      ],
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-partial-cell-hiz/census-v2-ready/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/bistro.pack"
+      ],
+      "request": "4 0 30 160 -\n",
+      "stdout": "{\"ready\":true,\"width\":640,\"height\":360}\n{\"renderer\":\"softgl-native\",\"width\":640,\"height\":360,\"threads\":4,\"samples\":4,\"triangles\":640502,\"frames\":30,\"ms\":53.596917703,\"submitMs\":52.076663286,\"finishReadbackMs\":1.520144416,\"angle\":160,\"rgba\":\"d3545e37e1a472c9\",\"depth\":\"7c0bcde239c25207\",\"stencil\":\"97422459bb4b3383\",\"sampleDepth\":\"8a97e8fa78d0c60e\",\"sampleStencil\":\"009b538b2455c383\"}\n",
+      "stderr": "SCENE {\"materials\":251,\"trianglesStored\":46005,\"triangleBytes\":20971520,\"depthPasses\":1402535,\"visiblePixels\":273483,\"shadePackets\":68428,\"activeShadeLanesPercent\":99.916335}\nSCENE {\"materials\":251,\"trianglesStored\":44778,\"triangleBytes\":24248320,\"depthPasses\":1383256,\"visiblePixels\":273646,\"shadePackets\":68461,\"activeShadeLanesPercent\":99.927696}\nSCENE {\"materials\":251,\"trianglesStored\":44040,\"triangleBytes\":25886720,\"depthPasses\":1342122,\"visiblePixels\":273233,\"shadePackets\":68358,\"activeShadeLanesPercent\":99.927221}\nSCENE {\"materials\":251,\"trianglesStored\":41684,\"triangleBytes\":27197440,\"depthPasses\":1358012,\"visiblePixels\":269726,\"shadePackets\":67485,\"activeShadeLanesPercent\":99.920723}\nSCENE {\"materials\":251,\"trianglesStored\":38793,\"triangleBytes\":27852800,\"depthPasses\":1340709,\"visiblePixels\":267205,\"shadePackets\":66854,\"activeShadeLanesPercent\":99.921097}\nSCENE {\"materials\":251,\"trianglesStored\":37044,\"triangleBytes\":28508160,\"depthPasses\":1328320,\"visiblePixels\":266020,\"shadePackets\":66547,\"activeShadeLanesPercent\":99.936887}\nSCENE {\"materials\":251,\"trianglesStored\":35602,\"triangleBytes\":29818880,\"depthPasses\":1315726,\"visiblePixels\":265116,\"shadePackets\":66315,\"activeShadeLanesPercent\":99.945714}\nSCENE {\"materials\":251,\"trianglesStored\":35261,\"triangleBytes\":29818880,\"depthPasses\":1314849,\"visiblePixels\":264973,\"shadePackets\":66284,\"activeShadeLanesPercent\":99.938522}\nSCENE {\"materials\":251,\"trianglesStored\":35261,\"triangleBytes\":29818880,\"depthPasses\":1314849,\"visiblePixels\":264973,\"shadePackets\":66284,\"activeShadeLanesPercent\":99.938522}\nSCENE {\"materials\":251,\"trianglesStored\":35602,\"triangleBytes\":29818880,\"depthPasses\":1315726,\"visiblePixels\":265116,\"shadePackets\":66315,\"activeShadeLanesPercent\":99.945714}\nSCENE {\"materials\":251,\"trianglesStored\":36980,\"triangleBytes\":29818880,\"depthPasses\":1325848,\"visiblePixels\":266026,\"shadePackets\":66548,\"activeShadeLanesPercent\":99.937639}\nSCENE {\"materials\":251,\"trianglesStored\":38793,\"triangleBytes\":29818880,\"depthPasses\":1340709,\"visiblePixels\":267205,\"shadePackets\":66854,\"activeShadeLanesPercent\":99.921097}\nSCENE {\"materials\":251,\"trianglesStored\":41684,\"triangleBytes\":29818880,\"depthPasses\":1358012,\"visiblePixels\":269726,\"shadePackets\":67485,\"activeShadeLanesPercent\":99.920723}\nSCENE {\"materials\":251,\"trianglesStored\":44050,\"triangleBytes\":29818880,\"depthPasses\":1345028,\"visiblePixels\":273231,\"shadePackets\":68358,\"activeShadeLanesPercent\":99.926490}\nSCENE {\"materials\":251,\"trianglesStored\":44778,\"triangleBytes\":29818880,\"depthPasses\":1383256,\"visiblePixels\":273646,\"shadePackets\":68461,\"activeShadeLanesPercent\":99.927696}\nSCENE {\"materials\":251,\"trianglesStored\":46005,\"triangleBytes\":29818880,\"depthPasses\":1402535,\"visiblePixels\":273483,\"shadePackets\":68428,\"activeShadeLanesPercent\":99.916335}\nSCENE {\"materials\":251,\"trianglesStored\":48708,\"triangleBytes\":31784960,\"depthPasses\":1392054,\"visiblePixels\":274960,\"shadePackets\":68796,\"activeShadeLanesPercent\":99.918600}\nSCENE {\"materials\":251,\"trianglesStored\":50139,\"triangleBytes\":33751040,\"depthPasses\":1445398,\"visiblePixels\":276501,\"shadePackets\":69181,\"activeShadeLanesPercent\":99.919414}\nSCENE {\"materials\":251,\"trianglesStored\":49575,\"triangleBytes\":35389440,\"depthPasses\":1418004,\"visiblePixels\":275962,\"shadePackets\":69040,\"activeShadeLanesPercent\":99.928302}\nSCENE {\"materials\":251,\"trianglesStored\":49571,\"triangleBytes\":36044800,\"depthPasses\":1438416,\"visiblePixels\":275953,\"shadePackets\":69044,\"activeShadeLanesPercent\":99.919254}\nSCENE {\"materials\":251,\"trianglesStored\":49847,\"triangleBytes\":38010880,\"depthPasses\":1452863,\"visiblePixels\":276151,\"shadePackets\":69096,\"activeShadeLanesPercent\":99.915697}\nSCENE {\"materials\":251,\"trianglesStored\":48369,\"triangleBytes\":38010880,\"depthPasses\":1433944,\"visiblePixels\":275814,\"shadePackets\":69011,\"activeShadeLanesPercent\":99.916680}\nSCENE {\"materials\":251,\"trianglesStored\":48194,\"triangleBytes\":38010880,\"depthPasses\":1429989,\"visiblePixels\":276421,\"shadePackets\":69165,\"activeShadeLanesPercent\":99.913612}\nSCENE {\"materials\":251,\"trianglesStored\":48194,\"triangleBytes\":38010880,\"depthPasses\":1429989,\"visiblePixels\":276421,\"shadePackets\":69165,\"activeShadeLanesPercent\":99.913612}\nSCENE {\"materials\":251,\"trianglesStored\":48369,\"triangleBytes\":38010880,\"depthPasses\":1433944,\"visiblePixels\":275814,\"shadePackets\":69011,\"activeShadeLanesPercent\":99.916680}\nSCENE {\"materials\":251,\"trianglesStored\":49847,\"triangleBytes\":38010880,\"depthPasses\":1452863,\"visiblePixels\":276151,\"shadePackets\":69096,\"activeShadeLanesPercent\":99.915697}\nSCENE {\"materials\":251,\"trianglesStored\":49571,\"triangleBytes\":38010880,\"depthPasses\":1438416,\"visiblePixels\":275953,\"shadePackets\":69044,\"activeShadeLanesPercent\":99.919254}\nSCENE {\"materials\":251,\"trianglesStored\":49579,\"triangleBytes\":38010880,\"depthPasses\":1417977,\"visiblePixels\":275973,\"shadePackets\":69042,\"activeShadeLanesPercent\":99.929391}\nSCENE {\"materials\":251,\"trianglesStored\":50139,\"triangleBytes\":38010880,\"depthPasses\":1445398,\"visiblePixels\":276501,\"shadePackets\":69181,\"activeShadeLanesPercent\":99.919414}\nSCENE {\"materials\":251,\"trianglesStored\":48708,\"triangleBytes\":38010880,\"depthPasses\":1392054,\"visiblePixels\":274960,\"shadePackets\":68796,\"activeShadeLanesPercent\":99.918600}\nSCENE {\"materials\":251,\"trianglesStored\":44279,\"triangleBytes\":38010880,\"depthPasses\":1361656,\"visiblePixels\":273451,\"shadePackets\":68412,\"activeShadeLanesPercent\":99.928010}\nPARTIAL 1350401 276171 147203 62720\nPACKET 1513792 2119481 982246 3321165\n",
+      "frameStats": [
+        {
+          "materials": 251,
+          "trianglesStored": 46005,
+          "triangleBytes": 20971520,
+          "depthPasses": 1402535,
+          "visiblePixels": 273483,
+          "shadePackets": 68428,
+          "activeShadeLanesPercent": 99.916335
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 44778,
+          "triangleBytes": 24248320,
+          "depthPasses": 1383256,
+          "visiblePixels": 273646,
+          "shadePackets": 68461,
+          "activeShadeLanesPercent": 99.927696
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 44040,
+          "triangleBytes": 25886720,
+          "depthPasses": 1342122,
+          "visiblePixels": 273233,
+          "shadePackets": 68358,
+          "activeShadeLanesPercent": 99.927221
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 41684,
+          "triangleBytes": 27197440,
+          "depthPasses": 1358012,
+          "visiblePixels": 269726,
+          "shadePackets": 67485,
+          "activeShadeLanesPercent": 99.920723
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 38793,
+          "triangleBytes": 27852800,
+          "depthPasses": 1340709,
+          "visiblePixels": 267205,
+          "shadePackets": 66854,
+          "activeShadeLanesPercent": 99.921097
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 37044,
+          "triangleBytes": 28508160,
+          "depthPasses": 1328320,
+          "visiblePixels": 266020,
+          "shadePackets": 66547,
+          "activeShadeLanesPercent": 99.936887
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 35602,
+          "triangleBytes": 29818880,
+          "depthPasses": 1315726,
+          "visiblePixels": 265116,
+          "shadePackets": 66315,
+          "activeShadeLanesPercent": 99.945714
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 35261,
+          "triangleBytes": 29818880,
+          "depthPasses": 1314849,
+          "visiblePixels": 264973,
+          "shadePackets": 66284,
+          "activeShadeLanesPercent": 99.938522
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 35261,
+          "triangleBytes": 29818880,
+          "depthPasses": 1314849,
+          "visiblePixels": 264973,
+          "shadePackets": 66284,
+          "activeShadeLanesPercent": 99.938522
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 35602,
+          "triangleBytes": 29818880,
+          "depthPasses": 1315726,
+          "visiblePixels": 265116,
+          "shadePackets": 66315,
+          "activeShadeLanesPercent": 99.945714
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 36980,
+          "triangleBytes": 29818880,
+          "depthPasses": 1325848,
+          "visiblePixels": 266026,
+          "shadePackets": 66548,
+          "activeShadeLanesPercent": 99.937639
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 38793,
+          "triangleBytes": 29818880,
+          "depthPasses": 1340709,
+          "visiblePixels": 267205,
+          "shadePackets": 66854,
+          "activeShadeLanesPercent": 99.921097
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 41684,
+          "triangleBytes": 29818880,
+          "depthPasses": 1358012,
+          "visiblePixels": 269726,
+          "shadePackets": 67485,
+          "activeShadeLanesPercent": 99.920723
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 44050,
+          "triangleBytes": 29818880,
+          "depthPasses": 1345028,
+          "visiblePixels": 273231,
+          "shadePackets": 68358,
+          "activeShadeLanesPercent": 99.92649
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 44778,
+          "triangleBytes": 29818880,
+          "depthPasses": 1383256,
+          "visiblePixels": 273646,
+          "shadePackets": 68461,
+          "activeShadeLanesPercent": 99.927696
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 46005,
+          "triangleBytes": 29818880,
+          "depthPasses": 1402535,
+          "visiblePixels": 273483,
+          "shadePackets": 68428,
+          "activeShadeLanesPercent": 99.916335
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 48708,
+          "triangleBytes": 31784960,
+          "depthPasses": 1392054,
+          "visiblePixels": 274960,
+          "shadePackets": 68796,
+          "activeShadeLanesPercent": 99.9186
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 50139,
+          "triangleBytes": 33751040,
+          "depthPasses": 1445398,
+          "visiblePixels": 276501,
+          "shadePackets": 69181,
+          "activeShadeLanesPercent": 99.919414
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 49575,
+          "triangleBytes": 35389440,
+          "depthPasses": 1418004,
+          "visiblePixels": 275962,
+          "shadePackets": 69040,
+          "activeShadeLanesPercent": 99.928302
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 49571,
+          "triangleBytes": 36044800,
+          "depthPasses": 1438416,
+          "visiblePixels": 275953,
+          "shadePackets": 69044,
+          "activeShadeLanesPercent": 99.919254
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 49847,
+          "triangleBytes": 38010880,
+          "depthPasses": 1452863,
+          "visiblePixels": 276151,
+          "shadePackets": 69096,
+          "activeShadeLanesPercent": 99.915697
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 48369,
+          "triangleBytes": 38010880,
+          "depthPasses": 1433944,
+          "visiblePixels": 275814,
+          "shadePackets": 69011,
+          "activeShadeLanesPercent": 99.91668
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 48194,
+          "triangleBytes": 38010880,
+          "depthPasses": 1429989,
+          "visiblePixels": 276421,
+          "shadePackets": 69165,
+          "activeShadeLanesPercent": 99.913612
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 48194,
+          "triangleBytes": 38010880,
+          "depthPasses": 1429989,
+          "visiblePixels": 276421,
+          "shadePackets": 69165,
+          "activeShadeLanesPercent": 99.913612
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 48369,
+          "triangleBytes": 38010880,
+          "depthPasses": 1433944,
+          "visiblePixels": 275814,
+          "shadePackets": 69011,
+          "activeShadeLanesPercent": 99.91668
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 49847,
+          "triangleBytes": 38010880,
+          "depthPasses": 1452863,
+          "visiblePixels": 276151,
+          "shadePackets": 69096,
+          "activeShadeLanesPercent": 99.915697
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 49571,
+          "triangleBytes": 38010880,
+          "depthPasses": 1438416,
+          "visiblePixels": 275953,
+          "shadePackets": 69044,
+          "activeShadeLanesPercent": 99.919254
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 49579,
+          "triangleBytes": 38010880,
+          "depthPasses": 1417977,
+          "visiblePixels": 275973,
+          "shadePackets": 69042,
+          "activeShadeLanesPercent": 99.929391
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 50139,
+          "triangleBytes": 38010880,
+          "depthPasses": 1445398,
+          "visiblePixels": 276501,
+          "shadePackets": 69181,
+          "activeShadeLanesPercent": 99.919414
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 48708,
+          "triangleBytes": 38010880,
+          "depthPasses": 1392054,
+          "visiblePixels": 274960,
+          "shadePackets": 68796,
+          "activeShadeLanesPercent": 99.9186
+        },
+        {
+          "materials": 251,
+          "trianglesStored": 44279,
+          "triangleBytes": 38010880,
+          "depthPasses": 1361656,
+          "visiblePixels": 273451,
+          "shadePackets": 68412,
+          "activeShadeLanesPercent": 99.92801
+        }
+      ],
+      "partial": {
+        "cellQueries": 1350401,
+        "rectangleWritten": 276171,
+        "cellDepthPass": 147203,
+        "wholeQueryRejects": 62720
+      },
+      "packet": {
+        "eligible": 1513792,
+        "queries": 2119481,
+        "rejected": 982246,
+        "rejectedTriangles": 3321165
+      }
+    },
+    {
+      "asset": "sponza",
+      "packSha256": "3b029ae7872ffc42fa161b274c974c443b3973e293c5f92f53f356ef22e93b2d",
+      "camera": [
+        0.25,
+        -0.12,
+        0,
+        -90,
+        0,
+        60,
+        0.003,
+        3
+      ],
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-partial-cell-hiz/census-v2-ready/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/sponza.pack"
+      ],
+      "request": "4 0 30 160 -\n",
+      "stdout": "{\"ready\":true,\"width\":640,\"height\":360}\n{\"renderer\":\"softgl-native\",\"width\":640,\"height\":360,\"threads\":4,\"samples\":4,\"triangles\":262267,\"frames\":30,\"ms\":34.798667999,\"submitMs\":33.793944943,\"finishReadbackMs\":1.004636389,\"angle\":160,\"rgba\":\"c3f19973921f2fc2\",\"depth\":\"1ac5a242dff2b42c\",\"stencil\":\"97422459bb4b3383\",\"sampleDepth\":\"9ab44a68c51d3aec\",\"sampleStencil\":\"009b538b2455c383\"}\n",
+      "stderr": "SCENE {\"materials\":25,\"trianglesStored\":42577,\"triangleBytes\":22937600,\"depthPasses\":1303937,\"visiblePixels\":248827,\"shadePackets\":62214,\"activeShadeLanesPercent\":99.988347}\nSCENE {\"materials\":25,\"trianglesStored\":42672,\"triangleBytes\":27852800,\"depthPasses\":1325010,\"visiblePixels\":248876,\"shadePackets\":62229,\"activeShadeLanesPercent\":99.983930}\nSCENE {\"materials\":25,\"trianglesStored\":42774,\"triangleBytes\":31784960,\"depthPasses\":1320257,\"visiblePixels\":249595,\"shadePackets\":62408,\"activeShadeLanesPercent\":99.985178}\nSCENE {\"materials\":25,\"trianglesStored\":42644,\"triangleBytes\":34078720,\"depthPasses\":1342946,\"visiblePixels\":249021,\"shadePackets\":62262,\"activeShadeLanesPercent\":99.989159}\nSCENE {\"materials\":25,\"trianglesStored\":42450,\"triangleBytes\":38010880,\"depthPasses\":1359015,\"visiblePixels\":247898,\"shadePackets\":61981,\"activeShadeLanesPercent\":99.989513}\nSCENE {\"materials\":25,\"trianglesStored\":42003,\"triangleBytes\":38993920,\"depthPasses\":1303602,\"visiblePixels\":246976,\"shadePackets\":61751,\"activeShadeLanesPercent\":99.988664}\nSCENE {\"materials\":25,\"trianglesStored\":40910,\"triangleBytes\":40960000,\"depthPasses\":1298937,\"visiblePixels\":246207,\"shadePackets\":61559,\"activeShadeLanesPercent\":99.988223}\nSCENE {\"materials\":25,\"trianglesStored\":40890,\"triangleBytes\":40960000,\"depthPasses\":1326367,\"visiblePixels\":246064,\"shadePackets\":61523,\"activeShadeLanesPercent\":99.988622}\nSCENE {\"materials\":25,\"trianglesStored\":40890,\"triangleBytes\":40960000,\"depthPasses\":1326367,\"visiblePixels\":246064,\"shadePackets\":61523,\"activeShadeLanesPercent\":99.988622}\nSCENE {\"materials\":25,\"trianglesStored\":40910,\"triangleBytes\":40960000,\"depthPasses\":1298937,\"visiblePixels\":246207,\"shadePackets\":61559,\"activeShadeLanesPercent\":99.988223}\nSCENE {\"materials\":25,\"trianglesStored\":42003,\"triangleBytes\":40960000,\"depthPasses\":1303602,\"visiblePixels\":246976,\"shadePackets\":61751,\"activeShadeLanesPercent\":99.988664}\nSCENE {\"materials\":25,\"trianglesStored\":42450,\"triangleBytes\":40960000,\"depthPasses\":1359015,\"visiblePixels\":247898,\"shadePackets\":61981,\"activeShadeLanesPercent\":99.989513}\nSCENE {\"materials\":25,\"trianglesStored\":42644,\"triangleBytes\":40960000,\"depthPasses\":1342946,\"visiblePixels\":249021,\"shadePackets\":62262,\"activeShadeLanesPercent\":99.989159}\nSCENE {\"materials\":25,\"trianglesStored\":42774,\"triangleBytes\":40960000,\"depthPasses\":1320257,\"visiblePixels\":249595,\"shadePackets\":62408,\"activeShadeLanesPercent\":99.985178}\nSCENE {\"materials\":25,\"trianglesStored\":42672,\"triangleBytes\":40960000,\"depthPasses\":1325010,\"visiblePixels\":248876,\"shadePackets\":62229,\"activeShadeLanesPercent\":99.983930}\nSCENE {\"materials\":25,\"trianglesStored\":42577,\"triangleBytes\":40960000,\"depthPasses\":1303937,\"visiblePixels\":248827,\"shadePackets\":62214,\"activeShadeLanesPercent\":99.988347}\nSCENE {\"materials\":25,\"trianglesStored\":42708,\"triangleBytes\":43253760,\"depthPasses\":1295101,\"visiblePixels\":249063,\"shadePackets\":62276,\"activeShadeLanesPercent\":99.983541}\nSCENE {\"materials\":25,\"trianglesStored\":42650,\"triangleBytes\":45875200,\"depthPasses\":1268893,\"visiblePixels\":249298,\"shadePackets\":62332,\"activeShadeLanesPercent\":99.987968}\nSCENE {\"materials\":25,\"trianglesStored\":42407,\"triangleBytes\":48168960,\"depthPasses\":1281854,\"visiblePixels\":248903,\"shadePackets\":62233,\"activeShadeLanesPercent\":99.988350}\nSCENE {\"materials\":25,\"trianglesStored\":42343,\"triangleBytes\":49479680,\"depthPasses\":1234792,\"visiblePixels\":248062,\"shadePackets\":62023,\"activeShadeLanesPercent\":99.987908}\nSCENE {\"materials\":25,\"trianglesStored\":42137,\"triangleBytes\":50462720,\"depthPasses\":1292255,\"visiblePixels\":246943,\"shadePackets\":61744,\"activeShadeLanesPercent\":99.986638}\nSCENE {\"materials\":25,\"trianglesStored\":40955,\"triangleBytes\":51118080,\"depthPasses\":1310195,\"visiblePixels\":246099,\"shadePackets\":61533,\"activeShadeLanesPercent\":99.986593}\nSCENE {\"materials\":25,\"trianglesStored\":40694,\"triangleBytes\":51118080,\"depthPasses\":1224135,\"visiblePixels\":246002,\"shadePackets\":61508,\"activeShadeLanesPercent\":99.987806}\nSCENE {\"materials\":25,\"trianglesStored\":40694,\"triangleBytes\":51118080,\"depthPasses\":1224135,\"visiblePixels\":246002,\"shadePackets\":61508,\"activeShadeLanesPercent\":99.987806}\nSCENE {\"materials\":25,\"trianglesStored\":40955,\"triangleBytes\":51118080,\"depthPasses\":1310195,\"visiblePixels\":246099,\"shadePackets\":61533,\"activeShadeLanesPercent\":99.986593}\nSCENE {\"materials\":25,\"trianglesStored\":42137,\"triangleBytes\":51118080,\"depthPasses\":1292255,\"visiblePixels\":246943,\"shadePackets\":61744,\"activeShadeLanesPercent\":99.986638}\nSCENE {\"materials\":25,\"trianglesStored\":42343,\"triangleBytes\":51118080,\"depthPasses\":1234792,\"visiblePixels\":248062,\"shadePackets\":62023,\"activeShadeLanesPercent\":99.987908}\nSCENE {\"materials\":25,\"trianglesStored\":42407,\"triangleBytes\":51118080,\"depthPasses\":1281854,\"visiblePixels\":248903,\"shadePackets\":62233,\"activeShadeLanesPercent\":99.988350}\nSCENE {\"materials\":25,\"trianglesStored\":42650,\"triangleBytes\":51118080,\"depthPasses\":1268893,\"visiblePixels\":249298,\"shadePackets\":62332,\"activeShadeLanesPercent\":99.987968}\nSCENE {\"materials\":25,\"trianglesStored\":42708,\"triangleBytes\":51118080,\"depthPasses\":1295101,\"visiblePixels\":249063,\"shadePackets\":62276,\"activeShadeLanesPercent\":99.983541}\nSCENE {\"materials\":25,\"trianglesStored\":42723,\"triangleBytes\":51118080,\"depthPasses\":1296182,\"visiblePixels\":249510,\"shadePackets\":62385,\"activeShadeLanesPercent\":99.987978}\nPARTIAL 429920 73729 40021 17677\nPACKET 767984 987819 310136 1043738\n",
+      "frameStats": [
+        {
+          "materials": 25,
+          "trianglesStored": 42577,
+          "triangleBytes": 22937600,
+          "depthPasses": 1303937,
+          "visiblePixels": 248827,
+          "shadePackets": 62214,
+          "activeShadeLanesPercent": 99.988347
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42672,
+          "triangleBytes": 27852800,
+          "depthPasses": 1325010,
+          "visiblePixels": 248876,
+          "shadePackets": 62229,
+          "activeShadeLanesPercent": 99.98393
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42774,
+          "triangleBytes": 31784960,
+          "depthPasses": 1320257,
+          "visiblePixels": 249595,
+          "shadePackets": 62408,
+          "activeShadeLanesPercent": 99.985178
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42644,
+          "triangleBytes": 34078720,
+          "depthPasses": 1342946,
+          "visiblePixels": 249021,
+          "shadePackets": 62262,
+          "activeShadeLanesPercent": 99.989159
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42450,
+          "triangleBytes": 38010880,
+          "depthPasses": 1359015,
+          "visiblePixels": 247898,
+          "shadePackets": 61981,
+          "activeShadeLanesPercent": 99.989513
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42003,
+          "triangleBytes": 38993920,
+          "depthPasses": 1303602,
+          "visiblePixels": 246976,
+          "shadePackets": 61751,
+          "activeShadeLanesPercent": 99.988664
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 40910,
+          "triangleBytes": 40960000,
+          "depthPasses": 1298937,
+          "visiblePixels": 246207,
+          "shadePackets": 61559,
+          "activeShadeLanesPercent": 99.988223
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 40890,
+          "triangleBytes": 40960000,
+          "depthPasses": 1326367,
+          "visiblePixels": 246064,
+          "shadePackets": 61523,
+          "activeShadeLanesPercent": 99.988622
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 40890,
+          "triangleBytes": 40960000,
+          "depthPasses": 1326367,
+          "visiblePixels": 246064,
+          "shadePackets": 61523,
+          "activeShadeLanesPercent": 99.988622
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 40910,
+          "triangleBytes": 40960000,
+          "depthPasses": 1298937,
+          "visiblePixels": 246207,
+          "shadePackets": 61559,
+          "activeShadeLanesPercent": 99.988223
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42003,
+          "triangleBytes": 40960000,
+          "depthPasses": 1303602,
+          "visiblePixels": 246976,
+          "shadePackets": 61751,
+          "activeShadeLanesPercent": 99.988664
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42450,
+          "triangleBytes": 40960000,
+          "depthPasses": 1359015,
+          "visiblePixels": 247898,
+          "shadePackets": 61981,
+          "activeShadeLanesPercent": 99.989513
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42644,
+          "triangleBytes": 40960000,
+          "depthPasses": 1342946,
+          "visiblePixels": 249021,
+          "shadePackets": 62262,
+          "activeShadeLanesPercent": 99.989159
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42774,
+          "triangleBytes": 40960000,
+          "depthPasses": 1320257,
+          "visiblePixels": 249595,
+          "shadePackets": 62408,
+          "activeShadeLanesPercent": 99.985178
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42672,
+          "triangleBytes": 40960000,
+          "depthPasses": 1325010,
+          "visiblePixels": 248876,
+          "shadePackets": 62229,
+          "activeShadeLanesPercent": 99.98393
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42577,
+          "triangleBytes": 40960000,
+          "depthPasses": 1303937,
+          "visiblePixels": 248827,
+          "shadePackets": 62214,
+          "activeShadeLanesPercent": 99.988347
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42708,
+          "triangleBytes": 43253760,
+          "depthPasses": 1295101,
+          "visiblePixels": 249063,
+          "shadePackets": 62276,
+          "activeShadeLanesPercent": 99.983541
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42650,
+          "triangleBytes": 45875200,
+          "depthPasses": 1268893,
+          "visiblePixels": 249298,
+          "shadePackets": 62332,
+          "activeShadeLanesPercent": 99.987968
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42407,
+          "triangleBytes": 48168960,
+          "depthPasses": 1281854,
+          "visiblePixels": 248903,
+          "shadePackets": 62233,
+          "activeShadeLanesPercent": 99.98835
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42343,
+          "triangleBytes": 49479680,
+          "depthPasses": 1234792,
+          "visiblePixels": 248062,
+          "shadePackets": 62023,
+          "activeShadeLanesPercent": 99.987908
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42137,
+          "triangleBytes": 50462720,
+          "depthPasses": 1292255,
+          "visiblePixels": 246943,
+          "shadePackets": 61744,
+          "activeShadeLanesPercent": 99.986638
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 40955,
+          "triangleBytes": 51118080,
+          "depthPasses": 1310195,
+          "visiblePixels": 246099,
+          "shadePackets": 61533,
+          "activeShadeLanesPercent": 99.986593
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 40694,
+          "triangleBytes": 51118080,
+          "depthPasses": 1224135,
+          "visiblePixels": 246002,
+          "shadePackets": 61508,
+          "activeShadeLanesPercent": 99.987806
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 40694,
+          "triangleBytes": 51118080,
+          "depthPasses": 1224135,
+          "visiblePixels": 246002,
+          "shadePackets": 61508,
+          "activeShadeLanesPercent": 99.987806
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 40955,
+          "triangleBytes": 51118080,
+          "depthPasses": 1310195,
+          "visiblePixels": 246099,
+          "shadePackets": 61533,
+          "activeShadeLanesPercent": 99.986593
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42137,
+          "triangleBytes": 51118080,
+          "depthPasses": 1292255,
+          "visiblePixels": 246943,
+          "shadePackets": 61744,
+          "activeShadeLanesPercent": 99.986638
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42343,
+          "triangleBytes": 51118080,
+          "depthPasses": 1234792,
+          "visiblePixels": 248062,
+          "shadePackets": 62023,
+          "activeShadeLanesPercent": 99.987908
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42407,
+          "triangleBytes": 51118080,
+          "depthPasses": 1281854,
+          "visiblePixels": 248903,
+          "shadePackets": 62233,
+          "activeShadeLanesPercent": 99.98835
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42650,
+          "triangleBytes": 51118080,
+          "depthPasses": 1268893,
+          "visiblePixels": 249298,
+          "shadePackets": 62332,
+          "activeShadeLanesPercent": 99.987968
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42708,
+          "triangleBytes": 51118080,
+          "depthPasses": 1295101,
+          "visiblePixels": 249063,
+          "shadePackets": 62276,
+          "activeShadeLanesPercent": 99.983541
+        },
+        {
+          "materials": 25,
+          "trianglesStored": 42723,
+          "triangleBytes": 51118080,
+          "depthPasses": 1296182,
+          "visiblePixels": 249510,
+          "shadePackets": 62385,
+          "activeShadeLanesPercent": 99.987978
+        }
+      ],
+      "partial": {
+        "cellQueries": 429920,
+        "rectangleWritten": 73729,
+        "cellDepthPass": 40021,
+        "wholeQueryRejects": 17677
+      },
+      "packet": {
+        "eligible": 767984,
+        "queries": 987819,
+        "rejected": 310136,
+        "rejectedTriangles": 1043738
+      }
+    },
+    {
+      "asset": "bmw",
+      "packSha256": "76cda2c57b81e10b3c92a269537b17e4e1c5f36c653bfd1af43fcb2218473cef",
+      "camera": null,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-partial-cell-hiz/census-v2-ready/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/bmw.pack"
+      ],
+      "request": "4 0 30 160 -\n",
+      "stdout": "{\"ready\":true,\"width\":640,\"height\":360}\n{\"renderer\":\"softgl-native\",\"width\":640,\"height\":360,\"threads\":4,\"samples\":4,\"triangles\":63009,\"frames\":30,\"ms\":19.766836101,\"submitMs\":18.690706359,\"finishReadbackMs\":1.076026408,\"angle\":160,\"rgba\":\"6d87786287f3a447\",\"depth\":\"b0f37ca6630a33b6\",\"stencil\":\"97422459bb4b3383\",\"sampleDepth\":\"dc2f9662c4e4c224\",\"sampleStencil\":\"009b538b2455c383\"}\n",
+      "stderr": "SCENE {\"materials\":19,\"trianglesStored\":11311,\"triangleBytes\":5242880,\"depthPasses\":229252,\"visiblePixels\":42567,\"shadePackets\":10644,\"activeShadeLanesPercent\":99.978861}\nSCENE {\"materials\":19,\"trianglesStored\":12852,\"triangleBytes\":6881280,\"depthPasses\":278500,\"visiblePixels\":47560,\"shadePackets\":11897,\"activeShadeLanesPercent\":99.941162}\nSCENE {\"materials\":19,\"trianglesStored\":15046,\"triangleBytes\":8847360,\"depthPasses\":354196,\"visiblePixels\":56154,\"shadePackets\":14045,\"activeShadeLanesPercent\":99.953720}\nSCENE {\"materials\":19,\"trianglesStored\":16578,\"triangleBytes\":11468800,\"depthPasses\":396370,\"visiblePixels\":62809,\"shadePackets\":15709,\"activeShadeLanesPercent\":99.957031}\nSCENE {\"materials\":19,\"trianglesStored\":17238,\"triangleBytes\":13434880,\"depthPasses\":422238,\"visiblePixels\":67969,\"shadePackets\":16998,\"activeShadeLanesPercent\":99.966172}\nSCENE {\"materials\":19,\"trianglesStored\":17374,\"triangleBytes\":14745600,\"depthPasses\":423902,\"visiblePixels\":71204,\"shadePackets\":17806,\"activeShadeLanesPercent\":99.971920}\nSCENE {\"materials\":19,\"trianglesStored\":17228,\"triangleBytes\":14745600,\"depthPasses\":426058,\"visiblePixels\":72865,\"shadePackets\":18223,\"activeShadeLanesPercent\":99.962959}\nSCENE {\"materials\":19,\"trianglesStored\":16496,\"triangleBytes\":15073280,\"depthPasses\":378496,\"visiblePixels\":73608,\"shadePackets\":18408,\"activeShadeLanesPercent\":99.967405}\nSCENE {\"materials\":19,\"trianglesStored\":16634,\"triangleBytes\":15400960,\"depthPasses\":371651,\"visiblePixels\":74234,\"shadePackets\":18565,\"activeShadeLanesPercent\":99.964988}\nSCENE {\"materials\":19,\"trianglesStored\":16806,\"triangleBytes\":15400960,\"depthPasses\":423839,\"visiblePixels\":73489,\"shadePackets\":18377,\"activeShadeLanesPercent\":99.974152}\nSCENE {\"materials\":19,\"trianglesStored\":16993,\"triangleBytes\":16056320,\"depthPasses\":442206,\"visiblePixels\":71871,\"shadePackets\":17973,\"activeShadeLanesPercent\":99.970790}\nSCENE {\"materials\":19,\"trianglesStored\":16679,\"triangleBytes\":16056320,\"depthPasses\":424524,\"visiblePixels\":69264,\"shadePackets\":17320,\"activeShadeLanesPercent\":99.976905}\nSCENE {\"materials\":19,\"trianglesStored\":15854,\"triangleBytes\":16056320,\"depthPasses\":406451,\"visiblePixels\":65462,\"shadePackets\":16370,\"activeShadeLanesPercent\":99.972511}\nSCENE {\"materials\":19,\"trianglesStored\":14919,\"triangleBytes\":16056320,\"depthPasses\":370030,\"visiblePixels\":60074,\"shadePackets\":15024,\"activeShadeLanesPercent\":99.963392}\nSCENE {\"materials\":19,\"trianglesStored\":13103,\"triangleBytes\":16056320,\"depthPasses\":322584,\"visiblePixels\":53859,\"shadePackets\":13468,\"activeShadeLanesPercent\":99.975869}\nSCENE {\"materials\":19,\"trianglesStored\":11231,\"triangleBytes\":16056320,\"depthPasses\":293663,\"visiblePixels\":49442,\"shadePackets\":12364,\"activeShadeLanesPercent\":99.971692}\nSCENE {\"materials\":19,\"trianglesStored\":13178,\"triangleBytes\":16056320,\"depthPasses\":320338,\"visiblePixels\":53773,\"shadePackets\":13447,\"activeShadeLanesPercent\":99.972113}\nSCENE {\"materials\":19,\"trianglesStored\":15122,\"triangleBytes\":16056320,\"depthPasses\":363016,\"visiblePixels\":60032,\"shadePackets\":15014,\"activeShadeLanesPercent\":99.960037}\nSCENE {\"materials\":19,\"trianglesStored\":16035,\"triangleBytes\":16056320,\"depthPasses\":404774,\"visiblePixels\":65423,\"shadePackets\":16359,\"activeShadeLanesPercent\":99.980133}\nSCENE {\"materials\":19,\"trianglesStored\":16730,\"triangleBytes\":16056320,\"depthPasses\":423225,\"visiblePixels\":69284,\"shadePackets\":17324,\"activeShadeLanesPercent\":99.982683}\nSCENE {\"materials\":19,\"trianglesStored\":17153,\"triangleBytes\":16056320,\"depthPasses\":439372,\"visiblePixels\":71897,\"shadePackets\":17980,\"activeShadeLanesPercent\":99.968020}\nSCENE {\"materials\":19,\"trianglesStored\":16993,\"triangleBytes\":16056320,\"depthPasses\":430383,\"visiblePixels\":73530,\"shadePackets\":18386,\"activeShadeLanesPercent\":99.980964}\nSCENE {\"materials\":19,\"trianglesStored\":16867,\"triangleBytes\":16056320,\"depthPasses\":396045,\"visiblePixels\":74351,\"shadePackets\":18592,\"activeShadeLanesPercent\":99.977141}\nSCENE {\"materials\":19,\"trianglesStored\":16708,\"triangleBytes\":16056320,\"depthPasses\":374744,\"visiblePixels\":73596,\"shadePackets\":18404,\"activeShadeLanesPercent\":99.972832}\nSCENE {\"materials\":19,\"trianglesStored\":17370,\"triangleBytes\":16056320,\"depthPasses\":398709,\"visiblePixels\":72806,\"shadePackets\":18208,\"activeShadeLanesPercent\":99.964301}\nSCENE {\"materials\":19,\"trianglesStored\":17616,\"triangleBytes\":16056320,\"depthPasses\":412969,\"visiblePixels\":71173,\"shadePackets\":17799,\"activeShadeLanesPercent\":99.967695}\nSCENE {\"materials\":19,\"trianglesStored\":17314,\"triangleBytes\":16056320,\"depthPasses\":411285,\"visiblePixels\":67904,\"shadePackets\":16983,\"activeShadeLanesPercent\":99.958782}\nSCENE {\"materials\":19,\"trianglesStored\":16534,\"triangleBytes\":16384000,\"depthPasses\":392701,\"visiblePixels\":62761,\"shadePackets\":15696,\"activeShadeLanesPercent\":99.963366}\nSCENE {\"materials\":19,\"trianglesStored\":15035,\"triangleBytes\":16384000,\"depthPasses\":344555,\"visiblePixels\":56041,\"shadePackets\":14015,\"activeShadeLanesPercent\":99.966108}\nSCENE {\"materials\":19,\"trianglesStored\":12938,\"triangleBytes\":16384000,\"depthPasses\":277860,\"visiblePixels\":47615,\"shadePackets\":11907,\"activeShadeLanesPercent\":99.972705}\nSCENE {\"materials\":19,\"trianglesStored\":14443,\"triangleBytes\":16384000,\"depthPasses\":352893,\"visiblePixels\":58093,\"shadePackets\":14530,\"activeShadeLanesPercent\":99.953544}\nPARTIAL 802120 192526 108500 47506\nPACKET 410827 711914 322207 998567\n",
+      "frameStats": [
+        {
+          "materials": 19,
+          "trianglesStored": 11311,
+          "triangleBytes": 5242880,
+          "depthPasses": 229252,
+          "visiblePixels": 42567,
+          "shadePackets": 10644,
+          "activeShadeLanesPercent": 99.978861
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 12852,
+          "triangleBytes": 6881280,
+          "depthPasses": 278500,
+          "visiblePixels": 47560,
+          "shadePackets": 11897,
+          "activeShadeLanesPercent": 99.941162
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 15046,
+          "triangleBytes": 8847360,
+          "depthPasses": 354196,
+          "visiblePixels": 56154,
+          "shadePackets": 14045,
+          "activeShadeLanesPercent": 99.95372
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 16578,
+          "triangleBytes": 11468800,
+          "depthPasses": 396370,
+          "visiblePixels": 62809,
+          "shadePackets": 15709,
+          "activeShadeLanesPercent": 99.957031
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 17238,
+          "triangleBytes": 13434880,
+          "depthPasses": 422238,
+          "visiblePixels": 67969,
+          "shadePackets": 16998,
+          "activeShadeLanesPercent": 99.966172
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 17374,
+          "triangleBytes": 14745600,
+          "depthPasses": 423902,
+          "visiblePixels": 71204,
+          "shadePackets": 17806,
+          "activeShadeLanesPercent": 99.97192
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 17228,
+          "triangleBytes": 14745600,
+          "depthPasses": 426058,
+          "visiblePixels": 72865,
+          "shadePackets": 18223,
+          "activeShadeLanesPercent": 99.962959
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 16496,
+          "triangleBytes": 15073280,
+          "depthPasses": 378496,
+          "visiblePixels": 73608,
+          "shadePackets": 18408,
+          "activeShadeLanesPercent": 99.967405
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 16634,
+          "triangleBytes": 15400960,
+          "depthPasses": 371651,
+          "visiblePixels": 74234,
+          "shadePackets": 18565,
+          "activeShadeLanesPercent": 99.964988
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 16806,
+          "triangleBytes": 15400960,
+          "depthPasses": 423839,
+          "visiblePixels": 73489,
+          "shadePackets": 18377,
+          "activeShadeLanesPercent": 99.974152
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 16993,
+          "triangleBytes": 16056320,
+          "depthPasses": 442206,
+          "visiblePixels": 71871,
+          "shadePackets": 17973,
+          "activeShadeLanesPercent": 99.97079
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 16679,
+          "triangleBytes": 16056320,
+          "depthPasses": 424524,
+          "visiblePixels": 69264,
+          "shadePackets": 17320,
+          "activeShadeLanesPercent": 99.976905
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 15854,
+          "triangleBytes": 16056320,
+          "depthPasses": 406451,
+          "visiblePixels": 65462,
+          "shadePackets": 16370,
+          "activeShadeLanesPercent": 99.972511
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 14919,
+          "triangleBytes": 16056320,
+          "depthPasses": 370030,
+          "visiblePixels": 60074,
+          "shadePackets": 15024,
+          "activeShadeLanesPercent": 99.963392
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 13103,
+          "triangleBytes": 16056320,
+          "depthPasses": 322584,
+          "visiblePixels": 53859,
+          "shadePackets": 13468,
+          "activeShadeLanesPercent": 99.975869
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 11231,
+          "triangleBytes": 16056320,
+          "depthPasses": 293663,
+          "visiblePixels": 49442,
+          "shadePackets": 12364,
+          "activeShadeLanesPercent": 99.971692
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 13178,
+          "triangleBytes": 16056320,
+          "depthPasses": 320338,
+          "visiblePixels": 53773,
+          "shadePackets": 13447,
+          "activeShadeLanesPercent": 99.972113
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 15122,
+          "triangleBytes": 16056320,
+          "depthPasses": 363016,
+          "visiblePixels": 60032,
+          "shadePackets": 15014,
+          "activeShadeLanesPercent": 99.960037
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 16035,
+          "triangleBytes": 16056320,
+          "depthPasses": 404774,
+          "visiblePixels": 65423,
+          "shadePackets": 16359,
+          "activeShadeLanesPercent": 99.980133
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 16730,
+          "triangleBytes": 16056320,
+          "depthPasses": 423225,
+          "visiblePixels": 69284,
+          "shadePackets": 17324,
+          "activeShadeLanesPercent": 99.982683
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 17153,
+          "triangleBytes": 16056320,
+          "depthPasses": 439372,
+          "visiblePixels": 71897,
+          "shadePackets": 17980,
+          "activeShadeLanesPercent": 99.96802
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 16993,
+          "triangleBytes": 16056320,
+          "depthPasses": 430383,
+          "visiblePixels": 73530,
+          "shadePackets": 18386,
+          "activeShadeLanesPercent": 99.980964
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 16867,
+          "triangleBytes": 16056320,
+          "depthPasses": 396045,
+          "visiblePixels": 74351,
+          "shadePackets": 18592,
+          "activeShadeLanesPercent": 99.977141
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 16708,
+          "triangleBytes": 16056320,
+          "depthPasses": 374744,
+          "visiblePixels": 73596,
+          "shadePackets": 18404,
+          "activeShadeLanesPercent": 99.972832
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 17370,
+          "triangleBytes": 16056320,
+          "depthPasses": 398709,
+          "visiblePixels": 72806,
+          "shadePackets": 18208,
+          "activeShadeLanesPercent": 99.964301
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 17616,
+          "triangleBytes": 16056320,
+          "depthPasses": 412969,
+          "visiblePixels": 71173,
+          "shadePackets": 17799,
+          "activeShadeLanesPercent": 99.967695
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 17314,
+          "triangleBytes": 16056320,
+          "depthPasses": 411285,
+          "visiblePixels": 67904,
+          "shadePackets": 16983,
+          "activeShadeLanesPercent": 99.958782
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 16534,
+          "triangleBytes": 16384000,
+          "depthPasses": 392701,
+          "visiblePixels": 62761,
+          "shadePackets": 15696,
+          "activeShadeLanesPercent": 99.963366
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 15035,
+          "triangleBytes": 16384000,
+          "depthPasses": 344555,
+          "visiblePixels": 56041,
+          "shadePackets": 14015,
+          "activeShadeLanesPercent": 99.966108
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 12938,
+          "triangleBytes": 16384000,
+          "depthPasses": 277860,
+          "visiblePixels": 47615,
+          "shadePackets": 11907,
+          "activeShadeLanesPercent": 99.972705
+        },
+        {
+          "materials": 19,
+          "trianglesStored": 14443,
+          "triangleBytes": 16384000,
+          "depthPasses": 352893,
+          "visiblePixels": 58093,
+          "shadePackets": 14530,
+          "activeShadeLanesPercent": 99.953544
+        }
+      ],
+      "partial": {
+        "cellQueries": 802120,
+        "rectangleWritten": 192526,
+        "cellDepthPass": 108500,
+        "wholeQueryRejects": 47506
+      },
+      "packet": {
+        "eligible": 410827,
+        "queries": 711914,
+        "rejected": 322207,
+        "rejectedTriangles": 998567
+      }
+    },
+    {
+      "asset": "t80",
+      "packSha256": "cb9146d7352f52600015c499c394566acc604b43fb5760a17d133c20c5a700f4",
+      "camera": null,
+      "command": [
+        "/home/cosmo/Git/softgl/tmp/scene-msaa-partial-cell-hiz/census-v2-ready/native/resident_candidate",
+        "/home/cosmo/Git/softgl/build/assets/t80.pack"
+      ],
+      "request": "4 0 30 160 -\n",
+      "stdout": "{\"ready\":true,\"width\":640,\"height\":360}\n{\"renderer\":\"softgl-native\",\"width\":640,\"height\":360,\"threads\":4,\"samples\":4,\"triangles\":44513,\"frames\":30,\"ms\":13.281006599,\"submitMs\":12.229133362,\"finishReadbackMs\":1.051719902,\"angle\":160,\"rgba\":\"f4c3cfe15ed7f724\",\"depth\":\"2c7ee74c33dd5311\",\"stencil\":\"97422459bb4b3383\",\"sampleDepth\":\"b6bcf146709d53c0\",\"sampleStencil\":\"009b538b2455c383\"}\n",
+      "stderr": "SCENE {\"materials\":7,\"trianglesStored\":10162,\"triangleBytes\":5242880,\"depthPasses\":165490,\"visiblePixels\":24825,\"shadePackets\":6210,\"activeShadeLanesPercent\":99.939614}\nSCENE {\"materials\":7,\"trianglesStored\":10691,\"triangleBytes\":6553600,\"depthPasses\":181281,\"visiblePixels\":26597,\"shadePackets\":6653,\"activeShadeLanesPercent\":99.943634}\nSCENE {\"materials\":7,\"trianglesStored\":11559,\"triangleBytes\":7208960,\"depthPasses\":203338,\"visiblePixels\":30271,\"shadePackets\":7569,\"activeShadeLanesPercent\":99.983485}\nSCENE {\"materials\":7,\"trianglesStored\":12507,\"triangleBytes\":8847360,\"depthPasses\":219124,\"visiblePixels\":34092,\"shadePackets\":8526,\"activeShadeLanesPercent\":99.964814}\nSCENE {\"materials\":7,\"trianglesStored\":12895,\"triangleBytes\":10158080,\"depthPasses\":242367,\"visiblePixels\":37744,\"shadePackets\":9439,\"activeShadeLanesPercent\":99.968217}\nSCENE {\"materials\":7,\"trianglesStored\":13457,\"triangleBytes\":10813440,\"depthPasses\":274417,\"visiblePixels\":40889,\"shadePackets\":10225,\"activeShadeLanesPercent\":99.973105}\nSCENE {\"materials\":7,\"trianglesStored\":13833,\"triangleBytes\":11468800,\"depthPasses\":286517,\"visiblePixels\":43484,\"shadePackets\":10874,\"activeShadeLanesPercent\":99.972411}\nSCENE {\"materials\":7,\"trianglesStored\":13642,\"triangleBytes\":12124160,\"depthPasses\":279028,\"visiblePixels\":45026,\"shadePackets\":11259,\"activeShadeLanesPercent\":99.977796}\nSCENE {\"materials\":7,\"trianglesStored\":13564,\"triangleBytes\":12451840,\"depthPasses\":285745,\"visiblePixels\":45569,\"shadePackets\":11395,\"activeShadeLanesPercent\":99.975867}\nSCENE {\"materials\":7,\"trianglesStored\":13869,\"triangleBytes\":12451840,\"depthPasses\":307972,\"visiblePixels\":46059,\"shadePackets\":11517,\"activeShadeLanesPercent\":99.980464}\nSCENE {\"materials\":7,\"trianglesStored\":13756,\"triangleBytes\":12451840,\"depthPasses\":310686,\"visiblePixels\":45749,\"shadePackets\":11441,\"activeShadeLanesPercent\":99.967223}\nSCENE {\"materials\":7,\"trianglesStored\":13510,\"triangleBytes\":12451840,\"depthPasses\":294255,\"visiblePixels\":43995,\"shadePackets\":11001,\"activeShadeLanesPercent\":99.979547}\nSCENE {\"materials\":7,\"trianglesStored\":12333,\"triangleBytes\":12451840,\"depthPasses\":272788,\"visiblePixels\":41395,\"shadePackets\":10352,\"activeShadeLanesPercent\":99.968605}\nSCENE {\"materials\":7,\"trianglesStored\":11468,\"triangleBytes\":12451840,\"depthPasses\":240622,\"visiblePixels\":38001,\"shadePackets\":9503,\"activeShadeLanesPercent\":99.971062}\nSCENE {\"materials\":7,\"trianglesStored\":10145,\"triangleBytes\":12451840,\"depthPasses\":203283,\"visiblePixels\":33529,\"shadePackets\":8386,\"activeShadeLanesPercent\":99.955283}\nSCENE {\"materials\":7,\"trianglesStored\":9132,\"triangleBytes\":12451840,\"depthPasses\":179905,\"visiblePixels\":31494,\"shadePackets\":7876,\"activeShadeLanesPercent\":99.968258}\nSCENE {\"materials\":7,\"trianglesStored\":10427,\"triangleBytes\":12451840,\"depthPasses\":211705,\"visiblePixels\":34245,\"shadePackets\":8564,\"activeShadeLanesPercent\":99.967889}\nSCENE {\"materials\":7,\"trianglesStored\":11669,\"triangleBytes\":12451840,\"depthPasses\":241469,\"visiblePixels\":38868,\"shadePackets\":9720,\"activeShadeLanesPercent\":99.969136}\nSCENE {\"materials\":7,\"trianglesStored\":12658,\"triangleBytes\":12451840,\"depthPasses\":273868,\"visiblePixels\":42456,\"shadePackets\":10617,\"activeShadeLanesPercent\":99.971743}\nSCENE {\"materials\":7,\"trianglesStored\":13552,\"triangleBytes\":12779520,\"depthPasses\":298818,\"visiblePixels\":44894,\"shadePackets\":11224,\"activeShadeLanesPercent\":99.995545}\nSCENE {\"materials\":7,\"trianglesStored\":13880,\"triangleBytes\":13434880,\"depthPasses\":305916,\"visiblePixels\":46660,\"shadePackets\":11668,\"activeShadeLanesPercent\":99.974289}\nSCENE {\"materials\":7,\"trianglesStored\":14107,\"triangleBytes\":13434880,\"depthPasses\":299276,\"visiblePixels\":46964,\"shadePackets\":11744,\"activeShadeLanesPercent\":99.974455}\nSCENE {\"materials\":7,\"trianglesStored\":14010,\"triangleBytes\":13434880,\"depthPasses\":290437,\"visiblePixels\":46474,\"shadePackets\":11621,\"activeShadeLanesPercent\":99.978487}\nSCENE {\"materials\":7,\"trianglesStored\":14405,\"triangleBytes\":13762560,\"depthPasses\":296031,\"visiblePixels\":45745,\"shadePackets\":11439,\"activeShadeLanesPercent\":99.975959}\nSCENE {\"materials\":7,\"trianglesStored\":14228,\"triangleBytes\":13762560,\"depthPasses\":290093,\"visiblePixels\":43987,\"shadePackets\":11000,\"activeShadeLanesPercent\":99.970455}\nSCENE {\"materials\":7,\"trianglesStored\":14202,\"triangleBytes\":13762560,\"depthPasses\":276147,\"visiblePixels\":41395,\"shadePackets\":10351,\"activeShadeLanesPercent\":99.978263}\nSCENE {\"materials\":7,\"trianglesStored\":13848,\"triangleBytes\":13762560,\"depthPasses\":258077,\"visiblePixels\":38432,\"shadePackets\":9612,\"activeShadeLanesPercent\":99.958385}\nSCENE {\"materials\":7,\"trianglesStored\":13187,\"triangleBytes\":13762560,\"depthPasses\":235216,\"visiblePixels\":34933,\"shadePackets\":8735,\"activeShadeLanesPercent\":99.979966}\nSCENE {\"materials\":7,\"trianglesStored\":12209,\"triangleBytes\":13762560,\"depthPasses\":207981,\"visiblePixels\":31106,\"shadePackets\":7779,\"activeShadeLanesPercent\":99.967862}\nSCENE {\"materials\":7,\"trianglesStored\":10906,\"triangleBytes\":13762560,\"depthPasses\":181318,\"visiblePixels\":27131,\"shadePackets\":6787,\"activeShadeLanesPercent\":99.937380}\nSCENE {\"materials\":7,\"trianglesStored\":11131,\"triangleBytes\":13762560,\"depthPasses\":231084,\"visiblePixels\":36685,\"shadePackets\":9173,\"activeShadeLanesPercent\":99.980922}\nPARTIAL 635372 170730 94309 44940\nPACKET 326646 503382 226878 740654\n",
+      "frameStats": [
+        {
+          "materials": 7,
+          "trianglesStored": 10162,
+          "triangleBytes": 5242880,
+          "depthPasses": 165490,
+          "visiblePixels": 24825,
+          "shadePackets": 6210,
+          "activeShadeLanesPercent": 99.939614
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 10691,
+          "triangleBytes": 6553600,
+          "depthPasses": 181281,
+          "visiblePixels": 26597,
+          "shadePackets": 6653,
+          "activeShadeLanesPercent": 99.943634
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 11559,
+          "triangleBytes": 7208960,
+          "depthPasses": 203338,
+          "visiblePixels": 30271,
+          "shadePackets": 7569,
+          "activeShadeLanesPercent": 99.983485
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 12507,
+          "triangleBytes": 8847360,
+          "depthPasses": 219124,
+          "visiblePixels": 34092,
+          "shadePackets": 8526,
+          "activeShadeLanesPercent": 99.964814
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 12895,
+          "triangleBytes": 10158080,
+          "depthPasses": 242367,
+          "visiblePixels": 37744,
+          "shadePackets": 9439,
+          "activeShadeLanesPercent": 99.968217
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 13457,
+          "triangleBytes": 10813440,
+          "depthPasses": 274417,
+          "visiblePixels": 40889,
+          "shadePackets": 10225,
+          "activeShadeLanesPercent": 99.973105
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 13833,
+          "triangleBytes": 11468800,
+          "depthPasses": 286517,
+          "visiblePixels": 43484,
+          "shadePackets": 10874,
+          "activeShadeLanesPercent": 99.972411
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 13642,
+          "triangleBytes": 12124160,
+          "depthPasses": 279028,
+          "visiblePixels": 45026,
+          "shadePackets": 11259,
+          "activeShadeLanesPercent": 99.977796
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 13564,
+          "triangleBytes": 12451840,
+          "depthPasses": 285745,
+          "visiblePixels": 45569,
+          "shadePackets": 11395,
+          "activeShadeLanesPercent": 99.975867
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 13869,
+          "triangleBytes": 12451840,
+          "depthPasses": 307972,
+          "visiblePixels": 46059,
+          "shadePackets": 11517,
+          "activeShadeLanesPercent": 99.980464
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 13756,
+          "triangleBytes": 12451840,
+          "depthPasses": 310686,
+          "visiblePixels": 45749,
+          "shadePackets": 11441,
+          "activeShadeLanesPercent": 99.967223
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 13510,
+          "triangleBytes": 12451840,
+          "depthPasses": 294255,
+          "visiblePixels": 43995,
+          "shadePackets": 11001,
+          "activeShadeLanesPercent": 99.979547
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 12333,
+          "triangleBytes": 12451840,
+          "depthPasses": 272788,
+          "visiblePixels": 41395,
+          "shadePackets": 10352,
+          "activeShadeLanesPercent": 99.968605
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 11468,
+          "triangleBytes": 12451840,
+          "depthPasses": 240622,
+          "visiblePixels": 38001,
+          "shadePackets": 9503,
+          "activeShadeLanesPercent": 99.971062
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 10145,
+          "triangleBytes": 12451840,
+          "depthPasses": 203283,
+          "visiblePixels": 33529,
+          "shadePackets": 8386,
+          "activeShadeLanesPercent": 99.955283
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 9132,
+          "triangleBytes": 12451840,
+          "depthPasses": 179905,
+          "visiblePixels": 31494,
+          "shadePackets": 7876,
+          "activeShadeLanesPercent": 99.968258
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 10427,
+          "triangleBytes": 12451840,
+          "depthPasses": 211705,
+          "visiblePixels": 34245,
+          "shadePackets": 8564,
+          "activeShadeLanesPercent": 99.967889
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 11669,
+          "triangleBytes": 12451840,
+          "depthPasses": 241469,
+          "visiblePixels": 38868,
+          "shadePackets": 9720,
+          "activeShadeLanesPercent": 99.969136
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 12658,
+          "triangleBytes": 12451840,
+          "depthPasses": 273868,
+          "visiblePixels": 42456,
+          "shadePackets": 10617,
+          "activeShadeLanesPercent": 99.971743
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 13552,
+          "triangleBytes": 12779520,
+          "depthPasses": 298818,
+          "visiblePixels": 44894,
+          "shadePackets": 11224,
+          "activeShadeLanesPercent": 99.995545
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 13880,
+          "triangleBytes": 13434880,
+          "depthPasses": 305916,
+          "visiblePixels": 46660,
+          "shadePackets": 11668,
+          "activeShadeLanesPercent": 99.974289
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 14107,
+          "triangleBytes": 13434880,
+          "depthPasses": 299276,
+          "visiblePixels": 46964,
+          "shadePackets": 11744,
+          "activeShadeLanesPercent": 99.974455
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 14010,
+          "triangleBytes": 13434880,
+          "depthPasses": 290437,
+          "visiblePixels": 46474,
+          "shadePackets": 11621,
+          "activeShadeLanesPercent": 99.978487
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 14405,
+          "triangleBytes": 13762560,
+          "depthPasses": 296031,
+          "visiblePixels": 45745,
+          "shadePackets": 11439,
+          "activeShadeLanesPercent": 99.975959
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 14228,
+          "triangleBytes": 13762560,
+          "depthPasses": 290093,
+          "visiblePixels": 43987,
+          "shadePackets": 11000,
+          "activeShadeLanesPercent": 99.970455
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 14202,
+          "triangleBytes": 13762560,
+          "depthPasses": 276147,
+          "visiblePixels": 41395,
+          "shadePackets": 10351,
+          "activeShadeLanesPercent": 99.978263
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 13848,
+          "triangleBytes": 13762560,
+          "depthPasses": 258077,
+          "visiblePixels": 38432,
+          "shadePackets": 9612,
+          "activeShadeLanesPercent": 99.958385
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 13187,
+          "triangleBytes": 13762560,
+          "depthPasses": 235216,
+          "visiblePixels": 34933,
+          "shadePackets": 8735,
+          "activeShadeLanesPercent": 99.979966
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 12209,
+          "triangleBytes": 13762560,
+          "depthPasses": 207981,
+          "visiblePixels": 31106,
+          "shadePackets": 7779,
+          "activeShadeLanesPercent": 99.967862
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 10906,
+          "triangleBytes": 13762560,
+          "depthPasses": 181318,
+          "visiblePixels": 27131,
+          "shadePackets": 6787,
+          "activeShadeLanesPercent": 99.93738
+        },
+        {
+          "materials": 7,
+          "trianglesStored": 11131,
+          "triangleBytes": 13762560,
+          "depthPasses": 231084,
+          "visiblePixels": 36685,
+          "shadePackets": 9173,
+          "activeShadeLanesPercent": 99.980922
+        }
+      ],
+      "partial": {
+        "cellQueries": 635372,
+        "rectangleWritten": 170730,
+        "cellDepthPass": 94309,
+        "wholeQueryRejects": 44940
+      },
+      "packet": {
+        "eligible": 326646,
+        "queries": 503382,
+        "rejected": 226878,
+        "rejectedTriangles": 740654
+      }
+    }
+  ]
+}
