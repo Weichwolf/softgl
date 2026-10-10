@@ -145,6 +145,9 @@ texture uploads avoid keeping a second complete pack inside that address space.
 
 The viewer provides model selection, MSAA selection, the GL test cycle and an
 interactive benchmark. Model sources and licenses are documented in `assets/`.
+Render times include completion of deferred draws and MSAA resolve, excluding
+SDL presentation. Render FPS show the resulting uncapped throughput; playback
+is capped at 30 FPS. Timing statistics restart when the scene or MSAA changes.
 
 ## Browser validation and measurements
 

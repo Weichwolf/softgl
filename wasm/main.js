@@ -111,10 +111,16 @@
   /* Rolling frame-time window for p50/p95 stats. */
   const FT_MAX = 120;
   const frameTimes = [];
+  function resetFrameStats() {
+    frameTimes.length = 0;
+    timingEl.textContent = '';
+    sStatsMs.textContent = '–';
+    sStatsP.textContent = '–';
+  }
   function recordFrameMs(ms) {
     frameTimes.push(ms);
     if (frameTimes.length > FT_MAX) frameTimes.shift();
-    sStatsMs.textContent = `${ms.toFixed(2)} ms (${(1000/ms).toFixed(0)} fps)`;
+    sStatsMs.textContent = `${ms.toFixed(2)} ms (${(1000/ms).toFixed(0)} render fps)`;
     if (frameTimes.length >= 10) {
       const s = [...frameTimes].sort((a,b)=>a-b);
       const p50 = s[Math.floor(s.length * 0.50)];
@@ -123,12 +129,8 @@
     }
   }
 
-  /* ---- Shared output path: softgl FB → SDL texture → canvas ---------
-   * sg_viewer_present uploads the softgl context's fb.color into the
-   * SDL streaming texture (SDL_UpdateTexture) and calls RenderCopyEx
-   * with SDL_FLIP_VERTICAL so the GL y=bottom convention reads correct
-   * in window space. Replaces the per-row putImageData Y-flip that ran
-   * on the JS side. */
+  /* Complete deferred rendering and MSAA resolve before uploading the
+   * framebuffer to SDL. The canvas CSS handles the GL y=bottom flip. */
   function blitContext(c) {
     const pixelsPtr = Mod.ccall('softgl_read_rgba8', 'number', ['number'], [c]);
     Mod.ccall('sg_viewer_present', null, ['number'], [pixelsPtr]);
@@ -145,6 +147,7 @@
   let mode = 'model';       /* 'model' | 'tests' | 'bench' */
 
   function renderTest() {
+    resetFrameStats();
     const c = createContext();
     let ms;
     try {
@@ -183,10 +186,8 @@
   }
 
   /* ---- Model mode -------------------------------------------------- */
-  /* 30 fps display cap. 2:2 cadence on 60 Hz, 4:4 on 120 Hz — clean,
-   * no judder. The compute-time measurement below (t1-t0 around
-   * sg_model_render) is unaffected, so the "fps" shown in the UI stays
-   * the uncapped theoretical rate implied by render cost. */
+  /* 30 fps display cap. Render timing includes driver completion and
+   * MSAA resolve, but excludes SDL presentation and the display cap. */
   const MODEL_CAP_MS = 1000 / 30;
   const assetBytes = new Map();
   const assets = {
@@ -294,10 +295,10 @@
     const t0 = performance.now();
     Mod.ccall('sg_model_render', null, ['number','number','number'],
               [modelAngle, W, H]);
-    const t1 = performance.now();
-    blitContext(modelCtx);
-    const ms = t1 - t0;
-    timingEl.textContent = `render: ${ms.toFixed(2)} ms   ·   ${(1000/ms).toFixed(0)} fps theoretical (capped @ 30)`;
+    const pixels = Mod._softgl_read_rgba8(modelCtx);
+    const ms = performance.now() - t0;
+    Mod._sg_viewer_present(pixels);
+    timingEl.textContent = `render: ${ms.toFixed(2)} ms   ·   ${(1000/ms).toFixed(0)} render fps (display capped @ 30)`;
     recordFrameMs(ms);
     /* steady angle bar instead of test progress */
     progEl.style.transition = 'none';
@@ -327,6 +328,7 @@
     transitioning = true;
     setControlsBusy(true);
     stopPlayback();
+    resetFrameStats();
     mode = 'model';
     try {
       // Let terminated pthreads return to Emscripten's prestarted pool.
@@ -430,6 +432,7 @@
     benchmarkCancelled = false;
     mode = 'bench';
     stopPlayback();
+    resetFrameStats();
     setControlsBusy(true);
     benchBtn.disabled = false;
     benchBtn.textContent = 'Stop Benchmark';

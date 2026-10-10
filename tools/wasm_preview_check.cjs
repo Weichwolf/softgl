@@ -20,6 +20,44 @@ async function main() {
         const page = await context.newPage();
         page.setDefaultTimeout(30000);
         page.on('pageerror', error => errors.push(error.message));
+        // Independently time draw submission through completed framebuffer readback.
+        await page.route('**/main.js', async route => {
+            const response = await route.fetch();
+            const probe = `(() => {
+                const create = createSoftGL;
+                createSoftGL = async options => {
+                    const mod = await create(options);
+                    const probe = window.previewRenderTiming = {frames:0};
+                    let start;
+                    for (const name of ['_sg_model_render', '_sg_test_run']) {
+                        let render = mod[name];
+                        const wrapped = (...args) => {
+                            start = performance.now();
+                            return render(...args);
+                        };
+                        // Emscripten replaces lazy exports on their first call.
+                        Object.defineProperty(mod, name, {
+                            get:() => wrapped, set:value => {render = value;},
+                        });
+                    }
+                    let read = mod._softgl_read_rgba8;
+                    const wrappedRead = (...args) => {
+                        const pixels = read(...args);
+                        if (start !== undefined) {
+                            probe.ms = performance.now() - start;
+                            probe.frames++;
+                            start = undefined;
+                        }
+                        return pixels;
+                    };
+                    Object.defineProperty(mod, '_softgl_read_rgba8', {
+                        get:() => wrappedRead, set:value => {read = value;},
+                    });
+                    return mod;
+                };
+            })();\n`;
+            await route.fulfill({response, body:probe + await response.text()});
+        });
         await page.goto(url);
         const moduleResponse = await context.request.get(new URL('softgl.wasm', url).href);
         assert.ok(moduleResponse.ok(), 'Preview WASM must be available from the checked server');
@@ -34,6 +72,18 @@ async function main() {
         const waitTest = () => page.waitForFunction(() => document.querySelector('#name').textContent.startsWith('test_'));
         const waitWorkers = n => page.waitForFunction(n =>
             document.querySelector('#s-threads').textContent === `${n + 1} (${n} workers + main thread)`, n);
+        const checkRenderTiming = async () => {
+            const timing = await page.evaluate(() => ({
+                measured:window.previewRenderTiming.ms,
+                displayed:Number.parseFloat(document.querySelector('#s-ms').textContent),
+                text:document.querySelector('#timing').textContent,
+            }));
+            assert.ok(Number.isFinite(timing.measured) && Number.isFinite(timing.displayed));
+            assert.ok(timing.displayed + 0.05 >= timing.measured,
+                `Displayed ${timing.displayed} ms must include completed rendering (${timing.measured} ms)`);
+            assert.equal(Number.parseFloat(timing.text.replace('render: ', '')), timing.displayed);
+            assert.ok(timing.text.includes('render fps (display capped @ 30)'));
+        };
         await waitT80();
         await waitWorkers(3);
         for (const samples of ['2', '4', '0']) {
@@ -42,6 +92,7 @@ async function main() {
             await waitWorkers(3);
             await page.waitForTimeout(150);
             assert.equal(await page.locator('#msaa').inputValue(), samples);
+            await checkRenderTiming();
         }
         await page.evaluate(() => {
             window.previewHeartbeat = 0;
@@ -54,10 +105,13 @@ async function main() {
         await waitBMW();
         await waitWorkers(3);
         await page.waitForTimeout(200);
+        await checkRenderTiming();
         await page.screenshot({path:path.join(path.dirname(output), 'bmw-msaa4.png')});
         await page.selectOption('#msaa', '0');
         await waitBMW();
         await waitWorkers(3);
+        await page.waitForTimeout(150);
+        await checkRenderTiming();
         await page.screenshot({path:path.join(path.dirname(output), 'bmw.png')});
         await page.click('#bench');
         await page.waitForFunction(() => document.querySelector('#name').textContent === 'Benchmark: bmw');
@@ -126,6 +180,7 @@ async function main() {
         fs.writeFileSync(output, JSON.stringify({url, browser:browser.version(), ...result,
             heartbeatDuringBenchmark:result.heartbeat - before, displayedTests:count,
             renderWorkers:3, bmwScene:true, cancelledBenchmark:true, offlineGeometry:true,
+            completedRenderTiming:true,
             multisampleModes:[0,2,4],
             wasmSha256, errors, passed:true}, null, 2) + '\n');
         console.log(`Preview passed: BMW, ${count} tests, six scenes in each of three MSAA passes, cancellation and three workers plus caller on nine reported processors.`);
