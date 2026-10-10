@@ -1,0 +1,38 @@
+{
+  "passed": true,
+  "command": [
+    "/home/cosmo/.local/bin/clang-22",
+    "-std=c11",
+    "-O3",
+    "-fno-strict-aliasing",
+    "-ffast-math",
+    "-fno-associative-math",
+    "-fsigned-zeros",
+    "-fno-finite-math-only",
+    "-msse4.1",
+    "-mno-avx",
+    "-mno-avx2",
+    "-mno-avx512f",
+    "-I/home/cosmo/Git/softgl/build/scene-msaa-packet-depth-bounds/v4-compact/source/libsoftgl/src",
+    "-I/home/cosmo/Git/softgl/build/scene-msaa-packet-depth-bounds/v4-compact/source/libsoftgl/include",
+    "/home/cosmo/Git/softgl/tmp/scene-msaa-packet-depth-bounds/numeric-v4/recipe/numeric_contract.c",
+    "-lm",
+    "-pthread",
+    "-o",
+    "/home/cosmo/Git/softgl/tmp/scene-msaa-packet-depth-bounds/numeric-v4/numeric_contract"
+  ],
+  "exitCode": 0,
+  "stdout": "4,000,000 full pixel intervals / 16,000,000 original samples: 1409966 separated, 2590034 exact fallback, max upper slack 0.122091874 PASS\n",
+  "stderr": "",
+  "empirical": true,
+  "universalProof": false,
+  "simdBits": 128,
+  "sourceManifestSha256": "f93d91a1f34438806dab757e7045f8b1f3d0def68abd2732fd1be25b763d6cfc",
+  "kernelSha256": "2cde2e2fa461423c4e15f1e77720ca5552e14e3ace5883ee6921a44b729131fa",
+  "binarySha256": "3171bddc0316c31cb7a69a7c00dbd5086f9d7006d2f773dca62bad14379939ce",
+  "recipeSha256": {
+    "interval_helper.inc": "1c188d009100c460161c841f784fa99e6cb8674f0dd9720cbafd2495724d554e",
+    "numeric.py": "9846566fd67f1e75655af943aa7a07f4ad07b88417f0b9b30f6b335d4cdba23d",
+    "numeric_contract.c": "a6edb9cf6df0ae209afd2ef5e88bce023cb45cc3f066da32d13cb2711ed435f1"
+  }
+}
