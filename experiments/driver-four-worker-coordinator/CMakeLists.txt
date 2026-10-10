@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.21)
+project(coord_trial C)
+set(CMAKE_C_STANDARD 11)
+add_compile_options(-Wall -Wextra -Wpedantic -Wno-unused-parameter -Wno-unused-function -fno-strict-aliasing -ffast-math -O3 -fno-associative-math -fsigned-zeros -fno-finite-math-only)
+add_subdirectory(libsoftgl)

@@ -1,0 +1,87 @@
+--- a/libsoftgl/src/workers.c
++++ b/libsoftgl/src/workers.c
+@@ -708,9 +708,7 @@
+         return;
+     }
+     sg_async_raster *job = p->async_raster;
+-    if (p->async_pending == 2) sg_drain_packed_bins(p, job);
+-    else sg_drain_bins(&job->state, p, job->bins, job->vpool,
+-                        job->transformed, &job->texture_context);
++    /* Trial: caller coordinates, four workers perform raster work. */
+     while (atomic_load_explicit(&p->done_count, memory_order_acquire) < p->nworkers) {
+ #if defined(__x86_64__) || defined(__i386__)
+         __builtin_ia32_pause();
+@@ -965,7 +963,7 @@
+     p->job_storage_first = storage_first;
+     /* Give the caller a disjoint tail instead of spending the whole vertex
+      * job spinning. Keep the worker loop and small-job partitions unchanged. */
+-    int main_count = count >= 1024 ? count / (p->nworkers + 1) : 0;
++    int main_count = 0;
+     p->job_first = first;
+     p->job_count = count - main_count;
+     atomic_store_explicit(&p->job_type, SG_JOB_VERTEX, memory_order_release);
+@@ -1012,7 +1010,7 @@
+         atomic_fetch_add_explicit(&p->gen, 1, memory_order_acq_rel);
+         pthread_cond_broadcast(&p->wake);
+         pthread_mutex_unlock(&p->mtx);
+-        sg_prepare_triangle_run(c, p);
++        /* Coordinator leaves triangle preparation to workers. */
+         while (atomic_load_explicit(&p->done_count, memory_order_acquire) < p->nworkers) {
+ #if defined(__x86_64__) || defined(__i386__)
+             __builtin_ia32_pause();
+@@ -1260,7 +1258,7 @@
+     /* Claim the same exclusive bins while workers run, including small draws.
+      * The browser caller cannot block in Atomics.wait; useful raster work
+      * avoids spending the entire small batch polling the completion counter. */
+-    sg_drain_raster_bins(c, p);
++    /* Coordinator does not drain raster bins. */
+ 
+     /* Spin-wait: flush latency is sub-ms with 4 workers, condvar wakeup
+      * of the main thread would add ~3µs vs ~50ns for a cached atomic. */
+@@ -1298,7 +1296,7 @@
+     atomic_fetch_add_explicit(&p->gen, 1, memory_order_acq_rel);
+     pthread_cond_broadcast(&p->wake);
+     pthread_mutex_unlock(&p->mtx);
+-    callback(data);
++    /* Coordinator does not execute scene jobs. */
+     while (atomic_load_explicit(&p->done_count, memory_order_acquire) < p->nworkers) {
+ #if defined(__x86_64__) || defined(__i386__)
+         __builtin_ia32_pause();
+--- a/libsoftgl/src/workers_queue_raw.inc
++++ b/libsoftgl/src/workers_queue_raw.inc
+@@ -217,14 +217,6 @@
+     atomic_fetch_add_explicit(&q->change, 1, memory_order_release);
+     if (p->stream_queue->sleepers) pthread_cond_broadcast(&p->wake);
+     pthread_mutex_unlock(&p->mtx);
+-    for (;;) {
+-        int begin, end;
+-        pthread_mutex_lock(&p->mtx);
+-        int claimed = sg_queue_vertex_claim(q, &begin, &end);
+-        pthread_mutex_unlock(&p->mtx);
+-        if (!claimed) break;
+-        sg_queue_vertex_run(p, begin, end);
+-    }
+     /* Do not help an arbitrarily long raster bin here: it could delay the
+      * next submission after its geometry has already completed. */
+     while (atomic_load_explicit(&q->vertex_done, memory_order_acquire) < count) {
+@@ -240,18 +232,10 @@
+ /* The browser caller cannot block in Atomics.wait. Help rasterize whenever
+  * a bin is claimable; otherwise wait on completion, outside the queue lock. */
+ static void sg_queue_help(sg_worker_pool *p, unsigned before) {
+-    int bin;
+-    pthread_mutex_lock(&p->mtx);
+-    sg_queue_slot *slot = sg_queue_claim(p->stream_queue, &bin);
+-    pthread_mutex_unlock(&p->mtx);
+-    if (slot) {
+-        sg_queue_render(p, slot, bin);
+-    } else {
+-        while (atomic_load_explicit(&p->stream_queue->change, memory_order_acquire) == before) {
++    while (atomic_load_explicit(&p->stream_queue->change, memory_order_acquire) == before) {
+ #if defined(__x86_64__) || defined(__i386__)
+-            __builtin_ia32_pause();
++        __builtin_ia32_pause();
+ #endif
+-        }
+     }
+ }
+ 

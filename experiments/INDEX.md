@@ -15,6 +15,7 @@ Only adopted work, useful measured findings and relevant research are retained. 
 | [depth-replay-two](depth-replay-two/README.md) | Accepted | BMW 2x frame time improves 5.184%/4.718%, with all six pairs faster. |
 | [dot3-compact-queue](dot3-compact-queue/README.md) | Accepted | Stores only exact attributes consumed by recognized ordered DOT3 draws. |
 | [draw-raster-overlap](draw-raster-overlap/README.md) | Accepted | Overlaps next-draw preparation with one immutable raster draw under the 2 MiB budget. |
+| [driver-four-worker-coordinator](driver-four-worker-coordinator/README.md) | Finding / not adopted | A separate coordinator with four workers slows native 4× MSAA by 4–12%, even with condition waits; twelve RGBA views remain exact. |
 | [fragment-stream-census](fragment-stream-census/README.md) | Finding | Fragment replay is limited by storage and validation costs. |
 | [fused-material-pass](fused-material-pass/README.md) | Accepted | One material pass: BMW -21–27%, T-80 -25–26%, Sponza -27–30%, Bistro -39–40% frame time across off/2x/4x; 108 identical coverage comparisons, small documented color differences. |
 | [fused-transparent-pass](fused-transparent-pass/README.md) | Accepted | BMW frame time -12.9/-8.6/-10.4% off/2×/4×; independent off -13.36%; small documented RGB changes, 753 tests, 108 images, 288 resident checks; live WASM updated. |

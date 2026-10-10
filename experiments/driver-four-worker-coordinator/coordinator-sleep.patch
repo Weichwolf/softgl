@@ -1,0 +1,187 @@
+--- a/libsoftgl/src/workers.c
++++ b/libsoftgl/src/workers.c
+@@ -28,6 +28,13 @@
+     const sg_position_vertex *geometry, sg_vert *out, const sg_vertex_inputs *inputs);
+ void sg_process_vertex_replay(softgl_ctx *c, int index,
+                               const sg_position_vertex *geometry, sg_vert *out);
++
++static void sg_wait_done(sg_worker_pool *p) {
++    pthread_mutex_lock(&p->mtx);
++    while (atomic_load_explicit(&p->done_count, memory_order_acquire) < p->nworkers)
++        pthread_cond_wait(&p->completed, &p->mtx);
++    pthread_mutex_unlock(&p->mtx);
++}
+ 
+ int sg_thread_count(softgl_ctx *c) {
+     if (!c) return 0;
+@@ -708,14 +715,8 @@
+         return;
+     }
+     sg_async_raster *job = p->async_raster;
+-    if (p->async_pending == 2) sg_drain_packed_bins(p, job);
+-    else sg_drain_bins(&job->state, p, job->bins, job->vpool,
+-                        job->transformed, &job->texture_context);
+-    while (atomic_load_explicit(&p->done_count, memory_order_acquire) < p->nworkers) {
+-#if defined(__x86_64__) || defined(__i386__)
+-        __builtin_ia32_pause();
+-#endif
+-    }
++    /* Trial: caller coordinates, four workers perform raster work. */
++    sg_wait_done(p);
+     if (p->async_pending == 2) sg_publish_coverage(p, job);
+     job->coverage_entry = NULL;
+     p->async_pending = 0;
+@@ -796,7 +797,11 @@
+             sg_drain_raster_bins(c, p);
+         }
+ 
+-        atomic_fetch_add_explicit(&p->done_count, 1, memory_order_acq_rel);
++        if (atomic_fetch_add_explicit(&p->done_count, 1, memory_order_acq_rel)+1 == p->nworkers) {
++            pthread_mutex_lock(&p->mtx);
++            pthread_cond_signal(&p->completed);
++            pthread_mutex_unlock(&p->mtx);
++        }
+     }
+     return NULL;
+ }
+@@ -833,6 +838,7 @@
+     atomic_init(&p->next_bin, 0);
+     pthread_mutex_init(&p->mtx, NULL);
+     pthread_cond_init(&p->wake, NULL);
++    pthread_cond_init(&p->completed, NULL);
+ 
+     /* More bins than workers balance the busy center against empty edges.
+      * A column lookup keeps producer work proportional to overlapping bins. */
+@@ -900,6 +906,7 @@
+     sg_queue_destroy(p);
+     pthread_mutex_destroy(&p->mtx);
+     pthread_cond_destroy(&p->wake);
++    pthread_cond_destroy(&p->completed);
+     free(p);
+     c->workers = NULL;
+ }
+@@ -965,7 +972,7 @@
+     p->job_storage_first = storage_first;
+     /* Give the caller a disjoint tail instead of spending the whole vertex
+      * job spinning. Keep the worker loop and small-job partitions unchanged. */
+-    int main_count = count >= 1024 ? count / (p->nworkers + 1) : 0;
++    int main_count = 0;
+     p->job_first = first;
+     p->job_count = count - main_count;
+     atomic_store_explicit(&p->job_type, SG_JOB_VERTEX, memory_order_release);
+@@ -977,11 +984,7 @@
+ 
+     sg_transform_slice(c, p, first + count - main_count, first + count, storage_first);
+ 
+-    while (atomic_load_explicit(&p->done_count, memory_order_acquire) < p->nworkers) {
+-#if defined(__x86_64__) || defined(__i386__)
+-        __builtin_ia32_pause();
+-#endif
+-    }
++    sg_wait_done(p);
+     /* Reset default job type so subsequent flushes do the right thing. */
+     atomic_store_explicit(&p->job_type, SG_JOB_RASTER, memory_order_release);
+     return p->transformed;
+@@ -1012,7 +1015,7 @@
+         atomic_fetch_add_explicit(&p->gen, 1, memory_order_acq_rel);
+         pthread_cond_broadcast(&p->wake);
+         pthread_mutex_unlock(&p->mtx);
+-        sg_prepare_triangle_run(c, p);
++        /* Coordinator leaves triangle preparation to workers. */
+         while (atomic_load_explicit(&p->done_count, memory_order_acquire) < p->nworkers) {
+ #if defined(__x86_64__) || defined(__i386__)
+             __builtin_ia32_pause();
+@@ -1260,15 +1263,11 @@
+     /* Claim the same exclusive bins while workers run, including small draws.
+      * The browser caller cannot block in Atomics.wait; useful raster work
+      * avoids spending the entire small batch polling the completion counter. */
+-    sg_drain_raster_bins(c, p);
++    /* Coordinator does not drain raster bins. */
+ 
+     /* Spin-wait: flush latency is sub-ms with 4 workers, condvar wakeup
+      * of the main thread would add ~3µs vs ~50ns for a cached atomic. */
+-    while (atomic_load_explicit(&p->done_count, memory_order_acquire) < p->nworkers) {
+-#if defined(__x86_64__) || defined(__i386__)
+-        __builtin_ia32_pause();
+-#endif
+-    }
++    sg_wait_done(p);
+     /* Workers are done — pool becomes empty; next flush refills from scratch.
+      * Bin counts were already zeroed by workers. */
+     GLuint qsid = c->current_query[SG_QUERY_TARGET_SAMPLES_PASSED];
+@@ -1298,11 +1297,7 @@
+     atomic_fetch_add_explicit(&p->gen, 1, memory_order_acq_rel);
+     pthread_cond_broadcast(&p->wake);
+     pthread_mutex_unlock(&p->mtx);
+-    callback(data);
+-    while (atomic_load_explicit(&p->done_count, memory_order_acquire) < p->nworkers) {
+-#if defined(__x86_64__) || defined(__i386__)
+-        __builtin_ia32_pause();
+-#endif
+-    }
++    /* Coordinator does not execute scene jobs. */
++    sg_wait_done(p);
+     atomic_store_explicit(&p->job_type, SG_JOB_RASTER, memory_order_release);
+ }
+--- a/libsoftgl/src/workers.h
++++ b/libsoftgl/src/workers.h
+@@ -141,7 +141,7 @@
+      * Workers increment done_count after an ordinary job or explicitly stopped
+      * queue epoch; the caller joins via that acquire/release counter. */
+     pthread_mutex_t mtx;
+-    pthread_cond_t  wake;
++    pthread_cond_t  wake, completed;
+     atomic_int      gen;
+     atomic_int      done_count;
+     atomic_int      alive;
+--- a/libsoftgl/src/workers_queue_raw.inc
++++ b/libsoftgl/src/workers_queue_raw.inc
+@@ -217,14 +217,6 @@
+     atomic_fetch_add_explicit(&q->change, 1, memory_order_release);
+     if (p->stream_queue->sleepers) pthread_cond_broadcast(&p->wake);
+     pthread_mutex_unlock(&p->mtx);
+-    for (;;) {
+-        int begin, end;
+-        pthread_mutex_lock(&p->mtx);
+-        int claimed = sg_queue_vertex_claim(q, &begin, &end);
+-        pthread_mutex_unlock(&p->mtx);
+-        if (!claimed) break;
+-        sg_queue_vertex_run(p, begin, end);
+-    }
+     /* Do not help an arbitrarily long raster bin here: it could delay the
+      * next submission after its geometry has already completed. */
+     while (atomic_load_explicit(&q->vertex_done, memory_order_acquire) < count) {
+@@ -240,18 +232,10 @@
+ /* The browser caller cannot block in Atomics.wait. Help rasterize whenever
+  * a bin is claimable; otherwise wait on completion, outside the queue lock. */
+ static void sg_queue_help(sg_worker_pool *p, unsigned before) {
+-    int bin;
+-    pthread_mutex_lock(&p->mtx);
+-    sg_queue_slot *slot = sg_queue_claim(p->stream_queue, &bin);
+-    pthread_mutex_unlock(&p->mtx);
+-    if (slot) {
+-        sg_queue_render(p, slot, bin);
+-    } else {
+-        while (atomic_load_explicit(&p->stream_queue->change, memory_order_acquire) == before) {
++    while (atomic_load_explicit(&p->stream_queue->change, memory_order_acquire) == before) {
+ #if defined(__x86_64__) || defined(__i386__)
+-            __builtin_ia32_pause();
++        __builtin_ia32_pause();
+ #endif
+-        }
+     }
+ }
+ 
+@@ -271,11 +255,7 @@
+         pthread_mutex_unlock(&p->mtx);
+         sg_queue_help(p, before);
+     }
+-    while (atomic_load_explicit(&p->done_count, memory_order_acquire) < p->nworkers) {
+-#if defined(__x86_64__) || defined(__i386__)
+-        __builtin_ia32_pause();
+-#endif
+-    }
++    sg_wait_done(p);
+     for (int i = 0; i < SG_QUEUE_SLOTS; i++) sg_queue_free_vertices(q->slots[i].draw);
+     p->async_pending = 0;
+     atomic_store_explicit(&p->job_type, SG_JOB_RASTER, memory_order_release);

@@ -1,0 +1,107 @@
+{
+  "baselineCommit": "eaa773ba9b1038ef639730dc1075279a93e2ba4f",
+  "status": "finding, not adopted",
+  "width": 640,
+  "height": 360,
+  "samples": 4,
+  "frames": 72,
+  "warmup": 12,
+  "reference": "three worker threads plus computing caller",
+  "candidate": "four worker threads plus coordinator; condition waits on ordinary job completion",
+  "results": {
+    "bistro": {
+      "referenceMs": 48.824685402777774,
+      "candidateMs": 51.76794986111111,
+      "fpsChangePct": -5.474307013835878
+    },
+    "sponza": {
+      "referenceMs": 32.43149168055555,
+      "candidateMs": 33.72729147222222,
+      "fpsChangePct": -3.871190851344719
+    },
+    "bmw": {
+      "referenceMs": 15.761113861111111,
+      "candidateMs": 17.358853458333332,
+      "fpsChangePct": -9.4055413680052
+    },
+    "t80": {
+      "referenceMs": 10.405228458333333,
+      "candidateMs": 11.871687,
+      "fpsChangePct": -12.238246023621969
+    }
+  },
+  "images": [
+    {
+      "model": "bistro",
+      "angle": 0,
+      "equal": true,
+      "sha256": "620c33cea996ce0db0589480694bca9ccdc3dc60fab568f1e4ed942f8e546050"
+    },
+    {
+      "model": "bistro",
+      "angle": 120,
+      "equal": true,
+      "sha256": "b662d67efdc2b02fa03869922fc11d167f758f3456b95f8541c1dee14746336b"
+    },
+    {
+      "model": "bistro",
+      "angle": 240,
+      "equal": true,
+      "sha256": "3ffc5595d2b59bb836a0b6dd5f086f2a945d932512786977becdda91cf515ce7"
+    },
+    {
+      "model": "sponza",
+      "angle": 0,
+      "equal": true,
+      "sha256": "1ea1d03e2c9ab8d87a1f306558ba9044e0929cb199375a3223ecf6def34763d1"
+    },
+    {
+      "model": "sponza",
+      "angle": 120,
+      "equal": true,
+      "sha256": "863f72a74a58afb217d0b1799d7a6a826ce0f8d9e20d16d402d52dd9545ee933"
+    },
+    {
+      "model": "sponza",
+      "angle": 240,
+      "equal": true,
+      "sha256": "f12f52298355effd4ef0fad36732cbb257ead270d6065f061a1f1df0b81a6b64"
+    },
+    {
+      "model": "bmw",
+      "angle": 0,
+      "equal": true,
+      "sha256": "c389bb48b451881e643c0f09ee166f63ddf90dab2723b205297764bf74b6f7e6"
+    },
+    {
+      "model": "bmw",
+      "angle": 120,
+      "equal": true,
+      "sha256": "81ae760a5cf5ce95ba37213653d7bca5ccec8c3f9990af5d6c2ff2dc68874f07"
+    },
+    {
+      "model": "bmw",
+      "angle": 240,
+      "equal": true,
+      "sha256": "3ee0b4d563bab81b268b0b93f8e7472da866e7c5e38df894127385834e1b435c"
+    },
+    {
+      "model": "t80",
+      "angle": 0,
+      "equal": true,
+      "sha256": "cbc5e659ceb376e6b10b96a20b7b2c30f93bc2aa0c000c5a794bdb3a24544e4e"
+    },
+    {
+      "model": "t80",
+      "angle": 120,
+      "equal": true,
+      "sha256": "d212f400cc1078f6ab677b02ae69b7d76803d84092bf431426590f66508ca251"
+    },
+    {
+      "model": "t80",
+      "angle": 240,
+      "equal": true,
+      "sha256": "94f077ab295b6e4940710c52f693de34866a2b34c9afb88356795660e7ae517f"
+    }
+  ]
+}
